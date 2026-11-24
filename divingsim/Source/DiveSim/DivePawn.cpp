@@ -1,0 +1,375 @@
+#include "DivePawn.h"
+#include "DiveWorld.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/SpotLightComponent.h"
+#include "Components/AudioComponent.h"
+#include "Components/InputComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "Camera/PlayerCameraManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
+#include "Engine/GameViewportClient.h"
+#include "Engine/Engine.h"
+#include "GameFramework/GameUserSettings.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
+#include "Misc/DateTime.h"
+#include "Misc/Guid.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
+#include "HAL/PlatformMisc.h"
+#include "HAL/FileManager.h"
+#include "Dom/JsonObject.h"
+#include "Serialization/JsonWriter.h"
+#include "Serialization/JsonSerializer.h"
+#include "Sound/SoundBase.h"
+#include "Materials/MaterialInstanceDynamic.h"
+
+ADivePawn::ADivePawn()
+{
+    PrimaryActorTick.bCanEverTick=true;
+    Body=CreateDefaultSubobject<UCapsuleComponent>(TEXT("DiverBody"));
+    Body->InitCapsuleSize(28,65); Body->SetCollisionProfileName(TEXT("Pawn"));
+    RootComponent=Body;
+    Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Eyes"));
+    Camera->SetupAttachment(Body); Camera->bUsePawnControlRotation=true;
+    Camera->FieldOfView=90;
+    Lamp=CreateDefaultSubobject<USpotLightComponent>(TEXT("DiveLamp"));
+    Lamp->SetupAttachment(Camera); Lamp->SetRelativeLocation(FVector(25,20,-20));
+    Lamp->SetIntensity(14000); Lamp->SetAttenuationRadius(2400);
+    Lamp->SetInnerConeAngle(12); Lamp->SetOuterConeAngle(27);
+    Lamp->SetLightColor(FLinearColor(.8f,.92f,1));
+    Lamp->SetCastShadows(true);
+    BreathAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("Regulator"));
+    BreathAudio->SetupAttachment(Camera); BreathAudio->bAutoActivate=false;
+    AmbientAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("UnderwaterAmbience"));
+    AmbientAudio->SetupAttachment(Camera); AmbientAudio->bAutoActivate=false;
+    AutoPossessPlayer=EAutoReceiveInput::Player0;
+}
+
+void ADivePawn::BeginPlay()
+{
+    Super::BeginPlay();
+    bSmokeTest=FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));
+    if(!bSmokeTest) LoadSettings();
+    Environment=GetWorld()->SpawnActor<ADiveWorld>();
+    Environment->Diver=this;
+    SetActorLocation(EntryLocation);
+    if(auto* PC=Cast<APlayerController>(GetController()))
+    {
+        PC->SetControlRotation(FRotator(-8,0,0));
+        PC->PlayerCameraManager->ViewPitchMin=-85;
+        PC->PlayerCameraManager->ViewPitchMax=85;
+    }
+    BreathSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/Diving/Audio/A_Breath.A_Breath"));
+    WarningSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/Diving/Audio/A_Warning.A_Warning"));
+    BreathAudio->SetSound(BreathSound); BreathAudio->SetVolumeMultiplier(.45f);
+    if(auto* Sound=LoadObject<USoundBase>(nullptr,TEXT("/Game/Diving/Audio/A_Ambience.A_Ambience")))
+    { AmbientAudio->SetSound(Sound); AmbientAudio->SetVolumeMultiplier(.22f); AmbientAudio->Play(); }
+    SetMenu(true);
+    if(auto* material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_Underwater.M_Underwater")))
+        UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
+    if(bSmokeTest) StartDive();
+}
+
+void ADivePawn::SetupPlayerInputComponent(UInputComponent* Input)
+{
+    Super::SetupPlayerInputComponent(Input);
+    Input->BindAxisKey(EKeys::MouseX,this,&ADivePawn::LookYaw);
+    Input->BindAxisKey(EKeys::MouseY,this,&ADivePawn::LookPitch);
+    Input->BindKey(EKeys::Escape,IE_Pressed,this,&ADivePawn::ToggleMenu);
+    Input->BindKey(EKeys::L,IE_Pressed,this,&ADivePawn::ToggleLamp);
+    Input->BindKey(EKeys::H,IE_Pressed,this,&ADivePawn::ToggleHUD);
+    Input->BindKey(EKeys::C,IE_Pressed,this,&ADivePawn::ToggleComputer);
+    Input->BindKey(EKeys::M,IE_Pressed,this,&ADivePawn::ToggleMap);
+    Input->BindKey(EKeys::F,IE_Pressed,this,&ADivePawn::Interact);
+    Input->BindKey(EKeys::P,IE_Pressed,this,&ADivePawn::Photograph);
+}
+
+void ADivePawn::LookYaw(float Value) { if(!bMenu) AddControllerYawInput(Value*MouseSensitivity); }
+void ADivePawn::LookPitch(float Value) { if(!bMenu) AddControllerPitchInput(-Value*MouseSensitivity); }
+void ADivePawn::ToggleLamp() { if(!bMenu) bLamp=!bLamp; }
+void ADivePawn::ToggleHUD() { if(!bMenu) bShowInstruments=!bShowInstruments; }
+void ADivePawn::ToggleComputer() { if(!bMenu) bShowComputer=!bShowComputer; }
+void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
+void ADivePawn::ToggleMenu() { SetMenu(!bMenu || !bDiveActive); }
+void ADivePawn::ResumeDive() { if(bDiveActive) SetMenu(false); }
+
+void ADivePawn::SetMenu(bool Open)
+{
+    bMenu=Open;
+    if(auto* PC=Cast<APlayerController>(GetController()))
+    {
+        PC->bShowMouseCursor=Open;
+        PC->bEnableClickEvents=Open;
+        if(Open)
+        {
+            FInputModeGameAndUI Mode;
+            Mode.SetHideCursorDuringCapture(false);
+            Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+            PC->SetInputMode(Mode);
+        }
+        else PC->SetInputMode(FInputModeGameOnly());
+    }
+    if(Open) BreathAudio->Stop();
+}
+
+void ADivePawn::StartDive()
+{
+    PendingConfig.Sanitize();
+    Simulation.Reset(PendingConfig);
+    EntryLocation=FVector(-6500,EntryIndex*1800-1800,-180);
+    SetActorLocation(EntryLocation); VelocityMetres=FVector::ZeroVector;
+    if(auto* PC=Cast<APlayerController>(GetController())) PC->SetControlRotation(FRotator(-8,0,0));
+    // Start trimmed at entry depth; later depth changes require manual compensation.
+    const double pressure=Simulation.Pressure(1.8);
+    const double suit=(PendingConfig.DrySuit?3:5)/std::pow(pressure/PendingConfig.SurfacePressureBar,.7);
+    Simulation.Data.BCDSurfaceLitres=FMath::Max(0.0,PendingConfig.WeightKg+
+        PendingConfig.StartPressureBar*PendingConfig.CylinderLitres*.0012-2-suit)*pressure;
+    Samples.Reset(); PreviousWarnings=0; Accumulator=0; TelemetryAccumulator=0; LastBreathPhase=0;
+    bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; Outcome.Empty(); LastLogPath.Empty();
+    Environment->Configure(PendingConfig.VisibilityMetres,PendingConfig.Hour,PendingConfig.CurrentMetresPerSecond);
+    if(!bSmokeTest) SaveSettings();
+    SetMenu(false);
+    Notify(Local(TEXT("WASD schwimmen  |  Q/E tarieren  |  L Lampe  |  ESC Pause"),TEXT("WASD swim  |  Q/E buoyancy  |  L torch  |  ESC pause")));
+}
+
+void ADivePawn::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+    if(bDiveActive && !bMenu)
+    {
+        Accumulator+=FMath::Min(DeltaSeconds,.25f);
+        while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
+    }
+    if(bSmokeTest && Simulation.Data.ElapsedSeconds>12 && !bSmokeCaptured)
+    {
+        bSmokeCaptured=true;
+        FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/DiveSmoke.png"),true,false);
+    }
+    if(bSmokeTest && bDiveActive && Simulation.Data.ElapsedSeconds>=22)
+    {
+        const bool valid=Simulation.Data.MaxDepthMetres>2.5 && Simulation.Data.DistanceMetres>5
+            && Simulation.Data.CylinderBar<199 && Samples.Num()>=21 && FMath::IsFinite(GetActorLocation().Z);
+        FinishDive(valid?TEXT("smoke_pass"):TEXT("smoke_failed"));
+        FString persisted;
+        const bool saved=FFileHelper::LoadFileToString(persisted,*LastLogPath) && persisted.Contains(TEXT("smoke_pass"));
+        UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s depth=%.2f distance=%.2f pressure=%.2f samples=%d log=%s"),
+            valid&&saved?TEXT("PASS"):TEXT("FAIL"),Simulation.Data.MaxDepthMetres,Simulation.Data.DistanceMetres,
+            Simulation.Data.CylinderBar,Samples.Num(),*LastLogPath);
+        FPlatformMisc::RequestExitWithStatus(false,valid&&saved?0:1);
+    }
+    Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
+    const float depth=FMath::Max(0.f,static_cast<float>(-GetActorLocation().Z/100));
+    const float underwater=FMath::Clamp(depth*2.f,0.f,1.f);
+    if(UnderwaterMaterial)
+    {
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),PendingConfig.VisibilityMetres*100);
+        Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
+    }
+    auto& PP=Camera->PostProcessSettings;
+    Camera->PostProcessBlendWeight=1;
+    PP.bOverride_ColorSaturation=true; PP.ColorSaturation=FVector4(.68,.85,.9,1);
+    PP.bOverride_SceneColorTint=true;
+    PP.SceneColorTint=FMath::Lerp(FLinearColor::White,FLinearColor(.48,.83,.78),underwater);
+    PP.bOverride_VignetteIntensity=true; PP.VignetteIntensity=.35f;
+    PP.bOverride_AutoExposureMethod=true; PP.AutoExposureMethod=EAutoExposureMethod::AEM_Manual;
+    PP.bOverride_AutoExposureBias=true; PP.AutoExposureBias=8.5f-depth*.018f;
+    PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
+    PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
+    if(bCameraMotion && !bMenu)
+        Camera->SetRelativeLocation(FVector(0,0,static_cast<float>(std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8)));
+    else Camera->SetRelativeLocation(FVector::ZeroVector);
+}
+
+void ADivePawn::SimulateStep(float Step)
+{
+    auto* PC=Cast<APlayerController>(GetController()); if(!PC) return;
+    auto Down=[this,PC](FKey Key)
+    {
+        if(!bSmokeTest) return PC->IsInputKeyDown(Key)?1.f:0.f;
+        const double t=Simulation.Data.ElapsedSeconds;
+        if(Key==EKeys::W) return t<10?1.f:0.f;
+        if(Key==EKeys::LeftControl) return t<7?.7f:0.f;
+        if(Key==EKeys::E) return t<4?.3f:0.f;
+        if(Key==EKeys::Q) return t>10 && t<14?1.f:0.f;
+        if(Key==EKeys::SpaceBar) return t>16?1.f:0.f;
+        return 0.f;
+    };
+    const float forward=Down(EKeys::W)-Down(EKeys::S);
+    const float side=Down(EKeys::D)-Down(EKeys::A);
+    const float vertical=Down(EKeys::SpaceBar)-Down(EKeys::LeftControl);
+    const float inflate=Down(EKeys::Q)-Down(EKeys::E);
+    const float sprint=Down(EKeys::LeftShift);
+    const FVector old=GetActorLocation();
+    const FRotationMatrix orientation(PC->GetControlRotation());
+    FVector wish=orientation.GetUnitAxis(EAxis::X)*forward+orientation.GetUnitAxis(EAxis::Y)*side+FVector::UpVector*vertical;
+    wish=wish.GetClampedToMaxSize(1);
+    const float effort=wish.Size()*(sprint>0?1.f:.45f);
+    const FVector current(0,PendingConfig.CurrentMetresPerSecond,0);
+    const FVector relative=VelocityMetres-current;
+    const float fatigue=1.f-static_cast<float>(Simulation.Data.Fatigue)*.35f;
+    FVector force=wish*SwimForceNewtons*(sprint>0?1.7f:1.f)*fatigue;
+    force.Z+=Simulation.Data.BuoyancyNewtons;
+    force-=relative*relative.Size()*DragCoefficient;
+    VelocityMetres+=force/100.f*Step;
+    VelocityMetres=VelocityMetres.GetClampedToMaxSize(2.5f);
+    FHitResult hit;
+    AddActorWorldOffset(VelocityMetres*100*Step,true,&hit);
+    if(hit.bBlockingHit)
+    {
+        VelocityMetres=FVector::VectorPlaneProject(VelocityMetres,hit.Normal);
+        AddActorWorldOffset(VelocityMetres*100*Step*(1-hit.Time),true);
+    }
+    FVector position=GetActorLocation();
+    position.X=FMath::Clamp(position.X,-9600.,9600.);
+    position.Y=FMath::Clamp(position.Y,-9600.,9600.);
+    if(position.Z>-15) { position.Z=-15; VelocityMetres.Z=FMath::Min(0.,VelocityMetres.Z); }
+    position.Z=FMath::Max(position.Z,static_cast<double>(ADiveWorld::GroundZ(position.X,position.Y)+75));
+    SetActorLocation(position);
+    const FVector actual=(position-old)/100/Step;
+    Simulation.Step(Step,-position.Z/100,effort,inflate,actual.Z,(position-old).Size()/100,bLamp);
+    const auto& s=Simulation.Data;
+    if(s.BreathPhase>=.52 && LastBreathPhase<.52)
+    {
+        Environment->EmitBreath(position,Camera->GetForwardVector(),s.AmbientBar);
+        if(BreathSound) { BreathAudio->SetPitchMultiplier(s.RespiratoryBPM/16); BreathAudio->Play(); }
+    }
+    LastBreathPhase=s.BreathPhase;
+    if((s.Warnings&~PreviousWarnings)!=0 && WarningSound)
+        UGameplayStatics::PlaySound2D(this,WarningSound,.25f);
+    PreviousWarnings=s.Warnings;
+    TelemetryAccumulator+=Step;
+    if(TelemetryAccumulator>=1)
+    {
+        Samples.Add({s,position}); TelemetryAccumulator-=1;
+        if(Samples.Num()%30==0) SaveLog(TEXT("in_progress"));
+    }
+    if(s.SpO2<60 && PendingConfig.GameMode!=Dive::Mode::Exploration)
+        FinishDive(TEXT("out_of_gas"));
+}
+
+void ADivePawn::Notify(const FString& Message)
+{ Notice=Message; NoticeUntil=GetWorld()->GetTimeSeconds()+8; }
+
+void ADivePawn::Interact()
+{
+    if(bMenu || !bDiveActive) return;
+    if(Simulation.Data.DepthMetres<=.8 && FVector::Dist2D(GetActorLocation(),EntryLocation)<1200)
+        FinishDive(TEXT("completed"));
+    else Notify(Local(TEXT("Zum Beenden an der Oberflaeche zur Einstiegsboje zurueckkehren."),TEXT("Return to the entry buoy at the surface to finish your dive.")));
+}
+
+void ADivePawn::FinishDive(const FString& Reason)
+{
+    if(!bDiveActive) return;
+    Samples.Add({Simulation.Data,GetActorLocation()});
+    Outcome=Reason; bDiveActive=false; bSummary=true;
+    if(!SaveLog(Reason)) Outcome+=TEXT(" / log_save_failed");
+    SetMenu(true);
+}
+
+void ADivePawn::EndPlay(const EEndPlayReason::Type Reason)
+{
+    if(bDiveActive) SaveLog(TEXT("interrupted"));
+    Super::EndPlay(Reason);
+}
+
+void ADivePawn::Photograph()
+{
+    if(bMenu) return;
+    const FString dir=FPaths::ProjectSavedDir()/TEXT("Photographs");
+    IFileManager::Get().MakeDirectory(*dir,true);
+    const FString path=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT(".png"));
+    FScreenshotRequest::RequestScreenshot(path,false,false);
+    Notify(Local(TEXT("Foto gespeichert: Saved/Photographs"),TEXT("Photo saved: Saved/Photographs")));
+}
+
+bool ADivePawn::SaveLog(const FString& Reason)
+{
+    const FString dir=FPaths::ProjectSavedDir()/TEXT("DiveLogs");
+    IFileManager::Get().MakeDirectory(*dir,true);
+    if(LastLogPath.IsEmpty()) LastLogPath=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT("_")+FGuid::NewGuid().ToString(EGuidFormats::Digits).Left(8)+TEXT(".json"));
+    auto root=MakeShared<FJsonObject>();
+    root->SetNumberField(TEXT("schema_version"),1);
+    root->SetStringField(TEXT("status"),Reason);
+    root->SetStringField(TEXT("location"),TEXT("Synthetic lake training area; not surveyed Walensee"));
+    root->SetNumberField(TEXT("duration_seconds"),Simulation.Data.ElapsedSeconds);
+    root->SetNumberField(TEXT("maximum_depth_m"),Simulation.Data.MaxDepthMetres);
+    root->SetNumberField(TEXT("distance_m"),Simulation.Data.DistanceMetres);
+    root->SetNumberField(TEXT("cylinder_litres"),PendingConfig.CylinderLitres);
+    root->SetNumberField(TEXT("oxygen_fraction"),PendingConfig.OxygenFraction);
+    root->SetNumberField(TEXT("mode"),static_cast<int>(PendingConfig.GameMode));
+    TArray<TSharedPtr<FJsonValue>> rows;
+    for(const auto& sample:Samples)
+    {
+        const auto& s=sample.State; auto row=MakeShared<FJsonObject>();
+        row->SetNumberField(TEXT("seconds"),s.ElapsedSeconds);
+        row->SetNumberField(TEXT("depth_m"),s.DepthMetres);
+        row->SetNumberField(TEXT("cylinder_bar"),s.CylinderBar);
+        row->SetNumberField(TEXT("heart_bpm"),s.HeartBPM);
+        row->SetNumberField(TEXT("respiratory_bpm"),s.RespiratoryBPM);
+        row->SetNumberField(TEXT("spo2_percent"),s.SpO2);
+        row->SetNumberField(TEXT("water_c"),s.WaterTemperatureC);
+        row->SetNumberField(TEXT("core_c"),s.CoreTemperatureC);
+        row->SetNumberField(TEXT("stress"),s.Stress);
+        row->SetNumberField(TEXT("fatigue"),s.Fatigue);
+        row->SetNumberField(TEXT("ppo2_bar"),s.PPO2);
+        row->SetNumberField(TEXT("ceiling_m"),s.CeilingMetres);
+        row->SetNumberField(TEXT("ndl_minutes"),s.NDLMinutes);
+        row->SetNumberField(TEXT("distance_m"),s.DistanceMetres);
+        row->SetNumberField(TEXT("warnings"),s.Warnings);
+        row->SetNumberField(TEXT("x_m"),sample.Position.X/100);
+        row->SetNumberField(TEXT("y_m"),sample.Position.Y/100);
+        rows.Add(MakeShared<FJsonValueObject>(row));
+    }
+    root->SetArrayField(TEXT("samples"),rows);
+    FString json; auto writer=TJsonWriterFactory<>::Create(&json);
+    if(!FJsonSerializer::Serialize(root,writer)) return false;
+    const FString temp=LastLogPath+TEXT(".tmp");
+    if(!FFileHelper::SaveStringToFile(json,*temp,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)) return false;
+    return IFileManager::Get().Move(*LastLogPath,*temp,true,true);
+}
+
+void ADivePawn::SaveSettings()
+{
+    auto obj=MakeShared<FJsonObject>();
+    obj->SetNumberField(TEXT("schema_version"),1);
+    obj->SetNumberField(TEXT("cylinder_litres"),PendingConfig.CylinderLitres);
+    obj->SetNumberField(TEXT("pressure_bar"),PendingConfig.StartPressureBar);
+    obj->SetNumberField(TEXT("weight_kg"),PendingConfig.WeightKg);
+    obj->SetNumberField(TEXT("visibility_m"),PendingConfig.VisibilityMetres);
+    obj->SetNumberField(TEXT("current_mps"),PendingConfig.CurrentMetresPerSecond);
+    obj->SetNumberField(TEXT("hour"),PendingConfig.Hour);
+    obj->SetNumberField(TEXT("planned_depth_m"),PendingConfig.PlannedDepthMetres);
+    obj->SetNumberField(TEXT("planned_minutes"),PendingConfig.PlannedMinutes);
+    obj->SetNumberField(TEXT("mode"),static_cast<int>(PendingConfig.GameMode));
+    obj->SetBoolField(TEXT("dry_suit"),PendingConfig.DrySuit);
+    obj->SetBoolField(TEXT("english"),bEnglish);
+    obj->SetBoolField(TEXT("camera_motion"),bCameraMotion);
+    obj->SetNumberField(TEXT("entry"),EntryIndex);
+    FString json; auto writer=TJsonWriterFactory<>::Create(&json);
+    FJsonSerializer::Serialize(obj,writer);
+    FFileHelper::SaveStringToFile(json,*(FPaths::ProjectSavedDir()/TEXT("DiveSettings.json")));
+}
+
+void ADivePawn::LoadSettings()
+{
+    FString json; if(!FFileHelper::LoadFileToString(json,*(FPaths::ProjectSavedDir()/TEXT("DiveSettings.json")))) return;
+    TSharedPtr<FJsonObject> obj; if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(json),obj)||!obj) return;
+    obj->TryGetNumberField(TEXT("cylinder_litres"),PendingConfig.CylinderLitres);
+    obj->TryGetNumberField(TEXT("pressure_bar"),PendingConfig.StartPressureBar);
+    obj->TryGetNumberField(TEXT("weight_kg"),PendingConfig.WeightKg);
+    obj->TryGetNumberField(TEXT("visibility_m"),PendingConfig.VisibilityMetres);
+    obj->TryGetNumberField(TEXT("current_mps"),PendingConfig.CurrentMetresPerSecond);
+    obj->TryGetNumberField(TEXT("hour"),PendingConfig.Hour);
+    obj->TryGetNumberField(TEXT("planned_depth_m"),PendingConfig.PlannedDepthMetres);
+    obj->TryGetNumberField(TEXT("planned_minutes"),PendingConfig.PlannedMinutes);
+    int mode=1; obj->TryGetNumberField(TEXT("mode"),mode); PendingConfig.GameMode=static_cast<Dive::Mode>(FMath::Clamp(mode,0,2));
+    obj->TryGetBoolField(TEXT("dry_suit"),PendingConfig.DrySuit);
+    obj->TryGetBoolField(TEXT("english"),bEnglish);
+    obj->TryGetBoolField(TEXT("camera_motion"),bCameraMotion);
+    obj->TryGetNumberField(TEXT("entry"),EntryIndex); EntryIndex=FMath::Clamp(EntryIndex,0,2);
+    PendingConfig.Sanitize();
+}

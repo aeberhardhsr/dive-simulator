@@ -1,0 +1,60 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "{C802AAD3-426C-7C21-263E-9196C757F6B5}",
+  "Category": "",
+  "Description": "",
+  "Plugins": [
+    {
+      "Name": "ModelingToolsEditorMode",
+      "Enabled": true,
+      "TargetAllowList": [
+        "Editor"
+      ]
+    },
+    {
+      "Name": "Landmass",
+      "Enabled": true
+    },
+    {
+      "Name": "InEditorDocumentation",
+      "Enabled": true,
+      "TargetAllowList": [
+        "Editor"
+      ],
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux"
+      ]
+    },
+    {
+      "Name": "AIAssistant",
+      "Enabled": true
+    },
+    {
+      "Enabled": true,
+      "Name": "ProceduralMeshComponent"
+    },
+    {
+      "TargetAllowList": [
+        "Editor"
+      ],
+      "Name": "PythonScriptPlugin",
+      "Enabled": true
+    },
+    {
+      "TargetAllowList": [
+        "Editor"
+      ],
+      "Name": "EditorScriptingUtilities",
+      "Enabled": true
+    }
+  ],
+  "Modules": [
+    {
+      "Name": "DiveSim",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}

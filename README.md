@@ -1,2 +1,62 @@
-# dive-simulator
-A fully playable dive simulator
+# Walensee Diving Simulator
+
+Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Die erste Trainingsbucht enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle.
+
+**Entwicklungsstand:** Der Trainingsbereich ist noch synthetisch. Echte swisstopo-Tiefendaten sind beschafft und reproduzierbar aufbereitet, aber noch nicht in die Spielwelt eingebaut. Fotorealistische Grafik, der vollständige Walensee, sämtliche Tierarten und die vollständige Anforderungsabnahme sind offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
+
+## Starten
+
+Nach einem lokalen Package-Build: `Builds/Windows/divingsim.exe` starten. Der gesamte benachbarte Ordner wird benötigt. Im Menü Ausrüstung und Umgebung einstellen, dann **Abtauchen** wählen. **Exploration** bietet unbegrenztes Gas und automatische Tarierung; **Simulation** verwendet manuelle Tarierung und begrenztes Gas. Hardcore ist derzeit als noch nicht vollständig implementiert gekennzeichnet.
+
+Aus dem Quellprojekt:
+
+```powershell
+./Tools/Build.ps1 -Target Editor
+./Tools/Play.ps1
+```
+
+Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.44, Windows SDK 10.0.22621 und .NET Framework 4.8 SDK. Das Skript erwartet Unreal unter `C:/Program Files/Epic Games/UE_5.8`; einen anderen Ort mit `-EngineRoot` übergeben. Binäre Projektdateien verwenden Git LFS: nach dem Klonen `git lfs pull` ausführen. Die vorhandenen Template-Assets bleiben erhalten.
+
+## Bedienung
+
+| Taste | Funktion |
+|---|---|
+| Maus | Blickrichtung |
+| WASD | Schwimmen in Blickrichtung / seitwärts |
+| Leertaste / Strg | Nach oben / unten schwimmen |
+| Umschalt | Kräftiger Flossenschlag, höhere Belastung |
+| Q / E | Jacket füllen / entleeren |
+| L | Lampe |
+| C | Computeranzeige |
+| M | Schematische Karte |
+| P | Foto |
+| H | Instrumente aus-/einblenden |
+| Esc | Pause und Menü |
+| F | Tauchgang an der Einstiegsboje nahe der Oberfläche abschließen |
+
+BCD-Gas dehnt sich beim Aufstieg aus. Gegensteuern und rechtzeitig entlüften. Im Pausenmenü steht die Simulation still; die Ausrüstung lässt sich während eines laufenden Tauchgangs nicht ändern.
+
+Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Bilder unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Abschlussfenster zeigt den zuletzt beendeten Tauchgang; ein durchsuchbares Logbuch folgt.
+
+## Entwicklung und Prüfung
+
+```powershell
+./Tools/TestCore.cmd                  # Engineunabhängige Simulationsprüfungen
+python -m unittest discover -s Tests -p 'test_*.py'
+./Tools/Build.ps1 -Target Content     # Materialien, Importe und Trainingsmap
+./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
+./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
+./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
+```
+
+Die Build-Skripte begrenzen C++-Parallelität für den Entwicklungsrechner. `Tools/TestCore.cmd` erwartet die lokale Installation unter `C:/BuildTools2022`; plattformunabhängig kann der Kern mit `cmake -S Tests -B artifacts/tests` gebaut und mit CTest geprüft werden. Die CI-Konfiguration prüft diesen Kern auf Windows, macOS und Linux, nicht das vollständige Unreal-Spiel. Ein macOS-Spiel-Build ist noch nicht getestet.
+
+Blender-Quellen: `blender/DivingAssets.blend`; reproduzierbare Geometrie über `Tools/create_blender_assets.py`, synthetischer Ton über `Tools/create_audio.py`. `Tools/build_unreal_content.py` wird durch den Content-Build in Unreal ausgeführt.
+
+```powershell
+python Tools/prepare_bathymetry.py
+```
+
+Dieser separate Geodaten-Schritt lädt den vollständigen offenen Walensee-Datensatz, prüft dessen SHA256-Prüfsumme und schreibt 46 Rasterkacheln nach `Geodata/Processed/Walensee`. Höhen sind absolute LN02-Höhen in Metern, keine Wassertiefen. Fehlende Messwerte bleiben als solche erhalten. Quelle: [swissBATHY3D](https://www.swisstopo.admin.ch/de/hoehenmodell-swissbathy3d), © swisstopo; [Nutzungsbedingungen](https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste).
+
+Anforderungen und offene Abnahme: [Documentation/PROJECT.md](Documentation/PROJECT.md). Modellbeschreibung: [Documentation/SIMULATION.md](Documentation/SIMULATION.md). Asset-Herkunft: [Documentation/ASSETS.csv](Documentation/ASSETS.csv).
