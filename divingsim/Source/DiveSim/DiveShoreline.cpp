@@ -1,6 +1,7 @@
 #include "DiveWorld.h"
 #include "ProceduralMeshComponent.h"
 #include "Materials/MaterialInterface.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 void ADiveWorld::CreateShoreline()
 {
@@ -25,7 +26,8 @@ void ADiveWorld::CreateShoreline()
             if(!Terrain.SampleShore(p.X,p.Y-100,w)) w=z;
             const FVector normal=FVector(-(n-s)/200,-(e-w)/200,1).GetSafeNormal();
             vertices.Add(FVector(p.X-origin.X,p.Y-origin.Y,z)); normals.Add(normal);
-            uv.Add(FVector2D(east/3,north/3)); tangents.Add(FProcMeshTangent(1,0,0));
+            uv.Add(FVector2D((east-grid.West)/(grid.Columns*grid.Spacing),(grid.North-north)/(grid.Rows*grid.Spacing)));
+            tangents.Add(FProcMeshTangent(1,0,0));
             const float green=FMath::Clamp((z-100)/400.f,0.f,1.f)*FMath::Clamp(static_cast<float>((normal.Z-.6)*3),0.f,1.f);
             colors.Add(FMath::Lerp(FLinearColor(.24f,.23f,.19f),FLinearColor(.08f,.16f,.055f),green));
         }
@@ -39,7 +41,7 @@ void ADiveWorld::CreateShoreline()
         mesh->SetupAttachment(RootComponent); mesh->SetRelativeLocation(FVector(origin.X,origin.Y,0));
         mesh->bUseAsyncCooking=true; mesh->SetCollisionProfileName(TEXT("BlockAll")); mesh->RegisterComponent();
         mesh->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,true);
-        mesh->SetMaterial(0,LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_Shore.M_Shore")));
+        mesh->SetMaterial(0,ImageryMaterial(TEXT("M_ShorePhoto"),Terrain.ShoreImagery[ShoreMeshes.Num()]));
         ShoreMeshes.Add(mesh);
         UE_LOG(LogTemp,Display,TEXT("WALENSEE_SHORE_MESH patch=%d vertices=%d triangles=%d"),ShoreMeshes.Num()-1,vertices.Num(),indices.Num()/3);
     }

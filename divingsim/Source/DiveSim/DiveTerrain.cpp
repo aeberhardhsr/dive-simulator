@@ -74,7 +74,7 @@ bool FDiveTerrain::Load()
         Overview[y*MapWidth+x]=Mosaic.Sample(east,north,height)?static_cast<float>(-height):-1.f;
     }
     UE_LOG(LogTemp,Display,TEXT("WALENSEE_DATA_READY tiles=%d entries=%d grid=1m water_reference=419m_LN02"),LoadedTiles,Entries.Num());
-    return LoadLandscape()&&LoadShoreline();
+    return LoadLandscape()&&LoadShoreline()&&LoadImagery();
 }
 
 bool FDiveTerrain::LoadLandscape()
@@ -133,7 +133,7 @@ bool FDiveTerrain::LoadShoreline()
         const auto obj=value->AsObject(); Dive::SurfaceGrid grid; FDiveEntry entry;
         double south=0,rows=0,cols=0,east=0,north=0,yaw=0; FString file;
         if(!obj||!obj->TryGetStringField(TEXT("file"),file)||FPaths::GetCleanFilename(file)!=file||
-           !obj->TryGetStringField(TEXT("name"),entry.Name)||
+           !obj->TryGetStringField(TEXT("name"),entry.Name)||!obj->TryGetStringField(TEXT("id"),entry.Id)||
            !obj->TryGetNumberField(TEXT("west"),grid.West)||!obj->TryGetNumberField(TEXT("south"),south)||
            !obj->TryGetNumberField(TEXT("rows"),rows)||rows!=384||
            !obj->TryGetNumberField(TEXT("columns"),cols)||cols!=384||

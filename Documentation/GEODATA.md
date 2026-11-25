@@ -34,7 +34,7 @@ Das umliegende Gelände stammt aus [swissALTI3D](https://www.swisstopo.admin.ch/
 
 `Tools/prepare_landscape.py` liest die originalen 2-m-Pixel und mittelt jeweils 4 × 4 Zellen zu einem 8-m-Raster. Es verwendet bewusst nicht die eingebetteten GeoTIFF-Vorschaustufen: Diese liefern keine verlässlichen Flächenmittel. Eine unabhängige Prüfung von 858 über alle Kacheln verteilten Zellen gegen native 4 × 4-Pixelblöcke ergab maximal 0,000062 m numerische Abweichung. Das ist ein Umwandlungstest, keine Aussage zur Vermessungsgenauigkeit oder zum Detailverlust durch Mittelung.
 
-Die Laufzeit lädt `landscape.f32` und erzeugt ein fernes Geländemesh mit 32-m-Abstand (vor den Uferaussparungen: 278.922 Vertices, 509.490 Dreiecke). Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Das Hintergrundmesh hat keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Gebäude, echte Landbedeckung, Vegetation und Landschafts-LOD fehlen noch. Die Farben für Fels und Bewuchs werden illustrativ aus Neigung und Höhe abgeleitet.
+Die Laufzeit lädt `landscape.f32` und erzeugt ein fernes Geländemesh mit 32-m-Abstand (vor den Uferaussparungen: 278.922 Vertices, 509.490 Dreiecke). Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Das Hintergrundmesh hat keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Die Oberfläche verwendet die unten beschriebenen SWISSIMAGE-Luftbilder. Räumliche Gebäude, Vegetation und Landschafts-LOD fehlen noch.
 
 Zur erneuten Aufbereitung:
 
@@ -65,7 +65,7 @@ Die Lücke wird als diskrete harmonische Fläche mit festgehaltenen vermessenen 
 
 Unreal erzeugt drei getrennte Ufermeshes mit Kollision. Ihr 1-m-Vertexraster und ihre Dreiecksdiagonalen schließen an die gestreamte Bathymetrie an; vollständig vermessene Seebodendreiecke bleiben im bisherigen Streaming. Die Bodenabfrage interpoliert die tatsächlichen Dreiecksflächen. Das ferne Landmesh wird im Inneren der Uferbereiche ausgespart. Die äußere Überlappungszone ist noch keine fertige Landschafts-LOD-Lösung.
 
-Die Uferoberfläche erhält eigenes prozedurales Kies-/Bodenmaterial mit entfernungsabhängig gefilterter Körnung und einem vereinfachten feuchten Bereich um den festen Pegel. Farbe, Körnung und Bewuchszuordnung sind illustrative Gestaltung. Gebäude, Wege und reale Bodenbedeckung fehlen.
+Die Uferoberfläche verwendet nahe dem Wasser eigenes prozedurales Kies-/Bodenmaterial mit gefilterter Körnung und einem vereinfachten feuchten Bereich. Zwischen 0 und 1,2 m über dem Szenariopegel geht es in die unten beschriebenen SWISSIMAGE-Luftbilder über. Die Kiesgestaltung ist illustrativ; fotografierte Wege und Bodenbedeckung sind in den Bildern enthalten. Räumliche Gebäude, Wegeausbau und Vegetation fehlen.
 
 ## Modellierte spielbare Zugänge
 
@@ -83,3 +83,34 @@ Tools/.geodata-env/Scripts/python.exe Tools/validate_shoreline.py
 ./Tools/Build.ps1 -Target Content -OnlyShore
 ./Tools/SmokeTest.ps1 -Scenario shore-preview -Entry 0
 ```
+
+## SWISSIMAGE-Luftbilder
+
+Die Landschaft und die drei Uferbereiche tragen georeferenzierte [SWISSIMAGE-Orthobilder](https://www.swisstopo.admin.ch/de/orthobilder-swissimage-10-cm), © swisstopo. Für enthaltene Seeflächen gilt zusätzlich: **Includes material © (2016-2018) Planet. All rights reserved.** Diese Quellenangaben stehen auch im Spielmenü und in `Content/Diving/Geodata/IMAGERY_NOTICE.txt`. Nutzungsbedingungen: [swisstopo OGD](https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste).
+
+Die Pipeline verwendet 286 originale 2-m-GeoTIFFs für den Landschaftsausschnitt sowie vier originale 0,1-m-GeoTIFFs für die drei örtlichen Ufer. Alle ausgewählten Kacheln tragen das Aufnahmejahr 2025. Eine Kacheljahresangabe beschreibt den überwiegenden Bildstand, keinen einheitlichen Aufnahmetag. Jede vollständige Quelldatei wurde gegen den SHA256-Multihash des offiziellen STAC-Assets geprüft.
+
+| Textur | LV95-Abdeckung | Laufzeitgröße | Horizontale Pixelabstände |
+|---|---|---|---|
+| Landschaft | E 2723000–2745000, N 1215000–1228000 | 4096 × 2048 | 5,3711 × 6,3477 m |
+| Weesen Strandbad | örtliches 384 × 384-m-Uferfeld | 2048 × 2048 | 0,1875 × 0,1875 m |
+| Murg West | örtliches 384 × 384-m-Uferfeld | 2048 × 2048 | 0,1875 × 0,1875 m |
+| Mols/Lediwracks | örtliches 384 × 384-m-Uferfeld | 2048 × 2048 | 0,1875 × 0,1875 m |
+
+Die nativen RGB-Pixel werden ohne Verwendung der COG-Vorschaustufen gelesen, in LV95 zusammengefügt und flächengewichtet in gespeicherten sRGB-Farbwerten verkleinert. Die Rechtecke sind exakt mit den zugehörigen Höhenrastern registriert; unterschiedliche Pixelabstände der Landschaft werden über die rechteckigen UV-Koordinaten berücksichtigt. Die Bildzeilen laufen von Nord nach Süd. Kein Bild verändert die Gelände- oder Kollisionshöhen.
+
+`imagery.json` versioniert für jedes Bild Ausdehnung, Größe, Pixelabstände, Ausgangsdateien, URLs, Aufnahmejahr und Quell-/PNG-Prüfsummen. Standardmäßig reproduziert `prepare_imagery.py` diese festgeschriebenen Quellen. Nur `--refresh` wählt neuere veröffentlichte Kacheln. Die Rohdaten und vorbereiteten PNGs sind lokal; die Unreal-Texturassets und das Manifest sind versioniert. Der Content-Build kann vorhandene Assets anhand ihrer Quellen-Metadaten weiterverwenden. Bei fehlenden bzw. abweichenden Assets ist zunächst die Datenaufbereitung erforderlich.
+
+Die vier Texturen behalten ihre vollständige Mipmap-Kette im Speicher, weil prozedurale Meshes keine zuverlässige importierte UV-Dichte für Unreals Texture-Streamer liefern. Im geprüften Windows-Build melden sie zusammen 14.090.240 Bytes (13,44 MiB) Texturspeicher. Das ersetzt keinen vollständigen Performance-Benchmark.
+
+Die Bilder enthalten bereits aufgenommenes Licht und Schatten. Fotografierte Bäume und Gebäude sind zunächst flach auf das Geländemesh projiziert; sie erhalten dadurch keine eigene Geometrie, Kollision oder wechselnden Schatten. Insbesondere steile Hänge, Übergänge, nahe Vegetation und Gebäude benötigen weitere Modellierung. Die Luftbilder sind deshalb ein Schritt zur realen Ortsdarstellung, keine abgeschlossene fotorealistische Landschaft.
+
+Reproduktion und unabhängige Prüfung:
+
+```powershell
+Tools/.geodata-env/Scripts/python.exe Tools/prepare_imagery.py
+Tools/.geodata-env/Scripts/python.exe Tools/validate_imagery.py
+./Tools/Build.ps1 -Target Content -OnlyImagery
+```
+
+Der unabhängige Prüfer kontrolliert sämtliche 290 offiziellen Quellenprüfsummen und vergleicht 675 Ausgabepixel einschließlich Kachelgrenzen mit selbst berechneten gewichteten Flächenmitteln der nativen Quellen. Maximale Abweichung: 0,499867 von 255, innerhalb der 8-Bit-Rundung. Unreal prüft zusätzlich Materialzuordnung, Auflösung, sRGB, Randbegrenzung, geladene Mipmaps und räumliche Übereinstimmung der Mesh-UVs mit den LV95-Rechtecken.

@@ -267,6 +267,13 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bSmokeTest&&!bSmokeImageryChecked&&GetWorld()->GetTimeSeconds()>2)
+    {
+        FString error; const bool valid=Environment&&Environment->ValidateImagery(error);
+        bSmokeImageryChecked=true;
+        UE_LOG(LogTemp,Display,TEXT("DIVE_IMAGERY_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*error);
+        if(!valid) { FPlatformMisc::RequestExitWithStatus(false,1); return; }
+    }
     if(bSmokeTest&&SmokeScenario==TEXT("shore-preview"))
     {
         ControlsSmokeClock+=DeltaSeconds;

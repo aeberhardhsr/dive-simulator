@@ -287,7 +287,9 @@ void ADiveWorld::CreateLandscape()
         float bottom=0;
         const bool surveyedLake=Terrain.Sample(p.X,p.Y,bottom);
         land.Add(height>1&&!surveyedLake);
-        vertices.Add(p); normals.Add(normal); uv.Add(FVector2D(east/32,north/32)); tangents.Add(FProcMeshTangent(1,0,0));
+        vertices.Add(p); normals.Add(normal);
+        uv.Add(FVector2D((east-grid.West)/(grid.Columns*grid.Spacing),(grid.North-north)/(grid.Rows*grid.Spacing)));
+        tangents.Add(FProcMeshTangent(1,0,0));
         const float rock=FMath::Clamp(static_cast<float>((.8-normal.Z)*3),0.f,1.f);
         const float altitude=FMath::Clamp(static_cast<float>((height-1200)/500),0.f,1.f);
         const float variation=.85f+.15f*FMath::Sin(east*.003)*FMath::Cos(north*.004);
@@ -306,7 +308,7 @@ void ADiveWorld::CreateLandscape()
         triangle(a,a+cols,a+1); triangle(a+1,a+cols,a+cols+1);
     }
     LandscapeMesh->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,false);
-    LandscapeMesh->SetMaterial(0,Mat(TEXT("M_Landscape")));
+    LandscapeMesh->SetMaterial(0,ImageryMaterial(TEXT("M_LandscapePhoto"),Terrain.LandscapeImagery));
     UE_LOG(LogTemp,Display,TEXT("WALENSEE_LAND_MESH vertices=%d triangles=%d"),vertices.Num(),indices.Num()/3);
 }
 

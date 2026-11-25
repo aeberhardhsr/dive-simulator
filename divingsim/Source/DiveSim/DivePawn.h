@@ -92,6 +92,7 @@ private:
     double SmokeLogbookStarted=0,SmokeLogbookTime=0;
     uint32 SmokeLogbookCaptured=0;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
+    bool bSmokeImageryChecked=false;
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;
     Dive::Config BeforeTutorialConfig;

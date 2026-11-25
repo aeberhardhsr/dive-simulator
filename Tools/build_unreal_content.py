@@ -260,6 +260,8 @@ if not ONLY_ENVIRONMENT:
     import_audio()
     from build_shore_content import build_shore_material
     build_shore_material()
+    from build_imagery_content import build_imagery
+    build_imagery()
     fish_meshes=['SM_Perch','SM_Roach','SM_Pike','SM_Whitefish','SM_Burbot']
     plant_meshes=['SM_Pondweed','SM_Stonewort','SM_Milfoil']
     equipment_meshes=['SM_LeftSleeve','SM_RightSleeve','SM_LeftGlove','SM_RightGlove','SM_WristComputer','SM_DiveTorch']

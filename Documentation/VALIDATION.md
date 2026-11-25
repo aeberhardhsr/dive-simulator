@@ -151,3 +151,33 @@ Die Aufnahmen wurden geprüft. Die Landschaft ist weiterhin grob und ohne Gebäu
 ![Rückkehr auf das Startpodest](Images/Access_Return.png)
 
 ![Auswahl des Uferstarts](Images/Access_Menu.png)
+
+## Georeferenzierte Landschaftstexturen (25. November 2026)
+
+Eigenständiger Windows-Build: `Builds/WindowsImagery/divingsim.exe`. Abschließender BuildCookRun erfolgreich: `artifacts/package-imagery-final.log`. Die Höhen- und Kollisionsgeometrie bleibt unverändert.
+
+- 290 offizielle SWISSIMAGE-Quelldateien des Kacheljahrs 2025 vollständig gegen die veröffentlichten SHA256 geprüft: 286 Landschaftskacheln mit 2 m und vier örtliche Kacheln mit 0,1 m Pixelabstand. Herkunft, Nutzungsbedingungen und zusätzliche Planet-Quellenangabe stehen in `GEODATA.md` und im versionierten Laufzeitmanifest.
+- Vier Texturen aus nativen RGB-Pixeln erzeugt: Landschaft 4096 × 2048, drei Uferbereiche jeweils 2048 × 2048. Ein unabhängiger Prüfer berechnet 675 flächengewichtete Pixel einschließlich Kachelgrenzen erneut; größte Abweichung 0,499867 von 255 durch Ganzzahlrundung. Das ist eine Rechenprüfung, keine Aussage zur Lagegenauigkeit der Luftbilder.
+- Erneutes Erzeugen mit den im Manifest festgehaltenen Quellen liefert identische Bild- und Manifestprüfsummen. Belege: `artifacts/validate-imagery-pinned.log` und `artifacts/imagery-reproduction.log`. Die vier Unreal-Asset-Metadaten stimmen mit den PNG-Prüfsummen überein (`artifacts/imagery-asset-audit.json`).
+- Gezielter Materialimport einschließlich erneutem Ufermaterialaufbau: 0 Fehler, 0 Warnungen. Editor- und Windows-Development-Build erfolgreich.
+- Die Laufzeit prüft Ausdehnung, Nordorientierung und verteilte Mesh-UVs gegen LV95 sowie Texturgröße, sRGB, Clamp und vollständig residente Mip-Stufen. Alle vier Texturen bestehen `DIVE_IMAGERY_PASS`; 13 Landschafts- und jeweils 12 Ufer-Mips sind geladen. Gemeldeter Texturspeicher zusammen 14.090.240 Bytes (13,44 MiB).
+
+| Vollständiger Uferablauf im Package | Dauer inkl. Landweg | Maximale Tiefe | Strecke | Gespeicherte Messpunkte |
+|---|---:|---:|---:|---:|
+| Weesen / Strandbad | 41,10 s | 6,11 m | 44,64 m | 42 |
+| Murg / West | 41,92 s | 4,27 m | 46,50 m | 42 |
+| Mols / Lediwracks | 46,60 s | 4,75 m | 51,78 m | 47 |
+
+Alle drei Abläufe einschließlich Rückkehr und erneut gelesenem Logbuch bestehen. Weitere erfolgreiche Package-Läufe: bisheriger Wasserstart (22 s, 5,67 m maximale Tiefe, 18,78 m Strecke, 23 Messpunkte), Handgelenkcomputer bei Nacht mit allen drei Seiten und Ufer-Vorschau mit Kollisionsprüfung an allen drei Plattformen. Belege: `artifacts/imagery-packaged-0-full.log` bis `imagery-packaged-2-full.log` sowie `imagery-regression-*-full.log`. Nach dem abschließenden identischen Materialneuaufbau und Packaging besteht die erneute Vorschau bei Mols einschließlich aller vier Texturen (`artifacts/runtime-imagery-final-preview.log`; ausführliches Laufzeitprotokoll `artifacts/DiveSmoke.log`).
+
+Die Aufnahmen zeigen geografisch zugeordnete Wald-, Feld- und Wegflächen. Gebäude und Bäume bleiben in die flache Oberfläche fotografiert; nahe Ansichten wirken dadurch weich und flach. Grobe Berggeometrie, dunkle steile Flächen und bereits im Luftbild enthaltene Schatten bleiben sichtbar. Das ist keine fotorealistische Qualitätsabnahme. Räumliche Landschaftsdetails, Gelände-LOD und originalgetreue Zugangsanlagen bleiben offen.
+
+![SWISSIMAGE-Oberfläche beim Start in Weesen](Images/Imagery_Start_0.png)
+
+![SWISSIMAGE-Oberfläche beim Start in Murg](Images/Imagery_Start_1.png)
+
+![SWISSIMAGE-Oberfläche beim Start in Mols](Images/Imagery_Start_2.png)
+
+![Rückkehr zum Ufer mit fotografierter Bodenbedeckung](Images/Imagery_Return.png)
+
+![Menü mit Quellenangaben](Images/Imagery_Menu.png)
