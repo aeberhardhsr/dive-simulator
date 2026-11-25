@@ -102,3 +102,20 @@ Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. 
 ![Gespeicherte Tauchkonfiguration mit Vorschau](Images/Profiles.png)
 
 ![Namensdialog mit sichtbarem Hinweis auf ein bereits vorhandenes Profil](Images/ProfileName.png)
+
+## Örtliche Uferdaten und Kollision (25. November 2026)
+
+- Drei Uferbereiche auf Basis der vorhandenen swissBATHY3D- und nativen swissALTI3D-Daten erzeugt. 10.700 Zellen sind als modellierte Verbindung gekennzeichnet; die übrigen 431.668 Zellen stammen aus den Quellen. Details und Ortsreferenzen: `GEODATA.md`, Quellen-/Herkunftsmanifest: `Content/Diving/Geodata/shoreline.json`.
+- Unabhängige Quellenprüfung bestanden: alle enthaltenen Bathymetriezellen höchstens 0,00000367 m Float32-Abweichung; verteilte native Landzellen höchstens 0,00000763 m Umwandlungsabweichung. Das sind Rechengenauigkeiten, keine Angaben zur Vermessungsgenauigkeit. Solver-Residuum unter 0,000008 m; analytische Ebene, unveränderte Randwerte und Höhenbegrenzung geprüft. Beleg: `artifacts/validate-shoreline.log`.
+- Drei kollidierbare Ufermeshes mit zusammen 447.485 Dreiecken. Die Dreiecksdiagonalen entsprechen dem benachbarten Seebodenraster. Ein anfänglicher Unterschied zwischen bilinearer Höhenabfrage und ebenen Kollisionsdreiecken wurde durch Abfrage derselben Dreiecksflächen behoben.
+- Windows-Package: Ortsprüfungen für alle drei Bereiche bestanden. Die Kollisionsstrahlen an den drei Startpositionen treffen bei 227,89 / 422,47 / 411,03 cm über dem Szenariopegel; die berechnete Dreieckshöhe stimmt damit überein. Die Prüfung beweist diese Positionen, noch keinen vollständigen begehbaren Zugang.
+- Unveränderter Tauchablauf im Package besteht: 22 s, maximale Tiefe 5,67 m, Strecke 18,78 m, Restdruck 197,99 bar, 23 Samples. Neun gestreamte Seebodenkacheln bleiben begrenzt. Beleg: `artifacts/runtime-shore-regression.log`.
+- Beim Build nach dem vorigen Commit wurden Namenskollisionen privater HUD-Hilfen durch Unreals adaptive Unity-Zusammenfassung sichtbar. Das kleine Spielmodul wird jetzt ausdrücklich mit getrennten C++-Übersetzungseinheiten gebaut, unabhängig vom Git-Arbeitsstatus.
+- Diese Erweiterung ist die Geländebasis für spätere Uferstarts. Normale Spielstarts, Geh-/Schwimmwechsel, Treppen, Wege, reale Bodenbedeckung, Landschafts-LOD und Fotorealismus sind damit nicht fertiggestellt.
+- Abschließender Materialimport: 0 Fehler/0 Warnungen; Windows-Package `Builds/WindowsShoreline` erfolgreich. Drei wiederholte Ortsläufe mit frischen Bildern bestehen (`artifacts/runtime-shore-0-final.log` bis `runtime-shore-2-final.log`). Eine regelmäßige Körnung durch ungenaue Sinus-Hashes bei großen Weltkoordinaten wurde durch Ganzzahl-Hashing entfernt. Das Material bleibt illustrative prozedurale Gestaltung.
+
+![Ufermodell bei Weesen mit Blick über den See](Images/Shore_0.png)
+
+![Ufermodell bei Murg West](Images/Shore_1.png)
+
+![Ufermodell bei Mols/Lediwracks](Images/Shore_2.png)

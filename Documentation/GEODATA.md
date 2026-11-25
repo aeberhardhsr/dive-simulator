@@ -46,3 +46,32 @@ Tools/.geodata-env/Scripts/python.exe Tools/validate_landscape.py
 ```
 
 Die Rohdaten und die lokale Python-Umgebung sind von Git ausgeschlossen. Das kompakte Laufzeitraster ist über Git LFS versioniert.
+
+## Örtliche Uferergänzung
+
+`shoreline.json` beschreibt drei zusätzliche, jeweils 384 × 384 m große Bereiche. Referenzorte und veröffentlichte Koordinaten stammen aus den Beschreibungen von [Weesen Strandbad](https://www.swiss-divers.ch/informationen/tauchplaetze/walensee-tauchplaetze/strandbad-weesen/), [Murg West](https://www.swiss-divers.ch/informationen/tauchplaetze/walensee-tauchplaetze/murg-west-murg/) und [Lediwracks bei Mols](https://www.swiss-divers.ch/informationen/tauchplaetze/walensee-tauchplaetze/lediwracks-mols/). Es sind Ortsreferenzen für das Spiel, keine aktuelle Prüfung realer Zugangsbedingungen.
+
+Die Ergänzung enthält 1-m-Raster und ein gleich großes Herkunftsraster:
+
+| Kennung | Herkunft |
+|---|---|
+| 1 | Vorhandene swissBATHY3D-Rasterzelle, unverändert außer Float32-Darstellung |
+| 2 | Natives swissALTI3D-2-m-Landmodell, bilinear auf 1 m abgetastet, über dem festen Spielszenariopegel |
+| 3 | Modellierte Verbindung zwischen den vermessenen Flächen; keine gemessene Tiefe |
+
+Die Lücke wird als diskrete harmonische Fläche mit festgehaltenen vermessenen Randwerten ergänzt. Am äußeren Kachelrand gilt eine verschwindende Normalableitung. Insgesamt sind 10.700 von 442.368 Zellen modelliert. Die Original-Bathymetrie wird nicht verändert. Dieser Ansatz verbindet die Geometrie, rekonstruiert aber keine unbekannten Felsen, Uferbefestigungen oder Stufen.
+
+`prepare_shoreline.py` prüft die SHA256 der benötigten originalen Landkacheln und protokolliert Quellen, Herkunftszahlen, Prüfsummen und Solver-Residuen. `validate_shoreline.py` prüft unabhängig sämtliche Bathymetriezellen, verteilte Landzellen direkt gegen die nativen Quellen, eine analytische Testfläche, Randwerterhaltung, harmonische Residuen und Höhenbegrenzung.
+
+Unreal erzeugt drei getrennte Ufermeshes mit Kollision. Ihr 1-m-Vertexraster und ihre Dreiecksdiagonalen schließen an die gestreamte Bathymetrie an; vollständig vermessene Seebodendreiecke bleiben im bisherigen Streaming. Die Bodenabfrage interpoliert die tatsächlichen Dreiecksflächen. Das ferne Landmesh wird im Inneren der Uferbereiche ausgespart. Die äußere Überlappungszone ist noch keine fertige Landschafts-LOD-Lösung.
+
+Die Uferoberfläche erhält eigenes prozedurales Kies-/Bodenmaterial mit entfernungsabhängig gefilterter Körnung und einem vereinfachten feuchten Bereich um den festen Pegel. Farbe, Körnung und Bewuchszuordnung sind illustrative Gestaltung. Gebäude, Treppen, Wege, reale Bodenbedeckung und ein spielbarer Land-Wasser-Bewegungswechsel sind noch nicht umgesetzt. Die normalen Spielstarts bleiben vorerst die bisherigen Offshore-Punkte.
+
+Reproduktion:
+
+```powershell
+Tools/.geodata-env/Scripts/python.exe Tools/prepare_shoreline.py
+Tools/.geodata-env/Scripts/python.exe Tools/validate_shoreline.py
+./Tools/Build.ps1 -Target Content -OnlyShore
+./Tools/SmokeTest.ps1 -Scenario shore-preview -Entry 0
+```

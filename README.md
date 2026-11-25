@@ -78,6 +78,7 @@ python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/SmokeTest.ps1 -Packaged -Scenario controls        # Engine-Tasteneingaben, Remapping, Pause, DE/EN
 ./Tools/SmokeTest.ps1 -Packaged -Scenario tutorial        # Alle acht Aufgaben, Abschluss, Planwiederherstellung
 ./Tools/SmokeTest.ps1 -Packaged -Scenario profiles        # Profilmenü, Namensdialog, Laden/Archiv/Undo, Tauchgang
+./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -Entry 0 # Uferansicht/Kollision; Entry 0, 1 oder 2
 python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMix.wav artifacts/DiveSmoke.log
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht

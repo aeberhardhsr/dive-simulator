@@ -19,7 +19,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 
 | Bereich | Umfang aus Spezifikation | Abnahme |
 |---|---|---|
-| WRLD | Reale Walensee-Geodaten, 1:1, Streaming, mindestens drei Einstiegspunkte, Felsen/Sedimente, Landschaft über Wasser, Tiefenkarte | Offen |
+| WRLD | Reale Walensee-Geodaten, 1:1, Streaming, mindestens drei Einstiegspunkte, Felsen/Sedimente, Landschaft über Wasser, Tiefenkarte | Bathymetrie und Hintergrundlandschaft vorhanden; drei örtliche Ufermeshes mit gekennzeichneter Lückeninterpolation und Kollision integriert. Spielbare Land-Wasser-Zugänge und Gesamtabnahme offen |
 | WATR | Wellen, Brechung, Reflexion, Absorption, God Rays, Caustics, Partikel, Strömung, Atemblasen mit Expansion, Thermokline, Oberflächenübergang | Geometrische Wellen, Tiefendruck und Wasserbewegung gekoppelt; Sicht steuert auch Oberflächenabsorption. Optische/fachliche Gesamtabnahme und Uferwechselwirkung offen |
 | BIOL | Mindestens fünf anatomisch plausible animierte Tierarten, drei Bewuchstypen, Schwärme, Flucht, Kollision, Habitat und Pflanzenbewegung | Fünf Fischmodelle (Felchen als Artengruppe), drei Bewuchstypen und Habitat-/Bewegungsregeln implementiert; anatomische und visuelle Abnahme offen |
 | DIVR | First Person, 3D-Bewegung, Auftrieb, Widerstand, Trägheit, Anstrengung, Atmung, BCD, Blei, Kollision, sichtbare Ausrüstung | Offen |

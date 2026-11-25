@@ -219,6 +219,7 @@ void ADiveWorld::BeginPlay()
     if(bTerrainReady)
     {
         CreateLandscape();
+        CreateShoreline();
         SetEntry(0);
         for(int i=0;i<Terrain.Entries.Num();++i)
         {
@@ -294,8 +295,12 @@ void ADiveWorld::CreateLandscape()
     {
         const int a=y*cols+x;
         // LV95 raster rows run southwards, unlike the local underwater tiles.
-        if(land[a]||land[a+cols]||land[a+1]) indices.Append({a,a+cols,a+1});
-        if(land[a+1]||land[a+cols]||land[a+cols+1]) indices.Append({a+1,a+cols,a+cols+1});
+        auto triangle=[&](int A,int B,int C)
+        {
+            const FVector center=(vertices[A]+vertices[B]+vertices[C])/3;
+            if((land[A]||land[B]||land[C])&&!Terrain.InShorePatch(center.X,center.Y,32)) indices.Append({A,B,C});
+        };
+        triangle(a,a+cols,a+1); triangle(a+1,a+cols,a+cols+1);
     }
     LandscapeMesh->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,false);
     LandscapeMesh->SetMaterial(0,Mat(TEXT("M_Landscape")));

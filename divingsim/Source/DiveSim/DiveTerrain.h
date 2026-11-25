@@ -9,10 +9,16 @@ class FDiveTerrain
 public:
     bool Load();
     bool LoadLandscape();
+    bool LoadShoreline();
     bool Sample(double X,double Y,float& Z) const;
+    bool SampleShore(double X,double Y,float& Z) const;
+    bool SampleGround(double X,double Y,float& Z) const;
+    bool InShorePatch(double X,double Y,double MarginMetres=0) const;
     FVector ToWorld(double East,double North) const { return FVector((North-OriginNorth)*100,(East-OriginEast)*100,-180); }
     FVector2D ToSurvey(const FVector& Position) const { return FVector2D(OriginEast+Position.Y/100,OriginNorth+Position.X/100); }
     TArray<FDiveEntry> Entries;
+    TArray<FDiveEntry> ShoreEntries;
+    TArray<Dive::SurfaceGrid> Shores;
     FString Error;
     int32 LoadedTiles=0;
     // Fixed-size overview, measured depths only. East to right, north up.

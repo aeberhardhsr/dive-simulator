@@ -74,7 +74,7 @@ bool FDiveTerrain::Load()
         Overview[y*MapWidth+x]=Mosaic.Sample(east,north,height)?static_cast<float>(-height):-1.f;
     }
     UE_LOG(LogTemp,Display,TEXT("WALENSEE_DATA_READY tiles=%d entries=%d grid=1m water_reference=419m_LN02"),LoadedTiles,Entries.Num());
-    return LoadLandscape();
+    return LoadLandscape()&&LoadShoreline();
 }
 
 bool FDiveTerrain::LoadLandscape()
@@ -114,4 +114,78 @@ bool FDiveTerrain::Sample(double X,double Y,float& Z) const
     double height;
     if(!Mosaic.Sample(OriginEast+Y/100,OriginNorth+X/100,height)) return false;
     Z=static_cast<float>(height*100); return true;
+}
+
+bool FDiveTerrain::LoadShoreline()
+{
+    Shores.Reset(); ShoreEntries.Reset();
+    const FString folder=FPaths::ProjectContentDir()/TEXT("Diving/Geodata");
+    FString text; TSharedPtr<FJsonObject> manifest;
+    const TArray<TSharedPtr<FJsonValue>>* sites=nullptr; double schema=0,water=0;
+    if(!FFileHelper::LoadFileToString(text,*(folder/TEXT("shoreline.json")))||
+       !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(text),manifest)||!manifest||
+       !manifest->TryGetNumberField(TEXT("schema"),schema)||schema!=1||
+       !manifest->TryGetNumberField(TEXT("water_elevation_m"),water)||water!=419||
+       !manifest->TryGetArrayField(TEXT("sites"),sites)||sites->Num()!=3)
+    { Error=TEXT("Uferdaten fehlen oder sind ungueltig: Tools/prepare_shoreline.py."); return false; }
+    for(const auto& value:*sites)
+    {
+        const auto obj=value->AsObject(); Dive::SurfaceGrid grid; FDiveEntry entry;
+        double south=0,rows=0,cols=0,east=0,north=0,yaw=0; FString file;
+        if(!obj||!obj->TryGetStringField(TEXT("file"),file)||FPaths::GetCleanFilename(file)!=file||
+           !obj->TryGetStringField(TEXT("name"),entry.Name)||
+           !obj->TryGetNumberField(TEXT("west"),grid.West)||!obj->TryGetNumberField(TEXT("south"),south)||
+           !obj->TryGetNumberField(TEXT("rows"),rows)||rows!=384||
+           !obj->TryGetNumberField(TEXT("columns"),cols)||cols!=384||
+           !obj->TryGetNumberField(TEXT("spacing_m"),grid.Spacing)||grid.Spacing!=1||
+           !obj->TryGetNumberField(TEXT("start_east"),east)||!obj->TryGetNumberField(TEXT("start_north"),north)||
+           !obj->TryGetNumberField(TEXT("yaw"),yaw)||!FMath::IsFinite(grid.West)||!FMath::IsFinite(south)||
+           !FMath::IsFinite(east)||!FMath::IsFinite(north)||!FMath::IsFinite(yaw))
+        { Error=TEXT("Ungueltige Uferkachel."); return false; }
+        grid.Rows=384; grid.Columns=384; grid.North=south+384;
+        TArray<uint8> bytes;
+        if(!FFileHelper::LoadFileToArray(bytes,*(folder/file))||bytes.Num()!=384*384*4)
+        { Error=TEXT("Uferkachel unvollstaendig."); return false; }
+        grid.Heights.resize(384*384); FMemory::Memcpy(grid.Heights.data(),bytes.GetData(),bytes.Num());
+        for(float z:grid.Heights) if(!FMath::IsFinite(z)||z<-300||z>4000)
+        { Error=TEXT("Ungueltige Uferhoehe."); return false; }
+        double ground=0;
+        if(!grid.Sample(east,north,ground)||ground<.3)
+        { Error=TEXT("Uferstart liegt nicht auf trockenem Boden."); return false; }
+        entry.Position=ToWorld(east,north); entry.Yaw=static_cast<float>(yaw);
+        Shores.Add(MoveTemp(grid));
+        float meshGround=0; SampleGround(entry.Position.X,entry.Position.Y,meshGround);
+        entry.Position.Z=meshGround+170; ShoreEntries.Add(entry);
+    }
+    UE_LOG(LogTemp,Display,TEXT("WALENSEE_SHORE_READY patches=%d resolution=1m modeled_gap=labelled"),Shores.Num());
+    return true;
+}
+bool FDiveTerrain::SampleShore(double X,double Y,float& Z) const
+{
+    for(const auto& grid:Shores)
+    {
+        double height=0;
+        if(grid.Sample(OriginEast+Y/100,OriginNorth+X/100,height)) { Z=static_cast<float>(height*100); return true; }
+    }
+    return false;
+}
+bool FDiveTerrain::InShorePatch(double X,double Y,double MarginMetres) const
+{
+    const double east=OriginEast+Y/100,north=OriginNorth+X/100;
+    for(const auto& grid:Shores)
+        if(east>=grid.West+1+MarginMetres&&east<=grid.West+grid.Columns-1-MarginMetres&&
+           north>=grid.North-grid.Rows+1+MarginMetres&&north<=grid.North-1-MarginMetres) return true;
+    return false;
+}
+bool FDiveTerrain::SampleGround(double X,double Y,float& Z) const
+{
+    // Collision uses planar triangles on an integer-metre vertex lattice.
+    // Interpolate those planes, rather than a bilinear saddle between vertices.
+    const double x=FMath::FloorToDouble(X/100)*100,y=FMath::FloorToDouble(Y/100)*100;
+    float a=0,b=0,c=0,d=0;
+    auto vertex=[this](double px,double py,float& height){return Sample(px,py,height)||SampleShore(px,py,height);};
+    if(!vertex(x,y,a)||!vertex(x+100,y,b)||!vertex(x,y+100,c)||!vertex(x+100,y+100,d)) return false;
+    const double tx=(X-x)/100,ty=(Y-y)/100;
+    Z=static_cast<float>(tx+ty<=1?a+(b-a)*tx+(c-a)*ty:d+(c-d)*(1-tx)+(b-d)*(1-ty));
+    return true;
 }

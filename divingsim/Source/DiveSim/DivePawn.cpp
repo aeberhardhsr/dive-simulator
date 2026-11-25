@@ -114,7 +114,17 @@ void ADivePawn::BeginPlay()
         UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
     if(bSmokeTest)
     {
-        if(Environment->bTerrainReady) { if(SmokeScenario==TEXT("tutorial")) StartTutorial(); else if(SmokeScenario!=TEXT("profiles")) StartDive(); }
+        if(Environment->bTerrainReady)
+        {
+            if(SmokeScenario==TEXT("shore-preview"))
+            {
+                const auto& shore=Environment->Terrain.ShoreEntries[EntryIndex];
+                SetActorLocation(shore.Position); bShowInstruments=false; SetMenu(false);
+                if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-12,shore.Yaw,0));
+            }
+            else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
+            else if(SmokeScenario!=TEXT("profiles")) StartDive();
+        }
         else { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL missing terrain")); FPlatformMisc::RequestExitWithStatus(false,1); }
     }
 }
@@ -249,6 +259,30 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bSmokeTest&&SmokeScenario==TEXT("shore-preview"))
+    {
+        ControlsSmokeClock+=DeltaSeconds;
+        if(ControlsSmokeClock>3&&!bSmokeCaptured)
+        {
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Shore_%d.png"),EntryIndex),true,false);
+            bSmokeCaptured=true;
+        }
+        if(ControlsSmokeClock>5)
+        {
+            FString error; bool valid=Environment->ValidateShoreline(error);
+            FCollisionQueryParams query(SCENE_QUERY_STAT(ShoreCollision),true,this);
+            for(const auto& entry:Environment->Terrain.ShoreEntries)
+            {
+                FHitResult hit; float ground=0; Environment->Terrain.SampleGround(entry.Position.X,entry.Position.Y,ground);
+                valid&=GetWorld()->LineTraceSingleByChannel(hit,entry.Position+FVector(0,0,300),entry.Position-FVector(0,0,500),ECC_Visibility,query);
+                valid&=FMath::Abs(hit.ImpactPoint.Z-ground)<5;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_COLLISION name=%s measured_z=%.2f hit_z=%.2f"),*entry.Name,ground,hit.ImpactPoint.Z);
+            }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_%s entry=%d error=%s"),valid?TEXT("PASS"):TEXT("FAIL"),EntryIndex,*error);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s shore_preview=1"),valid?TEXT("PASS"):TEXT("FAIL"));
+            FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
+        }
+    }
     if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))

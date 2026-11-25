@@ -258,6 +258,8 @@ if not ONLY_ENVIRONMENT:
     sys.path.insert(0,str(ROOT/'Tools'))
     from build_audio_content import import_audio
     import_audio()
+    from build_shore_content import build_shore_material
+    build_shore_material()
     fish_meshes=['SM_Perch','SM_Roach','SM_Pike','SM_Whitefish','SM_Burbot']
     plant_meshes=['SM_Pondweed','SM_Stonewort','SM_Milfoil']
     equipment_meshes=['SM_LeftSleeve','SM_RightSleeve','SM_LeftGlove','SM_RightGlove','SM_WristComputer','SM_DiveTorch']

@@ -44,10 +44,12 @@ public:
     double PressureDepth(const FVector& Position,double Seconds) const;
     FVector WaveVelocity(const FVector& Position,double Seconds) const;
     bool ValidateWater(FString& Error) const;
+    bool ValidateShoreline(FString& Error) const;
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> LandscapeMesh;
+    UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> ShoreMeshes;
     UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Water;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterMaterial;
@@ -78,6 +80,7 @@ private:
     void StreamTerrain(const FVector& Position,bool Immediate=false);
     void CreateChunk(FIntPoint Key);
     void CreateLandscape();
+    void CreateShoreline();
     void Populate();
     void TickFish(float Dt,const FVector& Player);
     UStaticMeshComponent* Prop(const FString& Name,const FString& MeshPath,

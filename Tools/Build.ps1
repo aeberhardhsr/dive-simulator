@@ -3,7 +3,8 @@ param(
     [ValidateSet('Editor','Game','Content','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
     [switch]$OnlyEnvironment,
-    [switch]$OnlyAudio
+    [switch]$OnlyAudio,
+    [switch]$OnlyShore
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -16,6 +17,7 @@ if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' 
 if ($Target -eq 'Content') {
     $script = Join-Path $PSScriptRoot 'build_unreal_content.py'
     if($OnlyAudio) { $script=Join-Path $PSScriptRoot 'build_audio_content.py' }
+    if($OnlyShore) { $script=Join-Path $PSScriptRoot 'build_shore_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions

@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "horizontal_crs": "EPSG:2056",
+  "vertical_crs": "EPSG:5728",
+  "water_elevation_m": 419,
+  "source_date": "2026-11-25",
+  "attribution": "Terrain: \u00a9 swisstopo; entry coordinates: Swiss Divers",
+  "encoding": "little-endian float32 metres relative to 419 m LN02, north-to-south cell centres",
+  "provenance": {
+    "1": "swissBATHY3D, unchanged 1 m cell",
+    "2": "swissALTI3D native 2 m terrain, bilinear at 1 m, above scenario water level",
+    "3": "modeled gap, harmonic interpolation; not surveyed depth"
+  },
+  "access_geometry": "Reference coordinates only; stairs, paths and access furniture are not surveyed by this dataset.",
+  "sites": [
+    {
+      "id": "weesen_strandbad",
+      "name": "Weesen / Strandbad",
+      "latitude": 47.13933,
+      "longitude": 9.12251,
+      "inland_north": 6,
+      "inland_east": 0,
+      "yaw": 180,
+      "source": "https://www.swiss-divers.ch/informationen/tauchplaetze/walensee-tauchplaetze/strandbad-weesen/",
+      "east": 2727727.8173642955,
+      "north": 1222298.0478029428,
+      "west": 2727520,
+      "south": 1222080,
+      "columns": 384,
+      "rows": 384,
+      "spacing_m": 1,
+      "start_east": 2727727.8173642955,
+      "start_north": 1222304.0478029428,
+      "file": "weesen_strandbad_shore.f32",
+      "sha256": "988ee96a9670e792e03d2b5d0bc36c0f99d4e3dcc93c416736e0b3338dcc4b68",
+      "provenance_file": "weesen_strandbad_shore.u8",
+      "provenance_sha256": "0e78dade5a41411d280092aba311cbb24eb28370028432c29bb5277688e3cd24",
+      "source_counts": {
+        "1": 78287,
+        "2": 65531,
+        "3": 3638
+      },
+      "harmonic_residual_m": 7.212423203117879e-06,
+      "iterations": 81,
+      "land_sources": [
+        {
+          "year": "2026",
+          "east": 2727000,
+          "north": 1222000,
+          "file": "swissalti3d_2026_2727-1222_2_2056_5728.tif",
+          "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2026_2727-1222/swissalti3d_2026_2727-1222_2_2056_5728.tif",
+          "sha256": "e9d9304051bd0217026090e530f18e4e32bac545cc86e5962ef58b6a37520f6c"
+        }
+      ],
+      "bathymetry_sources": [
+        {
+          "file": "swissBATHY3D_CHLV95_LN02_2727_1222.i16",
+          "sha256": "179e36fd45e8a8f71e2ee561aca8da4abe70bc7fca317ee09898cff9f3eb42fb"
+        }
+      ]
+    },
+    {
+      "id": "murg_west",
+      "name": "Murg / West",
+      "latitude": 47.113067,
+      "longitude": 9.208343,
+      "inland_north": -10,
+      "inland_east": 0,
+      "yaw": 0,
+      "source": "https://www.swiss-divers.ch/informationen/tauchplaetze/walensee-tauchplaetze/murg-west-murg/",
+      "east": 2734303.312463977,
+      "north": 1219522.3155998047,
+      "west": 2734080,
+      "south": 1219328,
+      "columns": 384,
+      "rows": 384,
+      "spacing_m": 1,
+      "start_east": 2734303.312463977,
+      "start_north": 1219512.3155998047,
+      "file": "murg_west_shore.f32",
+      "sha256": "1f006722c74a87d82f2f627c9a964d89343f0eb12e18fff94e8428869677c499",
+      "provenance_file": "murg_west_shore.u8",
+      "provenance_sha256": "2b6544278b94f19f517cb7caccb81d323bb5ce9e8328dc46912d601f0dd110c4",
+      "source_counts": {
+        "1": 69107,
+        "2": 74919,
+        "3": 3430
+      },
+      "harmonic_residual_m": 8.110701935848397e-06,
+      "iterations": 81,
+      "land_sources": [
+        {
+          "year": "2026",
+          "east": 2734000,
+          "north": 1219000,
+          "file": "swissalti3d_2026_2734-1219_2_2056_5728.tif",
+          "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2026_2734-1219/swissalti3d_2026_2734-1219_2_2056_5728.tif",
+          "sha256": "24ac0b791a63557609c88512a04760ca21d0a72dfc38369c527989975fb29484"
+        }
+      ],
+      "bathymetry_sources": [
+        {
+          "file": "swissBATHY3D_CHLV95_LN02_2734_1219.i16",
+          "sha256": "6c040da7727c422a7d72c1a69426c59c38e29d6e5bbc76e56ca8dffcbe01af0d"
+        }
+      ]
+    },
+    {
+      "id": "lediwracks",
+      "name": "Mols / Lediwracks",
+      "latitude": 47.115558,
+      "longitude": 9.292695,
+      "inland_north": -10,
+      "inland_east": 0,
+      "yaw": 0,
+      "source": "https://www.swiss-divers.ch/informationen/tauchplaetze/walensee-tauchplaetze/lediwracks-mols/",
+      "east": 2740697.0669489475,
+      "north": 1219947.0219710376,
+      "west": 2740480,
+      "south": 1219744,
+      "columns": 384,
+      "rows": 384,
+      "spacing_m": 1,
+      "start_east": 2740697.0669489475,
+      "start_north": 1219937.0219710376,
+      "file": "lediwracks_shore.f32",
+      "sha256": "14b456980ca3ed8613186096b5e69fae9e507d49a4f28976d0e871c93fe864e6",
+      "provenance_file": "lediwracks_shore.u8",
+      "provenance_sha256": "1b91eaf8700f1cafa3a6ac6ce55039f04d4c0af0751e1379a3b4044915fa787c",
+      "source_counts": {
+        "1": 70253,
+        "2": 73571,
+        "3": 3632
+      },
+      "harmonic_residual_m": 6.190483035073413e-06,
+      "iterations": 81,
+      "land_sources": [
+        {
+          "year": "2026",
+          "east": 2740000,
+          "north": 1219000,
+          "file": "swissalti3d_2026_2740-1219_2_2056_5728.tif",
+          "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2026_2740-1219/swissalti3d_2026_2740-1219_2_2056_5728.tif",
+          "sha256": "41aa7607902dee87f19dfb3e126bf225d65c7d81970932a102caa569f5d9d4a7"
+        },
+        {
+          "year": "2026",
+          "east": 2740000,
+          "north": 1220000,
+          "file": "swissalti3d_2026_2740-1220_2_2056_5728.tif",
+          "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2026_2740-1220/swissalti3d_2026_2740-1220_2_2056_5728.tif",
+          "sha256": "604386321ae5d7f8425952f14b057414d7d84a7ec59860e9c691e6aea0c34eb5"
+        }
+      ],
+      "bathymetry_sources": [
+        {
+          "file": "swissBATHY3D_CHLV95_LN02_2740_1219.i16",
+          "sha256": "3bc7234adccaca5e42026e3ef31ee587de2a015de8291d9e0e752c7a80bcd8d7"
+        },
+        {
+          "file": "swissBATHY3D_CHLV95_LN02_2740_1220.i16",
+          "sha256": "1ac1ac11170504022c15fe0529001e2f10061368c1b8db0fc1a58307c1e33dd3"
+        }
+      ]
+    }
+  ]
+}
