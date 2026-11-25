@@ -22,7 +22,7 @@ Eine vorausgerichtete Kapselabfrage erkennt feste Hindernisse. Bei einem Treffer
 
 `Host.json` hält Prozess-ID, Startzeit, ausführbare Datei/Prüfsumme, Quell-Commit und den Zustand des Arbeitsbaums fest. Bei Überschreiten der Beobachtungsfrist wird der Prozess nicht automatisch beendet oder neu gestartet. Ein laufender Test ist anhand dieser Prozess-ID und des Runtime-Logs zu überprüfen. Erst ein reguläres Ende mit `DIVE_SOAK_PASS` und erfolgreicher unabhängiger Auswertung ist ein bestandener Lauf.
 
-Der am 25. November um 09:31:49 UTC begonnene 7.200-Sekunden-Lauf prüft Stabilität bei paralleler Entwicklungsarbeit. Zusätzliche Editor-/Package-Builds, Tests ohne Rendering und kurze gerenderte Dialogtests mit 30-FPS-Limit werden mit Start-/Endzeit in `artifacts/soak-7200s-entry0-20261125-103131/DevelopmentActivity.jsonl` festgehalten. Sie verwenden ein separates Package; das gemessene `WindowsSoak`-Package bleibt unverändert. Sämtliche dabei entstehenden Bildintervalle bleiben in der Messung. Seine FPS-Werte sind deshalb **kein ungestörter Leistungsbenchmark**; der Zweistunden-Stabilitätsnachweis bleibt bis zum regulären erfolgreichen Ende offen.
+Der am 25. November um 09:31:49 UTC begonnene 7.200-Sekunden-Lauf prüft Stabilität bei paralleler Entwicklungsarbeit. Zusätzliche Editor-/Package-Builds, Tests ohne Rendering und kurze gerenderte Dialogtests mit 30-FPS-Limit werden mit Start-/Endzeit in `artifacts/soak-7200s-entry0-20261125-103131/DevelopmentActivity.jsonl` festgehalten. Sie verwenden ein separates Package; das gemessene `WindowsSoak`-Package bleibt unverändert. Sämtliche dabei entstehenden Bildintervalle bleiben in der Messung. Seine FPS-Werte sind deshalb **kein ungestörter Leistungsbenchmark**. Der Lauf endete am 25. November um 11:31:52 UTC erfolgreich; die geprüfte Reichweite des Nachweises steht unten.
 
 ## Ausführen
 
@@ -42,3 +42,35 @@ Ein 300-Sekunden-Lauf ist ausschließlich eine Vorprüfung. Die Auswertung marki
 36.643 Bildintervalle ergeben 122,14 FPS im Mittel, P95 ≤9,75 ms und P99 ≤10,75 ms. Ein Intervall beträgt 180,92 ms und überschreitet alle drei Rucklerschwellen; es bleibt vollständig enthalten. Das abgetastete Prozessspeichermaximum liegt bei 2.427,64 MiB gegenüber 2.380,08 MiB zu Messbeginn. Der abschließende Schreibvorgang benötigt außerhalb des Messfensters 40,43 ms. Der zuvor geöffnete Unreal-Editor blieb während des Tests offen.
 
 Editor- und Package-Build, C++-Kernprüfungen und 15 Python-Prüfungen bestehen. Werte, Build-Prüfsumme und Artefakt-Hashes sind in [SOAK_PRECHECK.json](SOAK_PRECHECK.json) festgehalten. Dieser Vorlauf wurde vor dem Commit mit entsprechend als verändert gekennzeichnetem Arbeitsbaum ausgeführt. Er erfüllt ausdrücklich noch nicht PERF-010.
+
+
+## Bestandener Zweistundenlauf vom 25. November 2026
+
+Die unveränderte Windows-Anwendung aus Commit `b4b6fba807ee97863a0137fc68094d3fda205239` beendete den Lauf regulär mit Exitcode 0 und `DIVE_SOAK_PASS`. Der unabhängige Python-Verifier bestätigt beide Zeitgrenzen, vollständige Intervallsummen, Bewegung/Streaming, Sicherungen und das erneut gelesene endgültige Tauchprotokoll. Der EXE-Hash stimmt am Ende mit dem vor dem Start erfassten Hash überein. Seitdem hinzugekommene Zahlenfelder, Sturm-, Wasser-, Uhrzeit- und Dämmerungsänderungen sind durch diesen älteren Build nicht abgedeckt.
+
+| Beobachtung | Ergebnis |
+|---|---:|
+| Gemessene echte / simulierte Dauer | 7.200,226 / 7.200,200 s |
+| Bewegung / Kurswechsel | 7.293,33 m / 31 |
+| Tiefe / Oberfläche | 0–8,195 m / tatsächlich erreicht |
+| Besuchte Kachelzentren / aktive Kacheln | 5 / 9 in allen Berichten |
+| Erfolgreiche / fehlgeschlagene Zwischensicherungen | 240 / 0 |
+| Endgültiges Protokoll | 7.218 Messpunkte, 7.217,080 s einschließlich Aufwärmen und Abschlussphase |
+| Größter Abstand benachbarter Protokollpunkte | unter 1,001 s |
+| Gemessene Bildintervalle / mittlere Bildrate | 548.144 / 76,13 FPS |
+| P95 / P99 / längstes Bildintervall | ≤24,75 / ≤27,50 / 267,12 ms |
+| Intervalle über 16,667 / 33,333 / 100 ms | 185.206 / 63 / 16 Bilder |
+| Abgetasteter Prozessspeicher: Beginn / Maximum / Ende | 2.367,32 / 2.391,38 / 802,50 MiB |
+| Abschlussfunktion außerhalb des Messfensters | 577,55 ms, vor anschließendem erneutem Lesen |
+
+Von den 240 Berichtsfenstern liegen 147 im Mittel unter 60 FPS; ihr Minimum beträgt 38,86 FPS. Damit wird trotz des höheren Gesamtmittels **keine durchgehende 60-FPS-Leistung** nachgewiesen. Der bereits geöffnete Editor blieb aktiv. Ab 10:13:19 UTC lief zusätzlich eine vom Benutzer gestartete Spielinstanz; außerdem fanden protokollierte Builds und kurze 30-FPS-Grafiktests statt. Die langsameren Phasen und Speicheränderungen fallen teilweise mit dieser parallelen Nutzung zusammen. Der zeitliche Zusammenhang isoliert keine einzelne Ursache. Die Zehn-Minuten-Aufnahmen bleiben einschließlich ihrer Verzögerungen in den Messwerten; es wurden keine langen Frames entfernt.
+
+Das Working Set fällt unter der parallelen Systemlast stark ab. Dieser abgetastete physische Speicherwert ist weder der gesamte zugesicherte Speicher noch ein Beweis für Speicherleckfreiheit. Der Stabilitätsnachweis gilt für Weesen, Exploration, das getestete Wetter und diesen Windows-Rechner. Er ist ein konkreter Nachweis zu PERF-010 für diesen Build, keine universelle Freigabe aller Modi, Orte, Plattformen oder neuerer Änderungen.
+
+Start, Ende sowie die Aufnahmen nach 60 und 110 Minuten wurden visuell geprüft. Insgesamt liegen 14 native PNGs vor: Start, zwölf Zehn-Minuten-Aufnahmen und Ende. Der endgültige Datensatz und die letzte Sicherung wurden aufbewahrt. [SOAK_2H_RESULTS.json](SOAK_2H_RESULTS.json) enthält den vollständigen Endbericht, alle 240 Messfenster in einer Spaltentabelle, Aktivitätsprotokoll, Build-/Artefaktprüfsummen und Grenzen. Die vollständigen lokalen Rohdateien liegen unter `artifacts/soak-7200s-entry0-20261125-103131`.
+
+![Zeitverlauf des Zweistundenlaufs mit paralleler Nutzung](Images/Soak_2h_Timeline.png)
+
+![Tatsächlich gerenderte Endaufnahme nach zwei Stunden](Images/Soak_2h_Final.png)
+
+Die Grafik lässt sich aus den validierten Originaldaten mit `python Tools/plot_soak.py <Artefaktordner> <Ausgabe.png> --background-start-utc 2026-11-25T10:13:19.8535402Z` erstellen. Das optionale Diagrammwerkzeug benötigt Matplotlib; der eigentliche Verifier bleibt ohne Zusatzpakete ausführbar.

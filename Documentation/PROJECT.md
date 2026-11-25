@@ -38,7 +38,7 @@ Unterwassergrund, ergänzte Uferbereiche und Felsobjekte verwenden inzwischen un
 | NAV | Kompass, Walenseekarte, Tiefenkarte, Einstieg; optional Wegpunkte, Fotos und Entdeckungen | Offen |
 | LOG | Automatische Speicherung, Tiefe/Gas/Vitalwerte/Temperatur/Strecke/Warnungen, grafische Auswertung | Automatische JSON-Speicherung, Logbuchbrowser mit Modusfilter, vier Diagrammgruppen und Warnereignissen implementiert; vollständige Abnahme offen |
 | UI | Menü, Gebiet/Ausrüstung/Konfiguration, Logbuch, Grafik/Audio, Tastenbelegung, Pause, Tutorial, DE/EN, Profil, persistierte Einstellungen, Komfort | 17 belegbare Aktionen mit Konflikttausch, dynamische Tastenhinweise, Maus-/Sichtfeldoptionen, achtteilige Einführung und Tauchkonfigurationsprofile implementiert; vollständige Abnahme offen |
-| PERF/GFX | PBR, LOD/Streaming/Culling, GPU-Partikel, 1080p–4K, 60 FPS empfohlen/30 FPS Minimum, zwei Stunden stabil | Reproduzierbare gerenderte Windows-Messung in 1080p/1440p/4K vorhanden, Ergebnisse und Grenzen in PERFORMANCE.md. Einzelner Ruckler protokolliert; Mindesthardware, zweistündiger Dauertest, macOS und Gesamtabnahme offen |
+| PERF/GFX | PBR, LOD/Streaming/Culling, GPU-Partikel, 1080p–4K, 60 FPS empfohlen/30 FPS Minimum, zwei Stunden stabil | Reproduzierbare gerenderte Windows-Messung in 1080p/1440p/4K vorhanden, Ergebnisse und Grenzen in PERFORMANCE.md. Zweistündiger Lauf des Builds b4b6fba in Weesen/Exploration erfolgreich, Details in SOAK.md; dabei Ruckler und Phasen unter 60 FPS unter paralleler Nutzung. Aktueller Endstand, Mindesthardware, macOS und Gesamtabnahme offen |
 | MAINT | Module, Tests, Konfiguration, Erweiterbarkeit, versionierte Persistenz, Windows/macOS-Builds, Modellbeschreibung | Offen |
 
 ## Reihenfolge
@@ -47,7 +47,7 @@ Unterwassergrund, ergänzte Uferbereiche und Felsobjekte verwenden inzwischen un
 2. Wasserbild, animierte Tiere/Pflanzen, Ton und Instrumente im kleinen Ausschnitt prüfen.
 3. Schweizer Geodaten integrieren; drei reale Einstiegspunkte. Vollständiger swisstopo-Walensee-Datensatz ist mit geprüfter SHA256 in 46 Rasterkacheln eingebunden. Die aktuelle Implementierung verwendet neun lokal erzeugte Geländekacheln mit Nachladen statt World Partition. Zusätzlich zu den Offshore-Starts bestehen drei örtliche Uferstarts mit modellierten begehbaren Zugängen. Originalgetreue Anlagen und Landbedeckung bleiben offen. Provenienz: `WALENSEE_DATA.json`, Laufzeitformat: `GEODATA.md`.
 4. Vollständige Ausrüstung, Physiologie/Dekompression, UI/Logbuch, Lokalisierung und Eingaben.
-5. Referenzbasierte Grafikabnahme, Plattformtests, Performance und zweistündiger Dauertest.
+5. Referenzbasierte Grafikabnahme, Plattformtests, Performance und Dauertest des abgenommenen Endstands.
 
 Die ursprüngliche MVP-Abnahme umfasst alle MUST-Anforderungen, beide Plattformen, reale Geografie, fünf Tierarten, drei Bewuchstypen, drei Einstiegspunkte und validierte Performance. Ein früher Prototyp erfüllt diese Abnahme ausdrücklich noch nicht.
 
