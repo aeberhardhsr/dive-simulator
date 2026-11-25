@@ -71,6 +71,14 @@ UTextureRenderTarget2D* ADiveAvatar::InspectionImage()
         const double angle=FMath::DegreesToRadians(InspectionYaw+55*SwimBlend);
         const double distance=bInspectionClose?290:580;
         const FQuat horizontal=FRotator(0,GetActorRotation().Yaw,0).Quaternion();
+        // Camera-relative studio lights keep the visible side readable at every
+        // inspection angle, including a horizontal body with its head raised.
+        const FVector lightTarget=GetActorTransform().TransformPosition(FVector(0,0,125));
+        for(int i=0;i<InspectionLights.Num();++i)
+        {
+            const double lightAngle=angle+(i?.8:-.6);
+            InspectionLights[i]->SetWorldLocation(lightTarget+horizontal.RotateVector(FVector(240*FMath::Cos(lightAngle),240*FMath::Sin(lightAngle),i?80:180)));
+        }
         const FVector eye=target+horizontal.RotateVector(FVector(distance*FMath::Cos(angle),distance*FMath::Sin(angle),bInspectionClose?25:50));
         InspectionCapture->SetWorldLocation(eye);
         InspectionCapture->SetWorldRotation(FRotationMatrix::MakeFromXZ(target-eye,FVector::UpVector).Rotator());

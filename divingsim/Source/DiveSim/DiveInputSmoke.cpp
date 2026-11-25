@@ -35,14 +35,14 @@ void ADivePawn::InputSmokeTick(float Dt)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
     if(SmokeScenario==TEXT("avatar"))
     {
-        if(ControlsSmokePhase<17&&ControlsSmokeClock>1+ControlsSmokePhase*2)
+        if(ControlsSmokePhase<25&&ControlsSmokeClock>1+ControlsSmokePhase*2)
         {
             const bool ok=hud->AvatarSmokeTest(ControlsSmokePhase);
             bControlsSmokeValid&=ok;
             UE_LOG(LogTemp,Display,TEXT("DIVE_AVATAR_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));
             ++ControlsSmokePhase;
         }
-        if(ControlsSmokePhase==17&&ControlsSmokeClock>36)
+        if(ControlsSmokePhase==25&&ControlsSmokeClock>52)
         {
             UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s avatar=1 case=%d"),bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),LoadoutTestCase);
             FPlatformMisc::RequestExitWithStatus(false,bControlsSmokeValid?0:1);

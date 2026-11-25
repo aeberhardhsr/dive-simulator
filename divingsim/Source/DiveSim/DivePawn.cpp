@@ -1,4 +1,5 @@
 #include "DivePawn.h"
+#include "DiveBodyFrame.h"
 #include "DiveWorld.h"
 #include "DiveEquipment.h"
 #include "DiveAudio.h"
@@ -767,7 +768,8 @@ void ADivePawn::SimulateStep(float Step)
     Dive::Exposure exposure;
     exposure.BodyImmersion=Dive::ShoreMovement::Immersion(
         physicalEye.Z/100-Dive::ShoreMovement::EyeOffset,localSurface/100);
-    exposure.MouthSubmerged=physicalEye.Z-12<localSurface;
+    const FVector physicalMouth=FDiveBodyFrame::PhysicalMouth(physicalEye,PC->GetControlRotation());
+    exposure.MouthSubmerged=physicalMouth.Z<Environment->SurfaceZ(physicalMouth.X,physicalMouth.Y,now+Step);
     exposure.RegulatorInMouth=bRegulatorInMouth;
     Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp,exposure);
     const auto& s=Simulation.Data;
@@ -790,11 +792,11 @@ void ADivePawn::SimulateStep(float Step)
     const FVector eye=Camera->GetComponentLocation();
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
     if(Audio->Advance(Step,s,Simulation.Settings,eyeDepth)&&s.MouthSubmerged)
-        Environment->EmitBreath(physicalEye-FVector(0,0,12),Camera->GetForwardVector(),s.AmbientBar);
+        Environment->EmitBreath(physicalMouth,FDiveBodyFrame::View(PC->GetControlRotation().Pitch,PC->GetControlRotation().Yaw).Vector(),s.AmbientBar);
     FreeflowBubbleClock+=Step;
     if(s.FreeflowLocalLPS>0&&s.MouthSubmerged&&FreeflowBubbleClock>=.2)
     {
-        Environment->EmitBreath(physicalEye-FVector(0,0,12),Camera->GetForwardVector(),s.AmbientBar);
+        Environment->EmitBreath(physicalMouth,FDiveBodyFrame::View(PC->GetControlRotation().Pitch,PC->GetControlRotation().Yaw).Vector(),s.AmbientBar);
         FreeflowBubbleClock=0;
     }
     TelemetryAccumulator+=Step;

@@ -92,11 +92,11 @@ if($Scenario -eq 'modes') {
 }
 if($Scenario -eq 'config' -and $log -notmatch 'DIVE_CONFIG_PASS') { throw "Configuration smoke test failed. See $logPath." }
 if($Scenario -eq 'avatar') {
-    foreach($phase in 0..16) {
+    foreach($phase in 0..24) {
         if($log -notmatch ('DIVE_AVATAR_PHASE '+$phase+' PASS')) { throw "Missing avatar phase $phase. See $logPath." }
     }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
-    foreach($stage in @('Front','Back','Swimming','Detail','FirstPerson','Computer','Paused','LookDown')) {
+    foreach($stage in @('Front','Back','Swimming','Detail','FirstPerson','Computer','Paused','LookDown','LookUp','RegulatorOut','RegulatorIn')) {
         $capture=Get-Item -LiteralPath (Join-Path $saved "Avatar_${LoadoutCase}_$stage.png")
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh avatar screenshot: $stage" }
     }

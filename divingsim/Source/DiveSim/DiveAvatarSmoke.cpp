@@ -21,6 +21,7 @@ bool ADiveHUD::AvatarSmokeTest(int phase)
         FString::Printf(TEXT("Screenshots/Avatar_%d_%s.png"),test,stage),true,false); };
     if(phase==0)
     {
+        UE_LOG(LogTemp,Display,TEXT("DIVE_BODY_POSE_VERSION 1"));
         for(int i=0;i<test%3;++i) NotifyHitBoxClick(TEXT("tank"));
         if(test>=3) NotifyHitBoxClick(TEXT("cylinder_material"));
         for(int i=0;i<test%3;++i) NotifyHitBoxClick(TEXT("bcd"));
@@ -63,7 +64,12 @@ bool ADiveHUD::AvatarSmokeTest(int phase)
     if(phase==8) { NotifyHitBoxClick(TEXT("start"));return Diver->bDiveActive; }
     if(phase==9) { shot(TEXT("FirstPerson"));return !avatar->IsInspection()&&avatar->MotionPhase>0; }
     if(phase==10) { Diver->bShowComputer=true; }
-    if(phase==11) shot(TEXT("Computer"));
+    if(phase==11)
+    {
+        shot(TEXT("Computer"));
+        // Reading the computer must not force a submerged swimmer upright.
+        return Diver->bWalking||Diver->Simulation.Data.DepthMetres<=.6||avatar->SwimBlend>.95;
+    }
     if(phase==12)
     {
         Diver->SetMenu(true);avatar->bInspectionClose=false;
@@ -86,5 +92,18 @@ bool ADiveHUD::AvatarSmokeTest(int phase)
             pc->SetControlRotation(FRotator(-65,pc->GetControlRotation().Yaw,0));
     }
     if(phase==16) { shot(TEXT("LookDown"));return !avatar->IsInspection()&&avatar->PoseUpdates>AvatarPausedUpdates; }
+    if(phase==17)
+        if(auto* pc=Cast<APlayerController>(Diver->GetController())) pc->SetControlRotation(FRotator(85,pc->GetControlRotation().Yaw,0));
+    if(phase==18) shot(TEXT("LookUp"));
+    if(phase==19)
+    {
+        if(auto* pc=Cast<APlayerController>(Diver->GetController())) pc->SetControlRotation(FRotator(0,pc->GetControlRotation().Yaw,0));
+        Diver->bRegulatorInMouth=false;
+    }
+    if(phase==20) { Diver->SetMenu(true);NotifyHitBoxClick(TEXT("avatar_view")); }
+    if(phase==21) { shot(TEXT("RegulatorOut"));return avatar->IsInspection()&&!Diver->bRegulatorInMouth; }
+    if(phase==22) { Diver->ResumeDive();Diver->bRegulatorInMouth=true; }
+    if(phase==23) Diver->SetMenu(true);
+    if(phase==24) { shot(TEXT("RegulatorIn"));return avatar->IsInspection()&&Diver->bRegulatorInMouth; }
     return true;
 }

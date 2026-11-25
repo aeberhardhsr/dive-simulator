@@ -25,13 +25,14 @@ def report(directory):
         log = runtime.read_text(encoding='utf-8-sig', errors='strict')
         if case['status'] != 'PASS' or f'DIVE_SMOKE_PASS avatar=1 case={number}' not in log:
             raise ValueError(f'Failed avatar case {number}')
-        for phase in range(17):
+        body_pose = 'DIVE_BODY_POSE_VERSION 1' in log
+        for phase in range(25 if body_pose else 17):
             if f'DIVE_AVATAR_PHASE {phase} PASS' not in log:
                 raise ValueError(f'Missing phase {phase} in case {number}')
         if re.search(r'DIVE_\w+_FAIL|DIVE_AVATAR_PHASE \d+ FAIL|Default Material will be used|Failed to compile Material', log):
             raise ValueError(f'Runtime validation error in case {number}')
         images = []
-        for stage in stages:
+        for stage in stages + (['LookUp', 'RegulatorOut', 'RegulatorIn'] if body_pose else []):
             path = folder/f'Avatar_{number}_{stage}.png'
             if path.stat().st_size < 10000 or path.read_bytes()[:8] != b'\x89PNG\r\n\x1a\n':
                 raise ValueError(f'Missing screenshot {path}')
@@ -56,4 +57,4 @@ if __name__ == '__main__':
     content = json.dumps(result, indent=2)+'\n'
     if args.output:
         args.output.write_text(content, encoding='utf-8')
-    print(f"PASS: {len(result['cases'])} avatar cases, 48 screenshots")
+    print(f"PASS: {len(result['cases'])} avatar cases, {sum(len(c['screenshots']) for c in result['cases'])} screenshots")

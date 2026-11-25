@@ -1,4 +1,5 @@
 #include "DiveAvatar.h"
+#include "DiveBodyFrame.h"
 #include "DivePawn.h"
 #include "DiveWorld.h"
 #include "Camera/CameraComponent.h"
@@ -91,7 +92,10 @@ void ADiveAvatar::Configure()
     const double ratio=Dive::Loadout::Cylinder(c.CylinderLitres,c.CylinderMaterial).DisplacedLitres/
         Dive::Loadout::Cylinder(size,c.CylinderMaterial).DisplacedLitres;
     Parts[Cylinder]->SetRelativeScale3D(FVector(FMath::Pow(ratio,1./3)));
-    Parts[Cylinder]->SetRelativeLocation(FVector(-24,0,124));
+    const double cylinderTop=Parts[Cylinder]->GetStaticMesh()?Parts[Cylinder]->GetStaticMesh()->GetBoundingBox().Max.Z*Parts[Cylinder]->GetRelativeScale3D().Z:35;
+    // Seat every cylinder below the neck, regardless of its selected length.
+    // The former fixed centre put tall valves through the extended head.
+    Parts[Cylinder]->SetRelativeLocation(FVector(-24,0,140-cylinderTop));
     Parts[Weights]->SetVisibility(c.WeightKg>.01);
     Parts[Weights]->SetRelativeScale3D(FVector(1,1,FMath::Clamp(c.WeightKg/6,.15,3.)));
     // Scale pockets about the belt, not about the ground-level rig origin.
@@ -161,13 +165,25 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
     const bool moving=Diver->bDiveActive?(Diver->bWalking?speed>.05:Diver->Simulation.Data.Exertion>.04):(bInspection&&bPreviewSwimming);
     const FVector eyes=Diver->Camera->GetComponentLocation();float floor=0;
     const bool nearBed=Diver->Environment&&Diver->Environment->SupportZ(eyes.X,eyes.Y,floor,eyes.Z)&&eyes.Z-floor<170;
-    const float swimTarget=!Diver->bDiveActive?(bPreviewSwimming?1.f:0.f):Diver->bWalking?0.f:Diver->bShowComputer?.45f:(moving||nearBed)?1.f:.12f;
+    const bool submerged=Diver->bDiveActive&&Diver->Simulation.Data.DepthMetres>.6;
+    const float swimTarget=!Diver->bDiveActive?(bPreviewSwimming?1.f:0.f):Diver->bWalking?0.f:(moving||nearBed||submerged)?1.f:0.f;
     SwimBlend=FMath::FInterpTo(SwimBlend,swimTarget,DeltaSeconds,3);
     MotionBlend=FMath::FInterpTo(MotionBlend,moving?1.f:0.f,DeltaSeconds,5);
     MotionPhase=Diver->bDiveActive||bPreviewSwimming?FMath::Fmod(MotionPhase+DeltaSeconds*(Diver->bWalking?speed*7:4+4*Diver->Simulation.Data.Exertion),2*PI):0;
-    const FRotator facing(-80*SwimBlend,Diver->GetControlRotation().Yaw,0);
-    const FQuat rotation=facing.Quaternion();
-    SetActorTransform(FTransform(rotation,eyes-rotation.RotateVector(FVector(8,0,170))));
+    const auto gaze=Diver->GetControlRotation();
+    const float viewPitch=Diver->bDiveActive?FRotator::NormalizeAxis(gaze.Pitch):0;
+    BodyPitch=FMath::FInterpTo(BodyPitch,FMath::Max(-80*SwimBlend,viewPitch-90),DeltaSeconds,5);
+    const auto frame=FDiveBodyFrame::FromEyes(eyes,BodyPitch,gaze.Yaw,viewPitch);
+    BodyPitch=frame.BodyPitch;
+    PoseEyes=eyes;PoseGaze=FDiveBodyFrame::View(viewPitch,gaze.Yaw).Vector();
+    SetActorTransform(frame.BodyWorld);
+    for(int index:{Hood,Mask})
+    {
+        // Preserve the known single-axis Euler rotation. Converting the local
+        // quaternion back to a rotator snaps near 90 degrees in Unreal, moving
+        // these off-origin meshes despite a mathematically exact eye anchor.
+        FDiveBodyFrame::ApplyLocalPitch(Parts[index],frame.HeadLocal.GetLocation(),frame.HeadPitch);
+    }
     for(FName name:BoneOrder) Suit->SetBoneTransformByName(name,Reference[name],EBoneSpaces::ComponentSpace);
     // FBX handedness is established by imported rest coordinates, not a label assumption.
     const bool leftIsL=Reference.Contains(TEXT("upper_l"))&&Reference[TEXT("upper_l")].GetLocation().Y<0;
@@ -186,7 +202,7 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
     Leg(leftIsL?TEXT("l"):TEXT("r"),-1,MotionPhase);
     Leg(leftIsL?TEXT("r"):TEXT("l"),1,MotionPhase+PI);
     RegulatorBlend=FMath::FInterpTo(RegulatorBlend,Diver->bRegulatorInMouth?1.f:0.f,DeltaSeconds,8);
-    Parts[Regulator]->SetRelativeLocation(FVector(7,9,-23)*(1-RegulatorBlend));
+    FDiveBodyFrame::ApplyLocalPitch(Parts[Regulator],frame.RegulatorLocal(RegulatorBlend).GetLocation(),frame.HeadPitch*RegulatorBlend);
     Parts[Regulator]->SetOwnerNoSee(RegulatorBlend>.7);
     const FRotator heading(0,0,-Diver->GetControlRotation().Yaw);
     const FVector compassCenter(14,8.5,131);
@@ -199,8 +215,8 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
 void ADiveAvatar::UpdateHose()
 {
     const double top=Parts[Cylinder]->GetStaticMesh()?Parts[Cylinder]->GetStaticMesh()->GetBoundingBox().Max.Z*Parts[Cylinder]->GetRelativeScale3D().Z:35;
-    const FVector end=FVector(13,4.5,158.5)+Parts[Regulator]->GetRelativeLocation();
-    const TArray<FVector> points={FVector(-24,4,124+top-1),FVector(-12,23,148),FVector(3,29,140),FVector(19,21,143),end+FVector(8,3,-1),end};
+    const FVector end=Parts[Regulator]->GetRelativeTransform().TransformPosition(FVector(13,4.5,158.5));
+    const TArray<FVector> points={Parts[Cylinder]->GetRelativeLocation()+FVector(0,4,top-1),FVector(-12,23,148),FVector(3,29,140),FVector(19,21,143),end+FVector(8,3,-1),end};
     TArray<FVector> centers;
     for(int i=0;i<points.Num()-1;++i)
     {
@@ -247,6 +263,19 @@ bool ADiveAvatar::Validate(FString& Error) const
         }
     }
     for(const auto& part:Parts) if(!part||!part->GetStaticMesh()) { Error=TEXT("Missing avatar equipment");return false; }
+    if(PoseUpdates>0)
+    {
+        const FTransform head=Parts[Hood]->GetComponentTransform();
+        const double eyeError=FVector::Distance(head.TransformPosition(FDiveBodyFrame::Eyes()),PoseEyes);
+        if(eyeError>.01)
+        { Error=FString::Printf(TEXT("Rendered eye anchor error %.6f cm"),eyeError);return false; }
+        if(!head.GetUnitAxis(EAxis::X).Equals(PoseGaze,.001))
+        { Error=TEXT("Head does not follow gaze");return false; }
+        if(!Parts[Mask]->GetComponentTransform().Equals(head,.01))
+        { Error=TEXT("Mask detached from head");return false; }
+        if(RegulatorBlend>.9999&&!Parts[Regulator]->GetComponentTransform().TransformPosition(FDiveBodyFrame::Mouth()).Equals(head.TransformPosition(FDiveBodyFrame::Mouth()),.1))
+        { Error=TEXT("Second stage detached from mouth");return false; }
+    }
     if(MaxArmLengthError>.01) { Error=TEXT("Arm solver changes limb lengths");return false; }
     if(!Reference.Contains(TEXT("pelvis"))||FMath::Abs(Reference[TEXT("pelvis")].GetLocation().Z-98)>1)
     { Error=TEXT("Unexpected avatar import units/rest pose");return false; }

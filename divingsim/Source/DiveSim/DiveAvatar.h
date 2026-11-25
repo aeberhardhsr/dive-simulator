@@ -48,7 +48,8 @@ private:
     TArray<FName> BoneOrder;
     int32 SelectedBCD=INDEX_NONE,SelectedMaterial=INDEX_NONE,SelectedSize=INDEX_NONE;
     bool bDry=true,bConfigured=false,bInspection=false;
-    float MotionBlend=0,RegulatorBlend=1;
+    float MotionBlend=0,RegulatorBlend=1,BodyPitch=0;
+    FVector PoseEyes=FVector::ZeroVector,PoseGaze=FVector::ForwardVector;
     void Configure();
     void AimBone(FName Name,const FVector& RestEnd,const FVector& Start,const FVector& End);
     FVector Arm(const TCHAR* Side,const FTransform& Wrist);
