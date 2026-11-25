@@ -24,6 +24,9 @@ public:
     void CloseProfiles(bool IncludingDialog=false);
     bool SubmitProfileName(const FString& Name);
     bool ProfileSmokeTest(int Phase);
+    bool ConfigSmokeTest(int Phase);
+    bool ConfigInputOpen() const { return ConfigDialog.IsValid(); }
+    void CloseConfigInput(bool RestoreFocus=true);
     bool LogbookReady() const { return !bIndexLoading&&!bDetailLoading&&SelectedLog.Error.IsEmpty()&&!SelectedLog.Path.IsEmpty(); }
     bool LogbookMatches(const FString& Path,int32 Samples) const;
     int32 LogMetricGroup=0;
@@ -39,6 +42,15 @@ private:
     void Button(FName Id,const FString& Label,float X,float Y,float W,float H,bool Accent=false);
     void Field(FName Id,const FString& Label,const FString& Value,float X,float Y,float W=330);
     void Menu();
+    bool OpenConfigInput(FName Id);
+    bool SubmitConfigInput(const FString& Value);
+    FString ConfigValue(FName Id) const;
+    FString ConfigInputTitle() const;
+    FString ConfigInputHint() const;
+    FName ConfigEditing;
+    FString ConfigError;
+    TSharedPtr<class SWidget> ConfigDialog;
+    TSharedPtr<class SEditableTextBox> ConfigEditor;
     void Instruments();
     void Summary();
     void Map();

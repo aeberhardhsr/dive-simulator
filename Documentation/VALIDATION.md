@@ -419,3 +419,17 @@ Zwei gerenderte 60-Sekunden-Läufe nach je 15 s Aufwärmen, native 1080p/Qualit�
 Im ersten Lauf liegen erhöhte GPU-/Renderzeiten unter anderem bei Simulationssekunden 27,8–28,4 vor. In den Zeitfenstern ±0,1 s um die Sicherungen bei 30,02 und 60,02 s bleibt die Spielthread-Zeit unter 2,75 beziehungsweise 2,41 ms. Diese Zähler beweisen keine eindeutige Ursache der GPU-Schwankung. Der erste Lauf wird nicht durch den günstigeren Wiederholungslauf ersetzt. Alle 14.293 Bilder bleiben unter 33,333 ms; eine universelle Leistungszusage folgt daraus nicht. Die gerenderten Läufe enthalten normale kurze Tauchprotokolle, nicht den synthetischen Zwei-Stunden-Datensatz.
 
 Einzelwerte, Rohdatenreferenzen, Wiederherstellungsdaten und SHA256-Prüfsummen: [BACKGROUND_LOG_RESULTS.json](BACKGROUND_LOG_RESULTS.json). Die tatsächliche zweistündige Spielstabilität, lange Protokolle während des Renderns und die Prüfung auf Mindesthardware bleiben offen.
+
+## Direkte Konfigurationseingaben (25. November 2026)
+
+Die bisher festen Schaltfolgen für Startdruck, Blei, geplante Tiefe und Dauer erfüllten die freie Eingabe aus CONF-009/013/017/018 nicht. Vierzehn Zahlenfelder öffnen jetzt einen gemeinsamen Eingabedialog. Er zeigt den jeweiligen Bereich, akzeptiert Dezimalpunkt oder Komma und übernimmt nur gültige Werte; falsche Zahlen, Einheiten im Text, überschüssige Nachkommastellen und Grenzüberschreitungen verändern die Konfiguration nicht. CONF-002 erhält die minutengenaue Eingabe von 00:00 bis 23:59. Bei laufendem Tauchgang sind diese Felder gesperrt. Konfiguration und Profilvorschau zeigen Bruchteile und Minuten; das bestehende Speicherformat bleibt erhalten.
+
+Die engineunabhängigen Prüfungen bestehen einschließlich aller Feldgrenzen, ungültiger Zeitformate, Dezimalkomma, negativer Lufttemperatur und unveränderter Werte nach Fehlern. Drei Unreal-Profiltests bestehen mit 213,5 bar, 7,5 kg, 22,5 m, 47 min und 23:59 Uhr auch nach Speicherung, erneutem Laden und Wiederherstellung. Editor- und Package-Build sind erfolgreich (`artifacts/build-config-editor-final-ui.log`, `package-config-final-ui.log`).
+
+Das Paket `Builds/WindowsConfig` besteht sieben gerenderte Konfigurationsphasen bei 1600×900 und 30-FPS-Limit: alle 14 Feldkennungen, Eingabe, Bereichsfehler, Uhrzeitfehler, Persistenz, Abbrechen und Sperre bei aktivem Tauchgang. Enter für ungültige und gültige Werte sowie Escape zum Verwerfen werden durch Slates tatsächliche Tastatur-Ereignisverarbeitung geschickt. Die Prüfung bestätigt außerdem, dass der gestartete Simulationskern die gewählten Werte erhält. Die bestehende Profiloberfläche besteht alle elf Phasen und den anschließenden kurzen Tauchgang erneut. Sechs Konfigurationsaufnahmen und der gemeinsame Profilnamendialog wurden visuell geprüft; lange Hinweise umbrechen innerhalb des Dialogs.
+
+![Direkte Eingabe eines Flaschendrucks](Images/ConfigPressure_DE.png)
+
+![Minutengenaue Uhrzeit und frei eingegebene Umweltwerte](Images/ConfigValues_EN.png)
+
+Artefakte und SHA256-Prüfsummen: [CONFIG_INPUT_RESULTS.json](CONFIG_INPUT_RESULTS.json). Automatische Umweltwerte, Sturm und wählbare Lampenmodelle bleiben außerhalb dieser Änderung offen. Die parallel laufende Zweistundenprüfung verwendet unverändert `WindowsSoak`; zusätzliche Build- und Dialogtestlast ist mit Uhrzeiten dokumentiert, siehe [SOAK.md](SOAK.md). Ihr Abschluss ist hier noch nicht nachgewiesen.

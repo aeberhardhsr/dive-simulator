@@ -1,0 +1,53 @@
+{
+  "captured_utc": "2026-11-25T09:52:13.337442+00:00",
+  "source_parent": "b4b6fba807ee97863a0137fc68094d3fda205239",
+  "source_dirty": true,
+  "package": "Builds/WindowsConfig",
+  "frame_limit": 30,
+  "requirements": [
+    "CONF-002",
+    "CONF-009",
+    "CONF-013",
+    "CONF-017",
+    "CONF-018"
+  ],
+  "numeric_fields": 14,
+  "configuration_runtime_phases": 7,
+  "slate_events": [
+    "Enter rejects invalid value",
+    "Enter accepts valid decimal comma",
+    "Escape cancels without applying"
+  ],
+  "native_profile_tests": 3,
+  "profile_ui_regression": true,
+  "game_configuration_values": {
+    "pressure_bar": 213.5,
+    "weight_kg": 7.5,
+    "planned_depth_m": 22.5,
+    "planned_minutes": 47,
+    "hour_test": "23:59",
+    "hour_final": "07:05",
+    "air_temperature_c": -3.5,
+    "current_mps": 0.17
+  },
+  "limitations": [
+    "Does not cover complete CONF requirements: automatic environment, storm, lamp models remain open.",
+    "UI tests ran alongside the unchanged two-hour soak package; their times are recorded in its DevelopmentActivity.jsonl."
+  ],
+  "sha256": {
+    "Builds/WindowsConfig/divingsim/Binaries/Win64/divingsim.exe": "8b8d987ce0b3491e5803a81250b57cd272e08be721afab0e9e944eb497663e16",
+    "artifacts/core-config-input.log": "18d84d691b31f61574376289afc66bf36b8f5f8304f7dad66f5046901d5f6cc8",
+    "artifacts/build-config-editor-final-ui.log": "9f5f6aad317a4b982291ca84cc36856d927df65ee2be1f43b6772e3ef1403f2c",
+    "artifacts/package-config-final-ui.log": "49a2c681ece7e47ef4729b4296f3380e31fc11c539a59ac0ac55414ea6a25b2b",
+    "artifacts/ProfileTests/index.json": "884c84bb4272dc6d78a8cf0494fd50c864fe27abafb53a3e720b688ef8915e16",
+    "artifacts/config-runtime-full.log": "a4b56b4de86764eb0c52833ed2813791d857af03ca2ab1442522974df8151316",
+    "artifacts/config-profiles-runtime-full.log": "b24fa384e04dbf1911f93351df5f936960a3aab9e453e0d2455774f57e4ada41",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ConfigPressure_DE.png": "77d4e0e16e0114a583e72263bf3377f555da898b23c4b654b9fa45cc8180af00",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ConfigRange_DE.png": "e3d63eb66db3404da9da0a9d477b45ef73c2b32486c59a760d6a4a04b1586ebc",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ConfigTime_DE.png": "f269ac2a0760cc53b173ab748084d5788d806a968d056c44c0e9b85015b72e11",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ConfigValues_DE.png": "9f8881348cb1a251a0f4438502388570e9bbd93f60d65f846e8f649b63f3c2dd",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ConfigAir_EN.png": "f6f6ecf6cd7d2ba74b5f487fc442011596cdfe72ebdc00896b28f50309615e37",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ConfigValues_EN.png": "0c75b0be12c9cec7b0ab7689d0b148b479b9489161f4401dae74bbb106a60b46",
+    "Builds/WindowsConfig/divingsim/Saved/Screenshots/ProfileName.png": "bc59f6a8a747711ea421f6786951280bddc9b295d41ffbbc1a738e2aa843f39e"
+  }
+}

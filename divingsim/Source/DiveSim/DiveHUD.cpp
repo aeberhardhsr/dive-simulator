@@ -94,7 +94,7 @@ void ADiveHUD::Menu()
     Button(TEXT("logbook"),L(TEXT("Logbuch ansehen   >"),TEXT("Open logbook   >")),73,720,437,58);
     const float x=650,w=265,gap=28;
     Text(bAudioPage?L(TEXT("KLANG UND LAUTSTAERKE"),TEXT("SOUND AND VOLUME")):Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
-    Text(bAudioPage?L(TEXT("Auch in der Pause einstellbar. 0 % schaltet den Kanal stumm."),TEXT("Adjustable while paused. 0% mutes the channel.")):Diver->bDiveActive?L(TEXT("Tauchplan und Umwelt bleiben waehrend des Tauchgangs fest."),TEXT("Dive plan and environment are fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
+    Text(bAudioPage?L(TEXT("Auch in der Pause einstellbar. 0 % schaltet den Kanal stumm."),TEXT("Adjustable while paused. 0% mutes the channel.")):Diver->bDiveActive?L(TEXT("Tauchplan und Umwelt bleiben waehrend des Tauchgangs fest."),TEXT("Dive plan and environment are fixed during the dive.")):L(TEXT("Werte anklicken: Zahlen eingeben, Optionen wechseln"),TEXT("Click values to enter numbers or change options")),x,198,15,Muted);
     const bool ready=Diver->Environment && Diver->Environment->bTerrainReady;
     if(bAudioPage)
     {
@@ -115,16 +115,16 @@ void ADiveHUD::Menu()
     {
         const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain"))};
         Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,250,w);
-        Field(TEXT("wind"),L(TEXT("WINDSTAERKE"),TEXT("WIND SPEED")),FString::Printf(TEXT("%.0f m/s"),c.WindMetresPerSecond),x+w+gap,250,w);
-        Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),FString::Printf(TEXT("%03.0f deg"),c.WindDirectionDegrees),x+2*(w+gap),250,w);
-        Field(TEXT("surface_temp"),L(TEXT("OBERFLAECHENTEMPERATUR"),TEXT("SURFACE TEMPERATURE")),FString::Printf(TEXT("%.0f C"),c.SurfaceTemperatureC),x,350,w);
-        Field(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),FString::Printf(TEXT("%.0f C"),c.BottomTemperatureC),x+w+gap,350,w);
-        Field(TEXT("thermocline"),L(TEXT("SPRUNGSCHICHT / TIEFE"),TEXT("THERMOCLINE / DEPTH")),FString::Printf(TEXT("%.0f m"),c.ThermoclineMetres),x+2*(w+gap),350,w);
-        Field(TEXT("thermal_width"),L(TEXT("SCHICHTUEBERGANG"),TEXT("TRANSITION SCALE")),FString::Printf(TEXT("%.1f m"),c.ThermoclineWidthMetres),x,450,w);
-        Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),FString::Printf(TEXT("%.0f m"),c.VisibilityMetres),x+w+gap,450,w);
-        Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),FString::Printf(TEXT("%.2f m/s"),c.CurrentMetresPerSecond),x+2*(w+gap),450,w);
-        Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x,550,w);
-        Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),FString::Printf(TEXT("%.0f C"),c.AirTemperatureC),x+w+gap,550,w);
+        Field(TEXT("wind"),L(TEXT("WINDSTAERKE"),TEXT("WIND SPEED")),ConfigValue(TEXT("wind")),x+w+gap,250,w);
+        Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),ConfigValue(TEXT("winddir")),x+2*(w+gap),250,w);
+        Field(TEXT("surface_temp"),L(TEXT("OBERFLAECHENTEMPERATUR"),TEXT("SURFACE TEMPERATURE")),ConfigValue(TEXT("surface_temp")),x,350,w);
+        Field(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),ConfigValue(TEXT("bottom_temp")),x+w+gap,350,w);
+        Field(TEXT("thermocline"),L(TEXT("SPRUNGSCHICHT / TIEFE"),TEXT("THERMOCLINE / DEPTH")),ConfigValue(TEXT("thermocline")),x+2*(w+gap),350,w);
+        Field(TEXT("thermal_width"),L(TEXT("SCHICHTUEBERGANG"),TEXT("TRANSITION SCALE")),ConfigValue(TEXT("thermal_width")),x,450,w);
+        Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+w+gap,450,w);
+        Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),450,w);
+        Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x,550,w);
+        Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),ConfigValue(TEXT("air_temp")),x+w+gap,550,w);
         Text(L(TEXT("Einstellbare Spielszenarien; keine aktuellen Messwerte."),TEXT("Configurable game scenarios; not current observations.")),x,655,15,Muted);
     }
     else
@@ -132,15 +132,15 @@ void ADiveHUD::Menu()
     const FString modes[]={L(TEXT("Exploration"),TEXT("Exploration")),L(TEXT("Simulation"),TEXT("Simulation")),L(TEXT("Hardcore *"),TEXT("Hardcore *"))};
     Field(TEXT("mode"),L(TEXT("MODUS"),TEXT("MODE")),modes[static_cast<int>(c.GameMode)],x,250,w);
     Field(TEXT("entry"),c.StartOnShore?L(TEXT("UFERZUGANG"),TEXT("SHORE ACCESS")):L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->EntryName():TEXT("Geodata unavailable"),x+w+gap,250,w);
-    Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x+2*(w+gap),250,w);
+    Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x+2*(w+gap),250,w);
     Field(TEXT("tank"),L(TEXT("FLASCHENVOLUMEN"),TEXT("CYLINDER VOLUME")),FString::Printf(TEXT("%.0f L / O2 %.0f%%"),c.CylinderLitres,c.OxygenFraction*100),x,350,w);
-    Field(TEXT("pressure"),L(TEXT("STARTDRUCK"),TEXT("START PRESSURE")),FString::Printf(TEXT("%.0f bar"),c.StartPressureBar),x+w+gap,350,w);
-    Field(TEXT("weight"),L(TEXT("BLEIGEWICHT"),TEXT("BALLAST")),FString::Printf(TEXT("%.0f kg"),c.WeightKg),x+2*(w+gap),350,w);
+    Field(TEXT("pressure"),L(TEXT("STARTDRUCK"),TEXT("START PRESSURE")),ConfigValue(TEXT("pressure")),x+w+gap,350,w);
+    Field(TEXT("weight"),L(TEXT("BLEIGEWICHT"),TEXT("BALLAST")),ConfigValue(TEXT("weight")),x+2*(w+gap),350,w);
     Field(TEXT("suit"),L(TEXT("ANZUG"),TEXT("SUIT")),c.DrySuit?L(TEXT("Trockentauchanzug"),TEXT("Dry suit")):L(TEXT("Nassanzug"),TEXT("Wet suit")),x,450,w);
-    Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),FString::Printf(TEXT("%.0f m"),c.VisibilityMetres),x+w+gap,450,w);
-    Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),FString::Printf(TEXT("%.2f m/s"),c.CurrentMetresPerSecond),x+2*(w+gap),450,w);
-    Field(TEXT("depth"),L(TEXT("GEPLANTE TIEFE"),TEXT("PLANNED DEPTH")),FString::Printf(TEXT("%.0f m"),c.PlannedDepthMetres),x,550,w);
-    Field(TEXT("duration"),L(TEXT("GEPLANTE DAUER"),TEXT("PLANNED DURATION")),FString::Printf(TEXT("%.0f min"),c.PlannedMinutes),x+w+gap,550,w);
+    Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+w+gap,450,w);
+    Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),450,w);
+    Field(TEXT("depth"),L(TEXT("GEPLANTE TIEFE"),TEXT("PLANNED DEPTH")),ConfigValue(TEXT("depth")),x,550,w);
+    Field(TEXT("duration"),L(TEXT("GEPLANTE DAUER"),TEXT("PLANNED DURATION")),ConfigValue(TEXT("duration")),x+w+gap,550,w);
     Field(TEXT("motion"),L(TEXT("KAMERABEWEGUNG"),TEXT("CAMERA MOTION")),Diver->bCameraMotion?L(TEXT("Sanft"),TEXT("Gentle")):L(TEXT("Stabil"),TEXT("Stable")),x+2*(w+gap),550,w);
     Button(TEXT("shore"),c.StartOnShore?L(TEXT("Start: am Ufer"),TEXT("Start: on shore")):L(TEXT("Start: direkt im Wasser"),TEXT("Start: in the water")),x,625,350,32,c.StartOnShore);
     Text(c.GameMode==Dive::Mode::Exploration?L(TEXT("Unbegrenztes Atemgas und automatische Tarierung."),TEXT("Unlimited gas and automatic buoyancy.")):
@@ -289,7 +289,7 @@ void ADiveHUD::Summary()
 
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
-    Super::NotifyHitBoxClick(Id); if(!Diver) return;
+    Super::NotifyHitBoxClick(Id); if(!Diver||ConfigDialog) return;
     if(Id==TEXT("profiles")) { OpenProfiles(); return; }
     if(bProfilesPage) { ProfileClick(Id); return; }
     if(Id==TEXT("controls")) { OpenControls(); return; }
@@ -362,26 +362,13 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
     }
     else if(!Diver->bDiveActive)
     {
+        if(OpenConfigInput(Id)) return;
         if(Id==TEXT("mode")) c.GameMode=static_cast<Dive::Mode>((static_cast<int>(c.GameMode)+1)%3);
         else if(Id==TEXT("entry")) Diver->EntryIndex=(Diver->EntryIndex+1)%3;
         else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
-        else if(Id==TEXT("hour")) c.Hour=FMath::Fmod(c.Hour+3,24.0);
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;
-        else if(Id==TEXT("pressure")) c.StartPressureBar=c.StartPressureBar>=250?100:c.StartPressureBar+50;
-        else if(Id==TEXT("weight")) c.WeightKg=c.WeightKg>=12?2:c.WeightKg+2;
         else if(Id==TEXT("suit")) c.DrySuit=!c.DrySuit;
-        else if(Id==TEXT("visibility")) c.VisibilityMetres=c.VisibilityMetres>=22?6:c.VisibilityMetres+4;
-        else if(Id==TEXT("current")) c.CurrentMetresPerSecond=c.CurrentMetresPerSecond>=.24?0:c.CurrentMetresPerSecond+.08;
-        else if(Id==TEXT("depth")) c.PlannedDepthMetres=c.PlannedDepthMetres>=35?10:c.PlannedDepthMetres+5;
-        else if(Id==TEXT("duration")) c.PlannedMinutes=c.PlannedMinutes>=60?10:c.PlannedMinutes+10;
         else if(Id==TEXT("weather")) c.Weather=(c.Weather+1)%3;
-        else if(Id==TEXT("wind")) c.WindMetresPerSecond=c.WindMetresPerSecond>=12?0:c.WindMetresPerSecond+3;
-        else if(Id==TEXT("winddir")) c.WindDirectionDegrees=FMath::Fmod(c.WindDirectionDegrees+45,360.);
-        else if(Id==TEXT("surface_temp")) c.SurfaceTemperatureC=c.SurfaceTemperatureC>=24?6:c.SurfaceTemperatureC+2;
-        else if(Id==TEXT("air_temp")) c.AirTemperatureC=c.AirTemperatureC>=40?-10:c.AirTemperatureC+2;
-        else if(Id==TEXT("bottom_temp")) c.BottomTemperatureC=c.BottomTemperatureC>=12?4:c.BottomTemperatureC+2;
-        else if(Id==TEXT("thermocline")) c.ThermoclineMetres=c.ThermoclineMetres>=25?5:c.ThermoclineMetres+5;
-        else if(Id==TEXT("thermal_width")) c.ThermoclineWidthMetres=c.ThermoclineWidthMetres>=5?.5:c.ThermoclineWidthMetres+.5;
     }
     Diver->SaveSettings();
 }

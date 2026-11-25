@@ -185,6 +185,23 @@ void ADivePawn::InputSmokeTick(float Dt)
         }
         return;
     }
+    if(SmokeScenario==TEXT("config"))
+    {
+        if(ControlsSmokePhase<=6&&ControlsSmokeClock>(ControlsSmokePhase+1)*1.5)
+        {
+            const bool passed=hud->ConfigSmokeTest(ControlsSmokePhase);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_CONFIG_PHASE %d %s"),ControlsSmokePhase,passed?TEXT("PASS"):TEXT("FAIL"));
+            if(!passed) { FPlatformMisc::RequestExitWithStatus(false,1); return; }
+            ++ControlsSmokePhase;
+        }
+        if(ControlsSmokePhase==7&&ControlsSmokeClock>12)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_CONFIG_PASS numeric=1 minute_clock=1 validation=1 persistence=1 cancel=1 active_guard=1"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS config=1"));
+            FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("profiles"))
     {
         if(ControlsSmokePhase<=10&&ControlsSmokeClock>(ControlsSmokePhase+1)*.8)

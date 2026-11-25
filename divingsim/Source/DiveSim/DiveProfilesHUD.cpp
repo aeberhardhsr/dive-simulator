@@ -1,4 +1,6 @@
 #include "DiveHUD.h"
+#include "DiveTextDialog.h"
+#include "Simulation/ConfigInput.h"
 #include "DivePawn.h"
 #include "DiveWorld.h"
 #include "DiveConfigIO.h"
@@ -30,64 +32,10 @@ FString ShortName(const FString& Name)
     int end=19; if(Name[end-1]>=0xD800&&Name[end-1]<=0xDBFF) --end;
     return Name.Left(end)+TEXT("…");
 }
-class SDiveProfileName : public SCompoundWidget
-{
-public:
-    SLATE_BEGIN_ARGS(SDiveProfileName) {}
-        SLATE_ARGUMENT(FText,Title)
-        SLATE_ARGUMENT(FText,Initial)
-        SLATE_ARGUMENT(bool,English)
-        SLATE_ATTRIBUTE(FText,Error)
-        SLATE_EVENT(FOnTextCommitted,OnSubmit)
-        SLATE_EVENT(FSimpleDelegate,OnCancel)
-    SLATE_END_ARGS()
-    TSharedPtr<SEditableTextBox> Editor;
-    void Construct(const FArguments& Args)
-    {
-        Submit=Args._OnSubmit; Cancel=Args._OnCancel;
-        ButtonText=FTextBlockStyle().SetFont(FCoreStyle::GetDefaultFontStyle("Regular",18)).SetColorAndOpacity(White);
-        ChildSlot
-        [SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush")).BorderBackgroundColor(FLinearColor(0,.012f,.014f,.88f))
-            .HAlign(HAlign_Center).VAlign(VAlign_Center).Padding(40)
-            [SNew(SBox).WidthOverride(620)
-                [SNew(SBorder).BorderImage(FCoreStyle::Get().GetBrush("WhiteBrush")).BorderBackgroundColor(Panel).Padding(30)
-                    [SNew(SVerticalBox)
-                        +SVerticalBox::Slot().AutoHeight().Padding(0,0,0,22)
-                        [SNew(STextBlock).Text(Args._Title).Font(FCoreStyle::GetDefaultFontStyle("Regular",24)).ColorAndOpacity(White)]
-                        +SVerticalBox::Slot().AutoHeight()
-                        [SAssignNew(Editor,SEditableTextBox).Text(Args._Initial).Font(FCoreStyle::GetDefaultFontStyle("Regular",22))
-                            .SelectAllTextWhenFocused(true).ClearKeyboardFocusOnCommit(false)
-                            .OnTextCommitted_Lambda([this](const FText& Text,ETextCommit::Type Type){if(Type==ETextCommit::OnEnter) Submit.ExecuteIfBound(Text,Type);})]
-                        +SVerticalBox::Slot().AutoHeight().Padding(0,10,0,0)
-                        [SNew(STextBlock).Text(Args._Error).Font(FCoreStyle::GetDefaultFontStyle("Regular",16)).ColorAndOpacity(Amber).WrapTextAt(560)
-                            .Visibility_Lambda([Error=Args._Error](){return Error.Get().IsEmpty()?EVisibility::Collapsed:EVisibility::Visible;})]
-                        +SVerticalBox::Slot().AutoHeight().Padding(0,12,0,24)
-                        [SNew(STextBlock).Text(FText::FromString(Args._English?TEXT("1–40 characters. Enter saves; Escape cancels."):TEXT("1–40 Zeichen. Enter speichert; Escape bricht ab."))).Font(FCoreStyle::GetDefaultFontStyle("Regular",16)).ColorAndOpacity(White)]
-                        +SVerticalBox::Slot().AutoHeight()
-                        [SNew(SHorizontalBox)
-                            +SHorizontalBox::Slot().FillWidth(1).Padding(0,0,10,0)
-                            [SNew(SButton).TextStyle(&ButtonText).ContentPadding(FMargin(12,10)).HAlign(HAlign_Center).Text(FText::FromString(Args._English?TEXT("Save"):TEXT("Speichern"))).OnClicked_Lambda([this](){Submit.ExecuteIfBound(Editor->GetText(),ETextCommit::OnEnter); return FReply::Handled();})]
-                            +SHorizontalBox::Slot().FillWidth(1)
-                            [SNew(SButton).TextStyle(&ButtonText).ContentPadding(FMargin(12,10)).HAlign(HAlign_Center).Text(FText::FromString(Args._English?TEXT("Cancel"):TEXT("Abbrechen"))).OnClicked_Lambda([this](){Cancel.ExecuteIfBound(); return FReply::Handled();})]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-    }
-    virtual FReply OnPreviewKeyDown(const FGeometry& Geometry,const FKeyEvent& Event) override
-    {
-        if(Event.GetKey()==EKeys::Escape) { Cancel.ExecuteIfBound(); return FReply::Handled(); }
-        return SCompoundWidget::OnPreviewKeyDown(Geometry,Event);
-    }
-private:
-    FTextBlockStyle ButtonText;
-    FOnTextCommitted Submit;
-    FSimpleDelegate Cancel;
-};
+
 }
 void ADiveHUD::EndPlay(const EEndPlayReason::Type Reason)
-{ CloseProfileName(false); Super::EndPlay(Reason); }
+{ CloseConfigInput(false); CloseProfileName(false); Super::EndPlay(Reason); }
 void ADiveHUD::OpenProfiles()
 {
     Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver) return;
@@ -137,7 +85,8 @@ void ADiveHUD::OpenProfileName(bool Rename)
     const auto* selected=Profiles.Find(ProfileSelection); if(Rename&&!selected) return;
     bProfileRename=Rename; ProfileEditingId=Rename?ProfileSelection:FString(); ProfileNameError.Empty();
     const TWeakObjectPtr<ADiveHUD> weak(this);
-    auto dialog=SNew(SDiveProfileName).English(Diver->bEnglish)
+    auto dialog=SNew(SDiveTextDialog).English(Diver->bEnglish)
+        .Hint(FText::FromString(Diver->Local(TEXT("1–40 Zeichen. Enter speichert; Escape bricht ab."),TEXT("1–40 characters. Enter saves; Escape cancels."))))
         .Title(FText::FromString(Rename?Diver->Local(TEXT("Profil umbenennen"),TEXT("Rename profile")):Diver->Local(TEXT("Aktuellen Tauchplan speichern"),TEXT("Save current dive plan"))))
         .Initial(FText::FromString(Rename?selected->Name:FString()))
         .Error_Lambda([weak](){return weak.IsValid()?FText::FromString(weak->ProfileNameError):FText::GetEmpty();})
@@ -217,14 +166,15 @@ void ADiveHUD::ProfilesMenu()
     const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain"))};
     const FString place=Diver->Environment&&Diver->Environment->Terrain.EntryList(c.StartOnShore).IsValidIndex(entry)?Diver->Environment->Terrain.EntryList(c.StartOnShore)[entry].Name:TEXT("?");
     Text(place+TEXT("  /  ")+modes[static_cast<int>(c.GameMode)]+(c.StartOnShore?L(TEXT("  /  Uferstart"),TEXT("  /  Shore start")):FString()),585,280,21,Accent);
-    Text(FString::Printf(TEXT("%.0f L   /   %.0f bar   /   O2 %.0f %%   /   %.0f kg"),c.CylinderLitres,c.StartPressureBar,c.OxygenFraction*100,c.WeightKg),585,325,20,White);
+    Text(FString::Printf(TEXT("%.0f L   /   %.1f bar   /   O2 %.0f %%   /   %.1f kg"),c.CylinderLitres,c.StartPressureBar,c.OxygenFraction*100,c.WeightKg),585,325,20,White);
     const FString suit=c.DrySuit?L(TEXT("Trockentauchanzug"),TEXT("Dry suit")):L(TEXT("Nassanzug"),TEXT("Wet suit"));
     const bool autoTrim=c.AutoBuoyancy||c.GameMode==Dive::Mode::Exploration;
     Text(suit+TEXT("   /   ")+(autoTrim?L(TEXT("Automatische Tarierung"),TEXT("Automatic buoyancy")):L(TEXT("Manuelle Tarierung"),TEXT("Manual buoyancy"))),585,365,19,White);
-    Text(FString::Printf(TEXT("%02d:00   /   %s   /   %.0f m/s   /   %03.0f deg"),static_cast<int>(c.Hour),*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
-    Text(FString::Printf(TEXT("%s %.0f m   /   %s %.2f m/s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,Diver->bEnglish?TEXT("Current"):TEXT("Stroemung"),c.CurrentMetresPerSecond),585,445,19,White);
-    Text(FString::Printf(TEXT("%.0f / %.0f C   /   %s %.0f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
-    Text(FString::Printf(TEXT("Plan: %.0f m   /   %.0f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphaere"),c.SurfacePressureBar),585,525,20,White);
+    const FString hour=UTF8_TO_TCHAR(Dive::FormatConfigInput(*Dive::FindConfigInput("hour"),c.Hour).c_str());
+    Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f deg"),*hour,*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
+    Text(FString::Printf(TEXT("%s %.1f m   /   %s %.2f m/s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,Diver->bEnglish?TEXT("Current"):TEXT("Stroemung"),c.CurrentMetresPerSecond),585,445,19,White);
+    Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s %.1f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
+    Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphaere"),c.SurfacePressureBar),585,525,20,White);
     if(selected&&DiveConfigIO::Equal(c,entry,Diver->PendingConfig,Diver->EntryIndex)) Text(L(TEXT("Entspricht dem aktuellen Tauchplan."),TEXT("Matches the current dive plan.")),585,580,16,Accent);
     if(Diver->bDiveActive) Text(L(TEXT("Laden ist erst nach Ende des laufenden Tauchgangs moeglich."),TEXT("Loading is available after the current dive ends.")),560,645,16,Amber);
     if(selected)

@@ -17,10 +17,10 @@ struct FProfileFixture
 };
 Dive::Config Varied()
 {
-    Dive::Config c; c.GameMode=Dive::Mode::Hardcore; c.CylinderLitres=15; c.StartPressureBar=250; c.OxygenFraction=.32;
-    c.WeightKg=9; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7; c.AirTemperatureC=-4;
-    c.VisibilityMetres=8; c.CurrentMetresPerSecond=.2; c.PlannedDepthMetres=24; c.PlannedMinutes=55;
-    c.Hour=23; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
+    Dive::Config c; c.GameMode=Dive::Mode::Hardcore; c.CylinderLitres=15; c.StartPressureBar=213.5; c.OxygenFraction=.32;
+    c.WeightKg=7.5; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7; c.AirTemperatureC=-3.5;
+    c.VisibilityMetres=8; c.CurrentMetresPerSecond=.17; c.PlannedDepthMetres=22.5; c.PlannedMinutes=47;
+    c.Hour=23+59./60; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
     c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; c.StartOnShore=true; return c;
 }
 }

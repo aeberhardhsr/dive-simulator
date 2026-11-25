@@ -8,6 +8,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/VisualMedium.h"
 #include "../divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
 #include "../divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
+#include "../divingsim/Source/DiveSim/Simulation/ConfigInput.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -21,6 +22,39 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        const auto& hour=*Dive::FindConfigInput("hour");
+        double value=13;
+        check(Dive::ParseConfigInput(hour,"23:59",value)==Dive::ConfigInputError::None,"Clock accepts final minute");
+        close(value,23+59./60,1e-12,"Clock preserves minutes");
+        check(Dive::FormatConfigInput(hour,value)=="23:59","Clock displays minutes");
+        for(const char* invalid:{"24:00","12:60","-1:00","12:5","12","13:00x","NaN",""})
+        {
+            const double previous=value;
+            check(Dive::ParseConfigInput(hour,invalid,value)!=Dive::ConfigInputError::None&&value==previous,"Invalid time preserves previous value");
+        }
+        check(Dive::ParseConfigInput(hour," 7:05 ",value)==Dive::ConfigInputError::None&&Dive::FormatConfigInput(hour,value)=="07:05","Clock accepts one digit hour");
+        const auto& weight=*Dive::FindConfigInput("weight");
+        check(Dive::ParseConfigInput(weight,"7,5",value)==Dive::ConfigInputError::None&&value==7.5,"Decimal comma accepted");
+        for(const char* invalid:{"NaN","inf","1e1","1.2.3","1,2.3","7 kg","-1","20.1","1.25","+","."})
+        {
+            const double previous=value;
+            check(Dive::ParseConfigInput(weight,invalid,value)!=Dive::ConfigInputError::None&&value==previous,"Invalid numeric input does not mutate value");
+        }
+        check(Dive::ParseConfigInput(*Dive::FindConfigInput("air_temp"),"-3.5",value)==Dive::ConfigInputError::None&&value==-3.5,"Negative air temperature accepted");
+        check(Dive::ParseConfigInput(*Dive::FindConfigInput("current"),"0.17",value)==Dive::ConfigInputError::None&&value==.17,"Current precision retained");
+        check(!Dive::FindConfigInput("unknown"),"Unknown input rejected");
+        for(const auto& input:Dive::ConfigInputs)
+        {
+            for(double boundary:{input.Minimum,input.Maximum})
+            {
+                const auto text=Dive::FormatConfigInput(input,boundary);
+                check(Dive::ParseConfigInput(input,text,value)==Dive::ConfigInputError::None,"Every advertised boundary is accepted");
+                Dive::Config c; c.*(input.Member)=value; c.Sanitize();
+                close(c.*(input.Member),value,1e-12,"Accepted input is preserved by simulation sanitization");
+            }
+        }
+    }
     {
         Dive::SoakMetrics m;
         check(!m.Add(0)&&!m.Add(-1)&&!m.Add(std::numeric_limits<double>::quiet_NaN()),"Soak rejects invalid intervals");

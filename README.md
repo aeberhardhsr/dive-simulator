@@ -55,6 +55,8 @@ Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauch
 
 **Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien und bleiben während eines Tauchgangs fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
 
+Zahlenfelder öffnen einen Eingabedialog: beispielsweise **213,5 bar**, **7,5 kg**, **22,5 m** oder **47 min**. Die Einheit gehört nicht in das Eingabefeld. Dezimalpunkt und Komma sind erlaubt; der Dialog nennt den gültigen Bereich. Die Uhrzeit lässt sich minutengenau von **00:00 bis 23:59** einstellen. Enter oder **Speichern** übernimmt den Wert, Escape oder **Abbrechen** verwirft die Eingabe. Ungültige Werte verändern den Tauchplan nicht. Während eines laufenden Tauchgangs bleibt die Konfiguration gesperrt.
+
 **Audio >** unten im Menü öffnet fünf Lautstärkeregler: Gesamt, Umgebung, Atem/Ausrüstung, Herzschlag und Warnungen. Mit **− / +** in 5-%-Schritten einstellen; 0 % schaltet den Kanal stumm. Einstellungen werden gespeichert und können auch in der Pause geändert werden. Atmung und Herzschlag folgen den simulierten Vitalwerten, Jacket-Geräusche dem tatsächlichen Gasfluss. Blasen steigen als räumliche Klangquelle auf; Wind, Wasser und Regen werden beim Eintauchen gedämpft. Die eigenen synthetischen Klänge sind ein Entwicklungsstand, keine Aufnahme echter Tauchausrüstung.
 
 **Logbuch ansehen** im Start-/Pausenmenü oder **Logbuch / Verläufe** nach dem Tauchgang öffnet gespeicherte Tauchgänge. Links einen Eintrag wählen, mit den Pfeilen blättern oder nach Modus filtern. Vier Diagrammgruppen zeigen Tiefe, Gas, Nullzeit, Dekotiefe, Vitalwerte, Temperatur, Stress, Ermüdung und Strecke. Die Maus über den Kurven wählt den gemeinsamen Zeitpunkt; **< ! / ! >** springt zu Warnereignissen. Neue Protokolle zeigen am ausgewählten Zeitpunkt außerdem Atemquelle, Körperimmersion, gemischte Umgebungstemperatur und die Atemreserve. Esc führt zurück. Beim Lesen aus dem Pausenmenü bleibt der laufende Tauchgang angehalten.
@@ -102,6 +104,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMix.wav artifacts/DiveSmoke.log
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht
+./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsConfig -Scenario config -MaxFPS 30 # Direkte Werte, Uhrzeit, Fehler, Persistenz und Sperre
 ./Tools/TestLogbook.ps1              # Unreal-Tests: alte/neue Logs, zwei Stunden Daten, Fehlerfälle
 ./Tools/TestCheckpointRecovery.ps1 -PackageDirectory Builds/WindowsRecovery # Eigene Testinstanz hart beenden, Sicherungen neu öffnen
 ./Tools/Soak.ps1 -PackageDirectory Builds/WindowsSoak -Seconds 7200 # Echte zwei Stunden, Ablauf und Messgrenzen: Documentation/SOAK.md

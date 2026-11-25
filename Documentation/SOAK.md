@@ -22,6 +22,8 @@ Eine vorausgerichtete Kapselabfrage erkennt feste Hindernisse. Bei einem Treffer
 
 `Host.json` hält Prozess-ID, Startzeit, ausführbare Datei/Prüfsumme, Quell-Commit und den Zustand des Arbeitsbaums fest. Bei Überschreiten der Beobachtungsfrist wird der Prozess nicht automatisch beendet oder neu gestartet. Ein laufender Test ist anhand dieser Prozess-ID und des Runtime-Logs zu überprüfen. Erst ein reguläres Ende mit `DIVE_SOAK_PASS` und erfolgreicher unabhängiger Auswertung ist ein bestandener Lauf.
 
+Der am 25. November um 09:31:49 UTC begonnene 7.200-Sekunden-Lauf prüft Stabilität bei paralleler Entwicklungsarbeit. Zusätzliche Editor-/Package-Builds, Tests ohne Rendering und kurze gerenderte Dialogtests mit 30-FPS-Limit werden mit Start-/Endzeit in `artifacts/soak-7200s-entry0-20261125-103131/DevelopmentActivity.jsonl` festgehalten. Sie verwenden ein separates Package; das gemessene `WindowsSoak`-Package bleibt unverändert. Sämtliche dabei entstehenden Bildintervalle bleiben in der Messung. Seine FPS-Werte sind deshalb **kein ungestörter Leistungsbenchmark**; der Zweistunden-Stabilitätsnachweis bleibt bis zum regulären erfolgreichen Ende offen.
+
 ## Ausführen
 
 ```powershell
