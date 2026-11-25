@@ -20,7 +20,7 @@ void ADiveHUD::ControlsMenu()
     Text(Diver->CapturingAction!=INDEX_NONE?L(TEXT("Warte auf Taste ... ESC bricht ab. Linksklick, ESC, F1 und F11 bleiben reserviert."),TEXT("Waiting for a key ... ESC cancels. Left click, ESC, F1 and F11 stay reserved.")):Diver->ControlMessage,120,160,17,Accent);
     for(int i=0;i<FDiveControls::Count;++i)
     {
-        const float x=120+(i/8)*720,y=210+(i%8)*54;
+        const float x=120+(i/9)*720,y=210+(i%9)*48;
         Text(FDiveControls::Label(i,Diver->bEnglish),x,y+11,18,White);
         Button(FName(*FString::Printf(TEXT("bind_%d"),i)),Diver->CapturingAction==i?TEXT("..."):Diver->KeyText(static_cast<EDiveAction>(i)),x+340,y,280,43,Diver->CapturingAction==i);
     }

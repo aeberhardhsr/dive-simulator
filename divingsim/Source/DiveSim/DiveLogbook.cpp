@@ -15,8 +15,9 @@ bool Parse(const FString& Json,FDiveLog& Log)
     if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),root)||!root)
         return fail(TEXT("Invalid JSON"));
     double version=0;
-    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2))
+    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3))
         return fail(TEXT("Unsupported log version"));
+    Log.bBreathingContext=version>=3;
     auto number=[](const TSharedPtr<FJsonObject>& obj,const TCHAR* key,double& value,double lo,double hi)
     { return obj->TryGetNumberField(key,value)&&FMath::IsFinite(value)&&value>=lo&&value<=hi; };
     double mode=0;
@@ -70,8 +71,23 @@ bool Parse(const FString& Json,FDiveLog& Log)
            !number(o,TEXT("ceiling_m"),s.CeilingMetres,0,1000)||
            !number(o,TEXT("ndl_minutes"),s.NDLMinutes,0,1000)||
            !number(o,TEXT("distance_m"),s.DistanceMetres,0,Log.Distance+.05)||s.DistanceMetres<lastDistance||
-           !number(o,TEXT("warnings"),warnings,0,255)||warnings!=FMath::FloorToDouble(warnings))
+           !number(o,TEXT("warnings"),warnings,0,version>=3?511:255)||warnings!=FMath::FloorToDouble(warnings))
             return fail(TEXT("Invalid or unordered sample values"));
+        s.EnvironmentTemperatureC=s.WaterTemperatureC;
+        if(Log.bBreathingContext)
+        {
+            double source=0;
+            if(!number(o,TEXT("environment_c"),s.EnvironmentTemperatureC,-10,60)||
+                !number(o,TEXT("body_immersion"),s.BodyImmersion,0,1)||
+                !number(o,TEXT("breathing_source"),source,0,2)||source!=FMath::FloorToDouble(source)||
+                !o->TryGetBoolField(TEXT("regulator_in_mouth"),s.RegulatorInMouth)||
+                !o->TryGetBoolField(TEXT("mouth_submerged"),s.MouthSubmerged))
+                return fail(TEXT("Invalid breathing/environment context"));
+            s.BreathSource=static_cast<Dive::BreathingSource>(static_cast<int>(source));
+            if((s.BreathSource==Dive::BreathingSource::Regulator&&!s.RegulatorInMouth)||
+                (s.BreathSource==Dive::BreathingSource::Air&&(s.RegulatorInMouth||s.MouthSubmerged)))
+                return fail(TEXT("Inconsistent breathing context"));
+        }
         s.Warnings=static_cast<uint32>(warnings);
         if(s.Warnings&~previousWarnings) ++Log.WarningEvents;
         previousWarnings=s.Warnings; Log.Warnings|=s.Warnings;

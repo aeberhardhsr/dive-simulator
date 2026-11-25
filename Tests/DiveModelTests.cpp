@@ -20,6 +20,36 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        Dive::Config cfg; cfg.SurfaceTemperatureC=6; cfg.BottomTemperatureC=6; cfg.AirTemperatureC=20; cfg.DrySuit=false;
+        const Dive::Exposure air{0,false,false},wet{1,true,true},noSupply{1,true,false};
+        Dive::Model freeAir(cfg),regulatedAir(cfg),water(cfg),held(cfg);
+        freeAir.Step(60,0,0,0,0,0,false,air);
+        close(freeAir.Data.CylinderBar,200,0,"Ambient-air breathing does not consume cylinder gas");
+        check(freeAir.Data.BreathSource==Dive::BreathingSource::Air&&freeAir.Data.SpO2>97,"Ambient air supplies breathing");
+        regulatedAir.Step(60,0,0,0,0,0,false,{0,false,true});
+        check(regulatedAir.Data.CylinderBar<199,"Regulator still consumes cylinder gas above water");
+        water.Step(60,0,0,0,0,0,false,wet);
+        check(water.Data.CoreTemperatureC<regulatedAir.Data.CoreTemperatureC,"Immersion cools more than dry air in the same suit");
+        close(freeAir.Data.EnvironmentTemperatureC,20,1e-12,"Dry body uses air temperature");
+        close(water.Data.EnvironmentTemperatureC,6,1e-12,"Immersed body uses water temperature");
+        held.Step(5,10,0,0,0,0,false,noSupply);
+        close(held.Data.CylinderBar,200,0,"Removed regulator does not invent cylinder consumption");
+        check(held.Data.SpO2<97&&(held.Data.Warnings&Dive::NoBreathingSupply),"Submerged mouth without regulator loses breathing supply");
+        held.Step(30,10,0,0,0,0,false,wet);
+        check(held.Data.SpO2>95&&!(held.Data.Warnings&Dive::NoBreathingSupply),"Replacing supplied regulator restores breathing");
+        const double before=freeAir.Data.CylinderBar;
+        freeAir.Step(1,0,0,1,0,0,false,air);
+        close(before-freeAir.Data.CylinderBar,2*cfg.SurfacePressureBar/cfg.CylinderLitres,1e-9,"BCD draws gas independently of mouthpiece use");
+        Dive::Model empty(cfg); empty.Data.CylinderBar=0;
+        empty.Step(5,0,0,0,0,0,false,{0,false,true});
+        check(empty.Data.BreathSource==Dive::BreathingSource::None,"Empty regulator cannot supply breathing even above water");
+        empty.Step(30,0,0,0,0,0,false,air);
+        check(empty.Data.SpO2>95&&empty.Data.BreathSource==Dive::BreathingSource::Air,"Removing empty regulator above water permits air breathing");
+        Dive::AudioModel quietAir;
+        const auto sound=quietAir.Step(.02,freeAir.Data,cfg,-1);
+        check(!sound.Inhale&&!sound.Exhale,"Ambient-air breathing does not play regulator hiss");
+    }
     const auto noon=Dive::EnvironmentLight::At(12,0),night=Dive::EnvironmentLight::At(23,0);
     check(noon.Direct>0&&noon.ElevationDegrees>0,"Daytime sun is above the horizon");
     check(night.Direct==0&&night.ElevationDegrees<0,"Night has no fictitious above-horizon sun");

@@ -25,6 +25,7 @@ FString Outcome(const FDiveLog& log,bool english)
     if(log.Status==TEXT("interrupted")) return english?TEXT("Interrupted"):TEXT("Unterbrochen");
     if(log.Status==TEXT("in_progress")) return english?TEXT("Autosave / not completed"):TEXT("Zwischenstand / nicht abgeschlossen");
     if(log.Status==TEXT("out_of_gas")) return english?TEXT("Out of breathing gas"):TEXT("Atemgas aufgebraucht");
+    if(log.Status==TEXT("no_breathing_supply")) return english?TEXT("No breathing supply"):TEXT("Keine Atemluft");
     return log.Status.Left(40);
 }
 }
@@ -178,11 +179,22 @@ void ADiveHUD::Logbook()
     Button(TEXT("logeventprev"),TEXT("< !"),510,734,70,36);
     Button(TEXT("logeventnext"),TEXT("! >"),590,734,70,36);
     FString warnings;
-    const TCHAR* warnDE[]={TEXT("Druck niedrig"),TEXT("Aufstieg schnell"),TEXT("ppO2 hoch"),TEXT("Unterkuehlt"),TEXT("Dekotiefe unterschritten"),TEXT("Kein Atemgas"),TEXT("Tiefenplan"),TEXT("Zeitplan")};
-    const TCHAR* warnEN[]={TEXT("Low gas"),TEXT("Fast ascent"),TEXT("High ppO2"),TEXT("Cold"),TEXT("Above ceiling"),TEXT("Out of gas"),TEXT("Depth plan"),TEXT("Time plan")};
+    const TCHAR* warnDE[]={TEXT("Druck niedrig"),TEXT("Aufstieg schnell"),TEXT("ppO2 hoch"),TEXT("Unterkuehlt"),TEXT("Dekotiefe unterschritten"),TEXT("Flasche leer"),TEXT("Tiefenplan"),TEXT("Zeitplan")};
+    const TCHAR* warnEN[]={TEXT("Low gas"),TEXT("Fast ascent"),TEXT("High ppO2"),TEXT("Cold"),TEXT("Above ceiling"),TEXT("Cylinder empty"),TEXT("Depth plan"),TEXT("Time plan")};
     int count=0;
     for(int bit=0;bit<8;++bit) if(sample.Warnings&(1u<<bit))
     { if(count++) warnings+=count==5?TEXT("\n"):TEXT(" / "); warnings+=L(warnDE[bit],warnEN[bit]); }
+    if(sample.Warnings&Dive::NoBreathingSupply)
+    { if(!warnings.IsEmpty()) warnings+=TEXT(" / "); warnings+=L(TEXT("Keine Atemluft"),TEXT("No breathing supply")); }
     Text(warnings.IsEmpty()?L(TEXT("Keine aktive Warnung an diesem Zeitpunkt"),TEXT("No active warning at this time")):warnings,685,742,14,warnings.IsEmpty()?Muted:Amber);
+    if(log.bBreathingContext)
+    {
+        const TCHAR* breathingDE[]={TEXT("Atemregler"),TEXT("Umgebungsluft"),TEXT("Keine Atemluft")};
+        const TCHAR* breathingEN[]={TEXT("Regulator"),TEXT("Ambient air"),TEXT("No breathing supply")};
+        const int source=static_cast<int>(sample.BreathSource);
+        Text(L(breathingDE[source],breathingEN[source])+FString::Printf(TEXT("    %.0f%% "),sample.BodyImmersion*100)+
+            L(TEXT("eingetaucht    Umgebung "),TEXT("immersed    Environment "))+
+            FString::Printf(TEXT("%.1f C"),sample.EnvironmentTemperatureC),510,796,16,Accent);
+    }
     Text(L(TEXT("Kurven: gespeicherte Spielwerte. Gelbe Marken: neue Warnungen."),TEXT("Curves: recorded game values. Yellow marks: new warnings.")),510,834,14,Muted);
 }

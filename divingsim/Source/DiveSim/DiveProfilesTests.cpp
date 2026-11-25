@@ -18,7 +18,7 @@ struct FProfileFixture
 Dive::Config Varied()
 {
     Dive::Config c; c.GameMode=Dive::Mode::Hardcore; c.CylinderLitres=15; c.StartPressureBar=250; c.OxygenFraction=.32;
-    c.WeightKg=9; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7;
+    c.WeightKg=9; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7; c.AirTemperatureC=-4;
     c.VisibilityMetres=8; c.CurrentMetresPerSecond=.2; c.PlannedDepthMetres=24; c.PlannedMinutes=55;
     c.Hour=23; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
     c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; c.StartOnShore=true; return c;
@@ -34,6 +34,9 @@ bool FDiveConfigPersistence::RunTest(const FString&)
     obj->RemoveField(TEXT("start_on_shore"));
     TestTrue(TEXT("Legacy profile remains readable"),DiveConfigIO::Read(obj,restored,entry,true,error));
     TestFalse(TEXT("Legacy profile retains its offshore start"),restored.StartOnShore);
+    obj->RemoveField(TEXT("air_temperature_c"));
+    TestTrue(TEXT("Legacy profile without air temperature loads"),DiveConfigIO::Read(obj,restored,entry,true,error));
+    TestEqual(TEXT("Legacy air temperature defaults"),restored.AirTemperatureC,20.);
     DiveConfigIO::Write(obj,original,2); DiveConfigIO::Read(obj,restored,entry,true,error);
     for(const TCHAR* key:{TEXT("weather"),TEXT("entry"),TEXT("mode")})
     {

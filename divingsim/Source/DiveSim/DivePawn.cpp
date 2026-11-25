@@ -43,6 +43,7 @@ void SaveEnvironment(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& Conf
     Obj->SetNumberField(TEXT("wind_mps"),Config.WindMetresPerSecond);
     Obj->SetNumberField(TEXT("wind_direction_degrees"),Config.WindDirectionDegrees);
     Obj->SetNumberField(TEXT("surface_temperature_c"),Config.SurfaceTemperatureC);
+    Obj->SetNumberField(TEXT("air_temperature_c"),Config.AirTemperatureC);
     Obj->SetNumberField(TEXT("bottom_temperature_c"),Config.BottomTemperatureC);
     Obj->SetNumberField(TEXT("thermocline_m"),Config.ThermoclineMetres);
     Obj->SetNumberField(TEXT("thermocline_width_m"),Config.ThermoclineWidthMetres);
@@ -227,6 +228,14 @@ void ADivePawn::PerformAction(EDiveAction Action)
     case EDiveAction::Map: ToggleMap(); break;
     case EDiveAction::Finish: Interact(); break;
     case EDiveAction::Photo: Photograph(); break;
+    case EDiveAction::Regulator:
+        if(bDiveActive&&!bMenu)
+        {
+            bRegulatorInMouth=!bRegulatorInMouth;
+            Notify(bRegulatorInMouth?Local(TEXT("Atemregler eingesetzt"),TEXT("Regulator in mouth")):
+                Local(TEXT("Atemregler abgesetzt - unter Wasser wieder einsetzen"),TEXT("Regulator removed - replace before submerging")));
+        }
+        break;
     default: break;
     }
 }
@@ -265,6 +274,7 @@ void ADivePawn::StartDive()
     Samples.Reset(); Accumulator=0; TelemetryAccumulator=0;
     Audio->Reset(); Audio->ApplyLevels(AudioLevels);
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
+    bRegulatorInMouth=!PendingConfig.StartOnShore;
     Outcome.Empty(); LastLogPath.Empty();
     bLogbook=false; DiveStartedUTC=FDateTime::UtcNow().ToIso8601();
     if(!bSmokeTest) SaveSettings();
@@ -313,7 +323,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -387,7 +397,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
-    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:SmokeScenario==TEXT("stream")?90:22;
+    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:SmokeScenario==TEXT("stream")?90:SmokeScenario==TEXT("breathing")?30:22;
     if(bSmokeTest && bDiveActive)
     {
         FString audioError;
@@ -595,7 +605,14 @@ void ADivePawn::SimulateStep(float Step)
     const double now=Simulation.Data.ElapsedSeconds;
     const double previousDepth=Environment->PressureDepth(old+offset,now);
     const double nextDepth=Environment->PressureDepth(position+offset,now+Step);
-    Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp);
+    const FVector physicalEye=position+offset;
+    const double localSurface=Environment->SurfaceZ(physicalEye.X,physicalEye.Y,now+Step);
+    Dive::Exposure exposure;
+    exposure.BodyImmersion=Dive::ShoreMovement::Immersion(
+        physicalEye.Z/100-Dive::ShoreMovement::EyeOffset,localSurface/100);
+    exposure.MouthSubmerged=physicalEye.Z-12<localSurface;
+    exposure.RegulatorInMouth=bRegulatorInMouth;
+    Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp,exposure);
     const auto& s=Simulation.Data;
     bEnteredWater|=s.DepthMetres>.2;
     if(bTutorialActive)
@@ -605,8 +622,8 @@ void ADivePawn::SimulateStep(float Step)
     }
     const FVector eye=Camera->GetComponentLocation();
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
-    if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&eyeDepth>0)
-        Environment->EmitBreath(eye,Camera->GetForwardVector(),s.AmbientBar);
+    if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&s.MouthSubmerged)
+        Environment->EmitBreath(physicalEye-FVector(0,0,12),Camera->GetForwardVector(),s.AmbientBar);
     TelemetryAccumulator+=Step;
     if(TelemetryAccumulator>=1)
     {
@@ -614,7 +631,7 @@ void ADivePawn::SimulateStep(float Step)
         if(Samples.Num()%30==0) SaveLog(TEXT("in_progress"));
     }
     if(s.SpO2<60 && PendingConfig.GameMode!=Dive::Mode::Exploration)
-        FinishDive(TEXT("out_of_gas"));
+        FinishDive(s.CylinderBar<=.1?TEXT("out_of_gas"):TEXT("no_breathing_supply"));
 }
 
 void ADivePawn::Notify(const FString& Message)
@@ -692,7 +709,7 @@ bool ADivePawn::SaveLog(const FString& Reason)
     IFileManager::Get().MakeDirectory(*dir,true);
     if(LastLogPath.IsEmpty()) LastLogPath=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT("_")+FGuid::NewGuid().ToString(EGuidFormats::Digits).Left(8)+TEXT(".json"));
     auto root=MakeShared<FJsonObject>();
-    root->SetNumberField(TEXT("schema_version"),2);
+    root->SetNumberField(TEXT("schema_version"),3);
     root->SetStringField(TEXT("started_at_utc"),DiveStartedUTC);
     root->SetBoolField(TEXT("is_test"),bSmokeTest);
     root->SetStringField(TEXT("status"),Reason);
@@ -719,6 +736,11 @@ bool ADivePawn::SaveLog(const FString& Reason)
         row->SetNumberField(TEXT("respiratory_bpm"),s.RespiratoryBPM);
         row->SetNumberField(TEXT("spo2_percent"),s.SpO2);
         row->SetNumberField(TEXT("water_c"),s.WaterTemperatureC);
+        row->SetNumberField(TEXT("environment_c"),s.EnvironmentTemperatureC);
+        row->SetNumberField(TEXT("body_immersion"),s.BodyImmersion);
+        row->SetNumberField(TEXT("breathing_source"),static_cast<int>(s.BreathSource));
+        row->SetBoolField(TEXT("regulator_in_mouth"),s.RegulatorInMouth);
+        row->SetBoolField(TEXT("mouth_submerged"),s.MouthSubmerged);
         row->SetNumberField(TEXT("core_c"),s.CoreTemperatureC);
         row->SetNumberField(TEXT("stress"),s.Stress);
         row->SetNumberField(TEXT("fatigue"),s.Fatigue);

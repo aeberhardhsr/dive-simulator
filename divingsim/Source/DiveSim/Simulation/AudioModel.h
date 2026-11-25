@@ -30,7 +30,8 @@ public:
     {
         AudioFrame a;
         if(dt<=0||!std::isfinite(dt)) return a;
-        const bool gas=c.GameMode==Mode::Exploration||s.CylinderBar>.1;
+        const bool gas=s.BreathSource==BreathingSource::Regulator&&(c.GameMode==Mode::Exploration||s.CylinderBar>0);
+        if(!s.RegulatorInMouth) HasBreath=false;
         if(First||s.BreathPhase<PreviousPhase)
         { HasBreath=gas; a.Inhale=gas; First=false; }
         // The final lungful can still be exhaled after the cylinder runs empty.
@@ -42,7 +43,7 @@ public:
         WarningCooldown=std::max(0.,WarningCooldown-dt);
         const uint32_t newWarnings=s.Warnings&~PreviousWarnings;
         // A newly empty cylinder bypasses the chatter cooldown.
-        a.Warning=newWarnings&&((newWarnings&OutOfGas)||WarningCooldown<=0);
+        a.Warning=newWarnings&&((newWarnings&(OutOfGas|NoBreathingSupply))||WarningCooldown<=0);
         if(a.Warning) WarningCooldown=2;
         PreviousWarnings=s.Warnings;
         a.Wet=Clamp(eyeDepth/.5,0,1);

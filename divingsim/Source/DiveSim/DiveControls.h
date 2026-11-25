@@ -6,7 +6,7 @@ class FJsonObject;
 enum class EDiveAction : uint8
 {
     Forward,Backward,Left,Right,Ascend,Descend,Sprint,Inflate,Deflate,
-    Lamp,HUD,Computer,ComputerPage,Map,Finish,Photo,Count
+    Lamp,HUD,Computer,ComputerPage,Map,Finish,Photo,Regulator,Count
 };
 
 struct FDiveControls

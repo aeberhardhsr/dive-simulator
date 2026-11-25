@@ -32,6 +32,39 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("breathing"))
+    {
+        const auto& state=Simulation.Data; const double t=state.ElapsedSeconds;
+        if(ControlsSmokePhase==0&&t>4)
+        {
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Regulator&&state.CylinderBar<PendingConfig.StartPressureBar;
+            TestBreathingGas=state.CylinderBar; tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=1;
+        }
+        if(ControlsSmokePhase==1&&t>6.5&&!bSmokeSecondaryCaptured)
+        { shot(TEXT("Breathing_NoSupply")); bSmokeSecondaryCaptured=true; }
+        if(ControlsSmokePhase==1&&t>7)
+        {
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::None&&state.SpO2<97&&
+                (state.Warnings&Dive::NoBreathingSupply)&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
+            TestBreathingSpO2=state.SpO2;
+            tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=2;
+        }
+        if(ControlsSmokePhase==2&&t>22&&!state.MouthSubmerged)
+        {
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Regulator&&state.SpO2>TestBreathingSpO2;
+            TestBreathingGas=state.CylinderBar; tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=3;
+        }
+        if(ControlsSmokePhase==3&&t>25)
+        {
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Air&&
+                !(state.Warnings&Dive::NoBreathingSupply)&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
+            shot(TEXT("Breathing_Air")); ControlsSmokePhase=4;
+            UE_LOG(LogTemp,Display,TEXT("DIVE_BREATHING_%s phases=4 gas=%.4f spo2=%.3f immersion=%.3f"),
+                bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),state.CylinderBar,state.SpO2,state.BodyImmersion);
+        }
+        if(t>29&&ControlsSmokePhase!=4) bControlsSmokeValid=false;
+        return;
+    }
     if(SmokeScenario==TEXT("shore"))
     {
         TestLessonAge+=Dt;
@@ -45,6 +78,8 @@ void ADivePawn::InputSmokeTick(float Dt)
         if(ControlsSmokePhase==0&&TestLessonAge>1)
         {
             bControlsSmokeValid=bWalking&&!CanFinishDive()&&FMath::Abs(Camera->GetComponentLocation().Z-GetActorLocation().Z-80)<1;
+            bControlsSmokeValid&=Simulation.Data.BreathSource==Dive::BreathingSource::Air&&
+                FMath::Abs(Simulation.Data.CylinderBar-PendingConfig.StartPressureBar)<1.e-8;
             FString shoreError;
             bControlsSmokeValid&=Environment->ValidateShoreline(shoreError);
             if(!shoreError.IsEmpty()) UE_LOG(LogTemp,Error,TEXT("DIVE_SHORE_FAIL %s"),*shoreError);
@@ -56,6 +91,7 @@ void ADivePawn::InputSmokeTick(float Dt)
             bControlsSmokeValid&=PendingConfig.StartOnShore;
             next(1,TEXT("ShoreStart"));
         }
+        if(ControlsSmokePhase==1&&TestLessonAge>.2&&!bRegulatorInMouth) tap(Controls.Key(EDiveAction::Regulator));
         if(ControlsSmokePhase==1&&!bWalking&&Simulation.Data.DepthMetres>.2) next(2,TEXT("ShoreWater"));
         if(ControlsSmokePhase==2&&TestLessonAge>7&&Simulation.Data.MaxDepthMetres>3)
         {
@@ -66,6 +102,7 @@ void ADivePawn::InputSmokeTick(float Dt)
         if(ControlsSmokePhase==3&&bWalking&&distance<.6)
         {
             bControlsSmokeValid&=CanFinishDive()&&bEnteredWater&&FMath::Abs(GetActorLocation().Z-EntryLocation.Z)<1;
+            tap(Controls.Key(EDiveAction::Regulator));
             next(4,TEXT("ShoreReturn"));
         }
         TestKey(Controls.Key(EDiveAction::Forward),ControlsSmokePhase>=1&&ControlsSmokePhase<=3);
@@ -73,6 +110,7 @@ void ADivePawn::InputSmokeTick(float Dt)
         TestKey(Controls.Key(EDiveAction::Ascend),ControlsSmokePhase==3&&!bWalking);
         if(ControlsSmokePhase==4&&TestLessonAge>.8)
         {
+            bControlsSmokeValid&=Simulation.Data.BreathSource==Dive::BreathingSource::Air;
             tap(Controls.Key(EDiveAction::Finish));
             bControlsSmokeValid&=!bDiveActive&&bSummary;
             next(5,TEXT("ShoreComplete"));
@@ -200,7 +238,9 @@ void ADivePawn::InputSmokeTick(float Dt)
     if(t>=14&&t<16&&!bMenu) tap(EKeys::Escape);
     if(t>=16&&bMenu) tap(EKeys::Escape);
     TestKey(EKeys::W,!bMenu&&t<3); // Old forward key must no longer swim.
-    TestKey(EKeys::L,!bMenu&&t>3.3&&t<3.5); // Old lamp key must no longer toggle.
+    // The conflicting T binding swaps the regulator onto L. Exercise L twice
+    // so the old lamp key cannot toggle the lamp or leave the regulator removed.
+    TestKey(EKeys::L,!bMenu&&((t>3.3&&t<3.5)||(t>3.6&&t<3.8)));
     TestKey(EKeys::T,!bMenu&&((t>=4&&t<4.2)||(t>=5&&t<5.2)));
     TestKey(EKeys::I,!bMenu&&t>=3&&t<13);
     TestKey(Controls.Key(EDiveAction::Descend),!bMenu&&t>=3&&t<10);

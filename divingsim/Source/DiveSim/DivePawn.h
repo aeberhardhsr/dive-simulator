@@ -52,6 +52,8 @@ public:
     bool bMenu=true, bDiveActive=false, bShowInstruments=true, bShowComputer=false, bShowMap=false;
     bool bLamp=true, bSummary=false, bEnglish=false, bLogbook=false;
     bool bWalking=false;
+    bool bRegulatorInMouth=true;
+    double TestBreathingGas=0,TestBreathingSpO2=0;
     FString EntryName() const;
     bool CanFinishDive() const;
     bool bEnteredWater=false;

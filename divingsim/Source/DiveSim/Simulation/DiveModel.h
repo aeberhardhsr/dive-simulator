@@ -21,7 +21,13 @@ enum class Mode { Exploration, Simulation, Hardcore };
 enum Warning : uint32_t
 {
     None=0, LowGas=1, FastAscent=2, HighPO2=4, Cold=8,
-    CeilingViolation=16, OutOfGas=32, DepthPlan=64, TimePlan=128
+    CeilingViolation=16, OutOfGas=32, DepthPlan=64, TimePlan=128, NoBreathingSupply=256
+};
+enum class BreathingSource { Regulator=0, Air=1, None=2 };
+struct Exposure
+{
+    double BodyImmersion=1;
+    bool MouthSubmerged=true,RegulatorInMouth=true;
 };
 
 struct Config
@@ -33,6 +39,7 @@ struct Config
     double WeightKg = 6.0;
     double SurfacePressureBar = 0.965; // Scenario atmosphere, configurable.
     double SurfaceTemperatureC = 18.0;
+    double AirTemperatureC = 20.0;
     double BottomTemperatureC = 6.0;
     double VisibilityMetres = 14.0;
     double CurrentMetresPerSecond = 0.08;
@@ -55,6 +62,7 @@ struct Config
         clean(OxygenFraction,.21,.21,.40); clean(WeightKg,6,0,20);
         clean(SurfacePressureBar,.965,.6,1.1);
         clean(SurfaceTemperatureC,18,1,30); clean(BottomTemperatureC,6,1,25);
+        clean(AirTemperatureC,20,-10,40);
         clean(VisibilityMetres,14,2,40); clean(CurrentMetresPerSecond,.08,0,.5);
         clean(PlannedDepthMetres,20,3,60); clean(PlannedMinutes,30,1,120);
         clean(Hour,13,0,23.99);
@@ -72,6 +80,9 @@ struct State
     double BCDInflowLPS=0, BCDOutflowLPS=0; // Actual gas flow, local litres/second.
     double HeartBPM=70, RespiratoryBPM=12, SpO2=98;
     double CoreTemperatureC=37, WaterTemperatureC=18;
+    double EnvironmentTemperatureC=18,BodyImmersion=1;
+    bool RegulatorInMouth=true,MouthSubmerged=true;
+    BreathingSource BreathSource=BreathingSource::Regulator;
     double Stress=0, Fatigue=0, Exertion=0;
     double SurfaceRMV=16, RemainingGasMinutes=0;
     double AscentMetresPerMinute=0, BreathPhase=0, BuoyancyNewtons=0;
@@ -111,36 +122,47 @@ public:
         return Settings.SurfaceTemperatureC+(Settings.BottomTemperatureC-Settings.SurfaceTemperatureC)*thermocline;
     }
     void Step(double dt,double depth,double effort,double inflate,double verticalVelocity,
-              double distance,bool lamp)
+              double distance,bool lamp,Exposure exposure={})
     {
         if (!std::isfinite(dt) || dt<=0 || !std::isfinite(depth) || !std::isfinite(effort)
-            || !std::isfinite(inflate) || !std::isfinite(verticalVelocity) || !std::isfinite(distance)) return;
+            || !std::isfinite(inflate) || !std::isfinite(verticalVelocity) || !std::isfinite(distance)
+            || !std::isfinite(exposure.BodyImmersion)) return;
         // Split long calls so behaviour remains stable at different render rates.
         while(dt>1e-9)
         {
             const double step=std::min(dt,.02);
-            Integrate(step,depth,effort,inflate,verticalVelocity,distance*step/dt,lamp);
+            Integrate(step,depth,effort,inflate,verticalVelocity,distance*step/dt,lamp,exposure);
             distance-=distance*step/dt; dt-=step;
         }
     }
 private:
-    void Integrate(double dt,double depth,double effort,double inflate,double vz,double distance,bool lamp)
+    void Integrate(double dt,double depth,double effort,double inflate,double vz,double distance,bool lamp,const Exposure& exposure)
     {
         auto& s=Data; const auto& c=Settings;
         const bool unlimited=c.GameMode==Mode::Exploration;
         s.ElapsedSeconds+=dt; s.DepthMetres=std::max(0.0,depth);
         s.MaxDepthMetres=std::max(s.MaxDepthMetres,s.DepthMetres);
-        s.AmbientBar=Pressure(depth); s.PPO2=s.AmbientBar*c.OxygenFraction;
+        s.BodyImmersion=Clamp(exposure.BodyImmersion,0,1);
+        s.RegulatorInMouth=exposure.RegulatorInMouth; s.MouthSubmerged=exposure.MouthSubmerged;
+        const auto previousSource=s.BreathSource;
+        s.BreathSource=s.RegulatorInMouth?
+            ((unlimited||s.CylinderBar>0)?BreathingSource::Regulator:BreathingSource::None):
+            (s.MouthSubmerged?BreathingSource::None:BreathingSource::Air);
+        const bool hasBreathingSupply=s.BreathSource!=BreathingSource::None;
+        s.AmbientBar=Pressure(depth);
+        s.PPO2=s.BreathSource==BreathingSource::Regulator?s.AmbientBar*c.OxygenFraction:
+            s.BreathSource==BreathingSource::Air?c.SurfacePressureBar*.21:0;
         s.WaterTemperatureC=Temperature(depth); s.Exertion=Clamp(effort,0,1);
+        s.EnvironmentTemperatureC=s.BodyImmersion*s.WaterTemperatureC+(1-s.BodyImmersion)*c.AirTemperatureC;
         s.AscentMetresPerMinute=Approach(s.AscentMetresPerMinute,vz*60,3,dt);
         const double stressTarget=Clamp((s.CylinderBar<50?.35:0)+(depth>c.PlannedDepthMetres?.2:0)
-            +(s.AscentMetresPerMinute>9?.35:0)+(s.CylinderBar<1?.7:0),0,1);
+            +(s.AscentMetresPerMinute>9?.35:0)+(!hasBreathingSupply?.7:0),0,1);
         s.Stress=Approach(s.Stress,unlimited?stressTarget*.25:stressTarget,.12,dt);
         s.Fatigue=Clamp(s.Fatigue+dt*(s.Exertion*.00035-(1-s.Exertion)*.00012),0,1);
         s.HeartBPM=Approach(s.HeartBPM,68+62*s.Exertion+36*s.Stress+12*s.Fatigue,.3,dt);
         s.RespiratoryBPM=Approach(s.RespiratoryBPM,12+15*s.Exertion+13*s.Stress,.4,dt);
         s.SurfaceRMV=16+24*s.Exertion+18*s.Stress+5*s.Fatigue;
-        const double breathingLitres=s.SurfaceRMV*s.AmbientBar/60*dt;
+        const double breathingLitres=s.BreathSource==BreathingSource::Regulator?s.SurfaceRMV*s.AmbientBar/60*dt:0;
         double injected=std::max(0.0,Clamp(inflate,-1,1))*2.0*s.AmbientBar*dt;
         if(!unlimited) injected=std::min(injected,std::max(0.0,s.CylinderBar*c.CylinderLitres-breathingLitres));
         s.BCDSurfaceLitres+=injected;
@@ -153,22 +175,30 @@ private:
         s.BCDLitres=s.BCDSurfaceLitres/s.AmbientBar;
         if(!unlimited) s.CylinderBar=std::max(0.0,s.CylinderBar-(breathingLitres+injected)/c.CylinderLitres);
         s.RemainingGasMinutes=std::max(0.0,(s.CylinderBar-50)*c.CylinderLitres/(s.SurfaceRMV*s.AmbientBar));
+        if(previousSource!=s.BreathSource&&hasBreathingSupply) s.BreathPhase=0;
         s.BreathPhase=std::fmod(s.BreathPhase+dt*s.RespiratoryBPM/60,1.0);
-        const double lungDelta=.65*std::sin(s.BreathPhase*2*Pi);
+        const double lungDelta=hasBreathingSupply?.65*std::sin(s.BreathPhase*2*Pi):0;
         const double suitLift=(c.DrySuit?3:5)/std::pow(s.AmbientBar/c.SurfacePressureBar,.7);
         const double gasMass=s.CylinderBar*c.CylinderLitres*.0012;
         const double netKg=2+suitLift+s.BCDLitres+lungDelta-c.WeightKg-gasMass;
         s.BuoyancyNewtons=(c.AutoBuoyancy || unlimited)?lungDelta*Gravity:netKg*Gravity;
-        const double coldLoad=std::max(0.0,22-s.WaterTemperatureC)*(c.DrySuit?.0000015:.000007);
+        const double suitCooling=c.DrySuit?.0000015:.000007;
+        // Qualitative heat-loss model: exposed air area cools more slowly than
+        // immersed area. Wind affects air cooling only; no wet-suit drying model.
+        const double coldLoad=suitCooling*(s.BodyImmersion*std::max(0.0,22-s.WaterTemperatureC)
+            +(1-s.BodyImmersion)*.05*(1+c.WindMetresPerSecond/12)*std::max(0.0,22-c.AirTemperatureC));
         s.CoreTemperatureC=Clamp(s.CoreTemperatureC+dt*((37-s.CoreTemperatureC)*.0001-coldLoad),32,37.5);
-        s.SpO2=Approach(s.SpO2,(!unlimited && s.CylinderBar<=.1 && depth>.2)?45:98,.035,dt);
+        s.SpO2=Approach(s.SpO2,(!unlimited&&!hasBreathingSupply)?45:98,.035,dt);
         s.DistanceMetres+=std::max(0.0,distance);
         if(lamp) s.LampBattery=std::max(0.0,s.LampBattery-dt/72);
         if(s.MaxDepthMetres>10 && depth>=3 && depth<=6 && std::abs(vz)<.2)
             s.StopRemainingSeconds=std::max(0.0,s.StopRemainingSeconds-dt);
         if(depth>10) s.StopRemainingSeconds=180;
         double ceilingBar=c.SurfacePressureBar, ndl=99;
-        const double inspired=(s.AmbientBar-.0627)*(1-c.OxygenFraction);
+        // No-supply tissue kinetics remain the existing approximation; retained
+        // alveolar gas and breath-hold physiology are not modeled independently.
+        const double inspired=s.BreathSource==BreathingSource::Air?(c.SurfacePressureBar-.0627)*.79:
+            (s.AmbientBar-.0627)*(1-c.OxygenFraction);
         for(size_t i=0;i<16;++i)
         {
             const double k=std::log(2.0)/(HalfTimes[i]*60);
@@ -186,6 +216,7 @@ private:
         s.Warnings=None;
         if(!unlimited && s.CylinderBar<50) s.Warnings|=LowGas;
         if(!unlimited && s.CylinderBar<=.1) s.Warnings|=OutOfGas;
+        if(!hasBreathingSupply) s.Warnings|=NoBreathingSupply;
         if(s.AscentMetresPerMinute>9) s.Warnings|=FastAscent;
         if(s.PPO2>1.4) s.Warnings|=HighPO2;
         if(s.CoreTemperatureC<35.5) s.Warnings|=Cold;

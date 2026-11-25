@@ -277,3 +277,35 @@ Die Bilder wurden visuell geprüft. Handgelenktext bleibt nachts lesbar, die Lam
 ![Nachtaufnahme mit eingeschalteter 1000-Lumen-Lampe](Images/Lighting_Torch_On.png)
 
 ![Derselbe Nachtablauf mit ausgeschalteter Lampe](Images/Lighting_Torch_Off.png)
+
+
+## Atemquelle und Luft-/Wasser-Temperatur (25. November 2026)
+
+Eigenständiger Windows-Build: `Builds/WindowsBreathing/divingsim.exe`. Der Uferstart verwendet Umgebungsluft; mit der frei belegbaren Taste T wird der Atemregler eingesetzt/abgesetzt. Der Kern unterscheidet Regler, Umgebungsluft und fehlende Atemluft. Lufttemperatur, Wind und eingetauchter Körperanteil beeinflussen das qualitative Kältemodell. Neue Logdateien verwenden Schema 3 und speichern den Atem-/Umgebungskontext pro Messpunkt; die Anzeige liest weiterhin Schema 1/2.
+
+- Kernprüfungen: null Fehler (`artifacts/core-breathing-final.log`). Zusätzliche Fälle prüfen freien Luftatem ohne Flaschenverbrauch, Verbrauch mit Regler über Wasser, unabhängigen Jacketverbrauch, fehlende Versorgung unter Wasser, Erholung nach Wiedereinsetzen, leeren Regler an Land, Luft-/Wasser-Abkühlung und ausbleibende Reglergeräusche bei Umgebungsluft.
+- Acht Unreal-Automationstests bestehen: drei Logbuch-, drei Profil- und zwei Steuerungstests. Enthalten sind Schema-3-Kontext, Warnbit 256, ungültige/fehlende Kontextwerte, alte Logdateien, alte Profile ohne Lufttemperatur sowie die neue Tastenbelegung.
+- Der neue Gameplay-Ablauf `breathing` besteht sowohl im Editor-Spielmodus als auch im Package: Regler absetzen nach vier Sekunden, drei Sekunden ohne Versorgung unter Wasser, wieder einsetzen, auftauchen und auf Umgebungsluft wechseln. Ohne Regler bleibt der Flaschendruck konstant; simulierte SpO2 sinkt und erholt sich nach Wiedereinsetzen. Die vier geprüften Phasen enden bei 198,0995 bar, 92,872 % SpO2 und 81,8 % Körperimmersion. Frische Warnungs-/Oberflächenbilder sind verpflichtender Teil des Testskripts.
+- An der welligen Oberfläche wechseln die aufgezeichneten Atemquellen bei abgesetztem Regler zeitweise zwischen Luft und fehlender Versorgung. Kurzes Überspülen hat im derzeitigen Modell bereits Auswirkungen; Atemanhaltereserve und alveolare Gasdynamik fehlen. Dieser Test belegt die implementierte Kopplung, keine realistische medizinische Reaktionszeit.
+- Steuerungstest mit T/L-Konflikttausch, achtteilige Einführung, Audio und vier Logbuchseiten bestehen. Die Steuerungsseite mit 17 Aktionen und neue Kontextzeile im Logbuch wurden visuell geprüft; keine Überlagerung bei 1600×900.
+- Die tatsächlich gerenderte Tonaufnahme besteht `validate_audio_mix.py`: 40,85 s Stereo/48 kHz, aktiver RMS 0,01393 und Spitzenpegel 0,1404. Pause ist still, Master-Stummschaltung unterschreitet die Prüfschwelle und der Ton kehrt zurück (`artifacts/breathing-audio-mix.log`). Natürliche Atmung ohne Regler besitzt noch keinen eigenen Klang.
+
+Belege: `artifacts/breathing-editor-full.log`, `breathing-package-*-full.log`, `build-breathing-final.log` und `package-breathing.log`. Physiologie, Wärmehaushalt und Körpergeometrie bleiben ausdrücklich vereinfachte Spielmodelle. Dauer/Strecke enthalten weiterhin den Landweg; die vollständige Anforderungsabnahme bleibt offen.
+
+Alle drei Uferabläufe bestehen mit zusätzlicher Prüfung der Umgebungsluft beim Start/Abschluss und unverändertem Anfangsdruck vor Einsetzen des Reglers:
+
+| Einstieg | Maximale Tiefe | Strecke | Messpunkte |
+|---|---:|---:|---:|
+| Weesen / Strandbad | 5,75 m | 43,84 m | 40 |
+| Murg / West | 4,23 m | 46,41 m | 42 |
+| Mols / Lediwracks | 4,76 m | 51,87 m | 47 |
+
+Auch der Profilablauf mit Speichern, Laden, Rückgängig, Archiv und gesperrter Konfiguration während des Tauchgangs besteht. Insgesamt neun Package-Szenarien: Atmung, Steuerung, Einführung, Audio, Logbuch, Profile und drei Uferstarts.
+
+![Uferstart mit Umgebungsluft und Reglertaste](Images/Breathing_ShoreAir.png)
+
+![Warnung nach Absetzen des Reglers unter Wasser](Images/Breathing_NoSupply.png)
+
+Eine unabhängige Auswertung der neun erzeugten JSON-Protokolle bestätigt 281 konsistente Messpunkte: alle drei Atemquellen vorhanden, Warnbit 256 genau bei fehlender Versorgung, gültige Immersion und die gespeicherte Umgebungstemperatur passend zur Luft-/Wassergewichtung.
+
+Nach den abschließenden Textkorrekturen wurden Editor und Windows-Package erneut erfolgreich gebaut. Atmungs- und Logbuchablauf bestehen auch im endgültigen Package (`artifacts/breathing-final-full.log`, `breathing-final-logbook-full.log`, `package-breathing-final.log`).

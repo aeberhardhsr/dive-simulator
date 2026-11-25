@@ -8,6 +8,7 @@ const FNumber Numbers[]={
     {TEXT("cylinder_litres"),&Dive::Config::CylinderLitres},{TEXT("pressure_bar"),&Dive::Config::StartPressureBar},
     {TEXT("oxygen_fraction"),&Dive::Config::OxygenFraction},{TEXT("weight_kg"),&Dive::Config::WeightKg},
     {TEXT("surface_pressure_bar"),&Dive::Config::SurfacePressureBar},{TEXT("surface_temperature_c"),&Dive::Config::SurfaceTemperatureC},
+    {TEXT("air_temperature_c"),&Dive::Config::AirTemperatureC},
     {TEXT("bottom_temperature_c"),&Dive::Config::BottomTemperatureC},{TEXT("visibility_m"),&Dive::Config::VisibilityMetres},
     {TEXT("current_mps"),&Dive::Config::CurrentMetresPerSecond},{TEXT("planned_depth_m"),&Dive::Config::PlannedDepthMetres},
     {TEXT("planned_minutes"),&Dive::Config::PlannedMinutes},{TEXT("hour"),&Dive::Config::Hour},
@@ -32,7 +33,8 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
         const auto value=Obj->TryGetField(n.Name); double number=0;
         const bool valid=value&&value->Type==EJson::Number&&value->TryGetNumber(number)&&FMath::IsFinite(number);
         if(valid) candidate.*(n.Member)=number;
-        else if(Strict) { Error=FString(TEXT("Missing or invalid "))+n.Name; return false; }
+        else if(Strict&&!(FString(n.Name)==TEXT("air_temperature_c")&&!value))
+        { Error=FString(TEXT("Missing or invalid "))+n.Name; return false; }
     }
     auto integer=[&](const TCHAR* Name,int32& Target,int32 Max)
     {

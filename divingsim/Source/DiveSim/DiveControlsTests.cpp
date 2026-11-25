@@ -12,6 +12,7 @@ bool FDiveBindingPersistence::RunTest(const FString&)
     TestEqual(TEXT("Forward now uses S"),controls.Key(EDiveAction::Forward),EKeys::S);
     TestEqual(TEXT("Backward receives old W"),controls.Key(EDiveAction::Backward),EKeys::W);
     controls.Assign(9,EKeys::ThumbMouseButton);
+    controls.Assign(static_cast<int>(EDiveAction::Regulator),EKeys::G);
     controls.Sensitivity=.27; controls.FieldOfView=105; controls.InvertY=true;
     auto root=MakeShared<FJsonObject>(); controls.Write(root);
     FString json; FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&json));
@@ -43,6 +44,7 @@ bool FDiveBindingValidation::RunTest(const FString&)
     TestEqual(TEXT("FOV bounded"),controls.FieldOfView,60.);
     controls.Read(MakeShared<FJsonObject>());
     TestTrue(TEXT("Legacy settings without controls use defaults"),controls.Keys==FDiveControls{}.Keys);
+    TestEqual(TEXT("New regulator action has default key"),controls.Key(EDiveAction::Regulator),EKeys::T);
     return true;
 }
 #endif

@@ -21,7 +21,7 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
     root->SetNumberField(TEXT("distance_m"),Seconds);
     root->SetNumberField(TEXT("cylinder_litres"),12);
     root->SetNumberField(TEXT("mode"),1);
-    if(Version==2) root->SetStringField(TEXT("started_at_utc"),TEXT("2026-11-25T12:34:56Z"));
+    if(Version>=2) root->SetStringField(TEXT("started_at_utc"),TEXT("2026-11-25T12:34:56Z"));
     TArray<TSharedPtr<FJsonValue>> rows;
     for(int i=0;i<=Seconds;++i)
     {
@@ -29,6 +29,15 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
         const TCHAR* keys[]={TEXT("seconds"),TEXT("depth_m"),TEXT("cylinder_bar"),TEXT("heart_bpm"),TEXT("respiratory_bpm"),TEXT("spo2_percent"),TEXT("water_c"),TEXT("core_c"),TEXT("stress"),TEXT("fatigue"),TEXT("ppo2_bar"),TEXT("ceiling_m"),TEXT("ndl_minutes"),TEXT("distance_m"),TEXT("warnings")};
         const double values[]={double(i),i==Seconds/2?20.:5.,200-i*.01,72,13,98,14,37,.1,.2,.3,0,99,double(i),i==1?double(Dive::FastAscent):0};
         for(int j=0;j<UE_ARRAY_COUNT(keys);++j) s->SetNumberField(keys[j],values[j]);
+        if(Version==3)
+        {
+            s->SetNumberField(TEXT("environment_c"),14);
+            s->SetNumberField(TEXT("body_immersion"),1);
+            s->SetNumberField(TEXT("breathing_source"),i==1?2:0);
+            s->SetBoolField(TEXT("regulator_in_mouth"),i!=1);
+            s->SetBoolField(TEXT("mouth_submerged"),true);
+            if(i==1) s->SetNumberField(TEXT("warnings"),Dive::NoBreathingSupply);
+        }
         rows.Add(MakeShared<FJsonValueObject>(s));
     }
     root->SetArrayField(TEXT("samples"),rows);
@@ -49,6 +58,11 @@ bool FDiveLogReadTest::RunTest(const FString&)
     TestEqual(TEXT("Legacy date is local without UTC claim"),log.Date,FString(TEXT("2026-11-25 14:56")));
     TestEqual(TEXT("Warning transitions counted"),log.WarningEvents,1);
     TestEqual(TEXT("Warning union"),log.Warnings,uint32(Dive::FastAscent));
+    FDiveLog breathing;
+    TestTrue(TEXT("Breathing-context schema loads"),DiveLogbook::Parse(Fixture(2,3),breathing));
+    TestTrue(TEXT("Schema 3 context retained"),breathing.bBreathingContext);
+    TestTrue(TEXT("No-supply source and ninth warning retained"),breathing.Samples.Num()==3&&
+        breathing.Samples[1].BreathSource==Dive::BreathingSource::None&&breathing.Warnings==Dive::NoBreathingSupply);
     TestEqual(TEXT("Sample lookup before start"),DiveLogbook::NearestSample(log.Samples,-5),0);
     TestEqual(TEXT("Sample lookup nearer previous"),DiveLogbook::NearestSample(log.Samples,.1),0);
     TestEqual(TEXT("Sample lookup nearer next"),DiveLogbook::NearestSample(log.Samples,.9),1);
@@ -70,6 +84,15 @@ bool FDiveLogRejectTest::RunTest(const FString&)
     FDiveLog log;
     TestFalse(TEXT("Truncated file"),DiveLogbook::Parse(Fixture().Left(100),log));
     TestFalse(TEXT("Unknown schema"),DiveLogbook::Parse(Fixture(2,99),log));
+    TSharedPtr<FJsonObject> breathing;
+    FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,3)),breathing);
+    breathing->GetArrayField(TEXT("samples"))[0]->AsObject()->SetNumberField(TEXT("body_immersion"),1.1);
+    FString badBreathing; FJsonSerializer::Serialize(breathing,TJsonWriterFactory<>::Create(&badBreathing));
+    TestFalse(TEXT("Invalid body immersion rejected"),DiveLogbook::Parse(badBreathing,log));
+    FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,3)),breathing);
+    breathing->GetArrayField(TEXT("samples"))[0]->AsObject()->RemoveField(TEXT("breathing_source"));
+    badBreathing.Empty(); FJsonSerializer::Serialize(breathing,TJsonWriterFactory<>::Create(&badBreathing));
+    TestFalse(TEXT("Missing breathing context cannot become default data"),DiveLogbook::Parse(badBreathing,log));
     TestFalse(TEXT("Fractional mode"),DiveLogbook::Parse(EditFixture([](auto root){root->SetNumberField(TEXT("mode"),1.5);}),log));
     TestFalse(TEXT("Nonobject sample"),DiveLogbook::Parse(EditFixture([](auto root){root->SetArrayField(TEXT("samples"),{MakeShared<FJsonValueString>(TEXT("bad"))});}),log));
     const TCHAR* keys[]={TEXT("heart_bpm"),TEXT("spo2_percent"),TEXT("warnings"),TEXT("seconds")};

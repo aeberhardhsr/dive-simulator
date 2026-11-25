@@ -9,6 +9,7 @@ struct FDiveLog
     double Duration=0, MaxDepth=0, Distance=0, CylinderLitres=0;
     int32 Mode=1;
     bool bTest=false;
+    bool bBreathingContext=false;
     TArray<Dive::State> Samples;
     uint32 Warnings=0;
     int32 WarningEvents=0;

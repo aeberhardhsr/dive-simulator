@@ -124,6 +124,7 @@ void ADiveHUD::Menu()
         Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),FString::Printf(TEXT("%.0f m"),c.VisibilityMetres),x+w+gap,450,w);
         Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),FString::Printf(TEXT("%.2f m/s"),c.CurrentMetresPerSecond),x+2*(w+gap),450,w);
         Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x,550,w);
+        Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),FString::Printf(TEXT("%.0f C"),c.AirTemperatureC),x+w+gap,550,w);
         Text(L(TEXT("Einstellbare Spielszenarien; keine aktuellen Messwerte."),TEXT("Configurable game scenarios; not current observations.")),x,655,15,Muted);
     }
     else
@@ -173,6 +174,9 @@ void ADiveHUD::Instruments()
     Text(TEXT("WALENSEE / ")+Diver->EntryName(),50,46,16,White);
     Text((Diver->PendingConfig.StartOnShore?L(TEXT("Rueckkehr zum Startpodest  /  "),TEXT("Return to the starting platform  /  ")):L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  ")))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
     if(Diver->PendingConfig.StartOnShore) Text(Diver->bWalking?L(TEXT("GEHEN / WATEN"),TEXT("WALKING / WADING")):L(TEXT("SCHWIMMEN"),TEXT("SWIMMING")),50,102,14,Accent);
+    const FString source=s.BreathSource==Dive::BreathingSource::Air?L(TEXT("UMGEBUNGSLUFT"),TEXT("AMBIENT AIR")):
+        s.BreathSource==Dive::BreathingSource::Regulator?L(TEXT("ATEMREGLER"),TEXT("REGULATOR")):L(TEXT("KEINE ATEMLUFT"),TEXT("NO BREATHING SUPPLY"));
+    Text(source+TEXT("   [")+Diver->Controls.KeyText(EDiveAction::Regulator,Diver->bEnglish)+TEXT("] ")+L(TEXT("Regler ein / absetzen"),TEXT("Insert / remove regulator")),50,130,14,s.BreathSource==Dive::BreathingSource::None?Amber:Accent);
     Rect(50,705,328,145,Dark); Rect(50,705,3,145,Accent);
     Text(L(TEXT("TIEFE"),TEXT("DEPTH")),75,723,14,Muted);
     Text(FString::Printf(TEXT("%.1f"),s.DepthMetres),72,749,55,White);
@@ -198,7 +202,8 @@ void ADiveHUD::Instruments()
     int row=0;
     auto warning=[&](uint32 Flag,const TCHAR* German,const TCHAR* English)
     { if(s.Warnings&Flag) { Rect(1030,180+row*45,520,38,Dark); Text(TEXT("!  ")+L(German,English),1048,189+row*45,17,Amber); ++row; } };
-    warning(Dive::OutOfGas,TEXT("ATEMGAS AUFGEBRAUCHT"),TEXT("OUT OF BREATHING GAS"));
+    warning(Dive::NoBreathingSupply,TEXT("KEINE ATEMLUFT - REGLER / OBERFLAECHE"),TEXT("NO BREATHING SUPPLY - REGULATOR / SURFACE"));
+    warning(Dive::OutOfGas,TEXT("FLASCHE LEER"),TEXT("CYLINDER EMPTY"));
     warning(Dive::LowGas,TEXT("NIEDRIGER FLASCHENDRUCK"),TEXT("LOW CYLINDER PRESSURE"));
     warning(Dive::FastAscent,TEXT("AUFSTIEG VERLANGSAMEN"),TEXT("SLOW YOUR ASCENT"));
     warning(Dive::HighPO2,TEXT("ERHOEHTER SAUERSTOFFPARTIALDRUCK"),TEXT("HIGH OXYGEN PARTIAL PRESSURE"));
@@ -256,7 +261,10 @@ void ADiveHUD::Summary()
     const auto& s=Diver->Simulation.Data;
     Text(TEXT("D I V E   /   L O G"),120,80,18,Accent);
     Text(Diver->Tutorial.Stage==Dive::Lesson::Done?L(TEXT("Einfuehrung abgeschlossen."),TEXT("Introduction complete.")):L(TEXT("Dein Tauchgang."),TEXT("Your dive.")),120,137,54,White);
-    Text(Diver->Outcome==TEXT("completed")?L(TEXT("Zurueck an der Oberflaeche"),TEXT("Back at the surface")):Diver->Outcome,122,215,19,Muted);
+    const FString outcome=Diver->Outcome==TEXT("completed")?L(TEXT("Zurueck an der Oberflaeche"),TEXT("Back at the surface")):
+        Diver->Outcome==TEXT("no_breathing_supply")?L(TEXT("Abbruch: keine Atemluft"),TEXT("Ended: no breathing supply")):
+        Diver->Outcome==TEXT("out_of_gas")?L(TEXT("Abbruch: Flasche leer"),TEXT("Ended: cylinder empty")):Diver->Outcome;
+    Text(outcome,122,215,19,Muted);
     const FString titles[]={L(TEXT("DAUER"),TEXT("DURATION")),L(TEXT("MAXIMALE TIEFE"),TEXT("MAXIMUM DEPTH")),L(TEXT("RESTDRUCK"),TEXT("GAS REMAINING")),L(TEXT("STRECKE"),TEXT("DISTANCE"))};
     const FString values[]={Time(s.ElapsedSeconds),FString::Printf(TEXT("%.1f m"),s.MaxDepthMetres),FString::Printf(TEXT("%.0f bar"),s.CylinderBar),FString::Printf(TEXT("%.0f m"),s.DistanceMetres)};
     for(int i=0;i<4;++i)
@@ -368,6 +376,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         else if(Id==TEXT("wind")) c.WindMetresPerSecond=c.WindMetresPerSecond>=12?0:c.WindMetresPerSecond+3;
         else if(Id==TEXT("winddir")) c.WindDirectionDegrees=FMath::Fmod(c.WindDirectionDegrees+45,360.);
         else if(Id==TEXT("surface_temp")) c.SurfaceTemperatureC=c.SurfaceTemperatureC>=24?6:c.SurfaceTemperatureC+2;
+        else if(Id==TEXT("air_temp")) c.AirTemperatureC=c.AirTemperatureC>=40?-10:c.AirTemperatureC+2;
         else if(Id==TEXT("bottom_temp")) c.BottomTemperatureC=c.BottomTemperatureC>=12?4:c.BottomTemperatureC+2;
         else if(Id==TEXT("thermocline")) c.ThermoclineMetres=c.ThermoclineMetres>=25?5:c.ThermoclineMetres+5;
         else if(Id==TEXT("thermal_width")) c.ThermoclineWidthMetres=c.ThermoclineWidthMetres>=5?.5:c.ThermoclineWidthMetres+.5;
