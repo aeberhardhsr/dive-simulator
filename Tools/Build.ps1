@@ -57,3 +57,7 @@ if ($Target -eq 'Content') {
     & "$EngineRoot/Engine/Build/BatchFiles/Build.bat" $name Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE -NoUBA -MaxParallelActions=2 @slotOptions
 }
 if ($LASTEXITCODE -ne 0) { throw "Unreal $Target failed with exit code $LASTEXITCODE" }
+if($Target -eq 'Package') {
+    # Keep scenario-data attribution readable without extracting the game pak.
+    Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/TEMPERATURE_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'TEMPERATURE_NOTICE.txt')
+}

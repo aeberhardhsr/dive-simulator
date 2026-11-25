@@ -9,6 +9,7 @@
 #include "Weather.h"
 #include "ScenarioClock.h"
 #include "Torch.h"
+#include "EnvironmentScenario.h"
 
 namespace Dive
 {
@@ -59,6 +60,8 @@ struct Config
     bool DrySuit = true;
     bool AutoBuoyancy = false;
     bool StartOnShore = false; // Legacy/instant start remains compatible.
+    bool AutoVisibility = false,AutoTemperature = false;
+    CurrentSetting CurrentSource = CurrentSetting::Custom;
     void SelectWeather(int Value)
     {
         Weather=std::clamp(Value,0,WeatherScenario::Count-1);
@@ -83,6 +86,27 @@ struct Config
         clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
         Weather=std::clamp(Weather,0,WeatherScenario::Count-1);
         TorchModel=std::clamp(TorchModel,0,Torch::Count-1);
+        CurrentSource=static_cast<CurrentSetting>(std::clamp(static_cast<int>(CurrentSource),0,4));
+    }
+    // Keep manual values in the plan; resolve an independent frozen dive config.
+    Config Resolved() const
+    {
+        Config result=*this; result.Sanitize();
+        if(result.AutoTemperature)
+        {
+            result.SurfaceTemperatureC=EnvironmentScenario::Temperature(result.Date,0);
+            result.BottomTemperatureC=EnvironmentScenario::Temperature(result.Date,144);
+        }
+        if(result.AutoVisibility) result.VisibilityMetres=EnvironmentScenario::Visibility(result.Date,result.Weather,result.WindMetresPerSecond);
+        switch(result.CurrentSource)
+        {
+        case CurrentSetting::Automatic: result.CurrentMetresPerSecond=EnvironmentScenario::Current(result.Date,result.Weather,result.WindMetresPerSecond); break;
+        case CurrentSetting::None: result.CurrentMetresPerSecond=0; break;
+        case CurrentSetting::Light: result.CurrentMetresPerSecond=.08; break;
+        case CurrentSetting::Strong: result.CurrentMetresPerSecond=.3; break;
+        default: break;
+        }
+        return result;
     }
 };
 
@@ -121,7 +145,7 @@ public:
     explicit Model(Config cfg={}) { Reset(cfg); }
     void Reset(Config cfg)
     {
-        cfg.Sanitize(); Settings=cfg; Data=State{};
+        cfg=cfg.Resolved(); Settings=cfg; Data=State{};
         Data.CylinderBar=cfg.StartPressureBar;
         Data.AmbientBar=cfg.SurfacePressureBar;
         Data.PPO2=Data.AmbientBar*cfg.OxygenFraction;
@@ -133,6 +157,7 @@ public:
     { return Settings.SurfacePressureBar+std::max(0.0,depth)*BarPerMetre; }
     double Temperature(double depth) const
     {
+        if(Settings.AutoTemperature) return EnvironmentScenario::Temperature(Settings.Date,depth);
         const double thermocline=1/(1+std::exp(-(depth-Settings.ThermoclineMetres)/Settings.ThermoclineWidthMetres));
         return Settings.SurfaceTemperatureC+(Settings.BottomTemperatureC-Settings.SurfaceTemperatureC)*thermocline;
     }

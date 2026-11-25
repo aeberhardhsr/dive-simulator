@@ -8,6 +8,22 @@ namespace
 {
 void SaveEnvironment(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& Config)
 {
+    Obj->SetBoolField(TEXT("auto_visibility"),Config.AutoVisibility);
+    Obj->SetBoolField(TEXT("auto_temperature"),Config.AutoTemperature);
+    Obj->SetNumberField(TEXT("current_source"),static_cast<int>(Config.CurrentSource));
+    Obj->SetStringField(TEXT("temperature_model"),Config.AutoTemperature?TEXT("thermdis_walensee_v1"):TEXT("manual_thermocline_v1"));
+    Obj->SetStringField(TEXT("automatic_environment_model"),TEXT("seasonal_scenario_v1"));
+    if(Config.AutoTemperature)
+    {
+        TArray<TSharedPtr<FJsonValue>> profile;
+        for(double depth:Dive::WalenseeTemperatureData::Depths)
+        {
+            auto point=MakeShared<FJsonObject>();point->SetNumberField(TEXT("depth_m"),depth);
+            point->SetNumberField(TEXT("temperature_c"),Dive::EnvironmentScenario::Temperature(Config.Date,depth));
+            profile.Add(MakeShared<FJsonValueObject>(point));
+        }
+        Obj->SetArrayField(TEXT("temperature_profile"),profile);
+    }
     Obj->SetNumberField(TEXT("weather"),Config.Weather);
     Obj->SetNumberField(TEXT("wind_mps"),Config.WindMetresPerSecond);
     Obj->SetNumberField(TEXT("wind_direction_degrees"),Config.WindDirectionDegrees);

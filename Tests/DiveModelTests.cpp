@@ -24,6 +24,49 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 int main()
 {
     {
+        // Independent published data points, not values read back from the table.
+        using E=Dive::EnvironmentScenario;
+        close(E::Temperature({2026,2,15},0),5.836,1e-12,"Winter surface observation");
+        close(E::Temperature({2026,5,15},30),6.121,1e-12,"Spring 30 m observation");
+        close(E::Temperature({2026,8,15},0),17.085,1e-12,"Summer surface observation");
+        close(E::Temperature({2026,11,15},100),5.430,1e-12,"Autumn deep observation");
+        close(E::Temperature({2026,8,15},25),(9.494+7.603)/2,1e-12,"Linear interpolation in depth");
+        close(E::Temperature({2026,6,30},0),(8.176+17.085)/2,1e-12,"46 of 92 days between spring and summer");
+        close(E::Temperature({2024,2,29},0),5.836+(8.176-5.836)*14/90,1e-12,"Leap year seasonal fraction");
+        close(E::Temperature({2026,1,1},0),12.455+(5.836-12.455)*47/92,1e-12,"Previous autumn through new year");
+        close(E::Temperature({2000,1,1},-10),E::Temperature({2000,1,1},0),0,"Depth clamps at surface");
+        close(E::Temperature({2099,12,31},151),E::Temperature({2099,12,31},144),0,"Deep endpoint extends below observations");
+        Dive::Config plan; plan.Date={2026,8,15}; plan.VisibilityMetres=27;plan.CurrentMetresPerSecond=.17;
+        const auto manual=plan.Resolved();close(manual.VisibilityMetres,27,0,"Manual visibility unchanged");
+        plan.AutoTemperature=plan.AutoVisibility=true;plan.CurrentSource=Dive::CurrentSetting::Automatic;
+        const auto resolved=plan.Resolved();
+        close(resolved.SurfaceTemperatureC,17.085,1e-12,"Auto surface preview");
+        close(resolved.VisibilityMetres,12,1e-12,"Authored summer clear visibility");
+        close(resolved.CurrentMetresPerSecond,.072,1e-12,"Authored summer wind current");
+        close(plan.VisibilityMetres,27,0,"Resolving preserves manual visibility");
+        close(plan.CurrentMetresPerSecond,.17,0,"Resolving preserves manual current");
+        close(resolved.Resolved().VisibilityMetres,resolved.VisibilityMetres,0,"Resolve is idempotent");
+        Dive::Model model(plan);close(model.Temperature(25),8.5485,1e-12,"Runtime uses entire profile");
+        model.Step(.02,25,0,0,0,0,false);
+        close(model.Data.WaterTemperatureC,8.5485,1e-12,"Recorded water temperature uses seasonal profile");
+        plan.Date={2026,2,15};close(model.Temperature(0),17.085,1e-12,"Active dive date is frozen");
+        plan.SelectWeather(3);const auto storm=plan.Resolved();
+        check(storm.VisibilityMetres<resolved.VisibilityMetres&&storm.CurrentMetresPerSecond>resolved.CurrentMetresPerSecond,"Storm changes scenario visibility and current");
+        for(auto source:{Dive::CurrentSetting::None,Dive::CurrentSetting::Light,Dive::CurrentSetting::Strong})
+        { plan.CurrentSource=source;close(plan.Resolved().CurrentMetresPerSecond,source==Dive::CurrentSetting::None?0:source==Dive::CurrentSetting::Light?.08:.3,0,"Current presets"); }
+        plan.AutoTemperature=plan.AutoVisibility=false;plan.CurrentSource=Dive::CurrentSetting::Custom;
+        close(plan.Resolved().VisibilityMetres,27,0,"Disabling auto restores manual visibility");
+        close(plan.Resolved().SurfaceTemperatureC,18,0,"Disabling auto restores manual water");
+        close(plan.Resolved().CurrentMetresPerSecond,.17,0,"Custom restores manual current");
+        for(int year:{2000,2024,2026,2099})
+            for(int day=Dive::CivilDate{year,1,1}.SerialDay();day<=Dive::CivilDate{year,12,31}.SerialDay();++day)
+            {
+                const auto date=Dive::CivilDate::FromSerialDay(day),next=Dive::CivilDate::FromSerialDay(day+1);
+                if(next.ScenarioRange()) check(std::abs(E::Temperature(next,0)-E::Temperature(date,0))<.15,"Daily seasonal continuity");
+                for(double depth:{0.,5.,25.,100.,151.}) check(E::Temperature(date,depth)>5&&E::Temperature(date,depth)<18,"Seasonal bounded envelope");
+            }
+    }
+    {
         // Independent pressure * sphere-volume invariant across an ascent.
         const double initial=.006, start=5.965;
         const double gas=start*(4*3.14159265358979323846/3)*initial*initial*initial;

@@ -25,6 +25,9 @@ void DiveConfigIO::Write(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& 
     Obj->SetNumberField(TEXT("entry"),Entry); Obj->SetBoolField(TEXT("dry_suit"),Config.DrySuit);
     Obj->SetBoolField(TEXT("auto_buoyancy"),Config.AutoBuoyancy);
     Obj->SetBoolField(TEXT("start_on_shore"),Config.StartOnShore);
+    Obj->SetBoolField(TEXT("auto_visibility"),Config.AutoVisibility);
+    Obj->SetBoolField(TEXT("auto_temperature"),Config.AutoTemperature);
+    Obj->SetNumberField(TEXT("current_source"),static_cast<int>(Config.CurrentSource));
 }
 bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,int32& Entry,bool Strict,FString& Error)
 {
@@ -51,6 +54,9 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
     if(Obj->HasField(TEXT("torch_model"))&&!integer(TEXT("torch_model"),candidate.TorchModel,Dive::Torch::Count-1)) return false;
     if(!integer(TEXT("mode"),mode,2)||!integer(TEXT("weather"),candidate.Weather,Dive::WeatherScenario::Count-1)||!integer(TEXT("entry"),candidateEntry,2)) return false;
     candidate.GameMode=static_cast<Dive::Mode>(mode);
+    int32 currentSource=0;
+    if(Obj->HasField(TEXT("current_source"))&&!integer(TEXT("current_source"),currentSource,4)) return false;
+    candidate.CurrentSource=static_cast<Dive::CurrentSetting>(currentSource);
     auto boolean=[&](const TCHAR* Name,bool& Target)
     {
         const auto value=Obj->TryGetField(Name);
@@ -60,6 +66,8 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
     if(!boolean(TEXT("dry_suit"),candidate.DrySuit)||!boolean(TEXT("auto_buoyancy"),candidate.AutoBuoyancy)) return false;
     // Additive field: profiles/settings from before shore access start in water.
     if(Obj->HasField(TEXT("start_on_shore"))&&!boolean(TEXT("start_on_shore"),candidate.StartOnShore)) return false;
+    if(Obj->HasField(TEXT("auto_visibility"))&&!boolean(TEXT("auto_visibility"),candidate.AutoVisibility)) return false;
+    if(Obj->HasField(TEXT("auto_temperature"))&&!boolean(TEXT("auto_temperature"),candidate.AutoTemperature)) return false;
     // Additive date: old profiles retain the previous summer scenario.
     if(const auto value=Obj->TryGetField(TEXT("scenario_date")))
     {
@@ -79,5 +87,5 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
 bool DiveConfigIO::Equal(const Dive::Config& A,int32 EntryA,const Dive::Config& B,int32 EntryB)
 {
     for(const auto& n:Numbers) if(A.*(n.Member)!=B.*(n.Member)) return false;
-    return A.TorchModel==B.TorchModel&&A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
+    return A.AutoVisibility==B.AutoVisibility&&A.AutoTemperature==B.AutoTemperature&&A.CurrentSource==B.CurrentSource&&A.TorchModel==B.TorchModel&&A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
 }

@@ -11,6 +11,7 @@
 #include "HAL/PlatformMisc.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 void ADivePawn::TestKey(FKey Key,bool Down)
 {
@@ -182,6 +183,31 @@ void ADivePawn::InputSmokeTick(float Dt)
         {
             UE_LOG(LogTemp,Error,TEXT("DIVE_SHORE_FAIL timeout phase=%d walking=%d depth=%.2f distance=%.2f position=%s"),ControlsSmokePhase,bWalking,Simulation.Data.DepthMetres,distance,*GetActorLocation().ToString());
             FPlatformMisc::RequestExitWithStatus(false,1);
+        }
+        return;
+    }
+    if(SmokeScenario==TEXT("environment"))
+    {
+        if(ControlsSmokePhase<8&&ControlsSmokeClock>(ControlsSmokePhase+1)*3)
+        {
+            if(ControlsSmokePhase==7)
+            {
+                const double visibility=UnderwaterMaterial?UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("VisibilityCm")):0;
+                const double extinction=TorchFunction?TorchFunction->K2_GetScalarParameterValue(TEXT("ExtinctionPerCm")):0;
+                const bool valid=FMath::Abs(visibility-640)<.001&&FMath::Abs(extinction-1.45/640)<1.e-7;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_ENVIRONMENT_MATERIALS %s visibility_cm=%.6f extinction_per_cm=%.9f"),valid?TEXT("PASS"):TEXT("FAIL"),visibility,extinction);
+                if(!valid) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            }
+            const bool passed=hud->EnvironmentSmokeTest(ControlsSmokePhase);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_ENVIRONMENT_PHASE %d %s"),ControlsSmokePhase,passed?TEXT("PASS"):TEXT("FAIL"));
+            if(!passed) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            ++ControlsSmokePhase;
+        }
+        if(ControlsSmokePhase==8&&ControlsSmokeClock>27)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_ENVIRONMENT_PASS ui=1 seasonal=1 manual_restore=1 presets=1 validation=1 persistence=1 profiles=1 active_guard=1"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS environment=1"));
+            FPlatformMisc::RequestExitWithStatus(false,0);
         }
         return;
     }

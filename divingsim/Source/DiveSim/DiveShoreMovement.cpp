@@ -42,7 +42,7 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         const FRotationMatrix rotation(pc->GetControlRotation());
         Wish=(rotation.GetUnitAxis(EAxis::X)*Forward+rotation.GetUnitAxis(EAxis::Y)*Side+FVector::UpVector*Vertical).GetClampedToMaxSize(1);
         Effort=Wish.Size()*(Sprint>0?1.f:.45f);
-        const FVector current=(FVector(0,PendingConfig.CurrentMetresPerSecond,0)+Environment->WaveVelocity(old,Simulation.Data.ElapsedSeconds))*immersion;
+        const FVector current=(FVector(0,Simulation.Settings.CurrentMetresPerSecond,0)+Environment->WaveVelocity(old,Simulation.Data.ElapsedSeconds))*immersion;
         const FVector relative=VelocityMetres-current;
         const double fatigue=1-Simulation.Data.Fatigue*.35;
         FVector force=Wish*SwimForceNewtons*(Sprint>0?1.7:1)*fatigue*immersion;

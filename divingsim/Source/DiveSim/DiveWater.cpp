@@ -122,6 +122,13 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     const auto* section=Water?Water->GetProcMeshSection(0):nullptr;
     if(!section||section->ProcVertexBuffer.Num()<66000||!WaterMaterial||!CloudMaterial||!Rain->GetMaterial(0))
     { Error=TEXT("Missing water geometry or environment materials"); return false; }
+    if(Diver&&Diver->bDiveActive)
+    {
+        const auto& config=Diver->Simulation.Settings;
+        if(FMath::Abs(VisibleDistance-config.VisibilityMetres)>1.e-5||FMath::Abs(Flow-config.CurrentMetresPerSecond)>1.e-6||
+            FMath::Abs(WaterMaterial->K2_GetScalarParameterValue(TEXT("OpticalScale"))-14/config.VisibilityMetres)>1.e-5)
+        { Error=TEXT("Resolved dive visibility/current disagree with world and water material");return false; }
+    }
     const double displacement=Waves.AmplitudeBound()*100+1;
     if(section->SectionLocalBox.Min.Z>-displacement||section->SectionLocalBox.Max.Z<displacement)
     { Error=TEXT("Wave displacement outside culling bounds"); return false; }

@@ -1,0 +1,13 @@
+Automatic water temperature: numeric seasonal Walensee profiles from Eawag ThermDis.
+https://www.thermdis.eawag.ch/static/templates/json/Lakes.json
+https://www.thermdis.eawag.ch/en/impressum/
+Lake temperature observations are credited by ThermDis to cantonal authorities.
+Retrieved 2026-11-25; observation years are not stated in the source JSON.
+Source SHA-256: c10541ccb7556b62f7771eec4fce0ec95c5772be673cd411bb58e9c3fbd8d084
+Only numeric temperature facts are extracted; no license for the entire ThermDis
+database or accompanying text is asserted here.
+17 depths from 0 to 144 m; linear interpolation in depth and between authored
+seasonal anchor dates (February/May/August/November 15). Values below 144 m
+use the deepest profile value. This is an offline scenario, not live observations.
+Visibility and current rules are authored scenario values, not lake measurements.
+Model/provenance: Documentation/AUTOMATIC_ENVIRONMENT.md and WALENSEE_TEMPERATURE.json.

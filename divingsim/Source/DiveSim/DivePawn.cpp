@@ -93,6 +93,8 @@ void ADivePawn::BeginPlay()
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("surface-storm")) PendingConfig.SelectWeather(3);
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveAutomaticEnvironment")))
+        { PendingConfig.AutoTemperature=PendingConfig.AutoVisibility=true;PendingConfig.CurrentSource=Dive::CurrentSetting::Automatic; }
         if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("shore")) { PendingConfig.StartOnShore=true; PendingConfig.WindMetresPerSecond=0; PendingConfig.CurrentMetresPerSecond=0; }
         if(SmokeScenario==TEXT("tutorial"))
@@ -148,7 +150,7 @@ void ADivePawn::BeginPlay()
                 if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-12,shore.Yaw,0));
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
-            else if(SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")) StartDive();
+            else if(SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
             double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
@@ -356,7 +358,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -587,7 +589,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     const float underwater=static_cast<float>(Dive::CameraWaterBlend(depth));
     if(UnderwaterMaterial)
     {
-        UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),PendingConfig.VisibilityMetres*100);
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),Simulation.Settings.VisibilityMetres*100);
         UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->WaterAmbientAt(eye));
         Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
     }
@@ -619,7 +621,7 @@ void ADivePawn::SimulateStep(float Step)
     auto* PC=Cast<APlayerController>(GetController()); if(!PC) return;
     auto Down=[this,PC](EDiveAction Action)
     {
-        if(!bSmokeTest||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
+        if(!bSmokeTest||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
         if(SmokeScenario==TEXT("torch")) return 0.f;
         if(bPerformance)
@@ -665,7 +667,7 @@ void ADivePawn::SimulateStep(float Step)
     if(PendingConfig.StartOnShore) MoveAtShore(Step,forward,side,vertical,sprint,wish,effort);
     else
     {
-    const FVector current=FVector(0,PendingConfig.CurrentMetresPerSecond,0)+
+    const FVector current=FVector(0,Simulation.Settings.CurrentMetresPerSecond,0)+
         Environment->WaveVelocity(old,Simulation.Data.ElapsedSeconds);
     const FVector relative=VelocityMetres-current;
     const float fatigue=1.f-static_cast<float>(Simulation.Data.Fatigue)*.35f;
@@ -730,7 +732,7 @@ void ADivePawn::SimulateStep(float Step)
     Environment->UpdateDaylight();
     const FVector eye=Camera->GetComponentLocation();
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
-    if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&s.MouthSubmerged)
+    if(Audio->Advance(Step,s,Simulation.Settings,eyeDepth)&&s.MouthSubmerged)
         Environment->EmitBreath(physicalEye-FVector(0,0,12),Camera->GetForwardVector(),s.AmbientBar);
     TelemetryAccumulator+=Step;
     if(TelemetryAccumulator>=1)
@@ -820,7 +822,7 @@ bool ADivePawn::SaveLog(const FString& Reason)
     if(LastLogPath.IsEmpty()) LastLogPath=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT("_")+FGuid::NewGuid().ToString(EGuidFormats::Digits).Left(8)+TEXT(".json"));
     FDiveRecording recording;
     recording.Path=LastLogPath; recording.StartedUTC=DiveStartedUTC; recording.Status=Reason;
-    recording.Location=EntryName(); recording.bTest=bSmokeTest; recording.Config=PendingConfig;
+    recording.Location=EntryName(); recording.bTest=bSmokeTest; recording.Config=Simulation.Settings;
     recording.State=Simulation.Data; recording.SurveyOrigin=Environment->Terrain.ToSurvey(FVector::ZeroVector);
     recording.Samples=Samples;
     if(Reason==TEXT("in_progress"))

@@ -22,7 +22,7 @@ FString ADiveHUD::ConfigValue(FName Id) const
 {
     if(Id==TEXT("date")&&Diver) return UTF8_TO_TCHAR(Diver->PendingConfig.Date.Text().c_str());
     const auto* spec=Input(Id); if(!spec||!Diver) return FString();
-    const FString value=Number(*spec,Diver->PendingConfig.*(spec->Member));
+    const FString value=Number(*spec,Diver->PendingConfig.Resolved().*(spec->Member));
     return spec->Clock?value:value+TEXT(" ")+UTF8_TO_TCHAR(spec->Unit);
 }
 FString ADiveHUD::ConfigInputTitle() const
@@ -63,12 +63,13 @@ bool ADiveHUD::OpenConfigInput(FName Id)
 {
     const auto* spec=Input(Id);
     if((!spec&&Id!=TEXT("date"))||!Diver||Diver->bDiveActive||!Diver->bMenu||ConfigDialog||!GEngine||!GEngine->GameViewport) return false;
+    if(Diver->PendingConfig.AutoTemperature&&(Id==TEXT("surface_temp")||Id==TEXT("bottom_temp")||Id==TEXT("thermocline")||Id==TEXT("thermal_width"))) return false;
     ConfigEditing=Id; ConfigError.Empty();
     const TWeakObjectPtr<ADiveHUD> weak(this);
     auto dialog=SNew(SDiveTextDialog).English(Diver->bEnglish)
         .Title(FText::FromString(ConfigInputTitle()))
         .Hint(FText::FromString(ConfigInputHint()))
-        .Initial(FText::FromString(Id==TEXT("date")?ConfigValue(Id):Number(*spec,Diver->PendingConfig.*(spec->Member))))
+        .Initial(FText::FromString(Id==TEXT("date")?ConfigValue(Id):Number(*spec,Diver->PendingConfig.Resolved().*(spec->Member))))
         .Error_Lambda([weak](){return weak.IsValid()?FText::FromString(weak->ConfigError):FText::GetEmpty();})
         .OnSubmit_Lambda([weak](const FText& Value,ETextCommit::Type){if(weak.IsValid()) weak->SubmitConfigInput(Value.ToString());})
         .OnCancel_Lambda([weak](){if(weak.IsValid()) weak->CloseConfigInput();});
@@ -114,6 +115,8 @@ bool ADiveHUD::SubmitConfigInput(const FString& Value)
         return false;
     }
     candidate.*(spec->Member)=value;
+    if(ConfigEditing==TEXT("visibility")) candidate.AutoVisibility=false;
+    if(ConfigEditing==TEXT("current")) candidate.CurrentSource=Dive::CurrentSetting::Custom;
     if(!clockValid()) return false;
     Diver->PendingConfig=candidate;
     Diver->SaveSettings(); CloseConfigInput(); return true;

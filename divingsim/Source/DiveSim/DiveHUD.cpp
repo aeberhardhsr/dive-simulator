@@ -117,16 +117,25 @@ void ADiveHUD::Menu()
         Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,250,w);
         Field(TEXT("wind"),L(TEXT("WINDSTAERKE"),TEXT("WIND SPEED")),ConfigValue(TEXT("wind")),x+w+gap,250,w);
         Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),ConfigValue(TEXT("winddir")),x+2*(w+gap),250,w);
-        Field(TEXT("surface_temp"),L(TEXT("OBERFLAECHENTEMPERATUR"),TEXT("SURFACE TEMPERATURE")),ConfigValue(TEXT("surface_temp")),x,350,w);
-        Field(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),ConfigValue(TEXT("bottom_temp")),x+w+gap,350,w);
-        Field(TEXT("thermocline"),L(TEXT("SPRUNGSCHICHT / TIEFE"),TEXT("THERMOCLINE / DEPTH")),ConfigValue(TEXT("thermocline")),x+2*(w+gap),350,w);
-        Field(TEXT("thermal_width"),L(TEXT("SCHICHTUEBERGANG"),TEXT("TRANSITION SCALE")),ConfigValue(TEXT("thermal_width")),x,450,w);
+        auto waterField=[&](FName id,const FString& label,const FString& value,float fx,float fy)
+        {
+            if(!c.AutoTemperature) { Field(id,label,value,fx,fy,w); return; }
+            Text(label,fx,fy,14,Muted); Text(value,fx+12,fy+38,20,FLinearColor::White);
+        };
+        waterField(TEXT("surface_temp"),L(TEXT("OBERFLAECHENTEMPERATUR"),TEXT("SURFACE TEMPERATURE")),ConfigValue(TEXT("surface_temp")),x,350);
+        waterField(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),ConfigValue(TEXT("bottom_temp")),x+w+gap,350);
+        waterField(TEXT("thermocline"),c.AutoTemperature?L(TEXT("VERLAUF"),TEXT("TEMPERATURE CURVE")):L(TEXT("SPRUNGSCHICHT / TIEFE"),TEXT("THERMOCLINE / DEPTH")),c.AutoTemperature?L(TEXT("Saisonprofil"),TEXT("Seasonal profile")):ConfigValue(TEXT("thermocline")),x+2*(w+gap),350);
+        waterField(TEXT("thermal_width"),c.AutoTemperature?L(TEXT("PROFILBEREICH"),TEXT("PROFILE DEPTH")):L(TEXT("SCHICHTUEBERGANG"),TEXT("TRANSITION SCALE")),c.AutoTemperature?TEXT("0 – 144 m"):ConfigValue(TEXT("thermal_width")),x,450);
         Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+w+gap,450,w);
         Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),450,w);
         Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x,550,w);
         Field(TEXT("date"),L(TEXT("SZENARIODATUM"),TEXT("SCENARIO DATE")),ConfigValue(TEXT("date")),x+2*(w+gap),550,w);
         Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),ConfigValue(TEXT("air_temp")),x+w+gap,550,w);
-        Text(L(TEXT("Wetterwahl setzt den Wind; danach frei anpassbar."),TEXT("Choosing weather sets the wind; you can adjust it afterwards.")),x,655,15,Muted);
+        const FString currentModes[]={L(TEXT("Manuell"),TEXT("Custom")),TEXT("Auto"),L(TEXT("Keine"),TEXT("None")),L(TEXT("Leicht"),TEXT("Light")),L(TEXT("Stark"),TEXT("Strong"))};
+        Button(TEXT("auto_water"),L(TEXT("Wasser: "),TEXT("Water: "))+(c.AutoTemperature?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x,638,w,32);
+        Button(TEXT("auto_visibility"),L(TEXT("Sicht: "),TEXT("Visibility: "))+(c.AutoVisibility?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x+w+gap,638,w,32);
+        Button(TEXT("current_source"),L(TEXT("Stroemung: "),TEXT("Current: "))+currentModes[static_cast<int>(c.CurrentSource)],x+2*(w+gap),638,w,32);
+        Text(L(TEXT("Automatik: saisonale Profile / Szenariowerte. Keine Live-Messung."),TEXT("Automatic: seasonal profiles / scenario values. No live measurements.")),x,683,15,Muted);
     }
     else
     {
@@ -377,6 +386,9 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         else if(Id==TEXT("suit")) c.DrySuit=!c.DrySuit;
         else if(Id==TEXT("torch")) c.TorchModel=(c.TorchModel+1)%Dive::Torch::Count;
         else if(Id==TEXT("weather")) c.SelectWeather((c.Weather+1)%Dive::WeatherScenario::Count);
+        else if(Id==TEXT("auto_water")) c.AutoTemperature=!c.AutoTemperature;
+        else if(Id==TEXT("auto_visibility")) c.AutoVisibility=!c.AutoVisibility;
+        else if(Id==TEXT("current_source")) c.CurrentSource=static_cast<Dive::CurrentSetting>((static_cast<int>(c.CurrentSource)+1)%5);
     }
     Diver->SaveSettings();
 }

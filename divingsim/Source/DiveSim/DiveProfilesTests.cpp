@@ -27,6 +27,31 @@ Dive::Config Varied()
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveConfigPersistence,"DiveSim.Profiles.Configuration",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveConfigPersistence::RunTest(const FString&)
 {
+    for(int flags=0;flags<4;++flags) for(int source=0;source<5;++source)
+    {
+        auto original=Varied(); original.AutoTemperature=(flags&1)!=0;original.AutoVisibility=(flags&2)!=0;
+        original.CurrentSource=static_cast<Dive::CurrentSetting>(source);
+        auto obj=MakeShared<FJsonObject>();DiveConfigIO::Write(obj,original,2);
+        Dive::Config loaded;int entry=0;FString error;
+        TestTrue(TEXT("Environment choices load"),DiveConfigIO::Read(obj,loaded,entry,true,error));
+        TestTrue(TEXT("Environment choices and manual values roundtrip"),DiveConfigIO::Equal(original,2,loaded,entry));
+        for(const TCHAR* key:{TEXT("auto_temperature"),TEXT("auto_visibility"),TEXT("current_source")})
+        {
+            DiveConfigIO::Write(obj,original,2);obj->SetStringField(key,TEXT("true"));
+            TestFalse(TEXT("Invalid environment field type rejected"),DiveConfigIO::Read(obj,loaded,entry,true,error));
+            TestTrue(TEXT("Invalid environment choice is atomic"),DiveConfigIO::Equal(original,2,loaded,entry));
+        }
+        for(double invalid:{-1.,1.5,5.})
+        {
+            DiveConfigIO::Write(obj,original,2);obj->SetNumberField(TEXT("current_source"),invalid);
+            TestFalse(TEXT("Unknown/fractional current source rejected"),DiveConfigIO::Read(obj,loaded,entry,true,error));
+        }
+        DiveConfigIO::Write(obj,original,2);
+        for(const TCHAR* key:{TEXT("auto_temperature"),TEXT("auto_visibility"),TEXT("current_source")}) obj->RemoveField(key);
+        TestTrue(TEXT("Legacy environment loads"),DiveConfigIO::Read(obj,loaded,entry,true,error));
+        original.AutoTemperature=original.AutoVisibility=false;original.CurrentSource=Dive::CurrentSetting::Custom;
+        TestTrue(TEXT("Legacy remains manual"),DiveConfigIO::Equal(original,2,loaded,entry));
+    }
     for(int weather=0;weather<Dive::WeatherScenario::Count;++weather)
     {
         auto scenario=Varied(); scenario.SelectWeather(weather);

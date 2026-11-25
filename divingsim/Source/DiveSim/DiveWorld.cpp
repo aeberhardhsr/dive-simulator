@@ -256,7 +256,7 @@ void ADiveWorld::BeginPlay()
 
 void ADiveWorld::Configure(const Dive::Config& Config)
 {
-    WeatherSettings=Config; WeatherSettings.Sanitize();
+    WeatherSettings=Config.Resolved();
     BubbleState.Reset();RenderedBubbleIndices.Reset();Bubbles->ClearInstances();BubblesBorn=BubblesSurfaced=0;bParticleUniformsReady=false;
     VisibleDistance=WeatherSettings.VisibilityMetres; Flow=WeatherSettings.CurrentMetresPerSecond; DayHour=WeatherSettings.Hour;
     Waves.Configure(WeatherSettings.WindMetresPerSecond,WeatherSettings.WindDirectionDegrees);

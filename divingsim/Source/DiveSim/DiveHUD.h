@@ -25,6 +25,7 @@ public:
     bool SubmitProfileName(const FString& Name);
     bool ProfileSmokeTest(int Phase);
     bool ConfigSmokeTest(int Phase);
+    bool EnvironmentSmokeTest(int Phase);
     bool ConfigInputOpen() const { return ConfigDialog.IsValid(); }
     void CloseConfigInput(bool RestoreFocus=true);
     bool LogbookReady() const { return !bIndexLoading&&!bDetailLoading&&SelectedLog.Error.IsEmpty()&&!SelectedLog.Path.IsEmpty(); }
