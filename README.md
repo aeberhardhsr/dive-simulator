@@ -77,6 +77,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
 ./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
 ./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
+./Tools/Benchmark.ps1 -PackageDirectory Builds/Windows -Scenario underwater -Resolution 1080p # 60 s gerenderte Leistung
 ./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -DisableNanite # Konventionellen Gelände-Fallback prüfen
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario stream  # 90 s, Kachelwechsel
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
@@ -114,4 +115,4 @@ python Tools/package_bathymetry.py
 
 Diese Geodaten-Schritte laden den vollständigen offenen Walensee-Datensatz, prüfen dessen SHA256-Prüfsumme und schreiben 46 Rasterkacheln nach `Geodata/Processed/Walensee`. Der zweite Schritt erzeugt die mit Git LFS versionierten Laufzeitdaten in `divingsim/Content/Diving/Geodata`; nach einem vollständigen LFS-Checkout ist kein erneuter Download nötig. Die ursprünglichen Höhen sind absolute LN02-Höhen in Metern, keine Wassertiefen. Das Spiel verwendet einen festen Bezugspegel von 419 m LN02, keine aktuelle Pegelmessung. Fehlende Messwerte bleiben erhalten; am Vermessungsrand endet der begehbare Bereich. Details: [Geodaten und Koordinaten](Documentation/GEODATA.md). Quelle: [swissBATHY3D](https://www.swisstopo.admin.ch/de/hoehenmodell-swissbathy3d), © swisstopo; [Nutzungsbedingungen](https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste).
 
-Anforderungen und offene Abnahme: [Documentation/PROJECT.md](Documentation/PROJECT.md). Modellbeschreibung: [Documentation/SIMULATION.md](Documentation/SIMULATION.md). Asset-Herkunft: [Documentation/ASSETS.csv](Documentation/ASSETS.csv).
+Anforderungen und offene Abnahme: [Documentation/PROJECT.md](Documentation/PROJECT.md). Modellbeschreibung: [Documentation/SIMULATION.md](Documentation/SIMULATION.md). Gerenderte Leistungsmessung und Ergebnisse: [Documentation/PERFORMANCE.md](Documentation/PERFORMANCE.md). Asset-Herkunft: [Documentation/ASSETS.csv](Documentation/ASSETS.csv).

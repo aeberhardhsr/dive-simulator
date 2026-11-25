@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "Async/Future.h"
 #include "GameFramework/Pawn.h"
 #include "Simulation/DiveModel.h"
 #include "Simulation/AudioModel.h"
@@ -95,6 +96,12 @@ private:
     uint32 SmokeLogbookCaptured=0;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     bool bSmokeImageryChecked=false;
+    bool bPerformance=false;
+    int32 PerformancePhase=0;
+    double PerformanceStarted=0,PerformanceCaptureStarted=0,PerformanceSeconds=60,PerformanceYaw=0;
+    double PerformanceNextMemory=0,PerformanceMemoryMB=0;
+    FString PerformanceDirectory;
+    TSharedFuture<FString> PerformanceWrite;
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;
     Dive::Config BeforeTutorialConfig;
@@ -120,4 +127,6 @@ private:
     void Notify(const FString& Text);
     void InputSmokeTick(float DeltaSeconds);
     void TestKey(FKey Key,bool Down);
+    void SetupPerformance();
+    void TickPerformance();
 };

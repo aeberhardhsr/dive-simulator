@@ -1,0 +1,1289 @@
+{
+  "schema": 1,
+  "source_base_commit": "f418c2f9a7d2c0db7bce7e68d6daa69b1fce2bee",
+  "source_note": "Base plus benchmark implementation committed with this report; gameplay quality unchanged.",
+  "package_executable": "Builds/WindowsPerformance/divingsim/Binaries/Win64/divingsim.exe",
+  "package_executable_sha256": "b934a9680724e02b7344c1912ed124779c6c6f07a4c108aecfc6818fc39b2a96",
+  "captures": [
+    {
+      "metadata": {
+        "scenario": "perf-shore",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-shore_09F6DBC8/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.99999832361937,
+        "distance_m": 0,
+        "depth_m": 0,
+        "walking": true,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:33:22.2303624Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 724725760
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5315 MiB, 3 %"
+        ]
+      },
+      "frames": 8339,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.987591099999996,
+      "average_fps": 139.01208311730323,
+      "one_percent_low_fps": 102.94705555488831,
+      "frame": {
+        "mean_ms": 7.193619270895791,
+        "p50_ms": 7.1493,
+        "p95_ms": 8.3126,
+        "p99_ms": 9.2387,
+        "max_ms": 11.1125
+      },
+      "game_thread": {
+        "mean_ms": 1.6889941959467563,
+        "p50_ms": 1.6921,
+        "p95_ms": 1.9517,
+        "p99_ms": 2.1375,
+        "max_ms": 5.9643
+      },
+      "render_thread": {
+        "mean_ms": 7.186471579326058,
+        "p50_ms": 7.1397,
+        "p95_ms": 8.284,
+        "p99_ms": 9.2274,
+        "max_ms": 11.101
+      },
+      "rhi_thread": {
+        "mean_ms": 2.5669823120278212,
+        "p50_ms": 2.5685,
+        "p95_ms": 2.9799,
+        "p99_ms": 3.1926,
+        "max_ms": 4.2185
+      },
+      "gpu": {
+        "mean_ms": 6.653775176879722,
+        "p50_ms": 6.6138,
+        "p95_ms": 7.5351,
+        "p99_ms": 8.3793,
+        "max_ms": 9.7243
+      },
+      "frames_over_16_67_ms": 0,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2307.3477,
+        "end": 2299.8242,
+        "max": 2322.6758
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 0.0,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.1394881760402926
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7121384578486629
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.628552740136707
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.43396991245952754
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.3677199424391414
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.34451874325458687
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.26927937402566254
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.262800923372107
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.23610413718671303
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.20036683055522245
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.1951738218011752
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.18525252428348724
+        }
+      ],
+      "artifact_directory": "artifacts/perf-shore-1080p-q2-20261125-083322-229",
+      "sha256": {
+        "Capture.csv": "15bfba84f14aa6119d8b7ed4d6faacb2674dbdd3896d78ea2d5e21428e860f8b",
+        "Metadata.json": "90addd379c1b41a33581550eac81842eb8e67d0d6301d5a9cb28baef2b65acfc",
+        "Frame.png": "01c71de847168ac205b7a2b748b840edb4ccf2b3e00b698fa2ee01947362af8c",
+        "Runtime.log": "f60d35af3e5f6ef51793a5ba5e91eb762cff7bed1e347ae59d4c33dbd0cd8998"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-stream",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-stream_AFA33EFB/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.95999832451344,
+        "distance_m": 117.65644826998245,
+        "depth_m": 5.50312197475939,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:34:43.1166088Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 724914176
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5260 MiB, 1 %"
+        ]
+      },
+      "frames": 7680,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9795941,
+      "average_fps": 128.04354739706383,
+      "one_percent_low_fps": 94.87218314323371,
+      "frame": {
+        "mean_ms": 7.809842981770833,
+        "p50_ms": 7.7753,
+        "p95_ms": 9.0128,
+        "p99_ms": 9.9673,
+        "max_ms": 14.2144
+      },
+      "game_thread": {
+        "mean_ms": 1.7917326432291667,
+        "p50_ms": 1.7807,
+        "p95_ms": 2.1066,
+        "p99_ms": 2.3728,
+        "max_ms": 8.4772
+      },
+      "render_thread": {
+        "mean_ms": 7.8026728515625,
+        "p50_ms": 7.7677,
+        "p95_ms": 9.0061,
+        "p99_ms": 9.9556,
+        "max_ms": 14.2268
+      },
+      "rhi_thread": {
+        "mean_ms": 2.558833984375,
+        "p50_ms": 2.5716,
+        "p95_ms": 3.0356,
+        "p99_ms": 3.304,
+        "max_ms": 5.2708
+      },
+      "gpu": {
+        "mean_ms": 7.274799309895833,
+        "p50_ms": 7.1904,
+        "p95_ms": 8.2153,
+        "p99_ms": 9.2428,
+        "max_ms": 12.3611
+      },
+      "frames_over_16_67_ms": 0,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2317.832,
+        "end": 2312.9297,
+        "max": 2406.875
+      },
+      "terrain_chunks": {
+        "min": 7.0,
+        "max": 9.0,
+        "frames_below_nine": 4
+      },
+      "distance_m": 94.5877,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.1721893489583333
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.709748984375
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.6605150911458333
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.5664951041666667
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.449140078125
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.44597141927083334
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.3222694921875
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.2888266145833333
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.2514798307291667
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.2441398828125
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.22954798177083333
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.20833649739583332
+        }
+      ],
+      "artifact_directory": "artifacts/perf-stream-1080p-q2-20261125-083443-116",
+      "sha256": {
+        "Capture.csv": "18112343d567353323368cedfd524a6e2fecc668aa4fdbb599c5d04f694917a5",
+        "Metadata.json": "faa9b54a49dde29d95ae5f1da1fd07c40bfa8328eb851cac45b7c04f8267074d",
+        "Frame.png": "a345cb94c12852f9da9cfe2ec82b8a020baef73f4c806b129f37697934039a90",
+        "Runtime.log": "247105c46f62ecca19051bf311627e99044f0848d26ec18c420572ca53645844"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-surface_E29129B1/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.99999832361937,
+        "distance_m": 18.59895860002244,
+        "depth_m": 0,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:32:01.4935021Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 726482944
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5290 MiB, 3 %"
+        ]
+      },
+      "frames": 7638,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9884648,
+      "average_fps": 127.3244785554172,
+      "one_percent_low_fps": 94.88034294931232,
+      "frame": {
+        "mean_ms": 7.8539493061010734,
+        "p50_ms": 7.8233,
+        "p95_ms": 9.0446,
+        "p99_ms": 10.0304,
+        "max_ms": 11.6094
+      },
+      "game_thread": {
+        "mean_ms": 1.7500215632364493,
+        "p50_ms": 1.7521,
+        "p95_ms": 2.0421,
+        "p99_ms": 2.3179,
+        "max_ms": 6.8692
+      },
+      "render_thread": {
+        "mean_ms": 7.847051387797853,
+        "p50_ms": 7.8238,
+        "p95_ms": 9.0388,
+        "p99_ms": 10.002,
+        "max_ms": 11.6305
+      },
+      "rhi_thread": {
+        "mean_ms": 2.4902736187483634,
+        "p50_ms": 2.5228,
+        "p95_ms": 2.9675,
+        "p99_ms": 3.2209,
+        "max_ms": 4.4063
+      },
+      "gpu": {
+        "mean_ms": 7.332338805970149,
+        "p50_ms": 7.2843,
+        "p95_ms": 8.2913,
+        "p99_ms": 9.2942,
+        "max_ms": 10.5956
+      },
+      "frames_over_16_67_ms": 0,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2316.457,
+        "end": 2313.6602,
+        "max": 2330.6055
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 12.781099999999999,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.1889126865671642
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.7385880989787903
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7222742995548573
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.6438723356899712
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.45567181199266826
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.3143034825870647
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.3054061927206075
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.2817631709871694
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.26162094789211837
+        },
+        {
+          "name": "GPU/VolumetricCloud",
+          "mean_ms": 0.22626118093741818
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.22425039277297723
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.2067909007593611
+        }
+      ],
+      "artifact_directory": "artifacts/perf-surface-1080p-q2-20261125-083201-492",
+      "sha256": {
+        "Capture.csv": "5e011e584f784a23a8eaf6c1f77f7d37623bb44438002691a91da6c7c17c2af7",
+        "Metadata.json": "879a82d13aeba2b6e7af21093026afb89eceb3deadc388acb297bcaebdb7c381",
+        "Frame.png": "cc8a90154b045c6ece036e23b7c9fdc3d015ce17fc5ad0b7fa153393807d6fcc",
+        "Runtime.log": "acb28cd8e462e29fc0d423a6502ab30bd7cd6ff5c998b7bbea68f5bff281f713"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-surface_2CBDC7FA/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 3840,
+        "height": 2160,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.9799983240664,
+        "distance_m": 18.595064959923118,
+        "depth_m": 0,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:30:40.9584093Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 726425600
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5285 MiB, 3 %"
+        ]
+      },
+      "frames": 3574,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9705369,
+      "average_fps": 59.5959313480817,
+      "one_percent_low_fps": 47.71977042018451,
+      "frame": {
+        "mean_ms": 16.779668970341355,
+        "p50_ms": 16.6987,
+        "p95_ms": 18.6948,
+        "p99_ms": 20.3293,
+        "max_ms": 22.1132
+      },
+      "game_thread": {
+        "mean_ms": 1.9056404308897594,
+        "p50_ms": 1.8939,
+        "p95_ms": 2.3046,
+        "p99_ms": 2.5998,
+        "max_ms": 5.6393
+      },
+      "render_thread": {
+        "mean_ms": 16.77355917739228,
+        "p50_ms": 16.6881,
+        "p95_ms": 18.6887,
+        "p99_ms": 20.3253,
+        "max_ms": 22.1427
+      },
+      "rhi_thread": {
+        "mean_ms": 2.4900923894795746,
+        "p50_ms": 2.4484,
+        "p95_ms": 3.0547,
+        "p99_ms": 3.3337,
+        "max_ms": 4.0642
+      },
+      "gpu": {
+        "mean_ms": 16.231057470621153,
+        "p50_ms": 16.15,
+        "p95_ms": 17.9185,
+        "p99_ms": 19.8315,
+        "max_ms": 21.4285
+      },
+      "frames_over_16_67_ms": 1843,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2378.5273,
+        "end": 2358.6562,
+        "max": 2395.7812
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 12.7707,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 2.7441543928371575
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 2.0697498601007274
+        },
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.9226435646334639
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 1.193090906547286
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8220966983771685
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.7788692501398993
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.6986446558477896
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.6184844152210408
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.6068661723559038
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.5394540290990487
+        },
+        {
+          "name": "GPU/NaniteBasePass",
+          "mean_ms": 0.5264022104085059
+        },
+        {
+          "name": "GPU/VolumetricCloud",
+          "mean_ms": 0.5078309177392277
+        }
+      ],
+      "artifact_directory": "artifacts/perf-surface-2160p-q2-20261125-083040-957",
+      "sha256": {
+        "Capture.csv": "b0db3e54d1c63155b000e94137f09a69168a1b7b16ff88f1f60a54473ac279dd",
+        "Metadata.json": "c3c5f5b3f6b592b555fabceb2d264e225e018ff0831235ba07bf65359d550301",
+        "Frame.png": "c1325729282a74f981e41841d0297fceef9573a3a5fbe692b1d80503c90f89b7",
+        "Runtime.log": "beddf62581a870e66dbcfb6b6f1126d4b5ac9fa75c7a57e857320bc4cf23563e"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-underwater_6EFC6E75/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.99999832361937,
+        "distance_m": 9.310275280354,
+        "depth_m": 5.2487195712471495,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:27:57.1027460Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 724869120
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5317 MiB, 15 %"
+        ]
+      },
+      "frames": 7727,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.984679799999995,
+      "average_fps": 128.81622483879627,
+      "one_percent_low_fps": 92.70842309509447,
+      "frame": {
+        "mean_ms": 7.762997256373755,
+        "p50_ms": 7.7093,
+        "p95_ms": 8.9852,
+        "p99_ms": 9.9261,
+        "max_ms": 40.4609
+      },
+      "game_thread": {
+        "mean_ms": 1.6183383072343729,
+        "p50_ms": 1.595,
+        "p95_ms": 1.9921,
+        "p99_ms": 2.3084,
+        "max_ms": 9.4677
+      },
+      "render_thread": {
+        "mean_ms": 7.755966403520124,
+        "p50_ms": 7.7001,
+        "p95_ms": 8.9671,
+        "p99_ms": 9.9335,
+        "max_ms": 42.5311
+      },
+      "rhi_thread": {
+        "mean_ms": 2.530822932574091,
+        "p50_ms": 2.5411,
+        "p95_ms": 3.0065,
+        "p99_ms": 3.2742,
+        "max_ms": 4.6924
+      },
+      "gpu": {
+        "mean_ms": 7.243213821664294,
+        "p50_ms": 7.1924,
+        "p95_ms": 8.1653,
+        "p99_ms": 9.1758,
+        "max_ms": 10.7965
+      },
+      "frames_over_16_67_ms": 1,
+      "frames_over_33_33_ms": 1,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": false,
+      "memory_mb": {
+        "start": 2326.3477,
+        "end": 2376.4961,
+        "max": 2403.1562
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 4.993800000000001,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.194693697424615
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7010054225443251
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.6475429791639705
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.5957161640999095
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.4544919114792287
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.31173916138216645
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.30187908632069366
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.2893245114533454
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.2485964022259609
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.24824217678271
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.21752140546136922
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.21364164617574738
+        }
+      ],
+      "artifact_directory": "artifacts/perf-underwater-1080p-q2-20261125-082757-096",
+      "sha256": {
+        "Capture.csv": "bf9798833999c83f03aa7d80938f869794809c9616eeed3f13204119d098e667",
+        "Metadata.json": "61341a2ca8265fe4cf2ff60b2f3641935be20124fe78655e36aa43ae63f0a625",
+        "Frame.png": "9c637b6894d678f2ac4ab98e5cd27c23eefd682958bcaeaad4141d6a8a42fcc2",
+        "Runtime.log": "7e169e0e5654efb792140757def1059be9b49e1d2a55298aecaefceb90a21b1c"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-underwater_76B3BB90/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.9799983240664,
+        "distance_m": 9.308506298131736,
+        "depth_m": 5.249463899391373,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:37:39.7618904Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 719187968
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5261 MiB, 15 %"
+        ]
+      },
+      "frames": 7720,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.983524599999996,
+      "average_fps": 128.70200695075528,
+      "one_percent_low_fps": 96.71363353493167,
+      "frame": {
+        "mean_ms": 7.769886606217616,
+        "p50_ms": 7.7433,
+        "p95_ms": 8.9294,
+        "p99_ms": 9.9225,
+        "max_ms": 11.3256
+      },
+      "game_thread": {
+        "mean_ms": 1.6600114766839378,
+        "p50_ms": 1.6456,
+        "p95_ms": 1.9808,
+        "p99_ms": 2.2281,
+        "max_ms": 5.3811
+      },
+      "render_thread": {
+        "mean_ms": 7.763147525906736,
+        "p50_ms": 7.7356,
+        "p95_ms": 8.9254,
+        "p99_ms": 9.8918,
+        "max_ms": 11.2935
+      },
+      "rhi_thread": {
+        "mean_ms": 2.5066019430051814,
+        "p50_ms": 2.5271,
+        "p95_ms": 2.9907,
+        "p99_ms": 3.203,
+        "max_ms": 5.0733
+      },
+      "gpu": {
+        "mean_ms": 7.252556593264249,
+        "p50_ms": 7.2021,
+        "p95_ms": 8.2274,
+        "p99_ms": 9.1717,
+        "max_ms": 10.3568
+      },
+      "frames_over_16_67_ms": 0,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2333.9102,
+        "end": 2331.0508,
+        "max": 2352.875
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 4.993800000000001,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.1995355310880829
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7030175388601037
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.6448540932642487
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.5968857253886011
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.45630294041450775
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.31246076424870467
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.30716193005181347
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.28659129533678757
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.249989689119171
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.24853354922279794
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.21751472797927462
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.21558838082901555
+        }
+      ],
+      "artifact_directory": "artifacts/perf-underwater-1080p-q2-20261125-083739-755",
+      "sha256": {
+        "Capture.csv": "3a7ea3ce20e6efb1ff098c5a274b84d2accc2389d8f03f45f17b57ef73300772",
+        "Metadata.json": "1b2f61f3950bd290bf1198d03a22ddfef0d03390b3c8a5822250fd08ee0b2241",
+        "Frame.png": "6460ee7cd9d88d3965197241cf0e30a59aef43228a98afa1eafa1fe3134e8519",
+        "Runtime.log": "bbda1ada55b76ac7f0f3866249fd652de838a8d69a3f96103e79c20c15c09b49"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-underwater_A5AC0DBC/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 2560,
+        "height": 1440,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.95999832451344,
+        "distance_m": 9.306743854372879,
+        "depth_m": 5.2501984863535585,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:36:03.9396672Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 725647360
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5245 MiB, 1 %"
+        ]
+      },
+      "frames": 5904,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9783592,
+      "average_fps": 98.43550371748083,
+      "one_percent_low_fps": 75.60733481876544,
+      "frame": {
+        "mean_ms": 10.158936178861788,
+        "p50_ms": 10.0869,
+        "p95_ms": 11.4033,
+        "p99_ms": 12.8295,
+        "max_ms": 14.5294
+      },
+      "game_thread": {
+        "mean_ms": 1.731753777100271,
+        "p50_ms": 1.7206,
+        "p95_ms": 2.0701,
+        "p99_ms": 2.3063,
+        "max_ms": 6.5644
+      },
+      "render_thread": {
+        "mean_ms": 10.151682520325203,
+        "p50_ms": 10.077,
+        "p95_ms": 11.3898,
+        "p99_ms": 12.8269,
+        "max_ms": 14.5115
+      },
+      "rhi_thread": {
+        "mean_ms": 2.2094989837398376,
+        "p50_ms": 2.1912,
+        "p95_ms": 2.6469,
+        "p99_ms": 3.0837,
+        "max_ms": 4.2456
+      },
+      "gpu": {
+        "mean_ms": 9.649359027777777,
+        "p50_ms": 9.5761,
+        "p95_ms": 10.662,
+        "p99_ms": 12.1029,
+        "max_ms": 13.2239
+      },
+      "frames_over_16_67_ms": 0,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2375.7227,
+        "end": 2370.4531,
+        "max": 2394.5938
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 4.9921,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.3148128895663957
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 1.200748069105691
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.8938627879403794
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.7143775067750677
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.5167549119241193
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.5005369918699187
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.4116645494579946
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.3776791327913279
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.36538741531165314
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.3430663617886179
+        },
+        {
+          "name": "GPU/VolumetricCloud",
+          "mean_ms": 0.3399145494579946
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.32553424796747965
+        }
+      ],
+      "artifact_directory": "artifacts/perf-underwater-1440p-q2-20261125-083603-938",
+      "sha256": {
+        "Capture.csv": "4416a2b8204b569c16839efbe905d54b4dba42f92f2548172f0fc45e85b22fc3",
+        "Metadata.json": "d9dd5ec257d416479b8798a9013e266788701e253b94a578fce3389811dad6dc",
+        "Frame.png": "9e5223e9b876814e7d72a3788d8571e4b54e97751d84bbb1a2458718c08aa947",
+        "Runtime.log": "b211baa430bf6185bf4747d0b2a277e9e3a25cfcdcd9f6caed29189a4cc806f8"
+      }
+    },
+    {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsPerformance/divingsim/Saved/Performance/perf-underwater_B2637A11/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 3840,
+        "height": 2160,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.99999832361937,
+        "distance_m": 9.310275280354,
+        "depth_m": 5.2487195712471495,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T07:29:19.4621241Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 23600,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-24T23:53:12.9220509+01:00",
+            "WorkingSet64": 725200896
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 5315 MiB, 6 %"
+        ]
+      },
+      "frames": 3593,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9688894,
+      "average_fps": 59.914399548643296,
+      "one_percent_low_fps": 48.623187182387596,
+      "frame": {
+        "mean_ms": 16.690478541608684,
+        "p50_ms": 16.5458,
+        "p95_ms": 18.5182,
+        "p99_ms": 20.1351,
+        "max_ms": 22.0128
+      },
+      "game_thread": {
+        "mean_ms": 1.8983304759254105,
+        "p50_ms": 1.9186,
+        "p95_ms": 2.2001,
+        "p99_ms": 2.3886,
+        "max_ms": 4.2839
+      },
+      "render_thread": {
+        "mean_ms": 16.684112440857223,
+        "p50_ms": 16.5318,
+        "p95_ms": 18.4813,
+        "p99_ms": 20.1191,
+        "max_ms": 22.0353
+      },
+      "rhi_thread": {
+        "mean_ms": 2.4083088783746174,
+        "p50_ms": 2.4016,
+        "p95_ms": 2.8229,
+        "p99_ms": 3.0545,
+        "max_ms": 4.7097
+      },
+      "gpu": {
+        "mean_ms": 16.140842081825774,
+        "p50_ms": 16.0007,
+        "p95_ms": 17.8714,
+        "p99_ms": 19.5289,
+        "max_ms": 20.6443
+      },
+      "frames_over_16_67_ms": 1576,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2468.2383,
+        "end": 2445.7656,
+        "max": 2484.4766
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 4.990499999999999,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 2.7374216253826886
+        },
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.741703005844698
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 1.6773397161146675
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 1.5170765377122182
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 1.0383391873086558
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8326129696632341
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.7368012524352908
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.6245684664625661
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.6033839409963818
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.5336760367381018
+        },
+        {
+          "name": "GPU/NaniteBasePass",
+          "mean_ms": 0.5014232952964097
+        },
+        {
+          "name": "GPU/SingleLayerWaterDepthPrepass",
+          "mean_ms": 0.38470044531032566
+        }
+      ],
+      "artifact_directory": "artifacts/perf-underwater-2160p-q2-20261125-082919-461",
+      "sha256": {
+        "Capture.csv": "90cd1262902ba3749f41d7a078e6849a943e02a33b9394e38e37011cfe7b5e07",
+        "Metadata.json": "b300717d94fb2fab492b502fb64c5b171c868558a5bf0f3795e35c7b9b1dc724",
+        "Frame.png": "c3c18f16b3902bbfba03d17b249d8d3a70ad07a6342cb18f0fc8693ed595236e",
+        "Runtime.log": "08242241916ab6dcb119cc5d7201a796ded68fa0eddc6a48fd0d8337862cf3c7"
+      }
+    }
+  ]
+}

@@ -34,7 +34,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | NAV | Kompass, Walenseekarte, Tiefenkarte, Einstieg; optional Wegpunkte, Fotos und Entdeckungen | Offen |
 | LOG | Automatische Speicherung, Tiefe/Gas/Vitalwerte/Temperatur/Strecke/Warnungen, grafische Auswertung | Automatische JSON-Speicherung, Logbuchbrowser mit Modusfilter, vier Diagrammgruppen und Warnereignissen implementiert; vollständige Abnahme offen |
 | UI | Menü, Gebiet/Ausrüstung/Konfiguration, Logbuch, Grafik/Audio, Tastenbelegung, Pause, Tutorial, DE/EN, Profil, persistierte Einstellungen, Komfort | 17 belegbare Aktionen mit Konflikttausch, dynamische Tastenhinweise, Maus-/Sichtfeldoptionen, achtteilige Einführung und Tauchkonfigurationsprofile implementiert; vollständige Abnahme offen |
-| PERF/GFX | PBR, LOD/Streaming/Culling, GPU-Partikel, 1080p–4K, 60 FPS empfohlen/30 FPS Minimum, zwei Stunden stabil | Offen |
+| PERF/GFX | PBR, LOD/Streaming/Culling, GPU-Partikel, 1080p–4K, 60 FPS empfohlen/30 FPS Minimum, zwei Stunden stabil | Reproduzierbare gerenderte Windows-Messung in 1080p/1440p/4K vorhanden, Ergebnisse und Grenzen in PERFORMANCE.md. Einzelner Ruckler protokolliert; Mindesthardware, zweistündiger Dauertest, macOS und Gesamtabnahme offen |
 | MAINT | Module, Tests, Konfiguration, Erweiterbarkeit, versionierte Persistenz, Windows/macOS-Builds, Modellbeschreibung | Offen |
 
 ## Reihenfolge

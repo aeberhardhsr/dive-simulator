@@ -82,6 +82,12 @@ void ADivePawn::BeginPlay()
     {
         FParse::Value(FCommandLine::Get(),TEXT("DiveEntry="),EntryIndex);
         FParse::Value(FCommandLine::Get(),TEXT("DiveScenario="),SmokeScenario);
+        bPerformance=SmokeScenario.StartsWith(TEXT("perf-"));
+        if(bPerformance)
+        {
+            PendingConfig.GameMode=Dive::Mode::Exploration;
+            PendingConfig.StartOnShore=SmokeScenario==TEXT("perf-shore");
+        }
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
         FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
@@ -143,6 +149,7 @@ void ADivePawn::BeginPlay()
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
             else if(SmokeScenario!=TEXT("profiles")) StartDive();
+            if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
         }
         else { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL missing terrain")); FPlatformMisc::RequestExitWithStatus(false,1); }
@@ -292,6 +299,9 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bPerformance&&SmokeScenario!=TEXT("perf-stream"))
+        if(auto* pc=Cast<APlayerController>(GetController()))
+            pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")?-12:-5,PerformanceYaw+6*Simulation.Data.ElapsedSeconds,0));
     if(bSmokeTest&&!bSmokeImageryChecked&&GetWorld()->GetTimeSeconds()>2)
     {
         FString error; const bool valid=Environment&&Environment->ValidateImagery(error);
@@ -430,7 +440,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
         if(SmokeScenario.StartsWith(TEXT("wrist")))
         {
             const double t=Simulation.Data.ElapsedSeconds;
@@ -443,7 +453,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             }
         }
     }
-    if(bSmokeTest && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
+    if(bSmokeTest && !bPerformance && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
     {
         if(Lamp->IntensityUnits!=ELightUnits::Lumens||FMath::Abs(Lamp->Intensity-1000)>.01f||Lamp->IsVisible()!=bLamp)
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Torch units/intensity/switch disagree")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
@@ -453,12 +463,12 @@ void ADivePawn::Tick(float DeltaSeconds)
             Equipment->ExportDisplayForTest(FPaths::ProjectSavedDir()/TEXT("Screenshots"),TEXT("WristTexture_")+SmokeScenario+TEXT(".png"));
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveUnderwater_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
+    if(bSmokeTest && !bPerformance && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
     {
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -527,6 +537,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);
+    if(bPerformance) TickPerformance();
 }
 
 void ADivePawn::SimulateStep(float Step)
@@ -536,6 +547,13 @@ void ADivePawn::SimulateStep(float Step)
     {
         if(!bSmokeTest||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
+        if(bPerformance)
+        {
+            if(SmokeScenario==TEXT("perf-stream")) return Action==EDiveAction::Forward||Action==EDiveAction::Sprint?1.f:0.f;
+            if(SmokeScenario==TEXT("perf-surface")) return Action==EDiveAction::Ascend?1.f:0.f;
+            if(SmokeScenario==TEXT("perf-underwater")) return Action==EDiveAction::Descend&&t<5?.7f:0.f;
+            return 0.f;
+        }
         if(SmokeScenario==TEXT("reserve-loss"))
         {
             if(Action==EDiveAction::Forward) return t<7?1.f:0.f;
