@@ -14,6 +14,9 @@ public:
     virtual void DrawHUD() override;
     virtual void NotifyHitBoxClick(FName BoxName) override;
     void OpenLogbook(const FString& PreferredPath=FString(),bool IncludeTests=false);
+    void OpenControls();
+    void CloseControls() { bControlsPage=false; }
+    bool ControlsOpen() const { return bControlsPage; }
     bool LogbookReady() const { return !bIndexLoading&&!bDetailLoading&&SelectedLog.Error.IsEmpty()&&!SelectedLog.Path.IsEmpty(); }
     bool LogbookMatches(const FString& Path,int32 Samples) const { return LogbookReady()&&SelectedLog.Path==Path&&SelectedLog.Samples.Num()==Samples; }
     int32 LogMetricGroup=0;
@@ -33,13 +36,15 @@ private:
     void Summary();
     void Map();
     void Logbook();
+    void ControlsMenu();
+    void TutorialOverlay();
     void SelectLog(int32 Index);
     FDiveLogIndex LogIndex;
     FDiveLog SelectedLog;
     TFuture<FDiveLogIndex> IndexTask;
     TFuture<FDiveLog> DetailTask;
     bool bIndexLoading=false,bDetailLoading=false;
-    bool bEnvironmentPage=false,bAudioPage=false;
+    bool bEnvironmentPage=false,bAudioPage=false,bControlsPage=false;
     int32 LogSelection=INDEX_NONE,LogPage=0,LogCursor=INDEX_NONE,LogFilter=0;
     FString PreferredLog;
     TArray<int32> VisibleLogs() const;

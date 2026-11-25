@@ -33,9 +33,14 @@ Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.4
 | P | Foto |
 | H | Instrumente aus-/einblenden |
 | Esc | Pause und Menü |
+| F1 | Steuerung und Hilfe öffnen |
 | F | Tauchgang an der Einstiegsboje nahe der Oberfläche abschließen |
 
 BCD-Gas dehnt sich beim Aufstieg aus. Gegensteuern und rechtzeitig entlüften. Im Pausenmenü steht die Simulation still; die Ausrüstung lässt sich während eines laufenden Tauchgangs nicht ändern.
+
+Die Tabelle zeigt die Standardbelegung. Unter **F1 / Steuerung und Hilfe** lassen sich alle 16 Spielaktionen auf Tastaturtasten oder rechte/mittlere/seitliche Maustasten legen. Eine belegte Taste tauscht die beiden Aktionen; Escape bricht die Auswahl ab. Escape, F1, F11, die Konsole, Alt/Windows und der linke Mausklick bleiben reserviert. Hinweise im Spiel zeigen die aktuelle Belegung. Mausgeschwindigkeit, Y-Invertierung und Sichtfeld sind ebenfalls einstellbar und werden gespeichert. **Standards wiederherstellen** setzt diese Steuerungsoptionen zurück.
+
+**Steuerung kennenlernen** im Startmenü beginnt eine geführte Einführung mit acht Aufgaben. Fortschritt entsteht durch Umsehen, eigenes Schwimmen, Füllen/Entleeren des Jackets, die Vitalwerteseite des Computers, Lampe, Karte und Rückkehr zur Boje. Sie verwendet ein ruhiges Weesen-Szenario mit manueller Tarierung und begrenztem Gas; der vorherige Tauchplan wird nach Abschluss oder Abbruch wiederhergestellt. Der Abschluss wird gespeichert und die Einführung kann wiederholt werden. Sie erklärt die Spielbedienung und ist keine Tauchausbildung.
 
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
@@ -64,6 +69,9 @@ python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm    # Windstille
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
+./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte
+./Tools/SmokeTest.ps1 -Packaged -Scenario controls        # Engine-Tasteneingaben, Remapping, Pause, DE/EN
+./Tools/SmokeTest.ps1 -Packaged -Scenario tutorial        # Alle acht Aufgaben, Abschluss, Planwiederherstellung
 python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMix.wav artifacts/DiveSmoke.log
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht

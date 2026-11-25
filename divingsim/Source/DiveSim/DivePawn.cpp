@@ -3,6 +3,7 @@
 #include "DiveEquipment.h"
 #include "DiveAudio.h"
 #include "AudioMixerBlueprintLibrary.h"
+#include "InputKeyEventArgs.h"
 #include "DiveHUD.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -81,6 +82,12 @@ void ADivePawn::BeginPlay()
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
+        if(SmokeScenario==TEXT("tutorial"))
+        {
+            PendingConfig.GameMode=Dive::Mode::Exploration; PendingConfig.CylinderLitres=15; PendingConfig.StartPressureBar=250;
+            PendingConfig.DrySuit=false; PendingConfig.WeightKg=10; PendingConfig.CurrentMetresPerSecond=.16;
+            PendingConfig.Weather=2; PendingConfig.WindMetresPerSecond=6; EntryIndex=2;
+        }
     }
     Environment=GetWorld()->SpawnActor<ADiveWorld>();
     Environment->Diver=this;
@@ -106,7 +113,7 @@ void ADivePawn::BeginPlay()
         UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
     if(bSmokeTest)
     {
-        if(Environment->bTerrainReady) StartDive();
+        if(Environment->bTerrainReady) { if(SmokeScenario==TEXT("tutorial")) StartTutorial(); else StartDive(); }
         else { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL missing terrain")); FPlatformMisc::RequestExitWithStatus(false,1); }
     }
 }
@@ -114,39 +121,42 @@ void ADivePawn::BeginPlay()
 void ADivePawn::SetupPlayerInputComponent(UInputComponent* Input)
 {
     Super::SetupPlayerInputComponent(Input);
-    // A scripted run must not capture mouse/shortcut input from another game window.
-    if(FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))) return;
+    // The player controller filters real input during unattended tests.
     Input->BindAxisKey(EKeys::MouseX,this,&ADivePawn::LookYaw);
     Input->BindAxisKey(EKeys::MouseY,this,&ADivePawn::LookPitch);
-    Input->BindKey(EKeys::Escape,IE_Pressed,this,&ADivePawn::ToggleMenu);
-    Input->BindKey(EKeys::L,IE_Pressed,this,&ADivePawn::ToggleLamp);
-    Input->BindKey(EKeys::H,IE_Pressed,this,&ADivePawn::ToggleHUD);
-    Input->BindKey(EKeys::C,IE_Pressed,this,&ADivePawn::ToggleComputer);
-    Input->BindKey(EKeys::R,IE_Pressed,this,&ADivePawn::NextComputerPage);
-    Input->BindKey(EKeys::M,IE_Pressed,this,&ADivePawn::ToggleMap);
-    Input->BindKey(EKeys::F,IE_Pressed,this,&ADivePawn::Interact);
-    Input->BindKey(EKeys::P,IE_Pressed,this,&ADivePawn::Photograph);
 }
 
-void ADivePawn::LookYaw(float Value) { if(!bMenu) AddControllerYawInput(Value*MouseSensitivity); }
-void ADivePawn::LookPitch(float Value) { if(!bMenu) AddControllerPitchInput(-Value*MouseSensitivity); }
+void ADivePawn::LookYaw(float Value)
+{ if(!bMenu) AddControllerYawInput(Value*MouseSensitivity); }
+void ADivePawn::LookPitch(float Value)
+{ if(!bMenu) AddControllerPitchInput(Value*MouseSensitivity*(Controls.InvertY?1:-1)); }
 void ADivePawn::ToggleLamp() { if(!bMenu) bLamp=!bLamp; }
 void ADivePawn::ToggleHUD() { if(!bMenu) bShowInstruments=!bShowInstruments; }
 void ADivePawn::ToggleComputer() { if(!bMenu) bShowComputer=!bShowComputer; }
 void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(ComputerPage+1)%3; }
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
-void ADivePawn::ToggleMenu() { if(bLogbook) { bLogbook=false; return; } SetMenu(!bMenu || !bDiveActive); }
+void ADivePawn::ToggleMenu()
+{
+    if(CapturingAction!=INDEX_NONE) { CapturingAction=INDEX_NONE; ControlMessage=Local(TEXT("Belegung unveraendert."),TEXT("Binding unchanged.")); return; }
+    if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ControlsOpen()) { hud->CloseControls(); return; }
+    if(bLogbook) { bLogbook=false; return; }
+    SetMenu(!bMenu || !bDiveActive);
+}
 void ADivePawn::ResumeDive() { if(bDiveActive) SetMenu(false); }
 
 void ADivePawn::SetMenu(bool Open)
 {
     bMenu=Open;
+    CapturingAction=INDEX_NONE;
     if(auto* PC=Cast<APlayerController>(GetController()))
     {
         PC->bShowMouseCursor=Open;
         PC->bEnableClickEvents=Open;
         if(Open)
         {
+            PC->FlushPressedKeys();
+            TestHeldKeys.Empty();
             FInputModeGameAndUI Mode;
             Mode.SetHideCursorDuringCapture(false);
             Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
@@ -157,9 +167,52 @@ void ADivePawn::SetMenu(bool Open)
     Audio->SetPaused(Open);
 }
 
+void ADivePawn::ApplyControls()
+{
+    Controls.Sanitize(); MouseSensitivity=Controls.Sensitivity;
+    Camera->SetFieldOfView(Controls.FieldOfView);
+    if(auto* PC=Cast<APlayerController>(GetController())) PC->FlushPressedKeys();
+}
+void ADivePawn::CaptureKey(FKey Key)
+{
+    if(Key==EKeys::Escape) { ToggleMenu(); return; }
+    const int changed=CapturingAction;
+    const int swapped=Controls.Assign(changed,Key);
+    if(swapped==-2)
+    { ControlMessage=Local(TEXT("Diese Taste ist reserviert oder nicht unterstuetzt."),TEXT("This key is reserved or unsupported.")); return; }
+    CapturingAction=INDEX_NONE;
+    ControlMessage=swapped>=0?Local(TEXT("Getauscht mit: "),TEXT("Swapped with: "))+FDiveControls::Label(swapped,bEnglish):Local(TEXT("Neue Belegung gespeichert."),TEXT("New binding saved."));
+    ApplyControls(); SaveSettings();
+}
+void ADivePawn::PerformAction(EDiveAction Action)
+{
+    switch(Action)
+    {
+    case EDiveAction::Lamp: ToggleLamp(); break;
+    case EDiveAction::HUD: ToggleHUD(); break;
+    case EDiveAction::Computer: ToggleComputer(); break;
+    case EDiveAction::ComputerPage: NextComputerPage(); break;
+    case EDiveAction::Map: ToggleMap(); break;
+    case EDiveAction::Finish: Interact(); break;
+    case EDiveAction::Photo: Photograph(); break;
+    default: break;
+    }
+}
+void ADivePawn::StartTutorial()
+{
+    if(bDiveActive||!Environment||!Environment->bTerrainReady) return;
+    BeforeTutorialConfig=PendingConfig; BeforeTutorialEntry=EntryIndex;
+    PendingConfig=Dive::Config{}; PendingConfig.WindMetresPerSecond=0;
+    PendingConfig.CurrentMetresPerSecond=0; PendingConfig.VisibilityMetres=18;
+    PendingConfig.PlannedDepthMetres=10; EntryIndex=0;
+    bTutorialActive=true; Tutorial=Dive::Tutorial{};
+    StartDive();
+}
+
 void ADivePawn::StartDive()
 {
     if(!Environment || !Environment->bTerrainReady) return;
+    if(!bTutorialActive) Tutorial=Dive::Tutorial{};
     PendingConfig.Sanitize();
     Simulation.Reset(PendingConfig);
     Environment->Configure(PendingConfig);
@@ -187,12 +240,14 @@ void ADivePawn::StartDive()
         IFileManager::Get().Delete(*(FPaths::ProjectSavedDir()/TEXT("AudioQA/DiveMix.wav")));
         UAudioMixerBlueprintLibrary::StartRecordingOutput(this,60);
     }
-    Notify(Local(TEXT("WASD schwimmen  |  Q/E tarieren  |  L Lampe  |  ESC Pause"),TEXT("WASD swim  |  Q/E buoyancy  |  L torch  |  ESC pause")));
+    Notify(Local(TEXT("F1 Steuerung und Hilfe  |  ESC Pause"),TEXT("F1 controls and help  |  ESC pause")));
 }
 
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")))
+    { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
         AudioSmokeClock+=DeltaSeconds;
@@ -323,7 +378,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && SmokeScenario!=TEXT("tutorial") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -331,7 +386,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
             (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
         const bool audioReady=SmokeScenario!=TEXT("audio")||(Audio->Inhales>4&&Audio->Exhales>4&&Audio->Heartbeats>30&&Audio->InflationSteps>100&&Audio->VentSteps>100);
-        const bool valid=audioReady && extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
+        const bool valid=bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
             && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<199)
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);
@@ -393,24 +448,24 @@ void ADivePawn::Tick(float DeltaSeconds)
 void ADivePawn::SimulateStep(float Step)
 {
     auto* PC=Cast<APlayerController>(GetController()); if(!PC) return;
-    auto Down=[this,PC](FKey Key)
+    auto Down=[this,PC](EDiveAction Action)
     {
-        if(!bSmokeTest) return PC->IsInputKeyDown(Key)?1.f:0.f;
+        if(!bSmokeTest||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
-        if(SmokeScenario==TEXT("stream")) return Key==EKeys::W?1.f:0.f;
-        if((SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio")) && t>16) return Key==EKeys::SpaceBar?1.f:0.f;
-        if(Key==EKeys::W) return t<10?1.f:0.f;
-        if(Key==EKeys::LeftControl) return t<7?.7f:0.f;
-        if(Key==EKeys::E) return t<4?.3f:0.f;
-        if(Key==EKeys::Q) return t>10 && t<14?1.f:0.f;
-        if(Key==EKeys::SpaceBar) return t>16?1.f:0.f;
+        if(SmokeScenario==TEXT("stream")) return Action==EDiveAction::Forward?1.f:0.f;
+        if((SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio")) && t>16) return Action==EDiveAction::Ascend?1.f:0.f;
+        if(Action==EDiveAction::Forward) return t<10?1.f:0.f;
+        if(Action==EDiveAction::Descend) return t<7?.7f:0.f;
+        if(Action==EDiveAction::Deflate) return t<4?.3f:0.f;
+        if(Action==EDiveAction::Inflate) return t>10 && t<14?1.f:0.f;
+        if(Action==EDiveAction::Ascend) return t>16?1.f:0.f;
         return 0.f;
     };
-    const float forward=Down(EKeys::W)-Down(EKeys::S);
-    const float side=Down(EKeys::D)-Down(EKeys::A);
-    const float vertical=Down(EKeys::SpaceBar)-Down(EKeys::LeftControl);
-    const float inflate=Down(EKeys::Q)-Down(EKeys::E);
-    const float sprint=Down(EKeys::LeftShift);
+    const float forward=Down(EDiveAction::Forward)-Down(EDiveAction::Backward);
+    const float side=Down(EDiveAction::Right)-Down(EDiveAction::Left);
+    const float vertical=Down(EDiveAction::Ascend)-Down(EDiveAction::Descend);
+    const float inflate=Down(EDiveAction::Inflate)-Down(EDiveAction::Deflate);
+    const float sprint=Down(EDiveAction::Sprint);
     const FVector old=GetActorLocation();
     const FRotationMatrix orientation(PC->GetControlRotation());
     FVector wish=orientation.GetUnitAxis(EAxis::X)*forward+orientation.GetUnitAxis(EAxis::Y)*side+FVector::UpVector*vertical;
@@ -455,6 +510,11 @@ void ADivePawn::SimulateStep(float Step)
     const double nextDepth=Environment->PressureDepth(position,now+Step);
     Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp);
     const auto& s=Simulation.Data;
+    if(bTutorialActive)
+    {
+        Tutorial.ObserveView(PC->GetControlRotation().Yaw,PC->GetControlRotation().Pitch);
+        Tutorial.Step(Step,s,(position-old).Size()/100,wish.SizeSquared()>.01,bShowComputer,ComputerPage,bLamp,bShowMap,FVector::Dist2D(position,EntryLocation)/100);
+    }
     const FVector eye=Camera->GetComponentLocation();
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
     if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&eyeDepth>0)
@@ -483,9 +543,24 @@ void ADivePawn::Interact()
 void ADivePawn::FinishDive(const FString& Reason)
 {
     if(!bDiveActive) return;
+    if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) hud->CloseControls();
     Samples.Add({Simulation.Data,GetActorLocation()});
     Outcome=Reason; bDiveActive=false; bSummary=true;
     if(!SaveLog(Reason)) Outcome+=TEXT(" / log_save_failed");
+    if(bTutorialActive)
+    {
+        const bool completed=Tutorial.Finish(Reason==TEXT("completed"));
+        bTutorialCompleted|=completed;
+        bTutorialActive=false; PendingConfig=BeforeTutorialConfig; EntryIndex=BeforeTutorialEntry;
+        SaveSettings();
+        if(bSmokeTest&&SmokeScenario==TEXT("tutorial"))
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_TUTORIAL_%s seconds=%.2f stages=%d"),completed?TEXT("PASS"):TEXT("FAIL"),Simulation.Data.ElapsedSeconds,static_cast<int>(Tutorial.Stage));
+            if(!completed) FPlatformMisc::RequestExitWithStatus(false,1);
+            TutorialFinishedAt=GetWorld()->GetTimeSeconds();
+        }
+    }
     SetMenu(true);
 }
 
@@ -564,25 +639,31 @@ void ADivePawn::SaveSettings()
 {
     auto obj=MakeShared<FJsonObject>();
     obj->SetNumberField(TEXT("schema_version"),1);
-    SaveEnvironment(obj,PendingConfig);
-    obj->SetNumberField(TEXT("cylinder_litres"),PendingConfig.CylinderLitres);
-    obj->SetNumberField(TEXT("pressure_bar"),PendingConfig.StartPressureBar);
-    obj->SetNumberField(TEXT("weight_kg"),PendingConfig.WeightKg);
-    obj->SetNumberField(TEXT("visibility_m"),PendingConfig.VisibilityMetres);
-    obj->SetNumberField(TEXT("current_mps"),PendingConfig.CurrentMetresPerSecond);
-    obj->SetNumberField(TEXT("hour"),PendingConfig.Hour);
-    obj->SetNumberField(TEXT("planned_depth_m"),PendingConfig.PlannedDepthMetres);
-    obj->SetNumberField(TEXT("planned_minutes"),PendingConfig.PlannedMinutes);
-    obj->SetNumberField(TEXT("mode"),static_cast<int>(PendingConfig.GameMode));
-    obj->SetBoolField(TEXT("dry_suit"),PendingConfig.DrySuit);
+    const Dive::Config& savedConfig=bTutorialActive?BeforeTutorialConfig:PendingConfig;
+    SaveEnvironment(obj,savedConfig);
+    obj->SetNumberField(TEXT("cylinder_litres"),savedConfig.CylinderLitres);
+    obj->SetNumberField(TEXT("pressure_bar"),savedConfig.StartPressureBar);
+    obj->SetNumberField(TEXT("weight_kg"),savedConfig.WeightKg);
+    obj->SetNumberField(TEXT("visibility_m"),savedConfig.VisibilityMetres);
+    obj->SetNumberField(TEXT("current_mps"),savedConfig.CurrentMetresPerSecond);
+    obj->SetNumberField(TEXT("hour"),savedConfig.Hour);
+    obj->SetNumberField(TEXT("planned_depth_m"),savedConfig.PlannedDepthMetres);
+    obj->SetNumberField(TEXT("planned_minutes"),savedConfig.PlannedMinutes);
+    obj->SetNumberField(TEXT("mode"),static_cast<int>(savedConfig.GameMode));
+    obj->SetBoolField(TEXT("dry_suit"),savedConfig.DrySuit);
     obj->SetBoolField(TEXT("english"),bEnglish);
     obj->SetBoolField(TEXT("camera_motion"),bCameraMotion);
-    obj->SetNumberField(TEXT("entry"),EntryIndex);
+    obj->SetNumberField(TEXT("entry"),bTutorialActive?BeforeTutorialEntry:EntryIndex);
     AudioLevels.Sanitize();
     for(int i=0;i<5;++i) obj->SetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
+    Controls.Sanitize(); Controls.Write(obj);
+    obj->SetBoolField(TEXT("tutorial_completed"),bTutorialCompleted);
     FString json; auto writer=TJsonWriterFactory<>::Create(&json);
     FJsonSerializer::Serialize(obj,writer);
-    FFileHelper::SaveStringToFile(json,*(FPaths::ProjectSavedDir()/(bSmokeTest?TEXT("DiveSettingsTest.json"):TEXT("DiveSettings.json"))));
+    const FString path=FPaths::ProjectSavedDir()/(bSmokeTest?TEXT("DiveSettingsTest.json"):TEXT("DiveSettings.json"));
+    const FString temp=path+TEXT(".tmp");
+    if(!FFileHelper::SaveStringToFile(json,*temp,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)||!IFileManager::Get().Move(*path,*temp,true,true))
+    { ControlMessage=Local(TEXT("Einstellungen konnten nicht gespeichert werden."),TEXT("Settings could not be saved.")); Notify(ControlMessage); }
 }
 
 void ADivePawn::LoadSettings()
@@ -612,4 +693,6 @@ void ADivePawn::LoadSettings()
     PendingConfig.Sanitize();
     for(int i=0;i<5;++i) obj->TryGetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
     AudioLevels.Sanitize();
+    Controls.Read(obj); ApplyControls();
+    obj->TryGetBoolField(TEXT("tutorial_completed"),bTutorialCompleted);
 }

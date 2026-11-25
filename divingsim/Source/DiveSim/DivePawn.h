@@ -3,6 +3,8 @@
 #include "GameFramework/Pawn.h"
 #include "Simulation/DiveModel.h"
 #include "Simulation/AudioModel.h"
+#include "Simulation/Tutorial.h"
+#include "DiveControls.h"
 #include "DivePawn.generated.h"
 
 class UCameraComponent;
@@ -56,8 +58,18 @@ public:
     float GraphicsQuality=2;
     Dive::AudioLevels AudioLevels;
     UPROPERTY() TObjectPtr<UDiveAudio> Audio;
+    FDiveControls Controls;
+    int32 CapturingAction=INDEX_NONE;
+    FString ControlMessage;
+    bool bTutorialActive=false,bTutorialCompleted=false;
+    Dive::Tutorial Tutorial;
 
     void StartDive();
+    void StartTutorial();
+    void PerformAction(EDiveAction Action);
+    void CaptureKey(FKey Key);
+    void ApplyControls();
+    FString KeyText(EDiveAction Action) const { return Controls.KeyText(Action,bEnglish); }
     void FinishDive(const FString& Reason);
     void ToggleMenu();
     void ResumeDive();
@@ -76,6 +88,15 @@ private:
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;
+    Dive::Config BeforeTutorialConfig;
+    int32 BeforeTutorialEntry=0;
+    double ControlsSmokeClock=0,TutorialFinishedAt=0;
+    int32 ControlsSmokePhase=0;
+    TSet<FKey> TestHeldKeys;
+    bool bControlsSmokeValid=true;
+    int32 TestLessonStage=-1;
+    double TestLessonAge=0;
+    uint32 TestLessonScreenshots=0;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> UnderwaterMaterial;
     void LookYaw(float Value);
     void LookPitch(float Value);
@@ -87,4 +108,6 @@ private:
     void Interact();
     void SimulateStep(float Step);
     void Notify(const FString& Text);
+    void InputSmokeTick(float DeltaSeconds);
+    void TestKey(FKey Key,bool Down);
 };

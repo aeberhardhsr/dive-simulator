@@ -56,18 +56,19 @@ void ADiveHUD::DrawHUD()
     if(Diver->bMenu)
     {
         DrawRect(FLinearColor(0,.012,.014,.62),0,0,Canvas->SizeX,Canvas->SizeY);
-        if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
+        if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
     }
     else
     {
         if(Diver->bShowInstruments) Instruments();
         if(Diver->bShowMap) Map();
+        if(Diver->bTutorialActive) TutorialOverlay();
         if(GetWorld()->GetTimeSeconds()<Diver->NoticeUntil)
         {
             Rect(320,610,960,48,Dark); Text(Diver->Notice,340,622,17,White);
         }
         if(Diver->Simulation.Data.DepthMetres<.8 && FVector::Dist2D(Diver->GetActorLocation(),Diver->EntryLocation)<1200)
-        { Rect(570,680,460,48,Dark); Text(Diver->Local(TEXT("[ F ]  Tauchgang abschliessen"),TEXT("[ F ]  Finish dive")),590,693,20,Accent); }
+        { Rect(570,680,460,48,Dark); Text(TEXT("[ ")+Diver->KeyText(EDiveAction::Finish)+TEXT(" ]  ")+Diver->Local(TEXT("Tauchgang abschliessen"),TEXT("Finish dive")),590,693,20,Accent); }
         Text(TEXT("+"),795,445,14,FLinearColor(.75,.9,.86,.45));
     }
 }
@@ -88,6 +89,7 @@ void ADiveHUD::Menu()
     Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
     Button(TEXT("environment"),bEnvironmentPage?L(TEXT("<   Ausruestung und Tauchplan"),TEXT("<   Equipment and dive plan")):L(TEXT("Wetter und Wasser   >"),TEXT("Weather and water   >")),73,590,437,42);
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
+    if(!Diver->bDiveActive) Button(TEXT("tutorial"),Diver->bTutorialCompleted?L(TEXT("Einfuehrung wiederholen  >"),TEXT("Replay introduction  >")):L(TEXT("Steuerung kennenlernen  >"),TEXT("Learn the controls  >")),73,676,437,32);
     Button(TEXT("logbook"),L(TEXT("Logbuch ansehen   >"),TEXT("Open logbook   >")),73,720,437,58);
     const float x=650,w=265,gap=28;
     Text(bAudioPage?L(TEXT("KLANG UND LAUTSTAERKE"),TEXT("SOUND AND VOLUME")):Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
@@ -139,7 +141,7 @@ void ADiveHUD::Menu()
     Field(TEXT("duration"),L(TEXT("GEPLANTE DAUER"),TEXT("PLANNED DURATION")),FString::Printf(TEXT("%.0f min"),c.PlannedMinutes),x+w+gap,550,w);
     Field(TEXT("motion"),L(TEXT("KAMERABEWEGUNG"),TEXT("CAMERA MOTION")),Diver->bCameraMotion?L(TEXT("Sanft"),TEXT("Gentle")):L(TEXT("Stabil"),TEXT("Stable")),x+2*(w+gap),550,w);
     Text(c.GameMode==Dive::Mode::Exploration?L(TEXT("Unbegrenztes Atemgas und automatische Tarierung."),TEXT("Unlimited gas and automatic buoyancy.")):
-        L(TEXT("Q / E: Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT("Q / E: inflate / deflate BCD. Air expands as you ascend.")),x,655,15,Muted);
+        Diver->KeyText(EDiveAction::Inflate)+TEXT(" / ")+Diver->KeyText(EDiveAction::Deflate)+L(TEXT(": Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT(": inflate / deflate BCD. Air expands as you ascend.")),x,655,15,Muted);
     if(c.GameMode==Dive::Mode::Hardcore) Text(L(TEXT("* Bisher wie Simulation; Ausruestungsdefekte sind noch offen."),TEXT("* Currently simulation rules; equipment failures are pending.")),x,681,14,Amber);
     }
     Button(TEXT("start"),Diver->bDiveActive?L(TEXT("Tauchgang fortsetzen"),TEXT("Resume dive")):L(TEXT("Abtauchen   >"),TEXT("Begin dive   >")),x,720,558,58,true);
@@ -150,8 +152,8 @@ void ADiveHUD::Menu()
     Button(TEXT("language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),70,835,185,40);
     Button(TEXT("quality"),FString::Printf(TEXT("Grafik / Quality: %.0f"),Diver->GraphicsQuality),275,835,235,40);
     Button(TEXT("audio"),bAudioPage?TEXT("< Audio"):TEXT("Audio >"),530,835,105,40,bAudioPage);
-    Text(L(TEXT("WASD Schwimmen  SPACE/CTRL Hoehe  Q/E BCD  L Licht  C Handgelenk  R Seite  M Karte"),
-        TEXT("WASD Swim  SPACE/CTRL Vertical  Q/E BCD  L Torch  C Wrist  R Page  M Map")),650,846,14,Muted);
+    Button(TEXT("controls"),L(TEXT("F1  Steuerung / Hilfe"),TEXT("F1  Controls / help")),650,835,330,40);
+    Text(L(TEXT("ESC pausiert oder setzt fort"),TEXT("ESC pauses or resumes")),1010,846,14,Muted);
 }
 
 void ADiveHUD::Instruments()
@@ -162,7 +164,7 @@ void ADiveHUD::Instruments()
     Rect(640,32,320,58,Dark);
     Text(FString::Printf(TEXT("N    %03.0f deg    %s"),yaw,*Time(s.ElapsedSeconds)),672,50,20,White);
     Text(TEXT("WALENSEE / ")+Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name,50,46,16,White);
-    Text(L(TEXT("Einstieg an der Boje  /  F zum Beenden"),TEXT("Entry at buoy  /  F to finish")),50,76,13,Muted);
+    Text(L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  "))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
     Rect(50,705,328,145,Dark); Rect(50,705,3,145,Accent);
     Text(L(TEXT("TIEFE"),TEXT("DEPTH")),75,723,14,Muted);
     Text(FString::Printf(TEXT("%.1f"),s.DepthMetres),72,749,55,White);
@@ -182,7 +184,7 @@ void ADiveHUD::Instruments()
     Text(FString::Printf(TEXT("%.0f bpm"),s.HeartBPM),1254,759,31,White);
     Text(FString::Printf(TEXT("SpO2  %.0f%%"),s.SpO2),1415,766,17,White);
     Text(FString::Printf(TEXT("%.0f /min    %.1f C    BCD %.1f L"),s.RespiratoryBPM,s.CoreTemperatureC,s.BCDLitres),1257,817,14,Muted);
-    Text(L(TEXT("L Lampe   C Handgelenk   R Seite   M Karte   P Foto   H HUD   ESC Pause"),TEXT("L Torch   C Wrist   R Page   M Map   P Photo   H HUD   ESC Pause")),50,875,13,Muted);
+    Text(Diver->KeyText(EDiveAction::Lamp)+L(TEXT(" Lampe   "),TEXT(" Torch   "))+Diver->KeyText(EDiveAction::Computer)+L(TEXT(" Handgelenk   "),TEXT(" Wrist   "))+Diver->KeyText(EDiveAction::Map)+L(TEXT(" Karte   "),TEXT(" Map   "))+TEXT("F1 ")+L(TEXT("Steuerung   ESC Pause"),TEXT("Controls   ESC Pause")),50,875,13,Muted);
     if(s.MaxDepthMetres>10 && s.DepthMetres<10 && s.StopRemainingSeconds>0)
     { Rect(1050,110,500,45,Dark); Text(L(TEXT("SICHERHEITSSTOPP  3-6 m   "),TEXT("SAFETY STOP  3-6 m   "))+Time(s.StopRemainingSeconds),1070,123,18,Accent); }
     int row=0;
@@ -237,7 +239,7 @@ void ADiveHUD::Map()
     Text(Diver->Local(TEXT("Gruen: du    Gelb: Spielstarts    Dunkel: keine Messdaten"),TEXT("Green: you    Yellow: game starts    Dark: no survey data")),210,595,17,White);
     Text(Diver->Local(TEXT("Hell: flach    Dunkelblau: tief    Tiefenlinien: 10 m    Bezugspegel: 419 m LN02"),TEXT("Light: shallow    Dark blue: deep    Contours: 10 m    Water reference: 419 m LN02")),210,631,16,Muted);
     const FVector2D survey=data.ToSurvey(Diver->GetActorLocation());
-    Text(FString::Printf(TEXT("LV95  E %.1f / N %.1f     |     M: %s"),survey.X,survey.Y,Diver->bEnglish?TEXT("close"):TEXT("schliessen")),210,678,16,White);
+    Text(FString::Printf(TEXT("LV95  E %.1f / N %.1f     |     %s: %s"),survey.X,survey.Y,*Diver->KeyText(EDiveAction::Map),Diver->bEnglish?TEXT("close"):TEXT("schliessen")),210,678,16,White);
 }
 
 void ADiveHUD::Summary()
@@ -245,7 +247,7 @@ void ADiveHUD::Summary()
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     const auto& s=Diver->Simulation.Data;
     Text(TEXT("D I V E   /   L O G"),120,80,18,Accent);
-    Text(L(TEXT("Dein Tauchgang."),TEXT("Your dive.")),120,137,54,White);
+    Text(Diver->Tutorial.Stage==Dive::Lesson::Done?L(TEXT("Einfuehrung abgeschlossen."),TEXT("Introduction complete.")):L(TEXT("Dein Tauchgang."),TEXT("Your dive.")),120,137,54,White);
     Text(Diver->Outcome==TEXT("completed")?L(TEXT("Zurueck an der Oberflaeche"),TEXT("Back at the surface")):Diver->Outcome,122,215,19,Muted);
     const FString titles[]={L(TEXT("DAUER"),TEXT("DURATION")),L(TEXT("MAXIMALE TIEFE"),TEXT("MAXIMUM DEPTH")),L(TEXT("RESTDRUCK"),TEXT("GAS REMAINING")),L(TEXT("STRECKE"),TEXT("DISTANCE"))};
     const FString values[]={Time(s.ElapsedSeconds),FString::Printf(TEXT("%.1f m"),s.MaxDepthMetres),FString::Printf(TEXT("%.0f bar"),s.CylinderBar),FString::Printf(TEXT("%.0f m"),s.DistanceMetres)};
@@ -270,6 +272,21 @@ void ADiveHUD::Summary()
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
     Super::NotifyHitBoxClick(Id); if(!Diver) return;
+    if(Id==TEXT("controls")) { OpenControls(); return; }
+    if(Id==TEXT("tutorial")) { if(!Diver->bDiveActive) { bControlsPage=false; Diver->StartTutorial(); } return; }
+    if(bControlsPage)
+    {
+        if(Id==TEXT("controls_back")) { bControlsPage=false; Diver->CapturingAction=INDEX_NONE; }
+        else if(Id==TEXT("controls_reset")) { Diver->Controls=FDiveControls{}; Diver->CapturingAction=INDEX_NONE; Diver->ControlMessage=Diver->Local(TEXT("Standardbelegung wiederhergestellt."),TEXT("Default controls restored.")); }
+        else if(Id==TEXT("controls_language")) { Diver->bEnglish=!Diver->bEnglish; Diver->ControlMessage.Empty(); }
+        else if(Id.ToString().StartsWith(TEXT("bind_"))) { Diver->CapturingAction=FCString::Atoi(*Id.ToString().Mid(5)); Diver->ControlMessage.Empty(); return; }
+        else if(Id==TEXT("sensitivity_minus")) Diver->Controls.Sensitivity-=.03;
+        else if(Id==TEXT("sensitivity_plus")) Diver->Controls.Sensitivity+=.03;
+        else if(Id==TEXT("invert_y")) Diver->Controls.InvertY=!Diver->Controls.InvertY;
+        else if(Id==TEXT("fov_minus")) Diver->Controls.FieldOfView-=5;
+        else if(Id==TEXT("fov_plus")) Diver->Controls.FieldOfView+=5;
+        Diver->ApplyControls(); Diver->SaveSettings(); return;
+    }
     if(Id==TEXT("logbook")) { OpenLogbook(Diver->bSummary?Diver->LastLogPath:FString()); return; }
     if(Diver->bLogbook)
     {

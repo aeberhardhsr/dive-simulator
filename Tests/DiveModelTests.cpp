@@ -3,6 +3,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/Ecology.h"
 #include "../divingsim/Source/DiveSim/Simulation/WaterSurface.h"
 #include "../divingsim/Source/DiveSim/Simulation/AudioModel.h"
+#include "../divingsim/Source/DiveSim/Simulation/Tutorial.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -16,6 +17,36 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    Dive::Tutorial lesson; Dive::State lessonState;
+    Dive::Tutorial viewLesson; viewLesson.ObserveView(179,20); viewLesson.ObserveView(-179,20);
+    close(viewLesson.LookDegrees,2,1e-12,"Tutorial view tracking handles compass wrap without a false full turn");
+    viewLesson.ObserveView(-179,20);
+    close(viewLesson.LookDegrees,2,1e-12,"Unchanged camera view cannot advance looking lesson");
+    auto lessonStep=[&](double distance=0,bool swimming=false,bool computer=false,int page=0,bool lamp=true,bool map=false,double entry=5)
+    { lesson.Step(.02,lessonState,distance,swimming,computer,page,lamp,map,entry); };
+    lessonStep(10,true,true,1,false,true);
+    check(lesson.Stage==Dive::Lesson::Look,"Tutorial cannot skip looking due to unrelated actions");
+    lesson.Look(24); lessonStep(); check(lesson.Stage==Dive::Lesson::Look,"Tutorial needs actual looking input");
+    lesson.Look(1); lessonStep(); check(lesson.Stage==Dive::Lesson::Swim,"Looking advances tutorial");
+    lessonStep(5,false); close(lesson.SwimMetres,0,0,"Current drift does not complete swimming lesson");
+    lessonStep(3,true); check(lesson.Stage==Dive::Lesson::Buoyancy,"Swimming covers required distance");
+    lessonState.BCDInflowLPS=2;
+    for(int i=0;i<40;++i) lessonStep();
+    lessonState.BCDInflowLPS=0; lessonState.BCDOutflowLPS=3;
+    for(int i=0;i<26;++i) lessonStep();
+    check(lesson.Stage==Dive::Lesson::Computer,"Actual inflation then venting advances BCD lesson");
+    lessonStep(0,false,true,0); check(lesson.Stage==Dive::Lesson::Computer,"Computer must show requested page");
+    lessonStep(0,false,true,1); check(lesson.Stage==Dive::Lesson::Computer,"Computer lesson also requires lowering the wrist");
+    lessonStep(); lessonStep(); check(lesson.Stage==Dive::Lesson::Lamp,"Already lit torch cannot skip off/on exercise");
+    lessonStep(0,false,false,0,false); lessonStep();
+    check(lesson.Stage==Dive::Lesson::Map,"Torch off then on advances lesson");
+    lessonStep(0,false,false,0,true,true); lessonStep();
+    check(lesson.Stage==Dive::Lesson::Return,"Map must be opened and closed");
+    lessonState.DepthMetres=3; lessonStep(); check(lesson.Stage==Dive::Lesson::Return,"Return needs shallow depth");
+    lessonState.DepthMetres=.5; lessonStep(0,false,false,0,true,false,20);
+    check(lesson.Stage==Dive::Lesson::Return,"Return needs proximity to entry");
+    lessonStep(); check(lesson.Stage==Dive::Lesson::Exit,"Surface near entry unlocks exit lesson");
+    check(!lesson.Finish(false)&&lesson.Finish(true)&&lesson.Stage==Dive::Lesson::Done,"Only successful finish completes introduction");
     Dive::AudioModel sound;
     Dive::State audioState; Dive::Config audioConfig;
     int inhales=0,exhales=0,beats=0;
