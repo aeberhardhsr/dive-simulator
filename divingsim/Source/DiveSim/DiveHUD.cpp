@@ -171,6 +171,8 @@ void ADiveHUD::Instruments()
     const int heading=FMath::RoundToInt(yaw/45)%8;
     Rect(640,32,320,58,Dark);
     Text(FString::Printf(TEXT("%s    %03d deg    %s"),Diver->bEnglish?headingsEN[heading]:headingsDE[heading],FMath::RoundToInt(yaw)%360,*Time(s.ElapsedSeconds)),672,50,20,White);
+    const int clockMinutes=FMath::FloorToInt(Diver->Environment->CurrentHour()*60+1.e-8)%1440;
+    Text(L(TEXT("UHRZEIT  "),TEXT("LOCAL TIME  "))+FString::Printf(TEXT("%02d:%02d"),clockMinutes/60,clockMinutes%60),672,100,14,Muted);
     Text(TEXT("WALENSEE / ")+Diver->EntryName(),50,46,16,White);
     Text((Diver->PendingConfig.StartOnShore?L(TEXT("Rueckkehr zum Startpodest  /  "),TEXT("Return to the starting platform  /  ")):L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  ")))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
     if(Diver->PendingConfig.StartOnShore) Text(Diver->bWalking?L(TEXT("GEHEN / WATEN"),TEXT("WALKING / WADING")):L(TEXT("SCHWIMMEN"),TEXT("SWIMMING")),50,102,14,Accent);

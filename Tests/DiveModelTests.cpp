@@ -124,6 +124,16 @@ int main()
         waveState.Warnings=Dive::NoBreathingSupply;
         check(waveAlerts.Step(.02,waveState,cfg,0).Warning,"New loss after cooldown still alerts");
     }
+    close(Dive::EnvironmentLight::HourAt(13,7200),15,1e-12,"Two-hour dive advances the local clock by two hours");
+    close(Dive::EnvironmentLight::HourAt(23+59./60,60),0,1e-12,"Local clock wraps exactly at midnight");
+    close(Dive::EnvironmentLight::HourAt(7.5,86400*3+1800),8,1e-12,"Clock remains bounded after multiple days");
+    close(Dive::EnvironmentLight::HourAt(7.5,-1),7.5,0,"Negative elapsed time cannot rewind a dive");
+    close(Dive::EnvironmentLight::HourAt(NAN,NAN),12,0,"Invalid clock inputs remain finite");
+    check(std::isfinite(Dive::EnvironmentLight::HourAt(1.e300,1.e300)),"Large finite clock values cannot overflow");
+    check(Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(5+59./60,30),0).Direct==0&&
+        Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(5+59./60,90),0).Direct>0,"Real elapsed time crosses sunrise");
+    check(Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(17+59./60,30),0).Direct>0&&
+        Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(17+59./60,90),0).Direct==0,"Real elapsed time crosses sunset");
     const auto noon=Dive::EnvironmentLight::At(12,0),night=Dive::EnvironmentLight::At(23,0);
     check(noon.Direct>0&&noon.ElevationDegrees>0,"Daytime sun is above the horizon");
     check(night.Direct==0&&night.ElevationDegrees<0,"Night has no fictitious above-horizon sun");

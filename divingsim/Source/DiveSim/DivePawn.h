@@ -114,6 +114,9 @@ private:
     void SteerSoak(float DeltaSeconds);
     void TickSoak();
     bool ReportSoak(bool Final);
+    int32 DayCycleSmokePhase=0;
+    double DayCyclePauseWall=0,DayCyclePauseSeconds=0,DayCyclePauseHour=0;
+    void TickDayCycleTest(float DeltaSeconds);
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;
     Dive::Config BeforeTutorialConfig;

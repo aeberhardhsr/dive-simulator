@@ -53,6 +53,7 @@ public:
     bool ValidateLandscape(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);
+    double CurrentHour() const;
     double WaterAmbientAt(const FVector& Eye) const;
     double ExposureBiasAt(const FVector& Eye) const;
     double SurfaceZ(double X,double Y,double Seconds=-1) const;
@@ -90,7 +91,8 @@ private:
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
     FRandomStream Random{1948};
-    float Flow=.08f, VisibleDistance=14, WorldTime=0, DayHour=12;
+    float Flow=.08f, VisibleDistance=14, WorldTime=0;
+    double DayHour=12;
     FVector PopulationOrigin=FVector::ZeroVector;
     FVector PopulationForward=FVector::ForwardVector;
     Dive::WaterSurface Waves;
@@ -101,6 +103,7 @@ private:
     bool bOpticsSmoke=false;
     uint8 ObservedOpticalMedia=0;
     void UpdateAtmosphere();
+    void UpdateDaylight();
     void CreateWater();
     void UpdateWater(const FVector& Player);
     void StreamTerrain(const FVector& Position,bool Immediate=false);

@@ -285,26 +285,36 @@ void ADiveWorld::Configure(const Dive::Config& Config)
         CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalDensity"),scenario.CloudDensity);
         CloudMaterial->SetScalarParameterValue(TEXT("StormClouds"),0); // Wind/rain storm without lightning.
     }
+    UpdateDaylight();
+    // Real-time sky capture contains the current sun/weather brightness.
+    if(Sky) Sky->GetLightComponent()->SetIntensity(3.f);
+    UpdateAtmosphere();
+}
+
+double ADiveWorld::CurrentHour() const
+{
+    return Dive::EnvironmentLight::HourAt(WeatherSettings.Hour,Diver?Diver->Simulation.Data.ElapsedSeconds:0);
+}
+
+void ADiveWorld::UpdateDaylight()
+{
+    DayHour=CurrentHour();
     Lighting=Dive::EnvironmentLight::At(DayHour,WeatherSettings.Weather);
     if(Sun)
     {
         Sun->SetActorRotation(FRotator(-Lighting.ElevationDegrees,DayHour*15-180,0));
         Sun->GetLightComponent()->SetIntensity(Lighting.Direct*Dive::EnvironmentLight::SunLux);
     }
-    // Real-time capture already contains the current sun/weather brightness.
-    // Apply a neutral artistic fill scale, rather than multiplying daylight twice.
-    if(Sky) Sky->GetLightComponent()->SetIntensity(3.f);
-    UpdateAtmosphere();
 }
 
 double ADiveWorld::WaterAmbientAt(const FVector& Eye) const
 {
-    return Lighting.WaterAmbient((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
+    return Dive::EnvironmentLight::At(CurrentHour(),WeatherSettings.Weather).WaterAmbient((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
 }
 
 double ADiveWorld::ExposureBiasAt(const FVector& Eye) const
 {
-    return Lighting.ExposureBias((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
+    return Dive::EnvironmentLight::At(CurrentHour(),WeatherSettings.Weather).ExposureBias((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
 }
 
 void ADiveWorld::UpdateAtmosphere()
@@ -340,6 +350,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     if(!bTerrainReady) return;
+    UpdateDaylight();
     if(Diver && Diver->bDiveActive && Diver->bMenu) { UpdateAtmosphere(); return; }
     const float dt=FMath::Min(DeltaSeconds,.1f); WorldTime+=dt;
     const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
@@ -358,6 +369,9 @@ void ADiveWorld::Tick(float DeltaSeconds)
             FMath::Abs(Sky->GetLightComponent()->Intensity-3)>1.e-5||
             !Sky->GetLightComponent()->GetLightColor().Equals(FLinearColor::White,1.e-5f))
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Sun/sky no longer match the configured environment")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        if(FMath::Abs(FMath::FindDeltaAngleDegrees(Sun->GetActorRotation().Pitch,-Lighting.ElevationDegrees))>.001||
+            FMath::Abs(FMath::FindDeltaAngleDegrees(Sun->GetActorRotation().Yaw,DayHour*15-180))>.001)
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Sun orientation does not follow the simulation clock")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         // This actor ticks after the pawn: both the current camera transform
         // and its post-process settings have now been updated for this frame.
         if(!Diver->Camera->PostProcessSettings.SceneColorTint.Equals(

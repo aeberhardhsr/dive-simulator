@@ -11,6 +11,15 @@ struct EnvironmentLight
 {
     static constexpr double SunLux=80000;
     double ElevationDegrees=0,Direct=0,Diffuse=0;
+    // One simulated second advances the local scenario clock by one second.
+    // Use elapsed simulation time, so pause/menu stalls and completed dives freeze it.
+    static double HourAt(double StartHour,double ElapsedSeconds)
+    {
+        if(!std::isfinite(StartHour)) StartHour=12;
+        if(!std::isfinite(ElapsedSeconds)||ElapsedSeconds<0) ElapsedSeconds=0;
+        const double start=std::fmod(std::fmod(StartHour,24.)+24.,24.);
+        return std::fmod(start+std::fmod(ElapsedSeconds,86400.)/3600.,24.);
+    }
     static EnvironmentLight At(double Hour,int Weather)
     {
         if(!std::isfinite(Hour)) Hour=12;

@@ -1,0 +1,74 @@
+{
+  "captured_utc": "2026-11-25T10:52:23.960720+00:00",
+  "source_parent": "84f33d4667b0b2c952bc718990212ed7085c891c",
+  "source_dirty": true,
+  "requirement": "ENV-001",
+  "package": "Builds/WindowsDayCycle",
+  "build_slot": "DayCycle",
+  "resolution": [
+    1600,
+    900
+  ],
+  "frame_cap": 30,
+  "cases": [
+    {
+      "start_hour": 5.983333333333333,
+      "duration_seconds": 90.03999798744917,
+      "end_hour_from_persisted_log": 6.008344443885402,
+      "samples": 91,
+      "clock_observation": "DIVE_DAYCYCLE_PASS elapsed=88.040 start=5.983333333 current=6.007788888 paused_wall=4.000 direct=0.002039125",
+      "pause_observation": "DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.020 hour=5.986116667"
+    },
+    {
+      "start_hour": 17.983333333333334,
+      "duration_seconds": 90.0199979878962,
+      "end_hour_from_persisted_log": 18.008338888329973,
+      "samples": 91,
+      "clock_observation": "DIVE_DAYCYCLE_PASS elapsed=88.020 start=17.983333333 current=18.007783333 paused_wall=4.002 direct=0.000000000",
+      "pause_observation": "DIVE_DAYCYCLE_PAUSE_PASS wall=4.002 sim=10.040 hour=17.986122222"
+    },
+    {
+      "start_hour": 23.983333333333334,
+      "duration_seconds": 90.0199979878962,
+      "end_hour_from_persisted_log": 0.008338888329973315,
+      "samples": 91,
+      "clock_observation": "DIVE_DAYCYCLE_PASS elapsed=88.020 start=23.983333333 current=0.007783333 paused_wall=4.000 direct=0.000000000",
+      "pause_observation": "DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.020 hour=23.986116667"
+    }
+  ],
+  "root_launcher_verified": true,
+  "original_user_executable_sha256": "c8904bba4d9a4b40ba2ea1b4af9a94fbc7faed9c032fb5c3d2248c79b455b263",
+  "original_user_executable_unchanged": true,
+  "python_tests": 15,
+  "limitations": [
+    "Sunrise/sunset still use fixed 06:00/18:00 artistic approximation; real solar ephemeris and date/season are not implemented.",
+    "Night landscape remains almost black; twilight, moon/star light and full visual acceptance remain open.",
+    "The elapsed simulation clock advances one-to-one; pausing freezes it. Frame stalls can still limit simulation progress through the existing step accumulator.",
+    "Rendered tests ran alongside separate unchanged WindowsSoak and user-opened game/editor. No clean performance claim.",
+    "The two-hour stability run is still ongoing and uses an older executable."
+  ],
+  "sha256": {
+    "artifacts/core-daycycle.log": "18d84d691b31f61574376289afc66bf36b8f5f8304f7dad66f5046901d5f6cc8",
+    "artifacts/build-daycycle-editor.log": "0c1576f519178d823f6204e9a61629eae4a2ff5c37826319cf50736e8a5d5841",
+    "artifacts/package-daycycle.log": "0b52f120bc2da570daaa457ab686fef8ad4aee18b10a4f433f466e2cbd17885c",
+    "artifacts/daycycle-bootstrap.log": "e33a5996ac4763e0b222d433970dfe4d6121dcb73197f173fd41a2680f87d347",
+    "artifacts/daycycle-storm-full.log": "07c0528399f5d98ac2957c370faf18a7cd91a95f62ba955c8399d7fd26ddf1c1",
+    "Builds/WindowsDayCycle/divingsim/Binaries/Win64/divingsim-DayCycle.exe": "01c90969dd2467424f0ae04e90fc6ac95342eb77c93d707cbd384bfeed050773",
+    "Builds/WindowsDayCycle/divingsim.exe": "4872cdd0aa67e11df06374f392b03a801383a5af949f6b37a538e28c6a66ed72",
+    "Builds/WindowsDayCycle/Manifest_NonUFSFiles_Win64.txt": "8a4039d3e546ed67c6ba2a79ab2464be49b82e94761638e430a8a887c2f349dd",
+    "Documentation/Images/DayCycle_Sunset.png": "ec6f644d918ef789d108fe71f74bfd76f141b8ea26388b0d26e535457755c4f8",
+    "Documentation/Images/DayCycle_Midnight.png": "e821710e0c1a48dbb14a7ed2a9bc531fc9383daf00547f6a1f11570fe75da11a",
+    "artifacts/daycycle-5-full.log": "924353d81f8b9245a7184c16011158300a373bf36d60a0100f54d4f622b5e2c2",
+    "Builds/WindowsDayCycle/divingsim/Saved/DiveLogs/20261125_114702_0C538381.json": "af4d9c546a5c76ccd76114f217323290b133a73376399996d8447c967fcbd7c2",
+    "Builds/WindowsDayCycle/divingsim/Saved/Screenshots/DayCycle_Before_05.png": "765e558863cebb66cc98f8cc4d9b55c3b3b1ffd1beb2c7735af2a2963af54437",
+    "Builds/WindowsDayCycle/divingsim/Saved/Screenshots/DayCycle_After_05.png": "6a34e51466850f5a4f78dc5aefc4ea801a0e42b903ccb76e268c4a6b6f83062a",
+    "artifacts/daycycle-17-full.log": "10354233871fe0220485b9df6e3d10e6e9c09cfc267c08121144cb5a03ee9348",
+    "Builds/WindowsDayCycle/divingsim/Saved/DiveLogs/20261125_114523_53A8F4F5.json": "b6b5a923b06aba4175363c30f03898ffd298851d5749fd1ba1d055552cb0c82d",
+    "Builds/WindowsDayCycle/divingsim/Saved/Screenshots/DayCycle_Before_17.png": "ec6f644d918ef789d108fe71f74bfd76f141b8ea26388b0d26e535457755c4f8",
+    "Builds/WindowsDayCycle/divingsim/Saved/Screenshots/DayCycle_After_17.png": "a8911dce0edb6e83504fcc3013da03a72197f357352396739855b7400be59be6",
+    "artifacts/daycycle-23-full.log": "7d5afad7d0b28504138a99fdb3318de4e6032de20a611e262bacec0f960b213b",
+    "Builds/WindowsDayCycle/divingsim/Saved/DiveLogs/20261125_114840_71DF45E6.json": "628bb2ca1b0d63f712b59e05cfee4f6f08132fa8c33be8eb36ff64af951727dd",
+    "Builds/WindowsDayCycle/divingsim/Saved/Screenshots/DayCycle_Before_23.png": "cfb9cf28baa5e145e8ef9e38d672a316b1686bdfc13b141e7ac59ac877b7b172",
+    "Builds/WindowsDayCycle/divingsim/Saved/Screenshots/DayCycle_After_23.png": "e821710e0c1a48dbb14a7ed2a9bc531fc9383daf00547f6a1f11570fe75da11a"
+  }
+}

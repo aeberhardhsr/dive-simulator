@@ -1,9 +1,10 @@
 param([string]$PackageDirectory='Builds/WindowsRecovery')
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
 $PackageDirectory=[IO.Path]::GetFullPath($PackageDirectory)
-$executable=Join-Path $PackageDirectory 'divingsim/Binaries/Win64/divingsim.exe'
+$executable=Resolve-DivePackageExecutable $PackageDirectory
 $saved=Join-Path $PackageDirectory 'divingsim/Saved'
 $output=Join-Path $repo ('artifacts/checkpoint-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $output -Force | Out-Null

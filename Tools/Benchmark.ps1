@@ -10,6 +10,7 @@ param(
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
 $size=@{'1080p'=@(1920,1080);'1440p'=@(2560,1440);'2160p'=@(3840,2160)}[$Resolution]
@@ -19,7 +20,7 @@ New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $logPath=Join-Path $resultDir 'Runtime.log'
 $context=[ordered]@{
     started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor
-    background_processes=@(Get-Process UnrealEditor,divingsim -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
+    background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $context.gpu_before=@(& nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu --format=csv)
@@ -27,7 +28,7 @@ if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
 $context | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $resultDir 'Host.json') -Encoding utf8
 $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
-$executable=Join-Path $PackageDirectory 'divingsim/Binaries/Win64/divingsim.exe'
+$executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
     $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f (Join-Path $repo 'divingsim/divingsim.uproject'))+$arguments

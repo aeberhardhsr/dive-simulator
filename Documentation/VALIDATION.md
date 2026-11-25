@@ -463,3 +463,19 @@ Die Änderung ist eine sichtbare Verbesserung der Feinstruktur, keine vollständ
 ![Sturm mit unregelmäßigen Feinwellen und gefilterten Reflexionen; dunkle Bänder bleiben sichtbar](Images/WaterReflections_Storm.png)
 
 ![Windstille mit erhaltener Landschaftsspiegelung](Images/WaterReflections_Calm.png)
+
+## Fortlaufende Tageszeit und unabhängiger Programmbau (25. November 2026)
+
+ENV-001 war bisher trotz auswählbarer Tag-/Nachtbeleuchtung unvollständig: Die Sonne behielt den beim Start gewählten Stand. Jetzt ergibt sich die Ortszeit aus Startuhrzeit plus tatsächlich verstrichener Simulationszeit, im Verhältnis 1:1 und mit Mitternachtswechsel. Sonne, Atmosphärenlicht, Unterwasser-Umgebungslicht und Belichtung folgen dieser gemeinsamen Zeit. Die Kamera fragt den aktuellen Wert direkt ab, sodass ihre Aktualisierung vor dem World-Tick keinen veralteten Lichtwert nutzt. Das HUD zeigt zusätzlich die aktuelle Stunde/Minute. Eine Pause hält die Simulationszeit und damit den Sonnenstand an; auch ein abgeschlossener Tauchgang lässt die Uhr stehen. Gespeicherte Startuhrzeit und Tauchdauer bleiben unverändert im bestehenden Logformat erhalten.
+
+Kernprüfungen bestehen für den Zweistundenfortschritt, Mitternacht, mehrere Tage, große/ungültige Werte und das Überschreiten von Sonnenaufgang/-untergang. Editor und Windows-Development-Package wurden neu kompiliert. Drei echte 90-Sekunden-Tauchgänge starten um 05:59, 17:59 und 23:59. Jeder pausiert für mindestens vier Sekunden Engine-Laufzeit; die Simulationssekunden und Ortszeit bleiben dabei exakt unverändert. Anschließend werden die Stundengrenze, Bilder vor/nach dem Wechsel, 91 gespeicherte Messpunkte und der reguläre Abschluss geprüft. Die Laufzeitprüfung kontrolliert zudem tatsächliche Intensität und Rotation des Unreal-Sonnenlichts. Es gibt keine beschleunigte Uhr und keine künstlich gesetzten Simulationssprünge. Alle drei Abläufe sowie die Sturmregression bestehen bei 1600×900 und 30-FPS-Limit. Sechs Zeitwechsel-Aufnahmen wurden visuell geprüft.
+
+Die ursprüngliche Lichtnäherung bleibt bewusst sichtbar dokumentiert: Sonnenaufgang liegt stets bei 06:00, Sonnenuntergang bei 18:00. Datum, Jahreszeit und tatsächlicher astronomischer Sonnenstand sind noch nicht umgesetzt. Nach Sonnenuntergang ist die Landschaft fast schwarz; plausible Dämmerung, Mond-/Sternenlicht und die optische Gesamtabnahme bleiben offen. Der fortschreitende Zyklus ist damit implementiert, die realistische Himmelsbeleuchtung noch nicht vollständig.
+
+Eine vom Nutzer über Explorer geöffnete Projekt-Spielinstanz sperrte zuvor die normale Entwicklungsdatei. Der optionale Build-Parameter `-BuildSlot DayCycle` erzeugt deshalb `divingsim-DayCycle.exe` im gleichen Binärverzeichnis. Engine-ABI und Zielplattform bleiben unverändert; UAT verpackt die neue Datei über seinen Build-Receipt. Der Paketstarter bleibt `divingsim.exe`; ein zusätzlicher 22-Sekunden-Tauchtest über genau diesen Starter bestätigt den Aufruf von `divingsim-DayCycle.exe` und den gespeicherten Abschluss. Smoke-, Benchmark-, Recovery- und künftige Soak-Aufrufe wählen die im UAT-Manifest verzeichnete Programmdatei, statt eine eventuell ältere Standarddatei zu starten. Das alte Entwicklungsprogramm blieb geöffnet und seine SHA256-Prüfsumme unverändert. Das ist kein Überspringen der C++-Kompilierung. Der laufende zweistündige Test verwendet weiterhin sein unverändertes älteres Package.
+
+Ergebnisse und Prüfsummen: [DAY_CYCLE_RESULTS.json](DAY_CYCLE_RESULTS.json). Zusätzliche Build-/Testlast ist zeitlich im Dauertest protokolliert; diese Abläufe sind keine ungestörte Leistungsmessung.
+
+![Fortschreitende Ortszeit kurz vor dem modellierten Sonnenuntergang](Images/DayCycle_Sunset.png)
+
+![Mitternachtswechsel ohne Rücksetzen der Tauchdauer](Images/DayCycle_Midnight.png)

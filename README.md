@@ -53,9 +53,9 @@ Bis zu 32 aktive und 128 Profile insgesamt liegen lokal in `divingsim/Saved/Dive
 
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
-**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen/Sturm, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Die Wetterwahl setzt zunächst 3/5/8/22 m/s Wind; danach ist der Wert von 0 bis 24 m/s frei einstellbar. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien und bleiben während eines Tauchgangs fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
+**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen/Sturm, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Die Wetterwahl setzt zunächst 3/5/8/22 m/s Wind; danach ist der Wert von 0 bis 24 m/s frei einstellbar. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien. Die eingestellte Uhrzeit ist die Startzeit: Während des Tauchgangs läuft sie sekundengenau mit der Simulation weiter, auch über Mitternacht. Pause hält die Uhr und den Sonnenstand an. Die übrigen Umweltvorgaben bleiben fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
 
-Zahlenfelder öffnen einen Eingabedialog: beispielsweise **213,5 bar**, **7,5 kg**, **22,5 m** oder **47 min**. Die Einheit gehört nicht in das Eingabefeld. Dezimalpunkt und Komma sind erlaubt; der Dialog nennt den gültigen Bereich. Die Uhrzeit lässt sich minutengenau von **00:00 bis 23:59** einstellen. Enter oder **Speichern** übernimmt den Wert, Escape oder **Abbrechen** verwirft die Eingabe. Ungültige Werte verändern den Tauchplan nicht. Während eines laufenden Tauchgangs bleibt die Konfiguration gesperrt.
+Zahlenfelder öffnen einen Eingabedialog: beispielsweise **213,5 bar**, **7,5 kg**, **22,5 m** oder **47 min**. Die Einheit gehört nicht in das Eingabefeld. Dezimalpunkt und Komma sind erlaubt; der Dialog nennt den gültigen Bereich. Die Startuhrzeit lässt sich minutengenau von **00:00 bis 23:59** einstellen. Enter oder **Speichern** übernimmt den Wert, Escape oder **Abbrechen** verwirft die Eingabe. Ungültige Werte verändern den Tauchplan nicht. Während eines laufenden Tauchgangs bleibt die Konfiguration gesperrt.
 
 **Audio >** unten im Menü öffnet fünf Lautstärkeregler: Gesamt, Umgebung, Atem/Ausrüstung, Herzschlag und Warnungen. Mit **− / +** in 5-%-Schritten einstellen; 0 % schaltet den Kanal stumm. Einstellungen werden gespeichert und können auch in der Pause geändert werden. Atmung und Herzschlag folgen den simulierten Vitalwerten, Jacket-Geräusche dem tatsächlichen Gasfluss. Blasen steigen als räumliche Klangquelle auf; Wind, Wasser und Regen werden beim Eintauchen gedämpft. Die eigenen synthetischen Klänge sind ein Entwicklungsstand, keine Aufnahme echter Tauchausrüstung.
 
@@ -85,6 +85,7 @@ python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenreferenz
 ./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
 ./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
+./Tools/Build.ps1 -Target Package -BuildSlot DayCycle -PackageDirectory Builds/WindowsDayCycle # Separater Programmname bei geöffnetem Projekt-Spiel
 ./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
 ./Tools/Benchmark.ps1 -PackageDirectory Builds/Windows -Scenario underwater -Resolution 1080p # 60 s gerenderte Leistung
 ./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -DisableNanite # Konventionellen Gelände-Fallback prüfen
@@ -95,6 +96,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1 -Packaged -Scenario dive -Hour 23 -LampOff # Nachtvergleich ohne Lampe
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-storm -Entry 1 # Sturm und 22 m/s Wind
+./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsDayCycle -Scenario daycycle -Hour (17+59/60) -MaxFPS 30 # 90 s Sonnenuntergang plus echte Pause
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
 ./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte
 ./Tools/TestProfiles.ps1              # Unreal-Prüfungen: Profile, Wiederherstellung, Datei-/Konfliktschutz
@@ -113,7 +115,7 @@ python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMi
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario logbook # Speichern, neu laden, vier Diagrammgruppen
 ```
 
-Ein laufendes Spiel kann geöffnet bleiben, wenn ein neuer Build mit `-PackageDirectory 'O:/games/dive game/Builds/WindowsLandscape'` in einen separaten Ordner geschrieben wird. Dem Smoke-Test dann denselben Parameter übergeben.
+Ein laufendes Spiel kann geöffnet bleiben, wenn ein neuer Build mit `-PackageDirectory 'O:/games/dive game/Builds/WindowsLandscape'` in einen separaten Ordner geschrieben wird. Dem Smoke-Test dann denselben Parameter übergeben. Wenn die Entwicklungsdatei unter `divingsim/Binaries/Win64` selbst geöffnet ist, erzeugt `-BuildSlot Name` einen separaten Win64-Development-Programmnamen. Der Paketstarter bleibt `divingsim.exe`; die Prüfscripte lesen den tatsächlichen Programmnamen aus dem UAT-Manifest und wählen keine liegengebliebene ältere Datei.
 
 Die Build-Skripte begrenzen C++-Parallelität für den Entwicklungsrechner. `Tools/TestCore.cmd` erwartet die lokale Installation unter `C:/BuildTools2022`; plattformunabhängig kann der Kern mit `cmake -S Tests -B artifacts/tests` gebaut und mit CTest geprüft werden. Die CI-Konfiguration prüft diesen Kern auf Windows, macOS und Linux, nicht das vollständige Unreal-Spiel. Ein macOS-Spiel-Build ist noch nicht getestet.
 

@@ -72,6 +72,7 @@ void ADivePawn::BeginPlay()
         }
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
+        if(SmokeScenario==TEXT("daycycle")) { PendingConfig.Hour=17+59./60; PendingConfig.WindMetresPerSecond=0; }
         FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
@@ -410,12 +411,13 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(Equipment) Equipment->Update(DeltaSeconds);
         return;
     }
+    if(bSmokeTest&&SmokeScenario==TEXT("daycycle")) TickDayCycleTest(DeltaSeconds);
     if(bDiveActive && !bMenu)
     {
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
-    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:SmokeScenario==TEXT("stream")?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
+    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:(SmokeScenario==TEXT("stream")||SmokeScenario==TEXT("daycycle"))?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
     if(bSmokeTest && bDiveActive)
     {
         FString audioError;
@@ -454,7 +456,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
         if(SmokeScenario.StartsWith(TEXT("wrist")))
         {
             const double t=Simulation.Data.ElapsedSeconds;
@@ -490,7 +492,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
             (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
         const bool audioReady=SmokeScenario!=TEXT("audio")||(Audio->Inhales>4&&Audio->Exhales>4&&Audio->Heartbeats>30&&Audio->InflationSteps>100&&Audio->VentSteps>100);
-        const bool valid=bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
+        const bool valid=(SmokeScenario!=TEXT("daycycle")||DayCycleSmokePhase==5)&&bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
             && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<199)
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);

@@ -3,16 +3,17 @@ param([string]$PackageDirectory='Builds/WindowsSoak',
     [ValidateRange(0,2)][int]$Entry=0,
     [ValidateRange(0,3)][int]$Quality=2)
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
-$executable=Join-Path $PackageDirectory 'divingsim/Binaries/Win64/divingsim.exe'
+$executable=Resolve-DivePackageExecutable $PackageDirectory
 $resultDir=Join-Path $repo ('artifacts/soak-{0}s-entry{1}-{2}' -f $Seconds,$Entry,(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $logPath=Join-Path $resultDir 'Runtime.log'
 $hostInfo=[ordered]@{started_utc=[DateTime]::UtcNow.ToString('o');requested_seconds=$Seconds;
     executable=$executable;executable_sha256=(Get-FileHash -LiteralPath $executable).Hash;
     source_commit=(& git -C $repo rev-parse HEAD);source_dirty=[bool](& git -C $repo status --porcelain);
-    background_processes=@(Get-Process UnrealEditor,divingsim -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)}
+    background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)}
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $hostInfo.gpu_before=@(& nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu --format=csv)
 }
