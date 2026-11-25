@@ -25,7 +25,11 @@ int main()
         for(double bottom=0;bottom<200;bottom+=.1)
         {
             const auto band=Dive::FishDepthBand(fish,bottom,1.15);
-            if(band.Valid) check(band.Shallow>=fish.MinDepth&&band.Deep<=fish.MaxDepth&&band.Deep<=bottom-fish.BottomClearance*1.15,
+            // AppleClang may fuse multiply/subtract in the reference expression;
+            // the habitat function stores the product first. Allow double rounding,
+            // while keeping tolerance far below the centimetre terrain resolution.
+            const double deepestAllowed=std::fma(-fish.BottomClearance,1.15,bottom);
+            if(band.Valid) check(band.Shallow>=fish.MinDepth&&band.Deep<=fish.MaxDepth&&band.Deep<=deepestAllowed+1e-12,
                 "Accepted habitats preserve depth limits and scaled clearance");
         }
     const auto& pondweed=Dive::PlantProfiles[0];
