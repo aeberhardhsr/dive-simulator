@@ -26,6 +26,10 @@ def report(directory):
         if case['status'] != 'PASS' or f'DIVE_SMOKE_PASS avatar=1 case={number}' not in log:
             raise ValueError(f'Failed avatar case {number}')
         body_pose = 'DIVE_BODY_POSE_VERSION 1' in log
+        gaze = re.search(r'DIVE_AVATAR_GAZE upward_pitch=([-\d.]+)', log)
+        upward_pitch = float(gaze.group(1)) if gaze else None
+        if upward_pitch is not None and abs(upward_pitch - 85) >= .5:
+            raise ValueError(f'Requested upward gaze was not reached in case {number}')
         for phase in range(25 if body_pose else 17):
             if f'DIVE_AVATAR_PHASE {phase} PASS' not in log:
                 raise ValueError(f'Missing phase {phase} in case {number}')
@@ -38,6 +42,8 @@ def report(directory):
                 raise ValueError(f'Missing screenshot {path}')
             images.append({'file': str(path), 'sha256': digest(path)})
         results.append({**case, 'runtime_log': str(runtime), 'runtime_log_sha256': digest(runtime),
+                        'verified_upward_pitch_degrees': upward_pitch,
+                        'recorded_blocking_parts': sorted(set(re.findall(r'DIVE_CONTACT part=(\S+)', log))),
                         'cylinder_litres': [12, 15, 10][number % 3],
                         'cylinder_material': 'Steel' if number < 3 else 'Aluminium',
                         'bcd': ['Jacket', 'Travel', 'Wing'][number % 3],

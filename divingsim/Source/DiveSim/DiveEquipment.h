@@ -2,6 +2,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Simulation/DiveModel.h"
+#include "DiveContacts.h"
 #include "DiveEquipment.generated.h"
 
 class ADivePawn;
@@ -22,6 +23,7 @@ public:
     void Initialize(ADivePawn* Pawn);
     void Update(float DeltaSeconds);
     bool Validate(FString& Error) const;
+    void HandContacts(const FTransform& Left,const FTransform& Right,TArray<FDiveContactShape>& Shapes) const;
     void ExportDisplayForTest(const FString& Directory,const FString& Filename) const;
     int32 DisplayUpdates=0;
     uint32 DisplayedPages=0;

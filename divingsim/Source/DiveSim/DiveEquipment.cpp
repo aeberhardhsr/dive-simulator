@@ -45,7 +45,7 @@ ADiveEquipment::ADiveEquipment()
 void ADiveEquipment::Initialize(ADivePawn* Pawn)
 {
     Diver=Pawn;
-    AttachToComponent(Pawn->Camera,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    SetActorTransform(Pawn->Camera->GetComponentTransform());
     for(int32 i=0;i<Meshes.Num();++i)
     {
         const FString name=EquipmentNames[i];
@@ -116,15 +116,10 @@ void ADiveEquipment::Update(float DeltaSeconds)
     const float sleeveScale=Diver->PendingConfig.DrySuit?1.f:.9f;
     Meshes[0]->SetRelativeScale3D(FVector(1,sleeveScale,sleeveScale));
     Meshes[3]->SetRelativeScale3D(FVector(1,sleeveScale,sleeveScale));
-    WristBlend=FMath::FInterpTo(WristBlend,Diver->bShowComputer?1.f:0.f,DeltaSeconds,8.f);
-    const double phase=Diver->Simulation.Data.ElapsedSeconds;
-    const float movement=Diver->VelocityMetres.Size();
-    const float sway=Diver->bCameraMotion?FMath::Sin(phase*2.5)*FMath::Min(movement,1.f)*.8f:0;
-    const float readingSwim=Avatar?FMath::Clamp(Avatar->SwimBlend/.45f,0.f,1.f):0;
-    LeftWrist->SetRelativeLocation(FMath::Lerp(FVector(35,-24,-18),FVector(FMath::Lerp(28.f,26.f,readingSwim),-6,-6),WristBlend)+FVector(0,0,sway));
-    LeftWrist->SetRelativeRotation(FMath::Lerp(FRotator(18,-8,0),FRotator(FMath::Lerp(75.f,60.f,readingSwim),-8,0),WristBlend));
-    RightHand->SetRelativeLocation(FVector(29,24,-20+sway));
-    RightHand->SetRelativeRotation(FRotator(8,-5,0));
+    WristBlend=Diver->PhysicalPose.Wrist;
+    SetActorTransform(FTransform(Diver->PhysicalPose.Gaze,Diver->PhysicalEyes()));
+    LeftWrist->SetRelativeTransform(Diver->PhysicalPose.Hand(true));
+    RightHand->SetRelativeTransform(Diver->PhysicalPose.Hand(false));
     if(Avatar) Avatar->UpdatePose(DeltaSeconds,LeftWrist,RightHand);
     DisplayTimer+=DeltaSeconds;
     if(DisplayUpdates==0||DisplayTimer>=.1f||Page!=Diver->ComputerPage||bEnglish!=Diver->bEnglish)
@@ -135,6 +130,12 @@ void ADiveEquipment::Update(float DeltaSeconds)
         Heading=FMath::Fmod(Diver->GetControlRotation().Yaw+360,360);
         Display->UpdateResource();
     }
+}
+
+void ADiveEquipment::HandContacts(const FTransform& Left,const FTransform& Right,TArray<FDiveContactShape>& Shapes) const
+{
+    for(int index:{1,2,4,5}) if(Meshes[index]->GetStaticMesh())
+        Shapes.Add(FDiveContactShape::Bounds(FName(EquipmentNames[index]),Meshes[index]->GetRelativeTransform()*(index<3?Left:Right),Meshes[index]->GetStaticMesh()->GetBoundingBox()));
 }
 
 bool ADiveEquipment::Validate(FString& Error) const

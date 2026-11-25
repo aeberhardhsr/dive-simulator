@@ -91,10 +91,21 @@ bool ADiveHUD::AvatarSmokeTest(int phase)
         if(auto* pc=Cast<APlayerController>(Diver->GetController()))
             pc->SetControlRotation(FRotator(-65,pc->GetControlRotation().Yaw,0));
     }
-    if(phase==16) { shot(TEXT("LookDown"));return !avatar->IsInspection()&&avatar->PoseUpdates>AvatarPausedUpdates; }
+    if(phase==16)
+    {
+        shot(TEXT("LookDown"));
+        return !avatar->IsInspection()&&avatar->PoseUpdates>AvatarPausedUpdates&&
+            FMath::Abs(FMath::FindDeltaAngleDegrees(Diver->PhysicalPose.Gaze.Pitch,-65.))<.5;
+    }
     if(phase==17)
         if(auto* pc=Cast<APlayerController>(Diver->GetController())) pc->SetControlRotation(FRotator(85,pc->GetControlRotation().Yaw,0));
-    if(phase==18) shot(TEXT("LookUp"));
+    if(phase==18)
+    {
+        shot(TEXT("LookUp"));
+        const double pitch=Diver->PhysicalPose.Gaze.Pitch;
+        UE_LOG(LogTemp,Display,TEXT("DIVE_AVATAR_GAZE upward_pitch=%.3f"),pitch);
+        return FMath::Abs(FMath::FindDeltaAngleDegrees(pitch,85.))<.5;
+    }
     if(phase==19)
     {
         if(auto* pc=Cast<APlayerController>(Diver->GetController())) pc->SetControlRotation(FRotator(0,pc->GetControlRotation().Yaw,0));

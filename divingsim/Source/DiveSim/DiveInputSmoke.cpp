@@ -35,14 +35,21 @@ void ADivePawn::InputSmokeTick(float Dt)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
     if(SmokeScenario==TEXT("avatar"))
     {
-        if(ControlsSmokePhase<25&&ControlsSmokeClock>1+ControlsSmokePhase*2)
+        TestLessonAge+=Dt;
+        if(ControlsSmokePhase<25&&TestLessonAge>(ControlsSmokePhase==0?1:2))
         {
+            // Full-body contacts can legitimately prevent a turn near the bed.
+            // Swim upward with ordinary thrust until the requested gaze fits,
+            // and give each screenshot its own interval after that transition.
+            const float requested=ControlsSmokePhase==16?-65:85;
+            if((ControlsSmokePhase==16||ControlsSmokePhase==18)&&
+                FMath::Abs(FMath::FindDeltaAngleDegrees(PhysicalPose.Gaze.Pitch,static_cast<double>(requested)))>.5&&TestLessonAge<15) return;
             const bool ok=hud->AvatarSmokeTest(ControlsSmokePhase);
             bControlsSmokeValid&=ok;
             UE_LOG(LogTemp,Display,TEXT("DIVE_AVATAR_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));
-            ++ControlsSmokePhase;
+            ++ControlsSmokePhase;TestLessonAge=0;
         }
-        if(ControlsSmokePhase==25&&ControlsSmokeClock>52)
+        if(ControlsSmokePhase==25&&TestLessonAge>2)
         {
             UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s avatar=1 case=%d"),bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),LoadoutTestCase);
             FPlatformMisc::RequestExitWithStatus(false,bControlsSmokeValid?0:1);
@@ -144,7 +151,14 @@ void ADivePawn::InputSmokeTick(float Dt)
             bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Regulator&&state.SpO2>=TestBreathingSpO2&&state.BreathReserve>TestBreathingReserve;
             TestBreathingGas=state.CylinderBar; tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=3;
         }
-        if(ControlsSmokePhase==3&&t>25)
+        if(ControlsSmokePhase==3&&state.MouthSubmerged)
+        {
+            // Waves can wet the mouth again after the regulator is removed.
+            // Assert that transition too; a fixed timestamp cannot assume air.
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::None&&
+                (state.Warnings&Dive::NoBreathingSupply)&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
+        }
+        if(ControlsSmokePhase==3&&t>25&&!state.MouthSubmerged)
         {
             bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Air&&
                 !(state.Warnings&Dive::NoBreathingSupply)&&state.SpO2>97.99&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
@@ -192,15 +206,25 @@ void ADivePawn::InputSmokeTick(float Dt)
         {
             const auto& entry=Environment->Terrain.ShoreEntries[EntryIndex];
             pc->SetControlRotation(FRotator(0,entry.Yaw+180,0));
+            TestLessonStage=0;
             next(3,TEXT("ShoreDive"));
+        }
+        if(ControlsSmokePhase==3&&TestLessonStage==0&&Simulation.Data.DepthMetres<.05)
+        {
+            // Surface away from the staircase before approaching its ramp.
+            // A diagonal shortcut from depth can put the hands below the deck;
+            // the full body collider must block that underside, not ignore it.
+            TestLessonStage=1;shot(FString::Printf(TEXT("ShoreSurface_%d"),EntryIndex));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_SURFACE entry=%d depth=%.4f distance=%.2f"),EntryIndex,Simulation.Data.DepthMetres,distance);
         }
         if(ControlsSmokePhase==3&&bWalking&&distance<.6)
         {
-            bControlsSmokeValid&=CanFinishDive()&&bEnteredWater&&FMath::Abs(GetActorLocation().Z-EntryLocation.Z)<1;
+            bControlsSmokeValid&=CanFinishDive()&&bEnteredWater&&FMath::Abs(GetActorLocation().Z-EntryLocation.Z)<1&&
+                PhysicalPose.Walking&&PhysicalPose.Swim<.05;
             tap(Controls.Key(EDiveAction::Regulator));
             next(4,TEXT("ShoreReturn"));
         }
-        TestKey(Controls.Key(EDiveAction::Forward),ControlsSmokePhase>=1&&ControlsSmokePhase<=3);
+        TestKey(Controls.Key(EDiveAction::Forward),ControlsSmokePhase==1||ControlsSmokePhase==2||(ControlsSmokePhase==3&&TestLessonStage==1));
         TestKey(Controls.Key(EDiveAction::Descend),ControlsSmokePhase==2);
         TestKey(Controls.Key(EDiveAction::Ascend),ControlsSmokePhase==3&&!bWalking);
         if(ControlsSmokePhase==4&&TestLessonAge>.8)

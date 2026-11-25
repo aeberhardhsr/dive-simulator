@@ -1,5 +1,7 @@
 # Gaze, swimming posture and breathing landmarks
 
+This report records the WindowsBody increment. The subsequent [body-contact implementation](CONTACTS.md) adds a shared physical pose and compound collisions; cosmetic camera bob is now separate from the physical eye anchor.
+
 The head, mask and second stage now follow the player's gaze around a neck joint. Previously they pitched rigidly with the torso, so a horizontal swimmer appeared to look down while the player looked forward. The shared `FDiveBodyFrame` keeps the authored eye landmark at the camera and computes the torso placement around it. Extreme gaze angles bring the shoulders along within an animation range of −60° to +90° at the neck. These limits are authored game constraints, not anatomical validation.
 
 A submerged swimmer retains horizontal trim while stationary or reading the wrist computer. Walking uses the standing base pose; near the surface the swimmer can return upright. The second stage rotates with the head when inserted and interpolates back to its chest position when removed; its flexible hose follows the transformed connector. Cylinder placement now aligns the valve below the neck for each selected cylinder length, instead of using a fixed centre that let the extended head intersect the valve. Inspection lighting follows the viewing angle so the visible side remains lit when rotating or pitching the body.

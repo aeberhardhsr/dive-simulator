@@ -9,9 +9,21 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
     auto* pc=Cast<APlayerController>(GetController()); if(!pc) return;
     const FVector old=GetActorLocation();
     const double surface=Environment->SurfaceZ(old.X,old.Y,Simulation.Data.ElapsedSeconds);
-    const double supportLimit=old.Z-HalfHeight*100+1;
+    // During the prone-to-standing transition, the eye can be above a landing
+    // while the old nominal capsule foot is still below its top. Consider that
+    // nearby support, then raise the body through swept movement before standing.
+    const double supportAllowance=(!bWalking||!PhysicalPose.Walking||bStandingUp)?45:1;
+    const double supportLimit=old.Z-HalfHeight*100+supportAllowance;
     float ground=0; if(!Environment->SupportZ(old.X,old.Y,ground,supportLimit)) { VelocityMetres=FVector::ZeroVector; return; }
-    bWalking=CanStand(old.Z/100,ground/100,surface/100,bWalking);
+    const bool canStand=CanStand(old.Z/100,ground/100,surface/100,bWalking);
+    bStandingUp=canStand&&old.Z<ground+FloorClearance*100-1;
+    bWalking=canStand&&!bStandingUp;
+    if(bStandingUp)
+    {
+        FHitResult lift;
+        MoveWithContacts(FVector(0,0,FMath::Min(ground+FloorClearance*100-old.Z,Step*150.)),lift);
+        VelocityMetres.Z=FMath::Max(0.,VelocityMetres.Z);
+    }
     const double immersion=Immersion(old.Z/100,surface/100);
     if(bWalking)
     {
@@ -29,13 +41,7 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         if(rise>distance*.85+1) { VelocityMetres=FVector::ZeroVector; return; }
         if(rise>=-35) destination.Z=nextGround+FloorClearance*100;
         else { bWalking=false; VelocityMetres.Z=-Dive::Gravity*Step; destination.Z=old.Z+VelocityMetres.Z*100*Step; }
-        FHitResult hit; AddActorWorldOffset(destination-old,true,&hit);
-        if(hit.bBlockingHit)
-        {
-            const FVector remaining=FVector::VectorPlaneProject(destination-old,hit.Normal)*(1-hit.Time);
-            AddActorWorldOffset(remaining,true);
-            VelocityMetres=FVector::VectorPlaneProject(VelocityMetres,hit.Normal);
-        }
+        FHitResult hit; MoveWithContacts(destination-old,hit);
     }
     else
     {
@@ -47,21 +53,17 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         const double fatigue=Simulation.Data.MotorCapacity;
         FVector force=Wish*SwimForceNewtons*(Sprint>0?1.7:1)*fatigue*immersion;
         force.Z+=VerticalForce(Simulation.Data.BuoyancyNewtons,immersion,Simulation.Data.TotalMassKg);
+        if(bStandingUp) force.Z=FMath::Max(0.,force.Z);
         force-=relative*relative.Size()*FMath::Lerp(1.5,static_cast<double>(DragCoefficient),immersion);
         VelocityMetres+=force/Simulation.Data.TotalMassKg*Step;
         VelocityMetres=VelocityMetres.GetClampedToMaxSize(FMath::Lerp(8.,2.5,immersion));
-        FHitResult hit; AddActorWorldOffset(VelocityMetres*100*Step,true,&hit);
-        if(hit.bBlockingHit)
-        {
-            VelocityMetres=FVector::VectorPlaneProject(VelocityMetres,hit.Normal);
-            AddActorWorldOffset(VelocityMetres*100*Step*(1-hit.Time),true);
-        }
+        FHitResult hit; MoveWithContacts(VelocityMetres*100*Step,hit);
     }
     FVector position=GetActorLocation(); float floor=0;
-    if(!Environment->SupportZ(position.X,position.Y,floor,position.Z-HalfHeight*100+1))
-    { SetActorLocation(old); VelocityMetres=FVector::ZeroVector; return; }
-    if(position.Z<floor+FloorClearance*100)
-    { position.Z=floor+FloorClearance*100; VelocityMetres.Z=FMath::Max(0.,VelocityMetres.Z); SetActorLocation(position); }
+    if(!Environment->SupportZ(position.X,position.Y,floor,position.Z-HalfHeight*100+supportAllowance))
+    { FHitResult hit;MoveWithContacts(old-position,hit); VelocityMetres=FVector::ZeroVector; return; }
+    if(bWalking&&position.Z<floor+FloorClearance*100)
+    { FHitResult hit;MoveWithContacts(FVector(0,0,floor+FloorClearance*100-position.Z),hit);VelocityMetres.Z=FMath::Max(0.,VelocityMetres.Z);position=GetActorLocation(); }
     const double nextSurface=Environment->SurfaceZ(position.X,position.Y,Simulation.Data.ElapsedSeconds+Step);
-    bWalking=CanStand(position.Z/100,floor/100,nextSurface/100,bWalking);
+    bWalking=CanStand(position.Z/100,floor/100,nextSurface/100,bWalking)&&position.Z>=floor+FloorClearance*100-1;
 }

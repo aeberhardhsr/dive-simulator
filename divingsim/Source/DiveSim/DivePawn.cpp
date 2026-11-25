@@ -318,6 +318,15 @@ void ADivePawn::StartDive()
     Audio->Reset(); Audio->ApplyLevels(AudioLevels);
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
     bRegulatorInMouth=!PendingConfig.StartOnShore;
+    ResetContactPose();
+    if(!bContactPoseReady)
+    {
+        bDiveActive=false;SetMenu(true);
+        Notify(Local(TEXT("Am Startpunkt ist zu wenig Platz fuer Taucher und Ausruestung. Bitte einen anderen Einstieg waehlen."),
+            TEXT("The start point has insufficient space for the diver and equipment. Please choose another entry.")));
+        if(bSmokeTest) FPlatformMisc::RequestExitWithStatus(false,1);
+        return;
+    }
     Outcome.Empty(); LastLogPath.Empty();
     bLogbook=false; DiveStartedUTC=FDateTime::UtcNow().ToIso8601();
     if(!bSmokeTest) SaveSettings();
@@ -647,6 +656,8 @@ void ADivePawn::SimulateStep(float Step)
     {
         if(!bSmokeTest||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
+        if(SmokeScenario==TEXT("avatar")&&ControlsSmokePhase>=16&&ControlsSmokePhase<=18)
+            return Action==EDiveAction::Ascend?1.f:0.f;
         if(SmokeScenario==TEXT("loadout"))
         {
             if(Action==EDiveAction::Forward) return 1.f;
@@ -696,6 +707,7 @@ void ADivePawn::SimulateStep(float Step)
     const float vertical=Down(EDiveAction::Ascend)-Down(EDiveAction::Descend);
     const float inflate=Down(EDiveAction::Inflate)-Down(EDiveAction::Deflate);
     const float sprint=Down(EDiveAction::Sprint);
+    AdvanceContactPose(Step,FMath::Min(1.f,FVector(forward,side,vertical).Size())*(sprint>0?1.f:.45f));
     const FVector old=GetActorLocation();
     const FRotationMatrix orientation(PC->GetControlRotation());
     FVector wish=orientation.GetUnitAxis(EAxis::X)*forward+orientation.GetUnitAxis(EAxis::Y)*side+FVector::UpVector*vertical;
@@ -723,7 +735,7 @@ void ADivePawn::SimulateStep(float Step)
     VelocityMetres+=force/Simulation.Data.TotalMassKg*Step;
     VelocityMetres=VelocityMetres.GetClampedToMaxSize(2.5f);
     FHitResult hit;
-    AddActorWorldOffset(VelocityMetres*100*Step,true,&hit);
+    MoveWithContacts(VelocityMetres*100*Step,hit);
     if(bSmokeTest&&SmokeScenario==TEXT("loadout")&&!bLoadoutImpulseChecked)
     {
         const double expected=125./Simulation.Data.TotalMassKg*Step*Step*100*std::cos(8*Dive::Pi/180);
@@ -731,11 +743,6 @@ void ADivePawn::SimulateStep(float Step)
         bLoadoutImpulseChecked=true;bLoadoutImpulseValid=!hit.bBlockingHit&&std::abs(moved-expected)<1.e-5;
         UE_LOG(LogTemp,Display,TEXT("DIVE_LOADOUT_IMPULSE_%s mass=%.6f expected_cm=%.9f actual_cm=%.9f"),
             bLoadoutImpulseValid?TEXT("PASS"):TEXT("FAIL"),Simulation.Data.TotalMassKg,expected,moved);
-    }
-    if(hit.bBlockingHit)
-    {
-        VelocityMetres=FVector::VectorPlaneProject(VelocityMetres,hit.Normal);
-        AddActorWorldOffset(VelocityMetres*100*Step*(1-hit.Time),true);
     }
     FVector position=GetActorLocation();
     float bottom=-30000;
@@ -749,8 +756,7 @@ void ADivePawn::SimulateStep(float Step)
     }
     const double nextSurface=Environment->SurfaceZ(position.X,position.Y,now+Step);
     if(position.Z>nextSurface+35) { position.Z=nextSurface+35; VelocityMetres.Z=FMath::Min(0.,VelocityMetres.Z); }
-    position.Z=FMath::Max(position.Z,static_cast<double>(bottom+75));
-    SetActorLocation(position);
+    FHitResult correction;MoveWithContacts(position-GetActorLocation(),correction);
     }
     const FVector position=GetActorLocation();
     if(bSmokeTest&&SmokeScenario==TEXT("shore")&&FMath::Abs(position.Z-old.Z)>20)

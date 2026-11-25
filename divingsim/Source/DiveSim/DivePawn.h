@@ -7,6 +7,8 @@
 #include "Simulation/Tutorial.h"
 #include "DiveControls.h"
 #include "DiveRecording.h"
+#include "DivePose.h"
+#include "DiveContacts.h"
 #include "Simulation/SoakMetrics.h"
 #include "DivePawn.generated.h"
 
@@ -45,6 +47,10 @@ public:
     bool bLoadoutImpulseChecked=false,bLoadoutImpulseValid=false;
     TArray<FDiveSample> Samples;
     FVector VelocityMetres=FVector::ZeroVector;
+    FDivePoseState PhysicalPose;
+    FVector PhysicalEyes() const;
+    int32 BodyContactCount=0,BlockedPoseSteps=0;
+    FName LastBodyContact;
     FVector EntryLocation=FVector(-6500,0,-180);
     TObjectPtr<ADiveWorld> Environment=nullptr;
     UPROPERTY() TObjectPtr<ADiveEquipment> Equipment;
@@ -90,6 +96,13 @@ private:
     FDiveRecordingWriter RecordingWriter;
     float Accumulator=0, TelemetryAccumulator=0;
     double CameraBaseHeight=0;
+    TArray<FDiveContactShape> ContactShapes;
+    bool bContactPoseReady=false,bStandingUp=false;
+    bool bBlockedGaze=false;
+    FRotator RequestedGaze=FRotator::ZeroRotator;
+    void ResetContactPose();
+    void AdvanceContactPose(float Step,float Effort);
+    void MoveWithContacts(const FVector& Delta,FHitResult& Hit);
     bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false, bSmokeSecondaryCaptured=false;
     FString SmokeScenario;
     double SmokeLogbookStarted=0,SmokeLogbookTime=0;

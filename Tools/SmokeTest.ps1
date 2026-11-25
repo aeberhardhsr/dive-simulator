@@ -51,6 +51,7 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }
 if($log -notmatch 'DIVE_LANDSCAPE_PASS') { throw "Landscape asset test failed. See $logPath." }
 if($log -notmatch 'DIVE_MEDIUM_PASS') { throw "Camera medium test failed. See $logPath." }
@@ -62,6 +63,7 @@ if($Scenario -like 'surface*' -or $Scenario -eq 'shore') {
         if($log -notmatch "DIVE_MEDIUM_PASS phase=$phase") { throw "Missing optical phase: $phase" }
     }
 }
+if($Scenario -eq 'shore' -and $log -notmatch 'DIVE_SHORE_SURFACE') { throw 'Shore return did not reach the offshore surface waypoint.' }
 if($DisableNanite -and $log -notmatch 'r.Nanite = "0"') { throw 'Nanite fallback override was not applied.' }
 if($MaxFPS -and $log -notmatch ('t.MaxFPS = "'+$MaxFPS+'"')) { throw 'Requested frame limit was not applied.' }
 if($Scenario -in @('logbook','reserve-loss') -and $log -notmatch 'DIVE_LOGBOOK_PASS') { throw "Logbook smoke test failed. See $logPath." }

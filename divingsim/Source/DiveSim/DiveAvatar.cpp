@@ -119,19 +119,12 @@ FVector ADiveAvatar::Arm(const TCHAR* Side,const FTransform& Wrist)
     const FVector shoulder=Reference[upper].GetLocation(),restElbow=Reference[lower].GetLocation();
     const float sign=restElbow.Y<0?-1.f:1.f;
     const FVector restWrist(0,sign*30,80.4);
-    const double a=FVector::Distance(shoulder,restElbow),b=FVector::Distance(restElbow,restWrist);
-    const FVector requested=GetActorTransform().InverseTransformPosition(Wrist.GetLocation());
-    FVector axis=requested-shoulder;
-    const double distance=FMath::Clamp(axis.Size(),FMath::Abs(a-b)+.01,a+b-.01);axis.Normalize();
-    const FVector target=shoulder+axis*distance;
-    const FVector forearm=GetActorTransform().InverseTransformVectorNoScale(Wrist.GetUnitAxis(EAxis::X));
-    FVector pole=target-forearm*b-shoulder;pole-=axis*FVector::DotProduct(pole,axis);
-    if(!pole.Normalize()) pole=FVector(0,sign,-.3).GetSafeNormal();
-    const double along=(a*a-b*b+distance*distance)/(2*distance);
-    const FVector elbow=shoulder+axis*along+pole*FMath::Sqrt(FMath::Max(0.,a*a-along*along));
-    AimBone(upper,restElbow,shoulder,elbow);AimBone(lower,restWrist,elbow,target);
-    MaxArmLengthError=FMath::Max(MaxArmLengthError,FMath::Max(FMath::Abs(FVector::Distance(shoulder,elbow)-a),FMath::Abs(FVector::Distance(elbow,target)-b)));
-    return GetActorTransform().TransformPosition(target);
+    const auto pose=FDiveArmPose::Solve(shoulder,restElbow,restWrist,GetActorTransform(),Wrist);
+    AimBone(upper,restElbow,pose.Shoulder,pose.Elbow);AimBone(lower,restWrist,pose.Elbow,pose.Wrist);
+    MaxArmLengthError=FMath::Max(MaxArmLengthError,FMath::Max(
+        FMath::Abs(FVector::Distance(pose.Shoulder,pose.Elbow)-FVector::Distance(shoulder,restElbow)),
+        FMath::Abs(FVector::Distance(pose.Elbow,pose.Wrist)-FVector::Distance(restElbow,restWrist))));
+    return GetActorTransform().TransformPosition(pose.Wrist);
 }
 
 void ADiveAvatar::Leg(const TCHAR* Side,float Sign,float Phase)
@@ -139,18 +132,12 @@ void ADiveAvatar::Leg(const TCHAR* Side,float Sign,float Phase)
     const FName thigh=Bone(TEXT("thigh"),Side),shin=Bone(TEXT("shin"),Side);
     if(!Reference.Contains(thigh)||!Reference.Contains(shin)) return;
     const FVector hip=Reference[thigh].GetLocation(),restKnee=Reference[shin].GetLocation(),restAnkle(0,Sign*11,10);
-    const double upper=FVector::Distance(hip,restKnee),lower=FVector::Distance(restKnee,restAnkle);
-    const double wave=FMath::Sin(Phase),walk=1-SwimBlend;
-    const double angle=FMath::DegreesToRadians((walk*17+SwimBlend*12)*wave*MotionBlend);
-    const double bend=FMath::DegreesToRadians((walk*32+SwimBlend*22)*FMath::Max(0.,-wave)*MotionBlend+SwimBlend*10);
-    const FVector knee=hip+FVector(FMath::Sin(angle)*upper,0,-FMath::Cos(angle)*upper);
-    const FVector ankle=knee+FVector(FMath::Sin(angle-bend)*lower,0,-FMath::Cos(angle-bend)*lower);
-    AimBone(thigh,restKnee,hip,knee);AimBone(shin,restAnkle,knee,ankle);
+    FDivePoseState state=Diver->PhysicalPose;
+    if(!Diver->bDiveActive) { state.Swim=SwimBlend;state.Motion=MotionBlend;state.Phase=MotionPhase;state.Walking=false;state.KneeTuck=0; }
+    const auto pose=LegPose(Side,Sign,state,GetActorTransform());
+    AimBone(thigh,restKnee,pose.Hip,pose.Knee);AimBone(shin,restAnkle,pose.Knee,pose.Ankle);
     const int boot=Sign<0?BootL:BootR,fin=Sign<0?FinL:FinR;
-    // Plantar flexion aligns the fin with the extended swimming leg. Keeping
-    // the standing ankle angle would make both blades hang below the diver.
-    const FRotator foot(FMath::RadiansToDegrees(-angle+bend*.6)-SwimBlend*80,Sign*7,0);
-    for(int index:{boot,fin}) { Parts[index]->SetRelativeLocation(ankle-FVector(0,0,2.6));Parts[index]->SetRelativeRotation(foot); }
+    for(int index:{boot,fin}) { Parts[index]->SetRelativeLocation(pose.Ankle-FVector(0,0,2.6));Parts[index]->SetRelativeRotation(pose.Foot); }
     const FVector direction=Parts[fin]->GetUpVector()*(SwimBlend*MotionBlend*3*FMath::Sin(Phase+.5));
     if(FinMaterials[Sign<0?0:1]) FinMaterials[Sign<0?0:1]->SetVectorParameterValue(TEXT("BladeBend"),FLinearColor(direction.X,direction.Y,direction.Z));
 }
@@ -161,18 +148,21 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
     Configure();SetActorHiddenInGame(!Diver->bDiveActive&&!bInspection);
     if(!Diver->bDiveActive&&!bInspection) return;
     if(Diver->bMenu&&Diver->bDiveActive) return; // Pose and animation clock pause together.
-    const float speed=Diver->VelocityMetres.Size();
-    const bool moving=Diver->bDiveActive?(Diver->bWalking?speed>.05:Diver->Simulation.Data.Exertion>.04):(bInspection&&bPreviewSwimming);
-    const FVector eyes=Diver->Camera->GetComponentLocation();float floor=0;
-    const bool nearBed=Diver->Environment&&Diver->Environment->SupportZ(eyes.X,eyes.Y,floor,eyes.Z)&&eyes.Z-floor<170;
-    const bool submerged=Diver->bDiveActive&&Diver->Simulation.Data.DepthMetres>.6;
-    const float swimTarget=!Diver->bDiveActive?(bPreviewSwimming?1.f:0.f):Diver->bWalking?0.f:(moving||nearBed||submerged)?1.f:0.f;
-    SwimBlend=FMath::FInterpTo(SwimBlend,swimTarget,DeltaSeconds,3);
-    MotionBlend=FMath::FInterpTo(MotionBlend,moving?1.f:0.f,DeltaSeconds,5);
-    MotionPhase=Diver->bDiveActive||bPreviewSwimming?FMath::Fmod(MotionPhase+DeltaSeconds*(Diver->bWalking?speed*7:4+4*Diver->Simulation.Data.Exertion),2*PI):0;
-    const auto gaze=Diver->GetControlRotation();
-    const float viewPitch=Diver->bDiveActive?FRotator::NormalizeAxis(gaze.Pitch):0;
-    BodyPitch=FMath::FInterpTo(BodyPitch,FMath::Max(-80*SwimBlend,viewPitch-90),DeltaSeconds,5);
+    const FVector eyes=Diver->bDiveActive?Diver->PhysicalEyes():Diver->Camera->GetComponentLocation();
+    FRotator gaze=Diver->GetControlRotation();float viewPitch=0;
+    if(Diver->bDiveActive)
+    {
+        const auto& pose=Diver->PhysicalPose;
+        SwimBlend=pose.Swim;MotionBlend=pose.Motion;MotionPhase=pose.Phase;BodyPitch=pose.BodyPitch;
+        gaze=pose.Gaze;viewPitch=gaze.Pitch;
+    }
+    else
+    {
+        SwimBlend=FMath::FInterpTo(SwimBlend,bPreviewSwimming?1.f:0.f,DeltaSeconds,3);
+        MotionBlend=FMath::FInterpTo(MotionBlend,bPreviewSwimming?1.f:0.f,DeltaSeconds,5);
+        MotionPhase=bPreviewSwimming?FMath::Fmod(MotionPhase+DeltaSeconds*4,2*PI):0;
+        BodyPitch=FMath::FInterpTo(BodyPitch,-80*SwimBlend,DeltaSeconds,5);
+    }
     const auto frame=FDiveBodyFrame::FromEyes(eyes,BodyPitch,gaze.Yaw,viewPitch);
     BodyPitch=frame.BodyPitch;
     PoseEyes=eyes;PoseGaze=FDiveBodyFrame::View(viewPitch,gaze.Yaw).Vector();
@@ -210,6 +200,72 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
     Parts[Compass]->SetRelativeLocation(compassCenter-heading.RotateVector(compassCenter));
     UpdateHose();
     Suit->RefreshBoneTransforms();++PoseUpdates;
+}
+
+FDiveLegPose ADiveAvatar::LegPose(const TCHAR* Side,float Sign,const FDivePoseState& State,const FTransform& Body) const
+{
+    const FVector hip=Reference[Bone(TEXT("thigh"),Side)].GetLocation(),knee=Reference[Bone(TEXT("shin"),Side)].GetLocation();
+    auto pose=FDiveLegPose::Solve(hip,knee,FVector(0,Sign*11,10),Sign,State.Swim,State.Motion,State.Phase+(Sign<0?0:PI),State.KneeTuck);
+    if(State.Walking&&State.FloorPitch[Sign<0?0:1]>-89)
+    {
+        const FQuat current=Body.GetRotation()*pose.Foot.Quaternion();
+        const double pitch=FMath::Max(static_cast<double>(current.Rotator().Pitch),static_cast<double>(State.FloorPitch[Sign<0?0:1])+3);
+        pose.Foot=(Body.GetRotation().Inverse()*FRotator(pitch,State.Gaze.Yaw+Sign*7,0).Quaternion()).Rotator();
+    }
+    return pose;
+}
+
+void ADiveAvatar::ContactPose(FDivePoseState& State,const FVector& Eyes,TArray<FDiveContactShape>& Shapes,FTransform& Left,FTransform& Right)
+{
+    Configure();Shapes.Reset();
+    const auto frame=FDiveBodyFrame::FromEyes(Eyes,State.BodyPitch,State.Gaze.Yaw,State.Gaze.Pitch);
+    const auto& body=frame.BodyWorld;const FTransform head=frame.HeadLocal*body;
+    auto capsule=[&](FName Name,const FVector& A,const FVector& B,double Radius,const FTransform& Transform)
+    { Shapes.Add(FDiveContactShape::Capsule(Name,Transform.TransformPosition(A),Transform.TransformPosition(B),Radius)); };
+    if(State.Walking) Shapes.Add(FDiveContactShape::Capsule(TEXT("Support"),Eyes-FVector(0,0,142),Eyes-FVector(0,0,18),28));
+    else Shapes.Add(FDiveContactShape::Capsule(TEXT("Support"),Eyes,Eyes,10));
+    capsule(TEXT("Torso"),FVector(0,0,98),FVector(0,0,132),23,body);
+    capsule(TEXT("BCDLeft"),FVector(0,-20,110),FVector(0,-20,130),11,body);
+    capsule(TEXT("BCDRight"),FVector(0,20,110),FVector(0,20,130),11,body);
+    capsule(TEXT("Head"),FVector(0,0,159),FVector(0,0,167),9.5,head);
+    capsule(TEXT("Mouthpiece"),FDiveBodyFrame::Mouth(),FDiveBodyFrame::Mouth(),5,head);
+    Shapes.Add(FDiveContactShape::Bounds(TEXT("Mask"),head,Parts[Mask]->GetStaticMesh()->GetBoundingBox()));
+    const auto cylinder=Parts[Cylinder]->GetRelativeTransform()*body;
+    const auto bounds=Parts[Cylinder]->GetStaticMesh()->GetBoundingBox();
+    const double scale=Parts[Cylinder]->GetRelativeScale3D().X;
+    const double radius=FMath::Max(bounds.GetExtent().X,bounds.GetExtent().Y)*scale;
+    Shapes.Add(FDiveContactShape::Capsule(TEXT("Cylinder"),cylinder.TransformPosition(FVector(0,0,bounds.Min.Z+radius/scale)),
+        cylinder.TransformPosition(FVector(0,0,bounds.Max.Z-radius/scale)),radius));
+    const bool leftIsL=Reference[TEXT("upper_l")].GetLocation().Y<0;
+    const FTransform camera(State.Gaze,Eyes);
+    Left=State.Hand(true)*camera;Right=State.Hand(false)*camera;
+    for(int i=0;i<2;++i)
+    {
+        const float sign=i?1:-1;const TCHAR* side=(i==0)==leftIsL?TEXT("l"):TEXT("r");
+        auto& hand=i?Right:Left;
+        const FVector shoulder=Reference[Bone(TEXT("upper"),side)].GetLocation(),elbow=Reference[Bone(TEXT("lower"),side)].GetLocation();
+        const auto arm=FDiveArmPose::Solve(shoulder,elbow,FVector(0,sign*30,80.4),body,hand);
+        capsule(i?TEXT("RightUpperArm"):TEXT("LeftUpperArm"),arm.Shoulder,arm.Elbow,7,body);
+        capsule(i?TEXT("RightForearm"):TEXT("LeftForearm"),arm.Elbow,arm.Wrist,6,body);
+        hand.SetLocation(body.TransformPosition(arm.Wrist));
+        State.FloorPitch[i]=-90;
+        if(State.Walking&&Diver->Environment)
+        {
+            const auto initial=LegPose(side,sign,State,body);
+            const FVector ankle=body.TransformPosition(initial.Ankle),forward=FRotator(0,State.Gaze.Yaw+sign*7,0).Vector();
+            float heel=0,toe=0;
+            if(Diver->Environment->SupportZ(ankle.X,ankle.Y,heel,ankle.Z)&&
+               Diver->Environment->SupportZ(ankle.X+forward.X*60,ankle.Y+forward.Y*60,toe,ankle.Z+50))
+                State.FloorPitch[i]=FMath::Clamp(FMath::RadiansToDegrees(FMath::Atan2(toe-heel,60.)),-40.,40.);
+        }
+        const auto leg=LegPose(side,sign,State,body);
+        capsule(i?TEXT("RightThigh"):TEXT("LeftThigh"),leg.Hip,leg.Knee,9,body);
+        capsule(i?TEXT("RightShin"):TEXT("LeftShin"),leg.Knee,leg.Ankle,6,body);
+        const FTransform foot=FTransform(leg.Foot,leg.Ankle-FVector(0,0,2.6))*body;
+        Shapes.Add(FDiveContactShape::Bounds(i?TEXT("RightBoot"):TEXT("LeftBoot"),foot,Parts[i?BootR:BootL]->GetStaticMesh()->GetBoundingBox()));
+        auto fin=Parts[i?FinR:FinL]->GetStaticMesh()->GetBoundingBox();fin.Min.Z-=3;fin.Max.Z+=3;
+        Shapes.Add(FDiveContactShape::Bounds(i?TEXT("RightFin"):TEXT("LeftFin"),foot,fin));
+    }
 }
 
 void ADiveAvatar::UpdateHose()

@@ -1,6 +1,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "DivePose.h"
+#include "DiveContacts.h"
 #include "DiveAvatar.generated.h"
 
 class ADivePawn;
@@ -24,6 +26,7 @@ public:
     void Initialize(ADivePawn* Pawn);
     void UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComponent* Right);
     bool Validate(FString& Error) const;
+    void ContactPose(FDivePoseState& Pose,const FVector& Eyes,TArray<FDiveContactShape>& Shapes,FTransform& Left,FTransform& Right);
     void SetInspection(bool Enabled);
     bool IsInspection() const { return bInspection; }
     UTextureRenderTarget2D* InspectionImage();
@@ -54,5 +57,6 @@ private:
     void AimBone(FName Name,const FVector& RestEnd,const FVector& Start,const FVector& End);
     FVector Arm(const TCHAR* Side,const FTransform& Wrist);
     void Leg(const TCHAR* Side,float Sign,float Phase);
+    FDiveLegPose LegPose(const TCHAR* Side,float Sign,const FDivePoseState& Pose,const FTransform& Body) const;
     void UpdateHose();
 };

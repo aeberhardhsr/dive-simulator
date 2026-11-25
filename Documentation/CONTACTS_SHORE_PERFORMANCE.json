@@ -1,0 +1,169 @@
+{
+  "metadata": {
+    "scenario": "perf-shore",
+    "csv": "O:/games/dive game/Builds/WindowsContacts/divingsim/Saved/Performance/perf-shore_1EA1F501/Capture.csv",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+    "engine": "5.8.4-58902052+++UE5+Release-5.8",
+    "width": 1920,
+    "height": 1080,
+    "quality": 2,
+    "warmup_seconds": 15,
+    "requested_capture_seconds": 60,
+    "simulation_seconds": 75.01999832317233,
+    "distance_m": 0,
+    "depth_m": 0,
+    "walking": true,
+    "r.ScreenPercentage": 100,
+    "r.SecondaryScreenPercentage.GameViewport": 100,
+    "r.DynamicRes.OperationMode": 0,
+    "r.VSync": 0,
+    "t.MaxFPS": 0,
+    "sg.ViewDistanceQuality": 2,
+    "sg.AntiAliasingQuality": 2,
+    "sg.ShadowQuality": 2,
+    "sg.GlobalIlluminationQuality": 2,
+    "sg.ReflectionQuality": 2,
+    "sg.PostProcessQuality": 2,
+    "sg.TextureQuality": 2,
+    "sg.EffectsQuality": 2,
+    "sg.FoliageQuality": 2
+  },
+  "host": {
+    "started_utc": "2026-11-25T21:22:44.8629902Z",
+    "editor": false,
+    "background_processes": [],
+    "gpu_before": [
+      "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+      "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2743 MiB, 6 %"
+    ]
+  },
+  "frames": 5883,
+  "discarded_boundary_frames": 2,
+  "measured_seconds": 59.9750416,
+  "average_fps": 98.09080315835914,
+  "one_percent_low_fps": 82.42916226404128,
+  "frame": {
+    "mean_ms": 10.194635662077172,
+    "p50_ms": 10.1615,
+    "p95_ms": 11.3208,
+    "p99_ms": 11.8607,
+    "max_ms": 14.3866
+  },
+  "game_thread": {
+    "mean_ms": 1.7648398946115926,
+    "p50_ms": 1.751,
+    "p95_ms": 2.1568,
+    "p99_ms": 2.4759,
+    "max_ms": 4.5912
+  },
+  "render_thread": {
+    "mean_ms": 10.188194492605813,
+    "p50_ms": 10.1527,
+    "p95_ms": 11.3047,
+    "p99_ms": 11.8376,
+    "max_ms": 14.4386
+  },
+  "rhi_thread": {
+    "mean_ms": 2.4561589665136836,
+    "p50_ms": 2.4192,
+    "p95_ms": 2.9662,
+    "p99_ms": 3.6182,
+    "max_ms": 6.0441
+  },
+  "gpu": {
+    "mean_ms": 9.646761788203298,
+    "p50_ms": 9.6136,
+    "p95_ms": 10.64,
+    "p99_ms": 10.9806,
+    "max_ms": 12.5596
+  },
+  "frames_over_16_67_ms": 0,
+  "frames_over_33_33_ms": 0,
+  "frames_over_100_ms": 0,
+  "all_frames_within_30fps_budget": true,
+  "memory_mb": {
+    "start": 2446.5625,
+    "end": 2425.3828,
+    "max": 2453.7773
+  },
+  "terrain_chunks": {
+    "min": 9.0,
+    "max": 9.0,
+    "frames_below_nine": 0
+  },
+  "distance_m": 0.0,
+  "top_gpu_passes_ms_not_additive": [
+    {
+      "name": "GPU/ShadowDepths",
+      "mean_ms": 1.895069675335713
+    },
+    {
+      "name": "GPU/VolumetricCloudShadow",
+      "mean_ms": 1.179121060683325
+    },
+    {
+      "name": "GPU/Unaccounted",
+      "mean_ms": 0.7934143974162842
+    },
+    {
+      "name": "GPU/TemporalSuperResolution",
+      "mean_ms": 0.6884987421383648
+    },
+    {
+      "name": "GPU/Basepass",
+      "mean_ms": 0.569571324154343
+    },
+    {
+      "name": "GPU/NaniteVisBuffer",
+      "mean_ms": 0.4202185279619242
+    },
+    {
+      "name": "GPU/LumenReflections",
+      "mean_ms": 0.4009855175930648
+    },
+    {
+      "name": "GPU/ShadowProjection",
+      "mean_ms": 0.38776338602753696
+    },
+    {
+      "name": "GPU/GlobalDistanceFieldUpdate",
+      "mean_ms": 0.295548597654258
+    },
+    {
+      "name": "GPU/LumenSceneUpdate",
+      "mean_ms": 0.2806374808771035
+    },
+    {
+      "name": "GPU/Postprocessing",
+      "mean_ms": 0.25611677715451303
+    },
+    {
+      "name": "GPU/RenderDeferredLighting",
+      "mean_ms": 0.2181982151963284
+    }
+  ],
+  "executable_sha256": "18a01ee6dad21e4e6d7b669c90ee7b8139c112aeb872adbeda06eebcbf5229e3",
+  "evidence": {
+    "Capture.csv": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-shore-1080p-q2-20261125-222244-862\\Capture.csv",
+      "sha256": "f8ec691cc51d3fd8650acfa73be748c679e774422e7b60095147703561c648a5"
+    },
+    "Metadata.json": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-shore-1080p-q2-20261125-222244-862\\Metadata.json",
+      "sha256": "e08fbd654bc2f9ea396edea935d27a88b0b409ddb84fedf5e116f373081ac29c"
+    },
+    "Frame.png": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-shore-1080p-q2-20261125-222244-862\\Frame.png",
+      "sha256": "142f35482ef46e16618e819b35bc954dcaf25d0ecfba8848d0af6dcbde16b853"
+    },
+    "Runtime.log": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-shore-1080p-q2-20261125-222244-862\\Runtime.log",
+      "sha256": "f71a294fbf2c63917d1e32c620ec8ae9f12f52b6d84c4cc9fa252a89743aa044"
+    },
+    "Host.json": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-shore-1080p-q2-20261125-222244-862\\Host.json",
+      "sha256": "24bfd380f90f19c23cdc0e31cc700c855158425804c232b8d1b05221b9ebabf3"
+    }
+  }
+}
