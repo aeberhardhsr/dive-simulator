@@ -17,6 +17,7 @@ namespace
 {
 const TCHAR* EquipmentNames[]={TEXT("SM_LeftSleeve"),TEXT("SM_LeftGlove"),TEXT("SM_WristComputer"),
     TEXT("SM_RightSleeve"),TEXT("SM_RightGlove"),TEXT("SM_DiveTorch")};
+const TCHAR* TorchMeshes[]={TEXT("SM_DiveTorch"),TEXT("SM_TorchSpot"),TEXT("SM_TorchWide")};
 FString Clock(double Seconds)
 { const int32 s=FMath::Max(0,FMath::FloorToInt(Seconds)); return FString::Printf(TEXT("%02d:%02d"),s/60,s%60); }
 }
@@ -84,6 +85,12 @@ void ADiveEquipment::Update(float DeltaSeconds)
     if(!Diver) return;
     SetActorHiddenInGame(!Diver->bDiveActive||Diver->bMenu);
     if(!Diver->bDiveActive||Diver->bMenu) return;
+    if(TorchModel!=Diver->PendingConfig.TorchModel)
+    {
+        TorchModel=Diver->PendingConfig.TorchModel;
+        const FString name=TorchMeshes[TorchModel];
+        Meshes[5]->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
+    }
     if(SuitMaterial) SuitMaterial->SetScalarParameterValue(TEXT("DrySuit"),Diver->PendingConfig.DrySuit?1.f:0.f);
     const float sleeveScale=Diver->PendingConfig.DrySuit?1.f:.9f;
     Meshes[0]->SetRelativeScale3D(FVector(1,sleeveScale,sleeveScale));
@@ -111,7 +118,7 @@ bool ADiveEquipment::Validate(FString& Error) const
 {
     if(!Display||!ScreenMaterial||!Font) { Error=TEXT("Missing wrist display resources"); return false; }
     for(int32 i=0;i<Meshes.Num();++i)
-        if(!Meshes[i]->GetStaticMesh()||Meshes[i]->GetStaticMesh()->GetName()!=EquipmentNames[i])
+        if(!Meshes[i]->GetStaticMesh()||Meshes[i]->GetStaticMesh()->GetName()!=(i==5&&TorchModel>=0?TorchMeshes[TorchModel]:EquipmentNames[i]))
         { Error=TEXT("Missing equipment mesh"); return false; }
     if(Diver&&Diver->Simulation.Data.ElapsedSeconds>1&&
        (DisplayUpdates<1||Diver->Simulation.Data.ElapsedSeconds-DisplayState.ElapsedSeconds>.5))

@@ -8,6 +8,7 @@
 #include <cstdint>
 #include "Weather.h"
 #include "ScenarioClock.h"
+#include "Torch.h"
 
 namespace Dive
 {
@@ -49,6 +50,7 @@ struct Config
     double PlannedMinutes = 30.0;
     double Hour = 13.0;
     CivilDate Date;
+    int TorchModel=0;
     double WindMetresPerSecond = 3.0;
     double WindDirectionDegrees = 90.0;
     double ThermoclineMetres = 10.0;
@@ -80,6 +82,7 @@ struct Config
         clean(WindMetresPerSecond,3,0,WeatherScenario::MaximumWind); clean(WindDirectionDegrees,90,0,359.99);
         clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
         Weather=std::clamp(Weather,0,WeatherScenario::Count-1);
+        TorchModel=std::clamp(TorchModel,0,Torch::Count-1);
     }
 };
 
@@ -210,7 +213,7 @@ private:
         const double suppliedTarget=hasBreathingSupply?saturationTarget:std::min(s.SpO2,saturationTarget);
         s.SpO2=Approach(s.SpO2,unlimited?98:suppliedTarget,hasBreathingSupply?.08:.035,dt);
         s.DistanceMetres+=std::max(0.0,distance);
-        if(lamp) s.LampBattery=std::max(0.0,s.LampBattery-dt/72);
+        s.LampBattery=Torch::At(Settings.TorchModel).BatteryAfter(s.LampBattery,dt,lamp);
         if(s.MaxDepthMetres>10 && depth>=3 && depth<=6 && std::abs(vz)<.2)
             s.StopRemainingSeconds=std::max(0.0,s.StopRemainingSeconds-dt);
         if(depth>10) s.StopRemainingSeconds=180;

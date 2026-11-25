@@ -313,6 +313,11 @@ void ADiveWorld::UpdateAtmosphere()
     fog->SetDirectionalInscatteringColor(FLinearColor::Black);
     fog->SetSkyAtmosphereAmbientContributionColorScale(FLinearColor(1-water,1-water,1-water));
     fog->SetVolumetricFogAlbedo(FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB());
+    // Concentrate underwater froxels on the visible water, instead of kilometres
+    // of atmosphere; native shadowed volumetrics provide the torch beam.
+    fog->SetVolumetricFogDistance(FMath::Lerp(60000.f,static_cast<float>(FMath::Clamp(static_cast<double>(VisibleDistance)*200,1000.,8000.)),water));
+    fog->SetVolumetricFogStartDistance(0);
+    fog->SetVolumetricFogNearFadeInDistance(10);
 }
 
 void ADiveWorld::EmitBreath(const FVector& Position,const FVector& Direction,float Pressure)
@@ -382,11 +387,15 @@ void ADiveWorld::Tick(float DeltaSeconds)
         Bubbles->AddInstance(FTransform(FRotator::ZeroRotator,b.Position,FVector(radius)));
     }
     Particles->ClearInstances();
-    for(int i=0;i<160;++i)
+    FRandomStream field(62419);
+    for(int i=0;i<640;++i)
     {
-        const float seed=i*137.5f;
-        const FVector relative(FMath::Fmod(seed*17+WorldTime*2,2400.f)-1200,
-            FMath::Fmod(seed*11+WorldTime*Flow*100,2400.f)-1200,FMath::Fmod(seed*7,1400.f)-700);
-        Particles->AddInstance(FTransform(FRotator::ZeroRotator,player+relative,FVector(.0018f)));
+        const float x=field.FRand()*800, y=field.FRand()*800, z=field.FRand()*800;
+        // Wrap a fixed world-space field around the diver. Translation of the
+        // camera must not drag every nearby speck along with it.
+        auto wrap=[](float value,float centre) { return centre+FMath::Fmod(FMath::Fmod(value-centre+400,800.f)+800,800.f)-400; };
+        const FVector position(wrap(x+WorldTime*2,player.X),wrap(y+WorldTime*Flow*100,player.Y),wrap(z,player.Z));
+        if(position.Z<SurfaceZ(position.X,position.Y))
+            Particles->AddInstance(FTransform(FRotator::ZeroRotator,position,FVector(.001f+(i%5)*.0005f)));
     }
 }

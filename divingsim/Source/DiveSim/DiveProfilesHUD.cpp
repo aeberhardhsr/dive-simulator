@@ -175,7 +175,9 @@ void ADiveHUD::ProfilesMenu()
     Text(FString::Printf(TEXT("%s %.1f m   /   %s %.2f m/s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,Diver->bEnglish?TEXT("Current"):TEXT("Stroemung"),c.CurrentMetresPerSecond),585,445,19,White);
     Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s %.1f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
     Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphaere"),c.SurfacePressureBar),585,525,20,White);
-    if(selected&&DiveConfigIO::Equal(c,entry,Diver->PendingConfig,Diver->EntryIndex)) Text(L(TEXT("Entspricht dem aktuellen Tauchplan."),TEXT("Matches the current dive plan.")),585,580,16,Accent);
+    const auto& torch=Dive::Torch::At(c.TorchModel);
+    Text(FString::Printf(TEXT("%s: %s / %.0f lm / %.0f deg / %.0f min"),Diver->bEnglish?TEXT("Torch"):TEXT("Lampe"),UTF8_TO_TCHAR(torch.Name),torch.Lumens,2*torch.OuterDegrees,torch.RuntimeMinutes),585,563,18,White);
+    if(selected&&DiveConfigIO::Equal(c,entry,Diver->PendingConfig,Diver->EntryIndex)) Text(L(TEXT("Entspricht dem aktuellen Tauchplan."),TEXT("Matches the current dive plan.")),585,602,16,Accent);
     if(Diver->bDiveActive) Text(L(TEXT("Laden ist erst nach Ende des laufenden Tauchgangs moeglich."),TEXT("Loading is available after the current dive ends.")),560,645,16,Amber);
     if(selected)
     {

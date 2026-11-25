@@ -1,15 +1,19 @@
-param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','logbook','audio','controls','tutorial','profiles','config','shore-preview','shore','breathing','reserve-loss')][string]$Scenario='dive',
+param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','config','shore-preview','shore','breathing','reserve-loss')][string]$Scenario='dive',
     [string]$PackageDirectory='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
+    [ValidateRange(0,2)][int]$Torch=0,
+    [ValidateRange(2,40)][double]$Visibility=14,
+    [ValidateRange(0,100)][double]$Battery=100,
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
+if($EditorSandbox) { $project=Join-Path $repo 'Builds/EditorSandbox/divingsim/divingsim.uproject' }
 $logPath=Join-Path $repo 'artifacts/DiveSmoke.log'
 New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $arguments='-DiveSmokeTest -windowed -ResX=1600 -ResY=900 -nosplash -unattended -abslog="{0}"' -f $logPath
@@ -24,6 +28,8 @@ if($HideSky) { $arguments+=' -DiveHideSky='+$HideSky }
 if($CelestialReferences) { $arguments+=' -DiveCelestialReferences' }
 if($PSBoundParameters.ContainsKey('Hour')) { $arguments+=' -DiveHour='+$Hour.ToString([Globalization.CultureInfo]::InvariantCulture) }
 if($Date) { $arguments+=" -DiveDate=$Date" }
+$arguments+=' -DiveTorch='+$Torch+' -DiveTorchBattery='+$Battery.ToString([Globalization.CultureInfo]::InvariantCulture)
+if($PSBoundParameters.ContainsKey('Visibility')) { $arguments+=' -DiveVisibility='+$Visibility.ToString([Globalization.CultureInfo]::InvariantCulture) }
 $executable="$EngineRoot/Engine/Binaries/Win64/UnrealEditor.exe"
 if($Packaged) {
     if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' }
@@ -61,9 +67,9 @@ if($CelestialReferences -and $log -notmatch 'DIVE_CELESTIAL_PASS references=6') 
 if($Scenario -eq 'config' -and $log -notmatch 'DIVE_CONFIG_PASS') { throw "Configuration smoke test failed. See $logPath." }
 if($Scenario -eq 'profiles' -and $log -notmatch 'DIVE_PROFILES_PASS') { throw "Profile smoke test failed. See $logPath." }
 if($Scenario -in @('shore-preview','shore') -and $log -notmatch 'DIVE_SHORE_PASS') { throw "Shore test failed. See $logPath." }
-if($Scenario -in @('controls','tutorial','profiles','config','surface-storm','daycycle','shore-preview','shore','breathing','reserve-loss')) {
-    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path $repo 'divingsim/Saved/Screenshots' }
-    $images=if($Scenario -eq 'daycycle') { $startHour=if($PSBoundParameters.ContainsKey('Hour')) { [int][Math]::Floor($Hour) } else { 17 }; @('Before','After') | ForEach-Object { 'DayCycle_{0}_{1:00}' -f $_,$startHour } } elseif($Scenario -eq 'surface-storm') { @('DiveUnderwater','SurfaceAir','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_surface-storm" } } elseif($Scenario -eq 'config') { @('ConfigPressure_DE','ConfigRange_DE','ConfigTime_DE','ConfigValues_DE','ConfigAir_EN','ConfigValues_EN','ConfigDate_EN','ConfigDateValues_EN','ConfigSpringGap_EN') } elseif($Scenario -eq 'reserve-loss') { @('Reserve_Short','Reserve_Low','Reserve_Summary','Logbook_0','Logbook_1','Logbook_2','Logbook_3') } elseif($Scenario -eq 'breathing') { @('Breathing_NoSupply','Breathing_Air') } elseif($Scenario -eq 'controls') { @('Controls_DE','Controls_EN') } elseif($Scenario -eq 'profiles') { @('ProfileName','Profiles_DE','ProfileDuplicate','ProfilesArchive','ProfilesActive','Profiles_EN') } elseif($Scenario -eq 'shore-preview') { @("Shore_$Entry") } elseif($Scenario -eq 'shore') { @('ShoreStart','ShoreWater','ShoreDive','ShoreReturn','ShoreComplete','ShoreMenu') | ForEach-Object { "$($_)_$Entry" } } else { (0..7 | ForEach-Object { "Tutorial_$_" })+@('TutorialMap','TutorialComplete') }
+if($Scenario -in @('controls','tutorial','profiles','config','torch','surface-storm','daycycle','shore-preview','shore','breathing','reserve-loss')) {
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    $images=if($Scenario -eq 'torch') { @('DiveUnderwater','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_torch" } } elseif($Scenario -eq 'daycycle') { $startHour=if($PSBoundParameters.ContainsKey('Hour')) { [int][Math]::Floor($Hour) } else { 17 }; @('Before','After') | ForEach-Object { 'DayCycle_{0}_{1:00}' -f $_,$startHour } } elseif($Scenario -eq 'surface-storm') { @('DiveUnderwater','SurfaceAir','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_surface-storm" } } elseif($Scenario -eq 'config') { @('ConfigPressure_DE','ConfigRange_DE','ConfigTime_DE','ConfigValues_DE','ConfigAir_EN','ConfigValues_EN','ConfigDate_EN','ConfigDateValues_EN','ConfigSpringGap_EN','ConfigTorch_EN') } elseif($Scenario -eq 'reserve-loss') { @('Reserve_Short','Reserve_Low','Reserve_Summary','Logbook_0','Logbook_1','Logbook_2','Logbook_3') } elseif($Scenario -eq 'breathing') { @('Breathing_NoSupply','Breathing_Air') } elseif($Scenario -eq 'controls') { @('Controls_DE','Controls_EN') } elseif($Scenario -eq 'profiles') { @('ProfileName','Profiles_DE','ProfileDuplicate','ProfilesArchive','ProfilesActive','Profiles_EN') } elseif($Scenario -eq 'shore-preview') { @("Shore_$Entry") } elseif($Scenario -eq 'shore') { @('ShoreStart','ShoreWater','ShoreDive','ShoreReturn','ShoreComplete','ShoreMenu') | ForEach-Object { "$($_)_$Entry" } } else { (0..7 | ForEach-Object { "Tutorial_$_" })+@('TutorialMap','TutorialComplete') }
     foreach($name in $images) {
         $capture=Get-Item -LiteralPath (Join-Path $saved "$name.png")
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh screenshot: $name" }

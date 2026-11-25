@@ -91,5 +91,7 @@ plant=mesh_object('SM_Pondweed',verts,faces,colors)
 export(plant)
 from create_equipment_assets import create_equipment
 create_equipment(mesh_object,export)
+from create_torch_assets import create_torches
+create_torches()
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'blender'/'DivingAssets.blend'))
 print('DIVE_ASSETS_OK', OUT)

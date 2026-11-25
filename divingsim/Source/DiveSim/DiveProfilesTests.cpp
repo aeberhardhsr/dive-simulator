@@ -20,7 +20,7 @@ Dive::Config Varied()
     Dive::Config c; c.GameMode=Dive::Mode::Hardcore; c.CylinderLitres=15; c.StartPressureBar=213.5; c.OxygenFraction=.32;
     c.WeightKg=7.5; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7; c.AirTemperatureC=-3.5;
     c.VisibilityMetres=8; c.CurrentMetresPerSecond=.17; c.PlannedDepthMetres=22.5; c.PlannedMinutes=47;
-    c.Date={2024,2,29}; c.Hour=23+59./60; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
+    c.TorchModel=2; c.Date={2024,2,29}; c.Hour=23+59./60; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
     c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; c.StartOnShore=true; return c;
 }
 }
@@ -44,6 +44,16 @@ bool FDiveConfigPersistence::RunTest(const FString&)
     Dive::Config restored; int entry=0; FString error;
     TestTrue(TEXT("Strict complete config loads"),DiveConfigIO::Read(obj,restored,entry,true,error));
     TestTrue(TEXT("Every config field and entry roundtrips"),DiveConfigIO::Equal(original,2,restored,entry));
+    obj->RemoveField(TEXT("torch_model"));
+    TestTrue(TEXT("Legacy torch defaults load"),DiveConfigIO::Read(obj,restored,entry,true,error));
+    TestEqual(TEXT("Legacy allround torch"),restored.TorchModel,0);
+    for(double invalid:{-1.,1.5,3.,999.})
+    {
+        const auto before=restored;obj->SetNumberField(TEXT("torch_model"),invalid);
+        TestFalse(TEXT("Invalid torch is rejected"),DiveConfigIO::Read(obj,restored,entry,true,error));
+        TestTrue(TEXT("Invalid torch is atomic"),DiveConfigIO::Equal(before,2,restored,entry));
+    }
+    DiveConfigIO::Write(obj,original,2);
     obj->RemoveField(TEXT("scenario_date"));
     TestTrue(TEXT("Legacy profile without date loads"),DiveConfigIO::Read(obj,restored,entry,true,error));
     TestTrue(TEXT("Legacy summer date defaults"),restored.Date==Dive::CivilDate{});

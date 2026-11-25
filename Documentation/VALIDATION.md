@@ -2,6 +2,8 @@
 
 Stand: 25. November 2026. Windows 11, Unreal Engine 5.8.4, MSVC 14.44, Windows SDK 10.0.22621. Lokaler Entwicklungsrechner; keine allgemeine Hardwarefreigabe.
 
+Aktueller Lampenstand: `Builds/WindowsTorch/divingsim.exe`. Drei auswählbare Gehäuse/Kegel mit Akkulaufzeiten und Wasserwegdämpfung sind integriert. Alle 15 Paketfälle bestehen mit 46 frischen PNGs; die unabhängige Auswertung bestätigt exportierte Modell-/Akkuwerte sowie sichtbare Reaktionen auf Lampenwahl, Restladung und Sichtweite. Kernsimulation, 15 Python-Tests, drei Unreal-Profiltests und der normale Root-Starter bestehen. Die 60-Sekunden-Messung in 1080p/Qualität 2 erreicht 88,83 FPS im Mittel und 69,59 FPS im langsamsten Prozent, mit einem Bild über 33,33 ms. Details, echte Aufnahmen und Grenzen: [TORCHES.md](TORCHES.md), maschinelle Ergebnisse: [TORCH_RESULTS.json](TORCH_RESULTS.json). Die folgenden Abschnitte dokumentieren zusätzlich frühere Inkremente; sie sind keine erneute Gesamtprüfung des neuesten Builds.
+
 | Prüfung | Ergebnis |
 |---|---|
 | Engineunabhängiger C++-Kern | Bestanden: 0 Fehler bei Druck, Gas, BCD, Kopplungen, Geweben, Stopptimer, Sanitierung, Rasterabfragen über Kachelgrenzen sowie Fisch-/Pflanzen-Habitatgrenzen |

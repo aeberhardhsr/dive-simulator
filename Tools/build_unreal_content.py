@@ -198,7 +198,7 @@ if not ONLY_WATER:
     material('M_Rain',(.12,.16,.18),.2,translucent=True,opacity=.35,unlit=True)
 if not ONLY_ENVIRONMENT:
     material('M_Bubble',(.4,.7,.65),.06,translucent=True,opacity=.21)
-    material('M_Particle',(.18,.32,.26),1,unlit=True)
+    material('M_Particle',(.45,.52,.43),1)
     material('M_Buoy',(.9,.22,.045),.35)
     material('M_Rope',(.65,.62,.42),.9)
 
@@ -260,6 +260,8 @@ if not ONLY_ENVIRONMENT:
     TOOLS.import_asset_tasks(tasks)
     import sys
     sys.path.insert(0,str(ROOT/'Tools'))
+    from build_torch_content import build_torch
+    build_torch()
     from build_audio_content import import_audio
     import_audio()
     from build_shore_content import build_shore_material

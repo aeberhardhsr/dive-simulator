@@ -2,18 +2,21 @@ param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
     [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
+    [switch]$EditorSandbox,
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
     [switch]$OnlyAudio,
     [switch]$OnlyShore,
     [switch]$OnlyImagery,
     [switch]$OnlyOptics,
+    [switch]$OnlyTorch,
     [switch]$OnlyBed,
     [switch]$OnlyWater
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $repo 'divingsim/divingsim.uproject'
+if($EditorSandbox) { . (Join-Path $PSScriptRoot 'PrepareEditorSandbox.ps1'); $project=Get-DiveEditorSandbox }
 if($BuildSlot -and $Target -notin @('Game','Package')) { throw 'BuildSlot applies to Game or Package only.' }
 $slotOptions=@()
 $ubtOptions='-NoUBA -MaxParallelActions=2 -NoHotReloadFromIDE'
@@ -33,6 +36,7 @@ if ($Target -eq 'Content') {
     if($OnlyShore) { $script=Join-Path $PSScriptRoot 'build_shore_content.py' }
     if($OnlyImagery) { $script=Join-Path $PSScriptRoot 'build_imagery_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
+    if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
     if($OnlyBed) { $script=Join-Path $PSScriptRoot 'build_bed_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }

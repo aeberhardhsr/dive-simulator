@@ -39,5 +39,6 @@ private:
     float DisplayTimer=0, Heading=0;
     bool bEnglish=false, bUnlimited=false;
     int32 Page=0;
+    int32 TorchModel=INDEX_NONE;
     UFUNCTION() void DrawDisplay(UCanvas* Canvas,int32 Width,int32 Height);
 };

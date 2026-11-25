@@ -1,7 +1,8 @@
-param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8')
+param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8',[switch]$EditorSandbox)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
+if($EditorSandbox) { $project=Join-Path $repo 'Builds/EditorSandbox/divingsim/divingsim.uproject' }
 $logPath=Join-Path $repo 'artifacts/ProfileTests.log'
 $reportPath=Join-Path $repo 'artifacts/ProfileTests'
 New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null

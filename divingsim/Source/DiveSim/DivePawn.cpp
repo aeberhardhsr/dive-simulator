@@ -51,6 +51,10 @@ ADivePawn::ADivePawn()
     Lamp->SetInnerConeAngle(12); Lamp->SetOuterConeAngle(27);
     Lamp->SetLightColor(FLinearColor(.8f,.92f,1));
     Lamp->SetCastShadows(true);
+    Lamp->bUseInverseSquaredFalloff=true;
+    Lamp->SetCastVolumetricShadow(true);
+    Lamp->SetVolumetricScatteringIntensity(1);
+    Lamp->SetLightFunctionFadeDistance(100000);
     Audio=CreateDefaultSubobject<UDiveAudio>(TEXT("DiveAudio"));
     AutoPossessPlayer=EAutoReceiveInput::Player0;
 }
@@ -72,8 +76,14 @@ void ADivePawn::BeginPlay()
         }
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
+        if(SmokeScenario==TEXT("torch"))
+        { PendingConfig.Hour=23; PendingConfig.Date={2026,12,23}; PendingConfig.CurrentMetresPerSecond=0; PendingConfig.WindMetresPerSecond=0; PendingConfig.AutoBuoyancy=true; }
         if(SmokeScenario==TEXT("daycycle")) { PendingConfig.Hour=17+59./60; PendingConfig.WindMetresPerSecond=0; }
         FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
+        FParse::Value(FCommandLine::Get(),TEXT("DiveTorch="),PendingConfig.TorchModel);
+        FParse::Value(FCommandLine::Get(),TEXT("DiveVisibility="),PendingConfig.VisibilityMetres);
+        if(PendingConfig.TorchModel<0||PendingConfig.TorchModel>=Dive::Torch::Count)
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL invalid DiveTorch")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         FString scenarioDate;
         if(FParse::Value(FCommandLine::Get(),TEXT("DiveDate="),scenarioDate)&&!Dive::CivilDate::Parse(TCHAR_TO_UTF8(*scenarioDate),PendingConfig.Date))
         { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL invalid DiveDate")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
@@ -141,6 +151,8 @@ void ADivePawn::BeginPlay()
             else if(SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
+            double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
+            Simulation.Data.LampBattery=FMath::Clamp(battery,0.,100.);
         }
         else { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL missing terrain")); FPlatformMisc::RequestExitWithStatus(false,1); }
     }
@@ -259,12 +271,24 @@ void ADivePawn::StartDive()
     Environment->SetEntry(EntryIndex,PendingConfig.StartOnShore);
     const auto& entry=Environment->Terrain.EntryList(PendingConfig.StartOnShore)[EntryIndex];
     EntryLocation=PendingConfig.StartOnShore?Environment->ShoreStart(EntryIndex):entry.Position;
+    if(bSmokeTest&&SmokeScenario==TEXT("torch"))
+    {
+        bool found=false;
+        for(int i=0;i<100;++i)
+        {
+            const FVector candidate=entry.Position+FRotator(0,entry.Yaw,0).Vector()*(i*100);
+            float bed=0;
+            if(Environment->Terrain.Sample(candidate.X,candidate.Y,bed)&&bed<-700&&bed>-6000)
+            { EntryLocation=candidate;EntryLocation.Z=bed+300;found=true;break; }
+        }
+        if(!found) { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL no submerged torch test location")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+    }
     Body->SetCapsuleHalfHeight(PendingConfig.StartOnShore?Dive::ShoreMovement::HalfHeight*100:65);
     CameraBaseHeight=PendingConfig.StartOnShore?Dive::ShoreMovement::EyeOffset*100:0;
     Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight));
     bWalking=PendingConfig.StartOnShore; bEnteredWater=false;
     SetActorLocation(EntryLocation); VelocityMetres=FVector::ZeroVector;
-    if(auto* PC=Cast<APlayerController>(GetController())) PC->SetControlRotation(FRotator(-8,entry.Yaw,0));
+    if(auto* PC=Cast<APlayerController>(GetController())) PC->SetControlRotation(FRotator(bSmokeTest&&SmokeScenario==TEXT("torch")?-55:-8,entry.Yaw,0));
     // Start trimmed at entry depth; later depth changes require manual compensation.
     const double pressure=Simulation.Pressure(Environment->PressureDepth(EntryLocation,0));
     const double suit=(PendingConfig.DrySuit?3:5)/std::pow(pressure/PendingConfig.SurfacePressureBar,.7);
@@ -423,6 +447,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
+    UpdateTorch(); // Current battery output before diagnostics; attachment is refreshed again after camera motion.
     const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:(SmokeScenario==TEXT("stream")||SmokeScenario==TEXT("daycycle"))?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
     if(bSmokeTest && bDiveActive)
     {
@@ -469,7 +494,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("torch")&&SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
         if(SmokeScenario.StartsWith(TEXT("wrist")))
         {
             const double t=Simulation.Data.ElapsedSeconds;
@@ -484,9 +509,19 @@ void ADivePawn::Tick(float DeltaSeconds)
     }
     if(bSmokeTest && !bPerformance && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
     {
-        if(Lamp->IntensityUnits!=ELightUnits::Lumens||FMath::Abs(Lamp->Intensity-1000)>.01f||Lamp->IsVisible()!=bLamp)
+        const auto& torch=Dive::Torch::At(PendingConfig.TorchModel);
+        if(Lamp->IntensityUnits!=ELightUnits::Lumens||FMath::Abs(Lamp->Intensity-torch.Output(Simulation.Data.LampBattery))>.1f||Lamp->IsVisible()!=(bLamp&&Simulation.Data.LampBattery>0)||
+            FMath::Abs(Lamp->OuterConeAngle-torch.OuterDegrees)>.01||!Lamp->bUseInverseSquaredFalloff||!TorchFunction)
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Torch units/intensity/switch disagree")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
-        UE_LOG(LogTemp,Display,TEXT("DIVE_TORCH_PASS on=%d lumens=%.1f exposure=%.3f"),bLamp,Lamp->Intensity,Camera->PostProcessSettings.AutoExposureBias);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_TORCH_PASS on=%d lumens=%.1f exposure=%.3f model=%s full_cone=%.1f battery=%.4f"),bLamp,Lamp->Intensity,Camera->PostProcessSettings.AutoExposureBias,UTF8_TO_TCHAR(torch.Id),2*Lamp->OuterConeAngle,Simulation.Data.LampBattery);
+        if(SmokeScenario==TEXT("torch"))
+        {
+            FHitResult hit;FCollisionQueryParams query;query.AddIgnoredActor(this);
+            const auto eye=Camera->GetComponentLocation();
+            const bool contact=GetWorld()->LineTraceSingleByChannel(hit,eye,eye+Camera->GetForwardVector()*2000,ECC_Visibility,query);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_TORCH_TARGET hit=%d distance_m=%.3f eye=%s lamp=%s direction=%s"),contact,hit.Distance/100,*eye.ToString(),*Lamp->GetComponentLocation().ToString(),*Lamp->GetForwardVector().ToString());
+            if(!contact||hit.Distance<100) { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Torch test has no visible nearby target")); FPlatformMisc::RequestExitWithStatus(false,1);return; }
+        }
         bSmokeUnderwaterCaptured=true;
         if(SmokeScenario.StartsWith(TEXT("wrist")))
             Equipment->ExportDisplayForTest(FPaths::ProjectSavedDir()/TEXT("Screenshots"),TEXT("WristTexture_")+SmokeScenario+TEXT(".png"));
@@ -505,9 +540,9 @@ void ADivePawn::Tick(float DeltaSeconds)
         const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
             (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
         const bool audioReady=SmokeScenario!=TEXT("audio")||(Audio->Inhales>4&&Audio->Exhales>4&&Audio->Heartbeats>30&&Audio->InflationSteps>100&&Audio->VentSteps>100);
-        const bool valid=(SmokeScenario!=TEXT("daycycle")||DayCycleSmokePhase==5)&&bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
+        const bool valid=(SmokeScenario!=TEXT("daycycle")||DayCycleSmokePhase==5)&&bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && (SmokeScenario==TEXT("torch")?displacement<.5:Simulation.Data.DistanceMetres>5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
-            && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<199)
+            && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<(SmokeScenario==TEXT("torch")?199.9:199))
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);
         FinishDive(valid?TEXT("smoke_pass"):TEXT("smoke_failed"));
         FString persisted;
@@ -570,6 +605,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);
+    UpdateTorch();
     if(bPerformance) TickPerformance();
 }
 
@@ -580,6 +616,7 @@ void ADivePawn::SimulateStep(float Step)
     {
         if(!bSmokeTest||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
+        if(SmokeScenario==TEXT("torch")) return 0.f;
         if(bPerformance)
         {
             if(SmokeScenario==TEXT("perf-soak"))

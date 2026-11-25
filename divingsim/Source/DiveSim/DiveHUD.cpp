@@ -138,8 +138,10 @@ void ADiveHUD::Menu()
     Field(TEXT("pressure"),L(TEXT("STARTDRUCK"),TEXT("START PRESSURE")),ConfigValue(TEXT("pressure")),x+w+gap,350,w);
     Field(TEXT("weight"),L(TEXT("BLEIGEWICHT"),TEXT("BALLAST")),ConfigValue(TEXT("weight")),x+2*(w+gap),350,w);
     Field(TEXT("suit"),L(TEXT("ANZUG"),TEXT("SUIT")),c.DrySuit?L(TEXT("Trockentauchanzug"),TEXT("Dry suit")):L(TEXT("Nassanzug"),TEXT("Wet suit")),x,450,w);
-    Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+w+gap,450,w);
-    Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),450,w);
+    const auto& torch=Dive::Torch::At(c.TorchModel);
+    Field(TEXT("torch"),L(TEXT("TAUCHLAMPE"),TEXT("DIVE TORCH")),FString::Printf(TEXT("%s / %.0f lm"),UTF8_TO_TCHAR(torch.Name),torch.Lumens),x+w+gap,450,w);
+    Text(L(TEXT("KEGEL / AKKU (SPIELMODELL)"),TEXT("BEAM / BATTERY (GAME MODEL)")),x+2*(w+gap),450,14,Muted);
+    Text(FString::Printf(TEXT("%.0f deg / %.0f min"),2*torch.OuterDegrees,torch.RuntimeMinutes),x+2*(w+gap)+18,488,21,White);
     Field(TEXT("depth"),L(TEXT("GEPLANTE TIEFE"),TEXT("PLANNED DEPTH")),ConfigValue(TEXT("depth")),x,550,w);
     Field(TEXT("duration"),L(TEXT("GEPLANTE DAUER"),TEXT("PLANNED DURATION")),ConfigValue(TEXT("duration")),x+w+gap,550,w);
     Field(TEXT("motion"),L(TEXT("KAMERABEWEGUNG"),TEXT("CAMERA MOTION")),Diver->bCameraMotion?L(TEXT("Sanft"),TEXT("Gentle")):L(TEXT("Stabil"),TEXT("Stable")),x+2*(w+gap),550,w);
@@ -373,6 +375,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;
         else if(Id==TEXT("suit")) c.DrySuit=!c.DrySuit;
+        else if(Id==TEXT("torch")) c.TorchModel=(c.TorchModel+1)%Dive::Torch::Count;
         else if(Id==TEXT("weather")) c.SelectWeather((c.Weather+1)%Dive::WeatherScenario::Count);
     }
     Diver->SaveSettings();

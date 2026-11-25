@@ -19,6 +19,7 @@ const FNumber Numbers[]={
 void DiveConfigIO::Write(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& Config,int32 Entry)
 {
     Obj->SetStringField(TEXT("scenario_date"),UTF8_TO_TCHAR(Config.Date.Text().c_str()));
+    Obj->SetNumberField(TEXT("torch_model"),Config.TorchModel);
     for(const auto& n:Numbers) Obj->SetNumberField(n.Name,Config.*(n.Member));
     Obj->SetNumberField(TEXT("weather"),Config.Weather); Obj->SetNumberField(TEXT("mode"),static_cast<int>(Config.GameMode));
     Obj->SetNumberField(TEXT("entry"),Entry); Obj->SetBoolField(TEXT("dry_suit"),Config.DrySuit);
@@ -47,6 +48,7 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
         return true;
     };
     int32 mode=1;
+    if(Obj->HasField(TEXT("torch_model"))&&!integer(TEXT("torch_model"),candidate.TorchModel,Dive::Torch::Count-1)) return false;
     if(!integer(TEXT("mode"),mode,2)||!integer(TEXT("weather"),candidate.Weather,Dive::WeatherScenario::Count-1)||!integer(TEXT("entry"),candidateEntry,2)) return false;
     candidate.GameMode=static_cast<Dive::Mode>(mode);
     auto boolean=[&](const TCHAR* Name,bool& Target)
@@ -77,5 +79,5 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
 bool DiveConfigIO::Equal(const Dive::Config& A,int32 EntryA,const Dive::Config& B,int32 EntryB)
 {
     for(const auto& n:Numbers) if(A.*(n.Member)!=B.*(n.Member)) return false;
-    return A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
+    return A.TorchModel==B.TorchModel&&A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
 }

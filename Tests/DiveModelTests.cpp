@@ -23,6 +23,24 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 int main()
 {
     {
+        for(int i=0;i<Dive::Torch::Count;++i)
+        {
+            const auto& lamp=Dive::Torch::At(i);
+            check(lamp.InnerDegrees>0&&lamp.InnerDegrees<lamp.OuterDegrees&&lamp.OuterDegrees<90,"Torch cones are valid half angles");
+            close(lamp.BatteryAfter(100,lamp.RuntimeMinutes*60,true),0,1.e-8,"Torch reaches empty at rated game runtime");
+            close(lamp.BatteryAfter(70,600,false),70,1.e-8,"Switched off torch preserves battery");
+            close(lamp.Output(5),lamp.Lumens*.5,1.e-8,"Low battery smoothly reduces output");
+            close(lamp.Output(0),0,1.e-8,"Empty battery cannot emit light");
+            Dive::Config c;c.TorchModel=i;c.GameMode=Dive::Mode::Exploration;
+            Dive::Model model(c);model.Step(10,5,0,0,0,0,true);
+            close(model.Data.LampBattery,100-100*10/(lamp.RuntimeMinutes*60),1.e-6,"Simulation uses chosen torch drain even in exploration");
+            const double battery=model.Data.LampBattery;model.Step(10,5,0,0,0,0,false);
+            close(model.Data.LampBattery,battery,1.e-8,"Simulation preserves switched-off battery");
+        }
+        check(Dive::Torch::At(2).BatteryAfter(100,3600,true)==0,"High output torch cannot run beyond battery duration");
+        check(Dive::Torch::At(1).BatteryAfter(100,3600,true)>60,"Spot torch lasts longer at lower power");
+    }
+    {
         using Dive::CivilDate; using Dive::ScenarioClock;
         check(CivilDate{1970,1,1}.SerialDay()==0,"Gregorian epoch is stable");
         check(CivilDate::Leap(2000)&&!CivilDate::Leap(2100),"Gregorian century leap rule");

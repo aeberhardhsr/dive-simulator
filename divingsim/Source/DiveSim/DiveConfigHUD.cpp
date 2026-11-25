@@ -222,12 +222,21 @@ bool ADiveHUD::ConfigSmokeTest(int Phase)
     }
     if(Phase==9)
     {
+        CloseConfigInput(); bEnvironmentPage=false;
+        for(int i=1;i<Dive::Torch::Count;++i)
+        { NotifyHitBoxClick(TEXT("torch")); if(Diver->PendingConfig.TorchModel!=i) return false; }
+        Diver->SaveSettings();Diver->PendingConfig.TorchModel=0;Diver->LoadSettings();
+        shot(TEXT("ConfigTorch_EN"));return Diver->PendingConfig.TorchModel==2;
+    }
+    if(Phase==10)
+    {
         CloseConfigInput(); NotifyHitBoxClick(TEXT("date")); if(!SubmitConfigInput(TEXT("2024-02-29"))) return false;
         Diver->StartDive(); Diver->SetMenu(true);
         const auto before=Diver->PendingConfig;
-        NotifyHitBoxClick(TEXT("pressure")); NotifyHitBoxClick(TEXT("date"));
+        NotifyHitBoxClick(TEXT("pressure")); NotifyHitBoxClick(TEXT("date")); NotifyHitBoxClick(TEXT("torch"));
         const bool locked=!ConfigDialog&&DiveConfigIO::Equal(before,0,Diver->PendingConfig,0)&&
             Diver->Simulation.Settings.Date==Dive::CivilDate{2024,2,29}&&
+            Diver->Simulation.Settings.TorchModel==2&&
             Diver->Simulation.Settings.StartPressureBar==213.5&&Diver->Simulation.Settings.WeightKg==7.5&&
             Diver->Simulation.Settings.PlannedDepthMetres==22.5&&Diver->Simulation.Settings.PlannedMinutes==47&&
             Diver->Simulation.Settings.AirTemperatureC==-3.5&&Diver->Simulation.Settings.CurrentMetresPerSecond==.17&&

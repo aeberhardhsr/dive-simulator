@@ -49,6 +49,14 @@ FDiveWriteResult WriteRecording(const FDiveRecording& Recording)
     root->SetNumberField(TEXT("cylinder_litres"),Recording.Config.CylinderLitres);
     root->SetNumberField(TEXT("oxygen_fraction"),Recording.Config.OxygenFraction);
     root->SetNumberField(TEXT("mode"),static_cast<int>(Recording.Config.GameMode));
+    const auto& torch=Dive::Torch::At(Recording.Config.TorchModel);
+    auto lamp=MakeShared<FJsonObject>();
+    lamp->SetStringField(TEXT("model"),UTF8_TO_TCHAR(torch.Id));
+    lamp->SetNumberField(TEXT("nominal_lumens"),torch.Lumens);
+    lamp->SetNumberField(TEXT("full_beam_degrees"),2*torch.OuterDegrees);
+    lamp->SetNumberField(TEXT("runtime_minutes"),torch.RuntimeMinutes);
+    lamp->SetNumberField(TEXT("remaining_percent"),Recording.State.LampBattery);
+    root->SetObjectField(TEXT("torch"),lamp);
     auto environment=MakeShared<FJsonObject>(); SaveEnvironment(environment,Recording.Config);
     root->SetObjectField(TEXT("environment"),environment);
     TArray<TSharedPtr<FJsonValue>> rows;
@@ -76,6 +84,7 @@ FDiveWriteResult WriteRecording(const FDiveRecording& Recording)
         row->SetNumberField(TEXT("ndl_minutes"),s.NDLMinutes);
         row->SetNumberField(TEXT("distance_m"),s.DistanceMetres);
         row->SetNumberField(TEXT("warnings"),s.Warnings);
+        row->SetNumberField(TEXT("lamp_battery_percent"),s.LampBattery);
         row->SetNumberField(TEXT("x_m"),sample.Position.X/100);
         row->SetNumberField(TEXT("y_m"),sample.Position.Y/100);
         const FVector2D survey=FVector2D(Recording.SurveyOrigin.X+sample.Position.Y/100,Recording.SurveyOrigin.Y+sample.Position.X/100);
