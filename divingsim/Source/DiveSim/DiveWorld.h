@@ -13,7 +13,13 @@ class AExponentialHeightFog;
 class ADivePawn;
 
 struct FDiveBubble { FVector Position; float Age=0, StartPressure=1, Radius=1; };
-struct FDiveFish { FVector Position, Velocity; float Phase=0; };
+struct FDiveFish
+{
+    FVector Position, Velocity, Home;
+    float Phase=0, TailCycle=0, Scale=1;
+    int32 Species=0, Instance=0;
+};
+struct FDiveRock { FVector Position; float Radius=0; };
 
 UCLASS()
 class DIVESIM_API ADiveWorld : public AActor
@@ -28,6 +34,7 @@ public:
     bool bTerrainReady=false;
     void SetEntry(int32 Index);
     int32 TerrainChunkCount() const { return Chunks.Num(); }
+    bool ValidateEcology(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(float Visibility,float Hour,float Current);
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
@@ -37,22 +44,24 @@ private:
     UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Water;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rocks;
-    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Plants;
-    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Fish;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Plants;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Bubbles;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Particles;
     UPROPERTY() TObjectPtr<ADirectionalLight> Sun;
     UPROPERTY() TObjectPtr<AExponentialHeightFog> Fog;
     TArray<FDiveBubble> BubbleState;
     TArray<FDiveFish> FishState;
+    TArray<FDiveRock> RockState;
     FRandomStream Random{1948};
-    float Flow=.08f, VisibleDistance=14, WorldTime=0;
+    float Flow=.08f, VisibleDistance=14, WorldTime=0, DayHour=12;
     FVector PopulationOrigin=FVector::ZeroVector;
     FVector PopulationForward=FVector::ForwardVector;
     void StreamTerrain(const FVector& Position,bool Immediate=false);
     void CreateChunk(FIntPoint Key);
     void CreateLandscape();
     void Populate();
+    void TickFish(float Dt,const FVector& Player);
     UStaticMeshComponent* Prop(const FString& Name,const FString& MeshPath,
         const FVector& Location,const FVector& Scale,const FString& MaterialPath, bool Collision=true);
 };

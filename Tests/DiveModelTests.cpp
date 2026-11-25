@@ -1,5 +1,6 @@
 #include "../divingsim/Source/DiveSim/Simulation/DiveModel.h"
 #include "../divingsim/Source/DiveSim/Simulation/HeightGrid.h"
+#include "../divingsim/Source/DiveSim/Simulation/Ecology.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -13,6 +14,25 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    const auto& perch=Dive::FishProfiles[0];
+    check(!Dive::FishDepthBand(perch,.5).Valid,"Fish cannot spawn in water shallower than their habitat and body clearance");
+    const auto& burbot=Dive::FishProfiles[4];
+    const auto bottomBand=Dive::FishDepthBand(burbot,30);
+    check(bottomBand.Valid&&bottomBand.Shallow>29&&bottomBand.Deep<30,"Burbot stays close to the bottom");
+    check(!Dive::FishDepthBand(burbot,90).Valid,"Bottom fish cannot float above bottom outside their depth envelope");
+    check(!Dive::FishDepthBand(perch,std::numeric_limits<double>::quiet_NaN()).Valid,"Missing habitat data is rejected");
+    for(const auto& fish:Dive::FishProfiles)
+        for(double bottom=0;bottom<200;bottom+=.1)
+        {
+            const auto band=Dive::FishDepthBand(fish,bottom,1.15);
+            if(band.Valid) check(band.Shallow>=fish.MinDepth&&band.Deep<=fish.MaxDepth&&band.Deep<=bottom-fish.BottomClearance*1.15,
+                "Accepted habitats preserve depth limits and scaled clearance");
+        }
+    const auto& pondweed=Dive::PlantProfiles[0];
+    check(Dive::PlantHabitat(pondweed,5,.2,14),"Shallow lit sediment supports vegetation");
+    check(!Dive::PlantHabitat(pondweed,5,.9,14),"Plants do not grow on steep cliffs");
+    check(!Dive::PlantHabitat(pondweed,8,.2,3),"Low visibility reduces vegetation depth");
+    check(!Dive::PlantHabitat(pondweed,1,.2,14),"Plant tops stay submerged");
     Dive::SurfaceGrid land; land.Columns=2; land.Rows=2; land.West=100; land.North=216; land.Spacing=8;
     land.Heights={10,20,30,40}; double landHeight=0;
     check(land.Sample(108,208,landHeight),"Land raster samples LV95 cell centres");

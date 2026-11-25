@@ -44,8 +44,9 @@ def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_
         exp.set_editor_property('code',code)
         exp.set_editor_property('output_type',kind)
         inputs=[]
-        for name in ['P','T','C','V']:
-            item=u.CustomInput(); item.set_editor_property('input_name',name); inputs.append(item)
+        names=['P','T','C','V']+(['Cycle','RX','RY','Phase','Amplitude'] if name=='M_Fish' else [])
+        for input_name in names:
+            item=u.CustomInput(); item.set_editor_property('input_name',input_name); inputs.append(item)
         exp.set_editor_property('inputs',inputs)
         position=node(u.MaterialExpressionWorldPosition,-400,0)
         time=node(u.MaterialExpressionTime,-400,200)
@@ -54,6 +55,11 @@ def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_
         LIB.connect_material_expressions(time,'',exp,'T')
         LIB.connect_material_expressions(col,'',exp,'C')
         LIB.connect_material_expressions(vc,'A',exp,'V')
+        if name=='M_Fish':
+            for index,input_name in enumerate(names[4:]):
+                data=node(u.MaterialExpressionPerInstanceCustomData,-650,index*120)
+                data.set_editor_property('data_index',index)
+                LIB.connect_material_expressions(data,'',exp,input_name)
         LIB.connect_material_property(exp,'',prop)
     target=u.MaterialProperty.MP_EMISSIVE_COLOR if unlit else u.MaterialProperty.MP_BASE_COLOR
     if custom_color: custom(custom_color,u.CustomMaterialOutputType.CMOT_FLOAT3,target)
@@ -94,7 +100,7 @@ material('M_Wood',(.12,.08,.035),.95,custom_color=stone)
 material('M_Plant',(.1,.3,.06),.7,vertex=True,
          custom_wpo='return float3(sin(T*1.1+P.x*.009)*9*V*V, sin(T*.8+P.y*.008)*6*V*V,0);')
 material('M_Fish',(.4,.45,.3),.32,vertex=True,
-         custom_wpo='return float3(0,sin(T*8+P.x*.055)*2.6*V, sin(T*4+P.y*.02)*.2*V);')
+         custom_wpo='float sway=sin(Cycle+Phase-V*3)*Amplitude*V; return float3(RX*sway,RY*sway,0);')
 material('M_Landscape',(.2,.24,.12),.95,vertex=True)
 material('M_Water',(.012,.035,.028),.13,water=True,
          custom_normal='return normalize(float3(sin(P.x*.13+P.y*.025+T*1.7)*.045+cos(P.y*.057-T*2.1)*.025, cos(P.y*.11+P.x*.018+T*1.5)*.035+sin(P.x*.19-T*2.9)*.015,1));')
@@ -168,7 +174,9 @@ ambient=u.load_asset(BASE+'/Audio/A_Ambience')
 if ambient:
     ambient.set_editor_property('looping',True)
     u.EditorAssetLibrary.save_loaded_asset(ambient)
-for name,mat_name in [('SM_Rock','M_Rock'),('SM_Perch','M_Fish'),('SM_Pondweed','M_Plant')]:
+fish_meshes=['SM_Perch','SM_Roach','SM_Pike','SM_Whitefish','SM_Burbot']
+plant_meshes=['SM_Pondweed','SM_Stonewort','SM_Milfoil']
+for name,mat_name in [('SM_Rock','M_Rock')]+[(n,'M_Fish') for n in fish_meshes]+[(n,'M_Plant') for n in plant_meshes]:
     mesh=u.load_asset(BASE+'/Meshes/'+name)
     if not mesh: raise RuntimeError('Missing imported mesh '+name)
     mesh.set_material(0,u.load_asset(BASE+'/Materials/'+mat_name))
@@ -184,6 +192,6 @@ if not u.EditorAssetLibrary.does_asset_exist(map_path):
     start=u.get_editor_subsystem(u.EditorActorSubsystem).spawn_actor_from_class(u.PlayerStart,u.Vector(-6500,-1800,-180))
     start.set_actor_label('Diver Entry')
     if not u.EditorLoadingAndSavingUtils.save_map(world,map_path): raise RuntimeError('Map save failed')
-for path in [BASE+'/Meshes/SM_Perch',BASE+'/Meshes/SM_Pondweed',BASE+'/Maps/L_DiveTraining']:
+for path in [BASE+'/Meshes/'+n for n in fish_meshes+plant_meshes]+[BASE+'/Maps/L_DiveTraining']:
     if not u.EditorAssetLibrary.does_asset_exist(path): raise RuntimeError('Missing output '+path)
 u.log('DIVE_CONTENT_OK')

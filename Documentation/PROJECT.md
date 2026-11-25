@@ -21,7 +21,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 |---|---|---|
 | WRLD | Reale Walensee-Geodaten, 1:1, Streaming, mindestens drei Einstiegspunkte, Felsen/Sedimente, Landschaft über Wasser, Tiefenkarte | Offen |
 | WATR | Wellen, Brechung, Reflexion, Absorption, God Rays, Caustics, Partikel, Strömung, Atemblasen mit Expansion, Thermokline, Oberflächenübergang | Offen |
-| BIOL | Mindestens fünf anatomisch plausible animierte Tierarten, drei Bewuchstypen, Schwärme, Flucht, Kollision, Habitat und Pflanzenbewegung | Offen |
+| BIOL | Mindestens fünf anatomisch plausible animierte Tierarten, drei Bewuchstypen, Schwärme, Flucht, Kollision, Habitat und Pflanzenbewegung | Fünf Fischmodelle (Felchen als Artengruppe), drei Bewuchstypen und Habitat-/Bewegungsregeln implementiert; anatomische und visuelle Abnahme offen |
 | DIVR | First Person, 3D-Bewegung, Auftrieb, Widerstand, Trägheit, Anstrengung, Atmung, BCD, Blei, Kollision, sichtbare Ausrüstung | Offen |
 | CONF | Einstieg, Uhrzeit, Wetter, Sicht, Temperatur, Strömung, Flasche 10/12/15 L, Druck, Luft, Anzug, Blei, Lampe, Modus, geplante Tiefe/Dauer, Profile | Offen |
 | VITAL | Gekoppelte Herz-/Atemfrequenz, simulierte SpO2, Kerntemperatur, Belastung, Stress, Ermüdung, Stickstoff; keine unabhängigen Zufallswerte | Offen |

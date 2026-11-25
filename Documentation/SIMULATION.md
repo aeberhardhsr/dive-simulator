@@ -40,6 +40,26 @@ Samples are recorded once per second. Versioned JSON includes position, depth, g
 
 The water surface uses Unreal's [Single Layer Water shading model](https://dev.epicgames.com/documentation/unreal-engine/single-layer-water-shading-model-in-unreal-engine), with scattering coefficients RGB `(0.00015, 0.00045, 0.00032)` and absorption `(0.0016, 0.00035, 0.00055)` per centimetre, and phase G `0.35`. These are illustrative optical settings, not measured Walensee water properties. Animated surface normals provide ripples; geometrical wave displacement is still pending. Underwater visibility uses a separate distance-attenuation post-process and height fog. Camera tint, saturation and ambience fade across the surface. The surface material's volume coefficients are currently fixed and still need to be coupled to the configured visibility.
 
-## Tests
+## Procedural ecology
+
+`Simulation/Ecology.h` contains SI habitat envelopes, lengths, speeds, schooling flags and vegetation constraints. These are gameplay parameters, not population estimates or locally measured habitat maps. Fish occurrence is supported by the [Eawag Projet Lac Walensee report, 2014](https://www.gl.ch/public/upload/assets/3028/Projet_Lacs_-_Walensee_Schlussbericht_def.pdf?fp=1). The whitefish model represents the **Coregonus group**, not a taxonomically validated model of a particular Walensee species.
+
+| Model | Length at scale 1 | Game depth envelope | Behaviour |
+|---|---|---|---|
+| Perch / Egli | 30 cm | 1.2–24 m | Local schooling, separation, diver avoidance |
+| Roach / Rotauge | 24 cm | 1–14 m | Faster schooling, diver avoidance |
+| Pike / Hecht | 75 cm | 1.5–16 m | Sparse solitary slow cruising, faster escape |
+| Whitefish / Felchen group | 38 cm | 5–55 m | Open-water schooling, at least 2 m bottom clearance |
+| Burbot / Trüsche | 55 cm | 8–80 m | Bottom-following, reduced daytime activity |
+
+Each population is seeded from the current terrain cell. Up to 77 fish are placed only where actual bathymetry intersects the species envelope; the Weesen start can have no burbot. Individual scale varies from 0.75 to 1.15. Same-species neighbours contribute cohesion/alignment; all fish contribute short-range separation. The diver causes escape steering. Terrain look-ahead, missing-data rejection and conservative rock exclusion volumes constrain movement. Runtime smoke tests check mesh identity, finite state, depth envelopes and rock exclusion every frame. Fish-to-fish separation is steering, not a rigid-body contact solver. Feeding, reproduction and seasonal ecology remain open. Population rebuilding after a 55 m move needs a persistent streaming solution.
+
+Models use original geometry and vertex colours: two dorsal fins and bars for perch, red iris for roach, elongated spotted pike, adipose fin for whitefish, rounded tail and chin barbel for burbot. Tail deformation uses vertex weights and per-instance world-side vectors, species-dependent cycles and escape rate. Accumulated animation phase avoids jumps when speed changes and pauses with the simulation. This is procedural vertex animation, not a skeletal anatomy simulation. Photorealistic textures, finer fin motion and independent anatomical review remain pending.
+
+Three illustrative vegetation forms are available: broad-leaved pondweed, whorled stonewort and feathery milfoil. They are generic freshwater growth types, **not confirmed species records at the simulated locations**. References: [InfoFlora pondweeds](https://www.infoflora.ch/de/flora/potamogeton.html), [stonewort habitats](https://www.infoflora.ch/de/lebensraeume/typoch/1.1.1-armleuchteralgengesellschaft.html) and [milfoil morphology, Fisheries and Oceans Canada](https://www.dfo-mpo.gc.ca/species-especes/profiles-profils/eurasian-water-milfoil-myriophylle-epis-eng.html). Plant placement rejects steep slopes, rock footprints and insufficient light/depth. Visibility limits vegetation depth; maximum game depths are 10/18/7 m respectively. Vertex-weighted sway keeps stem bases fixed. Exact species, lake-specific mapping, seasonal growth and a physical plant-flow model remain open.
+
+![Original Blender model overview, neutral inspection lighting](Images/EcologyAssets.png)
+
+## Core test coverage
 
 `Tools/TestCore.cmd` builds a standalone C++ test executable without Unreal. It checks hydrostatic pressure, depth scaling of gas use, exertion coupling, BCD consumption, expansion/relief, step partition invariance, exploration, tank exhaustion, tissue uptake/release, ceilings, stop timing and input sanitization. A passing result establishes internal consistency, not medical validity.

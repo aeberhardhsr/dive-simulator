@@ -55,7 +55,9 @@ Ein laufendes Spiel kann geöffnet bleiben, wenn ein neuer Build mit `-PackageDi
 
 Die Build-Skripte begrenzen C++-Parallelität für den Entwicklungsrechner. `Tools/TestCore.cmd` erwartet die lokale Installation unter `C:/BuildTools2022`; plattformunabhängig kann der Kern mit `cmake -S Tests -B artifacts/tests` gebaut und mit CTest geprüft werden. Die CI-Konfiguration prüft diesen Kern auf Windows, macOS und Linux, nicht das vollständige Unreal-Spiel. Ein macOS-Spiel-Build ist noch nicht getestet.
 
-Blender-Quellen: `blender/DivingAssets.blend`; reproduzierbare Geometrie über `Tools/create_blender_assets.py`, synthetischer Ton über `Tools/create_audio.py`. `Tools/build_unreal_content.py` wird durch den Content-Build in Unreal ausgeführt.
+Die Unterwasserwelt enthält fünf unterschiedlich geformte Fischmodelle (Egli, Rotauge, Hecht, Felchengruppe, Trüsche) und drei Bewuchstypen. Tiefe, Grundabstand, Hangneigung und Sicht beeinflussen deren Platzierung. Fischgruppen, Flucht und Hindernisvermeidung sind implementiert; die Tier- und Pflanzenverteilung ist eine Spielsimulation. Details und Grenzen stehen in der Modellbeschreibung.
+
+Blender-Quellen: `blender/DivingAssets.blend`; reproduzierbare Geometrie über `Tools/create_blender_assets.py` und `Tools/create_ecology_assets.py`, synthetischer Ton über `Tools/create_audio.py`. Blender-Skripte im Hintergrund mit `--python-exit-code 1` ausführen, damit Python-Fehler einen Fehlercode liefern. `Tools/preview_ecology_assets.py` rendert eine Übersicht nach `artifacts/EcologyAssets.png`. `Tools/build_unreal_content.py` wird durch den Content-Build in Unreal ausgeführt.
 
 ```powershell
 python Tools/prepare_bathymetry.py

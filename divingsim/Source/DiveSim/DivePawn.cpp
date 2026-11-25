@@ -64,6 +64,7 @@ void ADivePawn::BeginPlay()
     if(Environment->bTerrainReady)
     {
         EntryIndex=FMath::Clamp(EntryIndex,0,Environment->Terrain.Entries.Num()-1);
+        Environment->Configure(PendingConfig.VisibilityMetres,PendingConfig.Hour,PendingConfig.CurrentMetresPerSecond);
         Environment->SetEntry(EntryIndex);
         EntryLocation=Environment->Terrain.Entries[EntryIndex].Position;
     }
@@ -92,6 +93,8 @@ void ADivePawn::BeginPlay()
 void ADivePawn::SetupPlayerInputComponent(UInputComponent* Input)
 {
     Super::SetupPlayerInputComponent(Input);
+    // A scripted run must not capture mouse/shortcut input from another game window.
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))) return;
     Input->BindAxisKey(EKeys::MouseX,this,&ADivePawn::LookYaw);
     Input->BindAxisKey(EKeys::MouseY,this,&ADivePawn::LookPitch);
     Input->BindKey(EKeys::Escape,IE_Pressed,this,&ADivePawn::ToggleMenu);
@@ -136,6 +139,7 @@ void ADivePawn::StartDive()
     if(!Environment || !Environment->bTerrainReady) return;
     PendingConfig.Sanitize();
     Simulation.Reset(PendingConfig);
+    Environment->Configure(PendingConfig.VisibilityMetres,PendingConfig.Hour,PendingConfig.CurrentMetresPerSecond);
     Environment->SetEntry(EntryIndex);
     const auto& entry=Environment->Terrain.Entries[EntryIndex];
     EntryLocation=entry.Position;
@@ -148,7 +152,6 @@ void ADivePawn::StartDive()
         PendingConfig.StartPressureBar*PendingConfig.CylinderLitres*.0012-2-suit)*pressure;
     Samples.Reset(); PreviousWarnings=0; Accumulator=0; TelemetryAccumulator=0; LastBreathPhase=0;
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; Outcome.Empty(); LastLogPath.Empty();
-    Environment->Configure(PendingConfig.VisibilityMetres,PendingConfig.Hour,PendingConfig.CurrentMetresPerSecond);
     if(!bSmokeTest) SaveSettings();
     SetMenu(false);
     Notify(Local(TEXT("WASD schwimmen  |  Q/E tarieren  |  L Lampe  |  ESC Pause"),TEXT("WASD swim  |  Q/E buoyancy  |  L torch  |  ESC pause")));
@@ -165,6 +168,13 @@ void ADivePawn::Tick(float DeltaSeconds)
     const double smokeDuration=SmokeScenario==TEXT("surface")?38:SmokeScenario==TEXT("stream")?90:22;
     if(bSmokeTest && bDiveActive)
     {
+        FString ecologyError;
+        if(!Environment->ValidateEcology(ecologyError))
+        {
+            UE_LOG(LogTemp,Error,TEXT("DIVE_ECOLOGY_FAIL %s"),*ecologyError);
+            FPlatformMisc::RequestExitWithStatus(false,1);
+            return;
+        }
         bSmokeSurfaceReached|=GetActorLocation().Z>2;
         bSmokeChunkLimit&=Environment->TerrainChunkCount()<=9;
         if(SmokeScenario==TEXT("stream"))

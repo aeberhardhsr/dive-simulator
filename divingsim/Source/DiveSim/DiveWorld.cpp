@@ -1,5 +1,6 @@
 #include "DiveWorld.h"
 #include "DivePawn.h"
+#include "Simulation/Ecology.h"
 #include "ProceduralMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -41,7 +42,14 @@ ADiveWorld::ADiveWorld()
         return component;
     };
     Rocks=create(TEXT("Limestone")); Rocks->SetCollisionProfileName(TEXT("BlockAll"));
-    Plants=create(TEXT("Pondweed")); Fish=create(TEXT("Perch"));
+    for(const auto& profile:Dive::PlantProfiles)
+        Plants.Add(create(UTF8_TO_TCHAR(profile.Mesh)));
+    for(const auto& profile:Dive::FishProfiles)
+    {
+        auto* component=create(UTF8_TO_TCHAR(profile.Mesh));
+        component->NumCustomDataFloats=5;
+        Fish.Add(component);
+    }
     Bubbles=create(TEXT("BreathBubbles")); Particles=create(TEXT("SuspendedParticles"));
     Bubbles->SetCastShadow(false); Particles->SetCastShadow(false);
 }
@@ -121,13 +129,23 @@ UStaticMeshComponent* ADiveWorld::Prop(const FString& Name,const FString& MeshPa
 
 void ADiveWorld::Populate()
 {
-    Rocks->ClearInstances(); Plants->ClearInstances(); Fish->ClearInstances(); FishState.Reset();
+    Rocks->ClearInstances(); FishState.Reset(); RockState.Reset();
     Rocks->SetStaticMesh(Mesh(TEXT("/Game/Diving/Meshes/SM_Rock.SM_Rock")));
     Rocks->SetMaterial(0,Mat(TEXT("M_Rock")));
-    Plants->SetStaticMesh(Mesh(TEXT("/Game/Diving/Meshes/SM_Pondweed.SM_Pondweed")));
-    Plants->SetMaterial(0,Mat(TEXT("M_Plant")));
-    Fish->SetStaticMesh(Mesh(TEXT("/Game/Diving/Meshes/SM_Perch.SM_Perch")));
-    Fish->SetMaterial(0,Mat(TEXT("M_Fish")));
+    for(int32 species=0;species<Plants.Num();++species)
+    {
+        auto* component=Plants[species].Get(); component->ClearInstances();
+        const FString name=UTF8_TO_TCHAR(Dive::PlantProfiles[species].Mesh);
+        component->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
+        component->SetMaterial(0,Mat(TEXT("M_Plant")));
+    }
+    for(int32 species=0;species<Fish.Num();++species)
+    {
+        auto* component=Fish[species].Get(); component->ClearInstances();
+        const FString name=UTF8_TO_TCHAR(Dive::FishProfiles[species].Mesh);
+        component->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
+        component->SetMaterial(0,Mat(TEXT("M_Fish")));
+    }
     Bubbles->SetStaticMesh(Mesh(Sphere)); Bubbles->SetMaterial(0,Mat(TEXT("M_Bubble")));
     Particles->SetStaticMesh(Mesh(Sphere)); Particles->SetMaterial(0,Mat(TEXT("M_Particle")));
     // Habitat dressing is procedural, not part of the surveyed height data.
@@ -142,25 +160,52 @@ void ADiveWorld::Populate()
         const float size=Random.FRandRange(.4f,2.6f);
         Rocks->AddInstance(FTransform(FRotator(Random.FRandRange(-15.f,15.f),Random.FRandRange(0.f,360.f),0),
             FVector(x,y,z+size*15),FVector(size,size*.85,size*.7)));
+        RockState.Add({FVector(x,y,z+size*15),size*105});
     }
     for(int i=0;i<1800;++i)
     {
         const double x=PopulationOrigin.X+Random.FRandRange(-8000.f,8000.f);
         const double y=PopulationOrigin.Y+Random.FRandRange(-8000.f,8000.f);
-        float z; if(!Terrain.Sample(x,y,z)||z>-250||z<-1800) continue;
+        float z,n,e;
+        if(!Terrain.Sample(x,y,z)||!Terrain.Sample(x+100,y,n)||!Terrain.Sample(x,y+100,e)) continue;
         if(FMath::Sin(x*.002)+FMath::Cos(y*.003)<-.1) continue;
-        const float size=Random.FRandRange(.45f,1.3f);
-        Plants->AddInstance(FTransform(FRotator(0,Random.FRandRange(0.f,360.f),0),FVector(x,y,z+2),FVector(size)));
+        const int32 species=i%Plants.Num();
+        const float slope=FMath::Sqrt(FMath::Square(n-z)+FMath::Square(e-z))/100;
+        if(!Dive::PlantHabitat(Dive::PlantProfiles[species],-z/100,slope,VisibleDistance)) continue;
+        bool blocked=false;
+        for(const auto& rock:RockState)
+            if(FVector::Dist2D(rock.Position,FVector(x,y,z))<rock.Radius) { blocked=true; break; }
+        if(blocked) continue;
+        const float size=Random.FRandRange(.65f,1.2f);
+        Plants[species]->AddInstance(FTransform(FRotator(0,Random.FRandRange(0.f,360.f),0),FVector(x,y,z+2),FVector(size)));
     }
-    const FVector center=PopulationOrigin+PopulationForward*1200;
-    for(int i=0;i<54;++i)
+    const FVector center=PopulationOrigin+PopulationForward*1800;
+    for(int32 species=0;species<Fish.Num();++species)
     {
-        FVector pos=center+FVector(Random.FRandRange(-1500.f,1500.f),Random.FRandRange(-1500.f,1500.f),0);
-        float z; if(!Terrain.Sample(pos.X,pos.Y,z)||z>-350) continue;
-        pos.Z=FMath::Max(z+180.f,Random.FRandRange(-900.f,-280.f));
-        FDiveFish fish; fish.Position=pos; fish.Velocity=PopulationForward*40; fish.Phase=Random.FRandRange(0.f,6.28f);
-        FishState.Add(fish); Fish->AddInstance(FTransform(FRotator::ZeroRotator,pos,FVector(Random.FRandRange(.8f,1.6f))));
+        const auto& profile=Dive::FishProfiles[species];
+        for(int count=0,attempt=0;count<profile.Count&&attempt<profile.Count*30;++attempt)
+        {
+            FDiveFish fish; fish.Species=species; fish.Scale=Random.FRandRange(.75f,1.15f);
+            FVector pos=center+FVector(Random.FRandRange(-3500.f,3500.f),Random.FRandRange(-3500.f,3500.f),0);
+            float z; if(!Terrain.Sample(pos.X,pos.Y,z)) continue;
+            const auto band=Dive::FishDepthBand(profile,-z/100,fish.Scale);
+            if(!band.Valid) continue;
+            pos.Z=-100*Random.FRandRange(band.Shallow,band.Deep);
+            bool blocked=false;
+            for(const auto& rock:RockState)
+                if(FVector::Dist(rock.Position,pos)<rock.Radius+profile.LengthMetres*50*fish.Scale) { blocked=true; break; }
+            if(blocked) continue;
+            fish.Position=pos; fish.Home=pos;
+            fish.Velocity=PopulationForward*profile.CruiseSpeed*100;
+            fish.Phase=Random.FRandRange(0.f,6.28f);
+            fish.Instance=Fish[species]->AddInstance(FTransform(PopulationForward.Rotation(),pos,FVector(fish.Scale)));
+            FishState.Add(fish); ++count;
+        }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_ECOLOGY fish=%s count=%d"),UTF8_TO_TCHAR(profile.Mesh),Fish[species]->GetInstanceCount());
     }
+    for(int32 species=0;species<Plants.Num();++species)
+        UE_LOG(LogTemp,Display,TEXT("DIVE_ECOLOGY plant=%s count=%d"),UTF8_TO_TCHAR(Dive::PlantProfiles[species].Mesh),Plants[species]->GetInstanceCount());
+
 }
 
 void ADiveWorld::BeginPlay()
@@ -251,7 +296,7 @@ void ADiveWorld::CreateLandscape()
 
 void ADiveWorld::Configure(float Visibility,float Hour,float Current)
 {
-    VisibleDistance=Visibility; Flow=Current;
+    VisibleDistance=Visibility; Flow=Current; DayHour=Hour;
     if(Fog) Fog->GetComponent()->SetFogDensity(.35f*14/Visibility);
     const float daylight=FMath::Max(.02f,FMath::Sin((Hour-6)/12*PI));
     if(Sun)
@@ -289,33 +334,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
         const float underwater=FMath::Clamp(static_cast<float>(-player.Z)/70,0.f,1.f);
         Fog->GetComponent()->SetFogDensity(FMath::Lerp(.002f,.35f*14/VisibleDistance,underwater));
     }
-    for(int i=0;i<FishState.Num();++i)
-    {
-        auto& fish=FishState[i];
-        const FVector center=PopulationOrigin+PopulationForward*1200+FVector(600*FMath::Sin(WorldTime*.03f),i%2?0:600,-400);
-        FVector steer=(center-fish.Position)*.025;
-        FVector separation=FVector::ZeroVector;
-        for(int j=0;j<FishState.Num();++j)
-        {
-            if(i==j) continue;
-            const FVector away=fish.Position-FishState[j].Position;
-            const float distance=away.Size();
-            if(distance<90 && distance>1) separation+=away/distance*(90-distance)*.8;
-        }
-        steer+=separation;
-        const FVector away=fish.Position-player;
-        if(away.Size()<450) steer+=away.GetSafeNormal()*(450-away.Size())*.5;
-        steer.Z+=FMath::Sin(WorldTime+fish.Phase)*4;
-        fish.Velocity=(fish.Velocity+steer*dt).GetClampedToMaxSize(away.Size()<450?180:65);
-        const FVector next=fish.Position+(fish.Velocity+FVector(0,Flow*100,0))*dt;
-        float ground;
-        if(Terrain.Sample(next.X,next.Y,ground)) fish.Position=next;
-        else fish.Velocity=-fish.Velocity;
-        fish.Position.Z=FMath::Clamp(fish.Position.Z,static_cast<double>(GroundZ(fish.Position.X,fish.Position.Y)+100),-100.0);
-        FTransform transform; Fish->GetInstanceTransform(i,transform);
-        transform.SetLocation(fish.Position); transform.SetRotation(fish.Velocity.Rotation().Quaternion());
-        Fish->UpdateInstanceTransform(i,transform,false,i==FishState.Num()-1,true);
-    }
+    TickFish(dt,player);
     Bubbles->ClearInstances();
     for(int i=BubbleState.Num()-1;i>=0;--i)
     {
