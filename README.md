@@ -69,6 +69,8 @@ python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/Build.ps1 -Target Content     # Materialien, Importe und Trainingsmap
 ./Tools/Build.ps1 -Target Content -OnlyEnvironment # Nur Wasser, Wolken und Regen erneuern
 ./Tools/Build.ps1 -Target Content -OnlyOptics # Nur den HDR-Unterwassereffekt erneuern
+python Tools/prepare_bed_materials.py # Geprüfte CC0-Quellen für Sediment/Kies/Fels
+./Tools/Build.ps1 -Target Content -OnlyBed # Nur die PBR-Unterwasseroberflächen erneuern
 python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/Build.ps1 -Target Content -OnlyAudio # Nur Audiomaterial importieren
 ./Tools/Build.ps1 -Target Landscape   # 8-m-Höhendaten als Nanite-Geländekacheln bauen

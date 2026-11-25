@@ -129,8 +129,10 @@ if not ONLY_ENVIRONMENT:
     float caustic = pow(1-abs(sin(P.x*.037+sin(P.y*.03+T*.35))*sin(P.y*.033+sin(P.x*.02-T*.4))),24);
     return base + float3(.025,.04,.028)*caustic*saturate(1+P.z/1400);
     '''
-    material('M_Rock',(.31,.32,.27),.87,custom_color=stone)
-    material('M_Lakebed',(.23,.26,.18),.94,custom_color=stone)
+    import sys
+    sys.path.insert(0,str(ROOT/'Tools'))
+    from build_bed_content import build_bed
+    build_bed()
     material('M_Wood',(.12,.08,.035),.95,custom_color=stone)
     material('M_Plant',(.1,.3,.06),.7,vertex=True,
              custom_wpo='return float3(sin(T*1.1+P.x*.009)*9*V*V, sin(T*.8+P.y*.008)*6*V*V,0);')
@@ -240,7 +242,7 @@ if not ONLY_ENVIRONMENT:
     fish_meshes=['SM_Perch','SM_Roach','SM_Pike','SM_Whitefish','SM_Burbot']
     plant_meshes=['SM_Pondweed','SM_Stonewort','SM_Milfoil']
     equipment_meshes=['SM_LeftSleeve','SM_RightSleeve','SM_LeftGlove','SM_RightGlove','SM_WristComputer','SM_DiveTorch']
-    for name,mat_name in [('SM_Rock','M_Rock')]+[(n,'M_Fish') for n in fish_meshes]+[(n,'M_Plant') for n in plant_meshes]+[(n,'M_Suit' if 'Sleeve' in n else 'M_Equipment') for n in equipment_meshes]:
+    for name,mat_name in [('SM_Rock','M_RockSurface')]+[(n,'M_Fish') for n in fish_meshes]+[(n,'M_Plant') for n in plant_meshes]+[(n,'M_Suit' if 'Sleeve' in n else 'M_Equipment') for n in equipment_meshes]:
         mesh=u.load_asset(BASE+'/Meshes/'+name)
         if not mesh: raise RuntimeError('Missing imported mesh '+name)
         mesh.set_material(0,u.load_asset(BASE+'/Materials/'+mat_name))

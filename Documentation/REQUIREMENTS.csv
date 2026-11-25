@@ -1,0 +1,237 @@
+ID|Anforderung|Optionen_Einheit_Zielwert|Priorität
+WRLD-001|Nachbildung des Walensees anhand realer Geodaten||MUST
+WRLD-002|Import bathymetrischer Höhendaten||MUST
+WRLD-003|Massstabsgetreue Spielwelt im Verhältnis 1:1||MUST
+WRLD-004|Dynamisches Laden und Entladen von Weltabschnitten||MUST
+WRLD-005|Mehrere auswählbare Taucheinstiegspunkte||MUST
+WRLD-006|Realistische Felsformationen und Steilwände||MUST
+WRLD-007|Unterschiedliche Sedimente und Bodenbeschaffenheiten||MUST
+WRLD-008|Darstellung der Landschaft oberhalb der Wasseroberfläche||MUST
+WRLD-009|Frei erkundbare Unterwasserwelt ohne sichtbare Ladebildschirme||MUST
+WRLD-010|Versunkene Baumstämme und natürliche Hindernisse||SHOULD
+WRLD-011|Geografisch verortete Points of Interest||SHOULD
+WRLD-012|Unterwasserkarte mit Tiefenlinien||SHOULD
+WRLD-013|Authentische Schiffswracks||COULD
+WRLD-014|Import weiterer Seen über standardisierte Datenpipelines||FUTURE
+WATR-001|Physikalisch plausible Wasseroberfläche||MUST
+WATR-002|Dynamische Wellenbewegungen||MUST
+WATR-003|Lichtbrechung an der Wasseroberfläche||MUST
+WATR-004|Lichtabsorption in Abhängigkeit von der Wassertiefe||MUST
+WATR-005|Volumetrische Lichtstrahlen (God Rays)||MUST
+WATR-006|Dynamische Caustics auf Unterwasserobjekten||MUST
+WATR-007|Tiefenabhängige Sichtweite||MUST
+WATR-008|Schwebepartikel im Wasser||MUST
+WATR-009|Dynamische Wasserströmungen||MUST
+WATR-010|Einfluss von Strömungen auf Taucher, Pflanzen und Tiere||MUST
+WATR-011|Aufwirbelung von Sedimenten durch Flossenbewegungen||SHOULD
+WATR-012|Dynamische Luftblasenerzeugung beim Ausatmen||MUST
+WATR-013|Volumenzunahme von Luftblasen beim Aufsteigen||MUST
+WATR-014|Seitliche Bewegung von Luftblasen durch Strömungen||MUST
+WATR-015|Unterschiedliche Wassertemperaturschichten||MUST
+WATR-016|Nahtloser visueller Übergang beim Ein- und Auftauchen||MUST
+WATR-017|Wetterabhängige Wellen und Oberflächenbewegungen||SHOULD
+WATR-018|Dynamische Reflexionen und Spiegelungen||MUST
+WATR-019|Tiefenabhängige Farbveränderung||MUST
+BIOL-001|Mindestens fünf fotorealistische Tierarten||MUST
+BIOL-002|Mindestens drei unterschiedliche Pflanzen- bzw. Bewuchstypen||MUST
+BIOL-003|Anatomisch plausible 3D-Modelle||MUST
+BIOL-004|Realistische Schwimmanimationen||MUST
+BIOL-005|Individuelles Bewegungsverhalten||MUST
+BIOL-006|Schwarmverhalten bei geeigneten Fischarten||MUST
+BIOL-007|Fluchtreaktion bei Annäherung des Tauchers||MUST
+BIOL-008|Kollisionsvermeidung zwischen Tieren und Umgebung||MUST
+BIOL-009|Tiefen- und lebensraumabhängige Tierpopulation||MUST
+BIOL-010|Pflanzenbewegungen durch Wasserströmungen||MUST
+BIOL-011|Tag- und nachtaktives Verhalten||SHOULD
+BIOL-012|Räuber-Beute-Verhalten||SHOULD
+BIOL-013|Jahreszeitabhängige Tierpopulation||SHOULD
+BIOL-014|Datenbank mit Informationen zu entdeckten Arten||SHOULD
+BIOL-015|Fortpflanzung und Lebenszyklus||FUTURE
+DIVR-001|First-Person-Perspektive||MUST
+DIVR-002|Freie Bewegung in drei Dimensionen||MUST
+DIVR-003|Physikalisch plausibler Auftrieb||MUST
+DIVR-004|Simulation des Wasserwiderstands||MUST
+DIVR-005|Trägheit bei Richtungsänderungen||MUST
+DIVR-006|Unterschiedliche Schwimmgeschwindigkeiten||MUST
+DIVR-007|Einfluss der Atembewegung auf den Auftrieb||MUST
+DIVR-008|Anpassung des Auftriebs über das Tarierjacket (BCD)||MUST
+DIVR-009|Abhängigkeit des Auftriebs von Ausrüstung und Bleigewicht||MUST
+DIVR-010|Kollisionsphysik mit Unterwasserobjekten||MUST
+DIVR-011|Sichtbare Hände und Tauchausrüstung||MUST
+DIVR-012|Realistische Flossenbewegungen||SHOULD
+DIVR-013|Interaktion mit ausgewählten Gegenständen||SHOULD
+DIVR-014|Unterschiedliche Schwimmtechniken||COULD
+CONF-001|Einstiegspunkt|Kartenauswahl|MUST
+CONF-002|Tageszeit|00:00–23:59|MUST
+CONF-003|Jahreszeit|Frühling, Sommer, Herbst, Winter|SHOULD
+CONF-004|Wetter|Sonnig, bewölkt, Regen, Sturm|MUST
+CONF-005|Sichtweite|Automatisch oder benutzerdefiniert|MUST
+CONF-006|Wassertemperatur|Automatisch oder benutzerdefiniert|MUST
+CONF-007|Strömung|Automatisch, keine, leicht, stark|MUST
+CONF-008|Flaschengrösse|10, 12 oder 15 Liter|MUST
+CONF-009|Flaschendruck|Benutzerdefiniert|MUST
+CONF-010|Atemgas|Pressluft|MUST
+CONF-011|Atemgas|Nitrox|SHOULD
+CONF-012|Taucheranzug|Nassanzug, Trockentauchanzug|MUST
+CONF-013|Bleigewicht|Benutzerdefiniert|MUST
+CONF-014|Tauchlampe|Unterschiedliche Modelle|MUST
+CONF-015|Erfahrungslevel|Anfänger, Fortgeschritten, Experte|SHOULD
+CONF-016|Simulationsmodus|Exploration, Simulation, Hardcore|MUST
+CONF-017|Geplante Tauchtiefe|Benutzerdefiniert|MUST
+CONF-018|Geplante Tauchdauer|Benutzerdefiniert|MUST
+VITAL-001|Herzfrequenz|bpm|MUST
+VITAL-002|Atemfrequenz|Atemzüge/min|MUST
+VITAL-003|Sauerstoffsättigung (simulierte SpO₂)|%|MUST
+VITAL-004|Körperkerntemperatur|°C|MUST
+VITAL-005|Körperliche Belastung|%|MUST
+VITAL-006|Stresslevel|%|MUST
+VITAL-007|Ermüdungszustand|%|MUST
+VITAL-008|Stickstoffbelastung|Modellabhängig|MUST
+VITAL-009|CO₂-Belastung|Modellabhängig|SHOULD
+VITAL-010|Blutdruck|mmHg|COULD
+VITAL-011|Sauerstofftoxizitätsbelastung|Modellabhängig|SHOULD
+VITAL-012|Flüssigkeitshaushalt|%|FUTURE
+GAS-001|Kontinuierliche Berechnung des Flaschendrucks||MUST
+GAS-002|Tiefenabhängiger Atemgasverbrauch||MUST
+GAS-003|Aktivitätsabhängiger Atemgasverbrauch||MUST
+GAS-004|Stressabhängiger Atemgasverbrauch||MUST
+GAS-005|Berechnung des Umgebungsdrucks||MUST
+GAS-006|Berechnung des Sauerstoffpartialdrucks||MUST
+GAS-007|Berechnung der geschätzten verbleibenden Atemgaszeit||MUST
+GAS-008|Warnung bei niedrigem Atemgasvorrat||MUST
+GAS-009|Berechnung der simulierten Nullzeit||MUST
+GAS-010|Simulation der Stickstoffaufnahme und -abgabe||MUST
+GAS-011|Warnung bei zu hoher Aufstiegsgeschwindigkeit||MUST
+GAS-012|Simulation von Sicherheits- und Dekompressionsstopps||MUST
+GAS-013|Unterstützung verschiedener Atemgasgemische||SHOULD
+GAS-014|Simulation eines Ausrüstungsdefekts||SHOULD
+GAS-015|Gaswechsel während des Tauchgangs||FUTURE
+EQPM-001|Konfigurierbare Tauchausrüstung||MUST
+EQPM-002|Unterschiedliche Flaschengrössen||MUST
+EQPM-003|Funktionierendes Tarierjacket||MUST
+EQPM-004|Funktionierender Atemregler||MUST
+EQPM-005|Interaktiver Tauchcomputer||MUST
+EQPM-006|Funktionierende Tauchlampe||MUST
+EQPM-007|Simulation des Batterieverbrauchs||SHOULD
+EQPM-008|Unterschiedliche Lichtkegel und Lichtstärken||SHOULD
+EQPM-009|Kompass zur Unterwassernavigation||MUST
+EQPM-010|Unterschiedliche Isolationseigenschaften der Taucheranzüge||MUST
+EQPM-011|Ausrüstung mit individuellem Gewicht und Auftrieb||MUST
+EQPM-012|Ausrüstungsspezifische 3D-Modelle||MUST
+EQPM-013|Unterwasserkamera||SHOULD
+EQPM-014|Verschleiss- und Wartungssystem||FUTURE
+HUD-001|Anzeige der aktuellen Tauchtiefe||MUST
+HUD-002|Anzeige der maximalen Tauchtiefe||MUST
+HUD-003|Anzeige der Tauchdauer||MUST
+HUD-004|Anzeige des verbleibenden Flaschendrucks||MUST
+HUD-005|Anzeige der simulierten Nullzeit||MUST
+HUD-006|Anzeige der Herzfrequenz||MUST
+HUD-007|Anzeige der simulierten Sauerstoffsättigung||MUST
+HUD-008|Anzeige der Atemfrequenz||MUST
+HUD-009|Anzeige der Wassertemperatur||MUST
+HUD-010|Anzeige der Aufstiegsgeschwindigkeit||MUST
+HUD-011|Digitaler Kompass||MUST
+HUD-012|Optische und akustische Warnmeldungen||MUST
+HUD-013|Ein- und ausblendbares HUD||MUST
+HUD-014|Konfigurierbare HUD-Elemente||SHOULD
+HUD-015|Animierte Vitalwertdiagramme||SHOULD
+HUD-016|Farblich und symbolisch unterscheidbare Warnstufen||MUST
+HUD-017|Anzeige am virtuellen Handgelenk||MUST
+ENV-001|Dynamischer Tag- und Nachtzyklus||MUST
+ENV-002|Sonnenstandabhängige Lichtverhältnisse||MUST
+ENV-003|Dynamische Bewölkung||MUST
+ENV-004|Unterschiedliche Wetterszenarien||MUST
+ENV-005|Wetterabhängige Wasseroberfläche||MUST
+ENV-006|Tiefenabhängige Wassertemperatur||MUST
+ENV-007|Simulation einer Sprungschicht (Thermokline)||MUST
+ENV-008|Dynamische Veränderung der Sichtweite||MUST
+ENV-009|Jahreszeitabhängige Umweltbedingungen||SHOULD
+ENV-010|Historische Wetterdaten als Szenario||FUTURE
+ENV-011|Live-Wetterdaten für den Walensee||FUTURE
+AUD-001|Realistische Atemgeräusche||MUST
+AUD-002|Synchronisation von Ausatmung und Luftblasen||MUST
+AUD-003|Dynamische Atemgeräusche bei körperlicher Belastung||MUST
+AUD-004|Hörbarer Herzschlag bei erhöhtem Stress||MUST
+AUD-005|Tiefenabhängige Umgebungsgeräusche||MUST
+AUD-006|Akustische Simulation der Wasseroberfläche||MUST
+AUD-007|Gedämpfte Geräusche unter Wasser||MUST
+AUD-008|Akustische Warnmeldungen des Tauchcomputers||MUST
+AUD-009|Geräusche beim Befüllen und Entleeren des BCD||MUST
+AUD-010|Räumliches 3D-Audio||MUST
+AUD-011|Geräusche vorbeifahrender Schiffe||SHOULD
+AUD-012|Unterschiedliche Audioeffekte bei Stresszuständen||SHOULD
+NAV-001|Unterwasserkompass||MUST
+NAV-002|Karte des Walensees||MUST
+NAV-003|Topografische Tiefenkarte||MUST
+NAV-004|Markierung des Einstiegspunktes||MUST
+NAV-005|Anzeige bereits entdeckter Orte||SHOULD
+NAV-006|Setzen individueller Wegpunkte||SHOULD
+NAV-007|Unterwasserfotografie||SHOULD
+NAV-008|Sammlung entdeckter Tier- und Pflanzenarten||SHOULD
+NAV-009|Entdeckung besonderer Unterwasserformationen||SHOULD
+NAV-010|Freischalten von Erfolgen||COULD
+LOG-001|Automatische Speicherung abgeschlossener Tauchgänge||MUST
+LOG-002|Aufzeichnung des Tiefenprofils||MUST
+LOG-003|Aufzeichnung des Atemgasverbrauchs||MUST
+LOG-004|Aufzeichnung der Vitalwerte||MUST
+LOG-005|Aufzeichnung der Wassertemperatur||MUST
+LOG-006|Aufzeichnung der zurückgelegten Strecke||MUST
+LOG-007|Aufzeichnung ausgelöster Warnmeldungen||MUST
+LOG-008|Aufzeichnung entdeckter Tierarten||SHOULD
+LOG-009|Zuordnung aufgenommener Fotos||SHOULD
+LOG-010|Grafische Auswertung aller Tauchgänge||MUST
+LOG-011|Vergleich mehrerer Tauchgänge||SHOULD
+LOG-012|Export als CSV oder JSON||SHOULD
+LOG-013|Export als PDF-Tauchgangbericht||COULD
+UI-001|Hauptmenü||MUST
+UI-002|Interaktive Tauchgebietsauswahl||MUST
+UI-003|Tauchgangkonfiguration||MUST
+UI-004|Ausrüstungsmanagement||MUST
+UI-005|Persönliches Tauchganglogbuch||MUST
+UI-006|Grafik- und Audioeinstellungen||MUST
+UI-007|Frei konfigurierbare Tastaturbelegung||MUST
+UI-008|Gamepad-Unterstützung||SHOULD
+UI-009|Pausenmenü||MUST
+UI-010|Tutorial für die grundlegende Steuerung||MUST
+UI-011|Deutsch und Englisch||MUST
+UI-012|Lokales Spielerprofil||MUST
+UI-013|Automatische Speicherung der Einstellungen||MUST
+UI-014|Fotogalerie||SHOULD
+UI-015|Flora- und Fauna-Enzyklopädie||SHOULD
+UI-016|Konfigurierbare Kamerabewegung gegen Motion Sickness||MUST
+PERF-001|Bildwiederholrate auf empfohlener Hardware|≥ 60 FPS|
+PERF-002|Bildwiederholrate auf minimaler Hardware|≥ 30 FPS|
+PERF-003|Unterstützte Bildschirmauflösungen|1080p bis 4K|
+PERF-004|Startzeit des Spiels auf SSD|≤ 30 Sekunden|
+PERF-005|Initiale Ladezeit eines Tauchgangs|≤ 15 Sekunden|
+PERF-006|Weltstreaming|Keine sichtbaren Ladeunterbrechungen|
+PERF-007|HUD-Aktualisierung|≤ 100 ms|
+PERF-008|Speicherverwaltung|Dynamisches Asset Loading|
+PERF-009|Grafikeinstellungen|Low, Medium, High, Ultra|
+PERF-010|Spielstabilität|Mindestens 2 Stunden ohne Absturz|
+GFX-001|Physically Based Rendering (PBR)||
+GFX-002|Realistische Materialeigenschaften||
+GFX-003|Hochauflösende 3D-Modelle||
+GFX-004|Dynamische Schatten||
+GFX-005|Volumetrische Beleuchtung||
+GFX-006|Level of Detail (LOD) für sämtliche relevanten Assets||
+GFX-007|Frustum und Occlusion Culling||
+GFX-008|GPU-basiertes Partikelrendering||
+GFX-009|Anisotrope Texturfilterung||
+GFX-010|Temporal Anti-Aliasing||
+GFX-011|Dynamische Auflösung oder plattformgerechtes Upscaling||
+GFX-012|Optionales Hardware-Raytracing bei geeigneter Hardware||
+GFX-013|Textur- und Mesh-Streaming||
+GFX-014|Plattformübergreifend vergleichbare visuelle Qualität||
+MAINT-001|Modulare Softwarearchitektur||
+MAINT-002|Strikte Trennung von Rendering und Simulationslogik||
+MAINT-003|Automatisierte Unit Tests||
+MAINT-004|Konfigurationsbasierte Spielparameter||
+MAINT-005|Neue Tierarten ohne Anpassung der Kernlogik integrierbar||
+MAINT-006|Neue Ausrüstungsgegenstände über Stammdaten integrierbar||
+MAINT-007|Standardisierte Schnittstelle für neue Tauchgebiete||
+MAINT-008|Versionierte Datenbankstruktur||
+MAINT-009|Automatisierte Windows- und macOS-Builds||
+MAINT-010|Zentralisierte Fehlerprotokollierung||
+MAINT-011|Dokumentation sämtlicher Simulationsmodelle||
+MAINT-012|Versionierte Speicherstände mit Migrationsmöglichkeit||

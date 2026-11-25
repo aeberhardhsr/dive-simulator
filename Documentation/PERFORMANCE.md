@@ -59,3 +59,7 @@ Bei 4K liegen bereits die mittleren GPU-Zeiten nahe am 60-FPS-Budget. Insbesonde
 Die Unterwasser-, Oberflächen-, Ufer- und Nachladeaufnahmen wurden visuell geprüft. Die Szene ist gerendert, die Instrumente sind sichtbar; die bekannten flachen Orthobilddetails und vereinfachten Gelände-/Objektoberflächen bleiben sichtbar. Hohe Bildraten sind keine Fotorealismusabnahme.
 
 Eine universelle 60-FPS-Zusage, die zweistündige Stabilitätsprüfung und die tatsächliche macOS-Leistungsmessung bleiben offen. 4K erreicht in diesen beiden Läufen ungefähr 60 FPS im Mittel, aber keine durchgehend eingehaltenen 16,667 ms. Auch das strengere Kriterium „jedes Bild unter 33,333 ms“ besteht wegen des einzelnen Ausreißers nicht in allen Läufen.
+
+## Folgestand mit gescannten PBR-Oberflächen
+
+Nach Erneuerung von Seegrund, Fels und untergetauchtem Ufer wurden vier weitere Messungen mit derselben Methodik durchgeführt. Der Build `Builds/WindowsBed` erreicht 123,34 FPS unter Wasser in 1080p, 56,71 FPS in 4K, 122,34 FPS beim Nachladen und 132,85 FPS am Ufer. Alle 26.107 berücksichtigten Bilder dieser Serie bleiben unter 33,333 ms. Die höheren Materialkosten reduzieren die mittlere Bildrate gegenüber den jeweiligen Vorgängermessungen um ungefähr 4–5 %. Die historische Tabelle oben bleibt als Vergleich erhalten. Vollständige neue Werte und Package-Prüfsummen: [BED_PERFORMANCE.json](BED_PERFORMANCE.json); Ablauf-/Lichtprüfung und Grenzen: [VALIDATION.md](VALIDATION.md).

@@ -2,6 +2,15 @@
 import unreal as u
 
 def build_shore_material(name="M_Shore", imagery=False):
+    if imagery:
+        # Use exactly the same submerged surface as the adjoining bathymetry.
+        import sys
+        from pathlib import Path
+        sys.path.insert(0,str(Path(__file__).resolve().parent))
+        from build_bed_content import build_bed
+        if name!="M_ShorePhoto": raise RuntimeError("Unsupported imagery shore material")
+        build_bed({name})
+        return
     lib=u.MaterialEditingLibrary
     path="/Game/Diving/Materials/"+name
     material=u.load_asset(path) if u.EditorAssetLibrary.does_asset_exist(path) else u.AssetToolsHelpers.get_asset_tools().create_asset(

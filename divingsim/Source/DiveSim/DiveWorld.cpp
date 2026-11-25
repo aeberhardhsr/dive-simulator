@@ -136,7 +136,7 @@ void ADiveWorld::Populate()
 {
     Rocks->ClearInstances(); FishState.Reset(); RockState.Reset();
     Rocks->SetStaticMesh(Mesh(TEXT("/Game/Diving/Meshes/SM_Rock.SM_Rock")));
-    Rocks->SetMaterial(0,Mat(TEXT("M_Rock")));
+    Rocks->SetMaterial(0,Mat(TEXT("M_RockSurface")));
     for(int32 species=0;species<Plants.Num();++species)
     {
         auto* component=Plants[species].Get(); component->ClearInstances();

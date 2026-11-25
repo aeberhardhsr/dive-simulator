@@ -17,10 +17,11 @@ def scene(path):
         with rasterio.open(path) as image:
             if (image.width,image.height)!=(1600,900): raise ValueError('Expected 1600x900 smoke frame')
             rgb=image.read((1,2,3)).astype(np.float64)
-    # Exclude instrument panels, title, arms at the edges and centre reticle.
-    values=rgb[:,120:680,200:1400].max(axis=0)
+    # Exclude instrument panels, title + breathing-source line (y~140),
+    # arms at the edges and centre reticle at screen coordinate (800,450).
+    values=rgb[:,160:680,200:1400].max(axis=0)
     mask=np.ones(values.shape,dtype=bool)
-    mask[320:340,590:610]=False
+    mask[280:300,590:610]=False
     return values[mask]
 
 

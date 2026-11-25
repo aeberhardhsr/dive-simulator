@@ -7,6 +7,8 @@
 - [Requirements Specification v0.1](https://chatgpt.com/c/6b0615d3-17c8-83eb-891b-8af1042b27eb), im angemeldeten Browser gelesen.
 - [GitHub](https://github.com/aeberhardhsr/dive-simulator).
 
+Die vollständigen 236 nummerierten Anforderungen stehen in [REQUIREMENTS.csv](REQUIREMENTS.csv). Nicht nummerierte Modell-/Modusvorgaben und die zwanzig MVP-Abnahmekriterien sind in [REQUIREMENTS_CONTEXT.md](REQUIREMENTS_CONTEXT.md) festgehalten. Die folgende Übersicht ersetzt diese Einzelanforderungen nicht.
+
 Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spezifikation werden durch die ausdrücklich gewählte Unreal-Engine-Basis ersetzt. Lokal vorhanden: Unreal Engine 5.8.4 und Blender 5.3. Windows zuerst; gemeinsamer Quellstand für macOS, dort separater Build und Test auf dem vorhandenen Mac mit Xcode. macOS ist ohne diese Prüfung nicht als unterstützt freizugeben.
 
 ## Erstes ausführbares Inkrement
@@ -14,6 +16,8 @@ Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spez
 Spielbarer Ablauf: Konfiguration → Uferstart → Gehen/Waten → Tauchen und Tarieren → Rückkehr auf das Startpodest → Auswertung. Die bisherigen Offshore-Spielstarts bleiben wählbar. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei örtliche Uferbereiche, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Über Wasser liegen 77 swissALTI3D-Nanite-Kacheln mit 8-m-Quellgeometrie; Berge und Ufer tragen registrierte SWISSIMAGE-Luftbilder des Kacheljahrs 2025. Die begehbaren Zugänge sind modellierte Plattformen/Treppen auf den Höhendaten; originalgetreue Anlagen, räumliche Landschaftsdetails und fotorealistische Qualitätsabnahme bleiben offen.
 
 Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Mittlerer Wasserspiegel Z=0; lokale Wellen bewegen die Oberfläche.
+
+Unterwassergrund, ergänzte Uferbereiche und Felsobjekte verwenden inzwischen unterschiedliche gescannte Sand-/Kies-/Felsmaterialien mit weltbezogener Projektion, Normalen und Rauheit. Die räumliche Verteilung ist gestalterisch, keine lokale Sedimentmessung. Herkunft, Vergleichsbilder und Modellgrenzen: [BED_SURFACES.md](BED_SURFACES.md). Diese Verbesserung erfüllt noch nicht die gesamte visuelle Referenzabnahme.
 
 ## Fachlicher Gesamtumfang und noch zu prüfende Abnahme
 
