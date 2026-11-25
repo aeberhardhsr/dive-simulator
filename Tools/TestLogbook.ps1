@@ -12,5 +12,5 @@ if(-not $process.WaitForExit(180000)) { throw 'Logbook tests exceeded three minu
 $reportFile=Get-Item (Join-Path $reportPath 'index.json')
 if($reportFile.LastWriteTimeUtc -lt $startedAt) { throw 'No fresh logbook test report was produced.' }
 $report=Get-Content $reportFile.FullName -Raw | ConvertFrom-Json
-if($process.ExitCode -ne 0 -or $report.succeeded -ne 4 -or $report.failed -ne 0) { throw "Logbook tests failed. See $logPath." }
+if($process.ExitCode -ne 0 -or $report.succeeded -ne 6 -or $report.failed -ne 0) { throw "Logbook tests failed. See $logPath." }
 $report.tests | Select-Object fullTestPath,state

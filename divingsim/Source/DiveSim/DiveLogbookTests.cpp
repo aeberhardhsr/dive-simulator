@@ -1,4 +1,5 @@
 #include "DiveLogbook.h"
+#include "DiveRecording.h"
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
 #include "Misc/FileHelper.h"
@@ -180,6 +181,86 @@ bool FDiveLogRecoveryTest::RunTest(const FString&)
     TestFalse(TEXT("Cannot lose primary when backup cannot be staged"),DiveLogbook::Write(path,Fixture(120,4,TEXT("completed")),error));
     TestEqual(TEXT("Failed backup retains newest primary"),DiveLogbook::Read(path).Duration,90.);
     TestEqual(TEXT("Uncommitted temporary file never becomes an index entry"),DiveLogbook::Scan(dir).Entries.Num(),1);
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveLogCostTest,"DiveSim.Logbook.LongCheckpointCost",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveLogCostTest::RunTest(const FString&)
+{
+    const FString path=FPaths::ProjectSavedDir()/TEXT("Automation")/(TEXT("LongLog_")+FGuid::NewGuid().ToString())/TEXT("session.json");
+    const FString json=Fixture(7200,4,TEXT("in_progress"));
+    FString error;
+    TestTrue(TEXT("Initial two-hour checkpoint"),DiveLogbook::Write(path,json,error));
+    const double started=FPlatformTime::Seconds();
+    TestTrue(TEXT("Replace two-hour checkpoint with backup"),DiveLogbook::Write(path,json,error));
+    const double milliseconds=(FPlatformTime::Seconds()-started)*1000;
+    TestEqual(TEXT("All long-session samples preserved"),DiveLogbook::Read(path).Samples.Num(),7201);
+    UE_LOG(LogTemp,Display,TEXT("DIVE_CHECKPOINT_COST samples=7201 json_chars=%d write_ms=%.3f"),json.Len(),milliseconds);
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveLogAsyncTest,"DiveSim.Logbook.BackgroundWriter",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveLogAsyncTest::RunTest(const FString&)
+{
+    FDiveRecording recording;
+    recording.Path=FPaths::ProjectSavedDir()/TEXT("Automation")/(TEXT("AsyncLog_")+FGuid::NewGuid().ToString())/TEXT("session.json");
+    recording.StartedUTC=FDateTime::UtcNow().ToIso8601(); recording.Location=TEXT("Weesen / West");
+    recording.Status=TEXT("in_progress"); recording.bTest=true;
+    recording.SurveyOrigin=FVector2D(2726000,1219000);
+    for(int i=0;i<=7200;++i)
+    {
+        Dive::State s; s.ElapsedSeconds=i; s.DepthMetres=5; s.MaxDepthMetres=5;
+        s.DistanceMetres=i; recording.Samples.Add({s,FVector(i*100,i*50,-500)});
+    }
+    recording.State=recording.Samples.Last().State;
+    FDiveRecordingWriter writer;
+    auto wait=[&]()
+    {
+        TOptional<FDiveWriteResult> result;
+        const double deadline=FPlatformTime::Seconds()+15;
+        while(!result.IsSet()&&FPlatformTime::Seconds()<deadline)
+        { result=writer.Poll(); if(!result.IsSet()) FPlatformProcess::Sleep(.001f); }
+        TestTrue(TEXT("Worker returns within deadline"),result.IsSet());
+        return result;
+    };
+    const double started=FPlatformTime::Seconds();
+    writer.Submit(recording); // Includes copying all 7201 samples on the caller.
+    const double submitMilliseconds=(FPlatformTime::Seconds()-started)*1000;
+    recording.Samples.Last().State.CylinderBar=17;
+    auto first=wait();
+    TestTrue(TEXT("Background write succeeds"),first.IsSet()&&first->bSuccess);
+    auto saved=DiveLogbook::Read(recording.Path);
+    TestEqual(TEXT("Snapshot owns all samples"),saved.Samples.Num(),7201);
+    if(!saved.Samples.IsEmpty()) TestEqual(TEXT("Later actor changes cannot mutate queued snapshot"),saved.Samples.Last().CylinderBar,200.);
+    FString json; FFileHelper::LoadFileToString(json,*recording.Path);
+    TSharedPtr<FJsonObject> root; FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(json),root);
+    if(root.IsValid())
+    {
+        const auto last=root->GetArrayField(TEXT("samples")).Last()->AsObject();
+        TestEqual(TEXT("East survey coordinate preserved"),last->GetNumberField(TEXT("lv95_east_m")),2729600.);
+        TestEqual(TEXT("North survey coordinate preserved"),last->GetNumberField(TEXT("lv95_north_m")),1226200.);
+    }
+    UE_LOG(LogTemp,Display,TEXT("DIVE_LOG_ASYNC_COST samples=7201 submit_ms=%.3f worker_ms=%.3f"),submitMilliseconds,first.IsSet()?first->Milliseconds:-1);
+    // An active write plus two submissions must retain just the newest pending
+    // snapshot. Finish then discards it and waits before writing the final state.
+    writer.Submit(recording);
+    recording.Samples.Last().State.CylinderBar=16; writer.Submit(recording);
+    recording.Samples.Last().State.CylinderBar=15; writer.Submit(recording);
+    TestEqual(TEXT("Queue bounded to one pending snapshot"),writer.PendingCount(),1);
+    recording.Status=TEXT("completed"); recording.Samples.Last().State.CylinderBar=14;
+    TestTrue(TEXT("Final write completes after earlier worker"),writer.Finish(recording).bSuccess);
+    TestEqual(TEXT("No obsolete pending write remains"),writer.PendingCount(),0);
+    TestFalse(TEXT("No late worker result can replace final write"),writer.Poll().IsSet());
+    saved=DiveLogbook::Read(recording.Path);
+    TestEqual(TEXT("Final status wins"),saved.Status,FString(TEXT("completed")));
+    if(!saved.Samples.IsEmpty()) TestEqual(TEXT("Final samples win"),saved.Samples.Last().CylinderBar,14.);
+    recording.Status=TEXT("in_progress"); recording.Samples.Last().State.SpO2=101;
+    AddExpectedMessagePlain(TEXT("DIVE_LOG_SAVE_FAILED ")+recording.Path+TEXT(": Invalid new log: Invalid or unordered sample values"),ELogVerbosity::Warning);
+    writer.Submit(recording); const auto failed=wait();
+    TestTrue(TEXT("Worker failure reaches caller"),failed.IsSet()&&!failed->bSuccess&&!failed->Error.IsEmpty());
+    TestEqual(TEXT("Failed worker preserves completed log"),DiveLogbook::Read(recording.Path).Status,FString(TEXT("completed")));
+    recording.Samples.Last().State.SpO2=98;
+    recording.Path=FPaths::GetPath(recording.Path)/TEXT("next-session.json");
+    writer.Submit(recording); const auto next=wait();
+    TestTrue(TEXT("Writer can start another session after failure"),next.IsSet()&&next->bSuccess);
     return true;
 }
 #endif

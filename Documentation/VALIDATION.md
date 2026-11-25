@@ -389,3 +389,33 @@ Der erste Integrationslauf fand einen Pfadvergleichsfehler: Eine absolute Dateia
 ![Älterer Sicherungsstand mit sichtbarem Wiederherstellungshinweis](Images/Checkpoint_Recovery.png)
 
 Diese Funktion bewahrt Tauchprotokolle; sie setzt keine laufende Simulation fort. Vor der ersten Sicherung und seit der letzten erfolgreichen Sicherung können Messpunkte fehlen. Geprüft wurden Prozessbeendigung und gezielt beschädigte/fehlende Dateien, kein Stromausfall oder defekter Datenträger. Die Speicherung arbeitet derzeit synchron; ihr Einfluss bei langen Tauchgängen sowie die vollständige zweistündige Stabilität müssen noch gemessen und gegebenenfalls verbessert werden.
+
+## Hintergrundspeicherung für lange Protokolle (25. November 2026)
+
+Die nachfolgende Messung bestätigt den Engpass des vorigen Stands: Das Prüfen und Ersetzen einer bereits vorhandenen Datei mit 7.201 synthetischen Messpunkten dauert auf diesem Rechner 294,874 ms, ohne die vorherige JSON-Erzeugung. Der Build `Builds/WindowsBackgroundLogs/divingsim.exe` verlagert deshalb JSON-Erzeugung, Validierung, Sicherung und Dateizugriffe laufender Zwischenstände in einen Threadpool-Auftrag. Im Spielthread bleiben die Kopie der aufgezeichneten Zustände und die Übergabe. Der Auftrag enthält keine Actor-/World-Referenzen; Konfiguration, Koordinatenursprung und Messpunkte gehören der Kopie.
+
+Ein laufender Auftrag und höchstens ein wartender aktueller Stand begrenzen den Speicherbedarf bei langsamem Datenträger. Neuere Zwischenstände ersetzen einen noch wartenden Zwischenstand. Beim Abschluss/regulären Verlassen wird ein laufender Auftrag abgewartet und anschließend der endgültige Stand vollständig geschrieben; ein älterer Auftrag kann ihn dadurch nicht später überschreiben. Die bisherige Sicherungs-/Wiederherstellungslogik und alle 52 geschriebenen JSON-Feldnamen bleiben erhalten. Schema-Version und Lesbarkeit älterer Protokolle ändern sich nicht. Fehler abgeschlossener Hintergrundaufträge werden beim nächsten Spieltick gemeldet.
+
+Sechs Unreal-Tests bestehen (`artifacts/test-background-log-final.log`). Hinzugekommen sind die Kostenmessung sowie Prüfungen für eine unabhängige Datenkopie, LV95-Koordinaten, eine begrenzte Warteschlange, den Vorrang des Abschlusses vor alten Schreibaufträgen und Fehlerrückmeldung mit anschließendem erneutem Speichern. Die gezielt erzeugte Warnung bei einem ungültigen Messwert wird genau einmal erwartet. Alle 7.201 Messpunkte bleiben beim erneuten Lesen erhalten.
+
+| Messung mit synthetischem Zwei-Stunden-Datensatz | Gemessene Dauer |
+|---|---:|
+| Vorheriger synchroner Prüf-/Schreibpfad, ohne JSON-Erzeugung | 294,874 ms |
+| Datenkopie und Übergabe an Hintergrundauftrag | 0,132 ms |
+| Erste vollständige Dateierzeugung im Hintergrund | 311,154 ms |
+| Nachfolgender Hintergrundstand mit Sicherung | 480,330 ms |
+
+Die Arbeit entfällt nicht; sie läuft außerhalb des Spielthreads. Die Tabelle ist eine isolierte Kostenmessung, keine zweistündige Spiel- oder FPS-Messung. Der endgültige Abschluss kann weiterhin auf Speicherung warten (im synthetischen Test 476,376 ms für das Schreiben selbst).
+
+Editor und Windows-Package wurden erfolgreich gebaut (`artifacts/build-background-log-final.log`, `package-background-log.log`). Der echte Prozessabbruch-/Wiederöffnungsablauf besteht erneut: 60,020 s / 60 Messpunkte aus der Hauptdatei und 30,020 s / 30 Messpunkte aus der Sicherung einer beschädigten Testkopie; alle vier Logbuchseiten werden in neuen Prozessen gelesen und gerendert (`artifacts/checkpoint-20261125-094450`). Der Wiederherstellungshinweis wurde visuell geprüft. Auch der normale Uferablauf besteht mit 40 Messpunkten, 5,74 m maximaler Tiefe und 43,76 m Strecke (`artifacts/background-shore-full.log`). Seine Zwischenstand-Übergabe benötigt 0,031 ms; die anschließenden 12,199 ms Schreibarbeit laufen separat. Der Abschluss wird vor Rückmeldung vollständig gespeichert.
+
+Zwei gerenderte 60-Sekunden-Läufe nach je 15 s Aufwärmen, native 1080p/Qualitätsstufe 2 auf RTX 3090 / Ryzen 9 9950X3D:
+
+| Lauf | Mittel FPS | 1%-Low FPS | P95 ms | P99 ms | Maximum ms | Bilder >33,333 ms |
+|---|---:|---:|---:|---:|---:|---:|
+| Erster Lauf | 117,83 | 61,35 | 10,08 | 15,24 | 18,91 | 0 / 7068 |
+| Gezielte Wiederholung | 120,45 | 91,33 | 9,73 | 10,54 | 12,04 | 0 / 7225 |
+
+Im ersten Lauf liegen erhöhte GPU-/Renderzeiten unter anderem bei Simulationssekunden 27,8–28,4 vor. In den Zeitfenstern ±0,1 s um die Sicherungen bei 30,02 und 60,02 s bleibt die Spielthread-Zeit unter 2,75 beziehungsweise 2,41 ms. Diese Zähler beweisen keine eindeutige Ursache der GPU-Schwankung. Der erste Lauf wird nicht durch den günstigeren Wiederholungslauf ersetzt. Alle 14.293 Bilder bleiben unter 33,333 ms; eine universelle Leistungszusage folgt daraus nicht. Die gerenderten Läufe enthalten normale kurze Tauchprotokolle, nicht den synthetischen Zwei-Stunden-Datensatz.
+
+Einzelwerte, Rohdatenreferenzen, Wiederherstellungsdaten und SHA256-Prüfsummen: [BACKGROUND_LOG_RESULTS.json](BACKGROUND_LOG_RESULTS.json). Die tatsächliche zweistündige Spielstabilität, lange Protokolle während des Renderns und die Prüfung auf Mindesthardware bleiben offen.

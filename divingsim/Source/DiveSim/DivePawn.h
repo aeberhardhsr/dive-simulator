@@ -6,6 +6,7 @@
 #include "Simulation/AudioModel.h"
 #include "Simulation/Tutorial.h"
 #include "DiveControls.h"
+#include "DiveRecording.h"
 #include "DivePawn.generated.h"
 
 class UCameraComponent;
@@ -16,12 +17,6 @@ class UDiveAudio;
 class ADiveWorld;
 class ADiveEquipment;
 class UMaterialInstanceDynamic;
-
-struct FDiveSample
-{
-    Dive::State State;
-    FVector Position;
-};
 
 UCLASS(Blueprintable)
 class DIVESIM_API ADivePawn : public APawn
@@ -88,6 +83,7 @@ public:
     bool SaveLog(const FString& Reason);
     FString Local(const TCHAR* German,const TCHAR* English) const { return bEnglish?English:German; }
 private:
+    FDiveRecordingWriter RecordingWriter;
     float Accumulator=0, TelemetryAccumulator=0;
     double CameraBaseHeight=0;
     bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false, bSmokeSecondaryCaptured=false;

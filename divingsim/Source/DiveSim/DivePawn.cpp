@@ -35,24 +35,6 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/Material.h"
 
-namespace
-{
-void SaveEnvironment(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& Config)
-{
-    Obj->SetNumberField(TEXT("weather"),Config.Weather);
-    Obj->SetNumberField(TEXT("wind_mps"),Config.WindMetresPerSecond);
-    Obj->SetNumberField(TEXT("wind_direction_degrees"),Config.WindDirectionDegrees);
-    Obj->SetNumberField(TEXT("surface_temperature_c"),Config.SurfaceTemperatureC);
-    Obj->SetNumberField(TEXT("air_temperature_c"),Config.AirTemperatureC);
-    Obj->SetNumberField(TEXT("bottom_temperature_c"),Config.BottomTemperatureC);
-    Obj->SetNumberField(TEXT("thermocline_m"),Config.ThermoclineMetres);
-    Obj->SetNumberField(TEXT("thermocline_width_m"),Config.ThermoclineWidthMetres);
-    Obj->SetNumberField(TEXT("visibility_m"),Config.VisibilityMetres);
-    Obj->SetNumberField(TEXT("current_mps"),Config.CurrentMetresPerSecond);
-    Obj->SetNumberField(TEXT("hour"),Config.Hour);
-}
-}
-
 ADivePawn::ADivePawn()
 {
     PrimaryActorTick.bCanEverTick=true;
@@ -299,6 +281,9 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(const auto saved=RecordingWriter.Poll(); saved.IsSet()&&!saved->bSuccess)
+        Notify(Local(TEXT("Zwischenspeichern fehlgeschlagen. Aktuelle Messpunkte nur im Arbeitsspeicher."),
+                     TEXT("Autosave failed. Latest log data remains in memory.")));
     if(bPerformance&&SmokeScenario!=TEXT("perf-stream"))
         if(auto* pc=Cast<APlayerController>(GetController()))
             pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")?-12:-5,PerformanceYaw+6*Simulation.Data.ElapsedSeconds,0));
@@ -748,68 +733,21 @@ void ADivePawn::Photograph()
 
 bool ADivePawn::SaveLog(const FString& Reason)
 {
+    const double started=FPlatformTime::Seconds();
     const FString dir=FPaths::ProjectSavedDir()/TEXT("DiveLogs");
-    IFileManager::Get().MakeDirectory(*dir,true);
     if(LastLogPath.IsEmpty()) LastLogPath=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT("_")+FGuid::NewGuid().ToString(EGuidFormats::Digits).Left(8)+TEXT(".json"));
-    auto root=MakeShared<FJsonObject>();
-    root->SetNumberField(TEXT("schema_version"),4);
-    root->SetStringField(TEXT("physiology_model"),TEXT("breath_reserve_v1"));
-    root->SetStringField(TEXT("started_at_utc"),DiveStartedUTC);
-    root->SetBoolField(TEXT("is_test"),bSmokeTest);
-    root->SetStringField(TEXT("status"),Reason);
-    root->SetStringField(TEXT("location"),EntryName());
-    root->SetBoolField(TEXT("start_on_shore"),PendingConfig.StartOnShore);
-    root->SetStringField(TEXT("bathymetry"),TEXT("swissBATHY3D Walensee 2020; (c) swisstopo"));
-    root->SetNumberField(TEXT("water_elevation_ln02_m"),419);
-    root->SetNumberField(TEXT("duration_seconds"),Simulation.Data.ElapsedSeconds);
-    root->SetNumberField(TEXT("maximum_depth_m"),Simulation.Data.MaxDepthMetres);
-    root->SetNumberField(TEXT("distance_m"),Simulation.Data.DistanceMetres);
-    root->SetNumberField(TEXT("cylinder_litres"),PendingConfig.CylinderLitres);
-    root->SetNumberField(TEXT("oxygen_fraction"),PendingConfig.OxygenFraction);
-    root->SetNumberField(TEXT("mode"),static_cast<int>(PendingConfig.GameMode));
-    auto environment=MakeShared<FJsonObject>(); SaveEnvironment(environment,PendingConfig);
-    root->SetObjectField(TEXT("environment"),environment);
-    TArray<TSharedPtr<FJsonValue>> rows;
-    for(const auto& sample:Samples)
+    FDiveRecording recording;
+    recording.Path=LastLogPath; recording.StartedUTC=DiveStartedUTC; recording.Status=Reason;
+    recording.Location=EntryName(); recording.bTest=bSmokeTest; recording.Config=PendingConfig;
+    recording.State=Simulation.Data; recording.SurveyOrigin=Environment->Terrain.ToSurvey(FVector::ZeroVector);
+    recording.Samples=Samples;
+    if(Reason==TEXT("in_progress"))
     {
-        const auto& s=sample.State; auto row=MakeShared<FJsonObject>();
-        row->SetNumberField(TEXT("seconds"),s.ElapsedSeconds);
-        row->SetNumberField(TEXT("depth_m"),s.DepthMetres);
-        row->SetNumberField(TEXT("cylinder_bar"),s.CylinderBar);
-        row->SetNumberField(TEXT("heart_bpm"),s.HeartBPM);
-        row->SetNumberField(TEXT("respiratory_bpm"),s.RespiratoryBPM);
-        row->SetNumberField(TEXT("spo2_percent"),s.SpO2);
-        row->SetNumberField(TEXT("breath_reserve"),s.BreathReserve);
-        row->SetNumberField(TEXT("water_c"),s.WaterTemperatureC);
-        row->SetNumberField(TEXT("environment_c"),s.EnvironmentTemperatureC);
-        row->SetNumberField(TEXT("body_immersion"),s.BodyImmersion);
-        row->SetNumberField(TEXT("breathing_source"),static_cast<int>(s.BreathSource));
-        row->SetBoolField(TEXT("regulator_in_mouth"),s.RegulatorInMouth);
-        row->SetBoolField(TEXT("mouth_submerged"),s.MouthSubmerged);
-        row->SetNumberField(TEXT("core_c"),s.CoreTemperatureC);
-        row->SetNumberField(TEXT("stress"),s.Stress);
-        row->SetNumberField(TEXT("fatigue"),s.Fatigue);
-        row->SetNumberField(TEXT("ppo2_bar"),s.PPO2);
-        row->SetNumberField(TEXT("ceiling_m"),s.CeilingMetres);
-        row->SetNumberField(TEXT("ndl_minutes"),s.NDLMinutes);
-        row->SetNumberField(TEXT("distance_m"),s.DistanceMetres);
-        row->SetNumberField(TEXT("warnings"),s.Warnings);
-        row->SetNumberField(TEXT("x_m"),sample.Position.X/100);
-        row->SetNumberField(TEXT("y_m"),sample.Position.Y/100);
-        const FVector2D survey=Environment->Terrain.ToSurvey(sample.Position);
-        row->SetNumberField(TEXT("lv95_east_m"),survey.X);
-        row->SetNumberField(TEXT("lv95_north_m"),survey.Y);
-        rows.Add(MakeShared<FJsonValueObject>(row));
+        RecordingWriter.Submit(MoveTemp(recording));
+        if(bSmokeTest) { UE_LOG(LogTemp,Display,TEXT("DIVE_LOG_SUBMIT samples=%d milliseconds=%.3f"),Samples.Num(),(FPlatformTime::Seconds()-started)*1000); }
+        return true; // Queued; the result is reported by Poll on a later game tick.
     }
-    root->SetArrayField(TEXT("samples"),rows);
-    FString json; auto writer=TJsonWriterFactory<>::Create(&json);
-    if(!FJsonSerializer::Serialize(root,writer)) return false;
-    FString error;
-    const bool saved=DiveLogbook::Write(LastLogPath,json,error);
-    if(!saved) { UE_LOG(LogTemp,Warning,TEXT("DIVE_LOG_SAVE_FAILED %s: %s"),*LastLogPath,*error); }
-    else if(bSmokeTest) { UE_LOG(LogTemp,Display,TEXT("DIVE_LOG_SAVED status=%s seconds=%.3f samples=%d path=%s"),
-        *Reason,Simulation.Data.ElapsedSeconds,Samples.Num(),*LastLogPath); }
-    return saved;
+    return RecordingWriter.Finish(MoveTemp(recording)).bSuccess;
 }
 
 void ADivePawn::SaveSettings()

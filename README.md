@@ -63,6 +63,8 @@ Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter
 
 Laufende Tauchgänge werden alle 30 Sekunden Simulationszeit zwischengespeichert, beim regulären Verlassen als unterbrochen und beim Abschluss mit dem Ergebnis. Eine `.json.bak` bewahrt die vorherige gültige Version. Ist die Hauptdatei beschädigt oder fehlt sie, zeigt das Logbuch diesen älteren Stand mit einem Hinweis an. Zwischenstände sind Protokolle; sie erlauben noch kein Fortsetzen des Tauchgangs. Vor der ersten Sicherung und seit der letzten erfolgreichen Sicherung können bei einem Absturz Messpunkte verloren gehen. Schreibfehler während des Tauchgangs werden eingeblendet.
 
+Die laufende Sicherung verarbeitet eine eigene Datenkopie im Hintergrund. Es gibt höchstens einen Schreibauftrag und einen wartenden aktuellen Stand; bei langsamem Datenträger wächst keine unbegrenzte Warteschlange. Abschluss und reguläres Verlassen warten auf die endgültige Speicherung, damit ein älterer Auftrag das Ergebnis nicht später überschreibt.
+
 ## Entwicklung und Prüfung
 
 ```powershell
