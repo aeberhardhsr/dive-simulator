@@ -11,6 +11,7 @@ param(
     [switch]$OnlyOptics,
     [switch]$OnlyTorch,
     [switch]$OnlyParticles,
+    [switch]$OnlyAvatar,
     [switch]$OnlyBed,
     [switch]$OnlyWater
 )
@@ -39,6 +40,7 @@ if ($Target -eq 'Content') {
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
     if($OnlyParticles) { $script=Join-Path $PSScriptRoot 'build_particle_content.py' }
+    if($OnlyAvatar) { $script=Join-Path $PSScriptRoot 'build_avatar_content.py' }
     if($OnlyBed) { $script=Join-Path $PSScriptRoot 'build_bed_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }

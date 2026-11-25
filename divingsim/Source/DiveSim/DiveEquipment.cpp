@@ -1,5 +1,7 @@
 #include "DiveEquipment.h"
 #include "DivePawn.h"
+#include "DiveAvatar.h"
+#include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -53,6 +55,11 @@ void ADiveEquipment::Initialize(ADivePawn* Pawn)
     }
     SuitMaterial=UMaterialInstanceDynamic::Create(Meshes[0]->GetMaterial(0),this);
     Meshes[0]->SetMaterial(0,SuitMaterial); Meshes[3]->SetMaterial(0,SuitMaterial);
+    // The continuous articulated suit supplies both full arms. Keep the old
+    // assets loaded for compatibility checks, but never draw duplicate sleeves.
+    Meshes[0]->SetVisibility(false);Meshes[3]->SetVisibility(false);
+    Avatar=GetWorld()->SpawnActor<ADiveAvatar>();Avatar->Initialize(Pawn);
+    for(int index:{1,2,4,5}) Meshes[index]->SetCastShadow(true);
     TArray<FVector> vertices{{2.5,-4.15,5.57},{2.5,4.15,5.57},{-3.5,4.15,5.57},{-3.5,-4.15,5.57}};
     TArray<int32> triangles{0,1,2,0,2,3};
     TArray<FVector> normals{{0,0,1},{0,0,1},{0,0,1},{0,0,1}};
@@ -83,13 +90,27 @@ void ADiveEquipment::Initialize(ADivePawn* Pawn)
 void ADiveEquipment::Update(float DeltaSeconds)
 {
     if(!Diver) return;
-    SetActorHiddenInGame(!Diver->bDiveActive||Diver->bMenu);
-    if(!Diver->bDiveActive||Diver->bMenu) return;
+    SetActorHiddenInGame((!Diver->bDiveActive||Diver->bMenu)&&!(Avatar&&Avatar->IsInspection()));
     if(TorchModel!=Diver->PendingConfig.TorchModel)
     {
         TorchModel=Diver->PendingConfig.TorchModel;
         const FString name=TorchMeshes[TorchModel];
         Meshes[5]->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
+    }
+    if(!Diver->bDiveActive||Diver->bMenu)
+    {
+        if(Avatar) Avatar->UpdatePose(DeltaSeconds,LeftWrist,RightHand);
+        if(!Diver->bDiveActive&&Avatar&&Avatar->IsInspection())
+        {
+            DisplayTimer+=DeltaSeconds;
+            if(DisplayUpdates==0||DisplayTimer>=.1f)
+            {
+                DisplayTimer=0;DisplayState=Dive::Model(Diver->PendingConfig).Data;
+                bEnglish=Diver->bEnglish;bUnlimited=Diver->PendingConfig.GameMode==Dive::Mode::Exploration;
+                Page=0;Heading=0;Display->UpdateResource();
+            }
+        }
+        return;
     }
     if(SuitMaterial) SuitMaterial->SetScalarParameterValue(TEXT("DrySuit"),Diver->PendingConfig.DrySuit?1.f:0.f);
     const float sleeveScale=Diver->PendingConfig.DrySuit?1.f:.9f;
@@ -99,10 +120,12 @@ void ADiveEquipment::Update(float DeltaSeconds)
     const double phase=Diver->Simulation.Data.ElapsedSeconds;
     const float movement=Diver->VelocityMetres.Size();
     const float sway=Diver->bCameraMotion?FMath::Sin(phase*2.5)*FMath::Min(movement,1.f)*.8f:0;
-    LeftWrist->SetRelativeLocation(FMath::Lerp(FVector(52,-30,-28),FVector(28,-8,-6),WristBlend)+FVector(0,0,sway));
-    LeftWrist->SetRelativeRotation(FMath::Lerp(FRotator(18,-8,0),FRotator(75,-8,0),WristBlend));
-    RightHand->SetRelativeLocation(FVector(43,26,-24+sway));
+    const float readingSwim=Avatar?FMath::Clamp(Avatar->SwimBlend/.45f,0.f,1.f):0;
+    LeftWrist->SetRelativeLocation(FMath::Lerp(FVector(35,-24,-18),FVector(FMath::Lerp(28.f,26.f,readingSwim),-6,-6),WristBlend)+FVector(0,0,sway));
+    LeftWrist->SetRelativeRotation(FMath::Lerp(FRotator(18,-8,0),FRotator(FMath::Lerp(75.f,60.f,readingSwim),-8,0),WristBlend));
+    RightHand->SetRelativeLocation(FVector(29,24,-20+sway));
     RightHand->SetRelativeRotation(FRotator(8,-5,0));
+    if(Avatar) Avatar->UpdatePose(DeltaSeconds,LeftWrist,RightHand);
     DisplayTimer+=DeltaSeconds;
     if(DisplayUpdates==0||DisplayTimer>=.1f||Page!=Diver->ComputerPage||bEnglish!=Diver->bEnglish)
     {
@@ -116,6 +139,7 @@ void ADiveEquipment::Update(float DeltaSeconds)
 
 bool ADiveEquipment::Validate(FString& Error) const
 {
+    if(!Avatar||!Avatar->Validate(Error)) { if(Error.IsEmpty()) Error=TEXT("Missing world-space diver");return false; }
     if(!Display||!ScreenMaterial||!Font) { Error=TEXT("Missing wrist display resources"); return false; }
     for(int32 i=0;i<Meshes.Num();++i)
         if(!Meshes[i]->GetStaticMesh()||Meshes[i]->GetStaticMesh()->GetName()!=(i==5&&TorchModel>=0?TorchMeshes[TorchModel]:EquipmentNames[i]))

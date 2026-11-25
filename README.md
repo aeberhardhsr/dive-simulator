@@ -6,7 +6,7 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
-Der aktuelle Windows-Build liegt lokal unter **`Builds/WindowsLoadout/divingsim.exe`**. Unter **Ausruestung: Gewicht und Auftrieb** lassen sich Stahl-/Aluminiumflasche und drei BCDs wählen. Einzelmassen, Gas und Verdrängung bestimmen Tarierung und Trägheit; Details und Grenzen: [LOADOUT.md](Documentation/LOADOUT.md). Exploration, Simulation und Hardcore verwenden unterschiedliche Regeln für Gas, Tarierung, körperliche Folgen, HUD und Hilfetexte. Hardcore enthält einen kälteabhängigen Reglerdefekt mit Gasverlust; Details und Modellgrenzen stehen in [MODES.md](Documentation/MODES.md). Automatische saisonale Wassertemperaturen, Sichtweite und Strömung bleiben unter **Wetter und Wasser** wählbar; Herkunft: [AUTOMATIC_ENVIRONMENT.md](Documentation/AUTOMATIC_ENVIRONMENT.md). Kalender/Himmel, drei Lampen, GPU-Schwebeteilchen und transparente Atemblasen sind enthalten. Der gesamte Paketordner wird benötigt; vorherige Builds einschließlich `Builds/WindowsModes` und `Builds/WindowsEnvironment` bleiben erhalten.
+Der aktuelle Windows-Build liegt lokal unter **`Builds/WindowsAvatar/divingsim.exe`**. Unter **3D ansehen** auf der Ausrüstungsseite lässt sich der Taucher drehen, vergrößern und mit Flossenschlag ansehen. Gelenkgewichteter Körper, zwei Anzüge, sechs Flaschen und drei BCD-Modelle folgen dem gewählten Plan; Umsetzung und offene Qualitätsgrenzen: [AVATAR.md](Documentation/AVATAR.md). Unter **Ausruestung: Gewicht und Auftrieb** lassen sich Stahl-/Aluminiumflasche und drei BCDs wählen. Einzelmassen, Gas und Verdrängung bestimmen Tarierung und Trägheit; Details und Grenzen: [LOADOUT.md](Documentation/LOADOUT.md). Exploration, Simulation und Hardcore verwenden unterschiedliche Regeln für Gas, Tarierung, körperliche Folgen, HUD und Hilfetexte. Hardcore enthält einen kälteabhängigen Reglerdefekt mit Gasverlust; Details und Modellgrenzen stehen in [MODES.md](Documentation/MODES.md). Automatische saisonale Wassertemperaturen, Sichtweite und Strömung bleiben unter **Wetter und Wasser** wählbar; Herkunft: [AUTOMATIC_ENVIRONMENT.md](Documentation/AUTOMATIC_ENVIRONMENT.md). Kalender/Himmel, drei Lampen, GPU-Schwebeteilchen und transparente Atemblasen sind enthalten. Der gesamte Paketordner wird benötigt; vorherige Builds einschließlich `Builds/WindowsLoadout`, `Builds/WindowsModes` und `Builds/WindowsEnvironment` bleiben erhalten.
 
 Nach einem lokalen Package-Build ohne eigenes Zielverzeichnis: `Builds/Windows/divingsim.exe` starten. Im Menü Ausrüstung, Umgebung und **Start: am Ufer / direkt im Wasser** einstellen, dann starten. Neue Einstellungen beginnen am Ufer; ältere gespeicherte Pläne behalten ihren Wasserstart. **Exploration** bietet unbegrenztes Gas, wählbare automatische/manuelle Tarierung und keine körperlichen Beeinträchtigungen. **Simulation** verwendet manuelle Tarierung, begrenztes Gas und gekoppelte Beeinträchtigungen. **Hardcore** ergänzt Reglervereisung und deaktiviert automatische Hilfetexte. Die Modelle bleiben gestaltete Spielmechaniken; die vollständige Anforderungsabnahme ist offen.
 
@@ -77,10 +77,13 @@ Die laufende Sicherung verarbeitet eine eigene Datenkopie im Hintergrund. Es gib
 
 ```powershell
 ./Tools/TestCore.cmd                  # Engineunabhängige Simulationsprüfungen
+./Tools/TestAvatar.ps1 -PackageDirectory Builds/WindowsAvatar # Sechs 3D-Ausrüstungen und 48 Ansichten
+python Tools/ReportAvatar.py artifacts/avatar-validation-YYYYMMDD-HHMMSS --output artifacts/avatar-report.json
 ./Tools/TestLoadout.ps1 -PackageDirectory Builds/WindowsLoadout # Vier Ausrüstungen, DE/EN, Speicherung, Trägheit
 python Tools/ReportLoadout.py artifacts/loadout-validation-YYYYMMDD-HHMMSS # Den tatsächlichen Ergebnisordner angeben
 python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/Build.ps1 -Target Content     # Materialien, Importe und Trainingsmap
+./Tools/Build.ps1 -Target Content -OnlyAvatar # Nur Körper und Ausrüstungsmodelle importieren
 ./Tools/Build.ps1 -Target Content -OnlyEnvironment # Nur Wasser, Wolken und Regen erneuern
 ./Tools/Build.ps1 -Target Content -OnlyWater       # Nur Wassermaterial erneuern
 ./Tools/Build.ps1 -Target Content -OnlyOptics # Nur den HDR-Unterwassereffekt erneuern

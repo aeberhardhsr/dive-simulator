@@ -5,6 +5,7 @@
 #include "DiveEquipment.generated.h"
 
 class ADivePawn;
+class ADiveAvatar;
 class UCanvas;
 class UFont;
 class UCanvasRenderTarget2D;
@@ -25,6 +26,7 @@ public:
     int32 DisplayUpdates=0;
     uint32 DisplayedPages=0;
     float WristBlend=0;
+    UPROPERTY() TObjectPtr<ADiveAvatar> Avatar;
 private:
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
     UPROPERTY() TObjectPtr<USceneComponent> LeftWrist;

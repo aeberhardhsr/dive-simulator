@@ -2,6 +2,8 @@
 #include "DivePawn.h"
 #include "DiveWorld.h"
 #include "DiveAudio.h"
+#include "DiveEquipment.h"
+#include "DiveAvatar.h"
 #include "Engine/Canvas.h"
 #include "Engine/Font.h"
 #include "Engine/Texture2D.h"
@@ -51,6 +53,8 @@ void ADiveHUD::DrawHUD()
 {
     Super::DrawHUD();
     Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver || !Canvas) return;
+    if(Diver->Equipment&&Diver->Equipment->Avatar)
+        Diver->Equipment->Avatar->SetInspection(Diver->bMenu&&bLoadoutPage&&bAvatarView&&!bProfilesPage&&!bControlsPage&&!Diver->bLogbook&&!Diver->bSummary);
     Scale=FMath::Min(Canvas->SizeX/1600.f,Canvas->SizeY/900.f);
     OffsetX=(Canvas->SizeX-1600*Scale)/2; OffsetY=(Canvas->SizeY-900*Scale)/2;
     if(Diver->bMenu)
@@ -366,6 +370,15 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
     if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; bAudioPage=bLoadoutPage=false; return; }
     if(Id==TEXT("audio")) { bAudioPage=!bAudioPage; bLoadoutPage=false; return; }
     if(Id==TEXT("loadout")) { bLoadoutPage=!bLoadoutPage; bAudioPage=bEnvironmentPage=false; return; }
+    if(Id==TEXT("avatar_view")&&bLoadoutPage) { bAvatarView=!bAvatarView;return; }
+    if(bLoadoutPage&&bAvatarView&&Diver->Equipment&&Diver->Equipment->Avatar)
+    {
+        auto* avatar=Diver->Equipment->Avatar.Get();
+        if(Id==TEXT("avatar_left")) { avatar->InspectionYaw-=45;return; }
+        if(Id==TEXT("avatar_right")) { avatar->InspectionYaw+=45;return; }
+        if(Id==TEXT("avatar_zoom")) { avatar->bInspectionClose=!avatar->bInspectionClose;return; }
+        if(Id==TEXT("avatar_pose")&&!Diver->bDiveActive) { avatar->bPreviewSwimming=!avatar->bPreviewSwimming;return; }
+    }
     if(Id.ToString().StartsWith(TEXT("audio_minus_"))||Id.ToString().StartsWith(TEXT("audio_plus_")))
     {
         const FString name=Id.ToString();

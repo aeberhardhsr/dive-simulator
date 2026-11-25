@@ -27,6 +27,9 @@ public:
     bool ConfigSmokeTest(int Phase);
     bool EnvironmentSmokeTest(int Phase);
     bool LoadoutSmokeTest(int Phase);
+    bool AvatarSmokeTest(int Phase);
+    int32 AvatarPausedUpdates=0;
+    float AvatarPausedPhase=0;
     bool ConfigInputOpen() const { return ConfigDialog.IsValid(); }
     void CloseConfigInput(bool RestoreFocus=true);
     bool LogbookReady() const { return !bIndexLoading&&!bDetailLoading&&SelectedLog.Error.IsEmpty()&&!SelectedLog.Path.IsEmpty(); }
@@ -73,7 +76,7 @@ private:
     TFuture<FDiveLogIndex> IndexTask;
     TFuture<FDiveLog> DetailTask;
     bool bIndexLoading=false,bDetailLoading=false;
-    bool bEnvironmentPage=false,bAudioPage=false,bControlsPage=false,bLoadoutPage=false;
+    bool bEnvironmentPage=false,bAudioPage=false,bControlsPage=false,bLoadoutPage=false,bAvatarView=false;
     bool bProfilesPage=false,bProfileArchive=false,bProfileRename=false;
     FDiveProfiles Profiles;
     FString ProfileSelection,ProfileEditingId,ProfileMessage,ProfileNameError;
