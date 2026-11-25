@@ -1,6 +1,6 @@
 param(
     [string]$PackageDirectory='Builds/WindowsPerformance',
-    [ValidateSet('underwater','surface','shore','stream')][string]$Scenario='underwater',
+    [ValidateSet('underwater','surface','shore','stream','sediment')][string]$Scenario='underwater',
     [ValidateSet('1080p','1440p','2160p')][string]$Resolution='1080p',
     [ValidateRange(0,3)][int]$Quality=2,
     [ValidateRange(50,100)][double]$RenderScale=100,

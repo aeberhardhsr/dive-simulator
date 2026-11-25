@@ -1,0 +1,23 @@
+// Integrate a smooth, irregular density through the sphere up to opaque geometry.
+// All distances are world centimetres; Optical is unit-sphere optical depth.
+float3 ray=normalize(Position-Eye);
+float3 offset=Eye-Center;
+float b=dot(offset,ray),c=dot(offset,offset)-Radius*Radius;
+float h=b*b-c;
+if(h<=0 || Radius<=0) return 0;
+// With two-sided rendering, use only entry faces outside and exit faces inside.
+if((c>0 && Face<0)||(c<=0 && Face>0)) return 0;
+h=sqrt(h);
+float begin=max(0,-b-h);
+float opaqueDistance=Depth*length(Position-Eye)/max(Pixel,0.01);
+float end=min(-b+h,opaqueDistance);
+if(end<=begin) return 0;
+float step=(end-begin)/8;
+float integral=0;
+[unroll] for(int i=0;i<8;++i)
+{
+    float3 q=(offset+ray*(begin+(i+.5)*step))/Radius;
+    float eddy=.8+.2*sin(q.x*7+Age*.3)*sin(q.y*6-Age*.2)*sin(q.z*5+Age*.25);
+    integral+=max(0,1-dot(q,q))*eddy;
+}
+return saturate(1-exp(-Optical*.75*integral*step/Radius));

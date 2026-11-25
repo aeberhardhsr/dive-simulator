@@ -49,6 +49,11 @@ void ADivePawn::SetupPerformance()
     PerformanceStarted=FPlatformTime::Seconds();
     if(auto* pc=Cast<APlayerController>(GetController())) PerformanceYaw=pc->GetControlRotation().Yaw;
     if(SmokeScenario==TEXT("perf-soak")) SetupSoak();
+    if(SmokeScenario==TEXT("perf-sediment"))
+    {
+        FVector location=GetActorLocation();location.Z=Environment->GroundZ(location.X,location.Y)+110;
+        SetActorLocation(location);VelocityMetres=FVector::ZeroVector;ResetContactPose();
+    }
     UE_LOG(LogTemp,Display,TEXT("DIVE_PERF_WARMUP seconds=15 capture_seconds=%.0f quality=%d scale=%.2f"),PerformanceSeconds,quality,scale);
 }
 
@@ -70,6 +75,7 @@ void ADivePawn::TickPerformance()
         CSV_CUSTOM_STAT(DivePerf,DistanceM,Simulation.Data.DistanceMetres,ECsvCustomStatOp::Set);
         CSV_CUSTOM_STAT(DivePerf,SimSeconds,Simulation.Data.ElapsedSeconds,ECsvCustomStatOp::Set);
         CSV_CUSTOM_STAT(DivePerf,TerrainChunks,Environment->TerrainChunkCount(),ECsvCustomStatOp::Set);
+        CSV_CUSTOM_STAT(DivePerf,SedimentLive,Environment->SedimentLive(),ECsvCustomStatOp::Set);
         if(now>=PerformanceNextMemory)
         { PerformanceMemoryMB=FPlatformMemory::GetStats().UsedPhysical/1048576.; PerformanceNextMemory=now+1; }
         CSV_CUSTOM_STAT(DivePerf,ProcessMemoryMB,PerformanceMemoryMB,ECsvCustomStatOp::Set);
@@ -97,6 +103,8 @@ void ADivePawn::TickPerformance()
         root->SetNumberField(TEXT("distance_m"),Simulation.Data.DistanceMetres);
         root->SetNumberField(TEXT("depth_m"),Simulation.Data.DepthMetres);
         root->SetBoolField(TEXT("walking"),bWalking);
+        root->SetNumberField(TEXT("sediment_born"),Environment->SedimentBorn());
+        root->SetNumberField(TEXT("sediment_live"),Environment->SedimentLive());
         for(const TCHAR* name:{TEXT("r.ScreenPercentage"),TEXT("r.SecondaryScreenPercentage.GameViewport"),TEXT("r.DynamicRes.OperationMode"),TEXT("r.VSync"),TEXT("t.MaxFPS"),
             TEXT("sg.ViewDistanceQuality"),TEXT("sg.AntiAliasingQuality"),TEXT("sg.ShadowQuality"),TEXT("sg.GlobalIlluminationQuality"),
             TEXT("sg.ReflectionQuality"),TEXT("sg.PostProcessQuality"),TEXT("sg.TextureQuality"),TEXT("sg.EffectsQuality"),TEXT("sg.FoliageQuality")})

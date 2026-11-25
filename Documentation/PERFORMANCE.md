@@ -76,3 +76,10 @@ Der am 25. November 2026 geprüfte Build `b4b6fba` erfüllt in Weesen/Exploratio
 ## Folgestand mit Körper- und Ausrüstungskollision
 
 Der Build `Builds/WindowsContacts` erreicht in zwei getrennten 60-Sekunden-Läufen nach je 15 Sekunden Aufwärmzeit bei 1920×1080, Qualitätsstufe 2 und 100 Prozent Renderauflösung auf RTX 3090 / Ryzen 9 9950X3D unter Wasser 86,96 FPS im Mittel / 71,19 FPS im langsamsten Prozent und stationär am Ufer 98,09 / 82,43 FPS. Alle 11.099 gemessenen Bilder bleiben unter 16,67 ms; Maxima sind 15,0835 beziehungsweise 14,3866 ms. Keine weitere Unreal-Spiel- oder Editorinstanz war beim jeweiligen Start aktiv. Die beiden Bilder wurden visuell geprüft. Der Uferlauf bleibt stationär und ersetzt keinen Geh-/Streamingtest; diese kurzen Einzelmessungen ersetzen weder Mindesthardwareprüfung noch eine Langzeitfreigabe. Vollständige Einstellungen und Prüfsummen: [Unterwasser](CONTACTS_PERFORMANCE.json), [Ufer](CONTACTS_SHORE_PERFORMANCE.json). Umsetzung und weitere Prüfungen: [CONTACTS.md](CONTACTS.md).
+
+
+## WindowsSediment: aktive Wolken und Unterwasservergleich
+
+Zwei getrennte 60-Sekunden-Fenster nach je 15 Sekunden Aufwärmzeit, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Qualität 2, 100 Prozent Renderauflösung: Sedimentszenario 87.34 FPS im Mittel / 67.03 FPS im langsamsten Prozent, gewöhnlicher Unterwasserlauf 86.45 / 69.90 FPS. Im Sedimentlauf enthalten 5238 von 5238 gemessenen Bildern aktive Wolken (Minimum 6, Maximum 24, Mittel 19.51). Die Zählung erfasst simulierte Wolken, keine garantierte Bildabdeckung oder maximale Transparenzlast. Auch der gewöhnliche Unterwasserlauf erzeugt bis zu zwei Wolken. Die Szenarien fahren unterschiedliche Wege; ihre Differenz ist kein isolierter Effektkostenvergleich. Ein vom Nutzer geöffneter Unreal-Editor lief parallel; die Messungen sind daher keine isolierten Vergleiche.
+
+Vollständige Zeiten, langsame Bilder, Einstellungen und Artefakt-Prüfsummen: [Sediment](SEDIMENT_PERFORMANCE.json), [Unterwasser](SEDIMENT_UNDERWATER_PERFORMANCE.json). Die kurzen Messungen belegen weder Mindesthardware noch native macOS-Leistung oder eine Langzeitfreigabe.

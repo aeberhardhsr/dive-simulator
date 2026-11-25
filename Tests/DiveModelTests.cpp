@@ -10,6 +10,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
 #include "../divingsim/Source/DiveSim/Simulation/ConfigInput.h"
 #include "../divingsim/Source/DiveSim/Simulation/Bubbles.h"
+#include "../divingsim/Source/DiveSim/Simulation/Sediment.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -23,6 +24,27 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        using namespace Dive::Sediment;
+        close(StirRate(.1,0,true,true),0,0,"Still fins do not stir sediment");
+        close(StirRate(.9,1,true,true),0,0,"High fins do not reach sediment");
+        close(StirRate(.1,1,false,true),0,0,"Dry fins do not emit underwater silt");
+        close(StirRate(.1,1,true,false),0,0,"Rock and platforms do not emit sediment");
+        close(StirRate(-.1,1,true,true),0,0,"Invalid negative bed clearance does not emit");
+        close(StirRate(.1,std::numeric_limits<double>::infinity(),true,true),0,0,"Non-finite fin speed does not emit");
+        close(StirRate(std::numeric_limits<double>::quiet_NaN(),1,true,true),0,0,"Non-finite bed clearance does not emit");
+        check(StirRate(.1,1,true,true)>StirRate(.5,1,true,true),"Fin wash weakens with bed clearance");
+        check(StirRate(.1,1,true,true)>StirRate(.1,.3,true,true),"Faster strokes stir more sediment");
+        Puff a,b;for(int i=0;i<500;++i) a.Step(.02);for(int i=0;i<100;++i) b.Step(.1);
+        close(a.OpticalDepth(),b.OpticalDepth(),1e-12,"Sediment dilution independent of integration step");
+        check(a.Radius()>.22&&a.OpticalDepth()>0,"Puff expands while remaining visible");
+        const double density=a.OpticalDepth();a.Step(20);
+        check(a.OpticalDepth()<density&&a.Lift()<b.Lift(),"Sediment settles and thins after stirring stops");
+        a.Step(16);check(!a.Alive(),"Sediment lifetime is bounded");
+        close(a.OpticalDepth(),0,0,"Expired sediment has zero opacity before removal");
+        const double age=a.Age;a.Step(-1);a.Step(std::numeric_limits<double>::quiet_NaN());
+        close(a.Age,age,0,"Invalid time increments cannot alter sediment age");
+    }
     {
         Dive::Config cfg;Dive::Model standard(cfg);
         close(standard.Data.EquipmentDryKg,34.12,1e-10,"Complete standard gear includes ballast and each rigid item once");

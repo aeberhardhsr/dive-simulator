@@ -9,7 +9,7 @@ def build_optics():
         'M_Underwater','/Game/Diving/Materials',u.Material,u.MaterialFactoryNew())
     for node in list(lib.get_material_expressions(post)): lib.delete_material_expression(post,node)
     post.set_editor_property('material_domain',u.MaterialDomain.MD_POST_PROCESS)
-    post.set_editor_property('blendable_location',u.BlendableLocation.BL_SCENE_COLOR_BEFORE_BLOOM)
+    post.set_editor_property('blendable_location',u.BlendableLocation.BL_SCENE_COLOR_BEFORE_DOF)
     post.set_editor_property('disable_pre_exposure_scale',False)
     scene=lib.create_material_expression(post,u.MaterialExpressionSceneTexture,-500,0)
     scene.set_editor_property('scene_texture_id',u.SceneTextureId.PPI_POST_PROCESS_INPUT0)
@@ -41,7 +41,7 @@ def build_optics():
     lib.connect_material_property(fog,'',u.MaterialProperty.MP_EMISSIVE_COLOR)
     lib.recompile_material(post)
     if not u.EditorAssetLibrary.save_loaded_asset(post): raise RuntimeError('Cannot save underwater optics')
-    u.log('DIVE_OPTICS_CONTENT_OK stage=BeforeBloom ambient_default=0')
+    u.log('DIVE_OPTICS_CONTENT_OK stage=BeforeDOF ambient_default=0')
 
 
 if __name__=='__main__': build_optics()

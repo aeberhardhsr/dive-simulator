@@ -256,6 +256,7 @@ void ADiveWorld::BeginPlay()
 
 void ADiveWorld::Configure(const Dive::Config& Config)
 {
+    ResetSediment();
     WeatherSettings=Config.Resolved();
     BubbleState.Reset();RenderedBubbleIndices.Reset();Bubbles->ClearInstances();BubblesBorn=BubblesSurfaced=0;bParticleUniformsReady=false;
     VisibleDistance=WeatherSettings.VisibilityMetres; Flow=WeatherSettings.CurrentMetresPerSecond; DayHour=WeatherSettings.Hour;
@@ -344,6 +345,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
     UpdateAtmosphere();
     TickFish(dt,player);
     UpdateParticles(dt,player);
+    RenderSediment(dt);
     if(bOpticsSmoke&&Diver)
     {
         if(!Sun||!Sky||FMath::Abs(Sun->Intensity-Lighting.SolarSource*Dive::EnvironmentLight::SunLux)>.02||

@@ -1,5 +1,5 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView,
@@ -51,6 +51,7 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -notmatch 'DIVE_SEDIMENT_PAUSE_PASS' -or $log -match 'DIVE_SEDIMENT_FAIL')) { throw 'Sediment lifecycle or pause failed.' }
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }
 if($log -notmatch 'DIVE_LANDSCAPE_PASS') { throw "Landscape asset test failed. See $logPath." }

@@ -6,6 +6,7 @@
 #include "Simulation/WaterSurface.h"
 #include "Simulation/VisualMedium.h"
 #include "Simulation/EnvironmentLight.h"
+#include "Simulation/Sediment.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -29,6 +30,12 @@ struct FDiveFish
     int32 Species=0, Instance=0;
 };
 struct FDiveRock { FVector Position; float Radius=0; };
+struct FDiveSilt
+{
+    FVector Origin,Position;
+    Dive::Sediment::Puff Model;
+    int32 Side=1;
+};
 struct FDiveAccess
 {
     FVector Origin=FVector::ZeroVector,Forward=FVector::ForwardVector;
@@ -70,6 +77,13 @@ public:
     bool ValidateStorm(FString& Error) const;
     bool ValidateShoreline(FString& Error) const;
     bool ValidateParticles(FString& Detail) const;
+    void DisturbSediment(int32 Fin,const FVector& Position,double Speed,double Step);
+    void StepSediment(double Step);
+    bool ValidateSediment(FString& Detail) const;
+    int32 SedimentBorn() const { return SiltBorn; }
+    int32 SedimentLive() const { return Silt.Num(); }
+    FVector SedimentCenter() const;
+    void HideSedimentForTest(bool Hidden);
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
@@ -108,6 +122,15 @@ private:
     UPROPERTY() TObjectPtr<class UDirectionalLightComponent> Sun;
     UPROPERTY() TObjectPtr<class UExponentialHeightFogComponent> Fog;
     TArray<FDiveBubble> BubbleState;
+    TArray<FDiveSilt> Silt;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> SiltVolumes;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> SiltMaterials;
+    bool bSiltTestHidden=false;
+    double SiltCredit[2]={0,0};
+    int32 SiltBorn=0;
+    float SiltRenderClock=0;
+    void ResetSediment();
+    void RenderSediment(float Dt);
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
     FRandomStream Random{1948};

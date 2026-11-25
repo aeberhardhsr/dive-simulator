@@ -133,6 +133,10 @@ private:
     int32 DayCycleSmokePhase=0;
     double DayCyclePauseWall=0,DayCyclePauseSeconds=0,DayCyclePauseHour=0;
     void TickDayCycleTest(float DeltaSeconds);
+    void TickSedimentTest(float Dt);
+    int32 SiltSmokePhase=0,SiltBornAtStop=0;
+    double SiltPauseWall=0,SiltPauseSeconds=0;
+    FString SiltPauseDetail;
     FString ModeSmokeCase;
     int32 ModeSmokePhase=0;
     double ModeSmokeCapturedAt=0;

@@ -96,6 +96,7 @@ void ADivePawn::BeginPlay()
             PendingConfig.StartOnShore=SmokeScenario==TEXT("perf-shore");
         }
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
+        if(SmokeScenario==TEXT("sediment")) { PendingConfig.CurrentMetresPerSecond=.04;PendingConfig.WindMetresPerSecond=0; }
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
         if(SmokeScenario==TEXT("torch"))
         { PendingConfig.Hour=23; PendingConfig.Date={2026,12,23}; PendingConfig.CurrentMetresPerSecond=0; PendingConfig.WindMetresPerSecond=0; }
@@ -154,9 +155,9 @@ void ADivePawn::BeginPlay()
             TArray<FMaterialParameterInfo> parameters; TArray<FGuid> ids;
             material->GetAllScalarParameterInfo(parameters,ids);
             const bool ambient=parameters.ContainsByPredicate([](const FMaterialParameterInfo& info) { return info.Name==TEXT("AmbientLight"); });
-            if(!ambient||material->GetMaterial()->BlendableLocation!=BL_SceneColorBeforeBloom||material->GetMaterial()->bDisablePreExposureScale)
+            if(!ambient||material->GetMaterial()->BlendableLocation!=BL_SceneColorBeforeDOF||material->GetMaterial()->bDisablePreExposureScale)
             { UE_LOG(LogTemp,Error,TEXT("DIVE_OPTICS_FAIL Underwater material is stale or has the wrong HDR stage")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
-            UE_LOG(LogTemp,Display,TEXT("DIVE_OPTICS_PASS stage=BeforeBloom ambient_parameter=1"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_OPTICS_PASS stage=BeforeDOF ambient_parameter=1"));
         }
         UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
     }
@@ -356,7 +357,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(bPerformance&&SmokeScenario==TEXT("perf-soak")) SteerSoak(DeltaSeconds);
     if(bPerformance&&SmokeScenario!=TEXT("perf-stream")&&SmokeScenario!=TEXT("perf-soak"))
         if(auto* pc=Cast<APlayerController>(GetController()))
-            pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")?-12:-5,PerformanceYaw+6*Simulation.Data.ElapsedSeconds,0));
+            pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")||SmokeScenario==TEXT("perf-sediment")?-12:-5,PerformanceYaw+6*Simulation.Data.ElapsedSeconds,0));
     if(bSmokeTest&&!bSmokeImageryChecked&&GetWorld()->GetTimeSeconds()>2)
     {
         FString error; const bool valid=Environment&&Environment->ValidateImagery(error);
@@ -480,7 +481,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
     UpdateTorch(); // Current battery output before diagnostics; attachment is refreshed again after camera motion.
-    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:(SmokeScenario==TEXT("stream")||SmokeScenario==TEXT("daycycle"))?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
+    const double smokeDuration=SmokeScenario==TEXT("sediment")?70:(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:(SmokeScenario==TEXT("stream")||SmokeScenario==TEXT("daycycle"))?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
     if(bSmokeTest && bDiveActive)
     {
         FString audioError;
@@ -646,6 +647,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(Equipment) Equipment->Update(DeltaSeconds);
     UpdateTorch();
     if(bSmokeTest&&SmokeScenario==TEXT("modes")) TickModeTest();
+    if(bSmokeTest&&SmokeScenario==TEXT("sediment")) TickSedimentTest(DeltaSeconds);
     if(bPerformance) TickPerformance();
 }
 
@@ -682,6 +684,7 @@ void ADivePawn::SimulateStep(float Step)
                 return 0.f;
             }
             if(SmokeScenario==TEXT("perf-stream")) return Action==EDiveAction::Forward||Action==EDiveAction::Sprint?1.f:0.f;
+            if(SmokeScenario==TEXT("perf-sediment")) return Action==EDiveAction::Forward?.6f:Action==EDiveAction::Descend?.2f:0.f;
             if(SmokeScenario==TEXT("perf-surface")) return Action==EDiveAction::Ascend?1.f:0.f;
             if(SmokeScenario==TEXT("perf-underwater")) return Action==EDiveAction::Descend&&t<5?.7f:0.f;
             return 0.f;
@@ -694,6 +697,13 @@ void ADivePawn::SimulateStep(float Step)
             return 0.f;
         }
         if(SmokeScenario==TEXT("stream")) return Action==EDiveAction::Forward?1.f:0.f;
+        if(SmokeScenario==TEXT("sediment"))
+        {
+            if(Action==EDiveAction::Forward) return t<16?1.f:0.f;
+            if(Action==EDiveAction::Descend) return t<16?.2f:0.f;
+            if(Action==EDiveAction::Ascend) return t>=16&&t<19?.6f:0.f;
+            return 0.f;
+        }
         if((SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio")) && t>16) return Action==EDiveAction::Ascend?1.f:0.f;
         if(Action==EDiveAction::Forward) return t<10?1.f:0.f;
         if(Action==EDiveAction::Descend) return t<7?.7f:0.f;
@@ -778,6 +788,7 @@ void ADivePawn::SimulateStep(float Step)
     exposure.MouthSubmerged=physicalMouth.Z<Environment->SurfaceZ(physicalMouth.X,physicalMouth.Y,now+Step);
     exposure.RegulatorInMouth=bRegulatorInMouth;
     Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp,exposure);
+    Environment->StepSediment(Step);
     const auto& s=Simulation.Data;
     if(Simulation.Settings.Rules().AutomaticHints&&!bTutorialActive&&s.ElapsedSeconds>=NextAutomaticHint)
     {

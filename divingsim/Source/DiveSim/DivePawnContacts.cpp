@@ -79,7 +79,20 @@ void ADivePawn::AdvanceContactPose(float Step,float Effort)
     // Keep a blocked turn request until space becomes available. Resetting the
     // controller alone used to discard a single mouse turn permanently.
     bBlockedGaze=!accepted||!desired.Gaze.Equals(RequestedGaze,.001);
-    if(accepted) { PhysicalPose=desired;ContactShapes=MoveTemp(candidate); }
+    if(accepted)
+    {
+        if(Environment&&!desired.Walking&&desired.Swim>.5&&desired.Motion>.05&&
+            FMath::Abs(desired.Phase-PhysicalPose.Phase)>.00001)
+            for(int i=0;i<candidate.Num();++i)
+            {
+                const auto& fin=candidate[i];
+                if(fin.Name!=TEXT("LeftFin")&&fin.Name!=TEXT("RightFin")) continue;
+                const FVector tip=fin.World.TransformPosition(FVector(fin.Size.X*.6,0,0));
+                const FVector previous=ContactShapes[i].World.TransformPosition(FVector(ContactShapes[i].Size.X*.6,0,0));
+                Environment->DisturbSediment(fin.Name==TEXT("LeftFin")?0:1,tip,FVector::Distance(tip,previous)/(Step*100),Step);
+            }
+        PhysicalPose=desired;ContactShapes=MoveTemp(candidate);
+    }
     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(PhysicalPose.Gaze);
 }
 

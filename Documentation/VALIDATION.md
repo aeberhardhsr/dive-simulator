@@ -530,3 +530,12 @@ Die fertige Programmdatei besteht 25 native Unreal-Tests, 15 Python-Tests, die p
 Zwei getrennte 60-Sekunden-Messfenster nach je 15 Sekunden Aufwärmzeit ergeben bei 1920×1080, Qualitätsstufe 2 und 100 Prozent Renderauflösung auf RTX 3090 / Ryzen 9 9950X3D: unter Wasser 86,96 FPS im Mittel / 71,19 FPS im langsamsten Prozent; stationär am Ufer 98,09 / 82,43 FPS. Alle 11.099 gemessenen Bilder bleiben unter 16,67 ms. Bei beiden Starts war keine weitere Unreal-Instanz aktiv. Der Uferlauf misst keinen Geh- oder Streamingpfad. Auch der normale Paketstarter lädt nachweislich die Contacts-EXE und beendet seinen Spieltest erfolgreich.
 
 Prüfsummen und Rohdatenverweise: [Build](CONTACTS_BUILD.json), [Avatar](CONTACTS_AVATAR.json), [Spielabläufe](CONTACTS_REGRESSION.json), [Unterwasserleistung](CONTACTS_PERFORMANCE.json), [Uferleistung](CONTACTS_SHORE_PERFORMANCE.json), [Starter](CONTACTS_LAUNCHER.json). Die vereinfachten Kollisionsformen ersetzen keine dynamische Eigenkollision oder allgemeine Kontakt-IK. Grobe Ufertexturen, vereinfachte Körperoberflächen, native macOS-Abnahme, Mindesthardware und die gesamte 236-Anforderungsabnahme bleiben offen.
+
+
+## Flossenbedingte Sedimentwolken (WindowsSediment)
+
+WATR-011 ist als begrenztes Spielmodell umgesetzt. Kollisionsgeprüfte Flossenschläge nahe dem weichen Grund erzeugen bis zu 24 lokale Wolken mit Strömungsdrift, Verdünnung und Absetzen. Ein zusätzlicher Außen-/Innenvergleich deckte eine falsche Abschwächung naher Wolken durch die Entfernung zum Hintergrund auf; die korrigierte Renderreihenfolge besteht diesen Vergleich.
+
+Der fertige Paketstand besteht neun Spielszenarien mit 61 frischen Bildern: Sediment an allen drei Einstiegen und nachts, drei Ufer-Rückwege, Atmung und Streaming. Dazu kommen 25 Unreal-Tests, 15 Python-Tests, die portablen Simulationsprüfungen und der normale Paketstarter. 104 Quell-/Konfigurationsdateien stimmen mit dem Build überein; die bisherigen Taucher-Assets und der Contacts-Build sind erhalten. Details, Prüfsummen und offene Modell-/Qualitätsgrenzen: [SEDIMENT.md](SEDIMENT.md).
+
+Die 60-Sekunden-Messung mit aktiven Sedimentwolken erreicht 87.34 FPS im Mittel / 67.03 FPS im langsamsten Prozent bei 1080p, Qualität 2 und 100 Prozent Renderauflösung. Ein vom Nutzer geöffneter Unreal-Editor lief parallel; die Messungen sind daher keine isolierten Vergleiche. Mindesthardware, natives macOS und die vollständige Anforderungsabnahme bleiben offen.
