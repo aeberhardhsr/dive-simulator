@@ -5,6 +5,7 @@
 #include "Simulation/DiveModel.h"
 #include "Simulation/WaterSurface.h"
 #include "Simulation/VisualMedium.h"
+#include "Simulation/EnvironmentLight.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -52,6 +53,8 @@ public:
     bool ValidateLandscape(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);
+    double WaterAmbientAt(const FVector& Eye) const;
+    double ExposureBiasAt(const FVector& Eye) const;
     double SurfaceZ(double X,double Y,double Seconds=-1) const;
     double PressureDepth(const FVector& Position,double Seconds) const;
     FVector WaveVelocity(const FVector& Position,double Seconds) const;
@@ -92,6 +95,8 @@ private:
     Dive::WaterSurface Waves;
     Dive::Config WeatherSettings;
     Dive::VisualMedium OpticalMedium;
+    Dive::EnvironmentLight Lighting;
+    double WaterAmbient=0;
     bool bOpticsSmoke=false;
     uint8 ObservedOpticalMedia=0;
     void UpdateAtmosphere();

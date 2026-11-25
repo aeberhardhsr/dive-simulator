@@ -201,35 +201,10 @@ if not ONLY_ENVIRONMENT:
     LIB.connect_material_property(divide,'',u.MaterialProperty.MP_EMISSIVE_COLOR)
     LIB.recompile_material(screen); u.EditorAssetLibrary.save_loaded_asset(screen)
 
-    # Screen-distance water absorption, distinct from the atmospheric height fog.
-    post_path=BASE+'/Materials/M_Underwater'
-    post=u.load_asset(post_path) if u.EditorAssetLibrary.does_asset_exist(post_path) else TOOLS.create_asset('M_Underwater',BASE+'/Materials',u.Material,u.MaterialFactoryNew())
-    clear_expressions(post)
-    post.set_editor_property('material_domain',u.MaterialDomain.MD_POST_PROCESS)
-    scene=LIB.create_material_expression(post,u.MaterialExpressionSceneTexture,-500,0)
-    scene.set_editor_property('scene_texture_id',u.SceneTextureId.PPI_POST_PROCESS_INPUT0)
-    depth=LIB.create_material_expression(post,u.MaterialExpressionSceneDepth,-500,200)
-    visibility=LIB.create_material_expression(post,u.MaterialExpressionScalarParameter,-500,400)
-    visibility.set_editor_property('parameter_name','VisibilityCm')
-    visibility.set_editor_property('default_value',1400)
-    fog=LIB.create_material_expression(post,u.MaterialExpressionCustom,0,0)
-    inputs=[]
-    for name in ['Scene','Depth','Visibility']:
-        item=u.CustomInput();item.set_editor_property('input_name',name);inputs.append(item)
-    fog.set_editor_property('inputs',inputs)
-    fog.set_editor_property('output_type',u.CustomMaterialOutputType.CMOT_FLOAT3)
-    fog.set_editor_property('code','''
-    float d=max(0,Depth);
-    float transmission=exp(-d/max(150,Visibility)*1.45);
-    float3 attenuation=exp(-d*float3(.00045,.00009,.00012));
-    return Scene.rgb*attenuation*transmission + float3(.025,.105,.09)*(1-transmission);
-    ''')
-    LIB.connect_material_expressions(scene,'Color',fog,'Scene')
-    LIB.connect_material_expressions(depth,'',fog,'Depth')
-    LIB.connect_material_expressions(visibility,'',fog,'Visibility')
-    LIB.connect_material_property(fog,'',u.MaterialProperty.MP_EMISSIVE_COLOR)
-    LIB.recompile_material(post)
-    u.EditorAssetLibrary.save_loaded_asset(post)
+    import sys
+    sys.path.insert(0,str(ROOT/'Tools'))
+    from build_optics_content import build_optics
+    build_optics()
 
     tasks=[]
     for source in ASSETS.glob('*.fbx'):

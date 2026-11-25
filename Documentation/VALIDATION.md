@@ -244,3 +244,36 @@ Die frischen Bilder wurden visuell geprüft: Luft ist weniger grün; die Nachtan
 ![Luftansicht um 23 Uhr ohne künstlich grünen Luftdunst](Images/Medium_Air_Night.png)
 
 ![Unterwasseransicht nachts mit weiterhin vereinfachtem grünen Grundton](Images/Medium_Water_Night.png)
+
+## HDR-Beleuchtung und Nachtlampe (25. November 2026)
+
+Eigenständiger Windows-Build: `Builds/WindowsLighting/divingsim.exe`. Editor- und Package-Build erfolgreich; gezielter Materialaufbau mit `-OnlyOptics` meldet 0 Fehler/0 Warnungen. Belege: `artifacts/build-lighting-units.log`, `content-lighting-units.log` und `package-lighting.log`. Die Landschaftsassets wurden vor dem Packaging erneut geprüft, nicht neu erzeugt.
+
+Die Untersuchung fand zwei konkrete Fehler: Das Unterwassermaterial addierte einen konstanten grünen Farbwert nach dem Tonemapping, und die Lampe verwendete 14.000 Legacy-Einheiten statt einer expliziten photometrischen Einheit. Das neue Material arbeitet vor Bloom/Tonemapping; sein Umgebungslicht folgt Tageszeit, Wetter und Kameratiefe. Nachts ist dieser Anteil null. Die Lampe verwendet 1.000 Lumen, die Sonne maximal 80.000 Lux und die Kamera eine begrenzte, umgebungsabhängige Belichtung.
+
+Vergleichsaufnahmen mit 16-fachem Himmelslicht und ausgeschalteter Himmelsabschattung (`artifacts/light-sky16.png` und `light-sky-no-shadow.png`) zeigen, dass mehr Himmelslicht Details auf den dunklen Flanken sichtbar macht; das Abschalten der Schatten allein hilft deutlich weniger. Die endgültige Einstellung verwendet einen neutralen Sky-Light-Multiplikator von 3 ohne zusätzliche Multiplikation mit Tageslicht. Das ist eine gestalterische Abstimmung, keine unabhängige radiometrische Kalibrierung der Landschaft.
+
+- Vierzehn zusätzliche Kernprüfungen bestehen: Nacht ohne direkte Sonne/ambienten Wasserlichtanteil, periodische Stunden, Tiefen-/Sicht-/Wetterkopplung, endliche Ersatzwerte und begrenzte Belichtung. Gesamter Kern: null Fehler (`artifacts/core-lighting-final.log`).
+- Laufzeitprüfungen lesen die tatsächlichen Sonnen-/Himmelslichtwerte, Lampeneinheit, Intensität und Schaltzustand. Der geladene Materialstand muss den Parameter `AmbientLight` enthalten, vor Bloom laufen und Unreals Pre-Exposure-Konvertierung aktiv lassen.
+- Der erste HDR-Tageslauf zeigte eine sichtbare Lumen-/Sky-Cache-Clippingwarnung. Die Engine-Quelle beschreibt für den Cache-Offset 8 den sicheren Bereich ungefähr EV -4 bis 16. Die Projektkonfiguration verwendet diesen Wert; sämtliche endgültigen Package-Logs bestätigen dessen Anwendung. Die frischen Tages-/Regenbilder enthalten die Warnung nicht mehr.
+
+| Ablauf im endgültigen Package | Maximale Tiefe | Strecke | Messpunkte |
+|---|---:|---:|---:|
+| Auftauchen, Tag/windstill | 5,67 m | 21,54 m | 39 |
+| Auftauchen, Regen/12 m/s Wind | 5,72 m | 31,50 m | 39 |
+| Nacht, Lampe an | 5,67 m | 18,78 m | 23 |
+| Nacht, Lampe aus | 5,67 m | 18,78 m | 23 |
+| Handgelenkcomputer nachts, alle drei Seiten | 5,67 m | 18,78 m | 23 |
+| Weesen: Ufer, Tauchen, Rückkehr und Abschluss | 6,11 m | 44,63 m | 41 |
+
+Alle sechs Abläufe bestehen, ebenso ein zusätzlicher Einführungslauf mit Lampenwechsel: acht Stufen in 12,88 s und neun reguläre Aufgaben-/Kartenaufnahmen plus Abschluss. Die bestehenden Gelände-, Bildtextur-, Wasser-, Habitat- und Ausrüstungsprüfungen bleiben aktiv. Belege: `artifacts/lighting-{day,rain,night-on,night-off,wrist,shore,tutorial}-full.log`.
+
+`Tools/validate_lighting_frames.py` vergleicht die beiden 1600×900-Nachtaufnahmen außerhalb von HUD, Randarmen und Fadenkreuz. Im unbeleuchteten Prüfbereich sind sämtliche Pixel schwarz. Mit Lampe liegen 74.986 Pixel über Kanalwert 20 von 255; der Mittelwert des jeweils größten RGB-Kanals steigt von 0 auf 7,492. Die Prüfung besteht (`artifacts/lighting-frame-check.log`). Dies belegt einen tatsächlich gerenderten Lichtkegel und das entfernte konstante Hintergrundleuchten, keine physikalische Lichtmessung. Der Vergleich verwendet `dive -Hour 23` mit und ohne `-LampOff`.
+
+Die Bilder wurden visuell geprüft. Handgelenktext bleibt nachts lesbar, die Lampe beleuchtet den Seegrund lokal, und die Tagesansicht bleibt spielbar. Steile Bergflanken sind weiterhin teils zu dunkel, Orthobilddetails flach/gestreckt und Oberflächenreflexionen sichtbar verrauscht. Sonnenbahn und Augenanpassung bleiben vereinfachte Spielmodelle; Mond/Sterne/Uferbeleuchtung, reale Licht-/Wasserreferenzen und die gesamte Fotorealismusabnahme sind offen.
+
+![Tagesansicht mit HDR-Licht ohne Cache-Clippingwarnung](Images/Lighting_Day.png)
+
+![Nachtaufnahme mit eingeschalteter 1000-Lumen-Lampe](Images/Lighting_Torch_On.png)
+
+![Derselbe Nachtablauf mit ausgeschalteter Lampe](Images/Lighting_Torch_Off.png)

@@ -5,7 +5,8 @@ param(
     [switch]$OnlyEnvironment,
     [switch]$OnlyAudio,
     [switch]$OnlyShore,
-    [switch]$OnlyImagery
+    [switch]$OnlyImagery,
+    [switch]$OnlyOptics
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -24,6 +25,7 @@ if ($Target -eq 'Content') {
     if($OnlyAudio) { $script=Join-Path $PSScriptRoot 'build_audio_content.py' }
     if($OnlyShore) { $script=Join-Path $PSScriptRoot 'build_shore_content.py' }
     if($OnlyImagery) { $script=Join-Path $PSScriptRoot 'build_imagery_content.py' }
+    if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions

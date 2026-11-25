@@ -6,6 +6,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/Tutorial.h"
 #include "../divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
 #include "../divingsim/Source/DiveSim/Simulation/VisualMedium.h"
+#include "../divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -19,6 +20,21 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    const auto noon=Dive::EnvironmentLight::At(12,0),night=Dive::EnvironmentLight::At(23,0);
+    check(noon.Direct>0&&noon.ElevationDegrees>0,"Daytime sun is above the horizon");
+    check(night.Direct==0&&night.ElevationDegrees<0,"Night has no fictitious above-horizon sun");
+    close(night.WaterAmbient(0,14),0,0,"Unlit night water has no ambient emission");
+    close(Dive::EnvironmentLight::At(-1,0).Direct,night.Direct,0,"Solar clock wraps negative hours");
+    close(Dive::EnvironmentLight::At(36,0).Direct,noon.Direct,0,"Solar clock repeats daily");
+    check(noon.WaterAmbient(20,14)<noon.WaterAmbient(2,14),"Ambient daylight decays with water depth");
+    check(noon.WaterAmbient(20,4)<noon.WaterAmbient(20,30),"Turbid water attenuates ambient light faster");
+    check(noon.WaterAmbient(100,14)<.003,"Deep water cannot retain surface brightness");
+    check(Dive::EnvironmentLight::At(12,2).WaterAmbient(5,14)<noon.WaterAmbient(5,14),"Rain dims underwater ambient light");
+    close(noon.WaterAmbient(-5,14),noon.WaterAmbient(0,14),0,"Air position cannot amplify underwater source");
+    check(std::isfinite(Dive::EnvironmentLight::At(NAN,0).WaterAmbient(NAN,NAN)),"Lighting handles invalid inputs");
+    check(night.ExposureBias(0,14)>noon.ExposureBias(0,14),"Eyes gain sensitivity at night");
+    check(noon.ExposureBias(40,14)>noon.ExposureBias(2,14),"Eyes gain sensitivity as ambient daylight fades");
+    check(noon.ExposureBias(5000,2)<=night.ExposureBias(0,14),"Deep-water exposure cannot exceed the dark limit");
     close(Dive::CameraWaterBlend(-2),0,0,"Air camera is independent of body immersion");
     close(Dive::CameraWaterBlend(0),0,0,"Surface camera retains the air endpoint");
     close(Dive::CameraWaterBlend(.5),1,0,"Submerged camera reaches the water endpoint");

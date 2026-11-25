@@ -33,6 +33,7 @@
 #include "Serialization/JsonSerializer.h"
 #include "Sound/SoundBase.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/Material.h"
 
 namespace
 {
@@ -62,7 +63,8 @@ ADivePawn::ADivePawn()
     Camera->FieldOfView=90;
     Lamp=CreateDefaultSubobject<USpotLightComponent>(TEXT("DiveLamp"));
     Lamp->SetupAttachment(Camera); Lamp->SetRelativeLocation(FVector(25,20,-20));
-    Lamp->SetIntensity(14000); Lamp->SetAttenuationRadius(2400);
+    Lamp->SetIntensityUnits(ELightUnits::Lumens);
+    Lamp->SetIntensity(1000); Lamp->SetAttenuationRadius(2400);
     Lamp->SetInnerConeAngle(12); Lamp->SetOuterConeAngle(27);
     Lamp->SetLightColor(FLinearColor(.8f,.92f,1));
     Lamp->SetCastShadows(true);
@@ -116,7 +118,18 @@ void ADivePawn::BeginPlay()
     Audio->Initialize(Camera); Audio->ApplyLevels(AudioLevels);
     SetMenu(true);
     if(auto* material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_Underwater.M_Underwater")))
+    {
+        if(bSmokeTest)
+        {
+            TArray<FMaterialParameterInfo> parameters; TArray<FGuid> ids;
+            material->GetAllScalarParameterInfo(parameters,ids);
+            const bool ambient=parameters.ContainsByPredicate([](const FMaterialParameterInfo& info) { return info.Name==TEXT("AmbientLight"); });
+            if(!ambient||material->GetMaterial()->BlendableLocation!=BL_SceneColorBeforeBloom||material->GetMaterial()->bDisablePreExposureScale)
+            { UE_LOG(LogTemp,Error,TEXT("DIVE_OPTICS_FAIL Underwater material is stale or has the wrong HDR stage")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_OPTICS_PASS stage=BeforeBloom ambient_parameter=1"));
+        }
         UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
+    }
     if(bSmokeTest)
     {
         if(Environment->bTerrainReady)
@@ -129,6 +142,7 @@ void ADivePawn::BeginPlay()
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
             else if(SmokeScenario!=TEXT("profiles")) StartDive();
+            if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
         }
         else { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL missing terrain")); FPlatformMisc::RequestExitWithStatus(false,1); }
     }
@@ -421,6 +435,9 @@ void ADivePawn::Tick(float DeltaSeconds)
     }
     if(bSmokeTest && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
     {
+        if(Lamp->IntensityUnits!=ELightUnits::Lumens||FMath::Abs(Lamp->Intensity-1000)>.01f||Lamp->IsVisible()!=bLamp)
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Torch units/intensity/switch disagree")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_TORCH_PASS on=%d lumens=%.1f exposure=%.3f"),bLamp,Lamp->Intensity,Camera->PostProcessSettings.AutoExposureBias);
         bSmokeUnderwaterCaptured=true;
         if(SmokeScenario.StartsWith(TEXT("wrist")))
             Equipment->ExportDisplayForTest(FPaths::ProjectSavedDir()/TEXT("Screenshots"),TEXT("WristTexture_")+SmokeScenario+TEXT(".png"));
@@ -481,6 +498,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(UnderwaterMaterial)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),PendingConfig.VisibilityMetres*100);
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->WaterAmbientAt(eye));
         Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
     }
     auto& PP=Camera->PostProcessSettings;
@@ -491,7 +509,11 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.SceneColorTint=FMath::Lerp(FLinearColor::White,FLinearColor(.48,.83,.78),underwater);
     PP.bOverride_VignetteIntensity=true; PP.VignetteIntensity=.35f;
     PP.bOverride_AutoExposureMethod=true; PP.AutoExposureMethod=EAutoExposureMethod::AEM_Manual;
-    PP.bOverride_AutoExposureBias=true; PP.AutoExposureBias=8.5f-depth*.018f;
+    PP.bOverride_AutoExposureApplyPhysicalCameraExposure=true; PP.AutoExposureApplyPhysicalCameraExposure=true;
+    PP.bOverride_CameraISO=true; PP.CameraISO=100;
+    PP.bOverride_CameraShutterSpeed=true; PP.CameraShutterSpeed=60;
+    PP.bOverride_DepthOfFieldFstop=true; PP.DepthOfFieldFstop=4;
+    PP.bOverride_AutoExposureBias=true; PP.AutoExposureBias=Environment->ExposureBiasAt(eye);
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);

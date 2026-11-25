@@ -65,6 +65,7 @@ Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter
 python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/Build.ps1 -Target Content     # Materialien, Importe und Trainingsmap
 ./Tools/Build.ps1 -Target Content -OnlyEnvironment # Nur Wasser, Wolken und Regen erneuern
+./Tools/Build.ps1 -Target Content -OnlyOptics # Nur den HDR-Unterwassereffekt erneuern
 python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/Build.ps1 -Target Content -OnlyAudio # Nur Audiomaterial importieren
 ./Tools/Build.ps1 -Target Landscape   # 8-m-Höhendaten als Nanite-Geländekacheln bauen
@@ -78,6 +79,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm    # Windstille
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm -Hour 23 # Luft-/Wasserwechsel nachts
+./Tools/SmokeTest.ps1 -Packaged -Scenario dive -Hour 23 -LampOff # Nachtvergleich ohne Lampe
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
 ./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte
