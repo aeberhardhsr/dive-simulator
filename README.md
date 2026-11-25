@@ -1,8 +1,8 @@
 # Walensee Diving Simulator
 
-Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Die erste Trainingsbucht enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle.
+Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der vermessene Walensee-Grund enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle.
 
-**Entwicklungsstand:** Der Trainingsbereich ist noch synthetisch. Echte swisstopo-Tiefendaten sind beschafft und reproduzierbar aufbereitet, aber noch nicht in die Spielwelt eingebaut. Fotorealistische Grafik, der vollständige Walensee, sämtliche Tierarten und die vollständige Anforderungsabnahme sind offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
+**Entwicklungsstand:** 46 swisstopo-Rasterkacheln bilden den vermessenen Seegrund im Maßstab 1:1 ab. Drei Offshore-Spielstarts liegen bei Weesen, Murg und Walenstadt. Gelände wird um den Taucher nachgeladen; die Tiefenkarte zeigt Position und Spur. Echte Uferzugänge, Landschaft über Wasser, fotorealistische Grafik, sämtliche Tierarten und die vollständige Anforderungsabnahme sind offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
 
 ## Starten
 
@@ -28,7 +28,7 @@ Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.4
 | Q / E | Jacket füllen / entleeren |
 | L | Lampe |
 | C | Computeranzeige |
-| M | Schematische Karte |
+| M | Walensee-Tiefenkarte mit Position und Spur |
 | P | Foto |
 | H | Instrumente aus-/einblenden |
 | Esc | Pause und Menü |
@@ -47,6 +47,8 @@ python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
 ./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
 ./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
+./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario stream  # 90 s, Kachelwechsel
+./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
 ```
 
 Die Build-Skripte begrenzen C++-Parallelität für den Entwicklungsrechner. `Tools/TestCore.cmd` erwartet die lokale Installation unter `C:/BuildTools2022`; plattformunabhängig kann der Kern mit `cmake -S Tests -B artifacts/tests` gebaut und mit CTest geprüft werden. Die CI-Konfiguration prüft diesen Kern auf Windows, macOS und Linux, nicht das vollständige Unreal-Spiel. Ein macOS-Spiel-Build ist noch nicht getestet.
@@ -55,8 +57,9 @@ Blender-Quellen: `blender/DivingAssets.blend`; reproduzierbare Geometrie über `
 
 ```powershell
 python Tools/prepare_bathymetry.py
+python Tools/package_bathymetry.py
 ```
 
-Dieser separate Geodaten-Schritt lädt den vollständigen offenen Walensee-Datensatz, prüft dessen SHA256-Prüfsumme und schreibt 46 Rasterkacheln nach `Geodata/Processed/Walensee`. Höhen sind absolute LN02-Höhen in Metern, keine Wassertiefen. Fehlende Messwerte bleiben als solche erhalten. Quelle: [swissBATHY3D](https://www.swisstopo.admin.ch/de/hoehenmodell-swissbathy3d), © swisstopo; [Nutzungsbedingungen](https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste).
+Diese Geodaten-Schritte laden den vollständigen offenen Walensee-Datensatz, prüfen dessen SHA256-Prüfsumme und schreiben 46 Rasterkacheln nach `Geodata/Processed/Walensee`. Der zweite Schritt erzeugt die mit Git LFS versionierten Laufzeitdaten in `divingsim/Content/Diving/Geodata`; nach einem vollständigen LFS-Checkout ist kein erneuter Download nötig. Die ursprünglichen Höhen sind absolute LN02-Höhen in Metern, keine Wassertiefen. Das Spiel verwendet einen festen Bezugspegel von 419 m LN02, keine aktuelle Pegelmessung. Fehlende Messwerte bleiben erhalten; am Vermessungsrand endet der begehbare Bereich. Details: [Geodaten und Koordinaten](Documentation/GEODATA.md). Quelle: [swissBATHY3D](https://www.swisstopo.admin.ch/de/hoehenmodell-swissbathy3d), © swisstopo; [Nutzungsbedingungen](https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste).
 
 Anforderungen und offene Abnahme: [Documentation/PROJECT.md](Documentation/PROJECT.md). Modellbeschreibung: [Documentation/SIMULATION.md](Documentation/SIMULATION.md). Asset-Herkunft: [Documentation/ASSETS.csv](Documentation/ASSETS.csv).

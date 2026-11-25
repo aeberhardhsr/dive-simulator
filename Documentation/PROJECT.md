@@ -11,7 +11,7 @@ Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spez
 
 ## Erstes ausführbares Inkrement
 
-Ein begrenzter, zusammenhängender Unterwasser-Testbereich mit vollständigem Ablauf: Konfiguration → Einstieg → Erkunden und Tarieren → Auftauchen → Auswertung. Das Gelände ist zunächst synthetisch und darf nicht als vermessener Walensee bezeichnet werden. Reale Bathymetrie und fotorealistische Qualitätsabnahme bleiben explizite Arbeitspakete.
+Spielbarer Ablauf: Konfiguration → Einstieg → Erkunden und Tarieren → Auftauchen → Auswertung. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei Offshore-Spielstarts, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Landschaft über Wasser, reale Uferzugänge und fotorealistische Qualitätsabnahme bleiben offen.
 
 Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Wasseroberfläche Z=0.
 
@@ -41,7 +41,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 
 1. Toolchain, reproduzierbarer Build, Simulationskern und spielbarer Tauchablauf.
 2. Wasserbild, animierte Tiere/Pflanzen, Ton und Instrumente im kleinen Ausschnitt prüfen.
-3. Schweizer Geodaten integrieren und World Partition; drei reale Einstiegspunkte. Vollständiger swisstopo-Walensee-Datensatz ist heruntergeladen, gegen die offizielle SHA256-Prüfsumme geprüft und in 46 Rasterkacheln aufbereitet. Provenienz: `WALENSEE_DATA.json`. Noch keine Einbindung in die Laufzeitwelt.
+3. Schweizer Geodaten integrieren; drei reale Einstiegspunkte. Vollständiger swisstopo-Walensee-Datensatz ist mit geprüfter SHA256 in 46 Rasterkacheln eingebunden. Die aktuelle Implementierung verwendet neun lokal erzeugte Geländekacheln mit Nachladen statt World Partition. Drei vermessene Offshore-Startpunkte sind vorhanden; Ufer und reale Zugänge fehlen noch. Provenienz: `WALENSEE_DATA.json`, Laufzeitformat: `GEODATA.md`.
 4. Vollständige Ausrüstung, Physiologie/Dekompression, UI/Logbuch, Lokalisierung und Eingaben.
 5. Referenzbasierte Grafikabnahme, Plattformtests, Performance und zweistündiger Dauertest.
 
@@ -49,4 +49,4 @@ Die ursprüngliche MVP-Abnahme umfasst alle MUST-Anforderungen, beide Plattforme
 
 ## Modellgrenzen
 
-Das Produkt ist ein Spiel. Gasvorrat (Pressluft), Sauerstoffanteil, Partialdruck und simulierte Sauerstoffsättigung sind getrennte Werte. Physiologie und Dekompression sind unvalidierte Spielmodelle, keine medizinische Simulation und kein Werkzeug zur Planung realer Tauchgänge. Sicht-/Temperaturprofile und synthetisches Gelände sind keine Messdaten des Walensees.
+Das Produkt ist ein Spiel. Gasvorrat (Pressluft), Sauerstoffanteil, Partialdruck und simulierte Sauerstoffsättigung sind getrennte Werte. Physiologie und Dekompression sind unvalidierte Spielmodelle, keine medizinische Simulation und kein Werkzeug zur Planung realer Tauchgänge. Sicht-/Temperaturprofile, Felsen, Pflanzen und Tiere sind keine lokalen Messdaten; der Geländegrund stammt aus der Vermessung.

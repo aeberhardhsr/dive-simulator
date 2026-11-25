@@ -3,6 +3,7 @@
 #include "DiveWorld.h"
 #include "Engine/Canvas.h"
 #include "Engine/Font.h"
+#include "Engine/Texture2D.h"
 #include "CanvasItem.h"
 #include "Styling/CoreStyle.h"
 #include "Engine/Engine.h"
@@ -80,17 +81,18 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Unter der Oberflaeche."),TEXT("Below the surface.")),73,270,28,White);
     Text(L(TEXT("Ruhe. Tiefe. Entdecken."),TEXT("Stillness. Depth. Discovery.")),73,319,20,Muted);
     Text(L(TEXT("SPIELBARER ENTWICKLUNGSSTAND"),TEXT("PLAYABLE DEVELOPMENT BUILD")),73,410,13,Accent);
-    Text(L(TEXT("Trainingsbucht mit synthetischem Seegrund."),TEXT("Training bay with synthetic lakebed.")),73,444,17,White);
-    Text(L(TEXT("Die reale Walensee-Topografie folgt."),TEXT("Surveyed Walensee topography is upcoming.")),73,473,17,Muted);
+    Text(L(TEXT("Vermessener Walensee-Seegrund, Massstab 1:1."),TEXT("Surveyed Walensee lakebed, true scale.")),73,444,17,White);
+    Text(TEXT("swissBATHY3D 2020 / 1 m / © swisstopo"),73,473,17,Muted);
     Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,525,18,White);
     Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
     const float x=650,w=265,gap=28;
     Text(Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
-    Text(L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
+    Text(Diver->bDiveActive?L(TEXT("Ausrüstung bleibt während des Tauchgangs fest."),TEXT("Equipment is fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
     const FString modes[]={L(TEXT("Exploration"),TEXT("Exploration")),L(TEXT("Simulation"),TEXT("Simulation")),L(TEXT("Hardcore *"),TEXT("Hardcore *"))};
     Field(TEXT("mode"),L(TEXT("MODUS"),TEXT("MODE")),modes[static_cast<int>(c.GameMode)],x,250,w);
-    Field(TEXT("entry"),L(TEXT("EINSTIEG / TESTGELAENDE"),TEXT("ENTRY / TEST TERRAIN")),FString::Printf(TEXT("Bucht %d"),Diver->EntryIndex+1),x+w+gap,250,w);
+    const bool ready=Diver->Environment && Diver->Environment->bTerrainReady;
+    Field(TEXT("entry"),L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name:TEXT("Geodata unavailable"),x+w+gap,250,w);
     Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x+2*(w+gap),250,w);
     Field(TEXT("tank"),L(TEXT("FLASCHENVOLUMEN"),TEXT("CYLINDER VOLUME")),FString::Printf(TEXT("%.0f L / Air 21%%"),c.CylinderLitres),x,350,w);
     Field(TEXT("pressure"),L(TEXT("STARTDRUCK"),TEXT("START PRESSURE")),FString::Printf(TEXT("%.0f bar"),c.StartPressureBar),x+w+gap,350,w);
@@ -105,6 +107,7 @@ void ADiveHUD::Menu()
         L(TEXT("Q / E: Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT("Q / E: inflate / deflate BCD. Air expands as you ascend.")),x,655,15,Muted);
     if(c.GameMode==Dive::Mode::Hardcore) Text(L(TEXT("* Bisher wie Simulation; Ausruestungsdefekte sind noch offen."),TEXT("* Currently simulation rules; equipment failures are pending.")),x,681,14,Amber);
     Button(TEXT("start"),Diver->bDiveActive?L(TEXT("Tauchgang fortsetzen"),TEXT("Resume dive")):L(TEXT("Abtauchen   >"),TEXT("Begin dive   >")),x,720,558,58,true);
+    if(!ready) Text(Diver->Environment?Diver->Environment->Terrain.Error:TEXT("Geodata unavailable"),x,690,14,Red);
     if(Diver->bDiveActive) Button(TEXT("abort"),L(TEXT("Tauchgang abbrechen"),TEXT("End dive early")),x+586,720,265,58);
     else Button(TEXT("quit"),L(TEXT("Beenden"),TEXT("Quit")),x+586,720,265,58);
     Line(70,815,1530,815,Muted,.5);
@@ -120,7 +123,7 @@ void ADiveHUD::Instruments()
     const float yaw=FMath::Fmod(GetOwningPlayerController()->GetControlRotation().Yaw+360,360);
     Rect(640,32,320,58,Dark);
     Text(FString::Printf(TEXT("N    %03.0f deg    %s"),yaw,*Time(s.ElapsedSeconds)),672,50,20,White);
-    Text(TEXT("WALENSEE / TRAINING BAY"),50,46,16,White);
+    Text(TEXT("WALENSEE / ")+Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name,50,46,16,White);
     Text(L(TEXT("Einstieg an der Boje  /  F zum Beenden"),TEXT("Entry at buoy  /  F to finish")),50,76,13,Muted);
     Rect(50,705,328,145,Dark); Rect(50,705,3,145,Accent);
     Text(L(TEXT("TIEFE"),TEXT("DEPTH")),75,723,14,Muted);
@@ -168,23 +171,43 @@ void ADiveHUD::Instruments()
 
 void ADiveHUD::Map()
 {
-    Rect(470,160,660,500,Dark);
-    Text(Diver->Local(TEXT("TRAININGSBUCHT / SCHEMATISCHE KARTE"),TEXT("TRAINING BAY / SCHEMATIC MAP")),500,182,18,Accent);
-    for(int i=0;i<=8;++i)
+    const auto& data=Diver->Environment->Terrain;
+    if(!MapTexture && data.Overview.Num()>0)
     {
-        Line(520+i*65,240,520+i*65,590,Panel);
-        Line(520,240+i*43.75,1040,240+i*43.75,Panel);
+        MapTexture=UTexture2D::CreateTransient(FDiveTerrain::MapWidth,FDiveTerrain::MapHeight,PF_B8G8R8A8);
+        auto* pixels=static_cast<FColor*>(MapTexture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE));
+        for(int i=0;i<data.Overview.Num();++i)
+        {
+            const float depth=data.Overview[i];
+            if(depth<0) { pixels[i]=FColor(11,22,25); continue; }
+            const float t=FMath::Clamp(depth/155.f,0.f,1.f);
+            FLinearColor color=FMath::Lerp(FLinearColor(.18,.62,.46),FLinearColor(.015,.07,.16),t);
+            // Ten-metre contours are derived from the measured raster.
+            if(i%FDiveTerrain::MapWidth>0 && data.Overview[i-1]>=0 &&
+               FMath::FloorToInt(depth/10)!=FMath::FloorToInt(data.Overview[i-1]/10)) color*=.55f;
+            pixels[i]=color.ToFColor(true);
+        }
+        MapTexture->GetPlatformData()->Mips[0].BulkData.Unlock();
+        MapTexture->Filter=TF_Bilinear; MapTexture->SRGB=true; MapTexture->UpdateResource();
     }
-    for(int x=0;x<9;++x)
+    Rect(180,150,1240,580,Dark);
+    Text(Diver->Local(TEXT("WALENSEE / VERMESSENE TIEFENKARTE"),TEXT("WALENSEE / SURVEYED DEPTH MAP")),210,180,23,Accent);
+    Text(TEXT("N ^      swissBATHY3D 2020 / � swisstopo"),210,222,15,Muted);
+    if(MapTexture) DrawTexture(MapTexture,OffsetX+210*Scale,OffsetY+270*Scale,1180*Scale,295*Scale,0,0,1,1,FLinearColor::White,BLEND_Opaque);
+    auto point=[&](FVector pos,FLinearColor color,float size)
     {
-        const float px=-9000+x*2200;
-        Text(FString::Printf(TEXT("%.0fm"),-ADiveWorld::GroundZ(px,0)/100),520+x*58,255+x*30,13,Muted);
-    }
-    auto point=[&](FVector pos,FLinearColor color)
-    { Rect(520+(pos.X+10000)/20000*520,240+(pos.Y+10000)/20000*350,9,9,color); };
-    for(int i=0;i<Diver->Samples.Num();i+=5) point(Diver->Samples[i].Position,FLinearColor(.2,.4,.35,1));
-    point(Diver->EntryLocation,Amber); point(Diver->GetActorLocation(),Accent);
-    Text(Diver->Local(TEXT("Gruen: du    Gelb: Einstieg    M: schliessen"),TEXT("Green: you    Yellow: entry    M: close")),500,620,16,White);
+        const FVector2D survey=data.ToSurvey(pos);
+        const float x=210+(survey.X-data.MapWest)/(data.MapEast-data.MapWest)*1180;
+        const float y=270+(data.MapNorth-survey.Y)/(data.MapNorth-data.MapSouth)*295;
+        Rect(x-size*.5f,y-size*.5f,size,size,color);
+    };
+    for(int i=0;i<Diver->Samples.Num();i+=5) point(Diver->Samples[i].Position,FLinearColor(.75,.85,.8,1),3);
+    for(const auto& entry:data.Entries) point(entry.Position,Amber,7);
+    point(Diver->GetActorLocation(),Accent,12);
+    Text(Diver->Local(TEXT("Gruen: du    Gelb: Spielstarts    Dunkel: keine Messdaten"),TEXT("Green: you    Yellow: game starts    Dark: no survey data")),210,595,17,White);
+    Text(Diver->Local(TEXT("Hell: flach    Dunkelblau: tief    Tiefenlinien: 10 m    Bezugspegel: 419 m LN02"),TEXT("Light: shallow    Dark blue: deep    Contours: 10 m    Water reference: 419 m LN02")),210,631,16,Muted);
+    const FVector2D survey=data.ToSurvey(Diver->GetActorLocation());
+    Text(FString::Printf(TEXT("LV95  E %.1f / N %.1f     |     M: %s"),survey.X,survey.Y,Diver->bEnglish?TEXT("close"):TEXT("schliessen")),210,678,16,White);
 }
 
 void ADiveHUD::Summary()

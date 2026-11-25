@@ -14,6 +14,7 @@ public:
 private:
     ADivePawn* Diver=nullptr;
     UPROPERTY() TObjectPtr<UFont> InterfaceFont=nullptr;
+    UPROPERTY() TObjectPtr<class UTexture2D> MapTexture=nullptr;
     float Scale=1, OffsetX=0, OffsetY=0;
     void Text(const FString& Value,float X,float Y,float Size,FLinearColor Color);
     void Rect(float X,float Y,float W,float H,FLinearColor Color);

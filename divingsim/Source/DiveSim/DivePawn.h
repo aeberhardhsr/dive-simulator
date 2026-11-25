@@ -64,6 +64,8 @@ private:
     double LastBreathPhase=0;
     uint32_t PreviousWarnings=0;
     bool bSmokeTest=false, bSmokeCaptured=false;
+    FString SmokeScenario;
+    bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     UPROPERTY() TObjectPtr<UAudioComponent> BreathAudio;
     UPROPERTY() TObjectPtr<UAudioComponent> AmbientAudio;
     UPROPERTY() TObjectPtr<USoundBase> WarningSound;

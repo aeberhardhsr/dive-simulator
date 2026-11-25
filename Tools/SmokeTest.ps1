@@ -1,10 +1,12 @@
-param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged)
+param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged,
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','stream')][string]$Scenario='dive')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
 $logPath=Join-Path $repo 'artifacts/DiveSmoke.log'
 New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $arguments='-DiveSmokeTest -windowed -ResX=1600 -ResY=900 -nosplash -unattended -abslog="{0}"' -f $logPath
+$arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 $executable="$EngineRoot/Engine/Binaries/Win64/UnrealEditor.exe"
 if($Packaged) {
     $executable=Join-Path $repo 'Builds/Windows/divingsim/Binaries/Win64/divingsim.exe'

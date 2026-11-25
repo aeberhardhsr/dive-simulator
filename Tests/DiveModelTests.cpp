@@ -1,4 +1,5 @@
 #include "../divingsim/Source/DiveSim/Simulation/DiveModel.h"
+#include "../divingsim/Source/DiveSim/Simulation/HeightGrid.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -12,6 +13,19 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    Dive::HeightTile west; west.Columns=2; west.Rows=2; west.East=100; west.North=200;
+    west.Centimetres={-100,-200,-300,-400};
+    Dive::HeightTile east=west; east.East=102; east.Centimetres={-300,-400,-500,-600};
+    Dive::HeightMosaic grid; grid.Tiles={west,east}; double height=0;
+    check(grid.Sample(101.5,200.5,height),"Bilinear sample across tile boundary");
+    close(height,-4,1e-9,"South row is last raster row");
+    check(grid.Sample(102,201,height),"Interpolation straddles adjacent tiles");
+    close(height,-3.5,1e-9,"Adjacent tile interpolation preserves metre scale");
+    grid.Tiles[1].Centimetres[2]=INT16_MIN;
+    check(!grid.Sample(102,201,height),"No interpolation across unmeasured cells");
+    check(!grid.Sample(99,200,height),"Outside survey returns no data");
+    check(!grid.Sample(1e100,200,height),"Extreme coordinates rejected before integer conversion");
+    check(!grid.Sample(std::numeric_limits<double>::quiet_NaN(),200,height),"Nonfinite coordinates rejected");
     Dive::Config c; c.SurfacePressureBar=1;
     Dive::Model surface(c), deep(c);
     close(deep.Pressure(10),1.980665,1e-6,"Freshwater hydrostatic pressure");
