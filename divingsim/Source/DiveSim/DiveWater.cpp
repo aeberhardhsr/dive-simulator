@@ -4,6 +4,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/ExponentialHeightFog.h"
+#include "Components/ExponentialHeightFogComponent.h"
 
 void ADiveWorld::CreateWater()
 {
@@ -106,6 +108,15 @@ void ADiveWorld::UpdateWater(const FVector& Player)
 
 bool ADiveWorld::ValidateWater(FString& Error) const
 {
+    const auto* fog=Fog?Fog->GetComponent():nullptr;
+    const float water=static_cast<float>(OpticalMedium.Water);
+    const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB();
+    if(!fog||FMath::Abs(fog->FogDensity-OpticalMedium.Density)>1.e-6||
+        FMath::Abs(fog->FogHeightFalloff-OpticalMedium.HeightFalloff)>1.e-6||
+        !fog->FogInscatteringLuminance.Equals(FLinearColor(.028f,.115f,.095f)*water,1.e-5f)||
+        !fog->SkyAtmosphereAmbientContributionColorScale.Equals(FLinearColor(1-water,1-water,1-water),1.e-5f)||
+        fog->VolumetricFogAlbedo!=albedo)
+    { Error=TEXT("Air/water fog parameters do not match camera medium"); return false; }
     const auto* section=Water?Water->GetProcMeshSection(0):nullptr;
     if(!section||section->ProcVertexBuffer.Num()<66000||!WaterMaterial||!CloudMaterial||!Rain->GetMaterial(0))
     { Error=TEXT("Missing water geometry or environment materials"); return false; }

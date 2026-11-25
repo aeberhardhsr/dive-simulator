@@ -77,6 +77,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario stream  # 90 s, Kachelwechsel
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm    # Windstille
+./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm -Hour 23 # Luft-/Wasserwechsel nachts
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
 ./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte

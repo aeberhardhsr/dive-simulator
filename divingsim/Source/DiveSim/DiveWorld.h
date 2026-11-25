@@ -4,6 +4,7 @@
 #include "DiveTerrain.h"
 #include "Simulation/DiveModel.h"
 #include "Simulation/WaterSurface.h"
+#include "Simulation/VisualMedium.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -90,6 +91,10 @@ private:
     FVector PopulationForward=FVector::ForwardVector;
     Dive::WaterSurface Waves;
     Dive::Config WeatherSettings;
+    Dive::VisualMedium OpticalMedium;
+    bool bOpticsSmoke=false;
+    uint8 ObservedOpticalMedia=0;
+    void UpdateAtmosphere();
     void CreateWater();
     void UpdateWater(const FVector& Player);
     void StreamTerrain(const FVector& Position,bool Immediate=false);

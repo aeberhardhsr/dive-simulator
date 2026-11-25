@@ -216,3 +216,31 @@ Der zusätzliche Package-Lauf mit `-DisableNanite` bestätigt `r.Nanite = "0"`, 
 ![Konventioneller Render-Fallback bei ausgeschaltetem Nanite](Images/Terrain_Fallback.png)
 
 ![Nanite-Clusterdiagnose der tatsächlich gerenderten Berggeometrie](Images/Terrain_NaniteClusters.png)
+
+## Getrennte Luft- und Wasseroptik (25. November 2026)
+
+Eigenständiger Windows-Build: `Builds/WindowsMedium/divingsim.exe`. Editor-Build und abschließender BuildCookRun erfolgreich; die vorgeschaltete unveränderte Landschaftsprüfung bestätigt erneut die 77 Quellassets. Belege: `artifacts/build-medium-sync.log` und `artifacts/package-medium-verified.log`.
+
+- Luftnebel verwendet weiße Partikel und die Himmelsatmosphäre statt des grünen Unterwasserfarbtons. Sichtweite unter Wasser verändert den Luftdunst nicht; Regen erhöht dessen Dichte von 0,002 auf 0,012. Unter Wasser bleiben bei 14 m Sichtweite 0,35 Dichte und der bisherige grüne Farbton erhalten.
+- Nebel und Kamera-Postprozess verwenden dieselbe glatte Überblendung über 0–0,5 m Kameratiefe und die aktuelle Augenposition einschließlich Atembewegung. Die Aktualisierung des Kameraversatzes erfolgt vor der optischen Auswertung. Auch im Pausenmenü wird der Nebel an der Kamera gehalten; Wellen und Spielphysik bleiben angehalten.
+- Zwölf zusätzliche engineunabhängige Prüfungen decken Endpunkte, glatten Übergang, Trennung von Wetter und Unterwassersichtweite sowie endliche Ersatzwerte ab. Der gesamte Kern besteht mit null Fehlern (`artifacts/core-medium.log`).
+- Der Laufzeittest prüft nach dem Pawn-Tick die Übereinstimmung von Kamera-Tint und Nebelmedium. Beim ersten Erreichen jedes Mediums prüft er zusätzlich tatsächliche Nebeldichte, Höhenabfall, Farbe, Himmelsbeitrag und Partikelalbedo. Die Oberflächen- und Uferabläufe müssen Luft, Übergang und Wasser tatsächlich durchlaufen.
+- `-Hour 23` überschreibt die Tageszeit nur für den automatisierten Test. Relative Package-Ausgabepfade werden jetzt vor dem UAT-Aufruf gegen das Repository aufgelöst; der abschließende Build belegt das korrekte Archivziel im Projektordner.
+
+| Ablauf im endgültigen Package | Maximale Tiefe | Strecke | Messpunkte | Ergebnis |
+|---|---:|---:|---:|---|
+| Auftauchen bei Windstille, Tag | 5,67 m | 21,54 m | 39 | Alle drei Medien |
+| Auftauchen bei Regen, 12 m/s Wind | 5,72 m | 31,50 m | 39 | Alle drei Medien |
+| Auftauchen um 23 Uhr | 5,67 m | 21,54 m | 39 | Alle drei Medien |
+| Murg: Ufer, Tauchen, Rückkehr und Abschluss | 4,26 m | 46,48 m | 42 | Alle drei Medien, abgeschlossenes Logbuch |
+| Handgelenkcomputer nachts | 5,67 m | 18,78 m | 23 | Alle drei Anzeigeseiten |
+
+Alle fünf Läufe bestehen `DIVE_SMOKE_PASS`, `DIVE_LANDSCAPE_PASS` und `DIVE_IMAGERY_PASS`; es gibt keine gemeldete Medium-, Wasser-, Ausrüstungs- oder Habitatverletzung. Die Oberflächenläufe bestätigen Luftdichte 0,002 beziehungsweise 0,012 bei Regen, Wasserdichte 0,35 und Himmelsbeitrag 1 in Luft beziehungsweise 0 unter Wasser. Vollständige Belege: `artifacts/medium-{day,rain,night,shore,wrist}-full.log`. Ein zusätzlicher Editor-Oberflächenlauf besteht (`artifacts/medium-editor-surface-full.log`).
+
+Die frischen Bilder wurden visuell geprüft: Luft ist weniger grün; die Nachtansicht über Wasser ist nahezu schwarz. Unter Wasser bleibt nachts ein künstlicher grüner Grundton sichtbar. Die dunklen Bergflanken, flachen/gestreckten Orthobilddetails und vereinfachte Nachtbeleuchtung bleiben offen. Das Abschalten des Nebels in einer vorherigen Vergleichsaufnahme machte die dunklen Bergflächen noch dunkler; der Luft-/Wasserfehler erklärt sie daher nicht vollständig. Diese Änderung ist keine physikalische Beleuchtungs- oder Fotorealismusabnahme.
+
+![Luftansicht nach dem Auftauchen am Tag](Images/Medium_Air_Day.png)
+
+![Luftansicht um 23 Uhr ohne künstlich grünen Luftdunst](Images/Medium_Air_Night.png)
+
+![Unterwasseransicht nachts mit weiterhin vereinfachtem grünen Grundton](Images/Medium_Water_Night.png)

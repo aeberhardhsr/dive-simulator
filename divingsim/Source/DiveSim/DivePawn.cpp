@@ -81,6 +81,7 @@ void ADivePawn::BeginPlay()
         FParse::Value(FCommandLine::Get(),TEXT("DiveScenario="),SmokeScenario);
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
+        FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
@@ -472,9 +473,11 @@ void ADivePawn::Tick(float DeltaSeconds)
         else FPlatformMisc::RequestExitWithStatus(false,valid&&saved?0:1);
     }
     Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
+    const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
+    Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight+breathMotion));
     const FVector eye=Camera->GetComponentLocation();
     const float depth=FMath::Max(0.f,static_cast<float>((Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100));
-    const float underwater=FMath::Clamp(depth*2.f,0.f,1.f);
+    const float underwater=static_cast<float>(Dive::CameraWaterBlend(depth));
     if(UnderwaterMaterial)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),PendingConfig.VisibilityMetres*100);
@@ -491,9 +494,6 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_AutoExposureBias=true; PP.AutoExposureBias=8.5f-depth*.018f;
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
-    const double eyeOffset=CameraBaseHeight;
-    const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
-    Camera->SetRelativeLocation(FVector(0,0,eyeOffset+breathMotion));
     if(Equipment) Equipment->Update(DeltaSeconds);
 }
 

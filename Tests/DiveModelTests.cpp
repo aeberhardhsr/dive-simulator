@@ -5,6 +5,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/AudioModel.h"
 #include "../divingsim/Source/DiveSim/Simulation/Tutorial.h"
 #include "../divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
+#include "../divingsim/Source/DiveSim/Simulation/VisualMedium.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -18,6 +19,22 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    close(Dive::CameraWaterBlend(-2),0,0,"Air camera is independent of body immersion");
+    close(Dive::CameraWaterBlend(0),0,0,"Surface camera retains the air endpoint");
+    close(Dive::CameraWaterBlend(.5),1,0,"Submerged camera reaches the water endpoint");
+    close(Dive::CameraWaterBlend(.25),.5,1e-12,"Optical transition is symmetric");
+    check(Dive::CameraWaterBlend(.001)<.00002,"Waterline transition starts smoothly");
+    check(1-Dive::CameraWaterBlend(.499)<.00002,"Waterline transition finishes smoothly");
+    close(Dive::VisualMedium::At(-1,0,2).Density,Dive::VisualMedium::At(-1,0,40).Density,0,
+          "Underwater visibility must not tint or thicken air fog");
+    check(Dive::VisualMedium::At(-1,2,14).Density>Dive::VisualMedium::At(-1,0,14).Density,
+          "Rain increases aerial haze");
+    close(Dive::VisualMedium::At(3,2,14).Density,Dive::VisualMedium::At(3,0,14).Density,0,
+          "Underwater fog does not inherit the aerial weather density");
+    check(Dive::VisualMedium::At(3,0,2).Density>Dive::VisualMedium::At(3,0,40).Density,
+          "Lower underwater visibility increases extinction");
+    close(Dive::VisualMedium::At(3,0,14).Density,.35,1e-12,"Retain established submerged fog density");
+    check(std::isfinite(Dive::VisualMedium::At(NAN,2,NAN).Density),"Invalid optical inputs stay finite");
     using namespace Dive::ShoreMovement;
     close(Immersion(2,0),0,0,"Dry body displaces no water");
     close(Immersion(0,0),.5,1e-12,"Half immersed upright body");

@@ -11,6 +11,10 @@ $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $repo 'divingsim/divingsim.uproject'
 if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' }
+# UAT changes its working directory to the engine. Resolve caller-supplied
+# relative output paths against the repository before passing them to UAT.
+if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
+$PackageDirectory=[IO.Path]::GetFullPath($PackageDirectory)
 # Preserve the installed engine's WITH_LIVE_CODING ABI. -NoLiveCoding changes
 # registration structure layouts in a monolithic Development build and is unsafe
 # with this engine's precompiled libraries. -NoHotReloadFromIDE only selects a
