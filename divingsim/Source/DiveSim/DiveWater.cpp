@@ -150,6 +150,6 @@ bool ADiveWorld::ValidateStorm(FString& Error) const
     UE_LOG(LogTemp,Display,TEXT("DIVE_WEATHER_PASS kind=3 wind=%.1f rain_instances=%d wave_envelope_m=%.3f cloud_coverage=%.2f cloud_density=%.3f sun_lux=%.1f"),
         WeatherSettings.WindMetresPerSecond,Rain->GetInstanceCount(),Waves.AmplitudeBound(),
         CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalCoverage")),CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalDensity")),
-        Lighting.Direct*Dive::EnvironmentLight::SunLux);
+        Lighting.SolarSource*Dive::EnvironmentLight::SunLux);
     return true;
 }

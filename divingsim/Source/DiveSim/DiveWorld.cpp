@@ -242,7 +242,7 @@ void ADiveWorld::BeginPlay()
     Sun=GetWorld()->SpawnActor<ADirectionalLight>();
     auto* light=CastChecked<UDirectionalLightComponent>(Sun->GetLightComponent()); light->SetMobility(EComponentMobility::Movable);
     Sun->SetActorRotation(FRotator(-42,-30,0));
-    light->SetIntensity(8); light->SetLightColor(FLinearColor(1,.94,.8));
+    light->SetIntensity(Dive::EnvironmentLight::SunLux); light->SetLightColor(FLinearColor::White);
     light->bAtmosphereSunLight=true;
     light->SetVolumetricScatteringIntensity(2);
     GetWorld()->SpawnActor<ASkyAtmosphere>();
@@ -303,7 +303,7 @@ void ADiveWorld::UpdateDaylight()
     if(Sun)
     {
         Sun->SetActorRotation(FRotator(-Lighting.ElevationDegrees,DayHour*15-180,0));
-        Sun->GetLightComponent()->SetIntensity(Lighting.Direct*Dive::EnvironmentLight::SunLux);
+        Sun->GetLightComponent()->SetIntensity(Lighting.SolarSource*Dive::EnvironmentLight::SunLux);
     }
 }
 
@@ -365,7 +365,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
     TickFish(dt,player);
     if(bOpticsSmoke&&Diver)
     {
-        if(!Sun||!Sky||FMath::Abs(Sun->GetLightComponent()->Intensity-Lighting.Direct*Dive::EnvironmentLight::SunLux)>.02||
+        if(!Sun||!Sky||FMath::Abs(Sun->GetLightComponent()->Intensity-Lighting.SolarSource*Dive::EnvironmentLight::SunLux)>.02||
             FMath::Abs(Sky->GetLightComponent()->Intensity-3)>1.e-5||
             !Sky->GetLightComponent()->GetLightColor().Equals(FLinearColor::White,1.e-5f))
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Sun/sky no longer match the configured environment")); FPlatformMisc::RequestExitWithStatus(false,1); return; }

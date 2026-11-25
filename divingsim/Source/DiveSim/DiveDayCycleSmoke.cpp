@@ -36,8 +36,8 @@ void ADivePawn::TickDayCycleTest(float DeltaSeconds)
     else if(DayCycleSmokePhase==2&&elapsed>=25)
     {
         shot(TEXT("Before")); DayCycleSmokePhase=3;
-        UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_BEFORE elapsed=%.3f hour=%.9f direct=%.9f"),elapsed,hour,
-            Dive::EnvironmentLight::At(hour,PendingConfig.Weather).Direct);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_BEFORE elapsed=%.3f hour=%.9f solar_source=%.9f"),elapsed,hour,
+            Dive::EnvironmentLight::At(hour,PendingConfig.Weather).SolarSource);
     }
     else if(DayCycleSmokePhase==3&&elapsed>=65)
     {
@@ -47,8 +47,8 @@ void ADivePawn::TickDayCycleTest(float DeltaSeconds)
     }
     else if(DayCycleSmokePhase==4&&elapsed>=88)
     {
-        UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_PASS elapsed=%.3f start=%.9f current=%.9f paused_wall=%.3f direct=%.9f"),
-            elapsed,PendingConfig.Hour,hour,DayCyclePauseWall,Dive::EnvironmentLight::At(hour,PendingConfig.Weather).Direct);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_PASS elapsed=%.3f start=%.9f current=%.9f paused_wall=%.3f solar_source=%.9f"),
+            elapsed,PendingConfig.Hour,hour,DayCyclePauseWall,Dive::EnvironmentLight::At(hour,PendingConfig.Weather).SolarSource);
         DayCycleSmokePhase=5;
     }
 }

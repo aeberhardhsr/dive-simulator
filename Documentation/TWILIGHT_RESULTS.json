@@ -1,0 +1,540 @@
+{
+  "captured_utc": "2026-11-25T11:18:48.302726+00:00",
+  "source_parent": "cff5d6d2c7bd008ccb5a40c8feb61c93aad63fcb",
+  "source_dirty": true,
+  "requirements": [
+    "ENV-001",
+    "ENV-002"
+  ],
+  "package": "Builds/WindowsTwilightExposure",
+  "build_slot": "TwilightExposure",
+  "resolution": [
+    1600,
+    900
+  ],
+  "frame_cap": 30,
+  "roi_xyxy": [
+    1000,
+    180,
+    1500,
+    320
+  ],
+  "roi_units": "Mean encoded PNG RGB, 0-255; HUD-free terrain region, not photometric luminance or a real-scene calibration",
+  "cases": [
+    {
+      "directory": "artifacts/twilight-final-5_75",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=2.469",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121517_E8B1633C.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-5_75/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            15.648814285714286,
+            9.507014285714286,
+            19.50827142857143
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-5_75/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.36414285714285716,
+            0.04307142857142857
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-5_75/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            21.232785714285715,
+            13.480214285714286,
+            24.140328571428572
+          ]
+        }
+      ],
+      "start_hour": 5.75,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.03999914973974,
+      "samples": 39
+    },
+    {
+      "directory": "artifacts/twilight-final-12_00",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=-4.325",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121145_B6326962.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-12_00/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            70.42834285714285,
+            89.83007142857143,
+            82.93268571428571
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-12_00/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            7.576871428571429,
+            32.5593,
+            27.698642857142858
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-12_00/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            69.72821428571429,
+            89.7036,
+            87.15587142857143
+          ]
+        }
+      ],
+      "start_hour": 12,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.03999914973974,
+      "samples": 39
+    },
+    {
+      "directory": "artifacts/twilight-final-17_75",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=-2.034",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121227_5B35AB7C.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-17_75/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            55.83117142857143,
+            52.70928571428571,
+            37.88695714285714
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-17_75/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            1.6716,
+            11.4129,
+            8.982185714285714
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-17_75/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            57.904942857142856,
+            57.477714285714285,
+            43.32452857142857
+          ]
+        }
+      ],
+      "start_hour": 17.75,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.03999914973974,
+      "samples": 39
+    },
+    {
+      "directory": "artifacts/twilight-final-18_00",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=0.093",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121310_A6728F1B.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-18_00/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            52.843514285714285,
+            41.58658571428571,
+            40.1304
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-18_00/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0044428571428571425,
+            2.807457142857143,
+            2.0795142857142856
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-18_00/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            59.340442857142854,
+            50.12247142857143,
+            47.394357142857146
+          ]
+        }
+      ],
+      "start_hour": 18,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.01999915018678,
+      "samples": 39
+    },
+    {
+      "directory": "artifacts/twilight-final-18_10",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=1.090",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121103_AE238722.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-18_10/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            40.39157142857143,
+            30.8771,
+            35.274928571428575
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-18_10/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            1.2212,
+            0.9974285714285714
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-18_10/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            48.54788571428571,
+            37.87764285714286,
+            41.29022857142857
+          ]
+        }
+      ],
+      "start_hour": 18.1,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.03999914973974,
+      "samples": 39
+    },
+    {
+      "directory": "artifacts/twilight-final-18_50",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=4.379",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121352_0993B008.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-18_50/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.004328571428571428,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-18_50/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-18_50/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.12555714285714287,
+            4.2857142857142856e-05,
+            0.00014285714285714287
+          ]
+        }
+      ],
+      "start_hour": 18.5,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.03999914973974,
+      "samples": 39
+    },
+    {
+      "directory": "artifacts/twilight-final-23_00",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=5.500",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121435_29F0A633.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-23_00/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-23_00/DiveUnderwater_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-23_00/DiveSmoke_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "start_hour": 23,
+      "lamp_on": false,
+      "weather": 0,
+      "duration_seconds": 38.03999914973974,
+      "samples": 39
+    }
+  ],
+  "regressions": [
+    {
+      "directory": "artifacts/twilight-final-daycycle",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=1 lumens=1000.0 exposure=-0.341",
+        "DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.040 hour=17.986122222",
+        "DIVE_DAYCYCLE_PASS elapsed=88.040 start=17.983333333 current=18.007788888 paused_wall=4.000 solar_source=1.000000000",
+        "DIVE_SMOKE_PASS depth=11.45 distance=34.31 pressure=194.86 samples=91 log=../../../divingsim/Saved/DiveLogs/20261125_121604_764796D5.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-daycycle/DayCycle_After_17.png",
+          "roi_mean_encoded_rgb_0_255": [
+            60.79994285714286,
+            50.9516,
+            47.3682
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-daycycle/DayCycle_Before_17.png",
+          "roi_mean_encoded_rgb_0_255": [
+            50.1268,
+            39.72287142857143,
+            36.708485714285715
+          ]
+        }
+      ],
+      "scenario": "daycycle"
+    },
+    {
+      "directory": "artifacts/twilight-final-surface-storm",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=1 lumens=1000.0 exposure=-3.018",
+        "DIVE_WEATHER_PASS kind=3 wind=22.0 rain_instances=2021 wave_envelope_m=2.269 cloud_coverage=0.90 cloud_density=0.018 sun_lux=9600.0",
+        "DIVE_SMOKE_PASS depth=11.49 distance=44.78 pressure=196.71 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121738_3FE2BEE3.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-surface-storm/DiveSmoke_1_surface-storm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            43.67417142857143,
+            56.96998571428571,
+            57.8112
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-surface-storm/DiveUnderwater_1_surface-storm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            3.2151285714285716,
+            19.051057142857143,
+            15.349414285714285
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-surface-storm/SurfaceAir_1_surface-storm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            26.33762857142857,
+            41.947271428571426,
+            39.76445714285714
+          ]
+        }
+      ],
+      "scenario": "surface-storm"
+    },
+    {
+      "directory": "artifacts/twilight-final-dive",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=1 lumens=1000.0 exposure=5.500",
+        "DIVE_SMOKE_PASS depth=11.45 distance=23.12 pressure=197.37 samples=23 log=../../../divingsim/Saved/DiveLogs/20261125_121813_750A183F.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-dive/DiveSmoke_1_dive.png",
+          "roi_mean_encoded_rgb_0_255": [
+            19.976242857142857,
+            35.316985714285714,
+            36.10115714285714
+          ]
+        },
+        {
+          "path": "artifacts/twilight-final-dive/DiveUnderwater_1_dive.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "scenario": "dive"
+    }
+  ],
+  "sunset_comparison_old_initial_final": [
+    {
+      "directory": "artifacts/twilight-baseline-18_1",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=5.500",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_120259_859D62ED.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-baseline-18_1/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "artifacts/twilight-current-18_10",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=4.300",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_120412_577E6659.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-current-18_10/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            148.14832857142858,
+            129.1662142857143,
+            139.46347142857144
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "artifacts/twilight-final-18_10",
+      "runtime_checks_passed": true,
+      "fresh_pngs": true,
+      "markers": [
+        "DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=1.090",
+        "DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_121103_AE238722.json"
+      ],
+      "captures": [
+        {
+          "path": "artifacts/twilight-final-18_10/SurfaceAir_1_surface-calm.png",
+          "roi_mean_encoded_rgb_0_255": [
+            40.39157142857143,
+            30.8771,
+            35.274928571428575
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Fixed illustrative 06:00/18:00 solar path; no date, season, astronomical ephemeris, moon or stars.",
+    "Underwater ambient and exposure response are authored approximations.",
+    "Nearly black unlit late twilight/night; broad water-reflection bands remain.",
+    "Concurrent old-build soak, user game and editor were running; not a performance benchmark.",
+    "This report does not validate the ongoing two-hour soak or claim full requirements completion.",
+    "Night torch smoke confirms light units/state and dark exposure limit; its open-water view is not a measured beam-pattern validation."
+  ],
+  "sha256": {
+    "artifacts/twilight-final-5_75/SurfaceAir_1_surface-calm.png": "e278a50932ef1e3e3fdb86eab42d1e774f5712466d49283733946055e01a0e08",
+    "artifacts/twilight-final-5_75/DiveUnderwater_1_surface-calm.png": "4d3f0637a6d9325783800fa84f70608c2659b7046ff7372adfdbd9bccfcaedd1",
+    "artifacts/twilight-final-5_75/DiveSmoke_1_surface-calm.png": "0f24fae6759256a805693a861311a7c8d2b7b8e7377b285107909c135b537030",
+    "artifacts/twilight-final-5_75/Runtime.log": "4019d103bd5c1d6a7eb299401984b0ef6b6d65cc06af56e3741b65fe96e3485b",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121517_E8B1633C.json": "e46e8f4a9fa6b265e608c179650e641dc8004583ac2f8ab60c7570238975b82b",
+    "artifacts/twilight-final-12_00/SurfaceAir_1_surface-calm.png": "2e241b29a4a5061f0a44f4a19babb35ef74b77c4e6ff2ebc0182344cad249432",
+    "artifacts/twilight-final-12_00/DiveUnderwater_1_surface-calm.png": "de9b7fb99f3f5350b81377540f0c35a86424375e488ec51f3e1ac6bff060891d",
+    "artifacts/twilight-final-12_00/DiveSmoke_1_surface-calm.png": "9ae35791d9b4e8e959ae9920eb7ea2930b440e664becfed51a204c5c36a4b8ce",
+    "artifacts/twilight-final-12_00/Runtime.log": "91fdf7804238d0c27e21656721472cc218c912eb05ad377e4f4840639e40a646",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121145_B6326962.json": "f6776f509217dbdd7b02f39094a4cf06a2cdc7e43080e974f491b703597e27d8",
+    "artifacts/twilight-final-17_75/SurfaceAir_1_surface-calm.png": "a257009cfd8c8441ad99d05b039ed3f4966df339379a183f81f68be4950fc880",
+    "artifacts/twilight-final-17_75/DiveUnderwater_1_surface-calm.png": "52e194be2e826b461e9c875483a8197d6122d5044cd9934706bd7f361a12eec2",
+    "artifacts/twilight-final-17_75/DiveSmoke_1_surface-calm.png": "1144db50de553c6f4551d6201ebd6fd3a0594392edb6ef751efa422963a50e6d",
+    "artifacts/twilight-final-17_75/Runtime.log": "7cbba0111aabad6c260289ba70f055e148c395c5c49f29680673ce96fed34f89",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121227_5B35AB7C.json": "6678523a0ff1be6b4e0c206530078cc0fa4f97207931d9ebe77965134312043c",
+    "artifacts/twilight-final-18_00/SurfaceAir_1_surface-calm.png": "7e25d590cc31b2ab90ac9cda69caa72dd05fbe466ce43054d4dfbe76cba38100",
+    "artifacts/twilight-final-18_00/DiveUnderwater_1_surface-calm.png": "4ed0cc5f51fbfcc76b4287cf79ddb4bdbf26e6c6dffad8d9181ca4449486771c",
+    "artifacts/twilight-final-18_00/DiveSmoke_1_surface-calm.png": "34ada8a8d150f98f36669c966bb585452c82aa969812e44e8a32e506cd541109",
+    "artifacts/twilight-final-18_00/Runtime.log": "959b29a213bcae6245466a423f4c4547d970d5e942486504a39fa12ddaf0d119",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121310_A6728F1B.json": "cd1f2e7b23adba4d366a1cbdbd7761394fc074fee2e1d574d9e07a3b0da90a0d",
+    "artifacts/twilight-final-18_10/SurfaceAir_1_surface-calm.png": "dd0f16070fb93d8a460cf0b78cb92a6703f0b713eeda1a01fb25d88d5ac908eb",
+    "artifacts/twilight-final-18_10/DiveUnderwater_1_surface-calm.png": "8fef8f4035f3b00a8effef5ff95bfc0fae03205580e745f301d1c717af5304e5",
+    "artifacts/twilight-final-18_10/DiveSmoke_1_surface-calm.png": "f735357d5b05390eccc4a32e11e0ccfd7ea227b0f775e3ad5235dbde46d8335b",
+    "artifacts/twilight-final-18_10/Runtime.log": "f98bb4cf54ecb559e8b6740b213353de017c7cfd61ba307e23758af90d648fdb",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121103_AE238722.json": "af682e738aa6855a9da048bbcf8b7feae219e419a5e10d0a219c4d229ff8e962",
+    "artifacts/twilight-final-18_50/SurfaceAir_1_surface-calm.png": "0f477b8b383bdfb8b106e7729e9f7ae369a60aade7632377dc52e407adc391e7",
+    "artifacts/twilight-final-18_50/DiveUnderwater_1_surface-calm.png": "48f5673a4fb85272340c0de4316fccff5e6ee47800f315fd03c337e0bb5421ff",
+    "artifacts/twilight-final-18_50/DiveSmoke_1_surface-calm.png": "a11bd63db80563ef7a7d3f2bbcef45c40fa384ddb6d3dfb53bd9984bc3999021",
+    "artifacts/twilight-final-18_50/Runtime.log": "08f297661063f7d3d8f32159d4afe772851043f8679f4f0b645407cc33ee6e94",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121352_0993B008.json": "a2c63cc6f58696a8e0bdd161d8e718128597a859fd1f6909e2c8213fa81c91b6",
+    "artifacts/twilight-final-23_00/SurfaceAir_1_surface-calm.png": "4d1fbee001470a9037bce8b01b24f5cc32ed9c80e5058a7900bb4ca7810f8926",
+    "artifacts/twilight-final-23_00/DiveUnderwater_1_surface-calm.png": "111ae10b99c452191f63564e1fe37b0a7d5edf67c7db2483676954d8680fce30",
+    "artifacts/twilight-final-23_00/DiveSmoke_1_surface-calm.png": "199d82cce07a3f7596d8de2f01ead3815e16d81586558c5be84c09793fa600ae",
+    "artifacts/twilight-final-23_00/Runtime.log": "7161d69304fd8f03c32e8b27255ee4aa6e34acdad211c3840d8cdfcb4614a026",
+    "Builds/WindowsTwilightExposure/divingsim/Saved/DiveLogs/20261125_121435_29F0A633.json": "982c21d1e49343236daf03e2090e1d15bc31803b296a01ab5001f806a6e614ca",
+    "artifacts/twilight-final-daycycle/DayCycle_After_17.png": "50a98dffb61d9b5d5c8f124c223382b40ae467cdf35b0fcd1a1c490ce0431f5c",
+    "artifacts/twilight-final-daycycle/DayCycle_Before_17.png": "cc7d884558f6169ffdde11bdab05f15ac21b979f29b3f6027c464362879ee7d3",
+    "artifacts/twilight-final-daycycle/Runtime.log": "04b713a1c5242f5b2ab11036a63560a574d3cafb4e3c6f6a2f096def325ebd00",
+    "artifacts/twilight-final-surface-storm/DiveSmoke_1_surface-storm.png": "89e0049103fb087e526e2cfa86fa812655da8b5455e0b8bab7a8636c44c7e1bb",
+    "artifacts/twilight-final-surface-storm/DiveUnderwater_1_surface-storm.png": "23bf1919ba50cbe43acdcef55fd1214383b3b66686a28633267f29f5362421c0",
+    "artifacts/twilight-final-surface-storm/SurfaceAir_1_surface-storm.png": "74e15341aec70b543c77e2f6f9ec3e0590c8dc5c1fc33868231bf8abcce0e47f",
+    "artifacts/twilight-final-surface-storm/Runtime.log": "4b89d15444a25f7d7e6e57cae13e20abdd4d41722946eb6ae0fba2f6c4cfdad6",
+    "artifacts/twilight-final-dive/DiveSmoke_1_dive.png": "410a9ad0c5a804929e8a3851140ceff686cab65fa3860d3f7e9b14368484baef",
+    "artifacts/twilight-final-dive/DiveUnderwater_1_dive.png": "432f4d90cbdabbc09e742c07325aa573e2c667b7e6bfd19c5f1e373200818bb9",
+    "artifacts/twilight-final-dive/Runtime.log": "5aa172b2ac79e80e171dc0d960b5a50a5db5ea1b21aaf97a1c6123559f43d482",
+    "artifacts/twilight-baseline-18_1/SurfaceAir_1_surface-calm.png": "737263b5df30a57aacad1131fc7b663007cb3ac083340755368e45aa8c927461",
+    "artifacts/twilight-baseline-18_1/Runtime.log": "875e9cc4189b4ad1f8fbd4637626b913bc063d19be8a58b4bb69b4a61ec18344",
+    "artifacts/twilight-current-18_10/SurfaceAir_1_surface-calm.png": "4a507f265d99aaec356176e70f8c0ecf7f0775d3514b9bc250c0348dd860840f",
+    "artifacts/twilight-current-18_10/Runtime.log": "3fd75b71f976f68d822fedb6358d386013efbdf7a42582922b5b93171efa233e",
+    "Builds/WindowsTwilightExposure/divingsim.exe": "e11f25e959b6afe1a8b7df1d563ed7c1a15428c0c486de9e50fec4402919a417",
+    "Builds/WindowsTwilightExposure/divingsim/Binaries/Win64/divingsim-TwilightExposure.exe": "497e8eddbd59af5b914861558e528a0d741fc0d49dd4f9b398aae5ba46dd0b35",
+    "Builds/WindowsTwilightExposure/Manifest_NonUFSFiles_Win64.txt": "a8b5165ee5a9bbd6eeeaff195055d828bc0db1d9fa0f482b5badd037ac5fd479",
+    "Documentation/Images/Twilight_Before.png": "737263b5df30a57aacad1131fc7b663007cb3ac083340755368e45aa8c927461",
+    "Documentation/Images/Twilight_After.png": "dd0f16070fb93d8a460cf0b78cb92a6703f0b713eeda1a01fb25d88d5ac908eb",
+    "artifacts/core-twilight.log": "18d84d691b31f61574376289afc66bf36b8f5f8304f7dad66f5046901d5f6cc8",
+    "artifacts/build-twilight-exposure-editor.log": "b0d65672b26ad278e09f0d0298444460e49086f41e8541ed3598ba8de4aab453",
+    "artifacts/package-twilight-exposure.log": "baff001797f34659371d9dc0b5529217c391f60bc07ebed5752343a9d4634f3d",
+    "artifacts/twilight-bootstrap.log": "f1ca7592294d8580626ad4245d99639aaa75cbcbcd04da95bee4a54e5f85d3da"
+  },
+  "root_launcher_verified": true,
+  "original_user_game_executable_unchanged": true,
+  "original_user_game_executable_sha256": "c8904bba4d9a4b40ba2ea1b4af9a94fbc7faed9c032fb5c3d2248c79b455b263",
+  "root_launcher_saved_directory": "Builds/WindowsTwilightExposure/divingsim/Saved__bootstrap",
+  "visually_inspected": [
+    "All seven final surface captures",
+    "Day and dusk underwater captures",
+    "Both daycycle hour-boundary captures",
+    "Storm surface",
+    "Night dive with torch"
+  ]
+}
