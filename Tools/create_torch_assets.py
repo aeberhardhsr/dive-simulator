@@ -47,5 +47,7 @@ def create_torches():
 
 
 if __name__=='__main__':
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.delete(use_global=False)
     create_torches()
     bpy.ops.wm.save_as_mainfile(filepath=str(Path(__file__).resolve().parents[1]/'blender'/'TorchAssets.blend'))
