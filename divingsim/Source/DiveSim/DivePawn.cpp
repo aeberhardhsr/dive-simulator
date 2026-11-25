@@ -5,6 +5,7 @@
 #include "AudioMixerBlueprintLibrary.h"
 #include "InputKeyEventArgs.h"
 #include "DiveHUD.h"
+#include "DiveConfigIO.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -113,7 +114,7 @@ void ADivePawn::BeginPlay()
         UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
     if(bSmokeTest)
     {
-        if(Environment->bTerrainReady) { if(SmokeScenario==TEXT("tutorial")) StartTutorial(); else StartDive(); }
+        if(Environment->bTerrainReady) { if(SmokeScenario==TEXT("tutorial")) StartTutorial(); else if(SmokeScenario!=TEXT("profiles")) StartDive(); }
         else { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL missing terrain")); FPlatformMisc::RequestExitWithStatus(false,1); }
     }
 }
@@ -138,6 +139,8 @@ void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
 void ADivePawn::ToggleMenu()
 {
     if(CapturingAction!=INDEX_NONE) { CapturingAction=INDEX_NONE; ControlMessage=Local(TEXT("Belegung unveraendert."),TEXT("Binding unchanged.")); return; }
+    if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ProfilesOpen()) { hud->CloseProfiles(); return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ControlsOpen()) { hud->CloseControls(); return; }
     if(bLogbook) { bLogbook=false; return; }
@@ -246,7 +249,7 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -544,7 +547,7 @@ void ADivePawn::FinishDive(const FString& Reason)
 {
     if(!bDiveActive) return;
     if(auto* pc=Cast<APlayerController>(GetController()))
-        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) hud->CloseControls();
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) { hud->CloseControls(); hud->CloseProfiles(true); }
     Samples.Add({Simulation.Data,GetActorLocation()});
     Outcome=Reason; bDiveActive=false; bSummary=true;
     if(!SaveLog(Reason)) Outcome+=TEXT(" / log_save_failed");
@@ -640,20 +643,9 @@ void ADivePawn::SaveSettings()
     auto obj=MakeShared<FJsonObject>();
     obj->SetNumberField(TEXT("schema_version"),1);
     const Dive::Config& savedConfig=bTutorialActive?BeforeTutorialConfig:PendingConfig;
-    SaveEnvironment(obj,savedConfig);
-    obj->SetNumberField(TEXT("cylinder_litres"),savedConfig.CylinderLitres);
-    obj->SetNumberField(TEXT("pressure_bar"),savedConfig.StartPressureBar);
-    obj->SetNumberField(TEXT("weight_kg"),savedConfig.WeightKg);
-    obj->SetNumberField(TEXT("visibility_m"),savedConfig.VisibilityMetres);
-    obj->SetNumberField(TEXT("current_mps"),savedConfig.CurrentMetresPerSecond);
-    obj->SetNumberField(TEXT("hour"),savedConfig.Hour);
-    obj->SetNumberField(TEXT("planned_depth_m"),savedConfig.PlannedDepthMetres);
-    obj->SetNumberField(TEXT("planned_minutes"),savedConfig.PlannedMinutes);
-    obj->SetNumberField(TEXT("mode"),static_cast<int>(savedConfig.GameMode));
-    obj->SetBoolField(TEXT("dry_suit"),savedConfig.DrySuit);
+    DiveConfigIO::Write(obj,savedConfig,bTutorialActive?BeforeTutorialEntry:EntryIndex);
     obj->SetBoolField(TEXT("english"),bEnglish);
     obj->SetBoolField(TEXT("camera_motion"),bCameraMotion);
-    obj->SetNumberField(TEXT("entry"),bTutorialActive?BeforeTutorialEntry:EntryIndex);
     AudioLevels.Sanitize();
     for(int i=0;i<5;++i) obj->SetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
     Controls.Sanitize(); Controls.Write(obj);
@@ -670,27 +662,9 @@ void ADivePawn::LoadSettings()
 {
     FString json; if(!FFileHelper::LoadFileToString(json,*(FPaths::ProjectSavedDir()/(bSmokeTest?TEXT("DiveSettingsTest.json"):TEXT("DiveSettings.json"))))) return;
     TSharedPtr<FJsonObject> obj; if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(json),obj)||!obj) return;
-    obj->TryGetNumberField(TEXT("weather"),PendingConfig.Weather);
-    obj->TryGetNumberField(TEXT("wind_mps"),PendingConfig.WindMetresPerSecond);
-    obj->TryGetNumberField(TEXT("wind_direction_degrees"),PendingConfig.WindDirectionDegrees);
-    obj->TryGetNumberField(TEXT("surface_temperature_c"),PendingConfig.SurfaceTemperatureC);
-    obj->TryGetNumberField(TEXT("bottom_temperature_c"),PendingConfig.BottomTemperatureC);
-    obj->TryGetNumberField(TEXT("thermocline_m"),PendingConfig.ThermoclineMetres);
-    obj->TryGetNumberField(TEXT("thermocline_width_m"),PendingConfig.ThermoclineWidthMetres);
-    obj->TryGetNumberField(TEXT("cylinder_litres"),PendingConfig.CylinderLitres);
-    obj->TryGetNumberField(TEXT("pressure_bar"),PendingConfig.StartPressureBar);
-    obj->TryGetNumberField(TEXT("weight_kg"),PendingConfig.WeightKg);
-    obj->TryGetNumberField(TEXT("visibility_m"),PendingConfig.VisibilityMetres);
-    obj->TryGetNumberField(TEXT("current_mps"),PendingConfig.CurrentMetresPerSecond);
-    obj->TryGetNumberField(TEXT("hour"),PendingConfig.Hour);
-    obj->TryGetNumberField(TEXT("planned_depth_m"),PendingConfig.PlannedDepthMetres);
-    obj->TryGetNumberField(TEXT("planned_minutes"),PendingConfig.PlannedMinutes);
-    int mode=1; obj->TryGetNumberField(TEXT("mode"),mode); PendingConfig.GameMode=static_cast<Dive::Mode>(FMath::Clamp(mode,0,2));
-    obj->TryGetBoolField(TEXT("dry_suit"),PendingConfig.DrySuit);
+    FString configError; DiveConfigIO::Read(obj,PendingConfig,EntryIndex,false,configError);
     obj->TryGetBoolField(TEXT("english"),bEnglish);
     obj->TryGetBoolField(TEXT("camera_motion"),bCameraMotion);
-    obj->TryGetNumberField(TEXT("entry"),EntryIndex); EntryIndex=FMath::Clamp(EntryIndex,0,2);
-    PendingConfig.Sanitize();
     for(int i=0;i<5;++i) obj->TryGetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
     AudioLevels.Sanitize();
     Controls.Read(obj); ApplyControls();

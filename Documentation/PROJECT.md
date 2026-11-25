@@ -23,7 +23,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | WATR | Wellen, Brechung, Reflexion, Absorption, God Rays, Caustics, Partikel, Strömung, Atemblasen mit Expansion, Thermokline, Oberflächenübergang | Geometrische Wellen, Tiefendruck und Wasserbewegung gekoppelt; Sicht steuert auch Oberflächenabsorption. Optische/fachliche Gesamtabnahme und Uferwechselwirkung offen |
 | BIOL | Mindestens fünf anatomisch plausible animierte Tierarten, drei Bewuchstypen, Schwärme, Flucht, Kollision, Habitat und Pflanzenbewegung | Fünf Fischmodelle (Felchen als Artengruppe), drei Bewuchstypen und Habitat-/Bewegungsregeln implementiert; anatomische und visuelle Abnahme offen |
 | DIVR | First Person, 3D-Bewegung, Auftrieb, Widerstand, Trägheit, Anstrengung, Atmung, BCD, Blei, Kollision, sichtbare Ausrüstung | Offen |
-| CONF | Einstieg, Uhrzeit, Wetter, Sicht, Temperatur, Strömung, Flasche 10/12/15 L, Druck, Luft, Anzug, Blei, Lampe, Modus, geplante Tiefe/Dauer, Profile | Offen |
+| CONF | Einstieg, Uhrzeit, Wetter, Sicht, Temperatur, Strömung, Flasche 10/12/15 L, Druck, Luft, Anzug, Blei, Lampe, Modus, geplante Tiefe/Dauer, Profile | Konfigurationsmenüs und benannte lokale Tauchprofile mit Vorschau, Laden, Umbenennen, vorherigem Stand und Archiv implementiert; Gesamtabnahme offen |
 | VITAL | Gekoppelte Herz-/Atemfrequenz, simulierte SpO2, Kerntemperatur, Belastung, Stress, Ermüdung, Stickstoff; keine unabhängigen Zufallswerte | Offen |
 | GAS | Druck, tiefen-/belastungs-/stressabhängiger Verbrauch, ppO2, Restzeit, Nullzeit, Gewebeaufnahme/-abgabe, Warnungen, Stopps | Offen |
 | EQPM | Datengetriebene Ausrüstung, BCD, Atemregler, Computer, Lampe, Kompass, Isolation und Gewicht, 3D-Modelle | Sichtbare Unterarme/Handschuhe, Handgelenkcomputer und Handlampe implementiert; vollständiger Ausrüstungskatalog und Körpermodelle offen |
@@ -33,7 +33,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | MODE | Exploration, Simulation, Hardcore auf gemeinsamem Kern; Unterschiede transparent konfiguriert | Offen |
 | NAV | Kompass, Walenseekarte, Tiefenkarte, Einstieg; optional Wegpunkte, Fotos und Entdeckungen | Offen |
 | LOG | Automatische Speicherung, Tiefe/Gas/Vitalwerte/Temperatur/Strecke/Warnungen, grafische Auswertung | Automatische JSON-Speicherung, Logbuchbrowser mit Modusfilter, vier Diagrammgruppen und Warnereignissen implementiert; vollständige Abnahme offen |
-| UI | Menü, Gebiet/Ausrüstung/Konfiguration, Logbuch, Grafik/Audio, Tastenbelegung, Pause, Tutorial, DE/EN, Profil, persistierte Einstellungen, Komfort | 16 belegbare Aktionen mit Konflikttausch, dynamische Tastenhinweise, Maus-/Sichtfeldoptionen und achtteilige spielbare Einführung implementiert; Profile und vollständige Abnahme offen |
+| UI | Menü, Gebiet/Ausrüstung/Konfiguration, Logbuch, Grafik/Audio, Tastenbelegung, Pause, Tutorial, DE/EN, Profil, persistierte Einstellungen, Komfort | 16 belegbare Aktionen mit Konflikttausch, dynamische Tastenhinweise, Maus-/Sichtfeldoptionen, achtteilige Einführung und Tauchkonfigurationsprofile implementiert; vollständige Abnahme offen |
 | PERF/GFX | PBR, LOD/Streaming/Culling, GPU-Partikel, 1080p–4K, 60 FPS empfohlen/30 FPS Minimum, zwei Stunden stabil | Offen |
 | MAINT | Module, Tests, Konfiguration, Erweiterbarkeit, versionierte Persistenz, Windows/macOS-Builds, Modellbeschreibung | Offen |
 

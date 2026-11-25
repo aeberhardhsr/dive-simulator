@@ -31,6 +31,19 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("profiles"))
+    {
+        if(ControlsSmokePhase<=10&&ControlsSmokeClock>(ControlsSmokePhase+1)*.8)
+        {
+            const bool passed=hud->ProfileSmokeTest(ControlsSmokePhase);
+            bControlsSmokeValid&=passed;
+            UE_LOG(LogTemp,Display,TEXT("DIVE_PROFILE_PHASE %d %s"),ControlsSmokePhase,passed?TEXT("PASS"):TEXT("FAIL"));
+            if(!passed) { FPlatformMisc::RequestExitWithStatus(false,1); return; }
+            if(ControlsSmokePhase==10) UE_LOG(LogTemp,Display,TEXT("DIVE_PROFILES_PASS persistence=1 undo=1 archive=1 active_guard=1"));
+            ++ControlsSmokePhase;
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("tutorial"))
     {
         if(TutorialFinishedAt>0)

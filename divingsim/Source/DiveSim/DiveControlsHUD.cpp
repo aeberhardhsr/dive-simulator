@@ -9,6 +9,7 @@ const FLinearColor Dark(.012f,.032f,.032f,.94f),Panel(.025f,.065f,.063f,.92f);
 void ADiveHUD::OpenControls()
 {
     Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver) return;
+    CloseProfileName(); bProfilesPage=false;
     Diver->SetMenu(true); bControlsPage=true; Diver->ControlMessage.Empty();
 }
 void ADiveHUD::ControlsMenu()

@@ -88,3 +88,17 @@ Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. 
 - Vorherigen normalen Plan absichtlich auf Exploration, Walenstadt, 15 L/250 bar, Nassanzug, 10 kg Blei, Regen, 6 m/s Wind und 0,16 m/s Strömung gesetzt. Speichern während der Übung bewahrt diesen Plan; nach Abschluss werden Plan und Abschlusskennzeichen erneut von der Datei gelesen und geprüft. Die Übung selbst verwendet Simulation mit ruhigem Weesen-Szenario.
 - Laufzeitbelege: `artifacts/runtime-controls-verified.log`, `artifacts/runtime-tutorial-verified.log`. Ausgewählte Bilder: `Images/Controls.png`, `Images/Tutorial.png`, `Images/TutorialComplete.png`.
 - Manuelle Tastatur-/Mausprüfung und weitere Tastaturlayouts bleiben offen. Zur angefragten Schließung des Windows-Sicherheitsdialogs des früheren manuellen Audiotests liegt noch keine Rückmeldung vor; dafür wurde keine Firewall-Regel angelegt. Automatisierte Tests verwenden separate Einstellungen und ignorieren reale Desktop-Eingaben.
+
+## Tauchkonfigurationsprofile (25. November 2026)
+
+- Drei Unreal-Automationstests bestanden: `DiveSim.Profiles.Configuration`, `PersistenceAndRecovery` und `FileProtectionAndLimits`. Bericht: `artifacts/ProfileTests/index.json`.
+- Alle Konfigurationsfelder einschließlich Sauerstoffanteil, Atmosphärendruck, automatischer Tarierung und Einstieg werden gespeichert und verglichen. Profile lehnen fehlende, ungültige oder außerhalb des Wertebereichs liegende Daten ab; ältere allgemeine Einstellungen erhalten Standards.
+- Geprüft: Unicode-Namen, persistierte Wiederherstellung des vorherigen Konfigurations-/Namensstands, Archiv und Wiederherstellung nach erneutem Einlesen, doppelte Namen auch im Archiv, aktive Profilgrenze, beschädigte Originaldatei, Schreibfehler mit Rücknahme der Speicheränderung und Konflikt zwischen zwei nacheinander schreibenden Instanzen.
+- Der Menülauf erzeugt ausschließlich Testdateien, bedient die tatsächlichen HUD-Handler und setzt Text in das Slate-Eingabefeld. Er prüft Laden, Namensdialog, Dubletten, Umbenennen, Aktualisieren, Wiederherstellen nach Disk-Reload, Archiv, DE/EN, Navigation zur Steuerung sowie die Sperre des Ladens während eines laufenden Tauchgangs. Dies ist keine manuelle Tastatur-/Mausprüfung.
+- Abschließender Editor- und Windows-Development-Build unter `Builds/WindowsProfiles` erfolgreich. Der verpackte Profiltest besteht in allen elf Phasen. Anschließender 22-s-Tauchlauf: 5,67 m maximale Tiefe, 18,78 m Strecke, 197,99 bar Restdruck, 23 gespeicherte Samples. Laufzeitbeleg: `artifacts/runtime-profiles-final.log`.
+- Frische Aufnahmen von Namensdialog, Dublette, DE-/EN-Profilseite, Archiv und Sperre während des Tauchgangs erzeugt. Die Fehlermeldung für doppelte Namen war zunächst hinter dem Dialog zu schwach sichtbar; sie wird jetzt im Dialog selbst angezeigt. Die vergrößerten Dialogschaltflächen und der korrigierte Fehlerhinweis wurden im abschließenden Package-Bild geprüft.
+- Regression im selben Windows-Package: Einführung mit allen acht Aufgaben nach 12,72 s automatisierter Spielzeit abgeschlossen, 13 Samples gespeichert. Ursprünglicher Tauchplan und Abschlusskennzeichen nach erneutem Laden geprüft; alle zehn Aufnahmen frisch. Beleg: `artifacts/runtime-tutorial-profiles.log`. Die manuelle Bedienprüfung bleibt offen.
+
+![Gespeicherte Tauchkonfiguration mit Vorschau](Images/Profiles.png)
+
+![Namensdialog mit sichtbarem Hinweis auf ein bereits vorhandenes Profil](Images/ProfileName.png)

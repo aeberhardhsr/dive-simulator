@@ -1,0 +1,65 @@
+#include "DiveConfigIO.h"
+#include "Dom/JsonObject.h"
+
+namespace
+{
+struct FNumber { const TCHAR* Name; double Dive::Config::*Member; };
+const FNumber Numbers[]={
+    {TEXT("cylinder_litres"),&Dive::Config::CylinderLitres},{TEXT("pressure_bar"),&Dive::Config::StartPressureBar},
+    {TEXT("oxygen_fraction"),&Dive::Config::OxygenFraction},{TEXT("weight_kg"),&Dive::Config::WeightKg},
+    {TEXT("surface_pressure_bar"),&Dive::Config::SurfacePressureBar},{TEXT("surface_temperature_c"),&Dive::Config::SurfaceTemperatureC},
+    {TEXT("bottom_temperature_c"),&Dive::Config::BottomTemperatureC},{TEXT("visibility_m"),&Dive::Config::VisibilityMetres},
+    {TEXT("current_mps"),&Dive::Config::CurrentMetresPerSecond},{TEXT("planned_depth_m"),&Dive::Config::PlannedDepthMetres},
+    {TEXT("planned_minutes"),&Dive::Config::PlannedMinutes},{TEXT("hour"),&Dive::Config::Hour},
+    {TEXT("wind_mps"),&Dive::Config::WindMetresPerSecond},{TEXT("wind_direction_degrees"),&Dive::Config::WindDirectionDegrees},
+    {TEXT("thermocline_m"),&Dive::Config::ThermoclineMetres},{TEXT("thermocline_width_m"),&Dive::Config::ThermoclineWidthMetres}
+};
+}
+void DiveConfigIO::Write(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& Config,int32 Entry)
+{
+    for(const auto& n:Numbers) Obj->SetNumberField(n.Name,Config.*(n.Member));
+    Obj->SetNumberField(TEXT("weather"),Config.Weather); Obj->SetNumberField(TEXT("mode"),static_cast<int>(Config.GameMode));
+    Obj->SetNumberField(TEXT("entry"),Entry); Obj->SetBoolField(TEXT("dry_suit"),Config.DrySuit);
+    Obj->SetBoolField(TEXT("auto_buoyancy"),Config.AutoBuoyancy);
+}
+bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,int32& Entry,bool Strict,FString& Error)
+{
+    if(!Obj) { Error=TEXT("Missing configuration"); return false; }
+    Dive::Config candidate; int32 candidateEntry=0;
+    for(const auto& n:Numbers)
+    {
+        const auto value=Obj->TryGetField(n.Name); double number=0;
+        const bool valid=value&&value->Type==EJson::Number&&value->TryGetNumber(number)&&FMath::IsFinite(number);
+        if(valid) candidate.*(n.Member)=number;
+        else if(Strict) { Error=FString(TEXT("Missing or invalid "))+n.Name; return false; }
+    }
+    auto integer=[&](const TCHAR* Name,int32& Target,int32 Max)
+    {
+        const auto value=Obj->TryGetField(Name); double number=0;
+        const bool valid=value&&value->Type==EJson::Number&&value->TryGetNumber(number)&&FMath::IsFinite(number);
+        if(Strict&&(!valid||number<0||number>Max||std::floor(number)!=number))
+        { Error=FString(TEXT("Missing or invalid "))+Name; return false; }
+        if(valid) Target=static_cast<int32>(FMath::Clamp(number,0.,static_cast<double>(Max)));
+        return true;
+    };
+    int32 mode=1;
+    if(!integer(TEXT("mode"),mode,2)||!integer(TEXT("weather"),candidate.Weather,2)||!integer(TEXT("entry"),candidateEntry,2)) return false;
+    candidate.GameMode=static_cast<Dive::Mode>(mode);
+    auto boolean=[&](const TCHAR* Name,bool& Target)
+    {
+        const auto value=Obj->TryGetField(Name);
+        if(value&&value->Type==EJson::Boolean) { Target=value->AsBool(); return true; }
+        if(Strict) { Error=FString(TEXT("Missing or invalid "))+Name; return false; } return true;
+    };
+    if(!boolean(TEXT("dry_suit"),candidate.DrySuit)||!boolean(TEXT("auto_buoyancy"),candidate.AutoBuoyancy)) return false;
+    auto clean=candidate; clean.Sanitize();
+    if(Strict)
+        for(const auto& n:Numbers) if(candidate.*(n.Member)!=clean.*(n.Member))
+        { Error=FString(TEXT("Out of range: "))+n.Name; return false; }
+    Config=clean; Entry=candidateEntry; Error.Empty(); return true;
+}
+bool DiveConfigIO::Equal(const Dive::Config& A,int32 EntryA,const Dive::Config& B,int32 EntryB)
+{
+    for(const auto& n:Numbers) if(A.*(n.Member)!=B.*(n.Member)) return false;
+    return EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy;
+}

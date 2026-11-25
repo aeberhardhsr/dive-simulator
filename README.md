@@ -42,6 +42,10 @@ Die Tabelle zeigt die Standardbelegung. Unter **F1 / Steuerung und Hilfe** lasse
 
 **Steuerung kennenlernen** im Startmenü beginnt eine geführte Einführung mit acht Aufgaben. Fortschritt entsteht durch Umsehen, eigenes Schwimmen, Füllen/Entleeren des Jackets, die Vitalwerteseite des Computers, Lampe, Karte und Rückkehr zur Boje. Sie verwendet ein ruhiges Weesen-Szenario mit manueller Tarierung und begrenztem Gas; der vorherige Tauchplan wird nach Abschluss oder Abbruch wiederhergestellt. Der Abschluss wird gespeichert und die Einführung kann wiederholt werden. Sie erklärt die Spielbedienung und ist keine Tauchausbildung.
 
+**Tauchprofile** unten im Menü speichert benannte Zusammenstellungen aus Ausrüstung, Einstieg, Umwelt und Tauchplan. Einen Namen eingeben und mit Enter oder **Speichern** bestätigen; Escape bricht den Dialog ab. Profile lassen sich laden, umbenennen, mit dem aktuellen Plan aktualisieren und archivieren. **Vorheriger Stand** stellt die letzte Änderung an Name oder Konfiguration wieder her, auch nach einem Neustart. Das Archiv erlaubt die Wiederherstellung; es gibt keine endgültige Löschfunktion. Ein laufender Tauchgang verhindert das Laden anderer Profile.
+
+Bis zu 32 aktive und 128 Profile insgesamt liegen lokal in `divingsim/Saved/DiveProfiles.json`. Namen müssen eindeutig sein, auch gegenüber dem Archiv. Die Datei wird beim Speichern geprüft und über eine temporäre Datei ersetzt; unlesbare Dateien bleiben unangetastet. **Neu laden** liest Änderungen anderer Spielinstanzen erneut ein. Profile enthalten den Tauchplan; Sprache, Audio und Steuerung bleiben gemeinsame persönliche Einstellungen.
+
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
 **Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen, Windstärke und -richtung, Temperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien und bleiben während eines Tauchgangs fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
@@ -70,8 +74,10 @@ python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
 ./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte
+./Tools/TestProfiles.ps1              # Unreal-Prüfungen: Profile, Wiederherstellung, Datei-/Konfliktschutz
 ./Tools/SmokeTest.ps1 -Packaged -Scenario controls        # Engine-Tasteneingaben, Remapping, Pause, DE/EN
 ./Tools/SmokeTest.ps1 -Packaged -Scenario tutorial        # Alle acht Aufgaben, Abschluss, Planwiederherstellung
+./Tools/SmokeTest.ps1 -Packaged -Scenario profiles        # Profilmenü, Namensdialog, Laden/Archiv/Undo, Tauchgang
 python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMix.wav artifacts/DiveSmoke.log
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht

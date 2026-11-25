@@ -56,7 +56,7 @@ void ADiveHUD::DrawHUD()
     if(Diver->bMenu)
     {
         DrawRect(FLinearColor(0,.012,.014,.62),0,0,Canvas->SizeX,Canvas->SizeY);
-        if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
+        if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
     }
     else
     {
@@ -131,7 +131,7 @@ void ADiveHUD::Menu()
     Field(TEXT("mode"),L(TEXT("MODUS"),TEXT("MODE")),modes[static_cast<int>(c.GameMode)],x,250,w);
     Field(TEXT("entry"),L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name:TEXT("Geodata unavailable"),x+w+gap,250,w);
     Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x+2*(w+gap),250,w);
-    Field(TEXT("tank"),L(TEXT("FLASCHENVOLUMEN"),TEXT("CYLINDER VOLUME")),FString::Printf(TEXT("%.0f L / Air 21%%"),c.CylinderLitres),x,350,w);
+    Field(TEXT("tank"),L(TEXT("FLASCHENVOLUMEN"),TEXT("CYLINDER VOLUME")),FString::Printf(TEXT("%.0f L / O2 %.0f%%"),c.CylinderLitres,c.OxygenFraction*100),x,350,w);
     Field(TEXT("pressure"),L(TEXT("STARTDRUCK"),TEXT("START PRESSURE")),FString::Printf(TEXT("%.0f bar"),c.StartPressureBar),x+w+gap,350,w);
     Field(TEXT("weight"),L(TEXT("BLEIGEWICHT"),TEXT("BALLAST")),FString::Printf(TEXT("%.0f kg"),c.WeightKg),x+2*(w+gap),350,w);
     Field(TEXT("suit"),L(TEXT("ANZUG"),TEXT("SUIT")),c.DrySuit?L(TEXT("Trockentauchanzug"),TEXT("Dry suit")):L(TEXT("Nassanzug"),TEXT("Wet suit")),x,450,w);
@@ -153,7 +153,8 @@ void ADiveHUD::Menu()
     Button(TEXT("quality"),FString::Printf(TEXT("Grafik / Quality: %.0f"),Diver->GraphicsQuality),275,835,235,40);
     Button(TEXT("audio"),bAudioPage?TEXT("< Audio"):TEXT("Audio >"),530,835,105,40,bAudioPage);
     Button(TEXT("controls"),L(TEXT("F1  Steuerung / Hilfe"),TEXT("F1  Controls / help")),650,835,330,40);
-    Text(L(TEXT("ESC pausiert oder setzt fort"),TEXT("ESC pauses or resumes")),1010,846,14,Muted);
+    Button(TEXT("profiles"),L(TEXT("Tauchprofile"),TEXT("Dive profiles")),1010,835,260,40);
+    Text(TEXT("ESC Pause"),1310,846,14,Muted);
 }
 
 void ADiveHUD::Instruments()
@@ -272,6 +273,8 @@ void ADiveHUD::Summary()
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
     Super::NotifyHitBoxClick(Id); if(!Diver) return;
+    if(Id==TEXT("profiles")) { OpenProfiles(); return; }
+    if(bProfilesPage) { ProfileClick(Id); return; }
     if(Id==TEXT("controls")) { OpenControls(); return; }
     if(Id==TEXT("tutorial")) { if(!Diver->bDiveActive) { bControlsPage=false; Diver->StartTutorial(); } return; }
     if(bControlsPage)
