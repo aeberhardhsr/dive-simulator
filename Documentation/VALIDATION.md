@@ -23,6 +23,9 @@ Stand: 25. November 2026. Windows 11, Unreal Engine 5.8.4, MSVC 14.44, Windows S
 | 3D-Handgelenkcomputer im Windows-Package | Tages-/Nachtlauf bei Murg bestanden, jeweils 22 s und 23 Samples, über 200 Display-Aktualisierungen, alle drei Seiten tatsächlich gezeichnet, angehobene Pose erreicht, Bildschirm-HUD ausgeblendet. Haupt-, Vital- und Gasseite im Bild geprüft. Ausgabe: `Builds/WindowsEquipment` |
 | Auftauchen mit sichtbarer Ausrüstung | Murg im Equipment-Package bestanden: 38 s, 11,45 m maximale Tiefe, 29,33 m Strecke, 39 gespeicherte Samples; Oberfläche erreicht, maximal neun Geländekacheln, 359 Display-Aktualisierungen |
 | Manuelle Handgelenkbedienung | Im Equipment-Package geprüft: Exploration, englische Anzeige, Nassanzug, C anheben/senken, R durch alle drei Seiten, H HUD aus/ein, L betätigt, Pause, Abbruch und Auswertung. Nach 2:50 min zum deutschen Startmenü mit Simulation, Weesen und Trockenanzug zurückgekehrt |
+| Logbuch-Reader und Dateiverzeichnis | Drei Unreal-Automationstests bestanden: Schema 1/2, Datumsdarstellung, 7.201 Messpunkte über zwei Stunden, Zeitpunktsuche, Warnereignisse, fehlende/ungültige Werte, nicht monotone Reihen, unbekannte Versionen, temporäre Dateien, Testlauf-Filter und erneutes Lesen von Festplatte. Testdaten liegen isoliert unter `Saved/Automation`, nicht im Spieler-Logbuch |
+| Logbuch im Windows-Package | 22 s Tauchgang bei Murg gespeichert und erneut gelesen: 23 Messpunkte, 11,45 m maximale Tiefe, 197,38 bar Restdruck. Danach alle vier Diagrammgruppen mit DE/EN-Beschriftung gezeichnet und aufgenommen; `DIVE_LOGBOOK_PASS samples=23 groups=15`. Ausgabe: `Builds/WindowsLogbook` |
+| Manuelle Logbuchbedienung | Im abschließenden Package geprüft: leere Ansicht mit ausgeblendeten Testläufen, Aufruf aus Start- und Pausenmenü, Rückkehr mit Esc, neuer 11-s-Tauchgang mit zwölf Messpunkten, Öffnen aus der Auswertung, Vitalwertseite, Zeitcursor bei 00:04, Sprung zur Aufstiegswarnung bei 00:11, leeres Exploration-Filter, passendes Simulation-Filter und DE/EN-Wechsel. Testinstanz anschließend regulär beendet |
 
 ![Tiefenkarte aus der verpackten Anwendung bei Murg](Images/WalenseeMap.png)
 
@@ -31,6 +34,10 @@ Stand: 25. November 2026. Windows 11, Unreal Engine 5.8.4, MSVC 14.44, Windows S
 ![3D-Handgelenkcomputer mit Live-Daten im Package](Images/WristComputer.png)
 
 ![Vitalwertseite bei Nacht und ausgeblendetem Bildschirm-HUD](Images/WristComputerNight.png)
+
+![Logbuch mit gespeichertem Tiefen- und Gasprofil, Testdaten sichtbar im Prüflauf](Images/Logbook.png)
+
+![Gespeicherte Vitalwerte im Logbuch](Images/LogbookVitals.png)
 
 Reproduktionsbefehle stehen in der README. Laufzeit-Protokolle und lokale Build-Ausgaben sind unter `artifacts/` abgelegt und nicht Bestandteil der Versionsverwaltung. Das automatische Gameplay startet mit fest definierten Einstellungen, speichert ein eigenes Protokoll, prüft dessen Inhalt und verändert keine Benutzereinstellungen. Maus- und Tastaturbindungen sind während des Skriptlaufs deaktiviert. Fischzustände werden in jedem Frame auf gültige Modelle, endliche Werte, Habitatgrenzen und Felsabstände geprüft.
 
@@ -49,4 +56,4 @@ Reproduktionsbefehle stehen in der README. Laufzeit-Protokolle und lokale Build-
 
 ## Noch nicht abgenommen
 
-Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. Fotorealismus, echte Uferzugänge, detaillierte Landschaft mit Landbedeckung, vollständige Lokalisierung, optische Qualitätsabnahme des Oberflächenübergangs, geometrische Wellen, anatomische Abnahme der fünf Fischmodelle (Felchen als Artengruppe) und drei Bewuchstypen, vollständiger Ausrüstungskatalog und Körpermodelle, Hardcore-Unterschiede, Logbuchbrowser und weitere MUST-Anforderungen bleiben offen. Der Oberflächentest bestätigt die Bewegung in die Luft; das Wassermaterial dämpft den Grund jetzt, benötigt aber weitere Abstimmung. Das Land ist ein Hintergrundmesh ohne Spielerkollision. Kein macOS-Spieltest, kein kontrollierter Performance-Benchmark und kein zweistündiger Dauertest wurden durchgeführt. Der Biologie-Stand einschließlich FMA-Testkorrektur hat die Kern-/Parser-CI auf Windows, macOS und Linux bestanden (Run 45521430833); dies ist keine Prüfung des vollständigen Spiels auf diesen Plattformen.
+Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. Fotorealismus, echte Uferzugänge, detaillierte Landschaft mit Landbedeckung, vollständige Lokalisierung, optische Qualitätsabnahme des Oberflächenübergangs, geometrische Wellen, anatomische Abnahme der fünf Fischmodelle (Felchen als Artengruppe) und drei Bewuchstypen, vollständiger Ausrüstungskatalog und Körpermodelle, Hardcore-Unterschiede, weitere UI-Funktionen und weitere MUST-Anforderungen bleiben offen. Der Oberflächentest bestätigt die Bewegung in die Luft; das Wassermaterial dämpft den Grund jetzt, benötigt aber weitere Abstimmung. Das Land ist ein Hintergrundmesh ohne Spielerkollision. Kein macOS-Spieltest, kein kontrollierter Performance-Benchmark und kein zweistündiger Dauertest wurden durchgeführt. Der Biologie-Stand einschließlich FMA-Testkorrektur hat die Kern-/Parser-CI auf Windows, macOS und Linux bestanden (Run 45521430833); dies ist keine Prüfung des vollständigen Spiels auf diesen Plattformen.

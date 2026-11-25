@@ -1,6 +1,7 @@
 #include "DivePawn.h"
 #include "DiveWorld.h"
 #include "DiveEquipment.h"
+#include "DiveHUD.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -117,7 +118,7 @@ void ADivePawn::ToggleHUD() { if(!bMenu) bShowInstruments=!bShowInstruments; }
 void ADivePawn::ToggleComputer() { if(!bMenu) bShowComputer=!bShowComputer; }
 void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(ComputerPage+1)%3; }
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
-void ADivePawn::ToggleMenu() { SetMenu(!bMenu || !bDiveActive); }
+void ADivePawn::ToggleMenu() { if(bLogbook) { bLogbook=false; return; } SetMenu(!bMenu || !bDiveActive); }
 void ADivePawn::ResumeDive() { if(bDiveActive) SetMenu(false); }
 
 void ADivePawn::SetMenu(bool Open)
@@ -158,6 +159,7 @@ void ADivePawn::StartDive()
     Samples.Reset(); PreviousWarnings=0; Accumulator=0; TelemetryAccumulator=0; LastBreathPhase=0;
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
     Outcome.Empty(); LastLogPath.Empty();
+    bLogbook=false; DiveStartedUTC=FDateTime::UtcNow().ToIso8601();
     if(!bSmokeTest) SaveSettings();
     SetMenu(false);
     Notify(Local(TEXT("WASD schwimmen  |  Q/E tarieren  |  L Lampe  |  ESC Pause"),TEXT("WASD swim  |  Q/E buoyancy  |  L torch  |  ESC pause")));
@@ -166,6 +168,32 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bSmokeTest&&SmokeLogbookStarted>0)
+    {
+        auto* PC=Cast<APlayerController>(GetController());
+        auto* HUD=PC?Cast<ADiveHUD>(PC->GetHUD()):nullptr;
+        if(HUD&&HUD->LogbookReady())
+        {
+            SmokeLogbookTime+=DeltaSeconds;
+            const int group=FMath::Min(3,FMath::FloorToInt(SmokeLogbookTime/3));
+            HUD->LogMetricGroup=group; bEnglish=group>=2;
+            if(FMath::Fmod(SmokeLogbookTime,3.)>1.5&&!(SmokeLogbookCaptured&(1u<<group)))
+            {
+                SmokeLogbookCaptured|=1u<<group;
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Logbook_%d.png"),group),true,false);
+            }
+            if(SmokeLogbookTime>12)
+            {
+                const bool valid=HUD->LogbookMatches(LastLogPath,Samples.Num())&&HUD->LogRenderedGroups==15&&SmokeLogbookCaptured==15;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LOGBOOK_%s samples=%d groups=%u"),valid?TEXT("PASS"):TEXT("FAIL"),Samples.Num(),HUD->LogRenderedGroups);
+                FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
+            }
+        }
+        if(GetWorld()->GetTimeSeconds()-SmokeLogbookStarted>45)
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_LOGBOOK_FAIL load timeout")); FPlatformMisc::RequestExitWithStatus(false,1); }
+        if(Equipment) Equipment->Update(DeltaSeconds);
+        return;
+    }
     if(bDiveActive && !bMenu)
     {
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
@@ -230,14 +258,25 @@ void ADivePawn::Tick(float DeltaSeconds)
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);
         FinishDive(valid?TEXT("smoke_pass"):TEXT("smoke_failed"));
         FString persisted;
-        const bool saved=FFileHelper::LoadFileToString(persisted,*LastLogPath) && persisted.Contains(TEXT("smoke_pass"));
+        FDiveLog readback; readback.Path=LastLogPath;
+        const bool saved=FFileHelper::LoadFileToString(persisted,*LastLogPath)&&DiveLogbook::Parse(persisted,readback)&&
+            readback.Status==TEXT("smoke_pass")&&readback.Samples.Num()==Samples.Num()&&
+            FMath::Abs(readback.Duration-Simulation.Data.ElapsedSeconds)<.001&&
+            !readback.Samples.IsEmpty()&&FMath::Abs(readback.Samples.Last().CylinderBar-Simulation.Data.CylinderBar)<.001;
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s depth=%.2f distance=%.2f pressure=%.2f samples=%d log=%s"),
             valid&&saved?TEXT("PASS"):TEXT("FAIL"),Simulation.Data.MaxDepthMetres,Simulation.Data.DistanceMetres,
             Simulation.Data.CylinderBar,Samples.Num(),*LastLogPath);
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_DETAIL entry=%d scenario=%s displacement=%.2f surface=%d chunks=%d bounded=%d"),
             EntryIndex,*SmokeScenario,displacement,bSmokeSurfaceReached,Environment->TerrainChunkCount(),bSmokeChunkLimit);
         UE_LOG(LogTemp,Display,TEXT("DIVE_EQUIPMENT_CHECK updates=%d wrist=%.3f page=%d rendered_pages=%u"),Equipment->DisplayUpdates,Equipment->WristBlend,ComputerPage,Equipment->DisplayedPages);
-        FPlatformMisc::RequestExitWithStatus(false,valid&&saved?0:1);
+        if(SmokeScenario==TEXT("logbook")&&valid&&saved)
+        {
+            auto* PC=Cast<APlayerController>(GetController());
+            if(auto* HUD=PC?Cast<ADiveHUD>(PC->GetHUD()):nullptr)
+            { HUD->OpenLogbook(LastLogPath,true); SmokeLogbookStarted=GetWorld()->GetTimeSeconds(); }
+            else FPlatformMisc::RequestExitWithStatus(false,1);
+        }
+        else FPlatformMisc::RequestExitWithStatus(false,valid&&saved?0:1);
     }
     Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
     const float depth=FMath::Max(0.f,static_cast<float>(-GetActorLocation().Z/100));
@@ -386,7 +425,9 @@ bool ADivePawn::SaveLog(const FString& Reason)
     IFileManager::Get().MakeDirectory(*dir,true);
     if(LastLogPath.IsEmpty()) LastLogPath=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT("_")+FGuid::NewGuid().ToString(EGuidFormats::Digits).Left(8)+TEXT(".json"));
     auto root=MakeShared<FJsonObject>();
-    root->SetNumberField(TEXT("schema_version"),1);
+    root->SetNumberField(TEXT("schema_version"),2);
+    root->SetStringField(TEXT("started_at_utc"),DiveStartedUTC);
+    root->SetBoolField(TEXT("is_test"),bSmokeTest);
     root->SetStringField(TEXT("status"),Reason);
     root->SetStringField(TEXT("location"),Environment->Terrain.Entries[EntryIndex].Name);
     root->SetStringField(TEXT("bathymetry"),TEXT("swissBATHY3D Walensee 2020; (c) swisstopo"));

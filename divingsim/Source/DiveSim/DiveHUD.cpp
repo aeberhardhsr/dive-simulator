@@ -55,7 +55,7 @@ void ADiveHUD::DrawHUD()
     if(Diver->bMenu)
     {
         DrawRect(FLinearColor(0,.012,.014,.62),0,0,Canvas->SizeX,Canvas->SizeY);
-        if(Diver->bSummary) Summary(); else Menu();
+        if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
     }
     else
     {
@@ -86,6 +86,7 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,525,18,White);
     Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
+    Button(TEXT("logbook"),L(TEXT("Logbuch ansehen   >"),TEXT("Open logbook   >")),73,720,437,58);
     const float x=650,w=265,gap=28;
     Text(Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
     Text(Diver->bDiveActive?L(TEXT("Ausrüstung bleibt während des Tauchgangs fest."),TEXT("Equipment is fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
@@ -226,12 +227,40 @@ void ADiveHUD::Summary()
     }
     Text(L(TEXT("Telemetrie als JSON: divingsim/Saved/DiveLogs"),TEXT("JSON telemetry: divingsim/Saved/DiveLogs")),120,717,16,Muted);
     Button(TEXT("new"),L(TEXT("Naechsten Tauchgang planen  >"),TEXT("Plan another dive  >")),120,785,540,60,true);
+    Button(TEXT("logbook"),L(TEXT("Logbuch / Verlaeufe"),TEXT("Logbook / profiles")),690,785,490,60);
     Button(TEXT("quit"),L(TEXT("Beenden"),TEXT("Quit")),1215,785,265,60);
 }
 
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
     Super::NotifyHitBoxClick(Id); if(!Diver) return;
+    if(Id==TEXT("logbook")) { OpenLogbook(Diver->bSummary?Diver->LastLogPath:FString()); return; }
+    if(Diver->bLogbook)
+    {
+        if(Id==TEXT("logback")) Diver->bLogbook=false;
+        else if(Id==TEXT("loglanguage")) { Diver->bEnglish=!Diver->bEnglish; Diver->SaveSettings(); }
+        else if(Id==TEXT("logprev")) LogPage=FMath::Max(0,LogPage-1);
+        else if(Id==TEXT("lognext")) LogPage=FMath::Min((VisibleLogs().Num()-1)/7,LogPage+1);
+        else if(Id==TEXT("logfilter")&&!bIndexLoading&&!bDetailLoading)
+        {
+            LogFilter=(LogFilter+1)%4; LogPage=0;
+            const auto visible=VisibleLogs();
+            if(!visible.IsEmpty()) SelectLog(visible[0]);
+            else { LogSelection=INDEX_NONE; SelectedLog=FDiveLog{}; }
+        }
+        else if(Id.ToString().StartsWith(TEXT("logrow_"))) SelectLog(FCString::Atoi(*Id.ToString().Mid(7)));
+        else if(Id.ToString().StartsWith(TEXT("logmetric_"))) LogMetricGroup=FMath::Clamp(FCString::Atoi(*Id.ToString().Mid(10)),0,3);
+        else if(Id==TEXT("logeventprev")||Id==TEXT("logeventnext"))
+        {
+            const int direction=Id==TEXT("logeventnext")?1:-1;
+            for(int i=LogCursor+direction;SelectedLog.Samples.IsValidIndex(i);i+=direction)
+            {
+                const uint32 previous=i>0?SelectedLog.Samples[i-1].Warnings:0;
+                if(SelectedLog.Samples[i].Warnings&~previous) { LogCursor=i; break; }
+            }
+        }
+        return;
+    }
     auto& c=Diver->PendingConfig;
     if(Id==TEXT("start")) { if(Diver->bDiveActive) Diver->ResumeDive(); else Diver->StartDive(); return; }
     if(Id==TEXT("abort")) { Diver->FinishDive(TEXT("aborted")); return; }

@@ -39,7 +39,9 @@ BCD-Gas dehnt sich beim Aufstieg aus. Gegensteuern und rechtzeitig entlüften. I
 
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
-Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter `divingsim/Saved/Photographs`. Testaufnahmen liegen unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Abschlussfenster zeigt den zuletzt beendeten Tauchgang; ein durchsuchbares Logbuch folgt.
+**Logbuch ansehen** im Start-/Pausenmenü oder **Logbuch / Verläufe** nach dem Tauchgang öffnet gespeicherte Tauchgänge. Links einen Eintrag wählen, mit den Pfeilen blättern oder nach Modus filtern. Vier Diagrammgruppen zeigen Tiefe, Gas, Nullzeit, Dekotiefe, Vitalwerte, Temperatur, Stress, Ermüdung und Strecke. Die Maus über den Kurven wählt den gemeinsamen Zeitpunkt; **< ! / ! >** springt zu Warnereignissen. Esc führt zurück. Beim Lesen aus dem Pausenmenü bleibt der laufende Tauchgang angehalten.
+
+Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter `divingsim/Saved/Photographs`. Testaufnahmen liegen unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Logbuch liest auch ältere Protokolle; automatisierte Testläufe werden in der normalen Ansicht ausgeblendet. Fehlende oder beschädigte Dateien verhindern das Lesen anderer Einträge nicht.
 
 ## Entwicklung und Prüfung
 
@@ -54,6 +56,8 @@ python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht
+./Tools/TestLogbook.ps1              # Unreal-Tests: alte/neue Logs, zwei Stunden Daten, Fehlerfälle
+./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario logbook # Speichern, neu laden, vier Diagrammgruppen
 ```
 
 Ein laufendes Spiel kann geöffnet bleiben, wenn ein neuer Build mit `-PackageDirectory 'O:/games/dive game/Builds/WindowsLandscape'` in einen separaten Ordner geschrieben wird. Dem Smoke-Test dann denselben Parameter übergeben.

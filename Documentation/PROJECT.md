@@ -32,7 +32,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | AUD | Atmung und Blasen synchron, Belastung, Herzschlag, Tiefe, Oberfläche, Dämpfung, Warnungen, BCD, räumlich | Offen |
 | MODE | Exploration, Simulation, Hardcore auf gemeinsamem Kern; Unterschiede transparent konfiguriert | Offen |
 | NAV | Kompass, Walenseekarte, Tiefenkarte, Einstieg; optional Wegpunkte, Fotos und Entdeckungen | Offen |
-| LOG | Automatische Speicherung, Tiefe/Gas/Vitalwerte/Temperatur/Strecke/Warnungen, grafische Auswertung | Offen |
+| LOG | Automatische Speicherung, Tiefe/Gas/Vitalwerte/Temperatur/Strecke/Warnungen, grafische Auswertung | Automatische JSON-Speicherung, Logbuchbrowser mit Modusfilter, vier Diagrammgruppen und Warnereignissen implementiert; vollständige Abnahme offen |
 | UI | Menü, Gebiet/Ausrüstung/Konfiguration, Logbuch, Grafik/Audio, Tastenbelegung, Pause, Tutorial, DE/EN, Profil, persistierte Einstellungen, Komfort | Offen |
 | PERF/GFX | PBR, LOD/Streaming/Culling, GPU-Partikel, 1080p–4K, 60 FPS empfohlen/30 FPS Minimum, zwei Stunden stabil | Offen |
 | MAINT | Module, Tests, Konfiguration, Erweiterbarkeit, versionierte Persistenz, Windows/macOS-Builds, Modellbeschreibung | Offen |

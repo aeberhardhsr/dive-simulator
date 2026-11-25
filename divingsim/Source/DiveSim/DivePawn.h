@@ -45,10 +45,11 @@ public:
     TObjectPtr<ADiveWorld> Environment=nullptr;
     UPROPERTY() TObjectPtr<ADiveEquipment> Equipment;
     bool bMenu=true, bDiveActive=false, bShowInstruments=true, bShowComputer=false, bShowMap=false;
-    bool bLamp=true, bSummary=false, bEnglish=false;
+    bool bLamp=true, bSummary=false, bEnglish=false, bLogbook=false;
     int32 EntryIndex=0;
     int32 ComputerPage=0;
     FString Outcome, LastLogPath, Notice;
+    FString DiveStartedUTC;
     double NoticeUntil=0;
     float GraphicsQuality=2;
 
@@ -68,6 +69,8 @@ private:
     uint32_t PreviousWarnings=0;
     bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false, bSmokeSecondaryCaptured=false;
     FString SmokeScenario;
+    double SmokeLogbookStarted=0,SmokeLogbookTime=0;
+    uint32 SmokeLogbookCaptured=0;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     UPROPERTY() TObjectPtr<UAudioComponent> BreathAudio;
     UPROPERTY() TObjectPtr<UAudioComponent> AmbientAudio;
