@@ -6,7 +6,7 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
-Der aktuelle Lampen-Build liegt lokal unter **`Builds/WindowsTorch/divingsim.exe`**. Er enthält Kalender/Himmel sowie drei wählbare Lampen mit unterschiedlichen Kegeln, Gehäusen und Akkulaufzeiten. Reproduktion und Modellgrenzen: [TORCHES.md](Documentation/TORCHES.md). Der ganze Paketordner wird benötigt; der vorherige Kalender-Build bleibt unter `Builds/WindowsCelestial` erhalten.
+Der aktuelle Partikel-Build liegt lokal unter **`Builds/WindowsParticles/divingsim.exe`**. Er enthält Kalender/Himmel, drei wählbare Lampen mit unterschiedlichen Kegeln, Gehäusen und Akkulaufzeiten sowie GPU-bewegte Schwebeteilchen und transparente, beim Aufstieg expandierende Atemblasen. Reproduktion und Modellgrenzen: [PARTICLES.md](Documentation/PARTICLES.md), [TORCHES.md](Documentation/TORCHES.md). Der ganze Paketordner wird benötigt; die vorherigen Builds bleiben unter `Builds/WindowsTorch` und `Builds/WindowsCelestial` erhalten.
 
 Nach einem lokalen Package-Build: `Builds/Windows/divingsim.exe` starten. Der gesamte benachbarte Ordner wird benötigt. Im Menü Ausrüstung, Umgebung und **Start: am Ufer / direkt im Wasser** einstellen, dann starten. Neue Einstellungen beginnen am Ufer; ältere gespeicherte Pläne behalten ihren Wasserstart. **Exploration** bietet unbegrenztes Gas und automatische Tarierung; **Simulation** verwendet manuelle Tarierung und begrenztes Gas. Hardcore ist derzeit als noch nicht vollständig implementiert gekennzeichnet.
 

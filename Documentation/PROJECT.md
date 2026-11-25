@@ -19,6 +19,8 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 
 Unterwassergrund, ergänzte Uferbereiche und Felsobjekte verwenden inzwischen unterschiedliche gescannte Sand-/Kies-/Felsmaterialien mit weltbezogener Projektion, Normalen und Rauheit. Die räumliche Verteilung ist gestalterisch, keine lokale Sedimentmessung. Herkunft, Vergleichsbilder und Modellgrenzen: [BED_SURFACES.md](BED_SURFACES.md). Diese Verbesserung erfüllt noch nicht die gesamte visuelle Referenzabnahme.
 
+Schwebeteilchen verwenden ein unveränderliches Instanzfeld mit analytischer Bewegung im GPU-Vertexshader. Atemblasen entstehen zeitlich versetzt an den Reglerauslässen, steigen mit Strömung/Wellenbewegung und expandieren druckabhängig mit volumenbewahrender Formänderung. Transparente Spiegelung und Bildschirmraum-Brechung sind implementiert; vollständige Blasenoptik und Sedimentaufwirbelung fehlen. Details und Rendernachweise: [PARTICLES.md](PARTICLES.md).
+
 ## Fachlicher Gesamtumfang und noch zu prüfende Abnahme
 
 | Bereich | Umfang aus Spezifikation | Abnahme |

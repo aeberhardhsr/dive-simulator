@@ -1,0 +1,245 @@
+{
+  "status": "PASS",
+  "host": {
+    "executable_sha256": "64B544C97CB34729ED1FDB06C88EE2D2C6B096A74C76502C01F58DDA9C9B9402",
+    "background_processes": [],
+    "source_head": "0b5f34d4eb69a24fb9904271c462e1360ec1126f",
+    "source_dirty": true,
+    "executable": "O:\\games\\dive game\\Builds\\WindowsParticles\\divingsim\\Binaries\\Win64\\divingsim-Particles.exe",
+    "started_utc": "2026-11-25T14:58:51.0247641Z"
+  },
+  "cases": {
+    "wide": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 77,
+      "born": 112,
+      "surfaced": 35,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 1.06626315e-07,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "9c0c72631be874daccb6d947e2b801fad04903c82bc9216d1a79640a0313413e",
+        "DiveSmoke_1_torch.png": "ba4c8fb3176ba3a9daa9d4137462e531273e0f7ba8939795fd43504d8a4bda92",
+        "DiveUnderwater_1_torch.png": "1a10568871667ff0d08a85785f395e49d3bf746f9f647a528a1298c27e70c3ed",
+        "Runtime.log": "551453864cb3a6865f3919ff98f4e1a54ad6241aa0db28cd9abb3e613694b877",
+        "Summary.log": "317b886ac094c058c65345bdb58981ba79df4866548d1e1b6961d1952f8de7cb"
+      }
+    },
+    "spot": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 76,
+      "born": 112,
+      "surfaced": 36,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 1.06626314e-07,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "e5496cb900dae93b9807f907ac376fcecac193286256950cd3844fc34cc01669",
+        "DiveSmoke_1_torch.png": "6c37435cb1c63da9cd909d4aa4edc69dcbfeee4186345491128a5f0cb9e78f25",
+        "DiveUnderwater_1_torch.png": "35b7ab871e84ce1bfbb28aad9a2babb1ac7f3aee05a7aca712c7a9676dedf007",
+        "Runtime.log": "346f1b0588808098a9eff4bc822bd0c36044857c50cb16125c0fdb406a79692c",
+        "Summary.log": "53b81c5556c3b0911975359374754098568f8177bead3bad9bca0a4211fd45d8"
+      }
+    },
+    "day": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 76,
+      "born": 112,
+      "surfaced": 36,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 1.06626315e-07,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "072baf4dd51b23f2cc8275358a17fae6b76f587dfbe2e28ad2224f7e4999f5d8",
+        "DiveSmoke_1_torch.png": "0bb12ea34a034e8cb4e5c8aa2e37389a75df4e8a40abeb61f348407723a64457",
+        "DiveUnderwater_1_torch.png": "89c40955fc1f95ef58a45ab135ed4dc8c3ecd05a3aff71ebd6f6b100b487ad9c",
+        "Runtime.log": "4d3c2fe6e1a225e1b92acc9d88989a2147dee59ddd0acf50f63dc0550db410eb",
+        "Summary.log": "a18dfd3297e15cd14612408ddfb8c2a12408469d06640470232444cd540fba8f"
+      }
+    },
+    "off": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 77,
+      "born": 112,
+      "surfaced": 35,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 1.06626315e-07,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "1b9bccb9f9fb5a1553d0462c8c0a7c0f2c6c7599b5c8a56c1632b018ba1c0fdf",
+        "DiveSmoke_1_torch.png": "7916c975001d42597aeced092d7196843b36172329871ad3ba36f2dcf7a260c7",
+        "DiveUnderwater_1_torch.png": "d1726f28b546f663510144c99ba64d8567c50ec48a1d568b7ff4c339cc61271f",
+        "Runtime.log": "e422c053cbe0bc4f6db2ea8f30ea965f387fdf6bf037c5b91800bb85a4592dbb",
+        "Summary.log": "5098dae96d932bcf5b37346c03be026616bf06734bc0f60c5ec0dd72559383af"
+      }
+    },
+    "turbid": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 73,
+      "born": 112,
+      "surfaced": 39,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 1.21760977e-07,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "cb803d3acaf6d248c9b70f77bc83575b9996c558efdb0813665efde81043f5f2",
+        "DiveSmoke_1_torch.png": "9fa355e0966e118fee4246db6e2070a4912506dfb5a1bc9192b60b973d41c926",
+        "DiveUnderwater_1_torch.png": "81bd882ce855873df9b92d9ac26f9fd136db5eb247071e15af7aa71edf989016",
+        "Runtime.log": "2802a77295787beeea0c6fdf9c12d72c5e82c553e4586153df0969faf2bf6802",
+        "Summary.log": "e9535a685a0d7f96898d21bdf4ea9ddab9be0cf963aa96ecf8f03b4672e3e4b4"
+      }
+    },
+    "gpu-visible": {
+      "grains": 640,
+      "diagnostic_scale": 20.0,
+      "live_bubbles": 0,
+      "born": 0,
+      "surfaced": 0,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 0.0,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "e46985c1c9552064725e4ba2f28a0378b9e634a2a6323f577110ee8f1757065b",
+        "DiveSmoke_1_torch.png": "75ea972fe273e0b456427527d712e6be2ae5ddd88c2e38c88a6d3752f3b6e96d",
+        "DiveUnderwater_1_torch.png": "b75c3575be8908be7647a9cba849849742bd593d81192e157819b8d62f865631",
+        "Runtime.log": "f374280d8d59344ceea0eab0f28b50c231c7bf26fe30caa9978c02ba17ba9159",
+        "Summary.log": "1204a263babebd3a4e066072893ef3d6a71a0b5c3284ffe995a4017e810d6627"
+      },
+      "diagnostic_coloured_pixels": 1715
+    },
+    "gpu-zero": {
+      "grains": 640,
+      "diagnostic_scale": 0.0,
+      "live_bubbles": 0,
+      "born": 0,
+      "surfaced": 0,
+      "cell_moves": 2,
+      "max_final_pv_relative_error": 0.0,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "b6a96b5a7c9c891041acf40407c51b1611d6a2c2142c8e4b220a59077eb0c686",
+        "DiveSmoke_1_torch.png": "e5093c8a7108a39963bab2e5ab0903f37f9c6c1e6f7ce6dc5ae166bc575abc94",
+        "DiveUnderwater_1_torch.png": "0480f2efb57d69abe7521f4f8ac3c127460255da0408855f783b92cd7859ed2f",
+        "Runtime.log": "5e10fad9d40c34f42a1b3928145cb427d49e1030750415575f3dc2c948df5b18",
+        "Summary.log": "5fbf1e8116d5d1ac762b5feca40ae7f2a556cbfc8775cdf7ec0c0f16fe0b7b0e"
+      },
+      "diagnostic_coloured_pixels": 0
+    },
+    "surface": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 98,
+      "born": 196,
+      "surfaced": 98,
+      "cell_moves": 5,
+      "max_final_pv_relative_error": 1.14793961e-07,
+      "fresh_images": 3,
+      "sha256": {
+        "Dive.json": "7da022280e741664d42d85e0c48e9f338fbb07cf0d9c4a88d455941758f789fe",
+        "DiveSmoke_1_surface-calm.png": "a1a7256d4c161ab110062b69dcc802dbb3e7a9d15bff506230817a5a69136902",
+        "DiveUnderwater_1_surface-calm.png": "cf64c31513df279a24a099edcd1c7cfd26f6d95bf683f154e719902c4d9cbe8d",
+        "Runtime.log": "7079ca7ce8aa93e986d696ec260006900d5e16f25e1293962102e41767ff8879",
+        "Summary.log": "f41d64b75227b9e4455e882e719675ced067a0bed521d777caec13502769c8dc",
+        "SurfaceAir_1_surface-calm.png": "dbff0d4535f380db77423e947b554899456644c9ce95c7a9ace265c97784c549"
+      }
+    },
+    "storm": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 92,
+      "born": 252,
+      "surfaced": 160,
+      "cell_moves": 6,
+      "max_final_pv_relative_error": 1.04288756e-07,
+      "fresh_images": 3,
+      "sha256": {
+        "Dive.json": "6765d3df37f80e4a9e0cfd6666d7fdf119ca7b89d59330e50f10eab71223b9bc",
+        "DiveSmoke_1_surface-storm.png": "ffcb93c66257bf195b5b09b2ec120be376a326199da2d410ba9bb69e2bc9520c",
+        "DiveUnderwater_1_surface-storm.png": "3abb691a408134189c765a4944bce31797d32faee6df4557fcebfdf53040770a",
+        "Runtime.log": "1dc5c5d2d12e0f2671deebbff4de36713de9ffed3d120f1aa40b51abf2295199",
+        "Summary.log": "0c5038b930d3b335bda7ddeb3110fb51cbd2c721e8b2ed82dc02c889835984b2",
+        "SurfaceAir_1_surface-storm.png": "00d945e4d755f059b92b902ab75a8fbc74b35c65123d4f2c4243d6fba816948b"
+      }
+    },
+    "stream": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 64,
+      "born": 784,
+      "surfaced": 720,
+      "cell_moves": 20,
+      "max_final_pv_relative_error": 9.08563561e-08,
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "720330d6ec3d8b78dfad388674a505fd3237496eabcd40592f407960b2047357",
+        "DiveSmoke_1_stream.png": "00008be8f5c9c7612cb092b43bd571ec8ea3622fdd76a13d3181d84f9b99a996",
+        "DiveUnderwater_1_stream.png": "e616ed0c5e1359713965ea74ed2670656b4c3c98e4a821230492309ee79fc0da",
+        "Runtime.log": "f6120713e2d64ad98c9dfc88c763db09ccb76ea11ec002516a85c3efb4e3a5e8",
+        "Summary.log": "60ca9da13b5de5e13e78185383294c454d989d7ee94435b81c23036f3abdae66"
+      }
+    },
+    "audio": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 100,
+      "born": 252,
+      "surfaced": 152,
+      "cell_moves": 5,
+      "max_final_pv_relative_error": 1.04051792e-07,
+      "fresh_images": 3,
+      "sha256": {
+        "AudioMenu.png": "b3b0b14bed25be8615c514c3f5ba512e5b0638a110c483f0197c60b23cea63cf",
+        "Dive.json": "025516b3de2d64c526644e6f28b2f1e54881af91e456ba4b941ccc837f007569",
+        "DiveSmoke_1_audio.png": "575d7ddb7c84b9a4481664938e87b6358a050474cda57e870109e275621bcd15",
+        "DiveUnderwater_1_audio.png": "ee0426fdb6eb85e8d6aa52dab28c456e7f740ef7d7ae0f2e115821f51e1410b0",
+        "Runtime.log": "82fcbb5e18a81fd0032188880d3e8a07eca34c294191ac6409e46d8f2d8536bd",
+        "Summary.log": "16357bfe5ca3389b1d3f4fe27641c6bec3f33dd282c498ce7e10c249af320934"
+      }
+    },
+    "breathing": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 65,
+      "born": 140,
+      "surfaced": 75,
+      "cell_moves": 4,
+      "max_final_pv_relative_error": 1.1422372e-07,
+      "fresh_images": 4,
+      "sha256": {
+        "Breathing_Air.png": "1c041a3865df119c2da33eb06db2c024fa8b074bb8aaeefcf12ef3775d5556b1",
+        "Breathing_NoSupply.png": "fa7052948a3d21cda3d2dc1ec50b1dfdfaa4c0cbfb69f1484a36f04bb73290d7",
+        "Dive.json": "65439c03e43916571d3dedde8543c800ce3d5be18836de939dacaae6b7a53db9",
+        "DiveSmoke_0_breathing.png": "2da881187310abc7c1907fcb09adef0c6116565a57a1d3e8fbf80d975b441142",
+        "DiveUnderwater_0_breathing.png": "f8a7189eb016ab27b9a04577a1805e6ac61fbddc3490687b95783fc0352eb2f6",
+        "Runtime.log": "34be6311e03c7eccd7708a8c8680335be77dbad630165bc567302aff5843ba30",
+        "Summary.log": "3b26c7aef140d2b23aa2f3a40cad7990e79e8a72707aea55cfd917011315d98d"
+      }
+    },
+    "pause": {
+      "grains": 640,
+      "diagnostic_scale": 1.0,
+      "live_bubbles": 0,
+      "born": 196,
+      "surfaced": 196,
+      "cell_moves": 6,
+      "max_final_pv_relative_error": 0.0,
+      "fresh_images": 4,
+      "sha256": {
+        "DayCycle_After_17.png": "ff3c9daa993cab307f3eca6da40c62a60e0c467f1ec29f55bef35b6888f48bbc",
+        "DayCycle_Before_17.png": "9c2874ea16f311643bcda6f9272c5c92a5c66badbc90cbac55bfe1fadfedc359",
+        "Dive.json": "158304bf4f90b62e5344b3f51206d37db10404ea702fe8f16ba78e583fb4d93c",
+        "DiveSmoke_1_daycycle.png": "83e191af0d615f7b8930638933f54e97a5e68be8947c465b9a5b527f342de297",
+        "DiveUnderwater_1_daycycle.png": "779bc76a840e11b7391f05692ad075dcf5c0a3e51608a342a8934f1069f99701",
+        "Runtime.log": "944587d23cc055de1f2a73f8303f3951586b410a0dc44c464a17f61c08b7480f",
+        "Summary.log": "1b5f46c93c2d361a161ea480fbfc0d1fe886ad15c2a7233925620ab4942c58db"
+      }
+    }
+  },
+  "artifact_directory": "O:\\games\\dive game\\artifacts\\particles-validation-20261125-155851",
+  "limits": "GPU analytic WPO motion, not a compute fluid solver. Magnified emissive diagnostics are not gameplay visuals. Bubble refraction and normal-size appearance require visual review."
+}
