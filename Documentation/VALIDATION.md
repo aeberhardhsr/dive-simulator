@@ -4,7 +4,7 @@ Stand: 25. November 2026. Windows 11, Unreal Engine 5.8.4, MSVC 14.44, Windows S
 
 | Prüfung | Ergebnis |
 |---|---|
-| Engineunabhängiger C++-Kern | Bestanden: 0 Fehler bei Druck, Gas, BCD, Kopplungen, Geweben, Stopptimer, Sanitierung Rasterabfragen über Kachelgrenzen sowie Fisch-/Pflanzen-Habitatgrenzen |
+| Engineunabhängiger C++-Kern | Bestanden: 0 Fehler bei Druck, Gas, BCD, Kopplungen, Geweben, Stopptimer, Sanitierung, Rasterabfragen über Kachelgrenzen sowie Fisch-/Pflanzen-Habitatgrenzen |
 | Python-Bathymetrieparser | 3 Tests bestanden: Reihenfolge/NoData, unvollständiges Raster, falsche Zeilenbreite |
 | Unreal-Editor-Modul | Development-Build erfolgreich |
 | Asset-/Map-Erzeugung | Commandlet erfolgreich, letzte Content-Erzeugung ohne Warnungen oder Fehler |
@@ -20,14 +20,23 @@ Stand: 25. November 2026. Windows 11, Unreal Engine 5.8.4, MSVC 14.44, Windows S
 | Wiederholte Asset-Erzeugung | Zwei aufeinanderfolgende Content-Builds und anschließender Editor-Spieltest bestanden; keine Material-Kompilierungsfehler oder Ersatzmaterialien |
 | Biologie-Assets | Fünf Fischmodelle und drei Bewuchstypen in Blender erzeugt und als Übersicht gerendert; Flossenansätze nach Bildprüfung korrigiert. Letzter Content-Build: 0 Fehler, 0 Warnungen |
 | Biologie im Windows-Package | Alle drei Oberflächenläufe mit je 38 s und 39 Samples bestanden; Modelle, Habitatgrenzen und Felsabstände in jedem Frame geprüft. Bei Murg alle fünf Fischtypen und drei Bewuchstypen vorhanden. Ausgabe: `Builds/WindowsEcology` |
+| 3D-Handgelenkcomputer im Windows-Package | Tages-/Nachtlauf bei Murg bestanden, jeweils 22 s und 23 Samples, über 200 Display-Aktualisierungen, alle drei Seiten tatsächlich gezeichnet, angehobene Pose erreicht, Bildschirm-HUD ausgeblendet. Haupt-, Vital- und Gasseite im Bild geprüft. Ausgabe: `Builds/WindowsEquipment` |
+| Auftauchen mit sichtbarer Ausrüstung | Murg im Equipment-Package bestanden: 38 s, 11,45 m maximale Tiefe, 29,33 m Strecke, 39 gespeicherte Samples; Oberfläche erreicht, maximal neun Geländekacheln, 359 Display-Aktualisierungen |
+| Manuelle Handgelenkbedienung | Im Equipment-Package geprüft: Exploration, englische Anzeige, Nassanzug, C anheben/senken, R durch alle drei Seiten, H HUD aus/ein, L betätigt, Pause, Abbruch und Auswertung. Nach 2:50 min zum deutschen Startmenü mit Simulation, Weesen und Trockenanzug zurückgekehrt |
 
 ![Tiefenkarte aus der verpackten Anwendung bei Murg](Images/WalenseeMap.png)
 
 ![Oberfläche und swissALTI3D-Landschaft im Package bei Weesen](Images/WalenseeSurface.png)
 
+![3D-Handgelenkcomputer mit Live-Daten im Package](Images/WristComputer.png)
+
+![Vitalwertseite bei Nacht und ausgeblendetem Bildschirm-HUD](Images/WristComputerNight.png)
+
 Reproduktionsbefehle stehen in der README. Laufzeit-Protokolle und lokale Build-Ausgaben sind unter `artifacts/` abgelegt und nicht Bestandteil der Versionsverwaltung. Das automatische Gameplay startet mit fest definierten Einstellungen, speichert ein eigenes Protokoll, prüft dessen Inhalt und verändert keine Benutzereinstellungen. Maus- und Tastaturbindungen sind während des Skriptlaufs deaktiviert. Fischzustände werden in jedem Frame auf gültige Modelle, endliche Werte, Habitatgrenzen und Felsabstände geprüft.
 
 ## Behobene Fehler bei dieser Prüfung
+
+- Wechselnde Ziffern auf dem 3D-Computer hinterließen zunächst temporale Nachbilder. Der Export der Quelltextur war scharf und grenzte den Fehler auf die zeitliche Bildrekonstruktion ein. Das Display wird jetzt danach gezeichnet, mit expliziter Tiefenprüfung und Mip-Filterung. Tages-/Nachtaufnahmen zeigen einzelne ablesbare Werte statt überlagerter Ziffern.
 
 - Der Habitat-Grenztest verglich Gleitkommawerte zunächst ohne Toleranz. AppleClang auf macOS erzeugte 37 Abweichungen durch zusammengefasste Multiplikation/Subtraktion. Eine unabhängige Nachrechnung reproduzierte genau diese 37 Fälle mit höchstens 1,78 × 10⁻¹⁵ m Differenz. Der Test verwendet jetzt eine explizite FMA-Referenz mit 10⁻¹² m Toleranz; das Laufzeitmodell bleibt unverändert.
 
@@ -40,4 +49,4 @@ Reproduktionsbefehle stehen in der README. Laufzeit-Protokolle und lokale Build-
 
 ## Noch nicht abgenommen
 
-Fische, Pflanzen und synthetische Geräusche sind Prototypen. Fotorealismus, echte Uferzugänge, detaillierte Landschaft mit Landbedeckung, vollständige Lokalisierung, optische Qualitätsabnahme des Oberflächenübergangs, geometrische Wellen, anatomische Abnahme der fünf Fischmodelle (Felchen als Artengruppe) und drei Bewuchstypen, Ausrüstungsmodelle, Hardcore-Unterschiede, Logbuchbrowser und weitere MUST-Anforderungen bleiben offen. Der Oberflächentest bestätigt die Bewegung in die Luft; das Wassermaterial dämpft den Grund jetzt, benötigt aber weitere Abstimmung. Das Land ist ein Hintergrundmesh ohne Spielerkollision. Kein macOS-Spieltest, kein kontrollierter Performance-Benchmark und kein zweistündiger Dauertest wurden durchgeführt. Der Bathymetrie-Commit hat die Kern-/Parser-CI auf Windows, macOS und Linux bestanden (Run 45515640763); dies ist keine Prüfung des vollständigen Spiels auf diesen Plattformen.
+Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. Fotorealismus, echte Uferzugänge, detaillierte Landschaft mit Landbedeckung, vollständige Lokalisierung, optische Qualitätsabnahme des Oberflächenübergangs, geometrische Wellen, anatomische Abnahme der fünf Fischmodelle (Felchen als Artengruppe) und drei Bewuchstypen, vollständiger Ausrüstungskatalog und Körpermodelle, Hardcore-Unterschiede, Logbuchbrowser und weitere MUST-Anforderungen bleiben offen. Der Oberflächentest bestätigt die Bewegung in die Luft; das Wassermaterial dämpft den Grund jetzt, benötigt aber weitere Abstimmung. Das Land ist ein Hintergrundmesh ohne Spielerkollision. Kein macOS-Spieltest, kein kontrollierter Performance-Benchmark und kein zweistündiger Dauertest wurden durchgeführt. Der Biologie-Stand einschließlich FMA-Testkorrektur hat die Kern-/Parser-CI auf Windows, macOS und Linux bestanden (Run 45521430833); dies ist keine Prüfung des vollständigen Spiels auf diesen Plattformen.

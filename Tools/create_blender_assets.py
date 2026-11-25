@@ -89,5 +89,7 @@ for stalk in range(9):
                         k=a+part*2; faces.append((k-2,k-1,k+1,k))
 plant=mesh_object('SM_Pondweed',verts,faces,colors)
 export(plant)
+from create_equipment_assets import create_equipment
+create_equipment(mesh_object,export)
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'blender'/'DivingAssets.blend'))
 print('DIVE_ASSETS_OK', OUT)

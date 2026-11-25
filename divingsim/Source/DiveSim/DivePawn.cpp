@@ -1,5 +1,6 @@
 #include "DivePawn.h"
 #include "DiveWorld.h"
+#include "DiveEquipment.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -58,9 +59,11 @@ void ADivePawn::BeginPlay()
         FParse::Value(FCommandLine::Get(),TEXT("DiveEntry="),EntryIndex);
         FParse::Value(FCommandLine::Get(),TEXT("DiveScenario="),SmokeScenario);
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
+        if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
     }
     Environment=GetWorld()->SpawnActor<ADiveWorld>();
     Environment->Diver=this;
+    Equipment=GetWorld()->SpawnActor<ADiveEquipment>(); Equipment->SetOwner(this); Equipment->Initialize(this);
     if(Environment->bTerrainReady)
     {
         EntryIndex=FMath::Clamp(EntryIndex,0,Environment->Terrain.Entries.Num()-1);
@@ -101,6 +104,7 @@ void ADivePawn::SetupPlayerInputComponent(UInputComponent* Input)
     Input->BindKey(EKeys::L,IE_Pressed,this,&ADivePawn::ToggleLamp);
     Input->BindKey(EKeys::H,IE_Pressed,this,&ADivePawn::ToggleHUD);
     Input->BindKey(EKeys::C,IE_Pressed,this,&ADivePawn::ToggleComputer);
+    Input->BindKey(EKeys::R,IE_Pressed,this,&ADivePawn::NextComputerPage);
     Input->BindKey(EKeys::M,IE_Pressed,this,&ADivePawn::ToggleMap);
     Input->BindKey(EKeys::F,IE_Pressed,this,&ADivePawn::Interact);
     Input->BindKey(EKeys::P,IE_Pressed,this,&ADivePawn::Photograph);
@@ -111,6 +115,7 @@ void ADivePawn::LookPitch(float Value) { if(!bMenu) AddControllerPitchInput(-Val
 void ADivePawn::ToggleLamp() { if(!bMenu) bLamp=!bLamp; }
 void ADivePawn::ToggleHUD() { if(!bMenu) bShowInstruments=!bShowInstruments; }
 void ADivePawn::ToggleComputer() { if(!bMenu) bShowComputer=!bShowComputer; }
+void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(ComputerPage+1)%3; }
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
 void ADivePawn::ToggleMenu() { SetMenu(!bMenu || !bDiveActive); }
 void ADivePawn::ResumeDive() { if(bDiveActive) SetMenu(false); }
@@ -151,7 +156,8 @@ void ADivePawn::StartDive()
     Simulation.Data.BCDSurfaceLitres=FMath::Max(0.0,PendingConfig.WeightKg+
         PendingConfig.StartPressureBar*PendingConfig.CylinderLitres*.0012-2-suit)*pressure;
     Samples.Reset(); PreviousWarnings=0; Accumulator=0; TelemetryAccumulator=0; LastBreathPhase=0;
-    bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; Outcome.Empty(); LastLogPath.Empty();
+    bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
+    Outcome.Empty(); LastLogPath.Empty();
     if(!bSmokeTest) SaveSettings();
     SetMenu(false);
     Notify(Local(TEXT("WASD schwimmen  |  Q/E tarieren  |  L Lampe  |  ESC Pause"),TEXT("WASD swim  |  Q/E buoyancy  |  L torch  |  ESC pause")));
@@ -175,16 +181,35 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,1);
             return;
         }
+        FString equipmentError;
+        if(!Equipment||!Equipment->Validate(equipmentError))
+        {
+            UE_LOG(LogTemp,Error,TEXT("DIVE_EQUIPMENT_FAIL %s"),*equipmentError);
+            FPlatformMisc::RequestExitWithStatus(false,1); return;
+        }
         bSmokeSurfaceReached|=GetActorLocation().Z>2;
         bSmokeChunkLimit&=Environment->TerrainChunkCount()<=9;
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("surface");
+        if(Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("surface")&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(SmokeScenario.StartsWith(TEXT("wrist")))
+        {
+            const double t=Simulation.Data.ElapsedSeconds;
+            bShowComputer=t>4; bShowInstruments=false;
+            ComputerPage=t<10?0:t<16?1:2;
+            if(t>13&&!bSmokeSecondaryCaptured)
+            {
+                bSmokeSecondaryCaptured=true;
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/WristVitals_%s.png"),*SmokeScenario),true,false);
+            }
+        }
     }
     if(bSmokeTest && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
     {
         bSmokeUnderwaterCaptured=true;
+        if(SmokeScenario.StartsWith(TEXT("wrist")))
+            Equipment->ExportDisplayForTest(FPaths::ProjectSavedDir()/TEXT("Screenshots"),TEXT("WristTexture_")+SmokeScenario+TEXT(".png"));
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveUnderwater_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
     if(bSmokeTest && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
@@ -197,7 +222,9 @@ void ADivePawn::Tick(float DeltaSeconds)
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario==TEXT("surface")?bSmokeSurfaceReached:
             SmokeScenario==TEXT("stream")?displacement>80:true;
-        const bool valid=extended && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
+        const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
+            (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
+        const bool valid=extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
             && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<199)
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);
@@ -209,6 +236,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             Simulation.Data.CylinderBar,Samples.Num(),*LastLogPath);
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_DETAIL entry=%d scenario=%s displacement=%.2f surface=%d chunks=%d bounded=%d"),
             EntryIndex,*SmokeScenario,displacement,bSmokeSurfaceReached,Environment->TerrainChunkCount(),bSmokeChunkLimit);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_EQUIPMENT_CHECK updates=%d wrist=%.3f page=%d rendered_pages=%u"),Equipment->DisplayUpdates,Equipment->WristBlend,ComputerPage,Equipment->DisplayedPages);
         FPlatformMisc::RequestExitWithStatus(false,valid&&saved?0:1);
     }
     Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
@@ -234,6 +262,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(bCameraMotion && !bMenu)
         Camera->SetRelativeLocation(FVector(0,0,static_cast<float>(std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8)));
     else Camera->SetRelativeLocation(FVector::ZeroVector);
+    if(Equipment) Equipment->Update(DeltaSeconds);
 }
 
 void ADivePawn::SimulateStep(float Step)

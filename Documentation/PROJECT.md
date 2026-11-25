@@ -26,8 +26,8 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | CONF | Einstieg, Uhrzeit, Wetter, Sicht, Temperatur, Strömung, Flasche 10/12/15 L, Druck, Luft, Anzug, Blei, Lampe, Modus, geplante Tiefe/Dauer, Profile | Offen |
 | VITAL | Gekoppelte Herz-/Atemfrequenz, simulierte SpO2, Kerntemperatur, Belastung, Stress, Ermüdung, Stickstoff; keine unabhängigen Zufallswerte | Offen |
 | GAS | Druck, tiefen-/belastungs-/stressabhängiger Verbrauch, ppO2, Restzeit, Nullzeit, Gewebeaufnahme/-abgabe, Warnungen, Stopps | Offen |
-| EQPM | Datengetriebene Ausrüstung, BCD, Atemregler, Computer, Lampe, Kompass, Isolation und Gewicht, 3D-Modelle | Offen |
-| HUD | Tiefe/max., Dauer, Druck, Nullzeit, Puls, SpO2, Atmung, Temperatur, Aufstiegsrate, Kompass, Warnungen; digital und Handgelenk | Offen |
+| EQPM | Datengetriebene Ausrüstung, BCD, Atemregler, Computer, Lampe, Kompass, Isolation und Gewicht, 3D-Modelle | Sichtbare Unterarme/Handschuhe, Handgelenkcomputer und Handlampe implementiert; vollständiger Ausrüstungskatalog und Körpermodelle offen |
+| HUD | Tiefe/max., Dauer, Druck, Nullzeit, Puls, SpO2, Atmung, Temperatur, Aufstiegsrate, Kompass, Warnungen; digital und Handgelenk | Bildschirm-HUD und dreiseitiger 3D-Handgelenkcomputer vorhanden; vollständige Qualitätsabnahme offen |
 | ENV | Tag/Nacht, Sonnenstand, Bewölkung, Wetter/Wellen, Tiefentemperatur/Thermokline, Sichtweite | Offen |
 | AUD | Atmung und Blasen synchron, Belastung, Herzschlag, Tiefe, Oberfläche, Dämpfung, Warnungen, BCD, räumlich | Offen |
 | MODE | Exploration, Simulation, Hardcore auf gemeinsamem Kern; Unterschiede transparent konfiguriert | Offen |

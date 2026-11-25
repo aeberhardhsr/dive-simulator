@@ -113,7 +113,8 @@ void ADiveHUD::Menu()
     Line(70,815,1530,815,Muted,.5);
     Button(TEXT("language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),70,835,185,40);
     Button(TEXT("quality"),FString::Printf(TEXT("Grafik / Quality: %.0f"),Diver->GraphicsQuality),275,835,235,40);
-    Text(TEXT("WASD  Swim     SPACE / CTRL  Up / Down     Q / E  BCD     L  Light     C  Computer     M  Map"),650,846,14,Muted);
+    Text(L(TEXT("WASD Schwimmen  SPACE/CTRL Hoehe  Q/E BCD  L Licht  C Handgelenk  R Seite  M Karte"),
+        TEXT("WASD Swim  SPACE/CTRL Vertical  Q/E BCD  L Torch  C Wrist  R Page  M Map")),650,846,14,Muted);
 }
 
 void ADiveHUD::Instruments()
@@ -144,7 +145,7 @@ void ADiveHUD::Instruments()
     Text(FString::Printf(TEXT("%.0f bpm"),s.HeartBPM),1254,759,31,White);
     Text(FString::Printf(TEXT("SpO2  %.0f%%"),s.SpO2),1415,766,17,White);
     Text(FString::Printf(TEXT("%.0f /min    %.1f C    BCD %.1f L"),s.RespiratoryBPM,s.CoreTemperatureC,s.BCDLitres),1257,817,14,Muted);
-    Text(L(TEXT("L Lampe   C Computer   M Karte   P Foto   H HUD   ESC Pause"),TEXT("L Torch   C Computer   M Map   P Photo   H HUD   ESC Pause")),50,875,13,Muted);
+    Text(L(TEXT("L Lampe   C Handgelenk   R Seite   M Karte   P Foto   H HUD   ESC Pause"),TEXT("L Torch   C Wrist   R Page   M Map   P Photo   H HUD   ESC Pause")),50,875,13,Muted);
     if(s.MaxDepthMetres>10 && s.DepthMetres<10 && s.StopRemainingSeconds>0)
     { Rect(1050,110,500,45,Dark); Text(L(TEXT("SICHERHEITSSTOPP  3-6 m   "),TEXT("SAFETY STOP  3-6 m   "))+Time(s.StopRemainingSeconds),1070,123,18,Accent); }
     int row=0;
@@ -158,15 +159,7 @@ void ADiveHUD::Instruments()
     warning(Dive::DepthPlan,TEXT("GEPLANTE TIEFE UEBERSCHRITTEN"),TEXT("BEYOND PLANNED DEPTH"));
     warning(Dive::TimePlan,TEXT("GEPLANTE ZEIT UEBERSCHRITTEN"),TEXT("BEYOND PLANNED TIME"));
     warning(Dive::Cold,TEXT("KOERPERTEMPERATUR NIEDRIG"),TEXT("LOW CORE TEMPERATURE"));
-    if(Diver->bShowComputer)
-    {
-        Rect(1050,420,500,245,Dark);
-        Text(L(TEXT("TAUCHCOMPUTER"),TEXT("DIVE COMPUTER")),1075,440,20,Accent);
-        Text(FString::Printf(TEXT("ppO2 %.2f bar  |  %.2f bar ambient"),s.PPO2,s.AmbientBar),1075,488,19,White);
-        Text(FString::Printf(TEXT("Gas > 50 bar: %.0f min  |  Ceiling %.1f m"),s.RemainingGasMinutes,s.CeilingMetres),1075,527,18,White);
-        Text(FString::Printf(TEXT("Stress %.0f%%   Fatigue %.0f%%   Lamp %.0f%%"),s.Stress*100,s.Fatigue*100,s.LampBattery),1075,566,17,Muted);
-        Text(L(TEXT("Unvalidiertes Spielmodell / C schliessen"),TEXT("Unvalidated game model / C to close")),1075,622,14,Muted);
-    }
+
 }
 
 void ADiveHUD::Map()

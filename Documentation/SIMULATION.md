@@ -60,6 +60,14 @@ Three illustrative vegetation forms are available: broad-leaved pondweed, whorle
 
 ![Original Blender model overview, neutral inspection lighting](Images/EcologyAssets.png)
 
+## First-person equipment and wrist display
+
+`ADiveEquipment` attaches original glove, sleeve, wrist-computer and torch meshes to the first-person camera. C raises/lowers the left forearm with an interpolated pose; R cycles three pages while raised. The display remains available when the screen HUD is hidden with H. The selected wet/dry suit changes sleeve width and colour. The torch's existing spotlight now originates at its visible lens and uses the existing lamp switch/battery state. These are camera-relative static-mesh poses, not a full-body skeletal diver or inverse-kinematics system; arm/world clipping and anatomical refinement remain open.
+
+The computer is a world-space surface in the housing recess, driven by a 768 × 512 canvas render target. It snapshots the existing simulation state at approximately 10 Hz; it has no separate physiology or gas model. All pages retain depth, tank pressure, elapsed time and heading. The dive page adds NDL, ascent rate, maximum depth, water temperature and stop timer; the vital page adds pulse, SpO2, respiration, core temperature, stress and fatigue; the gas page adds ppO2, ambient pressure, estimated gas time to 50 bar, ceiling and lamp charge. Exploration is explicitly shown as unlimited gas. The footer displays the highest-priority active warning. English/German labels follow the game language.
+
+Exposure-compensated emission keeps the display readable in dark water. Numeric pixels are rendered after temporal reconstruction to avoid trails from changing digits. Because Unreal's [after-motion-blur translucency pass](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/MaterialTranslucencyPass?application_version=5.4) disables hardware depth testing, the material explicitly compares scene and surface depth with a 1 mm tolerance. Automated wrist scenarios cycle all three pages with the HUD hidden, save main/vital/gas screenshots, export the source display texture and check that the render callback ran, all pages were drawn, the wrist reached its raised pose and the state snapshot is no more than 0.5 s old. These checks do not replace visual review of readability, distortion or rendering artifacts.
+
 ## Core test coverage
 
 `Tools/TestCore.cmd` builds a standalone C++ test executable without Unreal. It checks hydrostatic pressure, depth scaling of gas use, exertion coupling, BCD consumption, expansion/relief, step partition invariance, exploration, tank exhaustion, tissue uptake/release, ceilings, stop timing and input sanitization. A passing result establishes internal consistency, not medical validity.

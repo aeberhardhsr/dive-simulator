@@ -9,6 +9,7 @@ class UCapsuleComponent;
 class USpotLightComponent;
 class UAudioComponent;
 class ADiveWorld;
+class ADiveEquipment;
 class UMaterialInstanceDynamic;
 
 struct FDiveSample
@@ -42,9 +43,11 @@ public:
     FVector VelocityMetres=FVector::ZeroVector;
     FVector EntryLocation=FVector(-6500,0,-180);
     TObjectPtr<ADiveWorld> Environment=nullptr;
+    UPROPERTY() TObjectPtr<ADiveEquipment> Equipment;
     bool bMenu=true, bDiveActive=false, bShowInstruments=true, bShowComputer=false, bShowMap=false;
     bool bLamp=true, bSummary=false, bEnglish=false;
     int32 EntryIndex=0;
+    int32 ComputerPage=0;
     FString Outcome, LastLogPath, Notice;
     double NoticeUntil=0;
     float GraphicsQuality=2;
@@ -63,7 +66,7 @@ private:
     float Accumulator=0, TelemetryAccumulator=0;
     double LastBreathPhase=0;
     uint32_t PreviousWarnings=0;
-    bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false;
+    bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false, bSmokeSecondaryCaptured=false;
     FString SmokeScenario;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     UPROPERTY() TObjectPtr<UAudioComponent> BreathAudio;
@@ -76,6 +79,7 @@ private:
     void ToggleLamp();
     void ToggleHUD();
     void ToggleComputer();
+    void NextComputerPage();
     void ToggleMap();
     void Interact();
     void SimulateStep(float Step);

@@ -44,7 +44,7 @@ def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_
         exp.set_editor_property('code',code)
         exp.set_editor_property('output_type',kind)
         inputs=[]
-        names=['P','T','C','V']+(['Cycle','RX','RY','Phase','Amplitude'] if name=='M_Fish' else [])
+        names=['P','T','C','V']+(['Cycle','RX','RY','Phase','Amplitude'] if name=='M_Fish' else ['DrySuit'] if name=='M_Suit' else [])
         for input_name in names:
             item=u.CustomInput(); item.set_editor_property('input_name',input_name); inputs.append(item)
         exp.set_editor_property('inputs',inputs)
@@ -60,6 +60,10 @@ def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_
                 data=node(u.MaterialExpressionPerInstanceCustomData,-650,index*120)
                 data.set_editor_property('data_index',index)
                 LIB.connect_material_expressions(data,'',exp,input_name)
+        if name=='M_Suit':
+            dry=node(u.MaterialExpressionScalarParameter)
+            dry.set_editor_property('parameter_name','DrySuit'); dry.set_editor_property('default_value',1)
+            LIB.connect_material_expressions(dry,'',exp,'DrySuit')
         LIB.connect_material_property(exp,'',prop)
     target=u.MaterialProperty.MP_EMISSIVE_COLOR if unlit else u.MaterialProperty.MP_BASE_COLOR
     if custom_color: custom(custom_color,u.CustomMaterialOutputType.CMOT_FLOAT3,target)
@@ -102,12 +106,42 @@ material('M_Plant',(.1,.3,.06),.7,vertex=True,
 material('M_Fish',(.4,.45,.3),.32,vertex=True,
          custom_wpo='float sway=sin(Cycle+Phase-V*3)*Amplitude*V; return float3(RX*sway,RY*sway,0);')
 material('M_Landscape',(.2,.24,.12),.95,vertex=True)
+material('M_Equipment',(.04,.05,.05),.82,vertex=True,custom_color='return C.rgb*.35;')
+material('M_Suit',(.07,.11,.13),.9,vertex=True,custom_color='return C.rgb*lerp(float3(.12,.13,.13),float3(.5,.5,.5),DrySuit);')
 material('M_Water',(.012,.035,.028),.13,water=True,
          custom_normal='return normalize(float3(sin(P.x*.13+P.y*.025+T*1.7)*.045+cos(P.y*.057-T*2.1)*.025, cos(P.y*.11+P.x*.018+T*1.5)*.035+sin(P.x*.19-T*2.9)*.015,1));')
 material('M_Bubble',(.4,.7,.65),.06,translucent=True,opacity=.21)
 material('M_Particle',(.18,.32,.26),1,unlit=True)
 material('M_Buoy',(.9,.22,.045),.35)
 material('M_Rope',(.65,.62,.42),.9)
+
+# A real world-space computer display; compensate exposure so it remains readable.
+screen=material('M_ComputerScreen',(.02,.04,.03),unlit=True,translucent=True,opacity=1)
+clear_expressions(screen)
+# Numeric pixels have no useful temporal history. Draw after TSR, while explicitly
+# restoring depth occlusion (this translucency pass disables the hardware depth test).
+screen.set_editor_property('translucency_pass',u.MaterialTranslucencyPass.MTP_AFTER_MOTION_BLUR)
+scene_depth=LIB.create_material_expression(screen,u.MaterialExpressionSceneDepth)
+pixel_depth=LIB.create_material_expression(screen,u.MaterialExpressionPixelDepth)
+depth_mask=LIB.create_material_expression(screen,u.MaterialExpressionCustom)
+depth_mask.set_editor_property('code','return step(Surface-0.1,Scene);')
+depth_mask.set_editor_property('output_type',u.CustomMaterialOutputType.CMOT_FLOAT1)
+depth_inputs=[]
+for input_name in ['Scene','Surface']:
+    item=u.CustomInput(); item.set_editor_property('input_name',input_name); depth_inputs.append(item)
+depth_mask.set_editor_property('inputs',depth_inputs)
+LIB.connect_material_expressions(scene_depth,'',depth_mask,'Scene')
+LIB.connect_material_expressions(pixel_depth,'',depth_mask,'Surface')
+LIB.connect_material_property(depth_mask,'',u.MaterialProperty.MP_OPACITY)
+sample=LIB.create_material_expression(screen,u.MaterialExpressionTextureSampleParameter2D)
+sample.set_editor_property('parameter_name','DisplayTexture')
+sample.set_editor_property('texture',u.load_asset('/Engine/EngineResources/WhiteSquareTexture'))
+exposure=LIB.create_material_expression(screen,u.MaterialExpressionEyeAdaptation)
+divide=LIB.create_material_expression(screen,u.MaterialExpressionDivide)
+LIB.connect_material_expressions(sample,'RGB',divide,'A')
+LIB.connect_material_expressions(exposure,'',divide,'B')
+LIB.connect_material_property(divide,'',u.MaterialProperty.MP_EMISSIVE_COLOR)
+LIB.recompile_material(screen); u.EditorAssetLibrary.save_loaded_asset(screen)
 
 # Screen-distance water absorption, distinct from the atmospheric height fog.
 post_path=BASE+'/Materials/M_Underwater'
@@ -176,7 +210,8 @@ if ambient:
     u.EditorAssetLibrary.save_loaded_asset(ambient)
 fish_meshes=['SM_Perch','SM_Roach','SM_Pike','SM_Whitefish','SM_Burbot']
 plant_meshes=['SM_Pondweed','SM_Stonewort','SM_Milfoil']
-for name,mat_name in [('SM_Rock','M_Rock')]+[(n,'M_Fish') for n in fish_meshes]+[(n,'M_Plant') for n in plant_meshes]:
+equipment_meshes=['SM_LeftSleeve','SM_RightSleeve','SM_LeftGlove','SM_RightGlove','SM_WristComputer','SM_DiveTorch']
+for name,mat_name in [('SM_Rock','M_Rock')]+[(n,'M_Fish') for n in fish_meshes]+[(n,'M_Plant') for n in plant_meshes]+[(n,'M_Suit' if 'Sleeve' in n else 'M_Equipment') for n in equipment_meshes]:
     mesh=u.load_asset(BASE+'/Meshes/'+name)
     if not mesh: raise RuntimeError('Missing imported mesh '+name)
     mesh.set_material(0,u.load_asset(BASE+'/Materials/'+mat_name))
@@ -192,6 +227,6 @@ if not u.EditorAssetLibrary.does_asset_exist(map_path):
     start=u.get_editor_subsystem(u.EditorActorSubsystem).spawn_actor_from_class(u.PlayerStart,u.Vector(-6500,-1800,-180))
     start.set_actor_label('Diver Entry')
     if not u.EditorLoadingAndSavingUtils.save_map(world,map_path): raise RuntimeError('Map save failed')
-for path in [BASE+'/Meshes/'+n for n in fish_meshes+plant_meshes]+[BASE+'/Maps/L_DiveTraining']:
+for path in [BASE+'/Meshes/'+n for n in fish_meshes+plant_meshes+equipment_meshes]+[BASE+'/Maps/L_DiveTraining']:
     if not u.EditorAssetLibrary.does_asset_exist(path): raise RuntimeError('Missing output '+path)
 u.log('DIVE_CONTENT_OK')
