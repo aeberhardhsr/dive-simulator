@@ -2,6 +2,7 @@
 #include <array>
 #include <algorithm>
 #include <cmath>
+#include "Weather.h"
 
 namespace Dive
 {
@@ -13,16 +14,21 @@ struct WaterVelocity { double X=0,Y=0,Z=0; };
 class WaterSurface
 {
 public:
+    static constexpr double MaximumDisplacement=.0025*WeatherScenario::MaximumWind*WeatherScenario::MaximumWind*1.875;
     std::array<WaveComponent,4> Waves;
     void Configure(double Wind,double DirectionDegrees)
     {
-        Wind=std::isfinite(Wind)?std::clamp(Wind,0.,12.):3.;
+        Wind=std::isfinite(Wind)?std::clamp(Wind,0.,WeatherScenario::MaximumWind):3.;
         DirectionDegrees=std::isfinite(DirectionDegrees)?DirectionDegrees:90.;
         constexpr double pi=3.14159265358979323846;
         constexpr std::array<double,4> lengths{20.,9.,4.5,2.1},weights{1.,.5,.25,.125},angles{0.,.28,-.43,.67},phases{.4,1.7,3.1,5.2};
+        // Extend wavelengths along with amplitudes above the former 12 m/s
+        // range, keeping each component's steepness within the existing bound.
+        // This is an authored wind growth rule, not a fetch-limited wave spectrum.
+        const double growth=std::max(1.,Wind/12.);
         for(int i=0;i<4;++i)
         {
-            const double k=2*pi/lengths[i],angle=DirectionDegrees*pi/180+angles[i];
+            const double k=2*pi/(lengths[i]*growth*growth),angle=DirectionDegrees*pi/180+angles[i];
             Waves[i]={k*std::cos(angle),k*std::sin(angle),std::sqrt(9.80665*k),.0025*Wind*Wind*weights[i],phases[i]};
         }
     }

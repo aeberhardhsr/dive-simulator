@@ -24,7 +24,7 @@ inline constexpr ConfigInput ConfigInputs[]={
     {"current",&Config::CurrentMetresPerSecond,0,.5,2,"m/s"},
     {"depth",&Config::PlannedDepthMetres,3,60,1,"m"},
     {"duration",&Config::PlannedMinutes,1,120,1,"min"},
-    {"wind",&Config::WindMetresPerSecond,0,12,1,"m/s"},
+    {"wind",&Config::WindMetresPerSecond,0,WeatherScenario::MaximumWind,1,"m/s"},
     {"winddir",&Config::WindDirectionDegrees,0,359.9,1,"deg"},
     {"surface_temp",&Config::SurfaceTemperatureC,1,30,1,"C"},
     {"air_temp",&Config::AirTemperatureC,-10,40,1,"C"},

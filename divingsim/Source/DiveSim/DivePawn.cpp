@@ -75,6 +75,7 @@ void ADivePawn::BeginPlay()
         FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
+        if(SmokeScenario==TEXT("surface-storm")) PendingConfig.SelectWeather(3);
         if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("shore")) { PendingConfig.StartOnShore=true; PendingConfig.WindMetresPerSecond=0; PendingConfig.CurrentMetresPerSecond=0; }
         if(SmokeScenario==TEXT("tutorial"))
@@ -441,6 +442,12 @@ void ADivePawn::Tick(float DeltaSeconds)
             GetActorLocation().Z>Environment->SurfaceZ(GetActorLocation().X,GetActorLocation().Y)+8)
         {
             bSmokeSecondaryCaptured=true;
+            if(SmokeScenario==TEXT("surface-storm"))
+            {
+                FString error;
+                if(!Environment->ValidateStorm(error))
+                { UE_LOG(LogTemp,Error,TEXT("DIVE_WEATHER_FAIL %s"),*error); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+            }
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/SurfaceAir_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
         }
         bSmokeChunkLimit&=Environment->TerrainChunkCount()<=9;

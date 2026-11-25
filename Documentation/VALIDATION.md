@@ -433,3 +433,19 @@ Das Paket `Builds/WindowsConfig` besteht sieben gerenderte Konfigurationsphasen 
 ![Minutengenaue Uhrzeit und frei eingegebene Umweltwerte](Images/ConfigValues_EN.png)
 
 Artefakte und SHA256-Prüfsummen: [CONFIG_INPUT_RESULTS.json](CONFIG_INPUT_RESULTS.json). Automatische Umweltwerte, Sturm und wählbare Lampenmodelle bleiben außerhalb dieser Änderung offen. Die parallel laufende Zweistundenprüfung verwendet unverändert `WindowsSoak`; zusätzliche Build- und Dialogtestlast ist mit Uhrzeiten dokumentiert, siehe [SOAK.md](SOAK.md). Ihr Abschluss ist hier noch nicht nachgewiesen.
+
+## Sturm als viertes Wetterszenario (25. November 2026)
+
+CONF-004 erhält die Auswahl Sturm/Storm. Die Wetterwahl setzt Wind auf 3/5/8/22 m/s; danach bleiben manuelle Werte zwischen 0 und 24 m/s erhalten. Die bisherigen Wetterkennungen 0–2 bleiben kompatibel. Wolken, direkte/diffuse Beleuchtung, Luftnebel, Regenmenge und Audioparameter beziehen ihre Werte aus einer gemeinsamen Szenariotabelle. Unterwasser-Sichtweite bleibt davon unabhängig. Wellenlängen wachsen oberhalb 12 m/s mit der Amplitude, sodass die Einzelkomponenten nicht steiler werden; die Rendergrenzen decken den maximalen Ausschlag ab. Das bleibt ein qualitatives Spielmodell, kein gemessenes Walensee-Sturmspektrum.
+
+Kernprüfungen bestehen für starke Windwerte, Wellenableitungen, Dispersion, Druckabfall in der Tiefe, Luft/Wasser-Optik und Audioparameter. Drei Unreal-Profiltests prüfen zusätzlich alle vier Wetterkennungen, gespeicherte Windvorgaben, nachträgliche 21,5 m/s und Ablehnung unbekannter Kennungen. Die sieben gerenderten Konfigurationsphasen bestätigen Auswahl bis Sturm, tatsächliche Speicherung/erneutes Laden und Übernahme des manuellen Windwerts in den gestarteten Simulationskern. Editor- und Windows-Package-Build sind erfolgreich.
+
+Im separaten Package `Builds/WindowsStorm` besteht der Oberflächenablauf bei Murg mit 22 m/s: Luft-, Übergangs- und Unterwasserphase, 38 s Tauchdauer, 39 Messpunkten, 11,49 m maximaler Tiefe und 44,78 m Strecke. Die Beobachtung über Wasser bestätigt 2.021 Regeninstanzen, Wolkendeckungsparameter 0,90, Dichte 0,018 und 9.272,9 Lux direkte Lichtquelle. Die konservative Summe der Wellenamplituden beträgt 2,269 m; dies ist keine signifikante Wellenhöhe. Screenshots prüfen Oberfläche, Unterwasseransicht und Konfiguration. Der normale Regenablauf besteht im selben Package als Regression. Alle gerenderten Tests sind auf 30 FPS begrenzt und laufen neben dem separat protokollierten Dauertest; sie sind keine Leistungsmessung.
+
+Das Wassermaterial filtert die feinen prozeduralen Normalen anhand ihrer Pixel-Fußabdrücke. Der Vorher/Nachher-Vergleich zeigt dennoch deutliche breitere Streifen/Bänder an der bewegten Oberfläche. Diese Darstellungsfehler sind **nicht behoben**; die Grafik ist noch nicht abgenommen. Brechende Wellen, Schaum, Gischt sowie Blitz/Donner fehlen. Die stärkeren Sturm-Audioparameter sind im Kern geprüft; eine eigene Aufnahme und Hörabnahme des fertigen Sturmmixes steht aus. Die konfigurierte Tageszeit schreitet weiterhin nicht fort.
+
+![Sturm im aktuellen Entwicklungsstand mit sichtbaren Wasserbändern](Images/Storm_Surface.png)
+
+![Sturmkonfiguration mit manuell angepasstem Wind](Images/Storm_Menu.png)
+
+Messwerte, Artefakte und SHA256-Prüfsummen: [STORM_RESULTS.json](STORM_RESULTS.json). Der unveränderte zweistündige Lauf von `WindowsSoak` ist zum Zeitpunkt dieser Änderung noch aktiv und noch nicht als bestanden gewertet.

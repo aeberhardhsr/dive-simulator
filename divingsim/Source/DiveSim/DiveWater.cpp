@@ -39,8 +39,9 @@ void ADiveWorld::CreateWater()
         boundary=MoveTemp(outer);
     }
     Water->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,false);
-    // CPU vertices are flat; include up to 0.675 m shader displacement in culling.
-    Water->GetProcMeshSection(0)->SectionLocalBox=Water->GetProcMeshSection(0)->SectionLocalBox.ExpandBy(FVector(0,0,100));
+    // CPU vertices are flat; include the full supported shader displacement.
+    const double displacement=Dive::WaterSurface::MaximumDisplacement*100+20;
+    Water->GetProcMeshSection(0)->SectionLocalBox=Water->GetProcMeshSection(0)->SectionLocalBox.ExpandBy(FVector(0,0,displacement));
     const FProcMeshSection expanded=*Water->GetProcMeshSection(0);
     Water->SetProcMeshSection(0,expanded);
     UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_MESH vertices=%d triangles=%d"),vertices.Num(),indices.Num()/3);
@@ -90,13 +91,14 @@ void ADiveWorld::UpdateWater(const FVector& Player)
     }
     Rain->ClearInstances();
     const FVector eye=Diver?Diver->GetPawnViewLocation():Player;
-    if(WeatherSettings.Weather==2&&eye.Z>SurfaceZ(eye.X,eye.Y)-150)
+    const auto scenario=Dive::WeatherScenario::At(WeatherSettings.Weather);
+    if(scenario.RainDrops>0&&eye.Z>SurfaceZ(eye.X,eye.Y)-150)
     {
         const double direction=FMath::DegreesToRadians(WeatherSettings.WindDirectionDegrees);
         const FVector velocity(WeatherSettings.WindMetresPerSecond*50*FMath::Cos(direction),
             WeatherSettings.WindMetresPerSecond*50*FMath::Sin(direction),-900);
         const FQuat rotation=FQuat::FindBetweenNormals(FVector::UpVector,velocity.GetSafeNormal());
-        for(int i=0;i<1600;++i)
+        for(int i=0;i<scenario.RainDrops;++i)
         {
             const FVector p(eye.X+FMath::Fmod(i*137.51+t*velocity.X+1.e8,1200.)-600,
                 eye.Y+FMath::Fmod(i*273.17+t*velocity.Y+1.e8,1200.)-600,
@@ -120,8 +122,14 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     const auto* section=Water?Water->GetProcMeshSection(0):nullptr;
     if(!section||section->ProcVertexBuffer.Num()<66000||!WaterMaterial||!CloudMaterial||!Rain->GetMaterial(0))
     { Error=TEXT("Missing water geometry or environment materials"); return false; }
-    if(section->SectionLocalBox.Min.Z>-100||section->SectionLocalBox.Max.Z<100)
+    const double displacement=Waves.AmplitudeBound()*100+1;
+    if(section->SectionLocalBox.Min.Z>-displacement||section->SectionLocalBox.Max.Z<displacement)
     { Error=TEXT("Wave displacement outside culling bounds"); return false; }
+    const auto scenario=Dive::WeatherScenario::At(WeatherSettings.Weather);
+    if(FMath::Abs(CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalCoverage"))-scenario.CloudCoverage)>1.e-5||
+        FMath::Abs(CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalDensity"))-scenario.CloudDensity)>1.e-5||
+        Rain->GetInstanceCount()>scenario.RainDrops)
+    { Error=TEXT("Weather cloud parameters or rain bound mismatch"); return false; }
     for(int i=0;i<4;++i)
     {
         const auto& w=Waves.Waves[i];
@@ -129,5 +137,19 @@ bool ADiveWorld::ValidateWater(FString& Error) const
         if(FMath::Abs(value.R-w.Kx)>1.e-5||FMath::Abs(value.G-w.Ky)>1.e-5||FMath::Abs(value.B-w.Omega)>1.e-5||FMath::Abs(value.A-w.Amplitude)>1.e-5)
         { Error=TEXT("CPU and material wave coefficients differ"); return false; }
     }
+    return true;
+}
+
+bool ADiveWorld::ValidateStorm(FString& Error) const
+{
+    if(!ValidateWater(Error)) return false;
+    const auto storm=Dive::WeatherScenario::At(3);
+    if(WeatherSettings.Weather!=3||WeatherSettings.WindMetresPerSecond!=storm.Wind||
+        Rain->GetInstanceCount()<100||Waves.AmplitudeBound()<2||!Sun)
+    { Error=TEXT("Storm surface observation lacks preset wind, waves or visible rain"); return false; }
+    UE_LOG(LogTemp,Display,TEXT("DIVE_WEATHER_PASS kind=3 wind=%.1f rain_instances=%d wave_envelope_m=%.3f cloud_coverage=%.2f cloud_density=%.3f sun_lux=%.1f"),
+        WeatherSettings.WindMetresPerSecond,Rain->GetInstanceCount(),Waves.AmplitudeBound(),
+        CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalCoverage")),CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalDensity")),
+        Lighting.Direct*Dive::EnvironmentLight::SunLux);
     return true;
 }

@@ -134,6 +134,9 @@ int main()
     check(noon.WaterAmbient(20,4)<noon.WaterAmbient(20,30),"Turbid water attenuates ambient light faster");
     check(noon.WaterAmbient(100,14)<.003,"Deep water cannot retain surface brightness");
     check(Dive::EnvironmentLight::At(12,2).WaterAmbient(5,14)<noon.WaterAmbient(5,14),"Rain dims underwater ambient light");
+    check(Dive::EnvironmentLight::At(12,3).Direct<Dive::EnvironmentLight::At(12,2).Direct&&
+          Dive::EnvironmentLight::At(12,3).Diffuse<Dive::EnvironmentLight::At(12,2).Diffuse,"Storm attenuates direct and diffuse daylight");
+    close(Dive::EnvironmentLight::At(23,3).Direct,0,0,"Storm cannot add a fictitious night sun");
     close(noon.WaterAmbient(-5,14),noon.WaterAmbient(0,14),0,"Air position cannot amplify underwater source");
     check(std::isfinite(Dive::EnvironmentLight::At(NAN,0).WaterAmbient(NAN,NAN)),"Lighting handles invalid inputs");
     check(night.ExposureBias(0,14)>noon.ExposureBias(0,14),"Eyes gain sensitivity at night");
@@ -151,6 +154,8 @@ int main()
           "Rain increases aerial haze");
     close(Dive::VisualMedium::At(3,2,14).Density,Dive::VisualMedium::At(3,0,14).Density,0,
           "Underwater fog does not inherit the aerial weather density");
+    check(Dive::VisualMedium::At(-1,3,14).Density>Dive::VisualMedium::At(-1,2,14).Density,"Storm increases aerial haze beyond ordinary rain");
+    close(Dive::VisualMedium::At(3,3,14).Density,Dive::VisualMedium::At(3,0,14).Density,0,"Storm preserves independent underwater visibility");
     check(Dive::VisualMedium::At(3,0,2).Density>Dive::VisualMedium::At(3,0,40).Density,
           "Lower underwater visibility increases extinction");
     close(Dive::VisualMedium::At(3,0,14).Density,.35,1e-12,"Retain established submerged fog density");
@@ -223,6 +228,14 @@ int main()
     const auto deepAudio=sound.Step(.02,audioState,audioConfig,20);
     check(above.Wet==0&&above.Wind==1&&above.Rain==1,"Air exposes wind and rain");
     check(deepAudio.Wet==1&&deepAudio.Wind<.001&&deepAudio.Rain<.001&&deepAudio.CutoffHz<1000,"Depth attenuates and low-pass filters surface layers");
+    Dive::Config stormConfig; stormConfig.SelectWeather(3); stormConfig.Sanitize();
+    check(stormConfig.Weather==3&&stormConfig.WindMetresPerSecond==22,"Storm selection applies strong wind before simulation");
+    Dive::AudioModel stormAudio;
+    const auto stormAir=stormAudio.Step(.02,audioState,stormConfig,-1),stormDeep=stormAudio.Step(.02,audioState,stormConfig,30);
+    check(stormAir.Wind==1&&stormAir.Rain>above.Rain,"Storm wind gain stays bounded while rain intensifies");
+    check(stormDeep.Rain<.001&&stormDeep.Wind<.001,"Storm surface sounds attenuate with depth");
+    stormConfig.WindMetresPerSecond=0; stormConfig.Sanitize();
+    check(stormConfig.Weather==3&&stormConfig.WindMetresPerSecond==0,"Explicit wind override survives sanitizing and loading");
     audioState.Warnings=Dive::LowGas;
     check(sound.Step(.02,audioState,audioConfig,2).Warning,"New warning produces an alert");
     check(!sound.Step(.02,audioState,audioConfig,2).Warning,"Persistent warning does not repeat every frame");
@@ -260,6 +273,27 @@ int main()
     }
     for(const auto& wave:water.Waves)
         close(wave.Omega*wave.Omega,9.80665*std::hypot(wave.Kx,wave.Ky),1e-12,"Deep-water dispersion relation");
+    for(double wind:{22.,Dive::WeatherScenario::MaximumWind})
+    {
+        Dive::WaterSurface storm; storm.Configure(wind,125);
+        check(storm.AmplitudeBound()>water.AmplitudeBound()&&storm.AmplitudeBound()<=Dive::WaterSurface::MaximumDisplacement+1e-12,"Storm waves fit expanded rendering envelope");
+        for(size_t i=0;i<storm.Waves.size();++i)
+        {
+            const auto& w=storm.Waves[i]; const auto& old=water.Waves[i];
+            check(w.Omega<old.Omega,"Stronger wind increases dominant wave period");
+            close(w.Amplitude*std::hypot(w.Kx,w.Ky),old.Amplitude*std::hypot(old.Kx,old.Ky),1e-12,"Wind extension preserves bounded component steepness");
+            close(w.Omega*w.Omega,9.80665*std::hypot(w.Kx,w.Ky),1e-12,"Storm retains deep-water dispersion");
+        }
+        for(double t=0;t<120;t+=.43)
+        {
+            const auto s=storm.Sample(54,-91,t);
+            check(std::abs(s.Height)<=storm.AmplitudeBound()+1e-12,"Storm displacement remains bounded over time");
+            close(s.GradientX,(storm.Sample(54+eps,-91,t).Height-storm.Sample(54-eps,-91,t).Height)/(2*eps),1e-7,"Storm slope agrees with rendered height field");
+            close(s.VerticalVelocity,(storm.Sample(54,-91,t+eps).Height-storm.Sample(54,-91,t-eps).Height)/(2*eps),1e-7,"Storm surface velocity agrees with moving waves");
+            close(storm.PressureDepth(54,-91,s.Height+.01,t),0,0,"Storm wave crest cannot pressurize air");
+            close(storm.PressureDepth(54,-91,-1000,t),1000,1e-10,"Storm pressure disturbance still decays in deep water");
+        }
+    }
     Dive::Config temperature; temperature.SurfaceTemperatureC=22; temperature.BottomTemperatureC=4; temperature.ThermoclineMetres=15;
     Dive::Model thermal(temperature);
     close(thermal.Temperature(15),13,1e-12,"Configurable thermocline midpoint");

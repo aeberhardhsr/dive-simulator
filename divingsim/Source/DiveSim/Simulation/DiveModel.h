@@ -6,6 +6,7 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include "Weather.h"
 
 namespace Dive
 {
@@ -50,10 +51,15 @@ struct Config
     double WindDirectionDegrees = 90.0;
     double ThermoclineMetres = 10.0;
     double ThermoclineWidthMetres = 2.0;
-    int Weather = 0; // 0 clear, 1 overcast, 2 rain; scenario presets, not live weather.
+    int Weather = 0; // 0 clear, 1 overcast, 2 rain, 3 storm; not live weather.
     bool DrySuit = true;
     bool AutoBuoyancy = false;
     bool StartOnShore = false; // Legacy/instant start remains compatible.
+    void SelectWeather(int Value)
+    {
+        Weather=std::clamp(Value,0,WeatherScenario::Count-1);
+        WindMetresPerSecond=WeatherScenario::At(Weather).Wind;
+    }
     void Sanitize()
     {
         auto clean=[](double& v,double fallback,double lo,double hi)
@@ -66,9 +72,9 @@ struct Config
         clean(VisibilityMetres,14,2,40); clean(CurrentMetresPerSecond,.08,0,.5);
         clean(PlannedDepthMetres,20,3,60); clean(PlannedMinutes,30,1,120);
         clean(Hour,13,0,23.99);
-        clean(WindMetresPerSecond,3,0,12); clean(WindDirectionDegrees,90,0,359.99);
+        clean(WindMetresPerSecond,3,0,WeatherScenario::MaximumWind); clean(WindDirectionDegrees,90,0,359.99);
         clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
-        Weather=std::clamp(Weather,0,2);
+        Weather=std::clamp(Weather,0,WeatherScenario::Count-1);
     }
 };
 

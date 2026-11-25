@@ -276,14 +276,14 @@ void ADiveWorld::Configure(const Dive::Config& Config)
         }
         WaterMaterial->SetVectorParameterValue(TEXT("WavePhase"),FLinearColor(Waves.Waves[0].Phase,Waves.Waves[1].Phase,Waves.Waves[2].Phase,Waves.Waves[3].Phase));
         WaterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),14.f/VisibleDistance);
-        WaterMaterial->SetScalarParameterValue(TEXT("WindStrength"),WeatherSettings.WindMetresPerSecond/12);
+        WaterMaterial->SetScalarParameterValue(TEXT("WindStrength"),FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.));
     }
     if(CloudMaterial)
     {
-        const float coverage[]={-.65f,.25f,.65f};
-        CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalCoverage"),coverage[WeatherSettings.Weather]);
-        CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalDensity"),WeatherSettings.Weather==2?.012f:.008f);
-        CloudMaterial->SetScalarParameterValue(TEXT("StormClouds"),0); // No unrequested lightning flashes.
+        const auto scenario=Dive::WeatherScenario::At(WeatherSettings.Weather);
+        CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalCoverage"),scenario.CloudCoverage);
+        CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalDensity"),scenario.CloudDensity);
+        CloudMaterial->SetScalarParameterValue(TEXT("StormClouds"),0); // Wind/rain storm without lightning.
     }
     Lighting=Dive::EnvironmentLight::At(DayHour,WeatherSettings.Weather);
     if(Sun)

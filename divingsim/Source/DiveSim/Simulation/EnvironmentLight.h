@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
+#include "Weather.h"
 
 namespace Dive
 {
@@ -16,8 +17,8 @@ struct EnvironmentLight
         Hour=std::fmod(std::fmod(Hour,24.)+24.,24.);
         const double height=std::sin((Hour-6)/12*3.14159265358979323846);
         const double day=std::max(0.,height);
-        return {65*height,day*(Weather==2?.3:Weather==1?.55:1.),
-                day*(Weather==2?.4:Weather==1?.65:1.)};
+        const auto scenario=WeatherScenario::At(Weather);
+        return {65*height,day*scenario.DirectLight,day*scenario.DiffuseLight};
     }
     double WaterAmbient(double EyeDepthMetres,double VisibilityMetres) const
     {

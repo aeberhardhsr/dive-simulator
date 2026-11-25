@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
+#include "Weather.h"
 
 namespace Dive
 {
@@ -20,7 +21,7 @@ struct VisualMedium
         VisualMedium out;
         out.Water=CameraWaterBlend(EyeDepthMetres);
         const double visibility=std::isfinite(VisibilityMetres)?std::clamp(VisibilityMetres,2.,40.):14.;
-        const double airDensity=Weather==2?.012:.002;
+        const double airDensity=WeatherScenario::At(Weather).AirFog;
         out.Density=airDensity*(1-out.Water)+(.35*14/visibility)*out.Water;
         out.HeightFalloff=.2*(1-out.Water)+.01*out.Water;
         return out;

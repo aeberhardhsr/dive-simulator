@@ -27,6 +27,19 @@ Dive::Config Varied()
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveConfigPersistence,"DiveSim.Profiles.Configuration",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveConfigPersistence::RunTest(const FString&)
 {
+    for(int weather=0;weather<Dive::WeatherScenario::Count;++weather)
+    {
+        auto scenario=Varied(); scenario.SelectWeather(weather);
+        auto stored=MakeShared<FJsonObject>(); DiveConfigIO::Write(stored,scenario,1);
+        Dive::Config loaded; int loadedEntry=0; FString message;
+        TestTrue(TEXT("All legacy and storm weather values load"),DiveConfigIO::Read(stored,loaded,loadedEntry,true,message));
+        TestTrue(TEXT("Weather and its wind roundtrip"),DiveConfigIO::Equal(scenario,1,loaded,loadedEntry));
+        scenario.WindMetresPerSecond=21.5; DiveConfigIO::Write(stored,scenario,1);
+        TestTrue(TEXT("Custom wind beyond former limit loads"),DiveConfigIO::Read(stored,loaded,loadedEntry,true,message));
+        TestEqual(TEXT("Loading preserves explicit wind"),loaded.WindMetresPerSecond,21.5);
+        stored->SetNumberField(TEXT("weather"),Dive::WeatherScenario::Count);
+        TestFalse(TEXT("Unknown weather rejected"),DiveConfigIO::Read(stored,loaded,loadedEntry,true,message));
+    }
     const auto original=Varied(); auto obj=MakeShared<FJsonObject>(); DiveConfigIO::Write(obj,original,2);
     Dive::Config restored; int entry=0; FString error;
     TestTrue(TEXT("Strict complete config loads"),DiveConfigIO::Read(obj,restored,entry,true,error));

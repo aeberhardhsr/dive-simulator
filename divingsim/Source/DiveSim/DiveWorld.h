@@ -59,6 +59,7 @@ public:
     double PressureDepth(const FVector& Position,double Seconds) const;
     FVector WaveVelocity(const FVector& Position,double Seconds) const;
     bool ValidateWater(FString& Error) const;
+    bool ValidateStorm(FString& Error) const;
     bool ValidateShoreline(FString& Error) const;
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:

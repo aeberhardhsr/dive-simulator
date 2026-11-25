@@ -53,7 +53,7 @@ Bis zu 32 aktive und 128 Profile insgesamt liegen lokal in `divingsim/Saved/Dive
 
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
-**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien und bleiben während eines Tauchgangs fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
+**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen/Sturm, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Die Wetterwahl setzt zunächst 3/5/8/22 m/s Wind; danach ist der Wert von 0 bis 24 m/s frei einstellbar. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien und bleiben während eines Tauchgangs fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
 
 Zahlenfelder öffnen einen Eingabedialog: beispielsweise **213,5 bar**, **7,5 kg**, **22,5 m** oder **47 min**. Die Einheit gehört nicht in das Eingabefeld. Dezimalpunkt und Komma sind erlaubt; der Dialog nennt den gültigen Bereich. Die Uhrzeit lässt sich minutengenau von **00:00 bis 23:59** einstellen. Enter oder **Speichern** übernimmt den Wert, Escape oder **Abbrechen** verwirft die Eingabe. Ungültige Werte verändern den Tauchplan nicht. Während eines laufenden Tauchgangs bleibt die Konfiguration gesperrt.
 
@@ -74,6 +74,7 @@ Die laufende Sicherung verarbeitet eine eigene Datenkopie im Hintergrund. Es gib
 python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/Build.ps1 -Target Content     # Materialien, Importe und Trainingsmap
 ./Tools/Build.ps1 -Target Content -OnlyEnvironment # Nur Wasser, Wolken und Regen erneuern
+./Tools/Build.ps1 -Target Content -OnlyWater       # Nur Wassermaterial erneuern
 ./Tools/Build.ps1 -Target Content -OnlyOptics # Nur den HDR-Unterwassereffekt erneuern
 python Tools/prepare_bed_materials.py # Geprüfte CC0-Quellen für Sediment/Kies/Fels
 ./Tools/Build.ps1 -Target Content -OnlyBed # Nur die PBR-Unterwasseroberflächen erneuern
@@ -93,6 +94,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm -Hour 23 # Luft-/Wasserwechsel nachts
 ./Tools/SmokeTest.ps1 -Packaged -Scenario dive -Hour 23 -LampOff # Nachtvergleich ohne Lampe
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
+./Tools/SmokeTest.ps1 -Packaged -Scenario surface-storm -Entry 1 # Sturm und 22 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
 ./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte
 ./Tools/TestProfiles.ps1              # Unreal-Prüfungen: Profile, Wiederherstellung, Datei-/Konfliktschutz

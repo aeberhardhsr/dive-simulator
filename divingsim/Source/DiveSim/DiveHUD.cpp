@@ -113,7 +113,7 @@ void ADiveHUD::Menu()
     }
     else if(bEnvironmentPage)
     {
-        const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain"))};
+        const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain")),L(TEXT("Sturm"),TEXT("Storm"))};
         Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,250,w);
         Field(TEXT("wind"),L(TEXT("WINDSTAERKE"),TEXT("WIND SPEED")),ConfigValue(TEXT("wind")),x+w+gap,250,w);
         Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),ConfigValue(TEXT("winddir")),x+2*(w+gap),250,w);
@@ -125,7 +125,7 @@ void ADiveHUD::Menu()
         Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),450,w);
         Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x,550,w);
         Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),ConfigValue(TEXT("air_temp")),x+w+gap,550,w);
-        Text(L(TEXT("Einstellbare Spielszenarien; keine aktuellen Messwerte."),TEXT("Configurable game scenarios; not current observations.")),x,655,15,Muted);
+        Text(L(TEXT("Wetterwahl setzt den Wind; danach frei anpassbar."),TEXT("Choosing weather sets the wind; you can adjust it afterwards.")),x,655,15,Muted);
     }
     else
     {
@@ -368,7 +368,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;
         else if(Id==TEXT("suit")) c.DrySuit=!c.DrySuit;
-        else if(Id==TEXT("weather")) c.Weather=(c.Weather+1)%3;
+        else if(Id==TEXT("weather")) c.SelectWeather((c.Weather+1)%Dive::WeatherScenario::Count);
     }
     Diver->SaveSettings();
 }

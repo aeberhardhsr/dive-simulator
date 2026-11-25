@@ -54,8 +54,8 @@ public:
         a.Wet=Clamp(eyeDepth/.5,0,1);
         const double nearSurface=std::exp(-std::max(0.,eyeDepth)/3);
         a.Surface=(1-a.Wet)+.16*a.Wet*nearSurface;
-        a.Wind=c.WindMetresPerSecond/12*((1-a.Wet)+.04*a.Wet*nearSurface);
-        a.Rain=c.Weather==2?((1-a.Wet)+.28*a.Wet*nearSurface):0;
+        a.Wind=Clamp(c.WindMetresPerSecond/12,0,1)*((1-a.Wet)+.04*a.Wet*nearSurface);
+        a.Rain=WeatherScenario::At(c.Weather).RainGain*((1-a.Wet)+.28*a.Wet*nearSurface);
         a.CutoffHz=20000+(650-20000)*a.Wet;
         return a;
     }

@@ -147,6 +147,13 @@ bool ADiveHUD::ConfigSmokeTest(int Phase)
     if(Phase==4)
     {
         Diver->bEnglish=true; bEnvironmentPage=true;
+        for(int weather=1;weather<Dive::WeatherScenario::Count;++weather)
+        {
+            NotifyHitBoxClick(TEXT("weather"));
+            if(Diver->PendingConfig.Weather!=weather||Diver->PendingConfig.WindMetresPerSecond!=Dive::WeatherScenario::At(weather).Wind) return false;
+        }
+        Diver->SaveSettings(); Diver->PendingConfig.Weather=0; Diver->PendingConfig.WindMetresPerSecond=0; Diver->LoadSettings();
+        if(Diver->PendingConfig.Weather!=3||Diver->PendingConfig.WindMetresPerSecond!=22) return false;
         NotifyHitBoxClick(TEXT("air_temp")); if(!ConfigDialog) return false;
         ConfigEditor->SetText(FText::FromString(TEXT("-3.5"))); shot(TEXT("ConfigAir_EN")); return true;
     }
@@ -156,6 +163,7 @@ bool ADiveHUD::ConfigSmokeTest(int Phase)
         key(EKeys::Escape); if(ConfigDialog||Diver->PendingConfig.AirTemperatureC!=before) return false;
         NotifyHitBoxClick(TEXT("air_temp")); if(!SubmitConfigInput(TEXT("-3.5"))) return false;
         NotifyHitBoxClick(TEXT("current")); if(!SubmitConfigInput(TEXT("0.17"))) return false;
+        NotifyHitBoxClick(TEXT("wind")); if(!SubmitConfigInput(TEXT("21.5"))) return false;
         NotifyHitBoxClick(TEXT("hour")); if(!SubmitConfigInput(TEXT("07:05"))) return false;
         shot(TEXT("ConfigValues_EN")); return ConfigValue(TEXT("hour"))==TEXT("07:05");
     }
@@ -167,7 +175,8 @@ bool ADiveHUD::ConfigSmokeTest(int Phase)
         const bool locked=!ConfigDialog&&DiveConfigIO::Equal(before,0,Diver->PendingConfig,0)&&
             Diver->Simulation.Settings.StartPressureBar==213.5&&Diver->Simulation.Settings.WeightKg==7.5&&
             Diver->Simulation.Settings.PlannedDepthMetres==22.5&&Diver->Simulation.Settings.PlannedMinutes==47&&
-            Diver->Simulation.Settings.AirTemperatureC==-3.5&&Diver->Simulation.Settings.CurrentMetresPerSecond==.17;
+            Diver->Simulation.Settings.AirTemperatureC==-3.5&&Diver->Simulation.Settings.CurrentMetresPerSecond==.17&&
+            Diver->Simulation.Settings.Weather==3&&Diver->Simulation.Settings.WindMetresPerSecond==21.5;
         Diver->FinishDive(TEXT("smoke_config_completed")); return locked;
     }
     return false;

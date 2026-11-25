@@ -7,7 +7,8 @@ param(
     [switch]$OnlyShore,
     [switch]$OnlyImagery,
     [switch]$OnlyOptics,
-    [switch]$OnlyBed
+    [switch]$OnlyBed,
+    [switch]$OnlyWater
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -30,6 +31,7 @@ if ($Target -eq 'Content') {
     if($OnlyBed) { $script=Join-Path $PSScriptRoot 'build_bed_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
+    if($OnlyWater) { $contentOptions+='-DiveWaterOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions
 } elseif ($Target -in @('Landscape','LandscapeCheck')) {
     $landOptions=@()

@@ -46,7 +46,7 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
         return true;
     };
     int32 mode=1;
-    if(!integer(TEXT("mode"),mode,2)||!integer(TEXT("weather"),candidate.Weather,2)||!integer(TEXT("entry"),candidateEntry,2)) return false;
+    if(!integer(TEXT("mode"),mode,2)||!integer(TEXT("weather"),candidate.Weather,Dive::WeatherScenario::Count-1)||!integer(TEXT("entry"),candidateEntry,2)) return false;
     candidate.GameMode=static_cast<Dive::Mode>(mode);
     auto boolean=[&](const TCHAR* Name,bool& Target)
     {

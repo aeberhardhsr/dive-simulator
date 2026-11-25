@@ -7,7 +7,8 @@ ASSETS=ROOT/'blender'/'exports'
 TOOLS=u.AssetToolsHelpers.get_asset_tools()
 LIB=u.MaterialEditingLibrary
 BASE='/Game/Diving'
-ONLY_ENVIRONMENT='-DiveEnvironmentOnly' in u.SystemLibrary.get_command_line()
+ONLY_WATER='-DiveWaterOnly' in u.SystemLibrary.get_command_line()
+ONLY_ENVIRONMENT=ONLY_WATER or '-DiveEnvironmentOnly' in u.SystemLibrary.get_command_line()
 
 def clear_expressions(material):
     # UE 5.8 DeleteAllMaterialExpressions mutates the collection it iterates,
@@ -159,16 +160,23 @@ float2 fadeSlope=-6*f*(1-f)/16*delta/max(.001,d);
 material('M_Water',(.012,.035,.028),.13,water=True,
          custom_wpo=wave_code+'return float3(0,0,h*100*fade);',
          custom_normal=wave_code+'''
-float2 micro=float2(sin(P.x*.13+P.y*.025+T*1.7)*.025+cos(P.y*.057-T*2.1)*.015,
-    cos(P.y*.11+P.x*.018+T*1.5)*.02+sin(P.x*.19-T*2.9)*.01)*WindStrength;
+// Filter each procedural ripple over its pixel footprint. Unfiltered world-space
+// sinusoids alias into bright stripes at grazing angles and in the distance.
+float4 ripplePhase=float4(P.x*.13+P.y*.025+T*1.7, P.y*.057-T*2.1,
+    P.y*.11+P.x*.018+T*1.5, P.x*.19-T*2.9);
+float4 footprint=abs(ddx(ripplePhase))+abs(ddy(ripplePhase));
+float4 filtered=exp(-.5*footprint*footprint);
+float2 micro=float2(sin(ripplePhase.x)*.025*filtered.x+cos(ripplePhase.y)*.015*filtered.y,
+    cos(ripplePhase.z)*.02*filtered.z+sin(ripplePhase.w)*.01*filtered.w)*WindStrength;
 return normalize(float3(-slope*fade-h*fadeSlope+micro,1));''')
-cloud_path=BASE+'/Materials/MI_Cloud'
-if not u.EditorAssetLibrary.does_asset_exist(cloud_path):
-    source=u.load_asset('/Engine/EngineSky/VolumetricClouds/m_SimpleVolumetricCloud_Inst')
-    if not source or not TOOLS.duplicate_asset('MI_Cloud',BASE+'/Materials',source):
-        raise RuntimeError('Cloud material copy failed')
-u.EditorAssetLibrary.save_asset(cloud_path)
-material('M_Rain',(.12,.16,.18),.2,translucent=True,opacity=.35,unlit=True)
+if not ONLY_WATER:
+    cloud_path=BASE+'/Materials/MI_Cloud'
+    if not u.EditorAssetLibrary.does_asset_exist(cloud_path):
+        source=u.load_asset('/Engine/EngineSky/VolumetricClouds/m_SimpleVolumetricCloud_Inst')
+        if not source or not TOOLS.duplicate_asset('MI_Cloud',BASE+'/Materials',source):
+            raise RuntimeError('Cloud material copy failed')
+    u.EditorAssetLibrary.save_asset(cloud_path)
+    material('M_Rain',(.12,.16,.18),.2,translucent=True,opacity=.35,unlit=True)
 if not ONLY_ENVIRONMENT:
     material('M_Bubble',(.4,.7,.65),.06,translucent=True,opacity=.21)
     material('M_Particle',(.18,.32,.26),1,unlit=True)
