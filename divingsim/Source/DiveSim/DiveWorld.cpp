@@ -53,6 +53,12 @@ ADiveWorld::ADiveWorld()
         Fish.Add(component);
     }
     Bubbles=create(TEXT("BreathBubbles")); Particles=create(TEXT("SuspendedParticles"));
+    Particles->NumCustomDataFloats=3;
+    // The raster shader shrinks/wraps the base mesh. Its undeformed geometry
+    // must not contribute metre-sized proxies to GI or ray-traced scenes.
+    Particles->bAffectDynamicIndirectLighting=false;
+    Particles->bAffectDistanceFieldLighting=false;
+    Particles->bVisibleInRayTracing=false;
     Rain=create(TEXT("Rain")); Rain->SetCastShadow(false);
     Bubbles->SetCastShadow(false); Particles->SetCastShadow(false);
 }
@@ -150,8 +156,7 @@ void ADiveWorld::Populate()
         component->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
         component->SetMaterial(0,Mat(TEXT("M_Fish")));
     }
-    Bubbles->SetStaticMesh(Mesh(Sphere)); Bubbles->SetMaterial(0,Mat(TEXT("M_Bubble")));
-    Particles->SetStaticMesh(Mesh(Sphere)); Particles->SetMaterial(0,Mat(TEXT("M_Particle")));
+    InitializeParticles();
     // Habitat dressing is procedural, not part of the surveyed height data.
     Random.Initialize(static_cast<uint32>(FMath::FloorToInt(PopulationOrigin.X/6400))*73856093u ^
         static_cast<uint32>(FMath::FloorToInt(PopulationOrigin.Y/6400))*19349663u);
@@ -252,6 +257,7 @@ void ADiveWorld::BeginPlay()
 void ADiveWorld::Configure(const Dive::Config& Config)
 {
     WeatherSettings=Config; WeatherSettings.Sanitize();
+    BubbleState.Reset();RenderedBubbleIndices.Reset();Bubbles->ClearInstances();BubblesBorn=BubblesSurfaced=0;bParticleUniformsReady=false;
     VisibleDistance=WeatherSettings.VisibilityMetres; Flow=WeatherSettings.CurrentMetresPerSecond; DayHour=WeatherSettings.Hour;
     Waves.Configure(WeatherSettings.WindMetresPerSecond,WeatherSettings.WindDirectionDegrees);
     if(WaterMaterial)
@@ -320,23 +326,12 @@ void ADiveWorld::UpdateAtmosphere()
     fog->SetVolumetricFogNearFadeInDistance(10);
 }
 
-void ADiveWorld::EmitBreath(const FVector& Position,const FVector& Direction,float Pressure)
-{
-    for(int i=0;i<18;++i)
-    {
-        FDiveBubble bubble;
-        bubble.Position=Position+Direction*35+FVector(0,Random.FRandRange(-9,9),-20);
-        bubble.StartPressure=Pressure; bubble.Age=-i*.018f; bubble.Radius=Random.FRandRange(.012,.032);
-        BubbleState.Add(bubble);
-    }
-}
-
 void ADiveWorld::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     if(!bTerrainReady) return;
     UpdateDaylight();
-    if(Diver && Diver->bDiveActive && Diver->bMenu) { UpdateAtmosphere(); return; }
+    if(Diver && Diver->bDiveActive && Diver->bMenu) { UpdateAtmosphere(); UpdateParticleField(Diver->GetActorLocation()); return; }
     const float dt=FMath::Min(DeltaSeconds,.1f); WorldTime+=dt;
     const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
     UpdateWater(player);
@@ -348,6 +343,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
     }
     UpdateAtmosphere();
     TickFish(dt,player);
+    UpdateParticles(dt,player);
     if(bOpticsSmoke&&Diver)
     {
         if(!Sun||!Sky||FMath::Abs(Sun->Intensity-Lighting.SolarSource*Dive::EnvironmentLight::SunLux)>.02||
@@ -375,27 +371,5 @@ void ADiveWorld::Tick(float DeltaSeconds)
                 phase==1?TEXT("air"):phase==4?TEXT("water"):TEXT("transition"),OpticalMedium.Water,
                 Fog->FogDensity,Fog->SkyAtmosphereAmbientContributionColorScale.R);
         }
-    }
-    Bubbles->ClearInstances();
-    for(int i=BubbleState.Num()-1;i>=0;--i)
-    {
-        auto& b=BubbleState[i]; b.Age+=dt;
-        b.Position+=FVector(FMath::Sin(WorldTime*3+i)*3,Flow*100,40+b.Radius*1500)*dt;
-        if(b.Age>18 || b.Position.Z>SurfaceZ(b.Position.X,b.Position.Y)) { BubbleState.RemoveAtSwap(i); continue; }
-        const float pressure=.965f+PressureDepth(b.Position,Diver?Diver->Simulation.Data.ElapsedSeconds:0)*.0980665f;
-        const float radius=b.Radius*FMath::Pow(b.StartPressure/pressure,1.f/3.f);
-        Bubbles->AddInstance(FTransform(FRotator::ZeroRotator,b.Position,FVector(radius)));
-    }
-    Particles->ClearInstances();
-    FRandomStream field(62419);
-    for(int i=0;i<640;++i)
-    {
-        const float x=field.FRand()*800, y=field.FRand()*800, z=field.FRand()*800;
-        // Wrap a fixed world-space field around the diver. Translation of the
-        // camera must not drag every nearby speck along with it.
-        auto wrap=[](float value,float centre) { return centre+FMath::Fmod(FMath::Fmod(value-centre+400,800.f)+800,800.f)-400; };
-        const FVector position(wrap(x+WorldTime*2,player.X),wrap(y+WorldTime*Flow*100,player.Y),wrap(z,player.Z));
-        if(position.Z<SurfaceZ(position.X,position.Y))
-            Particles->AddInstance(FTransform(FRotator::ZeroRotator,position,FVector(.001f+(i%5)*.0005f)));
     }
 }

@@ -9,6 +9,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
 #include "../divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
 #include "../divingsim/Source/DiveSim/Simulation/ConfigInput.h"
+#include "../divingsim/Source/DiveSim/Simulation/Bubbles.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -22,6 +23,20 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        // Independent pressure * sphere-volume invariant across an ascent.
+        const double initial=.006, start=5.965;
+        const double gas=start*(4*3.14159265358979323846/3)*initial*initial*initial;
+        double previous=initial;
+        for(double pressure=start;pressure>=.965;pressure-=.1)
+        {
+            const double radius=Dive::Bubble::RadiusAt(initial,start,pressure);
+            close(pressure*(4*3.14159265358979323846/3)*std::pow(radius,3),gas,1.e-15,"Bubble pressure-volume is conserved during ascent");
+            check(radius>=previous-1.e-12,"Ascending bubble expands");previous=radius;
+        }
+        close(Dive::Bubble::RadiusAt(.01,8,1),.02,1.e-12,"Eightfold volume gives twice the radius");
+        check(Dive::Bubble::RadiusAt(.01,1,0)==0,"Invalid bubble pressure cannot generate nonfinite geometry");
+    }
     {
         for(int i=0;i<Dive::Torch::Count;++i)
         {

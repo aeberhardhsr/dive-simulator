@@ -262,6 +262,8 @@ if not ONLY_ENVIRONMENT:
     sys.path.insert(0,str(ROOT/'Tools'))
     from build_torch_content import build_torch
     build_torch()
+    from build_particle_content import build_particles
+    build_particles()
     from build_audio_content import import_audio
     import_audio()
     from build_shore_content import build_shore_material

@@ -509,6 +509,9 @@ void ADivePawn::Tick(float DeltaSeconds)
     }
     if(bSmokeTest && !bPerformance && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
     {
+        FString particleDetail;const bool particlesValid=Environment->ValidateParticles(particleDetail);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_PARTICLES_%s %s"),particlesValid?TEXT("PASS"):TEXT("FAIL"),*particleDetail);
+        if(!particlesValid) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
         const auto& torch=Dive::Torch::At(PendingConfig.TorchModel);
         if(Lamp->IntensityUnits!=ELightUnits::Lumens||FMath::Abs(Lamp->Intensity-torch.Output(Simulation.Data.LampBattery))>.1f||Lamp->IsVisible()!=(bLamp&&Simulation.Data.LampBattery>0)||
             FMath::Abs(Lamp->OuterConeAngle-torch.OuterDegrees)>.01||!Lamp->bUseInverseSquaredFalloff||!TorchFunction)
@@ -540,7 +543,9 @@ void ADivePawn::Tick(float DeltaSeconds)
         const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
             (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
         const bool audioReady=SmokeScenario!=TEXT("audio")||(Audio->Inhales>4&&Audio->Exhales>4&&Audio->Heartbeats>30&&Audio->InflationSteps>100&&Audio->VentSteps>100);
-        const bool valid=(SmokeScenario!=TEXT("daycycle")||DayCycleSmokePhase==5)&&bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && (SmokeScenario==TEXT("torch")?displacement<.5:Simulation.Data.DistanceMetres>5)
+        FString particleDetail;const bool particlesReady=Environment->ValidateParticles(particleDetail);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_PARTICLES_%s final=1 %s"),particlesReady?TEXT("PASS"):TEXT("FAIL"),*particleDetail);
+        const bool valid=particlesReady&&(SmokeScenario!=TEXT("daycycle")||DayCycleSmokePhase==5)&&bControlsSmokeValid && audioReady && extended && wristReady && bSmokeChunkLimit && (SmokeScenario==TEXT("torch")?displacement<.5:Simulation.Data.DistanceMetres>5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<(SmokeScenario==TEXT("torch")?199.9:199))
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);

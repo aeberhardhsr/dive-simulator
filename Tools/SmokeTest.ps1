@@ -7,6 +7,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,2)][int]$Torch=0,
     [ValidateRange(2,40)][double]$Visibility=14,
     [ValidateRange(0,100)][double]$Battery=100,
+    [ValidateRange(0,30)][double]$ParticleScale=1,
+    [switch]$NoBubbles,
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
@@ -29,6 +31,8 @@ if($CelestialReferences) { $arguments+=' -DiveCelestialReferences' }
 if($PSBoundParameters.ContainsKey('Hour')) { $arguments+=' -DiveHour='+$Hour.ToString([Globalization.CultureInfo]::InvariantCulture) }
 if($Date) { $arguments+=" -DiveDate=$Date" }
 $arguments+=' -DiveTorch='+$Torch+' -DiveTorchBattery='+$Battery.ToString([Globalization.CultureInfo]::InvariantCulture)
+$arguments+=' -DiveParticleScale='+$ParticleScale.ToString([Globalization.CultureInfo]::InvariantCulture)
+if($NoBubbles) { $arguments+=' -DiveNoBubbles' }
 if($PSBoundParameters.ContainsKey('Visibility')) { $arguments+=' -DiveVisibility='+$Visibility.ToString([Globalization.CultureInfo]::InvariantCulture) }
 $executable="$EngineRoot/Engine/Binaries/Win64/UnrealEditor.exe"
 if($Packaged) {
@@ -75,7 +79,7 @@ if($Scenario -in @('controls','tutorial','profiles','config','torch','surface-st
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh screenshot: $name" }
     }
 }
-if($log -match 'Failed to compile Material|Default Material will be used|WALENSEE_DATA_FAILED|DIVE_ECOLOGY_FAIL|DIVE_EQUIPMENT_FAIL|DIVE_WATER_FAIL|DIVE_MEDIUM_FAIL|DIVE_LIGHT_FAIL|DIVE_OPTICS_FAIL|DIVE_AUDIO_FAIL|DIVE_ACCESS_FAIL|DIVE_BREATHING_FAIL|DIVE_RESERVE_FAIL|DIVE_CONFIG_FAIL|DIVE_WEATHER_FAIL|DIVE_DAYCYCLE_FAIL|DIVE_CELESTIAL_FAIL') {
+if($log -match 'Failed to compile Material|Default Material will be used|WALENSEE_DATA_FAILED|DIVE_ECOLOGY_FAIL|DIVE_EQUIPMENT_FAIL|DIVE_WATER_FAIL|DIVE_MEDIUM_FAIL|DIVE_LIGHT_FAIL|DIVE_OPTICS_FAIL|DIVE_AUDIO_FAIL|DIVE_ACCESS_FAIL|DIVE_BREATHING_FAIL|DIVE_RESERVE_FAIL|DIVE_CONFIG_FAIL|DIVE_WEATHER_FAIL|DIVE_DAYCYCLE_FAIL|DIVE_CELESTIAL_FAIL|DIVE_PARTICLES_FAIL') {
     throw "Runtime content validation failed. See $logPath."
 }
 ($log -split "`n") | Where-Object { $_ -match 'DIVE_SMOKE_|DIVE_EQUIPMENT_CHECK|DIVE_LOGBOOK_|DIVE_AUDIO_|DIVE_INPUT_|DIVE_TUTORIAL_|DIVE_PROFILE|DIVE_SHORE_|DIVE_ACCESS_|DIVE_BREATHING_|DIVE_RESERVE_|DIVE_CONFIG_|DIVE_WEATHER_|DIVE_DAYCYCLE_|DIVE_CELESTIAL_' }

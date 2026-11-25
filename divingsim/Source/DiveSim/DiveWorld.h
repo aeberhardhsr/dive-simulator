@@ -17,7 +17,11 @@ class ADirectionalLight;
 class AExponentialHeightFog;
 class ADivePawn;
 
-struct FDiveBubble { FVector Position; float Age=0, StartPressure=1, Radius=1; };
+struct FDiveBubble
+{
+    FVector Position;
+    float Age=0, StartPressure=1, RadiusMetres=.006f, Phase=0, Side=1;
+};
 struct FDiveFish
 {
     FVector Position, Velocity, Home;
@@ -65,6 +69,7 @@ public:
     bool ValidateWater(FString& Error) const;
     bool ValidateStorm(FString& Error) const;
     bool ValidateShoreline(FString& Error) const;
+    bool ValidateParticles(FString& Detail) const;
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
@@ -89,6 +94,17 @@ private:
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Bubbles;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Particles;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> ParticleMaterial;
+    TArray<int32> RenderedBubbleIndices;
+    FVector ParticleAnchor=FVector::ZeroVector;
+    FVector LastParticleViewer=FVector::ZeroVector;
+    float LastParticleTime=0,LastParticleWaterTime=0;
+    bool bParticleUniformsReady=false;
+    float ParticleScale=1;
+    double ParticleSimulationSeconds=0;
+    bool bNoBubbles=false;
+    int32 BubblesBorn=0,BubblesSurfaced=0;
+    int32 ParticleCellMoves=0;
     UPROPERTY() TObjectPtr<class UDirectionalLightComponent> Sun;
     UPROPERTY() TObjectPtr<class UExponentialHeightFogComponent> Fog;
     TArray<FDiveBubble> BubbleState;
@@ -122,6 +138,9 @@ private:
     UMaterialInstanceDynamic* ImageryMaterial(const TCHAR* Base,const FString& TexturePath);
     void Populate();
     void TickFish(float Dt,const FVector& Player);
+    void InitializeParticles();
+    void UpdateParticles(float Dt,const FVector& Player);
+    void UpdateParticleField(const FVector& Player);
     UStaticMeshComponent* Prop(const FString& Name,const FString& MeshPath,
         const FVector& Location,const FVector& Scale,const FString& MaterialPath, bool Collision=true);
 };

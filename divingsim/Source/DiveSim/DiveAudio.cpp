@@ -75,7 +75,7 @@ bool UDiveAudio::Advance(float Dt,const Dive::State& s,const Dive::Config& c,dou
     {
         Play(Exhale,pitch); ++Exhales;
         Sounds[Bubbles]->SetAbsolute(true,false,false);
-        Sounds[Bubbles]->SetWorldLocation(Listener->GetComponentLocation()+Listener->GetForwardVector()*25+FVector(0,0,-15));
+        Sounds[Bubbles]->SetWorldLocation(Listener->GetComponentLocation()+Listener->GetForwardVector()*8+FVector(0,0,-12));
         Play(Bubbles,FMath::Clamp(1.+EyeDepth*.003,1.,1.2));
     }
     if(Sounds[Bubbles]->IsPlaying()) Sounds[Bubbles]->AddWorldOffset(FVector(0,0,30*Dt));
