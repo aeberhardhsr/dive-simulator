@@ -61,6 +61,8 @@ Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauch
 
 Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter `divingsim/Saved/Photographs`. Testaufnahmen liegen unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Logbuch liest auch ältere Protokolle; automatisierte Testläufe werden in der normalen Ansicht ausgeblendet. Fehlende oder beschädigte Dateien verhindern das Lesen anderer Einträge nicht.
 
+Laufende Tauchgänge werden alle 30 Sekunden Simulationszeit zwischengespeichert, beim regulären Verlassen als unterbrochen und beim Abschluss mit dem Ergebnis. Eine `.json.bak` bewahrt die vorherige gültige Version. Ist die Hauptdatei beschädigt oder fehlt sie, zeigt das Logbuch diesen älteren Stand mit einem Hinweis an. Zwischenstände sind Protokolle; sie erlauben noch kein Fortsetzen des Tauchgangs. Vor der ersten Sicherung und seit der letzten erfolgreichen Sicherung können bei einem Absturz Messpunkte verloren gehen. Schreibfehler während des Tauchgangs werden eingeblendet.
+
 ## Entwicklung und Prüfung
 
 ```powershell
@@ -99,6 +101,7 @@ python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMi
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht
 ./Tools/TestLogbook.ps1              # Unreal-Tests: alte/neue Logs, zwei Stunden Daten, Fehlerfälle
+./Tools/TestCheckpointRecovery.ps1 -PackageDirectory Builds/WindowsRecovery # Eigene Testinstanz hart beenden, Sicherungen neu öffnen
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario logbook # Speichern, neu laden, vier Diagrammgruppen
 ```
 

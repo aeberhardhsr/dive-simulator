@@ -365,3 +365,27 @@ Vier abschließende Messungen erfassen jeweils 60 s nach 15 s Aufwärmen, Qualit
 Alle 26.107 berücksichtigten Bilder dieser vier Läufe bleiben unter 33,333 ms. Beim Nachladen sinkt die Kachelzahl für vier Bilder auf sieben/acht und erreicht wieder neun. Gegenüber den vergleichbaren vorherigen Läufen fällt die mittlere Bildrate um ungefähr 4–5 %. 4K erreicht damit im Mittel weniger als 60 FPS. Dies belegt den Aufwand der verbesserten Oberfläche auf diesem Rechner; es ist keine universelle Leistungs- oder Langzeitgarantie. Rohdatenreferenzen, Einzelwerte und SHA256 von Bildern, Logs, CSV, Executable sowie allen ausgelieferten Pak-/IoStore-Dateien stehen in [BED_PERFORMANCE.json](BED_PERFORMANCE.json). Auch Content-Änderungen ohne geändertes Executable sind so unterscheidbar.
 
 Die vollständigen 236 nummerierten Anforderungen wurden zusätzlich aus der angemeldeten Originalansicht übernommen und gegen deren Zeilen-Prüfsumme abgeglichen: [REQUIREMENTS.csv](REQUIREMENTS.csv), ergänzende Vorgaben in [REQUIREMENTS_CONTEXT.md](REQUIREMENTS_CONTEXT.md). Diese Erfassung und die Materialverbesserung markieren keine vollständige Anforderung als abgenommen. Lokale Sedimentverteilung, feinere Geometrie, visuelle Referenzqualität, Mindesthardware, macOS-Spiel und zweistündige Stabilität bleiben offen.
+
+## Zwischenstände und Wiederherstellung nach Prozessabbruch (25. November 2026)
+
+Die bereits vorhandene Sicherung alle 30 Sekunden Simulationszeit ist jetzt gegen einen beschädigten oder fehlenden Hauptstand abgesichert. Vor dem Ersetzen einer gültigen `.json` wird ihr Inhalt separat in `.json.bak` gesichert. Neue Daten werden geprüft, in eine temporäre Datei geschrieben und zurückgelesen. Kann die Vorgängerversion nicht gesichert werden, bleibt die Hauptdatei erhalten. Eine beschädigte Hauptdatei überschreibt keine gesunde Sicherung. Diese zweite Generation ist nötig, weil Unreals generische Dateioperation `Move` ein vorhandenes Ziel vor dem Umbenennen löscht; dieser Aufruf allein ist keine atomare Ersetzung.
+
+Das Logbuch entdeckt auch Sicherungen ohne Hauptdatei, erzeugt aus Hauptdatei/Sicherung keine doppelten Einträge und lädt bei einer unlesbaren Hauptdatei die geprüfte Vorgängerversion. Es zeigt deren tatsächliche Dauer/Messpunkte und einen deutschen oder englischen Hinweis auf möglicherweise fehlende neuere Daten. Schreibfehler beim laufenden Tauchgang werden nun gemeldet statt ignoriert. Die Schema-Version bleibt 4; Versionen 1–3 bleiben lesbar.
+
+Vier Unreal-Automationstests bestehen (`artifacts/test-log-recovery-final.log`). Die neue Prüfung deckt zwei aufeinanderfolgende Sicherungen, Ablehnung ungültiger Ersatzdaten, beschädigte/fehlende Hauptdatei, Auffinden einer alleinigen Sicherung, Reparatur ohne Überschreiben einer gesunden Sicherung sowie einen blockierten Sicherungs-Schreibpfad ab. Temporäre Dateien werden nicht als Tauchgänge gelesen. Der bestehende synthetische Zwei-Stunden-Datensatz bleibt lesbar; das ist weiterhin kein zweistündiger Laufzeittest.
+
+Editor und eigenständiges Package `Builds/WindowsRecovery/divingsim.exe` wurden erfolgreich gebaut (`artifacts/build-log-recovery-final.log`, `package-log-recovery-final.log`). `Tools/TestCheckpointRecovery.ps1` startet eine eigene Spielinstanz und beendet genau diesen Prozess hart, sobald zwei abgeschlossene Zwischenstände auf Datenträger vorliegen. Kein `EndPlay` oder normaler Tauchabschluss wird dafür ausgeführt. Danach öffnen zwei neue Spielprozesse den Originalstand und eine isolierte beschädigte Kopie mit gesunder Sicherung:
+
+| Fall | Geladene Dauer | Messpunkte | Beobachtung |
+|---|---:|---:|---|
+| Hauptstand nach harter Beendigung | 60,020 s | 60 | Nicht abgeschlossen; alle vier Kurvenseiten gerendert |
+| Beschädigte Testkopie, Sicherung gültig | 30,020 s | 30 | Älterer Stand gekennzeichnet; alle vier Kurvenseiten gerendert |
+| Normaler Ufer-Tauchabschluss | 39,680 s | 40 | Status `completed`; Sicherung mit 30 Messpunkten bleibt erhalten |
+
+Der erste Integrationslauf fand einen Pfadvergleichsfehler: Eine absolute Dateiangabe traf nicht auf den relativen Pfad desselben Logbucheintrags. Auswahl und Prüfung vergleichen jetzt normalisierte Pfade. Der vollständige Absturz-/Wiederöffnungsablauf besteht anschließend mit dem neu gebauten Package (`artifacts/checkpoint-20261125-093019`). Die Originaldatei bleibt beim Öffnen nachweislich unverändert. Deutsche und englische Wiederherstellungsansicht wurden visuell geprüft. Der normale Uferablauf besteht mit maximal 5,74 m Tiefe und 43,76 m Strecke (`artifacts/recovery-shore-full.log`). Ergebnisse, Executable- und Artefakt-Prüfsummen: [CHECKPOINT_RECOVERY.json](CHECKPOINT_RECOVERY.json).
+
+![Zwischenstand nach harter Prozessbeendigung](Images/Checkpoint_Primary.png)
+
+![Älterer Sicherungsstand mit sichtbarem Wiederherstellungshinweis](Images/Checkpoint_Recovery.png)
+
+Diese Funktion bewahrt Tauchprotokolle; sie setzt keine laufende Simulation fort. Vor der ersten Sicherung und seit der letzten erfolgreichen Sicherung können Messpunkte fehlen. Geprüft wurden Prozessbeendigung und gezielt beschädigte/fehlende Dateien, kein Stromausfall oder defekter Datenträger. Die Speicherung arbeitet derzeit synchron; ihr Einfluss bei langen Tauchgängen sowie die vollständige zweistündige Stabilität müssen noch gemessen und gegebenenfalls verbessert werden.

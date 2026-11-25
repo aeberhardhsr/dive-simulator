@@ -376,6 +376,21 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(AudioLevels.Values[0]!=master)
         { AudioLevels.Values[0]=master; Audio->ApplyLevels(AudioLevels); UE_LOG(LogTemp,Display,TEXT("DIVE_AUDIO_MASTER t=%.3f value=%.2f"),AudioSmokeClock,master); }
     }
+    if(bSmokeTest&&SmokeScenario==TEXT("recovery")&&SmokeLogbookStarted==0&&GetWorld()->GetTimeSeconds()>2)
+    {
+        FString path; FParse::Value(FCommandLine::Get(),TEXT("DiveRecoveryLog="),path);
+        const auto recovered=DiveLogbook::Read(path);
+        const bool expectedBackup=FParse::Param(FCommandLine::Get(),TEXT("DiveExpectBackup"));
+        auto* pc=Cast<APlayerController>(GetController());
+        auto* hud=pc?Cast<ADiveHUD>(pc->GetHUD()):nullptr;
+        if(!hud||!recovered.Error.IsEmpty()||!recovered.bTest||recovered.Status!=TEXT("in_progress")||
+            recovered.bRecovered!=expectedBackup||recovered.Samples.IsEmpty())
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_RECOVERY_FAIL cannot read expected checkpoint")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        bDiveActive=false; LastLogPath=path; RecoverySampleCount=recovered.Samples.Num();
+        hud->OpenLogbook(path,true); SmokeLogbookStarted=GetWorld()->GetTimeSeconds();
+        UE_LOG(LogTemp,Display,TEXT("DIVE_RECOVERY_PASS backup=%d seconds=%.3f samples=%d"),
+            recovered.bRecovered,recovered.Duration,RecoverySampleCount);
+    }
     if(bSmokeTest&&SmokeLogbookStarted>0)
     {
         auto* PC=Cast<APlayerController>(GetController());
@@ -392,8 +407,9 @@ void ADivePawn::Tick(float DeltaSeconds)
             }
             if(SmokeLogbookTime>12)
             {
-                const bool valid=HUD->LogbookMatches(LastLogPath,Samples.Num())&&HUD->LogRenderedGroups==15&&SmokeLogbookCaptured==15;
-                UE_LOG(LogTemp,Display,TEXT("DIVE_LOGBOOK_%s samples=%d groups=%u"),valid?TEXT("PASS"):TEXT("FAIL"),Samples.Num(),HUD->LogRenderedGroups);
+                const int32 expectedSamples=RecoverySampleCount>=0?RecoverySampleCount:Samples.Num();
+                const bool valid=HUD->LogbookMatches(LastLogPath,expectedSamples)&&HUD->LogRenderedGroups==15&&SmokeLogbookCaptured==15;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LOGBOOK_%s samples=%d groups=%u"),valid?TEXT("PASS"):TEXT("FAIL"),expectedSamples,HUD->LogRenderedGroups);
                 FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
             }
         }
@@ -653,7 +669,9 @@ void ADivePawn::SimulateStep(float Step)
     if(TelemetryAccumulator>=1)
     {
         Samples.Add({s,position}); TelemetryAccumulator-=1;
-        if(Samples.Num()%30==0) SaveLog(TEXT("in_progress"));
+        if(Samples.Num()%30==0&&!SaveLog(TEXT("in_progress")))
+            Notify(Local(TEXT("Zwischenspeichern fehlgeschlagen. Aktuelle Messpunkte nur im Arbeitsspeicher."),
+                         TEXT("Autosave failed. Latest log data remains in memory.")));
     }
     if(s.SpO2<60 && PendingConfig.GameMode!=Dive::Mode::Exploration)
         FinishDive(s.CylinderBar<=.1?TEXT("out_of_gas"):TEXT("no_breathing_supply"));
@@ -786,9 +804,12 @@ bool ADivePawn::SaveLog(const FString& Reason)
     root->SetArrayField(TEXT("samples"),rows);
     FString json; auto writer=TJsonWriterFactory<>::Create(&json);
     if(!FJsonSerializer::Serialize(root,writer)) return false;
-    const FString temp=LastLogPath+TEXT(".tmp");
-    if(!FFileHelper::SaveStringToFile(json,*temp,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)) return false;
-    return IFileManager::Get().Move(*LastLogPath,*temp,true,true);
+    FString error;
+    const bool saved=DiveLogbook::Write(LastLogPath,json,error);
+    if(!saved) { UE_LOG(LogTemp,Warning,TEXT("DIVE_LOG_SAVE_FAILED %s: %s"),*LastLogPath,*error); }
+    else if(bSmokeTest) { UE_LOG(LogTemp,Display,TEXT("DIVE_LOG_SAVED status=%s seconds=%.3f samples=%d path=%s"),
+        *Reason,Simulation.Data.ElapsedSeconds,Samples.Num(),*LastLogPath); }
+    return saved;
 }
 
 void ADivePawn::SaveSettings()

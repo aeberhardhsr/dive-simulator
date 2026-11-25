@@ -25,7 +25,7 @@ public:
     bool SubmitProfileName(const FString& Name);
     bool ProfileSmokeTest(int Phase);
     bool LogbookReady() const { return !bIndexLoading&&!bDetailLoading&&SelectedLog.Error.IsEmpty()&&!SelectedLog.Path.IsEmpty(); }
-    bool LogbookMatches(const FString& Path,int32 Samples) const { return LogbookReady()&&SelectedLog.Path==Path&&SelectedLog.Samples.Num()==Samples; }
+    bool LogbookMatches(const FString& Path,int32 Samples) const;
     int32 LogMetricGroup=0;
     uint32 LogRenderedGroups=0;
 private:

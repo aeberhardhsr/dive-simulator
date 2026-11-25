@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "basis_commit": "0484789c8abeb4a21a345afb3d07c1694fcb5d47",
+  "source_note": "Base plus checkpoint recovery changes committed with this report",
+  "artifact_directory": "artifacts/checkpoint-20261125-093019",
+  "checkpoint": {
+    "primary_seconds": 60.01999865844846,
+    "primary_samples": 60,
+    "backup_seconds": 30.01999932900071,
+    "backup_samples": 30,
+    "forced_termination": true,
+    "original_log": "O:\\games\\dive game\\Builds\\WindowsRecovery\\divingsim\\Saved\\DiveLogs\\20261125_093054_0CC74CCC.json",
+    "damaged_test_copy": "O:\\games\\dive game\\Builds\\WindowsRecovery\\divingsim\\Saved\\DiveLogs\\recoveryQA_79a76e8908ee40b098a8ac0ae72e9097.json",
+    "executable_sha256": "F6D9E87A9759F24693FF3E1F4D199B72D91A9D98F3884A6C73D42EE0EB292F0E"
+  },
+  "primary_unchanged_after_read": true,
+  "artifact_sha256": {
+    "Capture.log": "d6252ce1efa6fdfe073fda1acc149d99663baeb7dba7a91c18bef4dabe4b80c2",
+    "PrimaryView.log": "6666b802f1fedb0a27c92cdf0af8805be61b1556f8b40f30d32c0b3e863ab017",
+    "BackupView.log": "dece390030d8472ba58c31fd57e0db5d4bb7b2f492b602305b417f59c1fa7771",
+    "Primary.json": "3ae3454797c44db676c00a6fa464f0e1ee291f82c1b73fa2c9b3088376bf3648",
+    "Previous.json": "71cfc5d73acb0635e64bb3c3940b1f51f393dfda3e3a700c34d74fc708cf8af9",
+    "Primary_0.png": "2ddc8dfaa2d549e2a60085d6ae5047a6331929b9b3b810d2e5ddb4f95d438e8b",
+    "Backup_0.png": "0c6019c31aa75a2c25f981f108b15ecb69e211971811dfd8d6cb541cca196628",
+    "Backup_2.png": "f73f7d7d373d57816a2088ef075fa115cdf61a4feb504d7f3e74d86a85c16934"
+  },
+  "unreal_logbook_tests_passed": 4,
+  "normal_completion": {
+    "status": "completed",
+    "duration_seconds": 39.679999113082886,
+    "samples": 40,
+    "backup_status": "in_progress",
+    "backup_samples": 30,
+    "sha256": "94bd00f377dbfcdf7a07b8ed1cc49191d3afbf32fdc35e12a590ca5836bfd127",
+    "backup_sha256": "f79a6c453eff787ad4f81e65a4ec1cef3a03e4bd8a27d14ef5293d63b75966ae"
+  }
+}

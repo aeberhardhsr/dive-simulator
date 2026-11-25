@@ -30,6 +30,11 @@ FString Outcome(const FDiveLog& log,bool english)
 }
 }
 
+bool ADiveHUD::LogbookMatches(const FString& Path,int32 Samples) const
+{
+    return LogbookReady()&&FPaths::IsSamePath(SelectedLog.Path,Path)&&SelectedLog.Samples.Num()==Samples;
+}
+
 void ADiveHUD::OpenLogbook(const FString& PreferredPath,bool IncludeTests)
 {
     if(!Diver) Diver=Cast<ADivePawn>(GetOwningPawn());
@@ -69,7 +74,7 @@ void ADiveHUD::Logbook()
     if(bIndexLoading&&IndexTask.IsReady())
     {
         LogIndex=IndexTask.Get(); bIndexLoading=false;
-        int32 selection=LogIndex.Entries.IndexOfByPredicate([this](const FDiveLog& item){return item.Path==PreferredLog;});
+        int32 selection=LogIndex.Entries.IndexOfByPredicate([this](const FDiveLog& item){return !PreferredLog.IsEmpty()&&FPaths::IsSamePath(item.Path,PreferredLog);});
         if(selection==INDEX_NONE&&!LogIndex.Entries.IsEmpty()) selection=0;
         if(selection!=INDEX_NONE) { LogPage=selection/7; SelectLog(selection); }
     }
@@ -117,6 +122,8 @@ void ADiveHUD::Logbook()
     Text(log.Date+TEXT("   /   ")+Outcome(log,Diver->bEnglish),510,100,16,Muted);
     const TCHAR* modes[]={TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};
     Text(FString::Printf(TEXT("%s    /    %.0f L    /    %d %s"),modes[log.Mode],log.CylinderLitres,log.Samples.Num(),*L(TEXT("Messpunkte"),TEXT("samples"))),510,131,16,Muted);
+    if(log.bRecovered) Text(L(TEXT("Vorheriger Sicherungsstand geladen; neuere Messpunkte fehlen moeglicherweise."),
+        TEXT("Previous backup loaded; newer samples may be missing.")),510,154,14,Amber);
     const FString titles[]={L(TEXT("DAUER"),TEXT("DURATION")),L(TEXT("MAX. TIEFE"),TEXT("MAX. DEPTH")),L(TEXT("STRECKE"),TEXT("DISTANCE")),L(TEXT("WARNEREIGNISSE"),TEXT("WARNING EVENTS"))};
     const FString values[]={Clock(log.Duration),FString::Printf(TEXT("%.1f m"),log.MaxDepth),FString::Printf(TEXT("%.0f m"),log.Distance),FString::FromInt(log.WarningEvents)};
     for(int i=0;i<4;++i) { Rect(510+i*258,175,244,93,Panel); Text(titles[i],525+i*258,188,13,Muted); Text(values[i],525+i*258,218,29,White); }

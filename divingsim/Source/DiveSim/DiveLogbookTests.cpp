@@ -148,4 +148,38 @@ bool FDiveLogIndexTest::RunTest(const FString&)
     TestTrue(TEXT("Missing directory is empty"),DiveLogbook::Scan(dir/TEXT("missing")).Entries.IsEmpty());
     return true;
 }
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveLogRecoveryTest,"DiveSim.Logbook.CheckpointRecovery",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveLogRecoveryTest::RunTest(const FString&)
+{
+    const FString dir=FPaths::ProjectSavedDir()/TEXT("Automation")/(TEXT("Recovery_")+FGuid::NewGuid().ToString());
+    const FString path=dir/TEXT("session.json");
+    FString error;
+    TestTrue(TEXT("First checkpoint written"),DiveLogbook::Write(path,Fixture(30,4,TEXT("in_progress")),error));
+    TestTrue(TEXT("Second checkpoint written"),DiveLogbook::Write(path,Fixture(60,4,TEXT("in_progress")),error));
+    TestEqual(TEXT("Newest checkpoint preferred"),DiveLogbook::Read(path).Duration,60.);
+    TestFalse(TEXT("Healthy primary is not recovery"),DiveLogbook::Read(path).bRecovered);
+    TestEqual(TEXT("Previous checkpoint retained"),DiveLogbook::Read(path+TEXT(".bak")).Duration,30.);
+    TestEqual(TEXT("Backup does not duplicate index entry"),DiveLogbook::Scan(dir).Entries.Num(),1);
+    TestFalse(TEXT("Malformed replacement rejected"),DiveLogbook::Write(path,TEXT("{truncated"),error));
+    TestTrue(TEXT("Write failure explained"),!error.IsEmpty());
+    TestEqual(TEXT("Rejected input leaves primary intact"),DiveLogbook::Read(path).Duration,60.);
+    TestTrue(TEXT("Simulate torn primary"),FFileHelper::SaveStringToFile(TEXT("{torn"),*path));
+    const auto recovered=DiveLogbook::Read(path);
+    TestTrue(TEXT("Damaged primary falls back"),recovered.Error.IsEmpty()&&recovered.bRecovered);
+    TestEqual(TEXT("Recovery exposes actual older duration"),recovered.Duration,30.);
+    TestEqual(TEXT("Recovery keeps canonical selection path"),recovered.Path,path);
+    TestTrue(TEXT("New write repairs damaged primary"),DiveLogbook::Write(path,Fixture(90,4,TEXT("in_progress")),error));
+    TestEqual(TEXT("Damaged primary never overwrites healthy backup"),DiveLogbook::Read(path+TEXT(".bak")).Duration,30.);
+    TestTrue(TEXT("Simulate interruption after primary removal"),IFileManager::Get().Move(*(path+TEXT(".removed")),*path));
+    const auto missing=DiveLogbook::Scan(dir);
+    TestEqual(TEXT("Backup-only session remains discoverable"),missing.Entries.Num(),1);
+    if(missing.Entries.Num()==1) TestTrue(TEXT("Backup-only entry marked recovered"),missing.Entries[0].bRecovered);
+    TestTrue(TEXT("Restore healthy primary"),DiveLogbook::Write(path,Fixture(90,4,TEXT("in_progress")),error));
+    // A directory blocks the next backup staging write without modifying player files.
+    TestTrue(TEXT("Create blocked backup stage"),IFileManager::Get().MakeDirectory(*(path+TEXT(".bak.tmp")),true));
+    TestFalse(TEXT("Cannot lose primary when backup cannot be staged"),DiveLogbook::Write(path,Fixture(120,4,TEXT("completed")),error));
+    TestEqual(TEXT("Failed backup retains newest primary"),DiveLogbook::Read(path).Duration,90.);
+    TestEqual(TEXT("Uncommitted temporary file never becomes an index entry"),DiveLogbook::Scan(dir).Entries.Num(),1);
+    return true;
+}
 #endif

@@ -103,7 +103,9 @@ bool Parse(const FString& Json,FDiveLog& Log)
     return true;
 }
 
-FDiveLog Read(const FString& Path)
+namespace
+{
+FDiveLog ReadPrimary(const FString& Path)
 {
     FDiveLog log; log.Path=Path;
     const int64 bytes=IFileManager::Get().FileSize(*Path);
@@ -113,12 +115,57 @@ FDiveLog Read(const FString& Path)
     else Parse(json,log);
     return log;
 }
+}
+
+bool Write(const FString& Path,const FString& Json,FString& Error)
+{
+    Error.Empty();
+    FDiveLog incoming;
+    if(!Parse(Json,incoming)) { Error=TEXT("Invalid new log: ")+incoming.Error; return false; }
+    auto& files=IFileManager::Get();
+    if(!files.MakeDirectory(*FPaths::GetPath(Path),true))
+    { Error=TEXT("Cannot create log directory"); return false; }
+    auto stage=[&](const FString& Text,const FString& Temporary)
+    {
+        if(!FFileHelper::SaveStringToFile(Text,*Temporary,FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)) return false;
+        FString readback;
+        return FFileHelper::LoadFileToString(readback,*Temporary)&&readback==Text;
+    };
+    const FString temporary=Path+TEXT(".tmp"),backup=Path+TEXT(".bak");
+    if(!stage(Json,temporary)) { Error=TEXT("Cannot stage log"); return false; }
+    // UE's generic Move deletes an existing destination before renaming. Never
+    // rely on that as an atomic replacement: retain an independent valid copy.
+    if(ReadPrimary(Path).Error.IsEmpty())
+    {
+        FString previous;
+        if(!FFileHelper::LoadFileToString(previous,*Path)||!stage(previous,backup+TEXT(".tmp"))||
+            !files.Move(*backup,*(backup+TEXT(".tmp")),true,false,false,true))
+        { Error=TEXT("Cannot preserve previous log"); return false; }
+    }
+    // A damaged/missing primary must not overwrite an existing healthy backup.
+    if(!files.Move(*Path,*temporary,true,false,false,true))
+    { Error=TEXT("Cannot replace log; previous generation retained"); return false; }
+    return true;
+}
+
+FDiveLog Read(const FString& Path)
+{
+    FDiveLog log=ReadPrimary(Path);
+    if(log.Error.IsEmpty()) return log;
+    FDiveLog backup=ReadPrimary(Path+TEXT(".bak"));
+    if(backup.Error.IsEmpty())
+    { backup.Path=Path; backup.bRecovered=true; return backup; }
+    return log;
+}
 
 FDiveLogIndex Scan(const FString& Directory,bool IncludeTests)
 {
     FDiveLogIndex index;
     TArray<FString> names;
     IFileManager::Get().FindFiles(names,*(Directory/TEXT("*.json")),true,false);
+    TArray<FString> backups;
+    IFileManager::Get().FindFiles(backups,*(Directory/TEXT("*.json.bak")),true,false);
+    for(const auto& backup:backups) names.AddUnique(backup.LeftChop(4));
     names.Sort([](const FString& a,const FString& b){return a>b;});
     for(const auto& name:names)
     {

@@ -94,6 +94,7 @@ private:
     FString SmokeScenario;
     double SmokeLogbookStarted=0,SmokeLogbookTime=0;
     uint32 SmokeLogbookCaptured=0;
+    int32 RecoverySampleCount=-1;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     bool bSmokeImageryChecked=false;
     bool bPerformance=false;
