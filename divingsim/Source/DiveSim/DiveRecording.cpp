@@ -19,6 +19,11 @@ void SaveEnvironment(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& Conf
     Obj->SetNumberField(TEXT("visibility_m"),Config.VisibilityMetres);
     Obj->SetNumberField(TEXT("current_mps"),Config.CurrentMetresPerSecond);
     Obj->SetNumberField(TEXT("hour"),Config.Hour);
+    Obj->SetStringField(TEXT("scenario_date"),UTF8_TO_TCHAR(Config.Date.Text().c_str()));
+    Obj->SetStringField(TEXT("scenario_timezone"),TEXT("Europe/Zurich"));
+    const auto clock=Dive::ScenarioClock::At(Config.Date,Config.Hour,0);
+    Obj->SetNumberField(TEXT("scenario_start_utc_seconds"),clock.UTCSeconds);
+    Obj->SetNumberField(TEXT("scenario_utc_offset_minutes"),clock.OffsetMinutes);
 }
 }
 

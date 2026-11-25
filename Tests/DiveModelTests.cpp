@@ -23,6 +23,35 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 int main()
 {
     {
+        using Dive::CivilDate; using Dive::ScenarioClock;
+        check(CivilDate{1970,1,1}.SerialDay()==0,"Gregorian epoch is stable");
+        check(CivilDate::Leap(2000)&&!CivilDate::Leap(2100),"Gregorian century leap rule");
+        CivilDate date;
+        check(CivilDate::Parse("2024-02-29",date)&&date==CivilDate{2024,2,29},"Leap-day input is accepted");
+        check(!CivilDate::Parse("2025-02-29",date)&&date==CivilDate{2024,2,29},"Invalid date leaves the previous date intact");
+        check(!CivilDate::Parse("2026-13-01",date)&&!CivilDate::Parse("1999-12-31",date),"Scenario date range is explicit");
+        for(int year=2000;year<=2100;++year) for(int month=1;month<=12;++month)
+            for(int day=1;day<=CivilDate::DaysInMonth(year,month);++day)
+            { const CivilDate d{year,month,day}; check(CivilDate::FromSerialDay(d.SerialDay())==d,"Gregorian date round-trip across a full century"); }
+        const auto leap=ScenarioClock::At({2024,2,28},23+59./60,120);
+        check(leap.Date==CivilDate{2024,2,29},"Simulation advances into leap day");
+        close(leap.Hour,1./60,1.e-9,"Clock keeps the minute after midnight");
+        check(ScenarioClock::At({2026,12,31},23+59./60,120).Date==CivilDate{2027,1,1},"Simulation advances into a new year");
+        const auto spring=ScenarioClock::At({2026,3,29},1+59./60,120);
+        close(spring.Hour,3+1./60,1.e-9,"Swiss spring clock jumps forward without losing elapsed time");
+        check(spring.OffsetMinutes==120,"Spring uses CEST");
+        const auto autumn=ScenarioClock::At({2026,10,25},2+59./60,120);
+        close(autumn.Hour,2+1./60,1.e-9,"Swiss autumn clock repeats its hour while UTC stays continuous");
+        check(autumn.OffsetMinutes==60,"Autumn returns to CET");
+        double utc=123;
+        check(!ScenarioClock::StartUTC({2026,3,29},2.5,utc)&&utc==123,"Nonexistent spring time is rejected atomically");
+        check(ScenarioClock::StartUTC({2026,10,25},2.5,utc)&&ScenarioClock::OffsetAtUTC(utc)==120,"Ambiguous autumn input selects the first occurrence");
+        const auto before=ScenarioClock::At({2026,10,25},2+59./60,0);
+        close(autumn.UTCSeconds-before.UTCSeconds,120,1.e-9,"DST transition never rewinds simulation UTC");
+        check(ScenarioClock::At({},13,86400*3).Date==CivilDate{2026,6,24},"Multi-day dives advance the date");
+        close(ScenarioClock::At({},13,NAN).Hour,13,1.e-9,"Nonfinite elapsed time cannot poison the calendar");
+    }
+    {
         const auto& hour=*Dive::FindConfigInput("hour");
         double value=13;
         check(Dive::ParseConfigInput(hour,"23:59",value)==Dive::ConfigInputError::None,"Clock accepts final minute");
@@ -124,47 +153,37 @@ int main()
         waveState.Warnings=Dive::NoBreathingSupply;
         check(waveAlerts.Step(.02,waveState,cfg,0).Warning,"New loss after cooldown still alerts");
     }
-    close(Dive::EnvironmentLight::HourAt(13,7200),15,1e-12,"Two-hour dive advances the local clock by two hours");
-    close(Dive::EnvironmentLight::HourAt(23+59./60,60),0,1e-12,"Local clock wraps exactly at midnight");
-    close(Dive::EnvironmentLight::HourAt(7.5,86400*3+1800),8,1e-12,"Clock remains bounded after multiple days");
-    close(Dive::EnvironmentLight::HourAt(7.5,-1),7.5,0,"Negative elapsed time cannot rewind a dive");
-    close(Dive::EnvironmentLight::HourAt(NAN,NAN),12,0,"Invalid clock inputs remain finite");
-    check(std::isfinite(Dive::EnvironmentLight::HourAt(1.e300,1.e300)),"Large finite clock values cannot overflow");
-    check(Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(5+59./60,30),0).ElevationDegrees<0&&
-        Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(5+59./60,90),0).ElevationDegrees>0,"Real elapsed time crosses sunrise");
-    check(Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(17+59./60,30),0).ElevationDegrees>0&&
-        Dive::EnvironmentLight::At(Dive::EnvironmentLight::HourAt(17+59./60,90),0).ElevationDegrees<0,"Real elapsed time crosses sunset");
-    const auto noon=Dive::EnvironmentLight::At(12,0),night=Dive::EnvironmentLight::At(23,0);
+    const auto noon=Dive::EnvironmentLight::AtElevation(65,0),night=Dive::EnvironmentLight::AtElevation(-30,0);
     check(noon.SolarSource>0&&noon.ElevationDegrees>0,"Daytime sun is above the horizon");
     check(night.ElevationDegrees<0,"Night has no fictitious above-horizon sun");
     close(night.WaterAmbient(0,14),0,0,"Unlit night water has no ambient emission");
-    close(Dive::EnvironmentLight::At(-1,0).SolarSource,night.SolarSource,0,"Solar clock wraps negative hours");
-    close(Dive::EnvironmentLight::At(36,0).SolarSource,noon.SolarSource,0,"Solar clock repeats daily");
     check(noon.WaterAmbient(20,14)<noon.WaterAmbient(2,14),"Ambient daylight decays with water depth");
     check(noon.WaterAmbient(20,4)<noon.WaterAmbient(20,30),"Turbid water attenuates ambient light faster");
     check(noon.WaterAmbient(100,14)<.003,"Deep water cannot retain surface brightness");
-    check(Dive::EnvironmentLight::At(12,2).WaterAmbient(5,14)<noon.WaterAmbient(5,14),"Rain dims underwater ambient light");
-    check(Dive::EnvironmentLight::At(12,3).SolarSource<Dive::EnvironmentLight::At(12,2).SolarSource&&
-          Dive::EnvironmentLight::At(12,3).Diffuse<Dive::EnvironmentLight::At(12,2).Diffuse,"Storm attenuates direct and diffuse daylight");
-    close(Dive::EnvironmentLight::At(23,3).Diffuse,0,0,"Storm cannot add fictitious night ambient light");
+    check(Dive::EnvironmentLight::AtElevation(65,2).WaterAmbient(5,14)<noon.WaterAmbient(5,14),"Rain dims underwater ambient light");
+    check(Dive::EnvironmentLight::AtElevation(65,3).SolarSource<Dive::EnvironmentLight::AtElevation(65,2).SolarSource&&
+          Dive::EnvironmentLight::AtElevation(65,3).Diffuse<Dive::EnvironmentLight::AtElevation(65,2).Diffuse,"Storm attenuates direct and diffuse daylight");
+    close(Dive::EnvironmentLight::AtElevation(-30,3).Diffuse,0,0,"Storm cannot add fictitious night ambient light");
     close(night.SolarSource,noon.SolarSource,0,"Atmospheric sun stays illuminated outside the atmosphere at night");
-    const auto horizon=Dive::EnvironmentLight::At(18,0),twilight=Dive::EnvironmentLight::At(18.5,0);
+    const auto horizon=Dive::EnvironmentLight::AtElevation(0,0),twilight=Dive::EnvironmentLight::AtElevation(-8.5,0);
     check(horizon.Diffuse>0 && twilight.Diffuse>0 && twilight.Diffuse<horizon.Diffuse,"Twilight fades gradually beyond the horizon");
-    check(std::abs(Dive::EnvironmentLight::At(18-1.e-8,0).Diffuse-Dive::EnvironmentLight::At(18+1.e-8,0).Diffuse)<1.e-8,"Ambient source has no discontinuity at sunset");
+    check(std::abs(Dive::EnvironmentLight::AtElevation(1.e-8,0).Diffuse-Dive::EnvironmentLight::AtElevation(-1.e-8,0).Diffuse)<1.e-8,"Ambient source has no discontinuity at sunset");
     double previous=1;
-    for(int minute=12*60;minute<=24*60;++minute)
+    for(int angle=90;angle>=-90;--angle)
     {
-        const auto light=Dive::EnvironmentLight::At(minute/60.,0);
+        const auto light=Dive::EnvironmentLight::AtElevation(angle,0);
         check(light.Diffuse>=0 && light.Diffuse<=previous+1.e-12,"Afternoon and twilight ambient decrease monotonically");
         check(std::isfinite(light.ExposureBias(0,14)),"Twilight exposure remains finite");
         previous=light.Diffuse;
     }
-    close(Dive::EnvironmentLight::At(5.5,0).Diffuse,twilight.Diffuse,1.e-12,"Dawn and dusk use the same scattering approximation");
+    close(Dive::EnvironmentLight::AtElevation(-8.5,0).Diffuse,twilight.Diffuse,1.e-12,"Dawn and dusk use the same scattering approximation");
     close(noon.WaterAmbient(-5,14),noon.WaterAmbient(0,14),0,"Air position cannot amplify underwater source");
-    check(std::isfinite(Dive::EnvironmentLight::At(NAN,0).WaterAmbient(NAN,NAN)),"Lighting handles invalid inputs");
+    check(std::isfinite(Dive::EnvironmentLight::AtElevation(NAN,0).WaterAmbient(NAN,NAN)),"Lighting handles invalid inputs");
     check(night.ExposureBias(0,14)>noon.ExposureBias(0,14),"Eyes gain sensitivity at night");
     check(horizon.ExposureBias(0,14)-noon.ExposureBias(0,14)<6,"Camera does not fully compensate away dusk darkness");
-    close(night.ExposureBias(0,14),5.5,1.e-12,"Unlit-night sensitivity remains bounded after twilight changes");
+    close(night.ExposureBias(0,14),11.5,1.e-12,"Unlit-night sensitivity remains bounded after twilight changes");
+    check(Dive::EnvironmentLight::AtElevation(-30,0,45,.1).WaterAmbient(0,14)>0,"Above-horizon moon contributes underwater ambient");
+    close(Dive::EnvironmentLight::AtElevation(-30,0,-5,.1).WaterAmbient(0,14),0,0,"Below-horizon moon cannot illuminate water");
     check(noon.ExposureBias(40,14)>noon.ExposureBias(2,14),"Eyes gain sensitivity as ambient daylight fades");
     check(noon.ExposureBias(5000,2)<=night.ExposureBias(0,14),"Deep-water exposure cannot exceed the dark limit");
     close(Dive::CameraWaterBlend(-2),0,0,"Air camera is independent of body immersion");

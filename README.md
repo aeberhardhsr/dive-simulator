@@ -6,6 +6,8 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
+Der geprüfte Kalender-/Himmel-Build liegt lokal unter **`Builds/WindowsCelestial/divingsim.exe`**. Der Buildbefehl mit `-BuildSlot Celestial` steht unten; der ganze Paketordner wird benötigt.
+
 Nach einem lokalen Package-Build: `Builds/Windows/divingsim.exe` starten. Der gesamte benachbarte Ordner wird benötigt. Im Menü Ausrüstung, Umgebung und **Start: am Ufer / direkt im Wasser** einstellen, dann starten. Neue Einstellungen beginnen am Ufer; ältere gespeicherte Pläne behalten ihren Wasserstart. **Exploration** bietet unbegrenztes Gas und automatische Tarierung; **Simulation** verwendet manuelle Tarierung und begrenztes Gas. Hardcore ist derzeit als noch nicht vollständig implementiert gekennzeichnet.
 
 Aus dem Quellprojekt:
@@ -53,7 +55,7 @@ Bis zu 32 aktive und 128 Profile insgesamt liegen lokal in `divingsim/Saved/Dive
 
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
-**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen/Sturm, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Die Wetterwahl setzt zunächst 3/5/8/22 m/s Wind; danach ist der Wert von 0 bis 24 m/s frei einstellbar. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien. Die eingestellte Uhrzeit ist die Startzeit: Während des Tauchgangs läuft sie sekundengenau mit der Simulation weiter, auch über Mitternacht. Pause hält die Uhr und den Sonnenstand an. Atmosphärisches Morgen- und Abendlicht klingt durch die Dämmerung aus; die Kamera gleicht Dunkelheit nur teilweise aus. Sonnenaufgang und Sonnenuntergang verwenden noch eine feste 06:00-/18:00-Näherung. Datum, Jahreszeit, Mond und Sterne fehlen weiterhin. Die übrigen Umweltvorgaben bleiben fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
+**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen/Sturm, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung, Startdatum und Tageszeit. Die Wetterwahl setzt zunächst 3/5/8/22 m/s Wind; danach ist der Wert von 0 bis 24 m/s frei einstellbar. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien. Datum (2000–2099) und Uhrzeit legen den Start in Schweizer Ortszeit fest. Während des Tauchgangs laufen Datum und Uhrzeit mit der Simulation weiter, einschließlich Mitternacht und Sommerzeitwechsel; Pause hält die astronomische Zeit an. Die im Frühjahr übersprungene Stunde wird bei der Eingabe abgewiesen, die doppelte Herbststunde bezeichnet die erste Ausführung in Sommerzeit. Unreals Celestial Vault berechnet Sonne, Mondphase und Sternenhimmel für den Walensee. Die Belichtung erhält die Dämmerung und passt sich nachts allmählich an; die eingeschaltete Lampe begrenzt die Dunkeladaption. Wetter, Wassertemperatur, Vegetation und die sommerlichen Luftbilder ändern sich noch nicht automatisch mit dem Datum. Details und Prüfgrenzen: [Kalender und Himmel](Documentation/CELESTIAL.md). **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
 
 Zahlenfelder öffnen einen Eingabedialog: beispielsweise **213,5 bar**, **7,5 kg**, **22,5 m** oder **47 min**. Die Einheit gehört nicht in das Eingabefeld. Dezimalpunkt und Komma sind erlaubt; der Dialog nennt den gültigen Bereich. Die Startuhrzeit lässt sich minutengenau von **00:00 bis 23:59** einstellen. Enter oder **Speichern** übernimmt den Wert, Escape oder **Abbrechen** verwirft die Eingabe. Ungültige Werte verändern den Tauchplan nicht. Während eines laufenden Tauchgangs bleibt die Konfiguration gesperrt.
 
@@ -85,7 +87,7 @@ python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenreferenz
 ./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
 ./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
-./Tools/Build.ps1 -Target Package -BuildSlot DayCycle -PackageDirectory Builds/WindowsDayCycle # Separater Programmname bei geöffnetem Projekt-Spiel
+./Tools/Build.ps1 -Target Package -BuildSlot Celestial -PackageDirectory Builds/WindowsCelestial # Separater Programmname bei geöffnetem Projekt-Spiel
 ./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
 ./Tools/Benchmark.ps1 -PackageDirectory Builds/Windows -Scenario underwater -Resolution 1080p # 60 s gerenderte Leistung
 ./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -DisableNanite # Konventionellen Gelände-Fallback prüfen
@@ -96,7 +98,8 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1 -Packaged -Scenario dive -Hour 23 -LampOff # Nachtvergleich ohne Lampe
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-storm -Entry 1 # Sturm und 22 m/s Wind
-./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsDayCycle -Scenario daycycle -Hour (17+59/60) -MaxFPS 30 # 90 s Sonnenuntergang plus echte Pause
+./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsCelestial -Scenario daycycle -Date 2026-03-29 -Hour (1+59/60) -MaxFPS 30 # 90 s Sommerzeitwechsel plus echte Pause
+./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsCelestial -Scenario surface-calm -CelestialReferences -MaxFPS 30 # Sonne/Mond gegen JPL-Referenzen
 ./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsTwilightExposure -Scenario surface-calm -Entry 1 -Hour 18.1 -LampOff -MaxFPS 30 # Abendlicht über und unter Wasser
 ./Tools/SmokeTest.ps1 -Packaged -Scenario audio           # Audiomix mit Pause/Stummschaltung aufzeichnen
 ./Tools/TestControls.ps1              # Unreal-Prüfungen: Belegung, Konflikte, Persistenz, ungültige Werte

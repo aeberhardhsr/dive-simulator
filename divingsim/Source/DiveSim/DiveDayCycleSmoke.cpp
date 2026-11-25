@@ -7,7 +7,8 @@ void ADivePawn::TickDayCycleTest(float DeltaSeconds)
 {
     if(!bDiveActive||!Environment) return;
     const double elapsed=Simulation.Data.ElapsedSeconds;
-    const double hour=Environment->CurrentHour();
+    const auto clock=Environment->CurrentMoment();
+    const double hour=clock.Hour;
     auto fail=[](const TCHAR* why)
     { UE_LOG(LogTemp,Error,TEXT("DIVE_DAYCYCLE_FAIL %s"),why); FPlatformMisc::RequestExitWithStatus(false,1); };
     auto shot=[&](const TCHAR* phase)
@@ -15,8 +16,10 @@ void ADivePawn::TickDayCycleTest(float DeltaSeconds)
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/
             FString::Printf(TEXT("Screenshots/DayCycle_%s_%02d.png"),phase,FMath::FloorToInt(PendingConfig.Hour)),true,false);
     };
-    const double expected=FMath::Fmod(PendingConfig.Hour*3600+elapsed,86400.)/3600;
+    const double expected=Dive::ScenarioClock::At(PendingConfig.Date,PendingConfig.Hour,elapsed).Hour;
     if(FMath::Abs(hour-expected)>1.e-9) { fail(TEXT("World clock is detached from elapsed simulation time")); return; }
+    FString skyError;
+    if(!Environment->ValidateCelestial(skyError)) { fail(*skyError); return; }
     if(DayCycleSmokePhase==0&&elapsed>=10)
     {
         DayCyclePauseSeconds=elapsed; DayCyclePauseHour=hour; DayCyclePauseWall=0;
@@ -37,18 +40,18 @@ void ADivePawn::TickDayCycleTest(float DeltaSeconds)
     {
         shot(TEXT("Before")); DayCycleSmokePhase=3;
         UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_BEFORE elapsed=%.3f hour=%.9f solar_source=%.9f"),elapsed,hour,
-            Dive::EnvironmentLight::At(hour,PendingConfig.Weather).SolarSource);
+            Dive::WeatherScenario::At(PendingConfig.Weather).DirectLight);
     }
     else if(DayCycleSmokePhase==3&&elapsed>=65)
     {
-        const int boundary=(FMath::FloorToInt(PendingConfig.Hour)+1)%24;
+        const int boundary=FMath::FloorToInt(Dive::ScenarioClock::At(PendingConfig.Date,PendingConfig.Hour,65).Hour);
         if(FMath::FloorToInt(hour)!=boundary) { fail(TEXT("Expected hour boundary was not crossed")); return; }
         shot(TEXT("After")); DayCycleSmokePhase=4;
     }
     else if(DayCycleSmokePhase==4&&elapsed>=88)
     {
-        UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_PASS elapsed=%.3f start=%.9f current=%.9f paused_wall=%.3f solar_source=%.9f"),
-            elapsed,PendingConfig.Hour,hour,DayCyclePauseWall,Dive::EnvironmentLight::At(hour,PendingConfig.Weather).SolarSource);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_DAYCYCLE_PASS elapsed=%.3f start=%.9f current=%.9f paused_wall=%.3f solar_source=%.9f date=%s offset_minutes=%d"),
+            elapsed,PendingConfig.Hour,hour,DayCyclePauseWall,Dive::WeatherScenario::At(PendingConfig.Weather).DirectLight,UTF8_TO_TCHAR(clock.Date.Text().c_str()),clock.OffsetMinutes);
         DayCycleSmokePhase=5;
     }
 }

@@ -37,7 +37,6 @@ ADiveWorld::ADiveWorld()
     Ground->bUseAsyncCooking=true; Ground->SetCollisionProfileName(TEXT("BlockAll"));
     Water=CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("WaterSurface")); Water->SetupAttachment(RootComponent);
     Water->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    Clouds=CreateDefaultSubobject<UVolumetricCloudComponent>(TEXT("CloudLayer")); Clouds->SetupAttachment(RootComponent);
     auto create=[this](const TCHAR* name)
     {
         auto* component=CreateDefaultSubobject<UInstancedStaticMeshComponent>(name);
@@ -239,26 +238,14 @@ void ADiveWorld::BeginPlay()
     WaterMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("M_Water")),this);
     Water->SetMaterial(0,WaterMaterial);
     Water->SetCastShadow(false);
-    Sun=GetWorld()->SpawnActor<ADirectionalLight>();
-    auto* light=CastChecked<UDirectionalLightComponent>(Sun->GetLightComponent()); light->SetMobility(EComponentMobility::Movable);
-    Sun->SetActorRotation(FRotator(-42,-30,0));
-    light->SetIntensity(Dive::EnvironmentLight::SunLux); light->SetLightColor(FLinearColor::White);
-    light->bAtmosphereSunLight=true;
-    light->SetVolumetricScatteringIntensity(2);
-    GetWorld()->SpawnActor<ASkyAtmosphere>();
-    Sky=GetWorld()->SpawnActor<ASkyLight>();
-    Sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
-    Sky->GetLightComponent()->SetIntensity(.8);
-    Sky->GetLightComponent()->SetLightColor(FLinearColor::White);
-    Sky->GetLightComponent()->SetRealTimeCaptureEnabled(true);
+    CreateSky();
     CloudMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("MI_Cloud")),this);
     Clouds->SetMaterial(CloudMaterial);
     Clouds->SetLayerBottomAltitude(1.4f); Clouds->SetLayerHeight(1.2f);
     Rain->SetStaticMesh(Mesh(Sphere)); Rain->SetMaterial(0,Mat(TEXT("M_Rain")));
-    Fog=GetWorld()->SpawnActor<AExponentialHeightFog>();
-    Fog->SetActorLocation(FVector(0,0,-150));
-    Fog->GetComponent()->SetVolumetricFog(true);
-    Fog->GetComponent()->SetVolumetricFogScatteringDistribution(.55f);
+    Fog->SetWorldLocation(FVector(0,0,-150));
+    Fog->SetVolumetricFog(true);
+    Fog->SetVolumetricFogScatteringDistribution(.55f);
     Configure(Dive::Config{});
 }
 
@@ -285,36 +272,29 @@ void ADiveWorld::Configure(const Dive::Config& Config)
         CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalDensity"),scenario.CloudDensity);
         CloudMaterial->SetScalarParameterValue(TEXT("StormClouds"),0); // Wind/rain storm without lightning.
     }
-    UpdateDaylight();
+    LastSkyUTC=-1; UpdateDaylight();
     // Real-time sky capture contains the current sun/weather brightness.
-    if(Sky) Sky->GetLightComponent()->SetIntensity(3.f);
+    if(Sky) Sky->SetIntensity(3.f);
     UpdateAtmosphere();
 }
 
-double ADiveWorld::CurrentHour() const
+Dive::ScenarioClock::Moment ADiveWorld::CurrentMoment() const
 {
-    return Dive::EnvironmentLight::HourAt(WeatherSettings.Hour,Diver?Diver->Simulation.Data.ElapsedSeconds:0);
+    return Dive::ScenarioClock::At(WeatherSettings.Date,WeatherSettings.Hour,Diver?Diver->Simulation.Data.ElapsedSeconds:0);
 }
-
-void ADiveWorld::UpdateDaylight()
-{
-    DayHour=CurrentHour();
-    Lighting=Dive::EnvironmentLight::At(DayHour,WeatherSettings.Weather);
-    if(Sun)
-    {
-        Sun->SetActorRotation(FRotator(-Lighting.ElevationDegrees,DayHour*15-180,0));
-        Sun->GetLightComponent()->SetIntensity(Lighting.SolarSource*Dive::EnvironmentLight::SunLux);
-    }
-}
+double ADiveWorld::CurrentHour() const { return CurrentMoment().Hour; }
 
 double ADiveWorld::WaterAmbientAt(const FVector& Eye) const
 {
-    return Dive::EnvironmentLight::At(CurrentHour(),WeatherSettings.Weather).WaterAmbient((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
+    return Lighting.WaterAmbient((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
 }
 
 double ADiveWorld::ExposureBiasAt(const FVector& Eye) const
 {
-    return Dive::EnvironmentLight::At(CurrentHour(),WeatherSettings.Weather).ExposureBias((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
+    const double target=Lighting.ExposureBias((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
+    // A lit torch bounds the authored dark adaptation so its foreground beam
+    // does not blow out when turning it on after looking at the night sky.
+    return Diver&&Diver->bLamp&&Diver->Simulation.Data.LampBattery>0?FMath::Min(target,5.5):target;
 }
 
 void ADiveWorld::UpdateAtmosphere()
@@ -324,7 +304,7 @@ void ADiveWorld::UpdateAtmosphere()
     OpticalMedium=Dive::VisualMedium::At((SurfaceZ(eye.X,eye.Y)-eye.Z)/100,WeatherSettings.Weather,VisibleDistance);
     WaterAmbient=WaterAmbientAt(eye);
     const float water=static_cast<float>(OpticalMedium.Water);
-    auto* fog=Fog->GetComponent();
+    auto* fog=Fog.Get();
     fog->SetFogDensity(OpticalMedium.Density);
     fog->SetFogHeightFalloff(OpticalMedium.HeightFalloff);
     // Black additive colour leaves aerial fog lighting to Sky Atmosphere.
@@ -365,13 +345,13 @@ void ADiveWorld::Tick(float DeltaSeconds)
     TickFish(dt,player);
     if(bOpticsSmoke&&Diver)
     {
-        if(!Sun||!Sky||FMath::Abs(Sun->GetLightComponent()->Intensity-Lighting.SolarSource*Dive::EnvironmentLight::SunLux)>.02||
-            FMath::Abs(Sky->GetLightComponent()->Intensity-3)>1.e-5||
-            !Sky->GetLightComponent()->GetLightColor().Equals(FLinearColor::White,1.e-5f))
+        if(!Sun||!Sky||FMath::Abs(Sun->Intensity-Lighting.SolarSource*Dive::EnvironmentLight::SunLux)>.02||
+            FMath::Abs(Sky->Intensity-3)>1.e-5||
+            !Sky->GetLightColor().Equals(FLinearColor::White,1.e-5f))
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Sun/sky no longer match the configured environment")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
-        if(FMath::Abs(FMath::FindDeltaAngleDegrees(Sun->GetActorRotation().Pitch,-Lighting.ElevationDegrees))>.001||
-            FMath::Abs(FMath::FindDeltaAngleDegrees(Sun->GetActorRotation().Yaw,DayHour*15-180))>.001)
-        { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL Sun orientation does not follow the simulation clock")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        FString celestialError;
+        if(!ValidateCelestial(celestialError))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL %s"),*celestialError); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         // This actor ticks after the pawn: both the current camera transform
         // and its post-process settings have now been updated for this frame.
         if(!Diver->Camera->PostProcessSettings.SceneColorTint.Equals(
@@ -385,10 +365,10 @@ void ADiveWorld::Tick(float DeltaSeconds)
             { UE_LOG(LogTemp,Error,TEXT("DIVE_MEDIUM_FAIL %s"),*error); FPlatformMisc::RequestExitWithStatus(false,1); return; }
             ObservedOpticalMedia|=phase;
             UE_LOG(LogTemp,Display,TEXT("DIVE_LIGHT_PASS elevation=%.3f sun=%.5f sky=%.3f water_ambient=%.6f"),
-                Lighting.ElevationDegrees,Sun->GetLightComponent()->Intensity,Sky->GetLightComponent()->Intensity,WaterAmbient);
+                Lighting.ElevationDegrees,Sun->Intensity,Sky->Intensity,WaterAmbient);
             UE_LOG(LogTemp,Display,TEXT("DIVE_MEDIUM_PASS phase=%s weight=%.5f density=%.5f sky=%.5f"),
                 phase==1?TEXT("air"):phase==4?TEXT("water"):TEXT("transition"),OpticalMedium.Water,
-                Fog->GetComponent()->FogDensity,Fog->GetComponent()->SkyAtmosphereAmbientContributionColorScale.R);
+                Fog->FogDensity,Fog->SkyAtmosphereAmbientContributionColorScale.R);
         }
     }
     Bubbles->ClearInstances();

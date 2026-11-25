@@ -20,6 +20,7 @@ FString Number(const Dive::ConfigInput& Spec,double Value)
 
 FString ADiveHUD::ConfigValue(FName Id) const
 {
+    if(Id==TEXT("date")&&Diver) return UTF8_TO_TCHAR(Diver->PendingConfig.Date.Text().c_str());
     const auto* spec=Input(Id); if(!spec||!Diver) return FString();
     const FString value=Number(*spec,Diver->PendingConfig.*(spec->Member));
     return spec->Clock?value:value+TEXT(" ")+UTF8_TO_TCHAR(spec->Unit);
@@ -28,6 +29,7 @@ FString ADiveHUD::ConfigInputTitle() const
 {
     struct FLabel { const TCHAR* Id; const TCHAR* German; const TCHAR* English; };
     const FLabel labels[]={
+        {TEXT("date"),TEXT("Szenariodatum"),TEXT("Scenario date")},
         {TEXT("hour"),TEXT("Tageszeit"),TEXT("Time of day")},
         {TEXT("pressure"),TEXT("Startdruck"),TEXT("Starting pressure")},
         {TEXT("weight"),TEXT("Bleigewicht"),TEXT("Ballast")},
@@ -48,6 +50,9 @@ FString ADiveHUD::ConfigInputTitle() const
 }
 FString ADiveHUD::ConfigInputHint() const
 {
+    if(ConfigEditing==TEXT("date")) return Diver->Local(
+        TEXT("JJJJ-MM-TT, 2000–2099. Schweizer Ortszeit.\nIm Herbst gilt bei doppelter Uhrzeit die erste (Sommerzeit).\nEnter uebernimmt; Escape verwirft."),
+        TEXT("YYYY-MM-DD, 2000–2099. Swiss local time.\nRepeated autumn times use the first occurrence (summer time).\nEnter applies; Escape cancels."));
     const auto* spec=Input(ConfigEditing); if(!spec) return FString();
     const FString range=spec->Clock?TEXT("00:00 – 23:59 (HH:MM)"):
         Number(*spec,spec->Minimum)+TEXT(" – ")+Number(*spec,spec->Maximum)+TEXT(" ")+UTF8_TO_TCHAR(spec->Unit);
@@ -57,13 +62,13 @@ FString ADiveHUD::ConfigInputHint() const
 bool ADiveHUD::OpenConfigInput(FName Id)
 {
     const auto* spec=Input(Id);
-    if(!spec||!Diver||Diver->bDiveActive||!Diver->bMenu||ConfigDialog||!GEngine||!GEngine->GameViewport) return false;
+    if((!spec&&Id!=TEXT("date"))||!Diver||Diver->bDiveActive||!Diver->bMenu||ConfigDialog||!GEngine||!GEngine->GameViewport) return false;
     ConfigEditing=Id; ConfigError.Empty();
     const TWeakObjectPtr<ADiveHUD> weak(this);
     auto dialog=SNew(SDiveTextDialog).English(Diver->bEnglish)
         .Title(FText::FromString(ConfigInputTitle()))
         .Hint(FText::FromString(ConfigInputHint()))
-        .Initial(FText::FromString(Number(*spec,Diver->PendingConfig.*(spec->Member))))
+        .Initial(FText::FromString(Id==TEXT("date")?ConfigValue(Id):Number(*spec,Diver->PendingConfig.*(spec->Member))))
         .Error_Lambda([weak](){return weak.IsValid()?FText::FromString(weak->ConfigError):FText::GetEmpty();})
         .OnSubmit_Lambda([weak](const FText& Value,ETextCommit::Type){if(weak.IsValid()) weak->SubmitConfigInput(Value.ToString());})
         .OnCancel_Lambda([weak](){if(weak.IsValid()) weak->CloseConfigInput();});
@@ -76,7 +81,25 @@ bool ADiveHUD::OpenConfigInput(FName Id)
 bool ADiveHUD::SubmitConfigInput(const FString& Value)
 {
     const auto* spec=Input(ConfigEditing);
-    if(!ConfigDialog||!spec||!Diver||Diver->bDiveActive) return false;
+    if(!ConfigDialog||(!spec&&ConfigEditing!=TEXT("date"))||!Diver||Diver->bDiveActive) return false;
+    auto candidate=Diver->PendingConfig;
+    auto clockValid=[&]()
+    {
+        double utc=0;
+        if(Dive::ScenarioClock::StartUTC(candidate.Date,candidate.Hour,utc)) return true;
+        ConfigError=Diver->Local(TEXT("Diese Uhrzeit entfaellt bei der Sommerzeitumstellung. Bitte eine andere Uhrzeit oder ein anderes Datum waehlen."),
+            TEXT("This time does not exist during the spring clock change. Choose another time or date."));
+        return false;
+    };
+    if(ConfigEditing==TEXT("date"))
+    {
+        if(!Dive::CivilDate::Parse(TCHAR_TO_UTF8(*Value),candidate.Date))
+        {
+            ConfigError=Diver->Local(TEXT("Ein gueltiges Datum als JJJJ-MM-TT eingeben (2000–2099)."),TEXT("Enter a valid date as YYYY-MM-DD (2000–2099).")); return false;
+        }
+        if(!clockValid()) return false;
+        Diver->PendingConfig=candidate; Diver->SaveSettings(); CloseConfigInput(); return true;
+    }
     double value=0;
     const auto error=Dive::ParseConfigInput(*spec,TCHAR_TO_UTF8(*Value),value);
     if(error!=Dive::ConfigInputError::None)
@@ -90,7 +113,9 @@ bool ADiveHUD::SubmitConfigInput(const FString& Value)
             Diver->Local(TEXT("Eine Zahl ohne Einheit eingeben, zum Beispiel 7,5."),TEXT("Enter a number without a unit, for example 7.5."));
         return false;
     }
-    Diver->PendingConfig.*(spec->Member)=value;
+    candidate.*(spec->Member)=value;
+    if(!clockValid()) return false;
+    Diver->PendingConfig=candidate;
     Diver->SaveSettings(); CloseConfigInput(); return true;
 }
 void ADiveHUD::CloseConfigInput(bool RestoreFocus)
@@ -169,10 +194,40 @@ bool ADiveHUD::ConfigSmokeTest(int Phase)
     }
     if(Phase==6)
     {
+        NotifyHitBoxClick(TEXT("date")); if(!ConfigDialog) return false;
+        ConfigEditor->SetText(FText::FromString(TEXT("2024-02-29"))); shot(TEXT("ConfigDate_EN")); return true;
+    }
+    if(Phase==7)
+    {
+        const auto before=Diver->PendingConfig;
+        if(SubmitConfigInput(TEXT("2025-02-29"))||SubmitConfigInput(TEXT("2100-01-01"))||
+            !DiveConfigIO::Equal(before,0,Diver->PendingConfig,0)||!SubmitConfigInput(TEXT("2024-02-29"))) return false;
+        const auto expected=Diver->PendingConfig; const int entry=Diver->EntryIndex;
+        Diver->PendingConfig=Dive::Config{}; Diver->LoadSettings();
+        shot(TEXT("ConfigDateValues_EN"));
+        return DiveConfigIO::Equal(expected,entry,Diver->PendingConfig,Diver->EntryIndex)&&ConfigValue(TEXT("date"))==TEXT("2024-02-29");
+    }
+    if(Phase==8)
+    {
+        NotifyHitBoxClick(TEXT("hour")); if(!SubmitConfigInput(TEXT("02:30"))) return false;
+        const auto before=Diver->PendingConfig;
+        NotifyHitBoxClick(TEXT("date"));
+        if(SubmitConfigInput(TEXT("2026-03-29"))||!DiveConfigIO::Equal(before,0,Diver->PendingConfig,0)) return false;
+        CloseConfigInput(); NotifyHitBoxClick(TEXT("hour")); if(!SubmitConfigInput(TEXT("07:05"))) return false;
+        NotifyHitBoxClick(TEXT("date")); if(!SubmitConfigInput(TEXT("2026-03-29"))) return false;
+        NotifyHitBoxClick(TEXT("hour"));
+        ConfigEditor->SetText(FText::FromString(TEXT("02:30")));
+        const bool rejected=!SubmitConfigInput(TEXT("02:30"))&&Diver->PendingConfig.Hour==7+5./60&&!ConfigError.IsEmpty();
+        shot(TEXT("ConfigSpringGap_EN")); return rejected;
+    }
+    if(Phase==9)
+    {
+        CloseConfigInput(); NotifyHitBoxClick(TEXT("date")); if(!SubmitConfigInput(TEXT("2024-02-29"))) return false;
         Diver->StartDive(); Diver->SetMenu(true);
         const auto before=Diver->PendingConfig;
-        NotifyHitBoxClick(TEXT("pressure"));
+        NotifyHitBoxClick(TEXT("pressure")); NotifyHitBoxClick(TEXT("date"));
         const bool locked=!ConfigDialog&&DiveConfigIO::Equal(before,0,Diver->PendingConfig,0)&&
+            Diver->Simulation.Settings.Date==Dive::CivilDate{2024,2,29}&&
             Diver->Simulation.Settings.StartPressureBar==213.5&&Diver->Simulation.Settings.WeightKg==7.5&&
             Diver->Simulation.Settings.PlannedDepthMetres==22.5&&Diver->Simulation.Settings.PlannedMinutes==47&&
             Diver->Simulation.Settings.AirTemperatureC==-3.5&&Diver->Simulation.Settings.CurrentMetresPerSecond==.17&&

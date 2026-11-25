@@ -53,7 +53,10 @@ public:
     bool ValidateLandscape(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);
+    Dive::ScenarioClock::Moment CurrentMoment() const;
     double CurrentHour() const;
+    void UpdateDaylight();
+    bool ValidateCelestial(FString& Error) const;
     double WaterAmbientAt(const FVector& Eye) const;
     double ExposureBiasAt(const FVector& Eye) const;
     double SurfaceZ(double X,double Y,double Seconds=-1) const;
@@ -75,8 +78,9 @@ private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Water;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterMaterial;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> CloudMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInterface> StarMaterial;
     UPROPERTY() TObjectPtr<class UVolumetricCloudComponent> Clouds;
-    UPROPERTY() TObjectPtr<class ASkyLight> Sky;
+    UPROPERTY() TObjectPtr<class USkyLightComponent> Sky;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rain;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> Buoys;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuoyLines;
@@ -85,8 +89,8 @@ private:
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Bubbles;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Particles;
-    UPROPERTY() TObjectPtr<ADirectionalLight> Sun;
-    UPROPERTY() TObjectPtr<AExponentialHeightFog> Fog;
+    UPROPERTY() TObjectPtr<class UDirectionalLightComponent> Sun;
+    UPROPERTY() TObjectPtr<class UExponentialHeightFogComponent> Fog;
     TArray<FDiveBubble> BubbleState;
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
@@ -102,8 +106,12 @@ private:
     double WaterAmbient=0;
     bool bOpticsSmoke=false;
     uint8 ObservedOpticalMedia=0;
+    UPROPERTY() TObjectPtr<class ACelestialVaultDaySequenceActor> Celestial;
+    double LastSkyUTC=-1,LastMoonPhaseUTC=-1;
+    float MoonPhaseAge=0;
+    void CreateSky();
+    void ValidateCelestialReferences();
     void UpdateAtmosphere();
-    void UpdateDaylight();
     void CreateWater();
     void UpdateWater(const FVector& Player);
     void StreamTerrain(const FVector& Position,bool Immediate=false);

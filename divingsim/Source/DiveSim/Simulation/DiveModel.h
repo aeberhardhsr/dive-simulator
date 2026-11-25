@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstdint>
 #include "Weather.h"
+#include "ScenarioClock.h"
 
 namespace Dive
 {
@@ -47,6 +48,7 @@ struct Config
     double PlannedDepthMetres = 20.0;
     double PlannedMinutes = 30.0;
     double Hour = 13.0;
+    CivilDate Date;
     double WindMetresPerSecond = 3.0;
     double WindDirectionDegrees = 90.0;
     double ThermoclineMetres = 10.0;
@@ -72,6 +74,9 @@ struct Config
         clean(VisibilityMetres,14,2,40); clean(CurrentMetresPerSecond,.08,0,.5);
         clean(PlannedDepthMetres,20,3,60); clean(PlannedMinutes,30,1,120);
         clean(Hour,13,0,23.99);
+        if(!Date.ScenarioRange()) Date=CivilDate{};
+        double utc=0;
+        if(!ScenarioClock::StartUTC(Date,Hour,utc)) Hour+=1; // Corrupt/legacy spring-gap input; UI rejects it.
         clean(WindMetresPerSecond,3,0,WeatherScenario::MaximumWind); clean(WindDirectionDegrees,90,0,359.99);
         clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
         Weather=std::clamp(Weather,0,WeatherScenario::Count-1);

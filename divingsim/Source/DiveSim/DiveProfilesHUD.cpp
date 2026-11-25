@@ -171,7 +171,7 @@ void ADiveHUD::ProfilesMenu()
     const bool autoTrim=c.AutoBuoyancy||c.GameMode==Dive::Mode::Exploration;
     Text(suit+TEXT("   /   ")+(autoTrim?L(TEXT("Automatische Tarierung"),TEXT("Automatic buoyancy")):L(TEXT("Manuelle Tarierung"),TEXT("Manual buoyancy"))),585,365,19,White);
     const FString hour=UTF8_TO_TCHAR(Dive::FormatConfigInput(*Dive::FindConfigInput("hour"),c.Hour).c_str());
-    Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f deg"),*hour,*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
+    Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f deg"),*(FString(UTF8_TO_TCHAR(c.Date.Text().c_str()))+TEXT("  ")+hour),*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
     Text(FString::Printf(TEXT("%s %.1f m   /   %s %.2f m/s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,Diver->bEnglish?TEXT("Current"):TEXT("Stroemung"),c.CurrentMetresPerSecond),585,445,19,White);
     Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s %.1f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
     Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphaere"),c.SurfacePressureBar),585,525,20,White);

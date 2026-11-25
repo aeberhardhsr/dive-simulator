@@ -124,6 +124,7 @@ void ADiveHUD::Menu()
         Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+w+gap,450,w);
         Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),450,w);
         Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x,550,w);
+        Field(TEXT("date"),L(TEXT("SZENARIODATUM"),TEXT("SCENARIO DATE")),ConfigValue(TEXT("date")),x+2*(w+gap),550,w);
         Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),ConfigValue(TEXT("air_temp")),x+w+gap,550,w);
         Text(L(TEXT("Wetterwahl setzt den Wind; danach frei anpassbar."),TEXT("Choosing weather sets the wind; you can adjust it afterwards.")),x,655,15,Muted);
     }
@@ -171,8 +172,10 @@ void ADiveHUD::Instruments()
     const int heading=FMath::RoundToInt(yaw/45)%8;
     Rect(640,32,320,58,Dark);
     Text(FString::Printf(TEXT("%s    %03d deg    %s"),Diver->bEnglish?headingsEN[heading]:headingsDE[heading],FMath::RoundToInt(yaw)%360,*Time(s.ElapsedSeconds)),672,50,20,White);
-    const int clockMinutes=FMath::FloorToInt(Diver->Environment->CurrentHour()*60+1.e-8)%1440;
-    Text(L(TEXT("UHRZEIT  "),TEXT("LOCAL TIME  "))+FString::Printf(TEXT("%02d:%02d"),clockMinutes/60,clockMinutes%60),672,100,14,Muted);
+    const auto clock=Diver->Environment->CurrentMoment();
+    const int clockMinutes=FMath::FloorToInt(clock.Hour*60+1.e-8)%1440;
+    Text(FString::Printf(TEXT("%s  %02d:%02d %s"),UTF8_TO_TCHAR(clock.Date.Text().c_str()),clockMinutes/60,clockMinutes%60,
+        clock.OffsetMinutes==120?TEXT("CEST"):TEXT("CET")),672,100,14,Muted);
     Text(TEXT("WALENSEE / ")+Diver->EntryName(),50,46,16,White);
     Text((Diver->PendingConfig.StartOnShore?L(TEXT("Rueckkehr zum Startpodest  /  "),TEXT("Return to the starting platform  /  ")):L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  ")))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
     if(Diver->PendingConfig.StartOnShore) Text(Diver->bWalking?L(TEXT("GEHEN / WATEN"),TEXT("WALKING / WADING")):L(TEXT("SCHWIMMEN"),TEXT("SWIMMING")),50,102,14,Accent);

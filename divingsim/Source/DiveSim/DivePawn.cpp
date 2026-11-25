@@ -74,6 +74,12 @@ void ADivePawn::BeginPlay()
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
         if(SmokeScenario==TEXT("daycycle")) { PendingConfig.Hour=17+59./60; PendingConfig.WindMetresPerSecond=0; }
         FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
+        FString scenarioDate;
+        if(FParse::Value(FCommandLine::Get(),TEXT("DiveDate="),scenarioDate)&&!Dive::CivilDate::Parse(TCHAR_TO_UTF8(*scenarioDate),PendingConfig.Date))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL invalid DiveDate")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        double scenarioUTC=0;
+        if(!Dive::ScenarioClock::StartUTC(PendingConfig.Date,PendingConfig.Hour,scenarioUTC))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL invalid/nonexistent scenario start time")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("surface-storm")) PendingConfig.SelectWeather(3);
@@ -439,6 +445,13 @@ void ADivePawn::Tick(float DeltaSeconds)
         FString waterError;
         if(!Environment->ValidateWater(waterError))
         { UE_LOG(LogTemp,Error,TEXT("DIVE_WATER_FAIL %s"),*waterError); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        if(SmokeScenario.StartsWith(TEXT("surface"))&&Simulation.Data.ElapsedSeconds>24&&FParse::Param(FCommandLine::Get(),TEXT("DiveSkyView")))
+        {
+            double yaw=180,pitch=45;
+            FParse::Value(FCommandLine::Get(),TEXT("DiveSkyYaw="),yaw);
+            FParse::Value(FCommandLine::Get(),TEXT("DiveSkyPitch="),pitch);
+            if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(pitch,yaw,0));
+        }
         bSmokeSurfaceReached|=GetActorLocation().Z>Environment->SurfaceZ(GetActorLocation().X,GetActorLocation().Y)+2;
         if(SmokeScenario.StartsWith(TEXT("surface"))&&Simulation.Data.ElapsedSeconds>25&&!bSmokeSecondaryCaptured&&
             GetActorLocation().Z>Environment->SurfaceZ(GetActorLocation().X,GetActorLocation().Y)+8)
@@ -528,6 +541,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
     const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
     Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight+breathMotion));
+    Environment->UpdateDaylight();
     const FVector eye=Camera->GetComponentLocation();
     const float depth=FMath::Max(0.f,static_cast<float>((Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100));
     const float underwater=static_cast<float>(Dive::CameraWaterBlend(depth));
@@ -549,7 +563,10 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_CameraISO=true; PP.CameraISO=100;
     PP.bOverride_CameraShutterSpeed=true; PP.CameraShutterSpeed=60;
     PP.bOverride_DepthOfFieldFstop=true; PP.DepthOfFieldFstop=4;
-    PP.bOverride_AutoExposureBias=true; PP.AutoExposureBias=Environment->ExposureBiasAt(eye);
+    PP.bOverride_AutoExposureBias=true;
+    const float targetExposure=Environment->ExposureBiasAt(eye);
+    PP.AutoExposureBias=bDiveActive?FMath::FInterpTo(PP.AutoExposureBias,targetExposure,DeltaSeconds,
+        targetExposure<PP.AutoExposureBias?2.f:.5f):targetExposure;
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);
@@ -668,6 +685,7 @@ void ADivePawn::SimulateStep(float Step)
         Tutorial.ObserveView(PC->GetControlRotation().Yaw,PC->GetControlRotation().Pitch);
         Tutorial.Step(Step,s,(position-old).Size()/100,wish.SizeSquared()>.01,bShowComputer,ComputerPage,bLamp,bShowMap,FVector::Dist2D(position,EntryLocation)/100);
     }
+    Environment->UpdateDaylight();
     const FVector eye=Camera->GetComponentLocation();
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
     if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&s.MouthSubmerged)
