@@ -14,6 +14,8 @@
 #include "Engine/World.h"
 #include "Components/SkyAtmosphereComponent.h"
 #include "Materials/MaterialInterface.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Components/VolumetricCloudComponent.h"
 
 namespace
 {
@@ -33,8 +35,9 @@ ADiveWorld::ADiveWorld()
     Ground->bUseAsyncCooking=true; Ground->SetCollisionProfileName(TEXT("BlockAll"));
     LandscapeMesh=CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("WalenseeSurroundings"));
     LandscapeMesh->SetupAttachment(RootComponent); LandscapeMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    Water=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WaterSurface")); Water->SetupAttachment(RootComponent);
+    Water=CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("WaterSurface")); Water->SetupAttachment(RootComponent);
     Water->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Clouds=CreateDefaultSubobject<UVolumetricCloudComponent>(TEXT("CloudLayer")); Clouds->SetupAttachment(RootComponent);
     auto create=[this](const TCHAR* name)
     {
         auto* component=CreateDefaultSubobject<UInstancedStaticMeshComponent>(name);
@@ -51,6 +54,7 @@ ADiveWorld::ADiveWorld()
         Fish.Add(component);
     }
     Bubbles=create(TEXT("BreathBubbles")); Particles=create(TEXT("SuspendedParticles"));
+    Rain=create(TEXT("Rain")); Rain->SetCastShadow(false);
     Bubbles->SetCastShadow(false); Particles->SetCastShadow(false);
 }
 
@@ -220,15 +224,15 @@ void ADiveWorld::BeginPlay()
         {
             const FVector p=Terrain.Entries[i].Position;
             const float bottom=GroundZ(p.X,p.Y);
-            Prop(FString::Printf(TEXT("EntryBuoy%d"),i),Sphere,FVector(p.X,p.Y,15),FVector(.55,.55,.75),TEXT("M_Buoy"),false);
-            Prop(FString::Printf(TEXT("EntryLine%d"),i),TEXT("/Engine/BasicShapes/Cylinder.Cylinder"),
-                FVector(p.X,p.Y,bottom*.5),FVector(.025,.025,-bottom/100),TEXT("M_Rope"),false);
+            Buoys.Add(Prop(FString::Printf(TEXT("EntryBuoy%d"),i),Sphere,FVector(p.X,p.Y,15),FVector(.55,.55,.75),TEXT("M_Buoy"),false));
+            BuoyLines.Add(Prop(FString::Printf(TEXT("EntryLine%d"),i),TEXT("/Engine/BasicShapes/Cylinder.Cylinder"),
+                FVector(p.X,p.Y,bottom*.5),FVector(.025,.025,-bottom/100),TEXT("M_Rope"),false));
         }
     }
     else UE_LOG(LogTemp,Error,TEXT("WALENSEE_DATA_FAILED: %s"),*Terrain.Error);
-    Water->SetStaticMesh(Mesh(TEXT("/Engine/BasicShapes/Plane.Plane")));
-    Water->SetRelativeLocation(FVector(200000,800000,0));
-    Water->SetRelativeScale3D(FVector(4000,16000,1)); Water->SetMaterial(0,Mat(TEXT("M_Water")));
+    CreateWater();
+    WaterMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("M_Water")),this);
+    Water->SetMaterial(0,WaterMaterial);
     Water->SetCastShadow(false);
     Sun=GetWorld()->SpawnActor<ADirectionalLight>();
     Sun->SetActorRotation(FRotator(-42,-30,0));
@@ -237,11 +241,15 @@ void ADiveWorld::BeginPlay()
     light->bAtmosphereSunLight=true;
     light->SetVolumetricScatteringIntensity(2);
     GetWorld()->SpawnActor<ASkyAtmosphere>();
-    auto* sky=GetWorld()->SpawnActor<ASkyLight>();
-    sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
-    sky->GetLightComponent()->SetIntensity(.8);
-    sky->GetLightComponent()->SetLightColor(FLinearColor(.55,.75,.85));
-    sky->GetLightComponent()->SetRealTimeCaptureEnabled(true);
+    Sky=GetWorld()->SpawnActor<ASkyLight>();
+    Sky->GetLightComponent()->SetMobility(EComponentMobility::Movable);
+    Sky->GetLightComponent()->SetIntensity(.8);
+    Sky->GetLightComponent()->SetLightColor(FLinearColor(.55,.75,.85));
+    Sky->GetLightComponent()->SetRealTimeCaptureEnabled(true);
+    CloudMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("MI_Cloud")),this);
+    Clouds->SetMaterial(CloudMaterial);
+    Clouds->SetLayerBottomAltitude(1.4f); Clouds->SetLayerHeight(1.2f);
+    Rain->SetStaticMesh(Mesh(Sphere)); Rain->SetMaterial(0,Mat(TEXT("M_Rain")));
     Fog=GetWorld()->SpawnActor<AExponentialHeightFog>();
     Fog->SetActorLocation(FVector(0,0,-150));
     Fog->GetComponent()->SetFogHeightFalloff(.01);
@@ -249,7 +257,7 @@ void ADiveWorld::BeginPlay()
     Fog->GetComponent()->SetVolumetricFog(true);
     Fog->GetComponent()->SetVolumetricFogScatteringDistribution(.55f);
     Fog->GetComponent()->SetVolumetricFogAlbedo(FColor(75,135,110));
-    Configure(14,13,.08);
+    Configure(Dive::Config{});
 }
 
 void ADiveWorld::CreateLandscape()
@@ -294,16 +302,38 @@ void ADiveWorld::CreateLandscape()
     UE_LOG(LogTemp,Display,TEXT("WALENSEE_LAND_MESH vertices=%d triangles=%d"),vertices.Num(),indices.Num()/3);
 }
 
-void ADiveWorld::Configure(float Visibility,float Hour,float Current)
+void ADiveWorld::Configure(const Dive::Config& Config)
 {
-    VisibleDistance=Visibility; Flow=Current; DayHour=Hour;
-    if(Fog) Fog->GetComponent()->SetFogDensity(.35f*14/Visibility);
-    const float daylight=FMath::Max(.02f,FMath::Sin((Hour-6)/12*PI));
+    WeatherSettings=Config; WeatherSettings.Sanitize();
+    VisibleDistance=WeatherSettings.VisibilityMetres; Flow=WeatherSettings.CurrentMetresPerSecond; DayHour=WeatherSettings.Hour;
+    Waves.Configure(WeatherSettings.WindMetresPerSecond,WeatherSettings.WindDirectionDegrees);
+    if(WaterMaterial)
+    {
+        for(int i=0;i<4;++i)
+        {
+            const auto& w=Waves.Waves[i];
+            WaterMaterial->SetVectorParameterValue(FName(*FString::Printf(TEXT("Wave%d"),i)),FLinearColor(w.Kx,w.Ky,w.Omega,w.Amplitude));
+        }
+        WaterMaterial->SetVectorParameterValue(TEXT("WavePhase"),FLinearColor(Waves.Waves[0].Phase,Waves.Waves[1].Phase,Waves.Waves[2].Phase,Waves.Waves[3].Phase));
+        WaterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),14.f/VisibleDistance);
+        WaterMaterial->SetScalarParameterValue(TEXT("WindStrength"),WeatherSettings.WindMetresPerSecond/12);
+    }
+    if(CloudMaterial)
+    {
+        const float coverage[]={-.65f,.25f,.65f};
+        CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalCoverage"),coverage[WeatherSettings.Weather]);
+        CloudMaterial->SetScalarParameterValue(TEXT("Cloud_GlobalDensity"),WeatherSettings.Weather==2?.012f:.008f);
+        CloudMaterial->SetScalarParameterValue(TEXT("StormClouds"),0); // No unrequested lightning flashes.
+    }
+    if(Fog) Fog->GetComponent()->SetFogDensity(.35f*14/VisibleDistance);
+    const float daylight=FMath::Max(.02f,FMath::Sin((DayHour-6)/12*PI));
+    const float cloudLight=WeatherSettings.Weather==0?1.f:WeatherSettings.Weather==1?.55f:.3f;
     if(Sun)
     {
-        Sun->SetActorRotation(FRotator(-FMath::Max(5.f,daylight*65),Hour*15-180,0));
-        Sun->GetLightComponent()->SetIntensity(daylight*8);
+        Sun->SetActorRotation(FRotator(-FMath::Max(5.f,daylight*65),DayHour*15-180,0));
+        Sun->GetLightComponent()->SetIntensity(daylight*8*cloudLight);
     }
+    if(Sky) Sky->GetLightComponent()->SetIntensity(.8f*FMath::Lerp(.25f,1.f,daylight)*cloudLight);
 }
 
 void ADiveWorld::EmitBreath(const FVector& Position,const FVector& Direction,float Pressure)
@@ -323,6 +353,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
     if(Diver && Diver->bDiveActive && Diver->bMenu) return;
     const float dt=FMath::Min(DeltaSeconds,.1f); WorldTime+=dt;
     const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
+    UpdateWater(player);
     if(bTerrainReady)
     {
         StreamTerrain(player);
@@ -331,8 +362,8 @@ void ADiveWorld::Tick(float DeltaSeconds)
     }
     if(Fog)
     {
-        const float underwater=FMath::Clamp(static_cast<float>(-player.Z)/70,0.f,1.f);
-        Fog->GetComponent()->SetFogDensity(FMath::Lerp(.002f,.35f*14/VisibleDistance,underwater));
+        const float underwater=FMath::Clamp(static_cast<float>(SurfaceZ(player.X,player.Y)-player.Z)/70,0.f,1.f);
+        Fog->GetComponent()->SetFogDensity(FMath::Lerp(WeatherSettings.Weather==2?.012f:.002f,.35f*14/VisibleDistance,underwater));
     }
     TickFish(dt,player);
     Bubbles->ClearInstances();
@@ -340,8 +371,8 @@ void ADiveWorld::Tick(float DeltaSeconds)
     {
         auto& b=BubbleState[i]; b.Age+=dt;
         b.Position+=FVector(FMath::Sin(WorldTime*3+i)*3,Flow*100,40+b.Radius*1500)*dt;
-        if(b.Age>18 || b.Position.Z>0) { BubbleState.RemoveAtSwap(i); continue; }
-        const float pressure=.965f+FMath::Max(0.f,static_cast<float>(-b.Position.Z/100))*.0980665f;
+        if(b.Age>18 || b.Position.Z>SurfaceZ(b.Position.X,b.Position.Y)) { BubbleState.RemoveAtSwap(i); continue; }
+        const float pressure=.965f+PressureDepth(b.Position,Diver?Diver->Simulation.Data.ElapsedSeconds:0)*.0980665f;
         const float radius=b.Radius*FMath::Pow(b.StartPressure/pressure,1.f/3.f);
         Bubbles->AddInstance(FTransform(FRotator::ZeroRotator,b.Position,FVector(radius)));
     }

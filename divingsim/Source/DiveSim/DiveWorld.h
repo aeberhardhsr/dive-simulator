@@ -2,12 +2,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DiveTerrain.h"
+#include "Simulation/DiveModel.h"
+#include "Simulation/WaterSurface.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
 class UStaticMeshComponent;
 class UProceduralMeshComponent;
 class UMaterialInterface;
+class UMaterialInstanceDynamic;
 class ADirectionalLight;
 class AExponentialHeightFog;
 class ADivePawn;
@@ -36,13 +39,24 @@ public:
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
-    void Configure(float Visibility,float Hour,float Current);
+    void Configure(const Dive::Config& Config);
+    double SurfaceZ(double X,double Y,double Seconds=-1) const;
+    double PressureDepth(const FVector& Position,double Seconds) const;
+    FVector WaveVelocity(const FVector& Position,double Seconds) const;
+    bool ValidateWater(FString& Error) const;
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> LandscapeMesh;
     UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
-    UPROPERTY() TObjectPtr<UStaticMeshComponent> Water;
+    UPROPERTY() TObjectPtr<UProceduralMeshComponent> Water;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> CloudMaterial;
+    UPROPERTY() TObjectPtr<class UVolumetricCloudComponent> Clouds;
+    UPROPERTY() TObjectPtr<class ASkyLight> Sky;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rain;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> Buoys;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuoyLines;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rocks;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Plants;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
@@ -57,6 +71,10 @@ private:
     float Flow=.08f, VisibleDistance=14, WorldTime=0, DayHour=12;
     FVector PopulationOrigin=FVector::ZeroVector;
     FVector PopulationForward=FVector::ForwardVector;
+    Dive::WaterSurface Waves;
+    Dive::Config WeatherSettings;
+    void CreateWater();
+    void UpdateWater(const FVector& Player);
     void StreamTerrain(const FVector& Position,bool Immediate=false);
     void CreateChunk(FIntPoint Key);
     void CreateLandscape();

@@ -39,6 +39,11 @@ struct Config
     double PlannedDepthMetres = 20.0;
     double PlannedMinutes = 30.0;
     double Hour = 13.0;
+    double WindMetresPerSecond = 3.0;
+    double WindDirectionDegrees = 90.0;
+    double ThermoclineMetres = 10.0;
+    double ThermoclineWidthMetres = 2.0;
+    int Weather = 0; // 0 clear, 1 overcast, 2 rain; scenario presets, not live weather.
     bool DrySuit = true;
     bool AutoBuoyancy = false;
     void Sanitize()
@@ -52,6 +57,9 @@ struct Config
         clean(VisibilityMetres,14,2,40); clean(CurrentMetresPerSecond,.08,0,.5);
         clean(PlannedDepthMetres,20,3,60); clean(PlannedMinutes,30,1,120);
         clean(Hour,13,0,23.99);
+        clean(WindMetresPerSecond,3,0,12); clean(WindDirectionDegrees,90,0,359.99);
+        clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
+        Weather=std::clamp(Weather,0,2);
     }
 };
 
@@ -97,7 +105,7 @@ public:
     { return Settings.SurfacePressureBar+std::max(0.0,depth)*BarPerMetre; }
     double Temperature(double depth) const
     {
-        const double thermocline=1/(1+std::exp(-(depth-10)/2.0));
+        const double thermocline=1/(1+std::exp(-(depth-Settings.ThermoclineMetres)/Settings.ThermoclineWidthMetres));
         return Settings.SurfaceTemperatureC+(Settings.BottomTemperatureC-Settings.SurfaceTemperatureC)*thermocline;
     }
     void Step(double dt,double depth,double effort,double inflate,double verticalVelocity,

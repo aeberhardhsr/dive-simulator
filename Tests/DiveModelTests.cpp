@@ -1,6 +1,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/DiveModel.h"
 #include "../divingsim/Source/DiveSim/Simulation/HeightGrid.h"
 #include "../divingsim/Source/DiveSim/Simulation/Ecology.h"
+#include "../divingsim/Source/DiveSim/Simulation/WaterSurface.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -14,6 +15,29 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    Dive::WaterSurface water; water.Configure(0,90);
+    close(water.Sample(30,-50,10).Height,0,0,"No wind gives a flat geometric surface");
+    close(water.PressureDepth(30,-50,-20,10),20,1e-12,"Calm water preserves hydrostatic depth");
+    water.Configure(12,45);
+    const double eps=1e-4;
+    for(double t=0;t<60;t+=.13)
+    {
+        const auto s=water.Sample(54,-91,t);
+        check(std::abs(s.Height)<=water.AmplitudeBound()+1e-12,"Wave height respects its amplitude envelope");
+        close(s.GradientX,(water.Sample(54+eps,-91,t).Height-water.Sample(54-eps,-91,t).Height)/(2*eps),1e-7,"Analytical wave slope matches numerical derivative");
+        close(s.VerticalVelocity,(water.Sample(54,-91,t+eps).Height-water.Sample(54,-91,t-eps).Height)/(2*eps),1e-7,"Wave velocity matches time derivative");
+        close(water.PressureDepth(54,-91,s.Height+.01,t),0,0,"Camera above wave crest is in air");
+        close(water.PressureDepth(54,-91,-100,t),100,1e-10,"Short-wave pressure perturbation decays at depth");
+        close(water.Velocity(54,-91,0,t).Z,s.VerticalVelocity,1e-12,"Linear orbital velocity meets surface kinematic condition");
+        const auto deepVelocity=water.Velocity(54,-91,-100,t);
+        check(std::hypot(deepVelocity.X,deepVelocity.Y)<1e-12&&std::abs(deepVelocity.Z)<1e-12,"Wave orbital motion decays at depth");
+    }
+    for(const auto& wave:water.Waves)
+        close(wave.Omega*wave.Omega,9.80665*std::hypot(wave.Kx,wave.Ky),1e-12,"Deep-water dispersion relation");
+    Dive::Config temperature; temperature.SurfaceTemperatureC=22; temperature.BottomTemperatureC=4; temperature.ThermoclineMetres=15;
+    Dive::Model thermal(temperature);
+    close(thermal.Temperature(15),13,1e-12,"Configurable thermocline midpoint");
+    check(thermal.Temperature(2)>thermal.Temperature(25),"Configured lake cools with depth");
     const auto& perch=Dive::FishProfiles[0];
     check(!Dive::FishDepthBand(perch,.5).Valid,"Fish cannot spawn in water shallower than their habitat and body clearance");
     const auto& burbot=Dive::FishProfiles[4];

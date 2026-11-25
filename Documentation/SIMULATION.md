@@ -20,7 +20,7 @@ Breath phase drives lung displacement, exhalation sound and bubble emission. Asc
 
 Heart rate and breathing rate approach targets derived from exertion, stress and fatigue. Stress responds to low gas, plan exceedance and rapid ascent. Cold exposure depends on depth temperature and suit choice. Simulated SpO2 declines after gas exhaustion underwater, with a terminal gameplay state. These are qualitative couplings, not clinical relationships.
 
-The thermocline is a smooth transition centred on 10 m, between configurable 18 °C and 6 °C defaults. These values are scenario parameters, not Walensee measurements.
+The thermocline is a smooth logistic transition, initially centred on 10 m with a 2 m transition scale, between 18 °C and 6 °C defaults. Surface/deep temperature, centre depth and transition scale are configurable in the environment menu. These values are scenario parameters, not Walensee measurements.
 
 ## Nitrogen approximation
 
@@ -44,7 +44,17 @@ The browser paginates newest filenames first and filters by mode. Four chart gro
 
 ## Water optics
 
-The water surface uses Unreal's [Single Layer Water shading model](https://dev.epicgames.com/documentation/unreal-engine/single-layer-water-shading-model-in-unreal-engine), with scattering coefficients RGB `(0.00015, 0.00045, 0.00032)` and absorption `(0.0016, 0.00035, 0.00055)` per centimetre, and phase G `0.35`. These are illustrative optical settings, not measured Walensee water properties. Animated surface normals provide ripples; geometrical wave displacement is still pending. Underwater visibility uses a separate distance-attenuation post-process and height fog. Camera tint, saturation and ambience fade across the surface. The surface material's volume coefficients are currently fixed and still need to be coupled to the configured visibility.
+The water surface uses Unreal's [Single Layer Water shading model](https://dev.epicgames.com/documentation/unreal-engine/single-layer-water-shading-model-in-unreal-engine), with base scattering coefficients RGB `(0.00015, 0.00045, 0.00032)` and absorption `(0.0016, 0.00035, 0.00055)` per centimetre, and phase G `0.35`. Both coefficient vectors scale by `14 / configured visibility in metres`. These are illustrative optical settings, not measured Walensee water properties. Underwater visibility additionally uses a distance-attenuation post-process and height fog. Camera tint, saturation and ambience fade according to the camera's depth below the moving surface.
+
+## Waves and weather
+
+`Simulation/WaterSurface.h` defines four linear deep-water components with wavelengths 20, 9, 4.5 and 2.1 m. Each uses `omega² = g k`, height `A sin(k·x - omega t + phase)`, analytical slopes and orbital water velocity. Dynamic pressure and orbital velocity decay as `exp(-k depth)`. Near the interface, pressure depth blends over 2 m to the local water column and is zero in air. This blend, the four-component spectrum, directional spread and amplitude `0.0025 × wind² × {1, .5, .25, .125}` are gameplay approximations. The linear dispersion and depth decay follow [MIT's linear water-wave notes](https://ocw.mit.edu/courses/2-017j-design-of-electromechanical-robotic-systems-fall-2009/51e6a1ab5a7fa9937bdb7aca645897fd_MIT2_017JF09_ch06.pdf). No shallow-water dispersion, shoaling, breaking waves, fetch model or measured Walensee spectrum is claimed.
+
+Wind ranges from 0 to 12 m/s; the direction is where it blows **toward**, clockwise from north. At 12 m/s the conservative sum-of-amplitudes bound is 0.675 m; this is not significant wave height. At zero wind, both geometry and micro-normal ripples are flat. The same component coefficients and elapsed simulation time drive CPU physics and the material. Rendering uses a 257 × 257 half-metre grid centred on a 32 m snapped viewer position, plus outer flat-water rings. Geometric displacement fades between 32 and 48 m from the viewer to avoid coarse distant tessellation. The central grid covers the entire displaced area even immediately before recentering. Its bounds explicitly include vertical shader displacement. Distant micro normals remain animated. Buoys and their anchor lines follow this same rendered heightfield.
+
+Player drag includes wave orbital water velocity. Emerged body volume and the upper movement limit use the local moving interface. Gas pressure, displayed depth and ascent rate use pressure depth; short waves do not produce full-height pressure oscillations far below the surface. Breathing bubbles stop at the local interface and expand with local pressure. The wave clock freezes with a paused dive; the world updates after the pawn.
+
+Clear, overcast and rain are selectable scenario presets. A game-local copy of Unreal's default volumetric-cloud material changes cloud coverage/density, alongside sun/skylight intensity and atmospheric fog. Rain uses at most 1,600 instanced streaks in a 12 m volume near the viewer, advected with wind and removed beneath the water surface. Their unlit emission compensates exposure for readability; this is not physically validated precipitation/lighting. Weather, wind, temperature profile, visibility, current and hour persist in settings and each dive's JSON environment metadata. These values remain fixed during a dive. Live weather, rainfall audio, surface splash effects and reference-based optical acceptance remain open.
 
 ## Procedural ecology
 

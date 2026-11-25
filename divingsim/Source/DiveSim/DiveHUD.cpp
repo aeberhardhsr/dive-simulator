@@ -85,14 +85,32 @@ void ADiveHUD::Menu()
     Text(TEXT("swissBATHY3D + swissALTI3D / © swisstopo"),73,473,17,Muted);
     Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,525,18,White);
     Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
+    Button(TEXT("environment"),bEnvironmentPage?L(TEXT("<   Ausruestung und Tauchplan"),TEXT("<   Equipment and dive plan")):L(TEXT("Wetter und Wasser   >"),TEXT("Weather and water   >")),73,590,437,42);
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
     Button(TEXT("logbook"),L(TEXT("Logbuch ansehen   >"),TEXT("Open logbook   >")),73,720,437,58);
     const float x=650,w=265,gap=28;
     Text(Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
-    Text(Diver->bDiveActive?L(TEXT("Ausrüstung bleibt während des Tauchgangs fest."),TEXT("Equipment is fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
+    Text(Diver->bDiveActive?L(TEXT("Tauchplan und Umwelt bleiben waehrend des Tauchgangs fest."),TEXT("Dive plan and environment are fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
+    const bool ready=Diver->Environment && Diver->Environment->bTerrainReady;
+    if(bEnvironmentPage)
+    {
+        const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain"))};
+        Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,250,w);
+        Field(TEXT("wind"),L(TEXT("WINDSTAERKE"),TEXT("WIND SPEED")),FString::Printf(TEXT("%.0f m/s"),c.WindMetresPerSecond),x+w+gap,250,w);
+        Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),FString::Printf(TEXT("%03.0f deg"),c.WindDirectionDegrees),x+2*(w+gap),250,w);
+        Field(TEXT("surface_temp"),L(TEXT("OBERFLAECHENTEMPERATUR"),TEXT("SURFACE TEMPERATURE")),FString::Printf(TEXT("%.0f C"),c.SurfaceTemperatureC),x,350,w);
+        Field(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),FString::Printf(TEXT("%.0f C"),c.BottomTemperatureC),x+w+gap,350,w);
+        Field(TEXT("thermocline"),L(TEXT("SPRUNGSCHICHT / TIEFE"),TEXT("THERMOCLINE / DEPTH")),FString::Printf(TEXT("%.0f m"),c.ThermoclineMetres),x+2*(w+gap),350,w);
+        Field(TEXT("thermal_width"),L(TEXT("SCHICHTUEBERGANG"),TEXT("TRANSITION SCALE")),FString::Printf(TEXT("%.1f m"),c.ThermoclineWidthMetres),x,450,w);
+        Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),FString::Printf(TEXT("%.0f m"),c.VisibilityMetres),x+w+gap,450,w);
+        Field(TEXT("current"),L(TEXT("STROEMUNG"),TEXT("CURRENT")),FString::Printf(TEXT("%.2f m/s"),c.CurrentMetresPerSecond),x+2*(w+gap),450,w);
+        Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x,550,w);
+        Text(L(TEXT("Einstellbare Spielszenarien; keine aktuellen Messwerte."),TEXT("Configurable game scenarios; not current observations.")),x,655,15,Muted);
+    }
+    else
+    {
     const FString modes[]={L(TEXT("Exploration"),TEXT("Exploration")),L(TEXT("Simulation"),TEXT("Simulation")),L(TEXT("Hardcore *"),TEXT("Hardcore *"))};
     Field(TEXT("mode"),L(TEXT("MODUS"),TEXT("MODE")),modes[static_cast<int>(c.GameMode)],x,250,w);
-    const bool ready=Diver->Environment && Diver->Environment->bTerrainReady;
     Field(TEXT("entry"),L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name:TEXT("Geodata unavailable"),x+w+gap,250,w);
     Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x+2*(w+gap),250,w);
     Field(TEXT("tank"),L(TEXT("FLASCHENVOLUMEN"),TEXT("CYLINDER VOLUME")),FString::Printf(TEXT("%.0f L / Air 21%%"),c.CylinderLitres),x,350,w);
@@ -107,6 +125,7 @@ void ADiveHUD::Menu()
     Text(c.GameMode==Dive::Mode::Exploration?L(TEXT("Unbegrenztes Atemgas und automatische Tarierung."),TEXT("Unlimited gas and automatic buoyancy.")):
         L(TEXT("Q / E: Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT("Q / E: inflate / deflate BCD. Air expands as you ascend.")),x,655,15,Muted);
     if(c.GameMode==Dive::Mode::Hardcore) Text(L(TEXT("* Bisher wie Simulation; Ausruestungsdefekte sind noch offen."),TEXT("* Currently simulation rules; equipment failures are pending.")),x,681,14,Amber);
+    }
     Button(TEXT("start"),Diver->bDiveActive?L(TEXT("Tauchgang fortsetzen"),TEXT("Resume dive")):L(TEXT("Abtauchen   >"),TEXT("Begin dive   >")),x,720,558,58,true);
     if(!ready) Text(Diver->Environment?Diver->Environment->Terrain.Error:TEXT("Geodata unavailable"),x,690,14,Red);
     if(Diver->bDiveActive) Button(TEXT("abort"),L(TEXT("Tauchgang abbrechen"),TEXT("End dive early")),x+586,720,265,58);
@@ -262,6 +281,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         return;
     }
     auto& c=Diver->PendingConfig;
+    if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; return; }
     if(Id==TEXT("start")) { if(Diver->bDiveActive) Diver->ResumeDive(); else Diver->StartDive(); return; }
     if(Id==TEXT("abort")) { Diver->FinishDive(TEXT("aborted")); return; }
     if(Id==TEXT("new")) { Diver->bSummary=false; return; }
@@ -287,6 +307,13 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         else if(Id==TEXT("current")) c.CurrentMetresPerSecond=c.CurrentMetresPerSecond>=.24?0:c.CurrentMetresPerSecond+.08;
         else if(Id==TEXT("depth")) c.PlannedDepthMetres=c.PlannedDepthMetres>=35?10:c.PlannedDepthMetres+5;
         else if(Id==TEXT("duration")) c.PlannedMinutes=c.PlannedMinutes>=60?10:c.PlannedMinutes+10;
+        else if(Id==TEXT("weather")) c.Weather=(c.Weather+1)%3;
+        else if(Id==TEXT("wind")) c.WindMetresPerSecond=c.WindMetresPerSecond>=12?0:c.WindMetresPerSecond+3;
+        else if(Id==TEXT("winddir")) c.WindDirectionDegrees=FMath::Fmod(c.WindDirectionDegrees+45,360.);
+        else if(Id==TEXT("surface_temp")) c.SurfaceTemperatureC=c.SurfaceTemperatureC>=24?6:c.SurfaceTemperatureC+2;
+        else if(Id==TEXT("bottom_temp")) c.BottomTemperatureC=c.BottomTemperatureC>=12?4:c.BottomTemperatureC+2;
+        else if(Id==TEXT("thermocline")) c.ThermoclineMetres=c.ThermoclineMetres>=25?5:c.ThermoclineMetres+5;
+        else if(Id==TEXT("thermal_width")) c.ThermoclineWidthMetres=c.ThermoclineWidthMetres>=5?.5:c.ThermoclineWidthMetres+.5;
     }
     Diver->SaveSettings();
 }

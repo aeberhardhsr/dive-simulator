@@ -39,6 +39,8 @@ BCD-Gas dehnt sich beim Aufstieg aus. Gegensteuern und rechtzeitig entlüften. I
 
 Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
+**Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen, Windstärke und -richtung, Temperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung und Tageszeit. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Die Werte sind frei gewählte Spielszenarien und bleiben während eines Tauchgangs fest. **Ausruestung und Tauchplan** führt zu den übrigen Einstellungen zurück.
+
 **Logbuch ansehen** im Start-/Pausenmenü oder **Logbuch / Verläufe** nach dem Tauchgang öffnet gespeicherte Tauchgänge. Links einen Eintrag wählen, mit den Pfeilen blättern oder nach Modus filtern. Vier Diagrammgruppen zeigen Tiefe, Gas, Nullzeit, Dekotiefe, Vitalwerte, Temperatur, Stress, Ermüdung und Strecke. Die Maus über den Kurven wählt den gemeinsamen Zeitpunkt; **< ! / ! >** springt zu Warnereignissen. Esc führt zurück. Beim Lesen aus dem Pausenmenü bleibt der laufende Tauchgang angehalten.
 
 Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter `divingsim/Saved/Photographs`. Testaufnahmen liegen unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Logbuch liest auch ältere Protokolle; automatisierte Testläufe werden in der normalen Ansicht ausgeblendet. Fehlende oder beschädigte Dateien verhindern das Lesen anderer Einträge nicht.
@@ -49,11 +51,14 @@ Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter
 ./Tools/TestCore.cmd                  # Engineunabhängige Simulationsprüfungen
 python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/Build.ps1 -Target Content     # Materialien, Importe und Trainingsmap
+./Tools/Build.ps1 -Target Content -OnlyEnvironment # Nur Wasser, Wolken und Regen erneuern
 ./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
 ./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
 ./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario stream  # 90 s, Kachelwechsel
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
+./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm    # Windstille
+./Tools/SmokeTest.ps1 -Packaged -Scenario surface-rain    # Regen und 12 m/s Wind
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht
 ./Tools/TestLogbook.ps1              # Unreal-Tests: alte/neue Logs, zwei Stunden Daten, Fehlerfälle

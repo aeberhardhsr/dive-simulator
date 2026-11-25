@@ -1,7 +1,8 @@
 param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
     [ValidateSet('Editor','Game','Content','Package')][string]$Target = 'Editor',
-    [string]$PackageDirectory=''
+    [string]$PackageDirectory='',
+    [switch]$OnlyEnvironment
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -13,7 +14,9 @@ if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' 
 # normal build; it does not change those structures.
 if ($Target -eq 'Content') {
     $script = Join-Path $PSScriptRoot 'build_unreal_content.py'
-    & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log'
+    $contentOptions=@()
+    if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
+    & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions
 } elseif ($Target -eq 'Package') {
     & "$EngineRoot/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun "-project=$project" -noP4 -nocompileeditor -platform=Win64 -clientconfig=Development -build -cook '-map=/Game/Diving/Maps/L_DiveTraining' -stage -pak -archive "-archivedirectory=$PackageDirectory" '-ubtargs=-NoUBA -MaxParallelActions=2 -NoHotReloadFromIDE' -unattended
 } else {

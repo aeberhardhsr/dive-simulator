@@ -13,14 +13,14 @@ Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spez
 
 Spielbarer Ablauf: Konfiguration → Einstieg → Erkunden und Tarieren → Auftauchen → Auswertung. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei Offshore-Spielstarts, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Über Wasser ist ein swissALTI3D-Hintergrundmesh der umliegenden Berge vorhanden. Detaillierte Landschaft, begehbare Ufer, reale Zugänge und fotorealistische Qualitätsabnahme bleiben offen.
 
-Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Wasseroberfläche Z=0.
+Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Mittlerer Wasserspiegel Z=0; lokale Wellen bewegen die Oberfläche.
 
 ## Fachlicher Gesamtumfang und noch zu prüfende Abnahme
 
 | Bereich | Umfang aus Spezifikation | Abnahme |
 |---|---|---|
 | WRLD | Reale Walensee-Geodaten, 1:1, Streaming, mindestens drei Einstiegspunkte, Felsen/Sedimente, Landschaft über Wasser, Tiefenkarte | Offen |
-| WATR | Wellen, Brechung, Reflexion, Absorption, God Rays, Caustics, Partikel, Strömung, Atemblasen mit Expansion, Thermokline, Oberflächenübergang | Offen |
+| WATR | Wellen, Brechung, Reflexion, Absorption, God Rays, Caustics, Partikel, Strömung, Atemblasen mit Expansion, Thermokline, Oberflächenübergang | Geometrische Wellen, Tiefendruck und Wasserbewegung gekoppelt; Sicht steuert auch Oberflächenabsorption. Optische/fachliche Gesamtabnahme und Uferwechselwirkung offen |
 | BIOL | Mindestens fünf anatomisch plausible animierte Tierarten, drei Bewuchstypen, Schwärme, Flucht, Kollision, Habitat und Pflanzenbewegung | Fünf Fischmodelle (Felchen als Artengruppe), drei Bewuchstypen und Habitat-/Bewegungsregeln implementiert; anatomische und visuelle Abnahme offen |
 | DIVR | First Person, 3D-Bewegung, Auftrieb, Widerstand, Trägheit, Anstrengung, Atmung, BCD, Blei, Kollision, sichtbare Ausrüstung | Offen |
 | CONF | Einstieg, Uhrzeit, Wetter, Sicht, Temperatur, Strömung, Flasche 10/12/15 L, Druck, Luft, Anzug, Blei, Lampe, Modus, geplante Tiefe/Dauer, Profile | Offen |
@@ -28,7 +28,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | GAS | Druck, tiefen-/belastungs-/stressabhängiger Verbrauch, ppO2, Restzeit, Nullzeit, Gewebeaufnahme/-abgabe, Warnungen, Stopps | Offen |
 | EQPM | Datengetriebene Ausrüstung, BCD, Atemregler, Computer, Lampe, Kompass, Isolation und Gewicht, 3D-Modelle | Sichtbare Unterarme/Handschuhe, Handgelenkcomputer und Handlampe implementiert; vollständiger Ausrüstungskatalog und Körpermodelle offen |
 | HUD | Tiefe/max., Dauer, Druck, Nullzeit, Puls, SpO2, Atmung, Temperatur, Aufstiegsrate, Kompass, Warnungen; digital und Handgelenk | Bildschirm-HUD und dreiseitiger 3D-Handgelenkcomputer vorhanden; vollständige Qualitätsabnahme offen |
-| ENV | Tag/Nacht, Sonnenstand, Bewölkung, Wetter/Wellen, Tiefentemperatur/Thermokline, Sichtweite | Offen |
+| ENV | Tag/Nacht, Sonnenstand, Bewölkung, Wetter/Wellen, Tiefentemperatur/Thermokline, Sichtweite | Einstellbare Wetter-/Wind-/Temperaturprofile, volumetrische Wolken und gemeinsames Wellenmodell für Darstellung/Simulation implementiert; visuelle und fachliche Gesamtabnahme offen |
 | AUD | Atmung und Blasen synchron, Belastung, Herzschlag, Tiefe, Oberfläche, Dämpfung, Warnungen, BCD, räumlich | Offen |
 | MODE | Exploration, Simulation, Hardcore auf gemeinsamem Kern; Unterschiede transparent konfiguriert | Offen |
 | NAV | Kompass, Walenseekarte, Tiefenkarte, Einstieg; optional Wegpunkte, Fotos und Entdeckungen | Offen |
