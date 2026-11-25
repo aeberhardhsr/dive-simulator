@@ -48,11 +48,13 @@ void ADivePawn::SetupPerformance()
     IFileManager::Get().MakeDirectory(*PerformanceDirectory,true);
     PerformanceStarted=FPlatformTime::Seconds();
     if(auto* pc=Cast<APlayerController>(GetController())) PerformanceYaw=pc->GetControlRotation().Yaw;
+    if(SmokeScenario==TEXT("perf-soak")) SetupSoak();
     UE_LOG(LogTemp,Display,TEXT("DIVE_PERF_WARMUP seconds=15 capture_seconds=%.0f quality=%d scale=%.2f"),PerformanceSeconds,quality,scale);
 }
 
 void ADivePawn::TickPerformance()
 {
+    if(SmokeScenario==TEXT("perf-soak")) { TickSoak(); return; }
 #if CSV_PROFILER
     const double now=FPlatformTime::Seconds();
     auto* profiler=FCsvProfiler::Get();

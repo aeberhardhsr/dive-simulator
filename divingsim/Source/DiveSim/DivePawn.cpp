@@ -281,10 +281,14 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    if(const auto saved=RecordingWriter.Poll(); saved.IsSet()&&!saved->bSuccess)
-        Notify(Local(TEXT("Zwischenspeichern fehlgeschlagen. Aktuelle Messpunkte nur im Arbeitsspeicher."),
+    if(const auto saved=RecordingWriter.Poll(); saved.IsSet())
+    {
+        if(saved->bSuccess) ++SoakSaves; else ++SoakSaveErrors;
+        if(!saved->bSuccess) Notify(Local(TEXT("Zwischenspeichern fehlgeschlagen. Aktuelle Messpunkte nur im Arbeitsspeicher."),
                      TEXT("Autosave failed. Latest log data remains in memory.")));
-    if(bPerformance&&SmokeScenario!=TEXT("perf-stream"))
+    }
+    if(bPerformance&&SmokeScenario==TEXT("perf-soak")) SteerSoak(DeltaSeconds);
+    if(bPerformance&&SmokeScenario!=TEXT("perf-stream")&&SmokeScenario!=TEXT("perf-soak"))
         if(auto* pc=Cast<APlayerController>(GetController()))
             pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")?-12:-5,PerformanceYaw+6*Simulation.Data.ElapsedSeconds,0));
     if(bSmokeTest&&!bSmokeImageryChecked&&GetWorld()->GetTimeSeconds()>2)
@@ -550,6 +554,13 @@ void ADivePawn::SimulateStep(float Step)
         const double t=Simulation.Data.ElapsedSeconds;
         if(bPerformance)
         {
+            if(SmokeScenario==TEXT("perf-soak"))
+            {
+                if(Action==EDiveAction::Forward) return SoakForward;
+                if(Action==EDiveAction::Ascend) return FMath::Max(0.f,SoakVertical);
+                if(Action==EDiveAction::Descend) return FMath::Max(0.f,-SoakVertical);
+                return 0.f;
+            }
             if(SmokeScenario==TEXT("perf-stream")) return Action==EDiveAction::Forward||Action==EDiveAction::Sprint?1.f:0.f;
             if(SmokeScenario==TEXT("perf-surface")) return Action==EDiveAction::Ascend?1.f:0.f;
             if(SmokeScenario==TEXT("perf-underwater")) return Action==EDiveAction::Descend&&t<5?.7f:0.f;

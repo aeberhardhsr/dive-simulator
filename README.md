@@ -104,6 +104,7 @@ python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMi
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht
 ./Tools/TestLogbook.ps1              # Unreal-Tests: alte/neue Logs, zwei Stunden Daten, Fehlerfälle
 ./Tools/TestCheckpointRecovery.ps1 -PackageDirectory Builds/WindowsRecovery # Eigene Testinstanz hart beenden, Sicherungen neu öffnen
+./Tools/Soak.ps1 -PackageDirectory Builds/WindowsSoak -Seconds 7200 # Echte zwei Stunden, Ablauf und Messgrenzen: Documentation/SOAK.md
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario logbook # Speichern, neu laden, vier Diagrammgruppen
 ```
 

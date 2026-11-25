@@ -7,6 +7,7 @@
 #include "Simulation/Tutorial.h"
 #include "DiveControls.h"
 #include "DiveRecording.h"
+#include "Simulation/SoakMetrics.h"
 #include "DivePawn.generated.h"
 
 class UCameraComponent;
@@ -99,6 +100,20 @@ private:
     double PerformanceNextMemory=0,PerformanceMemoryMB=0;
     FString PerformanceDirectory;
     TSharedFuture<FString> PerformanceWrite;
+    Dive::SoakMetrics SoakTotal,SoakWindow;
+    double SoakLastTick=0,SoakNextReport=0,SoakSimStart=0,SoakDistanceStart=0,SoakFinalizationMS=0;
+    double SoakSimEnd=0;
+    double SoakAvoidUntil=0,SoakAvoidZ=0;
+    int32 SoakAvoidances=0;
+    double SoakMemoryStart=0,SoakMemoryMax=0,SoakMinDepth=1e9,SoakMaxDepth=0;
+    int32 SoakTarget=1,SoakTurns=0,SoakSaves=0,SoakSaveErrors=0,SoakScreenshot=0;
+    float SoakForward=0,SoakVertical=0;
+    FVector SoakEnds[2];
+    TSet<FIntPoint> SoakTiles;
+    void SetupSoak();
+    void SteerSoak(float DeltaSeconds);
+    void TickSoak();
+    bool ReportSoak(bool Final);
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;
     Dive::Config BeforeTutorialConfig;

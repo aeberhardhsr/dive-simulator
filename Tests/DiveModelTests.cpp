@@ -7,6 +7,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
 #include "../divingsim/Source/DiveSim/Simulation/VisualMedium.h"
 #include "../divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
+#include "../divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -20,6 +21,17 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        Dive::SoakMetrics m;
+        check(!m.Add(0)&&!m.Add(-1)&&!m.Add(std::numeric_limits<double>::quiet_NaN()),"Soak rejects invalid intervals");
+        for(int i=0;i<98;++i) m.Add(.010);
+        m.Add(.040); m.Add(2.);
+        check(m.Frames==100&&m.Over30==2&&m.Over100==1,"Soak retains interior stalls and counts thresholds");
+        close(m.Seconds,3.02,1e-10,"Soak wall time accumulated");
+        close(m.PercentileUpper(.95),10.25,1e-10,"Soak quarter-ms upper percentile bound");
+        close(m.PercentileUpper(.99),40.25,1e-10,"Soak nearest-rank percentile keeps hitch");
+        close(m.PercentileUpper(1),2000,1e-10,"Soak overflow reports exact maximum");
+    }
     {
         Dive::Config cfg; cfg.SurfaceTemperatureC=6; cfg.BottomTemperatureC=6; cfg.AirTemperatureC=20; cfg.DrySuit=false;
         const Dive::Exposure air{0,false,false},wet{1,true,true},noSupply{1,true,false};
