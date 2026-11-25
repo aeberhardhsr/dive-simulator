@@ -194,7 +194,8 @@ void ADiveHUD::Logbook()
         const int source=static_cast<int>(sample.BreathSource);
         Text(L(breathingDE[source],breathingEN[source])+FString::Printf(TEXT("    %.0f%% "),sample.BodyImmersion*100)+
             L(TEXT("eingetaucht    Umgebung "),TEXT("immersed    Environment "))+
-            FString::Printf(TEXT("%.1f C"),sample.EnvironmentTemperatureC),510,796,16,Accent);
+            FString::Printf(TEXT("%.1f C"),sample.EnvironmentTemperatureC)+
+            (log.bBreathReserveContext?L(TEXT("    Atemreserve "),TEXT("    Breath reserve "))+FString::Printf(TEXT("%.0f%%"),sample.BreathReserve*100):TEXT("")),510,796,16,Accent);
     }
     Text(L(TEXT("Kurven: gespeicherte Spielwerte. Gelbe Marken: neue Warnungen."),TEXT("Curves: recorded game values. Yellow marks: new warnings.")),510,834,14,Muted);
 }

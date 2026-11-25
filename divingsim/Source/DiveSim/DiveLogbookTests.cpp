@@ -29,7 +29,7 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
         const TCHAR* keys[]={TEXT("seconds"),TEXT("depth_m"),TEXT("cylinder_bar"),TEXT("heart_bpm"),TEXT("respiratory_bpm"),TEXT("spo2_percent"),TEXT("water_c"),TEXT("core_c"),TEXT("stress"),TEXT("fatigue"),TEXT("ppo2_bar"),TEXT("ceiling_m"),TEXT("ndl_minutes"),TEXT("distance_m"),TEXT("warnings")};
         const double values[]={double(i),i==Seconds/2?20.:5.,200-i*.01,72,13,98,14,37,.1,.2,.3,0,99,double(i),i==1?double(Dive::FastAscent):0};
         for(int j=0;j<UE_ARRAY_COUNT(keys);++j) s->SetNumberField(keys[j],values[j]);
-        if(Version==3)
+        if(Version>=3)
         {
             s->SetNumberField(TEXT("environment_c"),14);
             s->SetNumberField(TEXT("body_immersion"),1);
@@ -38,6 +38,7 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
             s->SetBoolField(TEXT("mouth_submerged"),true);
             if(i==1) s->SetNumberField(TEXT("warnings"),Dive::NoBreathingSupply);
         }
+        if(Version>=4) s->SetNumberField(TEXT("breath_reserve"),i==1?.4:1);
         rows.Add(MakeShared<FJsonValueObject>(s));
     }
     root->SetArrayField(TEXT("samples"),rows);
@@ -61,8 +62,13 @@ bool FDiveLogReadTest::RunTest(const FString&)
     FDiveLog breathing;
     TestTrue(TEXT("Breathing-context schema loads"),DiveLogbook::Parse(Fixture(2,3),breathing));
     TestTrue(TEXT("Schema 3 context retained"),breathing.bBreathingContext);
+    TestFalse(TEXT("Schema 3 does not invent a reserve"),breathing.bBreathReserveContext);
     TestTrue(TEXT("No-supply source and ninth warning retained"),breathing.Samples.Num()==3&&
         breathing.Samples[1].BreathSource==Dive::BreathingSource::None&&breathing.Warnings==Dive::NoBreathingSupply);
+    FDiveLog reserve;
+    TestTrue(TEXT("Schema 4 loads reserve"),DiveLogbook::Parse(Fixture(2,4),reserve));
+    TestTrue(TEXT("Schema 4 reserve context retained"),reserve.bBreathReserveContext);
+    if(reserve.Samples.Num()==3) TestEqual(TEXT("Recorded reserve preserved"),reserve.Samples[1].BreathReserve,.4);
     TestEqual(TEXT("Sample lookup before start"),DiveLogbook::NearestSample(log.Samples,-5),0);
     TestEqual(TEXT("Sample lookup nearer previous"),DiveLogbook::NearestSample(log.Samples,.1),0);
     TestEqual(TEXT("Sample lookup nearer next"),DiveLogbook::NearestSample(log.Samples,.9),1);
@@ -84,6 +90,17 @@ bool FDiveLogRejectTest::RunTest(const FString&)
     FDiveLog log;
     TestFalse(TEXT("Truncated file"),DiveLogbook::Parse(Fixture().Left(100),log));
     TestFalse(TEXT("Unknown schema"),DiveLogbook::Parse(Fixture(2,99),log));
+    for(int invalid=0;invalid<3;++invalid)
+    {
+        TSharedPtr<FJsonObject> reserve;
+        FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,4)),reserve);
+        auto sample=reserve->GetArrayField(TEXT("samples"))[0]->AsObject();
+        if(invalid==0) sample->RemoveField(TEXT("breath_reserve"));
+        else if(invalid==1) sample->SetNumberField(TEXT("breath_reserve"),1.01);
+        else sample->SetStringField(TEXT("breath_reserve"),TEXT("0.5"));
+        FString bad; FJsonSerializer::Serialize(reserve,TJsonWriterFactory<>::Create(&bad));
+        TestFalse(TEXT("Missing, out-of-range or nonnumeric reserve rejected"),DiveLogbook::Parse(bad,log));
+    }
     TSharedPtr<FJsonObject> breathing;
     FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,3)),breathing);
     breathing->GetArrayField(TEXT("samples"))[0]->AsObject()->SetNumberField(TEXT("body_immersion"),1.1);

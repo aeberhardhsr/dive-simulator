@@ -35,7 +35,10 @@ int main()
         close(water.Data.EnvironmentTemperatureC,6,1e-12,"Immersed body uses water temperature");
         held.Step(5,10,0,0,0,0,false,noSupply);
         close(held.Data.CylinderBar,200,0,"Removed regulator does not invent cylinder consumption");
-        check(held.Data.SpO2<97&&(held.Data.Warnings&Dive::NoBreathingSupply),"Submerged mouth without regulator loses breathing supply");
+        check(held.Data.SpO2>97.99&&held.Data.BreathReserve<.99&&(held.Data.Warnings&Dive::NoBreathingSupply),"Brief loss of supply spends reserve before oxygen saturation falls");
+        const double spent=held.Data.BreathReserve;
+        held.Step(.02,10,0,0,0,0,false,wet);
+        check(held.Data.BreathReserve>spent&&held.Data.BreathReserve<.999,"One supplied step cannot refill the reserve instantly");
         held.Step(30,10,0,0,0,0,false,wet);
         check(held.Data.SpO2>95&&!(held.Data.Warnings&Dive::NoBreathingSupply),"Replacing supplied regulator restores breathing");
         const double before=freeAir.Data.CylinderBar;
@@ -49,6 +52,31 @@ int main()
         Dive::AudioModel quietAir;
         const auto sound=quietAir.Step(.02,freeAir.Data,cfg,-1);
         check(!sound.Inhale&&!sound.Exhale,"Ambient-air breathing does not play regulator hiss");
+        Dive::Model resting(cfg),swimming(cfg),partitioned(cfg),waves(cfg);
+        resting.Step(30,10,0,0,0,0,false,noSupply);
+        swimming.Step(30,10,1,0,0,0,false,noSupply);
+        check(swimming.Data.BreathReserve<resting.Data.BreathReserve,"Swimming spends the same initial reserve faster than resting");
+        for(int i=0;i<1500;++i) partitioned.Step(.02,10,1,0,0,0,false,noSupply);
+        close(swimming.Data.BreathReserve,partitioned.Data.BreathReserve,1e-10,"Breath reserve is invariant to frame partitioning");
+        close(swimming.Data.SpO2,partitioned.Data.SpO2,1e-9,"Reserve-linked saturation is invariant to frame partitioning");
+        for(int i=0;i<60;++i) { waves.Step(.5,0,0,0,0,0,false,noSupply); waves.Step(1.5,0,0,0,0,0,false,air); }
+        check(waves.Data.SpO2>97.99&&waves.Data.BreathReserve>.9,"Repeated brief wave contact does not deoxygenate an otherwise breathing player");
+        swimming.Step(90,10,1,0,0,0,false,noSupply);
+        check(swimming.Data.SpO2<60&&swimming.Data.BreathReserve==0,"Prolonged supply loss still reaches the terminal gameplay threshold");
+        const double lowSpO2=swimming.Data.SpO2;
+        swimming.Step(1,10,0,0,0,0,false,wet);
+        check(swimming.Data.BreathReserve>0&&swimming.Data.BreathReserve<.2&&swimming.Data.SpO2<80,"Restoring supply does not reset depleted reserve or saturation");
+        swimming.Step(60,10,0,0,0,0,false,wet);
+        check(swimming.Data.BreathReserve>.99&&swimming.Data.SpO2>97&&swimming.Data.SpO2>lowSpO2,"Sustained ventilation restores reserve and simulated saturation");
+        Dive::AudioModel waveAlerts; Dive::State waveState;
+        waveState.Warnings=Dive::NoBreathingSupply;
+        check(waveAlerts.Step(.02,waveState,cfg,0).Warning,"First supply loss alerts immediately");
+        int repeatedAlerts=0;
+        for(int i=0;i<100;++i) { waveState.Warnings=i%2?Dive::NoBreathingSupply:Dive::None; repeatedAlerts+=waveAlerts.Step(.02,waveState,cfg,0).Warning?1:0; }
+        check(repeatedAlerts==0,"Rapid wave crossings do not chatter urgent alerts");
+        waveState.Warnings=0; waveAlerts.Step(8,waveState,cfg,0);
+        waveState.Warnings=Dive::NoBreathingSupply;
+        check(waveAlerts.Step(.02,waveState,cfg,0).Warning,"New loss after cooldown still alerts");
     }
     const auto noon=Dive::EnvironmentLight::At(12,0),night=Dive::EnvironmentLight::At(23,0);
     check(noon.Direct>0&&noon.ElevationDegrees>0,"Daytime sun is above the horizon");

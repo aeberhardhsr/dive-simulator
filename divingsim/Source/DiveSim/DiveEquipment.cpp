@@ -173,7 +173,7 @@ void ADiveEquipment::DrawDisplay(UCanvas* Canvas,int32 Width,int32 Height)
     }
     rect(24,447,720,2,dim);
     FString warning;
-    if(s.Warnings&Dive::NoBreathingSupply) warning=L(TEXT("! KEINE ATEMLUFT"),TEXT("! NO BREATHING SUPPLY"));
+    if(s.Warnings&Dive::NoBreathingSupply) warning=L(TEXT("! KEINE ATEMLUFT  Reserve "),TEXT("! NO SUPPLY  Reserve "))+FString::Printf(TEXT("%.0f%%"),s.BreathReserve*100);
     else if(s.Warnings&Dive::OutOfGas) warning=L(TEXT("! FLASCHE LEER"),TEXT("! CYLINDER EMPTY"));
     else if(s.Warnings&Dive::CeilingViolation) warning=L(TEXT("! DEKOTIEFE UNTERSCHRITTEN"),TEXT("! ABOVE CEILING"));
     else if(s.Warnings&Dive::FastAscent) warning=L(TEXT("! AUFSTIEG VERLANGSAMEN"),TEXT("! SLOW ASCENT"));

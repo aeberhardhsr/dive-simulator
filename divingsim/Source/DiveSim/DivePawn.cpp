@@ -323,7 +323,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -397,7 +397,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
-    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:SmokeScenario==TEXT("stream")?90:SmokeScenario==TEXT("breathing")?30:22;
+    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:SmokeScenario==TEXT("stream")?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
     if(bSmokeTest && bDiveActive)
     {
         FString audioError;
@@ -458,7 +458,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -536,6 +536,13 @@ void ADivePawn::SimulateStep(float Step)
     {
         if(!bSmokeTest||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
+        if(SmokeScenario==TEXT("reserve-loss"))
+        {
+            if(Action==EDiveAction::Forward) return t<7?1.f:0.f;
+            if(Action==EDiveAction::Descend) return t<7?.7f:0.f;
+            if(Action==EDiveAction::Deflate) return t<4?.3f:0.f;
+            return 0.f;
+        }
         if(SmokeScenario==TEXT("stream")) return Action==EDiveAction::Forward?1.f:0.f;
         if((SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio")) && t>16) return Action==EDiveAction::Ascend?1.f:0.f;
         if(Action==EDiveAction::Forward) return t<10?1.f:0.f;
@@ -709,7 +716,8 @@ bool ADivePawn::SaveLog(const FString& Reason)
     IFileManager::Get().MakeDirectory(*dir,true);
     if(LastLogPath.IsEmpty()) LastLogPath=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT("_")+FGuid::NewGuid().ToString(EGuidFormats::Digits).Left(8)+TEXT(".json"));
     auto root=MakeShared<FJsonObject>();
-    root->SetNumberField(TEXT("schema_version"),3);
+    root->SetNumberField(TEXT("schema_version"),4);
+    root->SetStringField(TEXT("physiology_model"),TEXT("breath_reserve_v1"));
     root->SetStringField(TEXT("started_at_utc"),DiveStartedUTC);
     root->SetBoolField(TEXT("is_test"),bSmokeTest);
     root->SetStringField(TEXT("status"),Reason);
@@ -735,6 +743,7 @@ bool ADivePawn::SaveLog(const FString& Reason)
         row->SetNumberField(TEXT("heart_bpm"),s.HeartBPM);
         row->SetNumberField(TEXT("respiratory_bpm"),s.RespiratoryBPM);
         row->SetNumberField(TEXT("spo2_percent"),s.SpO2);
+        row->SetNumberField(TEXT("breath_reserve"),s.BreathReserve);
         row->SetNumberField(TEXT("water_c"),s.WaterTemperatureC);
         row->SetNumberField(TEXT("environment_c"),s.EnvironmentTemperatureC);
         row->SetNumberField(TEXT("body_immersion"),s.BodyImmersion);

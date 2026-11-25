@@ -53,7 +53,7 @@ public:
     bool bLamp=true, bSummary=false, bEnglish=false, bLogbook=false;
     bool bWalking=false;
     bool bRegulatorInMouth=true;
-    double TestBreathingGas=0,TestBreathingSpO2=0;
+    double TestBreathingGas=0,TestBreathingSpO2=0,TestBreathingReserve=0;
     FString EntryName() const;
     bool CanFinishDive() const;
     bool bEnteredWater=false;

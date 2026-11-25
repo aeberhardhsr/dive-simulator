@@ -15,11 +15,15 @@ bool Parse(const FString& Json,FDiveLog& Log)
     if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),root)||!root)
         return fail(TEXT("Invalid JSON"));
     double version=0;
-    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3))
+    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4))
         return fail(TEXT("Unsupported log version"));
     Log.bBreathingContext=version>=3;
+    Log.bBreathReserveContext=version>=4;
     auto number=[](const TSharedPtr<FJsonObject>& obj,const TCHAR* key,double& value,double lo,double hi)
-    { return obj->TryGetNumberField(key,value)&&FMath::IsFinite(value)&&value>=lo&&value<=hi; };
+    {
+        const auto field=obj->TryGetField(key);
+        return field&&field->Type==EJson::Number&&field->TryGetNumber(value)&&FMath::IsFinite(value)&&value>=lo&&value<=hi;
+    };
     double mode=0;
     if(!root->TryGetStringField(TEXT("location"),Log.Location)||Log.Location.Len()>100||
        !root->TryGetStringField(TEXT("status"),Log.Status)||Log.Status.Len()>80||
@@ -74,6 +78,8 @@ bool Parse(const FString& Json,FDiveLog& Log)
            !number(o,TEXT("warnings"),warnings,0,version>=3?511:255)||warnings!=FMath::FloorToDouble(warnings))
             return fail(TEXT("Invalid or unordered sample values"));
         s.EnvironmentTemperatureC=s.WaterTemperatureC;
+        if(Log.bBreathReserveContext&&!number(o,TEXT("breath_reserve"),s.BreathReserve,0,1))
+            return fail(TEXT("Invalid or missing breath reserve"));
         if(Log.bBreathingContext)
         {
             double source=0;

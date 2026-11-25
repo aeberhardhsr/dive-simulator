@@ -32,6 +32,52 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("reserve-loss"))
+    {
+        const auto& state=Simulation.Data; const double t=state.ElapsedSeconds;
+        if(ControlsSmokePhase==0&&t>4)
+        {
+            TestBreathingGas=state.CylinderBar;
+            tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=1;
+        }
+        if(ControlsSmokePhase==1&&t>8)
+        {
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::None&&state.SpO2>97.99&&state.BreathReserve>.8&&state.BreathReserve<.99;
+            shot(TEXT("Reserve_Short")); ControlsSmokePhase=2;
+        }
+        if(ControlsSmokePhase==2&&t>80)
+        {
+            bControlsSmokeValid&=state.BreathReserve<.25&&state.SpO2<98&&bDiveActive;
+            shot(TEXT("Reserve_Low")); ControlsSmokePhase=3;
+        }
+        if(ControlsSmokePhase==3&&bSummary)
+        {
+            FString json; FDiveLog log; log.Path=LastLogPath;
+            const bool saved=FFileHelper::LoadFileToString(json,*LastLogPath)&&DiveLogbook::Parse(json,log)&&
+                log.Status==TEXT("no_breathing_supply")&&log.bBreathReserveContext&&log.Samples.Num()>60;
+            bControlsSmokeValid&=saved&&Outcome==TEXT("no_breathing_supply")&&!bDiveActive&&state.SpO2<60&&
+                state.BreathReserve==0&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
+            shot(TEXT("Reserve_Summary")); ControlsSmokePhase=4; TestLessonAge=0;
+            UE_LOG(LogTemp,Display,TEXT("DIVE_RESERVE_%s seconds=%.2f reserve=%.4f spo2=%.3f gas=%.4f samples=%d"),
+                bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),t,state.BreathReserve,state.SpO2,state.CylinderBar,log.Samples.Num());
+        }
+        if(ControlsSmokePhase==4)
+        {
+            TestLessonAge+=Dt;
+            if(TestLessonAge>2)
+            {
+                UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s reserve_loss=1"),bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"));
+                if(bControlsSmokeValid)
+                {
+                    hud->OpenLogbook(LastLogPath,true);
+                    SmokeLogbookStarted=GetWorld()->GetTimeSeconds(); ControlsSmokePhase=5;
+                }
+                else FPlatformMisc::RequestExitWithStatus(false,1);
+            }
+        }
+        if(ControlsSmokeClock>165) { UE_LOG(LogTemp,Error,TEXT("DIVE_RESERVE_FAIL timeout")); FPlatformMisc::RequestExitWithStatus(false,1); }
+        return;
+    }
     if(SmokeScenario==TEXT("breathing"))
     {
         const auto& state=Simulation.Data; const double t=state.ElapsedSeconds;
@@ -44,23 +90,24 @@ void ADivePawn::InputSmokeTick(float Dt)
         { shot(TEXT("Breathing_NoSupply")); bSmokeSecondaryCaptured=true; }
         if(ControlsSmokePhase==1&&t>7)
         {
-            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::None&&state.SpO2<97&&
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::None&&state.SpO2>97.99&&state.BreathReserve<.99&&
                 (state.Warnings&Dive::NoBreathingSupply)&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
             TestBreathingSpO2=state.SpO2;
+            TestBreathingReserve=state.BreathReserve;
             tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=2;
         }
         if(ControlsSmokePhase==2&&t>22&&!state.MouthSubmerged)
         {
-            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Regulator&&state.SpO2>TestBreathingSpO2;
+            bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Regulator&&state.SpO2>=TestBreathingSpO2&&state.BreathReserve>TestBreathingReserve;
             TestBreathingGas=state.CylinderBar; tap(Controls.Key(EDiveAction::Regulator)); ControlsSmokePhase=3;
         }
         if(ControlsSmokePhase==3&&t>25)
         {
             bControlsSmokeValid&=state.BreathSource==Dive::BreathingSource::Air&&
-                !(state.Warnings&Dive::NoBreathingSupply)&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
+                !(state.Warnings&Dive::NoBreathingSupply)&&state.SpO2>97.99&&FMath::Abs(state.CylinderBar-TestBreathingGas)<1.e-8;
             shot(TEXT("Breathing_Air")); ControlsSmokePhase=4;
-            UE_LOG(LogTemp,Display,TEXT("DIVE_BREATHING_%s phases=4 gas=%.4f spo2=%.3f immersion=%.3f"),
-                bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),state.CylinderBar,state.SpO2,state.BodyImmersion);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_BREATHING_%s phases=4 gas=%.4f spo2=%.3f immersion=%.3f reserve=%.4f"),
+                bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),state.CylinderBar,state.SpO2,state.BodyImmersion,state.BreathReserve);
         }
         if(t>29&&ControlsSmokePhase!=4) bControlsSmokeValid=false;
         return;

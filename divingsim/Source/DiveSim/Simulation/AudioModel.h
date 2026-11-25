@@ -22,7 +22,7 @@ struct AudioFrame
 };
 class AudioModel
 {
-    double PreviousPhase=0,HeartPhase=0,WarningCooldown=0;
+    double PreviousPhase=0,HeartPhase=0,WarningCooldown=0,NoSupplyCooldown=0;
     uint32_t PreviousWarnings=0;
     bool First=true,HasBreath=false;
 public:
@@ -41,9 +41,14 @@ public:
         HeartPhase+=dt*s.HeartBPM/60;
         if(HeartPhase>=1) { a.Heartbeat=true; HeartPhase=std::fmod(HeartPhase,1.); }
         WarningCooldown=std::max(0.,WarningCooldown-dt);
+        NoSupplyCooldown=std::max(0.,NoSupplyCooldown-dt);
         const uint32_t newWarnings=s.Warnings&~PreviousWarnings;
-        // A newly empty cylinder bypasses the chatter cooldown.
-        a.Warning=newWarnings&&((newWarnings&(OutOfGas|NoBreathingSupply))||WarningCooldown<=0);
+        // First loss of supply is immediate. Repeated wave contact must not
+        // retrigger an urgent beep on every surface crossing.
+        const bool noSupplyAlert=(newWarnings&NoBreathingSupply)&&NoSupplyCooldown<=0;
+        const uint32_t otherWarnings=newWarnings&~uint32_t(NoBreathingSupply);
+        a.Warning=noSupplyAlert||(otherWarnings&&((otherWarnings&OutOfGas)||WarningCooldown<=0));
+        if(noSupplyAlert) NoSupplyCooldown=8;
         if(a.Warning) WarningCooldown=2;
         PreviousWarnings=s.Warnings;
         a.Wet=Clamp(eyeDepth/.5,0,1);

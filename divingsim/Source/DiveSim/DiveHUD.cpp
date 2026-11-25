@@ -177,6 +177,8 @@ void ADiveHUD::Instruments()
     const FString source=s.BreathSource==Dive::BreathingSource::Air?L(TEXT("UMGEBUNGSLUFT"),TEXT("AMBIENT AIR")):
         s.BreathSource==Dive::BreathingSource::Regulator?L(TEXT("ATEMREGLER"),TEXT("REGULATOR")):L(TEXT("KEINE ATEMLUFT"),TEXT("NO BREATHING SUPPLY"));
     Text(source+TEXT("   [")+Diver->Controls.KeyText(EDiveAction::Regulator,Diver->bEnglish)+TEXT("] ")+L(TEXT("Regler ein / absetzen"),TEXT("Insert / remove regulator")),50,130,14,s.BreathSource==Dive::BreathingSource::None?Amber:Accent);
+    if(s.BreathSource==Dive::BreathingSource::None||s.BreathReserve<.99)
+        Text(L(TEXT("Atemreserve (Spiel): "),TEXT("Breath reserve (game): "))+FString::Printf(TEXT("%.0f%%"),s.BreathReserve*100),50,154,14,s.BreathReserve<.25?Amber:Accent);
     Rect(50,705,328,145,Dark); Rect(50,705,3,145,Accent);
     Text(L(TEXT("TIEFE"),TEXT("DEPTH")),75,723,14,Muted);
     Text(FString::Printf(TEXT("%.1f"),s.DepthMetres),72,749,55,White);

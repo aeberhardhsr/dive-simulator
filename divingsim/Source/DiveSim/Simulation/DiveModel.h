@@ -79,6 +79,7 @@ struct State
     double BCDSurfaceLitres=4, BCDLitres=4;
     double BCDInflowLPS=0, BCDOutflowLPS=0; // Actual gas flow, local litres/second.
     double HeartBPM=70, RespiratoryBPM=12, SpO2=98;
+    double BreathReserve=1; // Normalized gameplay reserve, not measured oxygen litres.
     double CoreTemperatureC=37, WaterTemperatureC=18;
     double EnvironmentTemperatureC=18,BodyImmersion=1;
     bool RegulatorInMouth=true,MouthSubmerged=true;
@@ -188,7 +189,15 @@ private:
         const double coldLoad=suitCooling*(s.BodyImmersion*std::max(0.0,22-s.WaterTemperatureC)
             +(1-s.BodyImmersion)*.05*(1+c.WindMetresPerSecond/12)*std::max(0.0,22-c.AirTemperatureC));
         s.CoreTemperatureC=Clamp(s.CoreTemperatureC+dt*((37-s.CoreTemperatureC)*.0001-coldLoad),32,37.5);
-        s.SpO2=Approach(s.SpO2,(!unlimited&&!hasBreathingSupply)?45:98,.035,dt);
+        // A brief loss of supply spends reserve before saturation falls. Demand
+        // follows activity; ventilation restores reserve over time, never on a toggle.
+        // These constants tune gameplay and are not physiological reference values.
+        const double demand=1+2*s.Exertion+.5*s.Stress+.5*s.Fatigue;
+        if(hasBreathingSupply) s.BreathReserve=Approach(s.BreathReserve,1,.12,dt);
+        else s.BreathReserve=Clamp(s.BreathReserve-dt*demand/120,0,1);
+        const double saturationTarget=45+53*Clamp(s.BreathReserve/.25,0,1);
+        const double suppliedTarget=hasBreathingSupply?saturationTarget:std::min(s.SpO2,saturationTarget);
+        s.SpO2=Approach(s.SpO2,unlimited?98:suppliedTarget,hasBreathingSupply?.08:.035,dt);
         s.DistanceMetres+=std::max(0.0,distance);
         if(lamp) s.LampBattery=std::max(0.0,s.LampBattery-dt/72);
         if(s.MaxDepthMetres>10 && depth>=3 && depth<=6 && std::abs(vz)<.2)

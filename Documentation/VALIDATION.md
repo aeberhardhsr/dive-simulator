@@ -309,3 +309,32 @@ Auch der Profilablauf mit Speichern, Laden, Rückgängig, Archiv und gesperrter 
 Eine unabhängige Auswertung der neun erzeugten JSON-Protokolle bestätigt 281 konsistente Messpunkte: alle drei Atemquellen vorhanden, Warnbit 256 genau bei fehlender Versorgung, gültige Immersion und die gespeicherte Umgebungstemperatur passend zur Luft-/Wassergewichtung.
 
 Nach den abschließenden Textkorrekturen wurden Editor und Windows-Package erneut erfolgreich gebaut. Atmungs- und Logbuchablauf bestehen auch im endgültigen Package (`artifacts/breathing-final-full.log`, `breathing-final-logbook-full.log`, `package-breathing-final.log`).
+
+
+## Endliche Atemreserve und verzögerte Sättigungsreaktion (25. November 2026)
+
+Der Folgestand ersetzt die unmittelbare SpO2-Abnahme bei jedem Mund-/Wasserkontakt durch eine endliche, belastungsabhängige Atemreserve. Erholung erfolgt kontinuierlich statt beim Umschalten des Reglers. Die Anzeige heißt ausdrücklich „Atemreserve (Spiel)“; es gibt keine Anzeige einer sicheren Atemanhaltezeit. Die begründende Fachquelle und die unabhängig davon gewählten Spielparameter sind in `SIMULATION.md` getrennt dokumentiert.
+
+Kernprüfungen bestehen (`artifacts/core-reserve.log`): kurze Unterbrechung mit stabiler Sättigung, Verbrauch bei Anstrengung, schrittweise Erholung ohne sofortiges Zurücksetzen, vollständige Entleerung mit Abbruchschwellwert, wiederholte Wellenkontakte, gleiche Ergebnisse bei großen/kleinen Integrationsaufrufen und Warnton-Sperre. Das Modell bleibt unvalidiert; die Tests beweisen die implementierten Beziehungen, keine klinische Genauigkeit.
+
+Drei Unreal-Logbuchtests bestehen (`artifacts/test-reserve-logbook.log`). Schema 4 verlangt eine endliche Reserve zwischen 0 und 1. Ein gezielt als Text statt Zahl gespeicherter Messwert deckte Unreals implizite Zahlkonvertierung auf; der Leser prüft nun den tatsächlichen JSON-Zahlentyp. Fehlende, falsch typisierte und außerhalb des Bereichs liegende Reservewerte werden abgewiesen. Versionen 1–3 bleiben lesbar, ohne Reservewerte zu erfinden.
+
+Im Editor-Spielmodus bestehen beide Atemabläufe:
+
+| Ablauf | Beobachtung |
+|---|---|
+| Kurzer Reglerwechsel und Auftauchen | Nach 25 s: 198,0995 bar, SpO2 98 %, Reserve 97,37 %. Im vorherigen Stand lagen bei demselben Ablauf 92,872 % SpO2 an. |
+| Regler nach 4 s dauerhaft abgesetzt | Bei 8 s Reserve ca. 94 %, SpO2 98 %; nach 80 s ca. 15 % Reserve und 95 % SpO2. |
+| Vollständiger Reserveverlust | Abbruch bei 118,74 s, Reserve 0, SpO2 59,992 %, Flasche weiterhin 199,8108 bar. 119 Messpunkte gespeichert und alle vier Logbuchseiten gerendert. |
+
+Belege: `artifacts/reserve-editor-breathing-full.log` und `reserve-editor-loss-full.log`. Der neue Test `reserve-loss` prüft den tatsächlichen Abbruchgrund, unveränderten Flaschendruck während fehlender Versorgung, Speicherung/erneutes Lesen und frische Aufnahmen bis zur Auswertung. Der erste Editorlauf zeigte beim späten Kontrollbild noch die automatisch geöffnete Testkarte; das Zeitfenster dieses Szenarios wurde auf 150 s gesetzt, damit die Endkontrollen sichtbar bleiben.
+
+
+Der eigenständige Build `Builds/WindowsReserve/divingsim.exe` wurde erfolgreich erstellt (`artifacts/package-reserve.log`). Beide Atemszenarien bestehen im Package mit denselben Ergebnissen wie im Editor. Eine unabhängige Auswertung der 119 gespeicherten Ausfall-Messpunkte bestätigt konstante Flaschenfüllung ab Sekunde 5, monoton sinkende Reserve, stabile Sättigung bis Sekunde 60 und den gespeicherten terminalen Zustand. Die endgültigen Reserve-/Abbruch-/Logbuchbilder wurden visuell geprüft; das späte Bild wird nicht mehr von der Testkarte verdeckt.
+
+![Niedrige Atemreserve im eigenständigen Spiel](Images/Reserve_Low.png)
+
+![Gespeicherter Verlauf mit verzögerter SpO2-Abnahme](Images/Reserve_Logbook.png)
+
+
+Alle fünf Package-Abläufe bestehen: `breathing`, `reserve-loss` einschließlich aller vier Logbuchseiten, `shore` (Weesen: 5,75 m / 43,77 m / 40 Messpunkte), `tutorial` (acht Stufen in 12,94 s) und `audio`. Die gerenderte Tonaufnahme besteht ebenfalls: 40,81 s Stereo/48 kHz, aktiver RMS 0,01396, Spitzenpegel 0,1381; Pause und Stummschaltung liegen innerhalb der Prüfschwellen. Belege: `artifacts/reserve-package-*-full.log` und `reserve-audio-mix.log`. Dies ist weiterhin keine vollständige physiologische, akustische oder zweistündige Stabilitätsabnahme.

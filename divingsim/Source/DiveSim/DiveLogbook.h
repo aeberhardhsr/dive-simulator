@@ -10,6 +10,7 @@ struct FDiveLog
     int32 Mode=1;
     bool bTest=false;
     bool bBreathingContext=false;
+    bool bBreathReserveContext=false;
     TArray<Dive::State> Samples;
     uint32 Warnings=0;
     int32 WarningEvents=0;
