@@ -21,7 +21,7 @@ Dive::Config Varied()
     c.WeightKg=9; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7;
     c.VisibilityMetres=8; c.CurrentMetresPerSecond=.2; c.PlannedDepthMetres=24; c.PlannedMinutes=55;
     c.Hour=23; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
-    c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; return c;
+    c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; c.StartOnShore=true; return c;
 }
 }
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveConfigPersistence,"DiveSim.Profiles.Configuration",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
@@ -31,6 +31,10 @@ bool FDiveConfigPersistence::RunTest(const FString&)
     Dive::Config restored; int entry=0; FString error;
     TestTrue(TEXT("Strict complete config loads"),DiveConfigIO::Read(obj,restored,entry,true,error));
     TestTrue(TEXT("Every config field and entry roundtrips"),DiveConfigIO::Equal(original,2,restored,entry));
+    obj->RemoveField(TEXT("start_on_shore"));
+    TestTrue(TEXT("Legacy profile remains readable"),DiveConfigIO::Read(obj,restored,entry,true,error));
+    TestFalse(TEXT("Legacy profile retains its offshore start"),restored.StartOnShore);
+    DiveConfigIO::Write(obj,original,2); DiveConfigIO::Read(obj,restored,entry,true,error);
     for(const TCHAR* key:{TEXT("weather"),TEXT("entry"),TEXT("mode")})
     {
         DiveConfigIO::Write(obj,original,2); obj->SetNumberField(key,1.5);

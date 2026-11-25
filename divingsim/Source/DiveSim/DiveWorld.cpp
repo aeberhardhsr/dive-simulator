@@ -63,10 +63,11 @@ float ADiveWorld::GroundZ(double X,double Y) const
     float z=-30000; Terrain.Sample(X,Y,z); return z;
 }
 
-void ADiveWorld::SetEntry(int32 Index)
+void ADiveWorld::SetEntry(int32 Index,bool Shore)
 {
     if(!bTerrainReady) return;
-    const auto& entry=Terrain.Entries[FMath::Clamp(Index,0,Terrain.Entries.Num()-1)];
+    const auto& entries=Terrain.EntryList(Shore);
+    const auto& entry=entries[FMath::Clamp(Index,0,entries.Num()-1)];
     PopulationOrigin=entry.Position;
     PopulationForward=FRotator(0,entry.Yaw,0).Vector();
     for(auto& pair:Chunks) pair.Value->DestroyComponent();
@@ -220,6 +221,8 @@ void ADiveWorld::BeginPlay()
     {
         CreateLandscape();
         CreateShoreline();
+        CreateAccess();
+        if(!bTerrainReady) return;
         SetEntry(0);
         for(int i=0;i<Terrain.Entries.Num();++i)
         {
@@ -355,6 +358,7 @@ void ADiveWorld::EmitBreath(const FVector& Position,const FVector& Direction,flo
 void ADiveWorld::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(!bTerrainReady) return;
     if(Diver && Diver->bDiveActive && Diver->bMenu) return;
     const float dt=FMath::Min(DeltaSeconds,.1f); WorldTime+=dt;
     const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
@@ -367,7 +371,8 @@ void ADiveWorld::Tick(float DeltaSeconds)
     }
     if(Fog)
     {
-        const float underwater=FMath::Clamp(static_cast<float>(SurfaceZ(player.X,player.Y)-player.Z)/70,0.f,1.f);
+        const FVector eye=Diver?Diver->GetPawnViewLocation():player;
+        const float underwater=FMath::Clamp(static_cast<float>(SurfaceZ(eye.X,eye.Y)-eye.Z)/70,0.f,1.f);
         Fog->GetComponent()->SetFogDensity(FMath::Lerp(WeatherSettings.Weather==2?.012f:.002f,.35f*14/VisibleDistance,underwater));
     }
     TickFish(dt,player);

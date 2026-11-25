@@ -28,8 +28,8 @@ FString FDiveControls::Id(int Action)
 }
 FString FDiveControls::Label(int Action,bool English)
 {
-    static const TCHAR* de[]={TEXT("Vorwaerts schwimmen"),TEXT("Rueckwaerts schwimmen"),TEXT("Nach links"),TEXT("Nach rechts"),TEXT("Nach oben"),TEXT("Nach unten"),TEXT("Kraeftiger Flossenschlag"),TEXT("Jacket fuellen"),TEXT("Jacket entleeren"),TEXT("Lampe"),TEXT("Instrumente ein / aus"),TEXT("Handgelenkcomputer"),TEXT("Naechste Computerseite"),TEXT("Karte"),TEXT("Tauchgang abschliessen"),TEXT("Foto aufnehmen")};
-    static const TCHAR* en[]={TEXT("Swim forward"),TEXT("Swim backward"),TEXT("Move left"),TEXT("Move right"),TEXT("Move up"),TEXT("Move down"),TEXT("Strong fin kick"),TEXT("Inflate BCD"),TEXT("Deflate BCD"),TEXT("Torch"),TEXT("Toggle instruments"),TEXT("Wrist computer"),TEXT("Next computer page"),TEXT("Map"),TEXT("Finish dive"),TEXT("Take photograph")};
+    static const TCHAR* de[]={TEXT("Vorwaerts gehen / schwimmen"),TEXT("Rueckwaerts"),TEXT("Nach links"),TEXT("Nach rechts"),TEXT("Nach oben"),TEXT("Nach unten"),TEXT("Schneller gehen / schwimmen"),TEXT("Jacket fuellen"),TEXT("Jacket entleeren"),TEXT("Lampe"),TEXT("Instrumente ein / aus"),TEXT("Handgelenkcomputer"),TEXT("Naechste Computerseite"),TEXT("Karte"),TEXT("Tauchgang abschliessen"),TEXT("Foto aufnehmen")};
+    static const TCHAR* en[]={TEXT("Walk / swim forward"),TEXT("Move backward"),TEXT("Move left"),TEXT("Move right"),TEXT("Move up"),TEXT("Move down"),TEXT("Walk / swim faster"),TEXT("Inflate BCD"),TEXT("Deflate BCD"),TEXT("Torch"),TEXT("Toggle instruments"),TEXT("Wrist computer"),TEXT("Next computer page"),TEXT("Map"),TEXT("Finish dive"),TEXT("Take photograph")};
     return Action>=0&&Action<Count?(English?en[Action]:de[Action]):TEXT("");
 }
 FString FDiveControls::KeyText(EDiveAction Action,bool English) const

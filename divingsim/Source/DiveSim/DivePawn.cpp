@@ -6,6 +6,7 @@
 #include "InputKeyEventArgs.h"
 #include "DiveHUD.h"
 #include "DiveConfigIO.h"
+#include "Simulation/ShoreMovement.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -73,7 +74,7 @@ void ADivePawn::BeginPlay()
 {
     Super::BeginPlay();
     bSmokeTest=FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));
-    if(!bSmokeTest) LoadSettings();
+    if(!bSmokeTest) { PendingConfig.StartOnShore=true; LoadSettings(); }
     if(bSmokeTest)
     {
         FParse::Value(FCommandLine::Get(),TEXT("DiveEntry="),EntryIndex);
@@ -83,6 +84,7 @@ void ADivePawn::BeginPlay()
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
         if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
+        if(SmokeScenario==TEXT("shore")) { PendingConfig.StartOnShore=true; PendingConfig.WindMetresPerSecond=0; PendingConfig.CurrentMetresPerSecond=0; }
         if(SmokeScenario==TEXT("tutorial"))
         {
             PendingConfig.GameMode=Dive::Mode::Exploration; PendingConfig.CylinderLitres=15; PendingConfig.StartPressureBar=250;
@@ -98,8 +100,10 @@ void ADivePawn::BeginPlay()
     {
         EntryIndex=FMath::Clamp(EntryIndex,0,Environment->Terrain.Entries.Num()-1);
         Environment->Configure(PendingConfig);
-        Environment->SetEntry(EntryIndex);
-        EntryLocation=Environment->Terrain.Entries[EntryIndex].Position;
+        Environment->SetEntry(EntryIndex,PendingConfig.StartOnShore);
+        EntryLocation=PendingConfig.StartOnShore?
+            Environment->ShoreStart(EntryIndex)+FVector(0,0,Dive::ShoreMovement::EyeOffset*100):
+            Environment->Terrain.Entries[EntryIndex].Position;
     }
     SetActorLocation(EntryLocation);
     if(auto* PC=Cast<APlayerController>(GetController()))
@@ -119,7 +123,7 @@ void ADivePawn::BeginPlay()
             if(SmokeScenario==TEXT("shore-preview"))
             {
                 const auto& shore=Environment->Terrain.ShoreEntries[EntryIndex];
-                SetActorLocation(shore.Position); bShowInstruments=false; SetMenu(false);
+                SetActorLocation(Environment->ShoreStart(EntryIndex)+FVector(0,0,80)); bShowInstruments=false; SetMenu(false);
                 if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-12,shore.Yaw,0));
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
@@ -229,9 +233,13 @@ void ADivePawn::StartDive()
     PendingConfig.Sanitize();
     Simulation.Reset(PendingConfig);
     Environment->Configure(PendingConfig);
-    Environment->SetEntry(EntryIndex);
-    const auto& entry=Environment->Terrain.Entries[EntryIndex];
-    EntryLocation=entry.Position;
+    Environment->SetEntry(EntryIndex,PendingConfig.StartOnShore);
+    const auto& entry=Environment->Terrain.EntryList(PendingConfig.StartOnShore)[EntryIndex];
+    EntryLocation=PendingConfig.StartOnShore?Environment->ShoreStart(EntryIndex):entry.Position;
+    Body->SetCapsuleHalfHeight(PendingConfig.StartOnShore?Dive::ShoreMovement::HalfHeight*100:65);
+    CameraBaseHeight=PendingConfig.StartOnShore?Dive::ShoreMovement::EyeOffset*100:0;
+    Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight));
+    bWalking=PendingConfig.StartOnShore; bEnteredWater=false;
     SetActorLocation(EntryLocation); VelocityMetres=FVector::ZeroVector;
     if(auto* PC=Cast<APlayerController>(GetController())) PC->SetControlRotation(FRotator(-8,entry.Yaw,0));
     // Start trimmed at entry depth; later depth changes require manual compensation.
@@ -273,7 +281,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FCollisionQueryParams query(SCENE_QUERY_STAT(ShoreCollision),true,this);
             for(const auto& entry:Environment->Terrain.ShoreEntries)
             {
-                FHitResult hit; float ground=0; Environment->Terrain.SampleGround(entry.Position.X,entry.Position.Y,ground);
+                FHitResult hit; float ground=0; Environment->SupportZ(entry.Position.X,entry.Position.Y,ground);
                 valid&=GetWorld()->LineTraceSingleByChannel(hit,entry.Position+FVector(0,0,300),entry.Position-FVector(0,0,500),ECC_Visibility,query);
                 valid&=FMath::Abs(hit.ImpactPoint.Z-ground)<5;
                 UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_COLLISION name=%s measured_z=%.2f hit_z=%.2f"),*entry.Name,ground,hit.ImpactPoint.Z);
@@ -283,7 +291,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -390,7 +398,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
         if(SmokeScenario.StartsWith(TEXT("wrist")))
         {
             const double t=Simulation.Data.ElapsedSeconds;
@@ -415,7 +423,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && SmokeScenario!=TEXT("tutorial") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -476,9 +484,9 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_AutoExposureBias=true; PP.AutoExposureBias=8.5f-depth*.018f;
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
-    if(bCameraMotion && !bMenu)
-        Camera->SetRelativeLocation(FVector(0,0,static_cast<float>(std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8)));
-    else Camera->SetRelativeLocation(FVector::ZeroVector);
+    const double eyeOffset=CameraBaseHeight;
+    const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
+    Camera->SetRelativeLocation(FVector(0,0,eyeOffset+breathMotion));
     if(Equipment) Equipment->Update(DeltaSeconds);
 }
 
@@ -487,7 +495,7 @@ void ADivePawn::SimulateStep(float Step)
     auto* PC=Cast<APlayerController>(GetController()); if(!PC) return;
     auto Down=[this,PC](EDiveAction Action)
     {
-        if(!bSmokeTest||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
+        if(!bSmokeTest||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
         if(SmokeScenario==TEXT("stream")) return Action==EDiveAction::Forward?1.f:0.f;
         if((SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio")) && t>16) return Action==EDiveAction::Ascend?1.f:0.f;
@@ -507,7 +515,10 @@ void ADivePawn::SimulateStep(float Step)
     const FRotationMatrix orientation(PC->GetControlRotation());
     FVector wish=orientation.GetUnitAxis(EAxis::X)*forward+orientation.GetUnitAxis(EAxis::Y)*side+FVector::UpVector*vertical;
     wish=wish.GetClampedToMaxSize(1);
-    const float effort=wish.Size()*(sprint>0?1.f:.45f);
+    float effort=wish.Size()*(sprint>0?1.f:.45f);
+    if(PendingConfig.StartOnShore) MoveAtShore(Step,forward,side,vertical,sprint,wish,effort);
+    else
+    {
     const FVector current=FVector(0,PendingConfig.CurrentMetresPerSecond,0)+
         Environment->WaveVelocity(old,Simulation.Data.ElapsedSeconds);
     const FVector relative=VelocityMetres-current;
@@ -543,10 +554,21 @@ void ADivePawn::SimulateStep(float Step)
     if(position.Z>nextSurface+35) { position.Z=nextSurface+35; VelocityMetres.Z=FMath::Min(0.,VelocityMetres.Z); }
     position.Z=FMath::Max(position.Z,static_cast<double>(bottom+75));
     SetActorLocation(position);
-    const double previousDepth=Environment->PressureDepth(old,now);
-    const double nextDepth=Environment->PressureDepth(position,now+Step);
+    }
+    const FVector position=GetActorLocation();
+    if(bSmokeTest&&SmokeScenario==TEXT("shore")&&FMath::Abs(position.Z-old.Z)>20)
+    {
+        UE_LOG(LogTemp,Error,TEXT("DIVE_SHORE_FAIL vertical discontinuity %.2f cm"),position.Z-old.Z);
+        bControlsSmokeValid=false;
+        FPlatformMisc::RequestExitWithStatus(false,1);
+    }
+    const FVector offset(0,0,PendingConfig.StartOnShore?Dive::ShoreMovement::EyeOffset*100:0);
+    const double now=Simulation.Data.ElapsedSeconds;
+    const double previousDepth=Environment->PressureDepth(old+offset,now);
+    const double nextDepth=Environment->PressureDepth(position+offset,now+Step);
     Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp);
     const auto& s=Simulation.Data;
+    bEnteredWater|=s.DepthMetres>.2;
     if(bTutorialActive)
     {
         Tutorial.ObserveView(PC->GetControlRotation().Yaw,PC->GetControlRotation().Pitch);
@@ -555,7 +577,7 @@ void ADivePawn::SimulateStep(float Step)
     const FVector eye=Camera->GetComponentLocation();
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
     if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&eyeDepth>0)
-        Environment->EmitBreath(position,Camera->GetForwardVector(),s.AmbientBar);
+        Environment->EmitBreath(eye,Camera->GetForwardVector(),s.AmbientBar);
     TelemetryAccumulator+=Step;
     if(TelemetryAccumulator>=1)
     {
@@ -572,9 +594,27 @@ void ADivePawn::Notify(const FString& Message)
 void ADivePawn::Interact()
 {
     if(bMenu || !bDiveActive) return;
-    if(Simulation.Data.DepthMetres<=.8 && FVector::Dist2D(GetActorLocation(),EntryLocation)<1200)
+    if(CanFinishDive())
         FinishDive(TEXT("completed"));
-    else Notify(Local(TEXT("Zum Beenden an der Oberflaeche zur Einstiegsboje zurueckkehren."),TEXT("Return to the entry buoy at the surface to finish your dive.")));
+    else if(PendingConfig.StartOnShore&&!bEnteredWater)
+        Notify(Local(TEXT("Erst abtauchen; nach der Rueckkehr hier den Tauchgang beenden."),TEXT("Dive first; return here afterwards to finish.")));
+    else Notify(PendingConfig.StartOnShore?Local(TEXT("Zum Beenden auf das Startpodest zurueckgehen."),TEXT("Return to the starting platform to finish.")):Local(TEXT("Zum Beenden an der Oberflaeche zur Einstiegsboje zurueckkehren."),TEXT("Return to the entry buoy at the surface to finish your dive.")));
+}
+
+FString ADivePawn::EntryName() const
+{ return Environment?Environment->Terrain.EntryList(PendingConfig.StartOnShore)[EntryIndex].Name:FString(); }
+FVector ADivePawn::GetPawnViewLocation() const { return Camera->GetComponentLocation(); }
+bool ADivePawn::CanFinishDive() const
+{
+    if(!bDiveActive||Simulation.Data.DepthMetres>.8) return false;
+    if(!PendingConfig.StartOnShore) return FVector::Dist2D(GetActorLocation(),EntryLocation)<1200;
+    if(!bWalking||!bEnteredWater||!Environment||!Environment->Accesses.IsValidIndex(EntryIndex)) return false;
+    const auto& access=Environment->Accesses[EntryIndex];
+    const FVector delta=GetActorLocation()-access.Origin;
+    const double along=FVector::DotProduct(delta,access.Forward);
+    const double across=FVector::DotProduct(delta,FVector(-access.Forward.Y,access.Forward.X,0));
+    return along>=-100&&along<=access.Landing&&FMath::Abs(across)<=90&&
+        FMath::Abs(GetActorLocation().Z-EntryLocation.Z)<15;
 }
 
 void ADivePawn::FinishDive(const FString& Reason)
@@ -627,7 +667,8 @@ bool ADivePawn::SaveLog(const FString& Reason)
     root->SetStringField(TEXT("started_at_utc"),DiveStartedUTC);
     root->SetBoolField(TEXT("is_test"),bSmokeTest);
     root->SetStringField(TEXT("status"),Reason);
-    root->SetStringField(TEXT("location"),Environment->Terrain.Entries[EntryIndex].Name);
+    root->SetStringField(TEXT("location"),EntryName());
+    root->SetBoolField(TEXT("start_on_shore"),PendingConfig.StartOnShore);
     root->SetStringField(TEXT("bathymetry"),TEXT("swissBATHY3D Walensee 2020; (c) swisstopo"));
     root->SetNumberField(TEXT("water_elevation_ln02_m"),419);
     root->SetNumberField(TEXT("duration_seconds"),Simulation.Data.ElapsedSeconds);

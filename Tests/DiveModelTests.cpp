@@ -4,6 +4,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/WaterSurface.h"
 #include "../divingsim/Source/DiveSim/Simulation/AudioModel.h"
 #include "../divingsim/Source/DiveSim/Simulation/Tutorial.h"
+#include "../divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -17,6 +18,18 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    using namespace Dive::ShoreMovement;
+    close(Immersion(2,0),0,0,"Dry body displaces no water");
+    close(Immersion(0,0),.5,1e-12,"Half immersed upright body");
+    close(Immersion(-2,0),1,0,"Submerged body displaces its full volume");
+    close(VerticalForce(0,0),-100*Dive::Gravity,1e-10,"Gravity acts fully on land");
+    close(VerticalForce(35,1),35,1e-10,"Underwater force preserves existing buoyancy model");
+    check(CanStand(.96,0,0,false),"Dry feet can stand");
+    check(!CanStand(2,0,0,true),"Airborne body cannot walk in midair");
+    check(CanStand(.96,0,1.5,true)&&!CanStand(.96,0,1.5,false),"Shore transition has hysteresis");
+    check(!CanStand(.96,0,1.6,true),"Deep water releases walking support");
+    close(WalkSpeed(false,0),1.1,1e-12,"Loaded walking pace");
+    check(WalkSpeed(true,1)<WalkSpeed(true,0),"Fatigue slows land locomotion");
     Dive::Tutorial lesson; Dive::State lessonState;
     Dive::Tutorial viewLesson; viewLesson.ObserveView(179,20); viewLesson.ObserveView(-179,20);
     close(viewLesson.LookDegrees,2,1e-12,"Tutorial view tracking handles compass wrap without a false full turn");

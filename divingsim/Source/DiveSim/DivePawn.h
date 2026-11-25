@@ -32,6 +32,7 @@ public:
     virtual void Tick(float DeltaSeconds) override;
     virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+    virtual FVector GetPawnViewLocation() const override;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly) TObjectPtr<UCapsuleComponent> Body;
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly) TObjectPtr<UCameraComponent> Camera;
@@ -50,6 +51,10 @@ public:
     UPROPERTY() TObjectPtr<ADiveEquipment> Equipment;
     bool bMenu=true, bDiveActive=false, bShowInstruments=true, bShowComputer=false, bShowMap=false;
     bool bLamp=true, bSummary=false, bEnglish=false, bLogbook=false;
+    bool bWalking=false;
+    FString EntryName() const;
+    bool CanFinishDive() const;
+    bool bEnteredWater=false;
     int32 EntryIndex=0;
     int32 ComputerPage=0;
     FString Outcome, LastLogPath, Notice;
@@ -81,6 +86,7 @@ public:
     FString Local(const TCHAR* German,const TCHAR* English) const { return bEnglish?English:German; }
 private:
     float Accumulator=0, TelemetryAccumulator=0;
+    double CameraBaseHeight=0;
     bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false, bSmokeSecondaryCaptured=false;
     FString SmokeScenario;
     double SmokeLogbookStarted=0,SmokeLogbookTime=0;
@@ -107,6 +113,7 @@ private:
     void ToggleMap();
     void Interact();
     void SimulateStep(float Step);
+    void MoveAtShore(float Step,float Forward,float Side,float Vertical,float Sprint,FVector& Wish,float& Effort);
     void Notify(const FString& Text);
     void InputSmokeTick(float DeltaSeconds);
     void TestKey(FKey Key,bool Down);

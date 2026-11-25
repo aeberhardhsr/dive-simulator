@@ -46,7 +46,8 @@ void ADiveWorld::CreateShoreline()
 }
 bool ADiveWorld::ValidateShoreline(FString& Error) const
 {
-    if(ShoreMeshes.Num()!=3||Terrain.ShoreEntries.Num()!=3) { Error=TEXT("Missing shore patches"); return false; }
+    if(ShoreMeshes.Num()!=3||Terrain.ShoreEntries.Num()!=3||Accesses.Num()!=3||AccessRamps.Num()!=3)
+    { Error=TEXT("Missing shore patches or accesses"); return false; }
     for(int i=0;i<3;++i)
     {
         auto* mesh=ShoreMeshes[i].Get(); const auto& entry=Terrain.ShoreEntries[i];
@@ -55,6 +56,16 @@ bool ADiveWorld::ValidateShoreline(FString& Error) const
            !Terrain.SampleGround(entry.Position.X,entry.Position.Y,ground)||ground<30||
            FMath::Abs(entry.Position.Z-ground-170)>1)
         { Error=TEXT("Invalid shore mesh or dry start"); return false; }
+        const auto& access=Accesses[i];
+        for(double d=0;d<access.Length;d+=100)
+        {
+            const FVector p=access.Origin+access.Forward*d;
+            const double rampZ=access.Origin.Z-FMath::Max(0.,d-access.Landing)*access.Drop/(access.Length-access.Landing);
+            float floor=0,above=0,below=0;
+            if(!Terrain.SampleGround(p.X,p.Y,floor)||!SupportZ(p.X,p.Y,above,rampZ+1)||
+                !SupportZ(p.X,p.Y,below,rampZ-1)||FMath::Abs(above-rampZ)>.1||FMath::Abs(below-floor)>.1)
+            { Error=TEXT("Access support must distinguish above and below the ramp"); return false; }
+        }
     }
     Error.Empty(); return true;
 }

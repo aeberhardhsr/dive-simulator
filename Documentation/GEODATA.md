@@ -26,7 +26,7 @@ Die Übersichtskarte verwendet eine feste 512 × 128-Textur mit gemessenen Tiefe
 | Murg / Süd | 2734890.5 | 1219849.5 |
 | Walenstadt / Ost | 2741110.5 | 1220619.5 |
 
-Diese Punkte wurden innerhalb vermessener flacher Wasserflächen gewählt. Der Taucher beginnt 1,8 m unter dem Szenariopegel, bei etwa 6 m Grundtiefe. Die Blickrichtung weist zunächst hangabwärts. Es handelt sich um Offshore-Spielstarts, nicht um verifizierte reale öffentliche Tauchzugänge. Begehbare Ufer und echte Zugänge bleiben offen.
+Diese Punkte wurden innerhalb vermessener flacher Wasserflächen gewählt. Der Taucher beginnt 1,8 m unter dem Szenariopegel, bei etwa 6 m Grundtiefe. Die Blickrichtung weist zunächst hangabwärts. Es handelt sich um die optionalen Offshore-Spielstarts, nicht um verifizierte reale öffentliche Tauchzugänge. Die zusätzlichen Uferstarts sind unten beschrieben.
 
 ## Landschaft über Wasser
 
@@ -34,7 +34,7 @@ Das umliegende Gelände stammt aus [swissALTI3D](https://www.swisstopo.admin.ch/
 
 `Tools/prepare_landscape.py` liest die originalen 2-m-Pixel und mittelt jeweils 4 × 4 Zellen zu einem 8-m-Raster. Es verwendet bewusst nicht die eingebetteten GeoTIFF-Vorschaustufen: Diese liefern keine verlässlichen Flächenmittel. Eine unabhängige Prüfung von 858 über alle Kacheln verteilten Zellen gegen native 4 × 4-Pixelblöcke ergab maximal 0,000062 m numerische Abweichung. Das ist ein Umwandlungstest, keine Aussage zur Vermessungsgenauigkeit oder zum Detailverlust durch Mittelung.
 
-Die Laufzeit lädt `landscape.f32` und erzeugt ein fernes Geländemesh mit 32-m-Abstand (278.922 Vertices, 509.490 Dreiecke beim geprüften Build). Land innerhalb der vermessenen Seefläche wird ausgespart. Dieses Hintergrundmesh hat keine Spielerkollision; die begehbare Fläche ist weiterhin die Bathymetrie. Feine Ufergeometrie, Gebäude, echte Landbedeckung, Vegetation und Landschafts-LOD fehlen noch. Die Farben für Fels und Bewuchs werden illustrativ aus Neigung und Höhe abgeleitet.
+Die Laufzeit lädt `landscape.f32` und erzeugt ein fernes Geländemesh mit 32-m-Abstand (vor den Uferaussparungen: 278.922 Vertices, 509.490 Dreiecke). Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Das Hintergrundmesh hat keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Gebäude, echte Landbedeckung, Vegetation und Landschafts-LOD fehlen noch. Die Farben für Fels und Bewuchs werden illustrativ aus Neigung und Höhe abgeleitet.
 
 Zur erneuten Aufbereitung:
 
@@ -65,7 +65,15 @@ Die Lücke wird als diskrete harmonische Fläche mit festgehaltenen vermessenen 
 
 Unreal erzeugt drei getrennte Ufermeshes mit Kollision. Ihr 1-m-Vertexraster und ihre Dreiecksdiagonalen schließen an die gestreamte Bathymetrie an; vollständig vermessene Seebodendreiecke bleiben im bisherigen Streaming. Die Bodenabfrage interpoliert die tatsächlichen Dreiecksflächen. Das ferne Landmesh wird im Inneren der Uferbereiche ausgespart. Die äußere Überlappungszone ist noch keine fertige Landschafts-LOD-Lösung.
 
-Die Uferoberfläche erhält eigenes prozedurales Kies-/Bodenmaterial mit entfernungsabhängig gefilterter Körnung und einem vereinfachten feuchten Bereich um den festen Pegel. Farbe, Körnung und Bewuchszuordnung sind illustrative Gestaltung. Gebäude, Treppen, Wege, reale Bodenbedeckung und ein spielbarer Land-Wasser-Bewegungswechsel sind noch nicht umgesetzt. Die normalen Spielstarts bleiben vorerst die bisherigen Offshore-Punkte.
+Die Uferoberfläche erhält eigenes prozedurales Kies-/Bodenmaterial mit entfernungsabhängig gefilterter Körnung und einem vereinfachten feuchten Bereich um den festen Pegel. Farbe, Körnung und Bewuchszuordnung sind illustrative Gestaltung. Gebäude, Wege und reale Bodenbedeckung fehlen.
+
+## Modellierte spielbare Zugänge
+
+`DiveAccess.cpp` erzeugt an jedem Uferstart eine 1,8 m breite Plattform und eine Treppe mit Geländern. Die Konstruktion liegt über dem unveränderten Höhenmodell: 18 cm Steigung und 32 cm Auftritt, ein passendes flaches Podest und ein Treppenende etwa 1,8 m unter dem Szenariopegel. Weesen hat 24 Stufen / 11,68 m Gesamtlänge, Murg 37 / 12,84 m, Mols 36 / 15,52 m. Diese Abmessungen sind Spielparameter, keine Vermessung der tatsächlichen Anlagen. Auch bei Weesen ist diese Konstruktion eine Spielhilfe und keine Behauptung über die örtliche Strandgestaltung.
+
+Die sichtbaren Stufen verwenden eine durchgehende Kollisionsrampe; Geländer blockieren die Spielfigur. Die Bodenabfrage berücksichtigt dieselbe Rampe. Der Ufermodus verwendet eine aufrechte Kapsel mit 0,9 m halber Höhe und eine Kamera 1,76 m über dem Standniveau. Gehen/Waten setzt Bodenkontakt voraus; der Übergang zum Schwimmen liegt bei 1,55 m Wasser über dem Boden, die Rückkehr zum Gehen bei 1,45 m. Eintauchtiefe gewichtet Gewichtskraft, Auftrieb und Wasserwiderstand. Das ist eine vereinfachte aufrechte Körperdarstellung, noch keine schwimmende Ganzkörperpose.
+
+Die ursprünglichen Offshore-Starts bleiben unverändert auswählbar. Das additive Einstellungsfeld `start_on_shore` wird in Einstellungen und Tauchprofilen gespeichert; ältere Dateien ohne dieses Feld behalten den Wasserstart.
 
 Reproduktion:
 

@@ -21,6 +21,7 @@ void DiveConfigIO::Write(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& 
     Obj->SetNumberField(TEXT("weather"),Config.Weather); Obj->SetNumberField(TEXT("mode"),static_cast<int>(Config.GameMode));
     Obj->SetNumberField(TEXT("entry"),Entry); Obj->SetBoolField(TEXT("dry_suit"),Config.DrySuit);
     Obj->SetBoolField(TEXT("auto_buoyancy"),Config.AutoBuoyancy);
+    Obj->SetBoolField(TEXT("start_on_shore"),Config.StartOnShore);
 }
 bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,int32& Entry,bool Strict,FString& Error)
 {
@@ -52,6 +53,8 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
         if(Strict) { Error=FString(TEXT("Missing or invalid "))+Name; return false; } return true;
     };
     if(!boolean(TEXT("dry_suit"),candidate.DrySuit)||!boolean(TEXT("auto_buoyancy"),candidate.AutoBuoyancy)) return false;
+    // Additive field: profiles/settings from before shore access start in water.
+    if(Obj->HasField(TEXT("start_on_shore"))&&!boolean(TEXT("start_on_shore"),candidate.StartOnShore)) return false;
     auto clean=candidate; clean.Sanitize();
     if(Strict)
         for(const auto& n:Numbers) if(candidate.*(n.Member)!=clean.*(n.Member))
@@ -61,5 +64,5 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
 bool DiveConfigIO::Equal(const Dive::Config& A,int32 EntryA,const Dive::Config& B,int32 EntryB)
 {
     for(const auto& n:Numbers) if(A.*(n.Member)!=B.*(n.Member)) return false;
-    return EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy;
+    return EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
 }

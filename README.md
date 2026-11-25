@@ -2,11 +2,11 @@
 
 Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der vermessene Walensee-Grund enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle.
 
-**Entwicklungsstand:** 46 swisstopo-Rasterkacheln bilden den vermessenen Seegrund im Maßstab 1:1 ab. Drei Offshore-Spielstarts liegen bei Weesen, Murg und Walenstadt. Gelände wird um den Taucher nachgeladen; die Tiefenkarte zeigt Position und Spur. Umliegende Berge basieren auf swissALTI3D, die Wasseroberfläche verwendet Absorption, Streuung und Reflexion. Echte Uferzugänge, detaillierte Landschaft, fotorealistische Grafik, sämtliche Tierarten und die vollständige Anforderungsabnahme sind offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
+**Entwicklungsstand:** 46 swisstopo-Rasterkacheln bilden den vermessenen Seegrund im Maßstab 1:1 ab. Drei Uferstarts bei Weesen Strandbad, Murg West und Mols/Lediwracks ermöglichen Gehen, Waten, Schwimmen und die Rückkehr an Land. Die Zugangsplattformen und Treppen sind modellierte Spielgeometrie auf örtlichen Höhendaten. Die bisherigen Offshore-Starts bleiben wählbar. Gelände wird um den Taucher nachgeladen; die Tiefenkarte zeigt Position und Spur. Umliegende Berge basieren auf swissALTI3D. Detaillierte Landschaft, originalgetreue Zugangsanlagen, fotorealistische Grafik und die vollständige Anforderungsabnahme bleiben offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
 
 ## Starten
 
-Nach einem lokalen Package-Build: `Builds/Windows/divingsim.exe` starten. Der gesamte benachbarte Ordner wird benötigt. Im Menü Ausrüstung und Umgebung einstellen, dann **Abtauchen** wählen. **Exploration** bietet unbegrenztes Gas und automatische Tarierung; **Simulation** verwendet manuelle Tarierung und begrenztes Gas. Hardcore ist derzeit als noch nicht vollständig implementiert gekennzeichnet.
+Nach einem lokalen Package-Build: `Builds/Windows/divingsim.exe` starten. Der gesamte benachbarte Ordner wird benötigt. Im Menü Ausrüstung, Umgebung und **Start: am Ufer / direkt im Wasser** einstellen, dann starten. Neue Einstellungen beginnen am Ufer; ältere gespeicherte Pläne behalten ihren Wasserstart. **Exploration** bietet unbegrenztes Gas und automatische Tarierung; **Simulation** verwendet manuelle Tarierung und begrenztes Gas. Hardcore ist derzeit als noch nicht vollständig implementiert gekennzeichnet.
 
 Aus dem Quellprojekt:
 
@@ -22,9 +22,9 @@ Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.4
 | Taste | Funktion |
 |---|---|
 | Maus | Blickrichtung |
-| WASD | Schwimmen in Blickrichtung / seitwärts |
+| WASD | Am Boden gehen, im Wasser schwimmen; vorwärts / seitwärts |
 | Leertaste / Strg | Nach oben / unten schwimmen |
-| Umschalt | Kräftiger Flossenschlag, höhere Belastung |
+| Umschalt | Schneller gehen / kräftiger Flossenschlag, höhere Belastung |
 | Q / E | Jacket füllen / entleeren |
 | L | Lampe |
 | C | Handgelenkcomputer anheben / senken |
@@ -34,9 +34,11 @@ Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.4
 | H | Instrumente aus-/einblenden |
 | Esc | Pause und Menü |
 | F1 | Steuerung und Hilfe öffnen |
-| F | Tauchgang an der Einstiegsboje nahe der Oberfläche abschließen |
+| F | Nach dem Tauchen auf dem Startpodest abschließen; beim Wasserstart nahe der Einstiegsboje |
 
 BCD-Gas dehnt sich beim Aufstieg aus. Gegensteuern und rechtzeitig entlüften. Im Pausenmenü steht die Simulation still; die Ausrüstung lässt sich während eines laufenden Tauchgangs nicht ändern.
+
+Beim Uferstart führen Podest und Treppe ins Wasser. Der Wechsel zwischen Gehen/Waten und Schwimmen folgt Bodenkontakt und Wassertiefe; die Kamera bleibt auf Augenhöhe. Nach dem Tauchen zur selben Treppe und auf das flache Podest zurückkehren. Der Atemregler bleibt in diesem Prototyp auch an Land angelegt und verbraucht Flaschenluft. Dauer und Strecke enthalten den Landweg. Körperhaltung, Flossen an Land und Luft-/Wasser-Temperaturwechsel sind noch vereinfacht.
 
 Die Tabelle zeigt die Standardbelegung. Unter **F1 / Steuerung und Hilfe** lassen sich alle 16 Spielaktionen auf Tastaturtasten oder rechte/mittlere/seitliche Maustasten legen. Eine belegte Taste tauscht die beiden Aktionen; Escape bricht die Auswahl ab. Escape, F1, F11, die Konsole, Alt/Windows und der linke Mausklick bleiben reserviert. Hinweise im Spiel zeigen die aktuelle Belegung. Mausgeschwindigkeit, Y-Invertierung und Sichtfeld sind ebenfalls einstellbar und werden gespeichert. **Standards wiederherstellen** setzt diese Steuerungsoptionen zurück.
 
@@ -79,6 +81,7 @@ python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/SmokeTest.ps1 -Packaged -Scenario tutorial        # Alle acht Aufgaben, Abschluss, Planwiederherstellung
 ./Tools/SmokeTest.ps1 -Packaged -Scenario profiles        # Profilmenü, Namensdialog, Laden/Archiv/Undo, Tauchgang
 ./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -Entry 0 # Uferansicht/Kollision; Entry 0, 1 oder 2
+./Tools/SmokeTest.ps1 -Packaged -Scenario shore -Entry 0 # Gehen, Tauchen, Rueckkehr und Abschluss
 python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMix.wav artifacts/DiveSmoke.log
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht

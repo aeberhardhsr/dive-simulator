@@ -23,6 +23,12 @@ struct FDiveFish
     int32 Species=0, Instance=0;
 };
 struct FDiveRock { FVector Position; float Radius=0; };
+struct FDiveAccess
+{
+    FVector Origin=FVector::ZeroVector,Forward=FVector::ForwardVector;
+    double Landing=0,Length=0,Drop=0;
+    int32 Steps=0;
+};
 
 UCLASS()
 class DIVESIM_API ADiveWorld : public AActor
@@ -35,7 +41,10 @@ public:
     float GroundZ(double X,double Y) const;
     FDiveTerrain Terrain;
     bool bTerrainReady=false;
-    void SetEntry(int32 Index);
+    void SetEntry(int32 Index,bool Shore=false);
+    bool SupportZ(double X,double Y,float& Z,double MaxAccessZ=TNumericLimits<double>::Max()) const;
+    FVector ShoreStart(int32 Index) const;
+    TArray<FDiveAccess> Accesses;
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
@@ -50,6 +59,9 @@ private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> LandscapeMesh;
     UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> ShoreMeshes;
+    UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> AccessRamps;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> AccessParts;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> AccessRails;
     UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Water;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterMaterial;
@@ -81,6 +93,7 @@ private:
     void CreateChunk(FIntPoint Key);
     void CreateLandscape();
     void CreateShoreline();
+    void CreateAccess();
     void Populate();
     void TickFish(float Dt,const FVector& Player);
     UStaticMeshComponent* Prop(const FString& Name,const FString& MeshPath,

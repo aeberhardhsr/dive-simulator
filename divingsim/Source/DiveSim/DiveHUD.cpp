@@ -67,7 +67,7 @@ void ADiveHUD::DrawHUD()
         {
             Rect(320,610,960,48,Dark); Text(Diver->Notice,340,622,17,White);
         }
-        if(Diver->Simulation.Data.DepthMetres<.8 && FVector::Dist2D(Diver->GetActorLocation(),Diver->EntryLocation)<1200)
+        if(Diver->CanFinishDive())
         { Rect(570,680,460,48,Dark); Text(TEXT("[ ")+Diver->KeyText(EDiveAction::Finish)+TEXT(" ]  ")+Diver->Local(TEXT("Tauchgang abschliessen"),TEXT("Finish dive")),590,693,20,Accent); }
         Text(TEXT("+"),795,445,14,FLinearColor(.75,.9,.86,.45));
     }
@@ -129,7 +129,7 @@ void ADiveHUD::Menu()
     {
     const FString modes[]={L(TEXT("Exploration"),TEXT("Exploration")),L(TEXT("Simulation"),TEXT("Simulation")),L(TEXT("Hardcore *"),TEXT("Hardcore *"))};
     Field(TEXT("mode"),L(TEXT("MODUS"),TEXT("MODE")),modes[static_cast<int>(c.GameMode)],x,250,w);
-    Field(TEXT("entry"),L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name:TEXT("Geodata unavailable"),x+w+gap,250,w);
+    Field(TEXT("entry"),c.StartOnShore?L(TEXT("UFERZUGANG"),TEXT("SHORE ACCESS")):L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->EntryName():TEXT("Geodata unavailable"),x+w+gap,250,w);
     Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),FString::Printf(TEXT("%02d:00"),static_cast<int>(c.Hour)),x+2*(w+gap),250,w);
     Field(TEXT("tank"),L(TEXT("FLASCHENVOLUMEN"),TEXT("CYLINDER VOLUME")),FString::Printf(TEXT("%.0f L / O2 %.0f%%"),c.CylinderLitres,c.OxygenFraction*100),x,350,w);
     Field(TEXT("pressure"),L(TEXT("STARTDRUCK"),TEXT("START PRESSURE")),FString::Printf(TEXT("%.0f bar"),c.StartPressureBar),x+w+gap,350,w);
@@ -140,11 +140,13 @@ void ADiveHUD::Menu()
     Field(TEXT("depth"),L(TEXT("GEPLANTE TIEFE"),TEXT("PLANNED DEPTH")),FString::Printf(TEXT("%.0f m"),c.PlannedDepthMetres),x,550,w);
     Field(TEXT("duration"),L(TEXT("GEPLANTE DAUER"),TEXT("PLANNED DURATION")),FString::Printf(TEXT("%.0f min"),c.PlannedMinutes),x+w+gap,550,w);
     Field(TEXT("motion"),L(TEXT("KAMERABEWEGUNG"),TEXT("CAMERA MOTION")),Diver->bCameraMotion?L(TEXT("Sanft"),TEXT("Gentle")):L(TEXT("Stabil"),TEXT("Stable")),x+2*(w+gap),550,w);
+    Button(TEXT("shore"),c.StartOnShore?L(TEXT("Start: am Ufer"),TEXT("Start: on shore")):L(TEXT("Start: direkt im Wasser"),TEXT("Start: in the water")),x,625,350,32,c.StartOnShore);
     Text(c.GameMode==Dive::Mode::Exploration?L(TEXT("Unbegrenztes Atemgas und automatische Tarierung."),TEXT("Unlimited gas and automatic buoyancy.")):
-        Diver->KeyText(EDiveAction::Inflate)+TEXT(" / ")+Diver->KeyText(EDiveAction::Deflate)+L(TEXT(": Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT(": inflate / deflate BCD. Air expands as you ascend.")),x,655,15,Muted);
+        Diver->KeyText(EDiveAction::Inflate)+TEXT(" / ")+Diver->KeyText(EDiveAction::Deflate)+L(TEXT(": Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT(": inflate / deflate BCD. Air expands as you ascend.")),x,665,15,Muted);
     if(c.GameMode==Dive::Mode::Hardcore) Text(L(TEXT("* Bisher wie Simulation; Ausruestungsdefekte sind noch offen."),TEXT("* Currently simulation rules; equipment failures are pending.")),x,681,14,Amber);
     }
-    Button(TEXT("start"),Diver->bDiveActive?L(TEXT("Tauchgang fortsetzen"),TEXT("Resume dive")):L(TEXT("Abtauchen   >"),TEXT("Begin dive   >")),x,720,558,58,true);
+    Button(TEXT("start"),Diver->bDiveActive?L(TEXT("Tauchgang fortsetzen"),TEXT("Resume dive")):
+        c.StartOnShore?L(TEXT("Am Ufer starten   >"),TEXT("Start on shore   >")):L(TEXT("Abtauchen   >"),TEXT("Begin dive   >")),x,720,558,58,true);
     if(!ready) Text(Diver->Environment?Diver->Environment->Terrain.Error:TEXT("Geodata unavailable"),x,690,14,Red);
     if(Diver->bDiveActive) Button(TEXT("abort"),L(TEXT("Tauchgang abbrechen"),TEXT("End dive early")),x+586,720,265,58);
     else Button(TEXT("quit"),L(TEXT("Beenden"),TEXT("Quit")),x+586,720,265,58);
@@ -162,10 +164,14 @@ void ADiveHUD::Instruments()
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     const auto& s=Diver->Simulation.Data;
     const float yaw=FMath::Fmod(GetOwningPlayerController()->GetControlRotation().Yaw+360,360);
+    const TCHAR* headingsDE[]={TEXT("N"),TEXT("NO"),TEXT("O"),TEXT("SO"),TEXT("S"),TEXT("SW"),TEXT("W"),TEXT("NW")};
+    const TCHAR* headingsEN[]={TEXT("N"),TEXT("NE"),TEXT("E"),TEXT("SE"),TEXT("S"),TEXT("SW"),TEXT("W"),TEXT("NW")};
+    const int heading=FMath::RoundToInt(yaw/45)%8;
     Rect(640,32,320,58,Dark);
-    Text(FString::Printf(TEXT("N    %03.0f deg    %s"),yaw,*Time(s.ElapsedSeconds)),672,50,20,White);
-    Text(TEXT("WALENSEE / ")+Diver->Environment->Terrain.Entries[Diver->EntryIndex].Name,50,46,16,White);
-    Text(L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  "))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
+    Text(FString::Printf(TEXT("%s    %03d deg    %s"),Diver->bEnglish?headingsEN[heading]:headingsDE[heading],FMath::RoundToInt(yaw)%360,*Time(s.ElapsedSeconds)),672,50,20,White);
+    Text(TEXT("WALENSEE / ")+Diver->EntryName(),50,46,16,White);
+    Text((Diver->PendingConfig.StartOnShore?L(TEXT("Rueckkehr zum Startpodest  /  "),TEXT("Return to the starting platform  /  ")):L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  ")))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
+    if(Diver->PendingConfig.StartOnShore) Text(Diver->bWalking?L(TEXT("GEHEN / WATEN"),TEXT("WALKING / WADING")):L(TEXT("SCHWIMMEN"),TEXT("SWIMMING")),50,102,14,Accent);
     Rect(50,705,328,145,Dark); Rect(50,705,3,145,Accent);
     Text(L(TEXT("TIEFE"),TEXT("DEPTH")),75,723,14,Muted);
     Text(FString::Printf(TEXT("%.1f"),s.DepthMetres),72,749,55,White);
@@ -235,7 +241,7 @@ void ADiveHUD::Map()
         Rect(x-size*.5f,y-size*.5f,size,size,color);
     };
     for(int i=0;i<Diver->Samples.Num();i+=5) point(Diver->Samples[i].Position,FLinearColor(.75,.85,.8,1),3);
-    for(const auto& entry:data.Entries) point(entry.Position,Amber,7);
+    for(const auto& entry:data.EntryList(Diver->PendingConfig.StartOnShore)) point(entry.Position,Amber,7);
     point(Diver->GetActorLocation(),Accent,12);
     Text(Diver->Local(TEXT("Gruen: du    Gelb: Spielstarts    Dunkel: keine Messdaten"),TEXT("Green: you    Yellow: game starts    Dark: no survey data")),210,595,17,White);
     Text(Diver->Local(TEXT("Hell: flach    Dunkelblau: tief    Tiefenlinien: 10 m    Bezugspegel: 419 m LN02"),TEXT("Light: shallow    Dark blue: deep    Contours: 10 m    Water reference: 419 m LN02")),210,631,16,Muted);
@@ -347,6 +353,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
     {
         if(Id==TEXT("mode")) c.GameMode=static_cast<Dive::Mode>((static_cast<int>(c.GameMode)+1)%3);
         else if(Id==TEXT("entry")) Diver->EntryIndex=(Diver->EntryIndex+1)%3;
+        else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
         else if(Id==TEXT("hour")) c.Hour=FMath::Fmod(c.Hour+3,24.0);
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;
         else if(Id==TEXT("pressure")) c.StartPressureBar=c.StartPressureBar>=250?100:c.StartPressureBar+50;

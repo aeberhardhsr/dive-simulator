@@ -215,8 +215,8 @@ void ADiveHUD::ProfilesMenu()
     Text(selected?selected->Name:L(TEXT("Aktueller Tauchplan"),TEXT("Current dive plan")),585,235,22,White);
     const FString modes[]={TEXT("Exploration"),TEXT("Simulation"),L(TEXT("Hardcore (unvollstaendig)"),TEXT("Hardcore (incomplete)"))};
     const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain"))};
-    const FString place=Diver->Environment&&Diver->Environment->Terrain.Entries.IsValidIndex(entry)?Diver->Environment->Terrain.Entries[entry].Name:TEXT("?");
-    Text(place+TEXT("  /  ")+modes[static_cast<int>(c.GameMode)],585,280,21,Accent);
+    const FString place=Diver->Environment&&Diver->Environment->Terrain.EntryList(c.StartOnShore).IsValidIndex(entry)?Diver->Environment->Terrain.EntryList(c.StartOnShore)[entry].Name:TEXT("?");
+    Text(place+TEXT("  /  ")+modes[static_cast<int>(c.GameMode)]+(c.StartOnShore?L(TEXT("  /  Uferstart"),TEXT("  /  Shore start")):FString()),585,280,21,Accent);
     Text(FString::Printf(TEXT("%.0f L   /   %.0f bar   /   O2 %.0f %%   /   %.0f kg"),c.CylinderLitres,c.StartPressureBar,c.OxygenFraction*100,c.WeightKg),585,325,20,White);
     const FString suit=c.DrySuit?L(TEXT("Trockentauchanzug"),TEXT("Dry suit")):L(TEXT("Nassanzug"),TEXT("Wet suit"));
     const bool autoTrim=c.AutoBuoyancy||c.GameMode==Dive::Mode::Exploration;

@@ -46,6 +46,7 @@ struct Config
     int Weather = 0; // 0 clear, 1 overcast, 2 rain; scenario presets, not live weather.
     bool DrySuit = true;
     bool AutoBuoyancy = false;
+    bool StartOnShore = false; // Legacy/instant start remains compatible.
     void Sanitize()
     {
         auto clean=[](double& v,double fallback,double lo,double hi)

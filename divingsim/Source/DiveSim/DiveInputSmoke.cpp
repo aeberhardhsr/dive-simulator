@@ -1,5 +1,6 @@
 #include "DivePawn.h"
 #include "DiveHUD.h"
+#include "DiveWorld.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "InputKeyEventArgs.h"
@@ -31,6 +32,74 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("shore"))
+    {
+        TestLessonAge+=Dt;
+        const double distance=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
+        auto next=[&](int phase,const TCHAR* image)
+        {
+            shot(FString::Printf(TEXT("%s_%d"),image,EntryIndex));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_PHASE %d walking=%d depth=%.2f distance=%.2f position=%s"),phase,bWalking,Simulation.Data.DepthMetres,distance,*GetActorLocation().ToString());
+            ControlsSmokePhase=phase; TestLessonAge=0;
+        };
+        if(ControlsSmokePhase==0&&TestLessonAge>1)
+        {
+            bControlsSmokeValid=bWalking&&!CanFinishDive()&&FMath::Abs(Camera->GetComponentLocation().Z-GetActorLocation().Z-80)<1;
+            FString shoreError;
+            bControlsSmokeValid&=Environment->ValidateShoreline(shoreError);
+            if(!shoreError.IsEmpty()) UE_LOG(LogTemp,Error,TEXT("DIVE_SHORE_FAIL %s"),*shoreError);
+            tap(Controls.Key(EDiveAction::Finish));
+            bControlsSmokeValid&=bDiveActive;
+            hud->NotifyHitBoxClick(TEXT("shore"));
+            bControlsSmokeValid&=PendingConfig.StartOnShore; // Active plan is locked.
+            SaveSettings(); PendingConfig.StartOnShore=false; LoadSettings();
+            bControlsSmokeValid&=PendingConfig.StartOnShore;
+            next(1,TEXT("ShoreStart"));
+        }
+        if(ControlsSmokePhase==1&&!bWalking&&Simulation.Data.DepthMetres>.2) next(2,TEXT("ShoreWater"));
+        if(ControlsSmokePhase==2&&TestLessonAge>7&&Simulation.Data.MaxDepthMetres>3)
+        {
+            const auto& entry=Environment->Terrain.ShoreEntries[EntryIndex];
+            pc->SetControlRotation(FRotator(0,entry.Yaw+180,0));
+            next(3,TEXT("ShoreDive"));
+        }
+        if(ControlsSmokePhase==3&&bWalking&&distance<.6)
+        {
+            bControlsSmokeValid&=CanFinishDive()&&bEnteredWater&&FMath::Abs(GetActorLocation().Z-EntryLocation.Z)<1;
+            next(4,TEXT("ShoreReturn"));
+        }
+        TestKey(Controls.Key(EDiveAction::Forward),ControlsSmokePhase>=1&&ControlsSmokePhase<=3);
+        TestKey(Controls.Key(EDiveAction::Descend),ControlsSmokePhase==2);
+        TestKey(Controls.Key(EDiveAction::Ascend),ControlsSmokePhase==3&&!bWalking);
+        if(ControlsSmokePhase==4&&TestLessonAge>.8)
+        {
+            tap(Controls.Key(EDiveAction::Finish));
+            bControlsSmokeValid&=!bDiveActive&&bSummary;
+            next(5,TEXT("ShoreComplete"));
+        }
+        if(ControlsSmokePhase==5&&TestLessonAge>2)
+        {
+            FString json; FDiveLog log; log.Path=LastLogPath;
+            const bool saved=FFileHelper::LoadFileToString(json,*LastLogPath)&&DiveLogbook::Parse(json,log)&&log.Status==TEXT("completed")&&log.Samples.Num()>=20;
+            bControlsSmokeValid&=saved&&bSmokeChunkLimit&&Simulation.Data.MaxDepthMetres>3&&Simulation.Data.DistanceMetres>20;
+            hud->NotifyHitBoxClick(TEXT("new"));
+            hud->NotifyHitBoxClick(TEXT("shore")); bControlsSmokeValid&=!PendingConfig.StartOnShore;
+            hud->NotifyHitBoxClick(TEXT("shore")); bControlsSmokeValid&=PendingConfig.StartOnShore;
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_%s entry=%d samples=%d depth=%.2f distance=%.2f"),bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),EntryIndex,log.Samples.Num(),Simulation.Data.MaxDepthMetres,Simulation.Data.DistanceMetres);
+            next(6,TEXT("ShoreMenu"));
+        }
+        if(ControlsSmokePhase==6&&TestLessonAge>1)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s shore=1"),bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"));
+            FPlatformMisc::RequestExitWithStatus(false,bControlsSmokeValid?0:1);
+        }
+        if(ControlsSmokeClock>120)
+        {
+            UE_LOG(LogTemp,Error,TEXT("DIVE_SHORE_FAIL timeout phase=%d walking=%d depth=%.2f distance=%.2f position=%s"),ControlsSmokePhase,bWalking,Simulation.Data.DepthMetres,distance,*GetActorLocation().ToString());
+            FPlatformMisc::RequestExitWithStatus(false,1);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("profiles"))
     {
         if(ControlsSmokePhase<=10&&ControlsSmokeClock>(ControlsSmokePhase+1)*.8)

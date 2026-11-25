@@ -87,7 +87,8 @@ void ADiveWorld::UpdateWater(const FVector& Player)
         BuoyLines[i]->SetWorldScale3D(FVector(.025,.025,(z-bottom)/100));
     }
     Rain->ClearInstances();
-    if(WeatherSettings.Weather==2&&Player.Z>SurfaceZ(Player.X,Player.Y)-150)
+    const FVector eye=Diver?Diver->GetPawnViewLocation():Player;
+    if(WeatherSettings.Weather==2&&eye.Z>SurfaceZ(eye.X,eye.Y)-150)
     {
         const double direction=FMath::DegreesToRadians(WeatherSettings.WindDirectionDegrees);
         const FVector velocity(WeatherSettings.WindMetresPerSecond*50*FMath::Cos(direction),
@@ -95,9 +96,9 @@ void ADiveWorld::UpdateWater(const FVector& Player)
         const FQuat rotation=FQuat::FindBetweenNormals(FVector::UpVector,velocity.GetSafeNormal());
         for(int i=0;i<1600;++i)
         {
-            const FVector p(Player.X+FMath::Fmod(i*137.51+t*velocity.X+1.e8,1200.)-600,
-                Player.Y+FMath::Fmod(i*273.17+t*velocity.Y+1.e8,1200.)-600,
-                Player.Z+FMath::Fmod(i*91.37+t*velocity.Z+1.e8,1200.)-200);
+            const FVector p(eye.X+FMath::Fmod(i*137.51+t*velocity.X+1.e8,1200.)-600,
+                eye.Y+FMath::Fmod(i*273.17+t*velocity.Y+1.e8,1200.)-600,
+                eye.Z+FMath::Fmod(i*91.37+t*velocity.Z+1.e8,1200.)-200);
             if(p.Z>SurfaceZ(p.X,p.Y,t)+10) Rain->AddInstance(FTransform(rotation,p,FVector(.003,.003,.16)));
         }
     }

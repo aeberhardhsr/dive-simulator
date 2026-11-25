@@ -18,6 +18,7 @@ public:
     FVector2D ToSurvey(const FVector& Position) const { return FVector2D(OriginEast+Position.Y/100,OriginNorth+Position.X/100); }
     TArray<FDiveEntry> Entries;
     TArray<FDiveEntry> ShoreEntries;
+    const TArray<FDiveEntry>& EntryList(bool Shore) const { return Shore?ShoreEntries:Entries; }
     TArray<Dive::SurfaceGrid> Shores;
     FString Error;
     int32 LoadedTiles=0;

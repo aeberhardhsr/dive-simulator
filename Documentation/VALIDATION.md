@@ -65,7 +65,7 @@ Reproduktionsbefehle stehen in der README. Laufzeit-Protokolle und lokale Build-
 
 ## Noch nicht abgenommen
 
-Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. Fotorealismus, echte Uferzugänge, detaillierte Landschaft mit Landbedeckung, vollständige Lokalisierung, optische Qualitätsabnahme des Oberflächenübergangs, brechende Wellen und Uferwechselwirkung, anatomische Abnahme der fünf Fischmodelle (Felchen als Artengruppe) und drei Bewuchstypen, vollständiger Ausrüstungskatalog und Körpermodelle, Hardcore-Unterschiede, weitere UI-Funktionen und weitere MUST-Anforderungen bleiben offen. Der Oberflächentest bestätigt die Bewegung in die Luft; Wellen und Wetter sind gekoppelte Spielszenarien, keine vermessene Strömungs-/Wettervorhersage. Das Land ist ein Hintergrundmesh ohne Spielerkollision. Kein macOS-Spieltest, kein kontrollierter Performance-Benchmark und kein zweistündiger Dauertest wurden durchgeführt. Die Kern-/Parser-CI auf Windows, macOS und Linux ist keine Prüfung des vollständigen Spiels auf diesen Plattformen.
+Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. Fotorealismus, originalgetreue Zugangsanlagen, detaillierte Landschaft mit Landbedeckung, vollständige Lokalisierung, optische Qualitätsabnahme des Oberflächenübergangs, brechende Wellen und Uferwechselwirkung, anatomische Abnahme der fünf Fischmodelle (Felchen als Artengruppe) und drei Bewuchstypen, vollständiger Ausrüstungskatalog und Körpermodelle, Hardcore-Unterschiede, weitere UI-Funktionen und weitere MUST-Anforderungen bleiben offen. Wellen und Wetter sind gekoppelte Spielszenarien, keine vermessene Strömungs-/Wettervorhersage. Das ferne Land ist ein Hintergrundmesh ohne Spielerkollision; drei örtliche Uferbereiche und modellierte Zugänge sind begehbar. Kein macOS-Spieltest, kein kontrollierter Performance-Benchmark und kein zweistündiger Dauertest wurden durchgeführt. Die Kern-/Parser-CI auf Windows, macOS und Linux ist keine Prüfung des vollständigen Spiels auf diesen Plattformen.
 
 ## Audio-Erweiterung (25. November 2026)
 
@@ -111,7 +111,7 @@ Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. 
 - Windows-Package: Ortsprüfungen für alle drei Bereiche bestanden. Die Kollisionsstrahlen an den drei Startpositionen treffen bei 227,89 / 422,47 / 411,03 cm über dem Szenariopegel; die berechnete Dreieckshöhe stimmt damit überein. Die Prüfung beweist diese Positionen, noch keinen vollständigen begehbaren Zugang.
 - Unveränderter Tauchablauf im Package besteht: 22 s, maximale Tiefe 5,67 m, Strecke 18,78 m, Restdruck 197,99 bar, 23 Samples. Neun gestreamte Seebodenkacheln bleiben begrenzt. Beleg: `artifacts/runtime-shore-regression.log`.
 - Beim Build nach dem vorigen Commit wurden Namenskollisionen privater HUD-Hilfen durch Unreals adaptive Unity-Zusammenfassung sichtbar. Das kleine Spielmodul wird jetzt ausdrücklich mit getrennten C++-Übersetzungseinheiten gebaut, unabhängig vom Git-Arbeitsstatus.
-- Diese Erweiterung ist die Geländebasis für spätere Uferstarts. Normale Spielstarts, Geh-/Schwimmwechsel, Treppen, Wege, reale Bodenbedeckung, Landschafts-LOD und Fotorealismus sind damit nicht fertiggestellt.
+- Dieser historische Prüfschritt betrifft die Geländebasis. Die anschließende Erweiterung um Uferstarts und Geh-/Schwimmwechsel ist unten separat dokumentiert. Wege, reale Bodenbedeckung, Landschafts-LOD und Fotorealismus bleiben offen.
 - Abschließender Materialimport: 0 Fehler/0 Warnungen; Windows-Package `Builds/WindowsShoreline` erfolgreich. Drei wiederholte Ortsläufe mit frischen Bildern bestehen (`artifacts/runtime-shore-0-final.log` bis `runtime-shore-2-final.log`). Eine regelmäßige Körnung durch ungenaue Sinus-Hashes bei großen Weltkoordinaten wurde durch Ganzzahl-Hashing entfernt. Das Material bleibt illustrative prozedurale Gestaltung.
 
 ![Ufermodell bei Weesen mit Blick über den See](Images/Shore_0.png)
@@ -119,3 +119,35 @@ Fische, Pflanzen, sichtbare Hände und synthetische Geräusche sind Prototypen. 
 ![Ufermodell bei Murg West](Images/Shore_1.png)
 
 ![Ufermodell bei Mols/Lediwracks](Images/Shore_2.png)
+
+## Spielbare Uferstarts (25. November 2026)
+
+Eigenständiger Windows-Build: `Builds/WindowsAccess/divingsim.exe`. BuildCookRun erfolgreich, Beleg: `artifacts/package-access-verified.log`.
+
+| Vollständiger Ablauf im Package | Dauer inkl. Landweg | Maximale Tiefe | Strecke | Gespeicherte Messpunkte |
+|---|---:|---:|---:|---:|
+| Weesen / Strandbad | 41,10 s | 6,12 m | 44,65 m | 42 |
+| Murg / West | 41,84 s | 4,21 m | 46,30 m | 42 |
+| Mols / Lediwracks | 46,62 s | 4,76 m | 51,83 m | 47 |
+
+Alle drei Läufe bestehen `DIVE_SHORE_PASS` und `DIVE_SMOKE_PASS`. Die Tests betätigen die regulären Eingaben für Gehen, Abtauchen, Rückweg und Abschluss. Sie prüfen Bodenkontakt, Augenhöhe, den Wechsel zum Schwimmen, die Rückkehr auf das flache Startpodest und das erneut gelesene abgeschlossene Logbuch. Ein vorzeitiges Beenden vor dem ersten Abtauchen wird abgewiesen. Die Startart bleibt während des Tauchgangs gesperrt; danach kann sie gewechselt werden. Einstellungs-Roundtrip und frische Bilder für Start, Wasserwechsel, Tauchen, Rückkehr, Auswertung und Menü sind vorgeschrieben.
+
+- Kollisionsstrahlen treffen die drei Plattformen bei Z 249,54 / 472,82 / 455,50 cm, jeweils passend zur Bodenabfrage. Zusätzliche Abfragen entlang aller drei Konstruktionen unterscheiden deren Oberseite vom Seegrund darunter. Ein Schwimmer unter der Treppe wird nicht auf ihre Oberseite versetzt.
+- Der Rückweg hat in keinem 20-ms-Schritt einen Höhensprung über 20 cm. Die Zahl gestreamter Seebodenkacheln bleibt auf neun begrenzt; vorhandene Wasser-, Audio-, Ausrüstungs- und Habitatprüfungen laufen während der Tauchgänge mit.
+- Der engineunabhängige Kern besteht einschließlich trockener/halber/vollständiger Immersion, Schwerkraft, erhaltenem Unterwasserauftrieb, Bodenkontakt, Übergangshysterese und ermüdungsabhängigem Gehtempo.
+- Drei Unreal-Profiltests bestehen: neuer Startmodus im vollständigen Konfigurations-Roundtrip und Weiterverwendung älterer Profile ohne `start_on_shore`.
+- Regressionen im selben Package bestehen: bisheriger Wasserstart (22 s, 5,67 m, 18,78 m, 23 Messpunkte), Einführung (acht Stufen, 12,82 s, neun frische Aufnahmen plus Abschluss), elf Phasen der Profilbedienung mit anschließendem Tauchgang und Ufer-Kollisionsstrahlen an allen drei Orten. Belege: `artifacts/runtime-access-regression-*.log`. Insgesamt sieben erfolgreiche Package-Läufe einschließlich der drei vollständigen Uferabläufe.
+- Der Bildschirmkompass zeigt die zur Gradzahl passende Himmelsrichtung. Nebel, Regen und Audio berücksichtigen im Ufermodus die erhöhte Augenposition.
+- Belege: `artifacts/runtime-access-packaged-0.log` bis `runtime-access-packaged-2.log`, `artifacts/runtime-access-preview-editor.log` und `artifacts/profiles-access.log`.
+
+Die Aufnahmen wurden geprüft. Die Landschaft ist weiterhin grob und ohne Gebäude/Landbedeckung; sichtbare Materialübergänge zwischen Uferergänzung und Seeboden sind noch nicht optisch abgestimmt. Plattformen, Treppen und Geländer sind erfundene Spielgeometrie auf den Höhendaten, keine originalgetreue Ortsrekonstruktion. Der Körper bleibt eine aufrechte Kollisionskapsel; der Atemregler bleibt an Land angelegt, die Uhr zählt den Landweg mit und das Temperaturmodell unterscheidet noch keine Luftphase. Damit ist der spielbare Uferwechsel geprüft, die vollständige Realismus- und Grafikabnahme bleibt offen.
+
+![Spielbarer Uferstart bei Weesen](Images/Access_Weesen.png)
+
+![Spielbarer Uferstart bei Murg](Images/Access_Murg.png)
+
+![Spielbarer Uferstart bei Mols](Images/Access_Mols.png)
+
+![Rückkehr auf das Startpodest](Images/Access_Return.png)
+
+![Auswahl des Uferstarts](Images/Access_Menu.png)

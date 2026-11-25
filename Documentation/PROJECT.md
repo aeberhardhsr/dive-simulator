@@ -11,7 +11,7 @@ Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spez
 
 ## Erstes ausführbares Inkrement
 
-Spielbarer Ablauf: Konfiguration → Einstieg → Erkunden und Tarieren → Auftauchen → Auswertung. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei Offshore-Spielstarts, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Über Wasser ist ein swissALTI3D-Hintergrundmesh der umliegenden Berge vorhanden. Detaillierte Landschaft, begehbare Ufer, reale Zugänge und fotorealistische Qualitätsabnahme bleiben offen.
+Spielbarer Ablauf: Konfiguration → Uferstart → Gehen/Waten → Tauchen und Tarieren → Rückkehr auf das Startpodest → Auswertung. Die bisherigen Offshore-Spielstarts bleiben wählbar. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei örtliche Uferbereiche, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Über Wasser ist ein swissALTI3D-Hintergrundmesh der umliegenden Berge vorhanden. Die begehbaren Zugänge sind modellierte Plattformen/Treppen auf den Höhendaten; originalgetreue Anlagen, detaillierte Landschaft und fotorealistische Qualitätsabnahme bleiben offen.
 
 Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Mittlerer Wasserspiegel Z=0; lokale Wellen bewegen die Oberfläche.
 
@@ -19,10 +19,10 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 
 | Bereich | Umfang aus Spezifikation | Abnahme |
 |---|---|---|
-| WRLD | Reale Walensee-Geodaten, 1:1, Streaming, mindestens drei Einstiegspunkte, Felsen/Sedimente, Landschaft über Wasser, Tiefenkarte | Bathymetrie und Hintergrundlandschaft vorhanden; drei örtliche Ufermeshes mit gekennzeichneter Lückeninterpolation und Kollision integriert. Spielbare Land-Wasser-Zugänge und Gesamtabnahme offen |
+| WRLD | Reale Walensee-Geodaten, 1:1, Streaming, mindestens drei Einstiegspunkte, Felsen/Sedimente, Landschaft über Wasser, Tiefenkarte | Bathymetrie und Hintergrundlandschaft vorhanden; drei örtliche Ufermeshes mit gekennzeichneter Lückeninterpolation und Kollision integriert. Modellierte Plattformen/Treppen mit spielbarem Land-Wasser-Wechsel vorhanden; originalgetreue Anlagen und Gesamtabnahme offen |
 | WATR | Wellen, Brechung, Reflexion, Absorption, God Rays, Caustics, Partikel, Strömung, Atemblasen mit Expansion, Thermokline, Oberflächenübergang | Geometrische Wellen, Tiefendruck und Wasserbewegung gekoppelt; Sicht steuert auch Oberflächenabsorption. Optische/fachliche Gesamtabnahme und Uferwechselwirkung offen |
 | BIOL | Mindestens fünf anatomisch plausible animierte Tierarten, drei Bewuchstypen, Schwärme, Flucht, Kollision, Habitat und Pflanzenbewegung | Fünf Fischmodelle (Felchen als Artengruppe), drei Bewuchstypen und Habitat-/Bewegungsregeln implementiert; anatomische und visuelle Abnahme offen |
-| DIVR | First Person, 3D-Bewegung, Auftrieb, Widerstand, Trägheit, Anstrengung, Atmung, BCD, Blei, Kollision, sichtbare Ausrüstung | Offen |
+| DIVR | First Person, 3D-Bewegung, Auftrieb, Widerstand, Trägheit, Anstrengung, Atmung, BCD, Blei, Kollision, sichtbare Ausrüstung | Schwimmen/Tarierung und aufrechtes Gehen/Waten mit Bodenkollision implementiert; Ganzkörperhaltung, Flossen an Land und physikalische Gesamtabnahme offen |
 | CONF | Einstieg, Uhrzeit, Wetter, Sicht, Temperatur, Strömung, Flasche 10/12/15 L, Druck, Luft, Anzug, Blei, Lampe, Modus, geplante Tiefe/Dauer, Profile | Konfigurationsmenüs und benannte lokale Tauchprofile mit Vorschau, Laden, Umbenennen, vorherigem Stand und Archiv implementiert; Gesamtabnahme offen |
 | VITAL | Gekoppelte Herz-/Atemfrequenz, simulierte SpO2, Kerntemperatur, Belastung, Stress, Ermüdung, Stickstoff; keine unabhängigen Zufallswerte | Offen |
 | GAS | Druck, tiefen-/belastungs-/stressabhängiger Verbrauch, ppO2, Restzeit, Nullzeit, Gewebeaufnahme/-abgabe, Warnungen, Stopps | Offen |
@@ -41,7 +41,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 
 1. Toolchain, reproduzierbarer Build, Simulationskern und spielbarer Tauchablauf.
 2. Wasserbild, animierte Tiere/Pflanzen, Ton und Instrumente im kleinen Ausschnitt prüfen.
-3. Schweizer Geodaten integrieren; drei reale Einstiegspunkte. Vollständiger swisstopo-Walensee-Datensatz ist mit geprüfter SHA256 in 46 Rasterkacheln eingebunden. Die aktuelle Implementierung verwendet neun lokal erzeugte Geländekacheln mit Nachladen statt World Partition. Drei vermessene Offshore-Startpunkte sind vorhanden; Ufer und reale Zugänge fehlen noch. Provenienz: `WALENSEE_DATA.json`, Laufzeitformat: `GEODATA.md`.
+3. Schweizer Geodaten integrieren; drei reale Einstiegspunkte. Vollständiger swisstopo-Walensee-Datensatz ist mit geprüfter SHA256 in 46 Rasterkacheln eingebunden. Die aktuelle Implementierung verwendet neun lokal erzeugte Geländekacheln mit Nachladen statt World Partition. Zusätzlich zu den Offshore-Starts bestehen drei örtliche Uferstarts mit modellierten begehbaren Zugängen. Originalgetreue Anlagen und Landbedeckung bleiben offen. Provenienz: `WALENSEE_DATA.json`, Laufzeitformat: `GEODATA.md`.
 4. Vollständige Ausrüstung, Physiologie/Dekompression, UI/Logbuch, Lokalisierung und Eingaben.
 5. Referenzbasierte Grafikabnahme, Plattformtests, Performance und zweistündiger Dauertest.
 
