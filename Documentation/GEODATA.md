@@ -26,4 +26,23 @@ Die Übersichtskarte verwendet eine feste 512 × 128-Textur mit gemessenen Tiefe
 | Murg / Süd | 2734890.5 | 1219849.5 |
 | Walenstadt / Ost | 2741110.5 | 1220619.5 |
 
-Diese Punkte wurden innerhalb vermessener flacher Wasserflächen gewählt. Der Taucher beginnt 1,8 m unter dem Szenariopegel, bei etwa 6 m Grundtiefe. Die Blickrichtung weist zunächst hangabwärts. Es handelt sich um Offshore-Spielstarts, nicht um verifizierte reale öffentliche Tauchzugänge. Oberirdisches Gelände und echte Uferzugänge sind weitere Arbeitspakete.
+Diese Punkte wurden innerhalb vermessener flacher Wasserflächen gewählt. Der Taucher beginnt 1,8 m unter dem Szenariopegel, bei etwa 6 m Grundtiefe. Die Blickrichtung weist zunächst hangabwärts. Es handelt sich um Offshore-Spielstarts, nicht um verifizierte reale öffentliche Tauchzugänge. Begehbare Ufer und echte Zugänge bleiben offen.
+
+## Landschaft über Wasser
+
+Das umliegende Gelände stammt aus [swissALTI3D](https://www.swisstopo.admin.ch/en/height-model-swissalti3d), © swisstopo, ebenfalls LV95/LN02. 286 vollständige 1-km-Kacheln der Ausgabe 2026 decken E 2723000–2745000 / N 1215000–1228000 ab. Jede Quelldatei wurde gegen ihren offiziellen STAC-SHA256-Multihash geprüft. Download-URLs, Editionsjahre und Prüfsummen stehen in `Content/Diving/Geodata/landscape.json`.
+
+`Tools/prepare_landscape.py` liest die originalen 2-m-Pixel und mittelt jeweils 4 × 4 Zellen zu einem 8-m-Raster. Es verwendet bewusst nicht die eingebetteten GeoTIFF-Vorschaustufen: Diese liefern keine verlässlichen Flächenmittel. Eine unabhängige Prüfung von 858 über alle Kacheln verteilten Zellen gegen native 4 × 4-Pixelblöcke ergab maximal 0,000062 m numerische Abweichung. Das ist ein Umwandlungstest, keine Aussage zur Vermessungsgenauigkeit oder zum Detailverlust durch Mittelung.
+
+Die Laufzeit lädt `landscape.f32` und erzeugt ein fernes Geländemesh mit 32-m-Abstand (278.922 Vertices, 509.490 Dreiecke beim geprüften Build). Land innerhalb der vermessenen Seefläche wird ausgespart. Dieses Hintergrundmesh hat keine Spielerkollision; die begehbare Fläche ist weiterhin die Bathymetrie. Feine Ufergeometrie, Gebäude, echte Landbedeckung, Vegetation und Landschafts-LOD fehlen noch. Die Farben für Fels und Bewuchs werden illustrativ aus Neigung und Höhe abgeleitet.
+
+Zur erneuten Aufbereitung:
+
+```powershell
+python -m venv Tools/.geodata-env
+Tools/.geodata-env/Scripts/python.exe -m pip install -r Tools/requirements-geodata.txt
+Tools/.geodata-env/Scripts/python.exe Tools/prepare_landscape.py
+Tools/.geodata-env/Scripts/python.exe Tools/validate_landscape.py
+```
+
+Die Rohdaten und die lokale Python-Umgebung sind von Git ausgeschlossen. Das kompakte Laufzeitraster ist über Git LFS versioniert.

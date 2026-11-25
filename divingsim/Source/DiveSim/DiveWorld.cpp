@@ -30,6 +30,8 @@ ADiveWorld::ADiveWorld()
     RootComponent=CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
     Ground=CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Lakebed")); Ground->SetupAttachment(RootComponent);
     Ground->bUseAsyncCooking=true; Ground->SetCollisionProfileName(TEXT("BlockAll"));
+    LandscapeMesh=CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("WalenseeSurroundings"));
+    LandscapeMesh->SetupAttachment(RootComponent); LandscapeMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     Water=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WaterSurface")); Water->SetupAttachment(RootComponent);
     Water->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     auto create=[this](const TCHAR* name)
@@ -167,6 +169,7 @@ void ADiveWorld::BeginPlay()
     bTerrainReady=Terrain.Load();
     if(bTerrainReady)
     {
+        CreateLandscape();
         SetEntry(0);
         for(int i=0;i<Terrain.Entries.Num();++i)
         {
@@ -180,7 +183,7 @@ void ADiveWorld::BeginPlay()
     else UE_LOG(LogTemp,Error,TEXT("WALENSEE_DATA_FAILED: %s"),*Terrain.Error);
     Water->SetStaticMesh(Mesh(TEXT("/Engine/BasicShapes/Plane.Plane")));
     Water->SetRelativeLocation(FVector(200000,800000,0));
-    Water->SetRelativeScale3D(FVector(10000,36000,1)); Water->SetMaterial(0,Mat(TEXT("M_Water")));
+    Water->SetRelativeScale3D(FVector(4000,16000,1)); Water->SetMaterial(0,Mat(TEXT("M_Water")));
     Water->SetCastShadow(false);
     Sun=GetWorld()->SpawnActor<ADirectionalLight>();
     Sun->SetActorRotation(FRotator(-42,-30,0));
@@ -202,6 +205,48 @@ void ADiveWorld::BeginPlay()
     Fog->GetComponent()->SetVolumetricFogScatteringDistribution(.55f);
     Fog->GetComponent()->SetVolumetricFogAlbedo(FColor(75,135,110));
     Configure(14,13,.08);
+}
+
+void ADiveWorld::CreateLandscape()
+{
+    const auto& grid=Terrain.Landscape;
+    constexpr int Stride=4; // 32 m background mesh from the 8 m averaged raster.
+    const int cols=(grid.Columns-1)/Stride, rows=(grid.Rows-1)/Stride;
+    TArray<FVector> vertices,normals; TArray<int32> indices;
+    TArray<FVector2D> uv; TArray<FLinearColor> colors; TArray<FProcMeshTangent> tangents;
+    TArray<bool> land;
+    for(int y=0;y<rows;++y) for(int x=0;x<cols;++x)
+    {
+        const double east=grid.West+(x*Stride+.5)*grid.Spacing;
+        const double north=grid.North-(y*Stride+.5)*grid.Spacing;
+        double height=0,n=0,s=0,e=0,w=0;
+        grid.Sample(east,north,height);
+        if(!grid.Sample(east,north+16,n)) n=height;
+        if(!grid.Sample(east,north-16,s)) s=height;
+        if(!grid.Sample(east+16,north,e)) e=height;
+        if(!grid.Sample(east-16,north,w)) w=height;
+        const FVector normal=FVector(-(n-s)/32,-(e-w)/32,1).GetSafeNormal();
+        FVector p=Terrain.ToWorld(east,north); p.Z=height*100;
+        float bottom=0;
+        const bool surveyedLake=Terrain.Sample(p.X,p.Y,bottom);
+        land.Add(height>1&&!surveyedLake);
+        vertices.Add(p); normals.Add(normal); uv.Add(FVector2D(east/32,north/32)); tangents.Add(FProcMeshTangent(1,0,0));
+        const float rock=FMath::Clamp(static_cast<float>((.8-normal.Z)*3),0.f,1.f);
+        const float altitude=FMath::Clamp(static_cast<float>((height-1200)/500),0.f,1.f);
+        const float variation=.85f+.15f*FMath::Sin(east*.003)*FMath::Cos(north*.004);
+        const FLinearColor vegetation=FMath::Lerp(FLinearColor(.055,.12,.035),FLinearColor(.24,.27,.10),altitude);
+        colors.Add(FMath::Lerp(vegetation,FLinearColor(.31,.32,.29),rock)*variation);
+    }
+    for(int y=0;y<rows-1;++y) for(int x=0;x<cols-1;++x)
+    {
+        const int a=y*cols+x;
+        // LV95 raster rows run southwards, unlike the local underwater tiles.
+        if(land[a]||land[a+cols]||land[a+1]) indices.Append({a,a+cols,a+1});
+        if(land[a+1]||land[a+cols]||land[a+cols+1]) indices.Append({a+1,a+cols,a+cols+1});
+    }
+    LandscapeMesh->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,false);
+    LandscapeMesh->SetMaterial(0,Mat(TEXT("M_Landscape")));
+    UE_LOG(LogTemp,Display,TEXT("WALENSEE_LAND_MESH vertices=%d triangles=%d"),vertices.Num(),indices.Num()/3);
 }
 
 void ADiveWorld::Configure(float Visibility,float Hour,float Current)

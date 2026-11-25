@@ -63,7 +63,7 @@ private:
     float Accumulator=0, TelemetryAccumulator=0;
     double LastBreathPhase=0;
     uint32_t PreviousWarnings=0;
-    bool bSmokeTest=false, bSmokeCaptured=false;
+    bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false;
     FString SmokeScenario;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
     UPROPERTY() TObjectPtr<UAudioComponent> BreathAudio;

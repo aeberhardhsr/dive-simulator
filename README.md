@@ -2,7 +2,7 @@
 
 Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der vermessene Walensee-Grund enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle.
 
-**Entwicklungsstand:** 46 swisstopo-Rasterkacheln bilden den vermessenen Seegrund im Maßstab 1:1 ab. Drei Offshore-Spielstarts liegen bei Weesen, Murg und Walenstadt. Gelände wird um den Taucher nachgeladen; die Tiefenkarte zeigt Position und Spur. Echte Uferzugänge, Landschaft über Wasser, fotorealistische Grafik, sämtliche Tierarten und die vollständige Anforderungsabnahme sind offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
+**Entwicklungsstand:** 46 swisstopo-Rasterkacheln bilden den vermessenen Seegrund im Maßstab 1:1 ab. Drei Offshore-Spielstarts liegen bei Weesen, Murg und Walenstadt. Gelände wird um den Taucher nachgeladen; die Tiefenkarte zeigt Position und Spur. Umliegende Berge basieren auf swissALTI3D, die Wasseroberfläche verwendet Absorption, Streuung und Reflexion. Echte Uferzugänge, detaillierte Landschaft, fotorealistische Grafik, sämtliche Tierarten und die vollständige Anforderungsabnahme sind offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
 
 ## Starten
 
@@ -36,7 +36,7 @@ Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.4
 
 BCD-Gas dehnt sich beim Aufstieg aus. Gegensteuern und rechtzeitig entlüften. Im Pausenmenü steht die Simulation still; die Ausrüstung lässt sich während eines laufenden Tauchgangs nicht ändern.
 
-Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Bilder unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Abschlussfenster zeigt den zuletzt beendeten Tauchgang; ein durchsuchbares Logbuch folgt.
+Tauchprotokolle liegen unter `divingsim/Saved/DiveLogs`, Fotos mit Taste P unter `divingsim/Saved/Photographs`. Testaufnahmen liegen unter `divingsim/Saved/Screenshots`. In einem verpackten Development-Build befinden sich diese Verzeichnisse unter dessen eigenem `divingsim`-Ordner. Das Abschlussfenster zeigt den zuletzt beendeten Tauchgang; ein durchsuchbares Logbuch folgt.
 
 ## Entwicklung und Prüfung
 
@@ -50,6 +50,8 @@ python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario stream  # 90 s, Kachelwechsel
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
 ```
+
+Ein laufendes Spiel kann geöffnet bleiben, wenn ein neuer Build mit `-PackageDirectory 'O:/games/dive game/Builds/WindowsLandscape'` in einen separaten Ordner geschrieben wird. Dem Smoke-Test dann denselben Parameter übergeben.
 
 Die Build-Skripte begrenzen C++-Parallelität für den Entwicklungsrechner. `Tools/TestCore.cmd` erwartet die lokale Installation unter `C:/BuildTools2022`; plattformunabhängig kann der Kern mit `cmake -S Tests -B artifacts/tests` gebaut und mit CTest geprüft werden. Die CI-Konfiguration prüft diesen Kern auf Windows, macOS und Linux, nicht das vollständige Unreal-Spiel. Ein macOS-Spiel-Build ist noch nicht getestet.
 

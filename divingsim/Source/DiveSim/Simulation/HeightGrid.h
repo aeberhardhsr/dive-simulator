@@ -5,6 +5,29 @@
 
 namespace Dive
 {
+// Dense, north-to-south cell-centred raster for the surrounding land model.
+struct SurfaceGrid
+{
+    int Columns=0, Rows=0;
+    double West=0, North=0, Spacing=8;
+    std::vector<float> Heights;
+    bool Sample(double east,double north,double& metres) const
+    {
+        if(!std::isfinite(east)||!std::isfinite(north)||Spacing<=0||Columns<2||Rows<2) return false;
+        const double x=(east-West)/Spacing-.5, y=(North-north)/Spacing-.5;
+        if(x<0||y<0||x>=Columns-1||y>=Rows-1) return false;
+        const int col=static_cast<int>(x),row=static_cast<int>(y);
+        const size_t index=static_cast<size_t>(row)*Columns+col;
+        if(index+Columns+1>=Heights.size()) return false;
+        const double a=Heights[index], b=Heights[index+1],c=Heights[index+Columns],d=Heights[index+Columns+1];
+        if(!std::isfinite(a)||!std::isfinite(b)||!std::isfinite(c)||!std::isfinite(d)||
+            a==-9999||b==-9999||c==-9999||d==-9999) return false;
+        const double tx=x-col,ty=y-row;
+        metres=(a*(1-tx)+b*tx)*(1-ty)+(c*(1-tx)+d*tx)*ty;
+        return true;
+    }
+};
+
 // Each sample is a surveyed cell centre, stored north-to-south in centimetres
 // relative to the scenario's reference water elevation. -32768 means unmeasured.
 struct HeightTile

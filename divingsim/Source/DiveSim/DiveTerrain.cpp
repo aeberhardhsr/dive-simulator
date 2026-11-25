@@ -74,6 +74,38 @@ bool FDiveTerrain::Load()
         Overview[y*MapWidth+x]=Mosaic.Sample(east,north,height)?static_cast<float>(-height):-1.f;
     }
     UE_LOG(LogTemp,Display,TEXT("WALENSEE_DATA_READY tiles=%d entries=%d grid=1m water_reference=419m_LN02"),LoadedTiles,Entries.Num());
+    return LoadLandscape();
+}
+
+bool FDiveTerrain::LoadLandscape()
+{
+    const FString folder=FPaths::ProjectContentDir()/TEXT("Diving/Geodata");
+    FString text; TSharedPtr<FJsonObject> manifest;
+    if(!FFileHelper::LoadFileToString(text,*(folder/TEXT("landscape.json")))||
+       !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(text),manifest)||!manifest)
+    { Error=TEXT("Landschaftsdaten fehlen: Tools/prepare_landscape.py ausfuehren."); return false; }
+    double rows=0,cols=0,water=0,schema=0; FString file;
+    if(!manifest->TryGetNumberField(TEXT("rows"),rows)||!manifest->TryGetNumberField(TEXT("columns"),cols)||
+       !manifest->TryGetNumberField(TEXT("schema"),schema)||schema!=1||
+       !manifest->TryGetNumberField(TEXT("water_elevation_m"),water)||water!=419||
+       !manifest->TryGetNumberField(TEXT("west"),Landscape.West)||
+       !manifest->TryGetNumberField(TEXT("north"),Landscape.North)||
+       !manifest->TryGetNumberField(TEXT("spacing_m"),Landscape.Spacing)||Landscape.Spacing!=8||
+       !manifest->TryGetStringField(TEXT("file"),file)||FPaths::GetCleanFilename(file)!=file||
+       !FMath::IsFinite(rows)||!FMath::IsFinite(cols)||rows<2||cols<2||rows>5000||cols>5000||
+       rows!=FMath::FloorToDouble(rows)||cols!=FMath::FloorToDouble(cols)||
+       !FMath::IsFinite(Landscape.West)||!FMath::IsFinite(Landscape.North))
+    { Error=TEXT("Ungueltiges Landschaftsraster."); return false; }
+    Landscape.Rows=static_cast<int>(rows); Landscape.Columns=static_cast<int>(cols);
+    TArray<uint8> bytes;
+    if(!FFileHelper::LoadFileToArray(bytes,*(folder/file))||bytes.Num()!=Landscape.Rows*Landscape.Columns*4)
+    { Error=TEXT("Landschaftsraster unvollstaendig."); return false; }
+    Landscape.Heights.resize(Landscape.Rows*Landscape.Columns);
+    // Supported Windows/macOS targets use little-endian IEEE754 float32.
+    FMemory::Memcpy(Landscape.Heights.data(),bytes.GetData(),bytes.Num());
+    for(float height:Landscape.Heights) if(!FMath::IsFinite(height)||height<-100||height>5000)
+    { Error=TEXT("Ungueltiger Landschaftshoehenwert."); return false; }
+    UE_LOG(LogTemp,Display,TEXT("WALENSEE_LAND_READY rows=%d columns=%d spacing=8m"),Landscape.Rows,Landscape.Columns);
     return true;
 }
 

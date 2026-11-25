@@ -172,6 +172,11 @@ void ADivePawn::Tick(float DeltaSeconds)
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
         if(Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("surface");
     }
+    if(bSmokeTest && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
+    {
+        bSmokeUnderwaterCaptured=true;
+        FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveUnderwater_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
+    }
     if(bSmokeTest && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
     {
         bSmokeCaptured=true;
@@ -183,6 +188,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         const bool extended=SmokeScenario==TEXT("surface")?bSmokeSurfaceReached:
             SmokeScenario==TEXT("stream")?displacement>80:true;
         const bool valid=extended && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
+            && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<199)
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);
         FinishDive(valid?TEXT("smoke_pass"):TEXT("smoke_failed"));
@@ -206,7 +212,8 @@ void ADivePawn::Tick(float DeltaSeconds)
     }
     auto& PP=Camera->PostProcessSettings;
     Camera->PostProcessBlendWeight=1;
-    PP.bOverride_ColorSaturation=true; PP.ColorSaturation=FVector4(.68,.85,.9,1);
+    PP.bOverride_ColorSaturation=true;
+    PP.ColorSaturation=FMath::Lerp(FVector4(1,1,1,1),FVector4(.68,.85,.9,1),underwater);
     PP.bOverride_SceneColorTint=true;
     PP.SceneColorTint=FMath::Lerp(FLinearColor::White,FLinearColor(.48,.83,.78),underwater);
     PP.bOverride_VignetteIntensity=true; PP.VignetteIntensity=.35f;

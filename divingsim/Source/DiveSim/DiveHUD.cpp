@@ -82,7 +82,7 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Ruhe. Tiefe. Entdecken."),TEXT("Stillness. Depth. Discovery.")),73,319,20,Muted);
     Text(L(TEXT("SPIELBARER ENTWICKLUNGSSTAND"),TEXT("PLAYABLE DEVELOPMENT BUILD")),73,410,13,Accent);
     Text(L(TEXT("Vermessener Walensee-Seegrund, Massstab 1:1."),TEXT("Surveyed Walensee lakebed, true scale.")),73,444,17,White);
-    Text(TEXT("swissBATHY3D 2020 / 1 m / © swisstopo"),73,473,17,Muted);
+    Text(TEXT("swissBATHY3D + swissALTI3D / © swisstopo"),73,473,17,Muted);
     Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,525,18,White);
     Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
@@ -192,7 +192,7 @@ void ADiveHUD::Map()
     }
     Rect(180,150,1240,580,Dark);
     Text(Diver->Local(TEXT("WALENSEE / VERMESSENE TIEFENKARTE"),TEXT("WALENSEE / SURVEYED DEPTH MAP")),210,180,23,Accent);
-    Text(TEXT("N ^      swissBATHY3D 2020 / � swisstopo"),210,222,15,Muted);
+    Text(TEXT("N ^      swissBATHY3D 2020 / © swisstopo"),210,222,15,Muted);
     if(MapTexture) DrawTexture(MapTexture,OffsetX+210*Scale,OffsetY+270*Scale,1180*Scale,295*Scale,0,0,1,1,FLinearColor::White,BLEND_Opaque);
     auto point=[&](FVector pos,FLinearColor color,float size)
     {

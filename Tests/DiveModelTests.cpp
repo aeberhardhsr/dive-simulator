@@ -13,6 +13,13 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    Dive::SurfaceGrid land; land.Columns=2; land.Rows=2; land.West=100; land.North=216; land.Spacing=8;
+    land.Heights={10,20,30,40}; double landHeight=0;
+    check(land.Sample(108,208,landHeight),"Land raster samples LV95 cell centres");
+    close(landHeight,25,1e-9,"Land interpolation preserves north-to-south orientation");
+    check(!land.Sample(100,216,landHeight),"Land raster does not extrapolate past cell centres");
+    land.Heights[3]=-9999;
+    check(!land.Sample(108,208,landHeight),"Land NoData rejected");
     Dive::HeightTile west; west.Columns=2; west.Rows=2; west.East=100; west.North=200;
     west.Centimetres={-100,-200,-300,-400};
     Dive::HeightTile east=west; east.East=102; east.Centimetres={-300,-400,-500,-600};

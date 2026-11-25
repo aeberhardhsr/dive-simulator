@@ -33,6 +33,7 @@ public:
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
+    UPROPERTY() TObjectPtr<UProceduralMeshComponent> LandscapeMesh;
     UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
     UPROPERTY() TObjectPtr<UStaticMeshComponent> Water;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rocks;
@@ -50,6 +51,7 @@ private:
     FVector PopulationForward=FVector::ForwardVector;
     void StreamTerrain(const FVector& Position,bool Immediate=false);
     void CreateChunk(FIntPoint Key);
+    void CreateLandscape();
     void Populate();
     UStaticMeshComponent* Prop(const FString& Name,const FString& MeshPath,
         const FVector& Location,const FVector& Scale,const FString& MaterialPath, bool Collision=true);

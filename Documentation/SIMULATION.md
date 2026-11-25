@@ -36,6 +36,10 @@ Exploration uses unlimited tank gas and automatic neutral trim, with breathing-i
 
 Samples are recorded once per second. Versioned JSON includes position, depth, gas, vital signs, warnings and temperatures. Every 30 samples, a temporary file is written and renamed to the session log. Completion, interruption and gas-exhaustion states are distinct. Repeated dives currently reset tissues; persistent repetitive-dive physiology is not implemented.
 
+## Water optics
+
+The water surface uses Unreal's [Single Layer Water shading model](https://dev.epicgames.com/documentation/unreal-engine/single-layer-water-shading-model-in-unreal-engine), with scattering coefficients RGB `(0.00015, 0.00045, 0.00032)` and absorption `(0.0016, 0.00035, 0.00055)` per centimetre, and phase G `0.35`. These are illustrative optical settings, not measured Walensee water properties. Animated surface normals provide ripples; geometrical wave displacement is still pending. Underwater visibility uses a separate distance-attenuation post-process and height fog. Camera tint, saturation and ambience fade across the surface. The surface material's volume coefficients are currently fixed and still need to be coupled to the configured visibility.
+
 ## Tests
 
 `Tools/TestCore.cmd` builds a standalone C++ test executable without Unreal. It checks hydrostatic pressure, depth scaling of gas use, exertion coupling, BCD consumption, expansion/relief, step partition invariance, exploration, tank exhaustion, tissue uptake/release, ceilings, stop timing and input sanitization. A passing result establishes internal consistency, not medical validity.

@@ -8,15 +8,27 @@ TOOLS=u.AssetToolsHelpers.get_asset_tools()
 LIB=u.MaterialEditingLibrary
 BASE='/Game/Diving'
 
+def clear_expressions(material):
+    # UE 5.8 DeleteAllMaterialExpressions mutates the collection it iterates,
+    # leaving nodes behind. Iterate a snapshot to make regeneration idempotent.
+    for expression in list(LIB.get_material_expressions(material)):
+        LIB.delete_material_expression(material,expression)
+    if LIB.get_num_material_expressions(material)!=0:
+        raise RuntimeError('Material graph could not be cleared: '+material.get_name())
+
 def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_wpo=None,
-             translucent=False, opacity=.4, unlit=False, custom_normal=None):
+             translucent=False, opacity=.4, unlit=False, custom_normal=None, water=False):
     path=BASE+'/Materials'
     full=path+'/'+name
     existing=u.load_asset(full) if u.EditorAssetLibrary.does_asset_exist(full) else None
     m=existing or TOOLS.create_asset(name,path,u.Material,u.MaterialFactoryNew())
-    if existing: LIB.delete_all_material_expressions(m)
+    if existing: clear_expressions(m)
     m.set_editor_property('two_sided',True)
     m.set_editor_property('used_with_instanced_static_meshes',True)
+    m.set_editor_property('blend_mode',u.BlendMode.BLEND_OPAQUE)
+    m.set_editor_property('shading_model',u.MaterialShadingModel.MSM_DEFAULT_LIT)
+    if water:
+        m.set_editor_property('shading_model',u.MaterialShadingModel.MSM_SINGLE_LAYER_WATER)
     if translucent:
         m.set_editor_property('blend_mode',u.BlendMode.BLEND_TRANSLUCENT)
     if unlit:
@@ -47,7 +59,18 @@ def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_
     if custom_color: custom(custom_color,u.CustomMaterialOutputType.CMOT_FLOAT3,target)
     else: LIB.connect_material_property(col,'',target)
     scalar(roughness,u.MaterialProperty.MP_ROUGHNESS)
-    scalar(.22,u.MaterialProperty.MP_SPECULAR)
+    scalar(.5 if water else .22,u.MaterialProperty.MP_SPECULAR)
+    if water:
+        scalar(.05,u.MaterialProperty.MP_OPACITY)
+        volume=node(u.MaterialExpressionSingleLayerWaterMaterialOutput,600,300)
+        for pin,value in [('ScatteringCoefficients',(.00015,.00045,.00032)),
+                          ('AbsorptionCoefficients',(.0016,.00035,.00055))]:
+            coefficient=node(u.MaterialExpressionConstant3Vector)
+            coefficient.set_editor_property('constant',u.LinearColor(*value,1))
+            if not LIB.connect_material_expressions(coefficient,'',volume,pin):
+                raise RuntimeError('Missing Single Layer Water input '+pin)
+        phase=node(u.MaterialExpressionConstant); phase.set_editor_property('r',.35)
+        LIB.connect_material_expressions(phase,'',volume,'PhaseG')
     if translucent:
         scalar(opacity,u.MaterialProperty.MP_OPACITY)
         if name=='M_Water': scalar(1.333,u.MaterialProperty.MP_REFRACTION)
@@ -72,8 +95,9 @@ material('M_Plant',(.1,.3,.06),.7,vertex=True,
          custom_wpo='return float3(sin(T*1.1+P.x*.009)*9*V*V, sin(T*.8+P.y*.008)*6*V*V,0);')
 material('M_Fish',(.4,.45,.3),.32,vertex=True,
          custom_wpo='return float3(0,sin(T*8+P.x*.055)*2.6*V, sin(T*4+P.y*.02)*.2*V);')
-material('M_Water',(.035,.17,.135),.09,translucent=True,opacity=.32,
-         custom_normal='return normalize(float3(sin(P.x*.009+T*.7)*.19+cos(P.y*.021-T)*.08, cos(P.y*.012+T*.5)*.14,1));')
+material('M_Landscape',(.2,.24,.12),.95,vertex=True)
+material('M_Water',(.012,.035,.028),.13,water=True,
+         custom_normal='return normalize(float3(sin(P.x*.13+P.y*.025+T*1.7)*.045+cos(P.y*.057-T*2.1)*.025, cos(P.y*.11+P.x*.018+T*1.5)*.035+sin(P.x*.19-T*2.9)*.015,1));')
 material('M_Bubble',(.4,.7,.65),.06,translucent=True,opacity=.21)
 material('M_Particle',(.18,.32,.26),1,unlit=True)
 material('M_Buoy',(.9,.22,.045),.35)
@@ -82,7 +106,7 @@ material('M_Rope',(.65,.62,.42),.9)
 # Screen-distance water absorption, distinct from the atmospheric height fog.
 post_path=BASE+'/Materials/M_Underwater'
 post=u.load_asset(post_path) if u.EditorAssetLibrary.does_asset_exist(post_path) else TOOLS.create_asset('M_Underwater',BASE+'/Materials',u.Material,u.MaterialFactoryNew())
-LIB.delete_all_material_expressions(post)
+clear_expressions(post)
 post.set_editor_property('material_domain',u.MaterialDomain.MD_POST_PROCESS)
 scene=LIB.create_material_expression(post,u.MaterialExpressionSceneTexture,-500,0)
 scene.set_editor_property('scene_texture_id',u.SceneTextureId.PPI_POST_PROCESS_INPUT0)

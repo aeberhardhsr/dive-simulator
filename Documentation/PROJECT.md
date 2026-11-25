@@ -11,7 +11,7 @@ Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spez
 
 ## Erstes ausführbares Inkrement
 
-Spielbarer Ablauf: Konfiguration → Einstieg → Erkunden und Tarieren → Auftauchen → Auswertung. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei Offshore-Spielstarts, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Landschaft über Wasser, reale Uferzugänge und fotorealistische Qualitätsabnahme bleiben offen.
+Spielbarer Ablauf: Konfiguration → Einstieg → Erkunden und Tarieren → Auftauchen → Auswertung. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei Offshore-Spielstarts, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Über Wasser ist ein swissALTI3D-Hintergrundmesh der umliegenden Berge vorhanden. Detaillierte Landschaft, begehbare Ufer, reale Zugänge und fotorealistische Qualitätsabnahme bleiben offen.
 
 Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Wasseroberfläche Z=0.
 
