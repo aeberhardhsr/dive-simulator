@@ -33,6 +33,32 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("loadout"))
+    {
+        auto phase=[&](int value)
+        {
+            const bool ok=hud->LoadoutSmokeTest(value);bControlsSmokeValid&=ok;
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LOADOUT_PHASE %d %s"),value,ok?TEXT("PASS"):TEXT("FAIL"));
+            ++ControlsSmokePhase;
+        };
+        if(ControlsSmokePhase==0&&ControlsSmokeClock>1) phase(0);
+        if(ControlsSmokePhase==1&&ControlsSmokeClock>3) phase(1);
+        if(ControlsSmokePhase==2&&ControlsSmokeClock>5) phase(2);
+        if(ControlsSmokePhase==3&&Simulation.Data.ElapsedSeconds>10) { SetMenu(true);phase(3); }
+        if(ControlsSmokePhase==4&&ControlsSmokeClock>18) { ResumeDive();++ControlsSmokePhase; }
+        if(ControlsSmokePhase==5&&ControlsSmokeClock>20)
+        {
+            bControlsSmokeValid&=bLoadoutImpulseChecked&&bLoadoutImpulseValid&&Simulation.Data.DistanceMetres>2;
+            FinishDive(bControlsSmokeValid?TEXT("smoke_pass"):TEXT("smoke_failed"));
+            const auto saved=DiveLogbook::Read(LastLogPath);
+            bControlsSmokeValid&=saved.Error.IsEmpty()&&saved.bLoadoutContext&&saved.Samples.Num()==Samples.Num();
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LOADOUT_%s case=%d mass=%.6f volume=%.6f log=%s"),
+                bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"),LoadoutTestCase,Simulation.Data.TotalMassKg,Simulation.Data.DisplacedLitres,*LastLogPath);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_%s loadout=1"),bControlsSmokeValid?TEXT("PASS"):TEXT("FAIL"));
+            FPlatformMisc::RequestExitWithStatus(false,bControlsSmokeValid?0:1);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("reserve-loss"))
     {
         const auto& state=Simulation.Data; const double t=state.ElapsedSeconds;
@@ -126,8 +152,13 @@ void ADivePawn::InputSmokeTick(float Dt)
         if(ControlsSmokePhase==0&&TestLessonAge>1)
         {
             bControlsSmokeValid=bWalking&&!CanFinishDive()&&FMath::Abs(Camera->GetComponentLocation().Z-GetActorLocation().Z-80)<1;
+            // Surface preparation transfers eight local litres into the BCD.
+            // Ambient-air breathing must leave that prepared pressure unchanged.
+            const double preparedPressure=PendingConfig.StartPressureBar-
+                (PendingConfig.Rules().LimitedGas?FMath::Min(PendingConfig.StartPressureBar,
+                    8*PendingConfig.SurfacePressureBar/PendingConfig.CylinderLitres):0);
             bControlsSmokeValid&=Simulation.Data.BreathSource==Dive::BreathingSource::Air&&
-                FMath::Abs(Simulation.Data.CylinderBar-PendingConfig.StartPressureBar)<1.e-8;
+                FMath::Abs(Simulation.Data.CylinderBar-preparedPressure)<1.e-8;
             FString shoreError;
             bControlsSmokeValid&=Environment->ValidateShoreline(shoreError);
             if(!shoreError.IsEmpty()) UE_LOG(LogTemp,Error,TEXT("DIVE_SHORE_FAIL %s"),*shoreError);

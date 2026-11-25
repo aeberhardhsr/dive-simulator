@@ -11,13 +11,14 @@ struct Torch
     const char* Id;
     const char* Name;
     double Lumens,InnerDegrees,OuterDegrees,RuntimeMinutes;
+    double DryKg,DisplacedLitres;
     static constexpr int Count=3;
     static const Torch& At(int index)
     {
         static const Torch models[]={
-            {"allround","Allround",1000,12,27,120},
-            {"spot","Spot",700,5,8,180},
-            {"wide","Wide",3000,45,55,55}
+            {"allround","Allround",1000,12,27,120,.65,.35},
+            {"spot","Spot",700,5,8,180,.48,.27},
+            {"wide","Wide",3000,45,55,55,1.05,.58}
         };
         return models[std::clamp(index,0,Count-1)];
     }

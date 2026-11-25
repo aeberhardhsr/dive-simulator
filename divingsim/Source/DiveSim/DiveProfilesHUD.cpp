@@ -162,7 +162,7 @@ void ADiveHUD::ProfilesMenu()
     const auto& plan=selected?selected->Config:Diver->PendingConfig; const auto c=plan.Resolved(); const int entry=selected?selected->Entry:Diver->EntryIndex;
     Rect(560,210,920,420,Panel);
     Text(selected?selected->Name:L(TEXT("Aktueller Tauchplan"),TEXT("Current dive plan")),585,235,22,White);
-    const FString modes[]={TEXT("Exploration"),TEXT("Simulation"),L(TEXT("Hardcore (unvollstaendig)"),TEXT("Hardcore (incomplete)"))};
+    const FString modes[]={TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};
     const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain")),L(TEXT("Sturm"),TEXT("Storm"))};
     const FString place=Diver->Environment&&Diver->Environment->Terrain.EntryList(c.StartOnShore).IsValidIndex(entry)?Diver->Environment->Terrain.EntryList(c.StartOnShore)[entry].Name:TEXT("?");
     Text(place+TEXT("  /  ")+modes[static_cast<int>(c.GameMode)]+(c.StartOnShore?L(TEXT("  /  Uferstart"),TEXT("  /  Shore start")):FString()),585,280,21,Accent);
@@ -177,7 +177,8 @@ void ADiveHUD::ProfilesMenu()
     else Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s %.1f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
     Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphaere"),c.SurfacePressureBar),585,525,20,White);
     const auto& torch=Dive::Torch::At(c.TorchModel);
-    Text(FString::Printf(TEXT("%s: %s / %.0f lm / %.0f deg / %.0f min"),Diver->bEnglish?TEXT("Torch"):TEXT("Lampe"),UTF8_TO_TCHAR(torch.Name),torch.Lumens,2*torch.OuterDegrees,torch.RuntimeMinutes),585,563,18,White);
+    Text(FString::Printf(TEXT("%s: %s / %.0f lm / %.0f deg / %.0f min / %s / %s"),Diver->bEnglish?TEXT("Torch"):TEXT("Lampe"),UTF8_TO_TCHAR(torch.Name),torch.Lumens,2*torch.OuterDegrees,torch.RuntimeMinutes,
+        c.CylinderMaterial==1?TEXT("Aluminium"):*L(TEXT("Stahl"),TEXT("Steel")),UTF8_TO_TCHAR(Dive::BCDEquipment::At(c.BCDModel).Item.Name)),585,563,17,White);
     if(selected&&DiveConfigIO::Equal(plan,entry,Diver->PendingConfig,Diver->EntryIndex)) Text(L(TEXT("Entspricht dem aktuellen Tauchplan."),TEXT("Matches the current dive plan.")),585,602,16,Accent);
     if(Diver->bDiveActive) Text(L(TEXT("Laden ist erst nach Ende des laufenden Tauchgangs moeglich."),TEXT("Loading is available after the current dive ends.")),560,645,16,Amber);
     if(selected)

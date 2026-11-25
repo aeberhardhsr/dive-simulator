@@ -26,6 +26,7 @@ public:
     bool ProfileSmokeTest(int Phase);
     bool ConfigSmokeTest(int Phase);
     bool EnvironmentSmokeTest(int Phase);
+    bool LoadoutSmokeTest(int Phase);
     bool ConfigInputOpen() const { return ConfigDialog.IsValid(); }
     void CloseConfigInput(bool RestoreFocus=true);
     bool LogbookReady() const { return !bIndexLoading&&!bDetailLoading&&SelectedLog.Error.IsEmpty()&&!SelectedLog.Path.IsEmpty(); }
@@ -43,6 +44,7 @@ private:
     void Button(FName Id,const FString& Label,float X,float Y,float W,float H,bool Accent=false);
     void Field(FName Id,const FString& Label,const FString& Value,float X,float Y,float W=330);
     void Menu();
+    void LoadoutMenu();
     bool OpenConfigInput(FName Id);
     bool SubmitConfigInput(const FString& Value);
     FString ConfigValue(FName Id) const;
@@ -71,7 +73,7 @@ private:
     TFuture<FDiveLogIndex> IndexTask;
     TFuture<FDiveLog> DetailTask;
     bool bIndexLoading=false,bDetailLoading=false;
-    bool bEnvironmentPage=false,bAudioPage=false,bControlsPage=false;
+    bool bEnvironmentPage=false,bAudioPage=false,bControlsPage=false,bLoadoutPage=false;
     bool bProfilesPage=false,bProfileArchive=false,bProfileRename=false;
     FDiveProfiles Profiles;
     FString ProfileSelection,ProfileEditingId,ProfileMessage,ProfileNameError;

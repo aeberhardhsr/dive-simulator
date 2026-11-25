@@ -16,6 +16,7 @@
 *.i16 filter=lfs diff=lfs merge=lfs -text
 *.f32 filter=lfs diff=lfs merge=lfs -text
 *.u8 filter=lfs diff=lfs merge=lfs -text
-# Small environment-report previews are stored directly with the report.
+# Small report previews are stored directly with the report.
 Documentation/Images/Environment_Winter.png -filter -diff -merge -text
 Documentation/Images/Environment_Summer.png -filter -diff -merge -text
+Documentation/Images/Loadout_EN.png -filter -diff -merge -text

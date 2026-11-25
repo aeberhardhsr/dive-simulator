@@ -10,9 +10,9 @@ namespace ShoreMovement
 constexpr double HalfHeight=.90, EyeOffset=.80, FloorClearance=.96, MassKg=100;
 inline double Immersion(double CentreHeight,double SurfaceHeight)
 { return Clamp((SurfaceHeight-CentreHeight+HalfHeight)/(2*HalfHeight),0,1); }
-inline double VerticalForce(double FullBuoyancy,double Immersed)
+inline double VerticalForce(double FullBuoyancy,double Immersed,double LoadedMassKg=MassKg)
 // FullBuoyancy is already the NET fully submerged force from the dive model.
-{ return FullBuoyancy*Immersed-MassKg*Gravity*(1-Immersed); }
+{ return FullBuoyancy*Immersed-LoadedMassKg*Gravity*(1-Immersed); }
 inline bool CanStand(double CentreHeight,double GroundHeight,double SurfaceHeight,bool WasStanding)
 {
     const double waterDepth=SurfaceHeight-GroundHeight;

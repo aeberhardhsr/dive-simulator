@@ -207,4 +207,7 @@ void ADiveHUD::Logbook()
             FString::Printf(TEXT("%.0f / %.0f / %.0f / %.0f%%   "),100*sample.MotorCapacity,100*sample.Narcosis,100*sample.Panic,100*sample.DecompressionBurden)+
             (sample.RegulatorFreeflow?L(TEXT("Reglerdefekt: "),TEXT("Regulator fault: "))+FString::Printf(TEXT("%.0f L"),sample.FreeflowLostLitres):TEXT("")),510,834,14,Muted);
     else Text(L(TEXT("Kurven: gespeicherte Spielwerte. Gelbe Marken: neue Warnungen."),TEXT("Curves: recorded game values. Yellow marks: new warnings.")),510,834,14,Muted);
+    if(log.bLoadoutContext) Text(FString::Printf(TEXT("%s %.2f kg   /   %s %.2f L   /   %s %+.2f kg"),
+        *L(TEXT("Masse"),TEXT("Mass")),sample.TotalMassKg,*L(TEXT("Verdraengung"),TEXT("Displacement")),sample.DisplacedLitres,
+        *L(TEXT("Netto"),TEXT("Net")),sample.DisplacedLitres-sample.TotalMassKg),510,858,13,Muted);
 }

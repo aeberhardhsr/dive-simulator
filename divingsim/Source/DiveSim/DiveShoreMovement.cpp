@@ -20,7 +20,7 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         Effort=Wish.Size()*(Sprint>0?.7f:.35f);
         const FVector target=Wish*WalkSpeed(Sprint>0,0)*Simulation.Data.MotorCapacity;
         const FVector horizontal(VelocityMetres.X,VelocityMetres.Y,0);
-        const FVector change=(target-horizontal).GetClampedToMaxSize(2.5*Step);
+        const FVector change=(target-horizontal).GetClampedToMaxSize(250/Simulation.Data.TotalMassKg*Step);
         VelocityMetres=horizontal+change;
         FVector destination=old+VelocityMetres*100*Step;
         float nextGround=0;
@@ -46,9 +46,9 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         const FVector relative=VelocityMetres-current;
         const double fatigue=Simulation.Data.MotorCapacity;
         FVector force=Wish*SwimForceNewtons*(Sprint>0?1.7:1)*fatigue*immersion;
-        force.Z+=VerticalForce(Simulation.Data.BuoyancyNewtons,immersion);
+        force.Z+=VerticalForce(Simulation.Data.BuoyancyNewtons,immersion,Simulation.Data.TotalMassKg);
         force-=relative*relative.Size()*FMath::Lerp(1.5,static_cast<double>(DragCoefficient),immersion);
-        VelocityMetres+=force/MassKg*Step;
+        VelocityMetres+=force/Simulation.Data.TotalMassKg*Step;
         VelocityMetres=VelocityMetres.GetClampedToMaxSize(FMath::Lerp(8.,2.5,immersion));
         FHitResult hit; AddActorWorldOffset(VelocityMetres*100*Step,true,&hit);
         if(hit.bBlockingHit)

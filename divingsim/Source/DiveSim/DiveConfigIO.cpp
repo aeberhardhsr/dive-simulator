@@ -20,6 +20,8 @@ void DiveConfigIO::Write(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& 
 {
     Obj->SetStringField(TEXT("scenario_date"),UTF8_TO_TCHAR(Config.Date.Text().c_str()));
     Obj->SetNumberField(TEXT("torch_model"),Config.TorchModel);
+    Obj->SetNumberField(TEXT("cylinder_material"),Config.CylinderMaterial);
+    Obj->SetNumberField(TEXT("bcd_model"),Config.BCDModel);
     for(const auto& n:Numbers) Obj->SetNumberField(n.Name,Config.*(n.Member));
     Obj->SetNumberField(TEXT("weather"),Config.Weather); Obj->SetNumberField(TEXT("mode"),static_cast<int>(Config.GameMode));
     Obj->SetNumberField(TEXT("entry"),Entry); Obj->SetBoolField(TEXT("dry_suit"),Config.DrySuit);
@@ -53,6 +55,8 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
     };
     int32 mode=1;
     if(Obj->HasField(TEXT("torch_model"))&&!integer(TEXT("torch_model"),candidate.TorchModel,Dive::Torch::Count-1)) return false;
+    if(Obj->HasField(TEXT("cylinder_material"))&&!integer(TEXT("cylinder_material"),candidate.CylinderMaterial,1)) return false;
+    if(Obj->HasField(TEXT("bcd_model"))&&!integer(TEXT("bcd_model"),candidate.BCDModel,Dive::BCDEquipment::Count-1)) return false;
     if(!integer(TEXT("mode"),mode,2)||!integer(TEXT("weather"),candidate.Weather,Dive::WeatherScenario::Count-1)||!integer(TEXT("entry"),candidateEntry,2)) return false;
     candidate.GameMode=static_cast<Dive::Mode>(mode);
     int32 currentSource=0;
@@ -88,6 +92,7 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
 }
 bool DiveConfigIO::Equal(const Dive::Config& A,int32 EntryA,const Dive::Config& B,int32 EntryB)
 {
+    if(A.CylinderMaterial!=B.CylinderMaterial||A.BCDModel!=B.BCDModel) return false;
     for(const auto& n:Numbers) if(A.*(n.Member)!=B.*(n.Member)) return false;
     return A.ManualExplorationBuoyancy==B.ManualExplorationBuoyancy&&A.AutoVisibility==B.AutoVisibility&&A.AutoTemperature==B.AutoTemperature&&A.CurrentSource==B.CurrentSource&&A.TorchModel==B.TorchModel&&A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
 }

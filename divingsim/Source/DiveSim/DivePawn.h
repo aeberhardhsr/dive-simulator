@@ -41,6 +41,8 @@ public:
 
     Dive::Model Simulation;
     Dive::Config PendingConfig;
+    int32 LoadoutTestCase=0;
+    bool bLoadoutImpulseChecked=false,bLoadoutImpulseValid=false;
     TArray<FDiveSample> Samples;
     FVector VelocityMetres=FVector::ZeroVector;
     FVector EntryLocation=FVector(-6500,0,-180);

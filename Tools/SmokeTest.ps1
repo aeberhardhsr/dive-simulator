@@ -1,5 +1,6 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout')][string]$Scenario='dive',
+    [ValidateRange(0,3)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
@@ -22,6 +23,7 @@ New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $arguments='-DiveSmokeTest -windowed -ResX=1600 -ResY=900 -nosplash -unattended -abslog="{0}"' -f $logPath
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 if($Scenario -eq 'modes') { $arguments+=' -DiveModeCase='+$ModeCase }
+if($Scenario -eq 'loadout') { $arguments+=' -DiveLoadoutCase='+$LoadoutCase }
 $consoleCommands=@()
 if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
@@ -72,6 +74,14 @@ if($Scenario -eq 'surface-storm' -and $log -notmatch 'DIVE_WEATHER_PASS kind=3 w
 if($Scenario -eq 'daycycle' -and ($log -notmatch 'DIVE_DAYCYCLE_PASS' -or $log -notmatch 'DIVE_DAYCYCLE_PAUSE_PASS')) { throw 'Day/night cycle or real pause test failed.' }
 if($CelestialReferences -and $log -notmatch 'DIVE_CELESTIAL_PASS references=6') { throw 'Astronomical reference comparison failed.' }
 if($Scenario -eq 'environment' -and $log -notmatch 'DIVE_ENVIRONMENT_PASS') { throw 'Automatic environment smoke test failed.' }
+if($Scenario -eq 'loadout') {
+    if($log -notmatch 'DIVE_LOADOUT_PASS' -or $log -notmatch 'DIVE_LOADOUT_IMPULSE_PASS' -or $log -match 'DIVE_LOADOUT_\w*FAIL') { throw 'Loadout runtime or inertia test failed.' }
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    foreach($stage in @('DE','EN','Paused')) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "Loadout_${LoadoutCase}_$stage.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh loadout screenshot: $stage" }
+    }
+}
 if($Scenario -eq 'modes') {
     if($log -notmatch 'DIVE_MODE_PASS' -or $log -match 'DIVE_MODE_FAIL') { throw 'Mode runtime test failed.' }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }

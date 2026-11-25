@@ -69,6 +69,12 @@ void ADivePawn::BeginPlay()
         FParse::Value(FCommandLine::Get(),TEXT("DiveEntry="),EntryIndex);
         FParse::Value(FCommandLine::Get(),TEXT("DiveScenario="),SmokeScenario);
         bPerformance=SmokeScenario.StartsWith(TEXT("perf-"));
+        if(SmokeScenario==TEXT("loadout"))
+        {
+            FParse::Value(FCommandLine::Get(),TEXT("DiveLoadoutCase="),LoadoutTestCase);
+            if(LoadoutTestCase<0||LoadoutTestCase>3) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            PendingConfig.WindMetresPerSecond=PendingConfig.CurrentMetresPerSecond=0;
+        }
         if(SmokeScenario==TEXT("modes"))
         {
             FParse::Value(FCommandLine::Get(),TEXT("DiveModeCase="),ModeSmokeCase);
@@ -164,7 +170,7 @@ void ADivePawn::BeginPlay()
                 if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-12,shore.Yaw,0));
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
-            else if(SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")) StartDive();
+            else if(SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
             double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
@@ -305,11 +311,8 @@ void ADivePawn::StartDive()
     bWalking=PendingConfig.StartOnShore; bEnteredWater=false;
     SetActorLocation(EntryLocation); VelocityMetres=FVector::ZeroVector;
     if(auto* PC=Cast<APlayerController>(GetController())) PC->SetControlRotation(FRotator(bSmokeTest&&SmokeScenario==TEXT("torch")?-55:-8,entry.Yaw,0));
-    // Start trimmed at entry depth; later depth changes require manual compensation.
-    const double pressure=Simulation.Pressure(Environment->PressureDepth(EntryLocation,0));
-    const double suit=(PendingConfig.DrySuit?3:5)/std::pow(pressure/PendingConfig.SurfacePressureBar,.7);
-    Simulation.Data.BCDSurfaceLitres=FMath::Max(0.0,PendingConfig.WeightKg+
-        PendingConfig.StartPressureBar*PendingConfig.CylinderLitres*.0012-2-suit)*pressure;
+    // Model::Reset prepares the selected loadout at the surface. Entry depth
+    // compresses that same gas; ballast is never silently neutralized at spawn.
     Samples.Reset(); Accumulator=0; TelemetryAccumulator=0;
     Audio->Reset(); Audio->ApplyLevels(AudioLevels);
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
@@ -375,7 +378,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -554,7 +557,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -643,6 +646,13 @@ void ADivePawn::SimulateStep(float Step)
     {
         if(!bSmokeTest||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
+        if(SmokeScenario==TEXT("loadout"))
+        {
+            if(Action==EDiveAction::Forward) return 1.f;
+            if(Action==EDiveAction::Descend&&t>1&&t<5) return .7f;
+            if(Action==EDiveAction::Inflate&&t>6&&t<8) return 1.f;
+            return 0.f;
+        }
         if(SmokeScenario==TEXT("modes"))
         {
             if(Action==EDiveAction::Forward||Action==EDiveAction::Sprint) return 1.f;
@@ -706,12 +716,21 @@ void ADivePawn::SimulateStep(float Step)
     // Upward swimming can lift the eyes into air, without allowing flight.
     const double now=Simulation.Data.ElapsedSeconds;
     const double surface=Environment->SurfaceZ(old.X,old.Y,now);
-    force.Z-=FMath::Clamp((old.Z-surface)/65.0,0.0,1.0)*90*9.80665;
+    force.Z-=FMath::Clamp((old.Z-surface)/65.0,0.0,1.0)*
+        (Simulation.Data.TotalMassKg*Dive::Gravity+Simulation.Data.BuoyancyNewtons);
     force-=relative*relative.Size()*DragCoefficient;
-    VelocityMetres+=force/100.f*Step;
+    VelocityMetres+=force/Simulation.Data.TotalMassKg*Step;
     VelocityMetres=VelocityMetres.GetClampedToMaxSize(2.5f);
     FHitResult hit;
     AddActorWorldOffset(VelocityMetres*100*Step,true,&hit);
+    if(bSmokeTest&&SmokeScenario==TEXT("loadout")&&!bLoadoutImpulseChecked)
+    {
+        const double expected=125./Simulation.Data.TotalMassKg*Step*Step*100*std::cos(8*Dive::Pi/180);
+        const double moved=FVector::Dist2D(old,GetActorLocation());
+        bLoadoutImpulseChecked=true;bLoadoutImpulseValid=!hit.bBlockingHit&&std::abs(moved-expected)<1.e-5;
+        UE_LOG(LogTemp,Display,TEXT("DIVE_LOADOUT_IMPULSE_%s mass=%.6f expected_cm=%.9f actual_cm=%.9f"),
+            bLoadoutImpulseValid?TEXT("PASS"):TEXT("FAIL"),Simulation.Data.TotalMassKg,expected,moved);
+    }
     if(hit.bBlockingHit)
     {
         VelocityMetres=FVector::VectorPlaneProject(VelocityMetres,hit.Normal);

@@ -21,12 +21,31 @@ Dive::Config Varied()
     c.WeightKg=7.5; c.SurfacePressureBar=.94; c.SurfaceTemperatureC=22; c.BottomTemperatureC=7; c.AirTemperatureC=-3.5;
     c.VisibilityMetres=8; c.CurrentMetresPerSecond=.17; c.PlannedDepthMetres=22.5; c.PlannedMinutes=47;
     c.TorchModel=2; c.Date={2024,2,29}; c.Hour=23+59./60; c.WindMetresPerSecond=8; c.WindDirectionDegrees=240; c.ThermoclineMetres=15;
-    c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; c.StartOnShore=true; return c;
+    c.ThermoclineWidthMetres=3; c.Weather=2; c.DrySuit=false; c.AutoBuoyancy=true; c.StartOnShore=true;
+    c.CylinderMaterial=1;c.BCDModel=2;return c;
 }
 }
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveConfigPersistence,"DiveSim.Profiles.Configuration",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveConfigPersistence::RunTest(const FString&)
 {
+    for(int material=0;material<2;++material) for(int bcd=0;bcd<3;++bcd)
+    {
+        Dive::Config original;original.CylinderMaterial=material;original.BCDModel=bcd;
+        auto object=MakeShared<FJsonObject>();DiveConfigIO::Write(object,original,1);
+        Dive::Config loaded;int entry=0;FString error;
+        TestTrue(TEXT("Loadout choices load"),DiveConfigIO::Read(object,loaded,entry,true,error));
+        TestTrue(TEXT("Loadout choices roundtrip"),DiveConfigIO::Equal(original,1,loaded,entry));
+        for(const TCHAR* key:{TEXT("cylinder_material"),TEXT("bcd_model")})
+        {
+            object->SetNumberField(key,9);
+            TestFalse(TEXT("Unknown equipment rejected"),DiveConfigIO::Read(object,loaded,entry,true,error));
+            TestTrue(TEXT("Rejected equipment is atomic"),DiveConfigIO::Equal(original,1,loaded,entry));
+            DiveConfigIO::Write(object,original,1);
+        }
+        object->RemoveField(TEXT("cylinder_material"));object->RemoveField(TEXT("bcd_model"));
+        TestTrue(TEXT("Legacy loadout loads"),DiveConfigIO::Read(object,loaded,entry,true,error));
+        TestEqual(TEXT("Legacy steel cylinder"),loaded.CylinderMaterial,0);TestEqual(TEXT("Legacy jacket"),loaded.BCDModel,0);
+    }
     for(int mode=0;mode<3;++mode) for(bool manual:{false,true})
     {
         Dive::Config original;original.GameMode=static_cast<Dive::Mode>(mode);original.ManualExplorationBuoyancy=manual;

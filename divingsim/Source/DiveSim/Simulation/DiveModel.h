@@ -11,6 +11,7 @@
 #include "Torch.h"
 #include "EnvironmentScenario.h"
 #include "ModeRules.h"
+#include "Loadout.h"
 
 namespace Dive
 {
@@ -53,6 +54,7 @@ struct Config
     double Hour = 13.0;
     CivilDate Date;
     int TorchModel=0;
+    int CylinderMaterial=0,BCDModel=0;
     double WindMetresPerSecond = 3.0;
     double WindDirectionDegrees = 90.0;
     double ThermoclineMetres = 10.0;
@@ -90,6 +92,8 @@ struct Config
         clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
         Weather=std::clamp(Weather,0,WeatherScenario::Count-1);
         TorchModel=std::clamp(TorchModel,0,Torch::Count-1);
+        CylinderMaterial=std::clamp(CylinderMaterial,0,1);
+        BCDModel=std::clamp(BCDModel,0,BCDEquipment::Count-1);
         if(static_cast<int>(GameMode)<0||static_cast<int>(GameMode)>2) GameMode=Mode::Simulation;
         CurrentSource=static_cast<CurrentSetting>(std::clamp(static_cast<int>(CurrentSource),0,4));
     }
@@ -121,6 +125,7 @@ struct State
     double CylinderBar=200, AmbientBar=.965, PPO2=.203;
     double BCDSurfaceLitres=4, BCDLitres=4;
     double BCDInflowLPS=0, BCDOutflowLPS=0; // Actual gas flow, local litres/second.
+    double EquipmentDryKg=0,CylinderGasKg=0,BCDGasKg=0,TotalMassKg=0,DisplacedLitres=0,SuitLitres=0;
     double HeartBPM=70, RespiratoryBPM=12, SpO2=98;
     double BreathReserve=1; // Normalized gameplay reserve, not measured oxygen litres.
     double CoreTemperatureC=37, WaterTemperatureC=18;
@@ -164,6 +169,16 @@ public:
         Data.RegulatorTemperatureC=cfg.SurfaceTemperatureC;
         // Surface tissues equilibrate with air before switching the selected tank mix.
         Data.NitrogenBar.fill((cfg.SurfacePressureBar-.0627)*.79);
+        // Surface preparation uses a fixed, visible 8 L initial fill, not a
+        // hidden neutral trim that cancels every ballast/loadout choice.
+        double fill=Loadout::InitialBCDLitres*cfg.SurfacePressureBar;
+        if(cfg.Rules().LimitedGas)
+        {
+            fill=std::min(fill,Data.CylinderBar*cfg.CylinderLitres);
+            Data.CylinderBar=std::max(0.0,Data.CylinderBar-fill/cfg.CylinderLitres);
+        }
+        Data.BCDSurfaceLitres=fill;Data.BCDLitres=fill/cfg.SurfacePressureBar;
+        UpdateBalance(0);
     }
     double Pressure(double depth) const
     { return Settings.SurfacePressureBar+std::max(0.0,depth)*BarPerMetre; }
@@ -188,6 +203,15 @@ public:
         }
     }
 private:
+    void UpdateBalance(double lungDelta)
+    {
+        const auto& c=Settings;auto& s=Data;
+        const auto balance=Loadout::Evaluate(c.CylinderLitres,c.CylinderMaterial,c.BCDModel,c.DrySuit,c.TorchModel,
+            c.WeightKg,s.CylinderBar,s.BCDSurfaceLitres,s.AmbientBar,c.SurfacePressureBar,lungDelta);
+        s.EquipmentDryKg=balance.EquipmentDryKg;s.CylinderGasKg=balance.CylinderGasKg;s.BCDGasKg=balance.BCDGasKg;
+        s.TotalMassKg=balance.TotalMassKg;s.DisplacedLitres=balance.DisplacedLitres;s.SuitLitres=balance.SuitLitres;
+        s.BuoyancyNewtons=(c.AssistedBuoyancy()?lungDelta:balance.NetKg)*Gravity;
+    }
     void Integrate(double dt,double depth,double effort,double inflate,double vz,double distance,bool lamp,const Exposure& exposure)
     {
         auto& s=Data; const auto& c=Settings;
@@ -223,10 +247,11 @@ private:
         s.BCDSurfaceLitres+=injected;
         const double vented=std::min(s.BCDSurfaceLitres,std::max(0.0,-inflate)*3*s.AmbientBar*dt);
         s.BCDSurfaceLitres-=vented;
-        const double relief=std::max(0.,s.BCDSurfaceLitres-18*s.AmbientBar);
+        const double capacity=BCDEquipment::At(c.BCDModel).CapacityLitres;
+        const double relief=std::max(0.,s.BCDSurfaceLitres-capacity*s.AmbientBar);
         s.BCDInflowLPS=injected/(s.AmbientBar*dt);
         s.BCDOutflowLPS=(vented+relief)/(s.AmbientBar*dt);
-        s.BCDSurfaceLitres=Clamp(s.BCDSurfaceLitres,0,18*s.AmbientBar); // overpressure relief
+        s.BCDSurfaceLitres=Clamp(s.BCDSurfaceLitres,0,capacity*s.AmbientBar); // overpressure relief
         s.BCDLitres=s.BCDSurfaceLitres/s.AmbientBar;
         if(!unlimited) s.CylinderBar=std::max(0.0,s.CylinderBar-(breathingLitres+injected)/c.CylinderLitres);
         // Expansion cooling / icing is qualitative. The regulator and thresholds
@@ -254,17 +279,15 @@ private:
         if(previousSource!=s.BreathSource&&hasBreathingSupply) s.BreathPhase=0;
         s.BreathPhase=std::fmod(s.BreathPhase+dt*s.RespiratoryBPM/60,1.0);
         const double lungDelta=hasBreathingSupply?.65*std::sin(s.BreathPhase*2*Pi):0;
-        const double suitLift=(c.DrySuit?3:5)/std::pow(s.AmbientBar/c.SurfacePressureBar,.7);
-        const double gasMass=s.CylinderBar*c.CylinderLitres*.0012;
-        const double netKg=2+suitLift+s.BCDLitres+lungDelta-c.WeightKg-gasMass;
-        s.BuoyancyNewtons=c.AssistedBuoyancy()?lungDelta*Gravity:netKg*Gravity;
-        const double suitCooling=c.DrySuit?.0000015:.000007;
+        UpdateBalance(lungDelta);
+        const auto& suit=SuitEquipment::At(c.DrySuit);
+        const double suitCooling=suit.Cooling;
         // Qualitative heat-loss model: exposed air area cools more slowly than
         // immersed area. Wind affects air cooling only; no wet-suit drying model.
         const double coldLoad=suitCooling*(s.BodyImmersion*std::max(0.0,22-s.WaterTemperatureC)
             +(1-s.BodyImmersion)*.05*(1+c.WindMetresPerSecond/12)*std::max(0.0,22-c.AirTemperatureC));
         s.CoreTemperatureC=rules.Physiology?Clamp(s.CoreTemperatureC+dt*((37-s.CoreTemperatureC)*.0001-coldLoad),32,37.5):37;
-        const double coldTarget=Clamp((18-s.EnvironmentTemperatureC)/18,0,1)*(c.DrySuit?.25:1);
+        const double coldTarget=Clamp((18-s.EnvironmentTemperatureC)/18,0,1)*suit.ColdScale;
         s.ColdStrain=rules.Physiology?Approach(s.ColdStrain,coldTarget,1./600,dt):0;
         // A brief loss of supply spends reserve before saturation falls. Demand
         // follows activity; ventilation restores reserve over time, never on a toggle.

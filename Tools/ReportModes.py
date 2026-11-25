@@ -21,7 +21,7 @@ def report(folder):
         directory = folder / name
         data = read(directory / "Dive.json")
         samples = data["samples"]
-        assert data["schema_version"] == 5 and data["status"] == "smoke_pass"
+        assert data["schema_version"] in {5,6} and data["status"] == "smoke_pass"
         assert data["physiology_model"] == "coupled_impairments_v2"
         assert len(samples) >= 20 and data["distance_m"] > 1
         assert all(a["seconds"] <= b["seconds"] for a, b in zip(samples, samples[1:]))

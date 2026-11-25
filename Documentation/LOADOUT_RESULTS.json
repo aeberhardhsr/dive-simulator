@@ -1,0 +1,100 @@
+{
+  "host": {
+    "executable_sha256": "6D2B1E76915718D231CFD785011D0F3DA152FC7DF3CFFCB8449241C6351BC23A",
+    "source_head": "fdcfdf58d707ad1b54f6079b1e5c43e66ea15813",
+    "source_dirty": true,
+    "started_utc": "2026-11-25T17:17:14.3700551Z",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsLoadout\\divingsim\\Binaries\\Win64\\divingsim-Loadout.exe"
+  },
+  "status": "PASS",
+  "cases": [
+    {
+      "name": 0,
+      "prepared_mass_kg": 117,
+      "samples": 13,
+      "distance_m": 13.26416737963107,
+      "status": "PASS",
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\0\\Loadout_0_DE.png",
+          "sha256": "d9a084db0b8b265cdcd4ff39ababe238d1990db9903b997cd46b32245206d95f"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\0\\Loadout_0_EN.png",
+          "sha256": "1a3e8bf59695c8ad9ce1b1540774009a0d202b1361aea67c058cca7b9d822ee6"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\0\\Loadout_0_Paused.png",
+          "sha256": "b60cce08d4ddb380188d7e7037cc5849408151dacb9586a064d871d542b94cca"
+        }
+      ]
+    },
+    {
+      "name": 1,
+      "prepared_mass_kg": 123.97,
+      "samples": 13,
+      "distance_m": 13.351657923225337,
+      "status": "PASS",
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\1\\Loadout_1_DE.png",
+          "sha256": "7a2515a8c329a3bb1770b30e0808095a76bb1c3c1e62c70798485e645fe0a03e"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\1\\Loadout_1_EN.png",
+          "sha256": "f6be49152f73aa50fed5de4922323216ab3033b2a650601c72b07c33ec3f7b11"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\1\\Loadout_1_Paused.png",
+          "sha256": "b957b81cc2645d220104bff5cd6d8a48a079f7bb19084a91cdecaccb49707fc1"
+        }
+      ]
+    },
+    {
+      "name": 2,
+      "prepared_mass_kg": 112.95,
+      "samples": 13,
+      "distance_m": 13.696176491110153,
+      "status": "PASS",
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\2\\Loadout_2_DE.png",
+          "sha256": "65ad76fccce6f12117ec98704ef37c6b14a4b102d475780e9ee41234dbea078b"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\2\\Loadout_2_EN.png",
+          "sha256": "5b32f1bd830612c901ffadf8182c5dbb3a896a845b2a5098422a6828a1a307cd"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\2\\Loadout_2_Paused.png",
+          "sha256": "794f10cb1f38b3dd4bd8e28eb0bde953bc36959d99f06b50307165c92e127bd9"
+        }
+      ]
+    },
+    {
+      "name": 3,
+      "prepared_mass_kg": 128.47,
+      "samples": 13,
+      "distance_m": 11.627755839405427,
+      "status": "PASS",
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\3\\Loadout_3_DE.png",
+          "sha256": "1b22a110c975d392575bb0d3af7593cc6312ab56a8aee4243dfe6c215c566698"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\3\\Loadout_3_EN.png",
+          "sha256": "a2e47e1e27b5c0671333fcefefc574e3f9f5f1274f0a9f2f811208f6841c1ce0"
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\loadout-validation-20261125-181714\\3\\Loadout_3_Paused.png",
+          "sha256": "ced980b27765d6dc915772ce23d7be62722df7adaf7f0591a56512a3745f0106"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Authored freshwater equipment parameters; no commercial product validation.",
+    "Short Windows scenarios; no full-body or equipment-variant visual acceptance."
+  ]
+}

@@ -24,6 +24,49 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 int main()
 {
     {
+        Dive::Config cfg;Dive::Model standard(cfg);
+        close(standard.Data.EquipmentDryKg,34.12,1e-10,"Complete standard gear includes ballast and each rigid item once");
+        close(standard.Data.TotalMassKg,117,1e-10,"80 kg body plus 34.12 kg equipment plus 2.88 kg gas");
+        close(standard.Data.CylinderBar,200-8*.965/12,1e-10,"Surface preparation actually transfers eight litres from cylinder");
+        close(standard.Data.CylinderGasKg+standard.Data.BCDGasKg,2.88,1e-10,"Preparation conserves carried gas mass");
+        const double mass=standard.Data.TotalMassKg;
+        standard.Step(1,0,0,1,0,0,false,{1,true,false});
+        close(standard.Data.TotalMassKg,mass,1e-9,"Inflation transfers gas without inventing or discarding mass");
+        const double volume=standard.Data.DisplacedLitres;
+        standard.Step(1,0,0,-1,0,0,false,{1,true,false});
+        close(mass-standard.Data.TotalMassKg,3*.965*.0012,1e-9,"Vented local litres remove their actual gas mass");
+        close(volume-standard.Data.DisplacedLitres,3,1e-9,"Venting changes displaced freshwater volume");
+        for(int material=0;material<2;++material) for(double size:{10.,12.,15.}) for(int bcd=0;bcd<3;++bcd)
+        {
+            cfg.CylinderMaterial=material;cfg.CylinderLitres=size;cfg.BCDModel=bcd;
+            Dive::Model m(cfg);m.Step(1,20,0,0,0,0,false,{1,true,false});
+            close(m.Data.BuoyancyNewtons,(m.Data.DisplacedLitres-m.Data.TotalMassKg)*9.80665,1e-9,"Archimedes net force is based on the entire loadout");
+            const auto initial=m.Data;
+            m.Step(10,0,0,1,0,0,false,{1,true,false});
+            close(m.Data.BCDLitres,bcd==0?18:bcd==1?12:24,1e-8,"Each BCD has its own physical relief capacity");
+            check(m.Data.TotalMassKg<initial.TotalMassKg,"Overpressure relief vents mass rather than creating hidden storage");
+        }
+        cfg=Dive::Config{};cfg.CylinderMaterial=1;Dive::Model aluminium(cfg);
+        Dive::Model steel;
+        check(aluminium.Data.TotalMassKg>steel.Data.TotalMassKg&&aluminium.Data.BuoyancyNewtons>steel.Data.BuoyancyNewtons,
+            "Aluminium can be heavier on land while more buoyant in water");
+        cfg=Dive::Config{};cfg.WeightKg=10;Dive::Model heavy(cfg);
+        close(heavy.Data.TotalMassKg-steel.Data.TotalMassKg,4,1e-9,"Ballast changes inertia");
+        close(heavy.Data.BuoyancyNewtons-steel.Data.BuoyancyNewtons,(4/11.34-4)*9.80665,1e-9,"Ballast displaces water and is not automatically trimmed away");
+        cfg=Dive::Config{};cfg.TorchModel=2;Dive::Model wide(cfg);
+        close(wide.Data.TotalMassKg-steel.Data.TotalMassKg,.4,1e-9,"Chosen torch contributes its own mass");
+        close(wide.Data.BuoyancyNewtons-steel.Data.BuoyancyNewtons,(.23-.4)*9.80665,1e-9,"Chosen torch contributes displacement and net buoyancy");
+        Dive::Model compression;const double suit= compression.Data.SuitLitres;
+        compression.Step(.02,30,0,0,0,0,false,{1,true,false});
+        check(compression.Data.SuitLitres<suit&&compression.Data.BCDLitres<8,"Depth compresses suit loft and BCD, not solid equipment");
+        close(compression.Data.TotalMassKg,117,1e-9,"Compression preserves mass");
+        cfg=Dive::Config{};cfg.CylinderLitres=1;cfg.StartPressureBar=1;Dive::Model scarce(cfg);
+        close(scarce.Data.CylinderBar,0,1e-12,"Preparation cannot spend more gas than available");
+        close(scarce.Data.BCDSurfaceLitres,1,1e-12,"Insufficient gas limits initial fill");
+        close(Dive::ShoreMovement::VerticalForce(17,0,117),-117*9.80665,1e-9,"Dry weight uses loaded mass");
+        close(Dive::ShoreMovement::VerticalForce(17,1,117),17,1e-9,"Full immersion retains net loadout force");
+    }
+    {
         Dive::Config c; c.GameMode=static_cast<Dive::Mode>(99); c.Sanitize();
         check(c.GameMode==Dive::Mode::Simulation,"Unknown mode falls back to simulation");
         c.GameMode=Dive::Mode::Exploration; c.WeightKg=20;
@@ -233,8 +276,9 @@ int main()
         Dive::Config cfg; cfg.SurfaceTemperatureC=6; cfg.BottomTemperatureC=6; cfg.AirTemperatureC=20; cfg.DrySuit=false;
         const Dive::Exposure air{0,false,false},wet{1,true,true},noSupply{1,true,false};
         Dive::Model freeAir(cfg),regulatedAir(cfg),water(cfg),held(cfg);
+        const double preparedPressure=freeAir.Data.CylinderBar;
         freeAir.Step(60,0,0,0,0,0,false,air);
-        close(freeAir.Data.CylinderBar,200,0,"Ambient-air breathing does not consume cylinder gas");
+        close(freeAir.Data.CylinderBar,preparedPressure,0,"Ambient-air breathing does not consume cylinder gas after preparation");
         check(freeAir.Data.BreathSource==Dive::BreathingSource::Air&&freeAir.Data.SpO2>97,"Ambient air supplies breathing");
         regulatedAir.Step(60,0,0,0,0,0,false,{0,false,true});
         check(regulatedAir.Data.CylinderBar<199,"Regulator still consumes cylinder gas above water");
@@ -243,7 +287,7 @@ int main()
         close(freeAir.Data.EnvironmentTemperatureC,20,1e-12,"Dry body uses air temperature");
         close(water.Data.EnvironmentTemperatureC,6,1e-12,"Immersed body uses water temperature");
         held.Step(5,10,0,0,0,0,false,noSupply);
-        close(held.Data.CylinderBar,200,0,"Removed regulator does not invent cylinder consumption");
+        close(held.Data.CylinderBar,preparedPressure,0,"Removed regulator does not invent cylinder consumption");
         check(held.Data.SpO2>97.99&&held.Data.BreathReserve<.99&&(held.Data.Warnings&Dive::NoBreathingSupply),"Brief loss of supply spends reserve before oxygen saturation falls");
         const double spent=held.Data.BreathReserve;
         held.Step(.02,10,0,0,0,0,false,wet);
@@ -521,10 +565,11 @@ int main()
     check(!grid.Sample(std::numeric_limits<double>::quiet_NaN(),200,height),"Nonfinite coordinates rejected");
     Dive::Config c; c.SurfacePressureBar=1;
     Dive::Model surface(c), deep(c);
+    const double preparedPressure=surface.Data.CylinderBar;
     close(deep.Pressure(10),1.980665,1e-6,"Freshwater hydrostatic pressure");
     run(surface,60,0); run(deep,60,20);
-    close(200-surface.Data.CylinderBar,16.0/12,1e-7,"Surface RMV to cylinder pressure");
-    close((200-deep.Data.CylinderBar)/(200-surface.Data.CylinderBar),deep.Pressure(20),1e-6,"Depth multiplies gas use");
+    close(preparedPressure-surface.Data.CylinderBar,16.0/12,1e-7,"Surface RMV to cylinder pressure");
+    close((preparedPressure-deep.Data.CylinderBar)/(preparedPressure-surface.Data.CylinderBar),deep.Pressure(20),1e-6,"Depth multiplies gas use");
     Dive::Model active(c); run(active,60,20,1);
     check(active.Data.CylinderBar<deep.Data.CylinderBar,"Exertion consumes more gas");
     check(active.Data.HeartBPM>deep.Data.HeartBPM,"Exertion raises heart rate");

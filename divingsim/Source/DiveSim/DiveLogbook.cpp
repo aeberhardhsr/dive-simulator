@@ -15,11 +15,20 @@ bool Parse(const FString& Json,FDiveLog& Log)
     if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),root)||!root)
         return fail(TEXT("Invalid JSON"));
     double version=0;
-    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4&&version!=5))
+    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4&&version!=5&&version!=6))
         return fail(TEXT("Unsupported log version"));
     Log.bBreathingContext=version>=3;
     Log.bBreathReserveContext=version>=4;
     Log.bImpairmentContext=version>=5;
+    Log.bLoadoutContext=version>=6;
+    bool assisted=false;
+    if(Log.bLoadoutContext)
+    {
+        FString model;const auto flag=root->TryGetField(TEXT("assisted_buoyancy"));
+        if(!root->TryGetStringField(TEXT("loadout_model"),model)||model!=TEXT("freshwater_mass_balance_v1")||
+            !flag||flag->Type!=EJson::Boolean) return fail(TEXT("Unknown loadout model or missing assistance rule"));
+        assisted=flag->AsBool();
+    }
     auto number=[](const TSharedPtr<FJsonObject>& obj,const TCHAR* key,double& value,double lo,double hi)
     {
         const auto field=obj->TryGetField(key);
@@ -35,6 +44,7 @@ bool Parse(const FString& Json,FDiveLog& Log)
        !number(root,TEXT("mode"),mode,0,2)||mode!=FMath::FloorToDouble(mode))
         return fail(TEXT("Invalid log summary"));
     Log.Mode=static_cast<int32>(mode);
+    if(Log.bLoadoutContext&&assisted&&Log.Mode!=0) return fail(TEXT("Invalid assisted buoyancy mode"));
     FString started;
     FDateTime utc;
     if(root->TryGetStringField(TEXT("started_at_utc"),started)&&FDateTime::ParseIso8601(*started,utc))
@@ -79,6 +89,26 @@ bool Parse(const FString& Json,FDiveLog& Log)
            !number(o,TEXT("warnings"),warnings,0,version>=5?8191:version>=3?511:255)||warnings!=FMath::FloorToDouble(warnings))
             return fail(TEXT("Invalid or unordered sample values"));
         s.EnvironmentTemperatureC=s.WaterTemperatureC;
+        if(Log.bLoadoutContext)
+        {
+            if(!number(o,TEXT("equipment_dry_kg"),s.EquipmentDryKg,0,500)||
+                !number(o,TEXT("cylinder_gas_kg"),s.CylinderGasKg,0,100)||
+                !number(o,TEXT("bcd_gas_kg"),s.BCDGasKg,0,10)||
+                !number(o,TEXT("total_mass_kg"),s.TotalMassKg,80,700)||
+                !number(o,TEXT("displaced_litres"),s.DisplacedLitres,0,1000)||
+                !number(o,TEXT("suit_litres"),s.SuitLitres,0,30)||
+                !number(o,TEXT("bcd_surface_litres"),s.BCDSurfaceLitres,0,2500)||
+                !number(o,TEXT("bcd_litres"),s.BCDLitres,0,24.00001)||
+                !number(o,TEXT("ambient_bar"),s.AmbientBar,.6,110)||
+                !number(o,TEXT("buoyancy_newtons"),s.BuoyancyNewtons,-10000,10000))
+                return fail(TEXT("Invalid loadout mass/volume context"));
+            if(FMath::Abs(s.TotalMassKg-(80+s.EquipmentDryKg+s.CylinderGasKg+s.BCDGasKg))>1.e-5||
+                FMath::Abs(s.CylinderGasKg-s.CylinderBar*Log.CylinderLitres*.0012)>1.e-5||
+                FMath::Abs(s.BCDGasKg-s.BCDSurfaceLitres*.0012)>1.e-5||
+                FMath::Abs(s.BCDLitres-s.BCDSurfaceLitres/s.AmbientBar)>1.e-5||
+                (!assisted&&FMath::Abs(s.BuoyancyNewtons-(s.DisplacedLitres-s.TotalMassKg)*9.80665)>1.e-4))
+                return fail(TEXT("Inconsistent loadout mass/volume balance"));
+        }
         if(Log.bImpairmentContext)
         {
             if(!number(o,TEXT("narcosis"),s.Narcosis,0,1)) return fail(TEXT("Invalid impairment or fault context"));

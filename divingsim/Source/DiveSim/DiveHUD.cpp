@@ -89,14 +89,16 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,525,18,White);
     Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
     Button(TEXT("environment"),bEnvironmentPage?L(TEXT("<   Ausruestung und Tauchplan"),TEXT("<   Equipment and dive plan")):L(TEXT("Wetter und Wasser   >"),TEXT("Weather and water   >")),73,590,437,42);
-    Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
+    Button(TEXT("loadout"),bLoadoutPage?L(TEXT("<   Zurueck zum Tauchplan"),TEXT("<   Back to dive plan")):L(TEXT("Ausruestung: Gewicht und Auftrieb   >"),TEXT("Equipment: weight and buoyancy   >")),73,640,437,32);
+    Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,794,13,Muted);
     if(!Diver->bDiveActive) Button(TEXT("tutorial"),Diver->bTutorialCompleted?L(TEXT("Einfuehrung wiederholen  >"),TEXT("Replay introduction  >")):L(TEXT("Steuerung kennenlernen  >"),TEXT("Learn the controls  >")),73,676,437,32);
     Button(TEXT("logbook"),L(TEXT("Logbuch ansehen   >"),TEXT("Open logbook   >")),73,720,437,58);
     const float x=650,w=265,gap=28;
-    Text(bAudioPage?L(TEXT("KLANG UND LAUTSTAERKE"),TEXT("SOUND AND VOLUME")):Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
+    Text(bLoadoutPage?L(TEXT("DEINE AUSRUESTUNG"),TEXT("YOUR EQUIPMENT")):bAudioPage?L(TEXT("KLANG UND LAUTSTAERKE"),TEXT("SOUND AND VOLUME")):Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
     Text(bAudioPage?L(TEXT("Auch in der Pause einstellbar. 0 % schaltet den Kanal stumm."),TEXT("Adjustable while paused. 0% mutes the channel.")):Diver->bDiveActive?L(TEXT("Tauchplan und Umwelt bleiben waehrend des Tauchgangs fest."),TEXT("Dive plan and environment are fixed during the dive.")):L(TEXT("Werte anklicken: Zahlen eingeben, Optionen wechseln"),TEXT("Click values to enter numbers or change options")),x,198,15,Muted);
     const bool ready=Diver->Environment && Diver->Environment->bTerrainReady;
-    if(bAudioPage)
+    if(bLoadoutPage) LoadoutMenu();
+    else if(bAudioPage)
     {
         const FString labels[]={L(TEXT("GESAMT"),TEXT("MASTER")),L(TEXT("UMGEBUNG"),TEXT("ENVIRONMENT")),L(TEXT("ATEM / AUSRUESTUNG"),TEXT("BREATH / EQUIPMENT")),L(TEXT("HERZSCHLAG"),TEXT("HEARTBEAT")),L(TEXT("WARNSIGNALE"),TEXT("WARNINGS"))};
         for(int i=0;i<5;++i)
@@ -361,8 +363,9 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         return;
     }
     auto& c=Diver->PendingConfig;
-    if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; bAudioPage=false; return; }
-    if(Id==TEXT("audio")) { bAudioPage=!bAudioPage; return; }
+    if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; bAudioPage=bLoadoutPage=false; return; }
+    if(Id==TEXT("audio")) { bAudioPage=!bAudioPage; bLoadoutPage=false; return; }
+    if(Id==TEXT("loadout")) { bLoadoutPage=!bLoadoutPage; bAudioPage=bEnvironmentPage=false; return; }
     if(Id.ToString().StartsWith(TEXT("audio_minus_"))||Id.ToString().StartsWith(TEXT("audio_plus_")))
     {
         const FString name=Id.ToString();
@@ -394,6 +397,8 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
         else if(Id==TEXT("exploration_trim")&&c.GameMode==Dive::Mode::Exploration) c.ManualExplorationBuoyancy=!c.ManualExplorationBuoyancy;
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;
+        else if(Id==TEXT("cylinder_material")) c.CylinderMaterial=1-c.CylinderMaterial;
+        else if(Id==TEXT("bcd")) c.BCDModel=(c.BCDModel+1)%Dive::BCDEquipment::Count;
         else if(Id==TEXT("suit")) c.DrySuit=!c.DrySuit;
         else if(Id==TEXT("torch")) c.TorchModel=(c.TorchModel+1)%Dive::Torch::Count;
         else if(Id==TEXT("weather")) c.SelectWeather((c.Weather+1)%Dive::WeatherScenario::Count);

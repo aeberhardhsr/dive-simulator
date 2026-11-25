@@ -22,6 +22,8 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
     root->SetNumberField(TEXT("distance_m"),Seconds);
     root->SetNumberField(TEXT("cylinder_litres"),12);
     root->SetNumberField(TEXT("mode"),1);
+    if(Version==6)
+    { root->SetStringField(TEXT("loadout_model"),TEXT("freshwater_mass_balance_v1"));root->SetBoolField(TEXT("assisted_buoyancy"),false); }
     if(Version>=2) root->SetStringField(TEXT("started_at_utc"),TEXT("2026-11-25T12:34:56Z"));
     TArray<TSharedPtr<FJsonValue>> rows;
     for(int i=0;i<=Seconds;++i)
@@ -40,7 +42,7 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
             if(i==1) s->SetNumberField(TEXT("warnings"),Dive::NoBreathingSupply);
         }
         if(Version>=4) s->SetNumberField(TEXT("breath_reserve"),i==1?.4:1);
-        if(Version==5)
+        if(Version>=5)
         {
             s->SetNumberField(TEXT("narcosis"),0.3);
             s->SetNumberField(TEXT("panic"),0.3);
@@ -54,6 +56,15 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
             s->SetNumberField(TEXT("freeflow_lost_litres"),100);
             s->SetBoolField(TEXT("regulator_freeflow"),true);
             s->SetNumberField(TEXT("warnings"),Dive::EquipmentFailure|Dive::NarcosisWarning);
+        }
+        if(Version==6)
+        {
+            const double gas=(200-i*.01)*12*.0012,mass=80+34.12+gas+.0096;
+            s->SetNumberField(TEXT("equipment_dry_kg"),34.12);s->SetNumberField(TEXT("cylinder_gas_kg"),gas);
+            s->SetNumberField(TEXT("bcd_gas_kg"),.0096);s->SetNumberField(TEXT("total_mass_kg"),mass);
+            s->SetNumberField(TEXT("displaced_litres"),117);s->SetNumberField(TEXT("suit_litres"),7.5);
+            s->SetNumberField(TEXT("bcd_surface_litres"),8);s->SetNumberField(TEXT("bcd_litres"),8);
+            s->SetNumberField(TEXT("ambient_bar"),1);s->SetNumberField(TEXT("buoyancy_newtons"),(117-mass)*9.80665);
         }
         rows.Add(MakeShared<FJsonValueObject>(s));
     }
@@ -82,6 +93,10 @@ bool FDiveLogReadTest::RunTest(const FString&)
     TestTrue(TEXT("No-supply source and ninth warning retained"),breathing.Samples.Num()==3&&
         breathing.Samples[1].BreathSource==Dive::BreathingSource::None&&breathing.Warnings==Dive::NoBreathingSupply);
     FDiveLog reserve;
+    FDiveLog loadout;
+    TestTrue(TEXT("Schema 6 retains loadout"),DiveLogbook::Parse(Fixture(2,6),loadout));
+    TestTrue(TEXT("Mass and volume survive readback"),loadout.bLoadoutContext&&loadout.Samples.Num()==3&&
+        loadout.Samples[0].EquipmentDryKg==34.12&&loadout.Samples[0].DisplacedLitres==117);
     FDiveLog effects;
     TestTrue(TEXT("Schema 5 retains impairments"),DiveLogbook::Parse(Fixture(2,5),effects));
     TestTrue(TEXT("Fault, effects and warning bits roundtrip"),effects.bImpairmentContext&&effects.Samples.Num()==3&&
@@ -111,6 +126,16 @@ bool FDiveLogRejectTest::RunTest(const FString&)
     FDiveLog log;
     TestFalse(TEXT("Truncated file"),DiveLogbook::Parse(Fixture().Left(100),log));
     TestFalse(TEXT("Unknown schema"),DiveLogbook::Parse(Fixture(2,99),log));
+    for(const TCHAR* key:{TEXT("total_mass_kg"),TEXT("bcd_litres"),TEXT("cylinder_gas_kg"),TEXT("buoyancy_newtons")})
+    {
+        TSharedPtr<FJsonObject> root;FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,6)),root);
+        root->GetArrayField(TEXT("samples"))[0]->AsObject()->SetNumberField(key,100);
+        FString bad;FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&bad));
+        TestFalse(TEXT("Physically inconsistent loadout sample rejected"),DiveLogbook::Parse(bad,log));
+        root->GetArrayField(TEXT("samples"))[0]->AsObject()->RemoveField(key);bad.Empty();
+        FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&bad));
+        TestFalse(TEXT("Missing loadout sample rejected"),DiveLogbook::Parse(bad,log));
+    }
     for(const TCHAR* key:{TEXT("motor_capacity"),TEXT("regulator_freeflow"),TEXT("freeflow_lost_litres"),TEXT("narcosis")})
     {
         TSharedPtr<FJsonObject> root;FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,5)),root);
@@ -232,9 +257,11 @@ bool FDiveLogAsyncTest::RunTest(const FString&)
     recording.StartedUTC=FDateTime::UtcNow().ToIso8601(); recording.Location=TEXT("Weesen / West");
     recording.Status=TEXT("in_progress"); recording.bTest=true;
     recording.SurveyOrigin=FVector2D(2726000,1219000);
+    // A repeated valid state isolates storage cost; this is not a live dive.
+    Dive::Model fixtureModel;fixtureModel.Step(.02,5,0,0,0,0,false);
     for(int i=0;i<=7200;++i)
     {
-        Dive::State s; s.ElapsedSeconds=i; s.DepthMetres=5; s.MaxDepthMetres=5;
+        auto s=fixtureModel.Data; s.ElapsedSeconds=i; s.DepthMetres=5; s.MaxDepthMetres=5;
         s.DistanceMetres=i; recording.Samples.Add({s,FVector(i*100,i*50,-500)});
     }
     recording.State=recording.Samples.Last().State;
@@ -251,12 +278,12 @@ bool FDiveLogAsyncTest::RunTest(const FString&)
     const double started=FPlatformTime::Seconds();
     writer.Submit(recording); // Includes copying all 7201 samples on the caller.
     const double submitMilliseconds=(FPlatformTime::Seconds()-started)*1000;
-    recording.Samples.Last().State.CylinderBar=17;
+    recording.Samples.Last().State.HeartBPM=117;
     auto first=wait();
     TestTrue(TEXT("Background write succeeds"),first.IsSet()&&first->bSuccess);
     auto saved=DiveLogbook::Read(recording.Path);
     TestEqual(TEXT("Snapshot owns all samples"),saved.Samples.Num(),7201);
-    if(!saved.Samples.IsEmpty()) TestEqual(TEXT("Later actor changes cannot mutate queued snapshot"),saved.Samples.Last().CylinderBar,200.);
+    if(!saved.Samples.IsEmpty()) TestEqual(TEXT("Later actor changes cannot mutate queued snapshot"),saved.Samples.Last().HeartBPM,fixtureModel.Data.HeartBPM);
     FString json; FFileHelper::LoadFileToString(json,*recording.Path);
     TSharedPtr<FJsonObject> root; FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(json),root);
     if(root.IsValid())
@@ -269,16 +296,16 @@ bool FDiveLogAsyncTest::RunTest(const FString&)
     // An active write plus two submissions must retain just the newest pending
     // snapshot. Finish then discards it and waits before writing the final state.
     writer.Submit(recording);
-    recording.Samples.Last().State.CylinderBar=16; writer.Submit(recording);
-    recording.Samples.Last().State.CylinderBar=15; writer.Submit(recording);
+    recording.Samples.Last().State.HeartBPM=116; writer.Submit(recording);
+    recording.Samples.Last().State.HeartBPM=115; writer.Submit(recording);
     TestEqual(TEXT("Queue bounded to one pending snapshot"),writer.PendingCount(),1);
-    recording.Status=TEXT("completed"); recording.Samples.Last().State.CylinderBar=14;
+    recording.Status=TEXT("completed"); recording.Samples.Last().State.HeartBPM=114;
     TestTrue(TEXT("Final write completes after earlier worker"),writer.Finish(recording).bSuccess);
     TestEqual(TEXT("No obsolete pending write remains"),writer.PendingCount(),0);
     TestFalse(TEXT("No late worker result can replace final write"),writer.Poll().IsSet());
     saved=DiveLogbook::Read(recording.Path);
     TestEqual(TEXT("Final status wins"),saved.Status,FString(TEXT("completed")));
-    if(!saved.Samples.IsEmpty()) TestEqual(TEXT("Final samples win"),saved.Samples.Last().CylinderBar,14.);
+    if(!saved.Samples.IsEmpty()) TestEqual(TEXT("Final samples win"),saved.Samples.Last().HeartBPM,114.);
     recording.Status=TEXT("in_progress"); recording.Samples.Last().State.SpO2=101;
     AddExpectedMessagePlain(TEXT("DIVE_LOG_SAVE_FAILED ")+recording.Path+TEXT(": Invalid new log: Invalid or unordered sample values"),ELogVerbosity::Warning);
     writer.Submit(recording); const auto failed=wait();
