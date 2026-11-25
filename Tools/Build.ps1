@@ -1,6 +1,6 @@
 param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
-    [ValidateSet('Editor','Game','Content','Package')][string]$Target = 'Editor',
+    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
     [switch]$OnlyEnvironment,
     [switch]$OnlyAudio,
@@ -23,7 +23,13 @@ if ($Target -eq 'Content') {
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions
+} elseif ($Target -in @('Landscape','LandscapeCheck')) {
+    $landOptions=@()
+    if($Target -eq 'LandscapeCheck') { $landOptions+='-VerifyOnly' }
+    & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions
 } elseif ($Target -eq 'Package') {
+    & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=LandscapeCheck.log'
+    if ($LASTEXITCODE -ne 0) { throw 'Landscape assets are missing or stale; run -Target Editor and -Target Landscape.' }
     & "$EngineRoot/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun "-project=$project" -noP4 -nocompileeditor -platform=Win64 -clientconfig=Development -build -cook '-map=/Game/Diving/Maps/L_DiveTraining' -stage -pak -archive "-archivedirectory=$PackageDirectory" '-ubtargs=-NoUBA -MaxParallelActions=2 -NoHotReloadFromIDE' -unattended
 } else {
     $name = if ($Target -eq 'Editor') { 'divingsimEditor' } else { 'divingsim' }

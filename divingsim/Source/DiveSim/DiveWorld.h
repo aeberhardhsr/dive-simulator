@@ -48,6 +48,7 @@ public:
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
     bool ValidateImagery(FString& Error) const;
+    bool ValidateLandscape(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);
     double SurfaceZ(double X,double Y,double Seconds=-1) const;
@@ -58,7 +59,7 @@ public:
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
-    UPROPERTY() TObjectPtr<UProceduralMeshComponent> LandscapeMesh;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LandscapeMeshes;
     UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> ShoreMeshes;
     UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> ImageryMaterials;
     UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> AccessRamps;

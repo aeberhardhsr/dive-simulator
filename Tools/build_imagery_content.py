@@ -14,9 +14,12 @@ def build_imagery():
     for item in manifest["images"]:
         path="/Game/Diving/Textures/"+item["asset"]
         source=ROOT/"Geodata/Processed/Imagery"/item["file"]
+        texture=u.load_asset(path) if u.EditorAssetLibrary.does_asset_exist(path) else None
         if source.exists():
             if hashlib.sha256(source.read_bytes()).hexdigest()!=item["sha256"]:
                 raise RuntimeError("Imagery source checksum differs: "+str(source))
+        current=texture and u.EditorAssetLibrary.get_metadata_tag(texture,"DiveImagerySHA256")==item["sha256"]
+        if source.exists() and not current:
             task=u.AssetImportTask()
             task.set_editor_property("filename",str(source))
             task.set_editor_property("destination_path","/Game/Diving/Textures")
@@ -28,10 +31,8 @@ def build_imagery():
             texture=u.load_asset(path)
             if not texture: raise RuntimeError("Texture import failed: "+path)
             u.EditorAssetLibrary.set_metadata_tag(texture,"DiveImagerySHA256",item["sha256"])
-        else:
-            texture=u.load_asset(path)
-            if not texture or u.EditorAssetLibrary.get_metadata_tag(texture,"DiveImagerySHA256")!=item["sha256"]:
-                raise RuntimeError("Run Tools/prepare_imagery.py before rebuilding imagery")
+        elif not current:
+            raise RuntimeError("Run Tools/prepare_imagery.py before rebuilding imagery")
         texture.set_editor_property("srgb",True)
         texture.set_editor_property("address_x",u.TextureAddress.TA_CLAMP)
         texture.set_editor_property("address_y",u.TextureAddress.TA_CLAMP)
@@ -48,6 +49,7 @@ def build_imagery():
         "M_LandscapePhoto","/Game/Diving/Materials",u.Material,u.MaterialFactoryNew())
     for node in list(lib.get_material_expressions(material)): lib.delete_material_expression(material,node)
     material.set_editor_property("two_sided",True)
+    material.set_editor_property("used_with_nanite",True)
     photo=lib.create_material_expression(material,u.MaterialExpressionTextureSampleParameter2D)
     photo.set_editor_property("parameter_name","Ortho")
     photo.set_editor_property("texture",u.load_asset("/Game/Diving/Textures/T_Ortho_landscape"))

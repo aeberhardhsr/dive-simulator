@@ -34,7 +34,13 @@ Das umliegende Gelände stammt aus [swissALTI3D](https://www.swisstopo.admin.ch/
 
 `Tools/prepare_landscape.py` liest die originalen 2-m-Pixel und mittelt jeweils 4 × 4 Zellen zu einem 8-m-Raster. Es verwendet bewusst nicht die eingebetteten GeoTIFF-Vorschaustufen: Diese liefern keine verlässlichen Flächenmittel. Eine unabhängige Prüfung von 858 über alle Kacheln verteilten Zellen gegen native 4 × 4-Pixelblöcke ergab maximal 0,000062 m numerische Abweichung. Das ist ein Umwandlungstest, keine Aussage zur Vermessungsgenauigkeit oder zum Detailverlust durch Mittelung.
 
-Die Laufzeit lädt `landscape.f32` und erzeugt ein fernes Geländemesh mit 32-m-Abstand (vor den Uferaussparungen: 278.922 Vertices, 509.490 Dreiecke). Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Das Hintergrundmesh hat keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Die Oberfläche verwendet die unten beschriebenen SWISSIMAGE-Luftbilder. Räumliche Gebäude, Vegetation und Landschafts-LOD fehlen noch.
+`DiveLandscapeBakeCommandlet` erzeugt aus `landscape.f32` gekachelte statische Unreal-Meshes mit 8-m-Abstand. Eine volle Kachel umfasst 256 × 256 Rasterzellen (2048 × 2048 m), Randkacheln sind entsprechend kleiner. Alle Kacheln teilen an ihren Grenzen dieselben Höhen und aus dem Gesamtraster berechneten Normalen. Die frühere Darstellung ließ drei von vier Rasterzeilen und -spalten aus und hatte 32 m Abstand.
+
+Die Meshes verwenden Nanite mit ungekürzter Quellgeometrie und 1 cm Positionsquantisierung. Nanite übernimmt die sichtabhängige Detailauswahl und das Streaming seiner Geometrieseiten; die Kachelkomponenten selbst werden beim Start geladen. Für Rendering ohne Nanite wird ein vereinfachtes Fallback-Mesh mitgebaut. Das ist keine Aussage zur macOS-Spielkompatibilität oder zur noch offenen Performance-Abnahme. Technischer Hintergrund: [Epic Nanite-Dokumentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/nanite-virtualized-geometry-in-unreal-engine).
+
+Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Die Hintergrundkacheln haben keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Die Oberfläche verwendet die unten beschriebenen SWISSIMAGE-Luftbilder. Räumliche Gebäude und Vegetation fehlen noch. Das 8-m-Raster glättet weiterhin Gelände unterhalb dieser Auflösung; Orthobilder enthalten bereits Schatten und liefern keine vertikale Fassaden- oder Felsstruktur.
+
+`Content/Diving/Geodata/landscape_meshes.json` enthält die Kachelgrenzen, Weltpositionen und Geometriezahlen. Ein MD5 über die tatsächlichen Höhen-/Maskendateien und ihre Manifeste dient ausschließlich der Erkennung veralteter Build-Ergebnisse; JSON-Zeilenenden werden für Windows/macOS auf LF vereinheitlicht. Die offiziellen Quelldaten werden separat mit SHA256 geprüft. Der Editor-Prüflauf vergleicht sämtliche gespeicherten Quellvertices mit dem Höhenraster und sämtliche Vertex-Instanz-UVs mit der geografischen Registrierung. Er prüft außerdem Normalen, dazu senkrechte Tangenten und vorhandene Nanite-Daten. Packaging führt diese Prüfung automatisch aus und bricht bei fehlenden oder veralteten Assets ab.
 
 Zur erneuten Aufbereitung:
 
@@ -43,9 +49,13 @@ python -m venv Tools/.geodata-env
 Tools/.geodata-env/Scripts/python.exe -m pip install -r Tools/requirements-geodata.txt
 Tools/.geodata-env/Scripts/python.exe Tools/prepare_landscape.py
 Tools/.geodata-env/Scripts/python.exe Tools/validate_landscape.py
+./Tools/Build.ps1 -Target Editor
+./Tools/Build.ps1 -Target Landscape       # Geänderte Geodaten in Nanite-Kacheln umsetzen
+./Tools/Build.ps1 -Target LandscapeCheck  # Nur prüfen, keine Assets schreiben
+python Tools/validate_landscape_meshes.py # Unabhängige Eingangs-/Kachelmanifestprüfung
 ```
 
-Die Rohdaten und die lokale Python-Umgebung sind von Git ausgeschlossen. Das kompakte Laufzeitraster ist über Git LFS versioniert.
+Die Rohdaten und die lokale Python-Umgebung sind von Git ausgeschlossen. Laufzeitraster und gebaute Landschaftsassets sind über Git LFS versioniert.
 
 ## Örtliche Uferergänzung
 

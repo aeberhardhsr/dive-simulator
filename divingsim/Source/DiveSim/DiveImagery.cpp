@@ -7,6 +7,9 @@
 #include "Engine/Texture2D.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "ProceduralMeshComponent.h"
+#if WITH_EDITOR
+#include "TextureCompiler.h"
+#endif
 
 bool FDiveTerrain::LoadImagery()
 {
@@ -57,6 +60,11 @@ UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FS
         bTerrainReady=false; Terrain.Error=TEXT("Luftbild-Assets fehlen: Tools/Build.ps1 -Target Content -OnlyImagery.");
         UE_LOG(LogTemp,Error,TEXT("DIVE_IMAGERY_FAIL missing %s or %s"),Base,*TexturePath); return nullptr;
     }
+#if WITH_EDITOR
+    // Editor -game may otherwise expose the 32x32 async-compilation placeholder
+    // while the Nanite tiles are being loaded. Cooked textures are already built.
+    FTextureCompilingManager::Get().FinishCompilation({texture});
+#endif
     auto* instance=UMaterialInstanceDynamic::Create(material,this);
     instance->SetTextureParameterValue(TEXT("Ortho"),texture); ImageryMaterials.Add(instance);
     return instance;
@@ -72,7 +80,14 @@ bool ADiveWorld::ValidateImagery(FString& Error) const
         if(!texture||texture->GetSizeX()!=(i==0?4096:2048)||texture->GetSizeY()!=2048||
             texture->GetNumMips()<10||texture->GetStreamableResourceState().NumResidentLODs!=texture->GetNumMips()||
             !texture->SRGB||!texture->NeverStream||texture->AddressX!=TA_Clamp||texture->AddressY!=TA_Clamp)
-        { Error=TEXT("Imagery texture dimensions, mips, colour space or addressing invalid"); return false; }
+        {
+            Error=texture?FString::Printf(TEXT("Imagery[%d] %s size=%dx%d mips=%d resident=%d srgb=%d neverstream=%d address=%d/%d"),
+                i,*texture->GetName(),texture->GetSizeX(),texture->GetSizeY(),texture->GetNumMips(),
+                texture->GetStreamableResourceState().NumResidentLODs,texture->SRGB,texture->NeverStream,
+                static_cast<int>(texture->AddressX),static_cast<int>(texture->AddressY)):
+                FString::Printf(TEXT("Imagery[%d] texture parameter missing"),i);
+            return false;
+        }
         UE_LOG(LogTemp,Display,TEXT("DIVE_IMAGERY_TEXTURE %s size=%dx%d mips=%d resident=%d bytes=%u"),
             *texture->GetName(),texture->GetSizeX(),texture->GetSizeY(),texture->GetNumMips(),
             texture->GetStreamableResourceState().NumResidentLODs,texture->CalcTextureMemorySizeEnum(TMC_AllMips));
@@ -91,7 +106,7 @@ bool ADiveWorld::ValidateImagery(FString& Error) const
         }
         return true;
     };
-    if(!registered(LandscapeMesh,Terrain.Landscape)) { Error=TEXT("Landscape UV registration mismatch"); return false; }
+    if(!ValidateLandscape(Error)) return false;
     for(int i=0;i<3;++i) if(!registered(ShoreMeshes[i],Terrain.Shores[i]))
     { Error=TEXT("Shore UV registration mismatch"); return false; }
     Error.Empty(); return true;

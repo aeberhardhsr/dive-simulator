@@ -1,6 +1,6 @@
 # Walensee Diving Simulator
 
-Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der vermessene Walensee-Grund enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle.
+Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der vermessene Walensee-Grund enthält Tarierung, Trägheit, Wasserwiderstand, tiefenabhängigen Gasverbrauch, gekoppelte Spiel-Vitalwerte, Instrumente, Fische, Pflanzen, Atmung und gespeicherte Tauchprotokolle. Die umgebende Landschaft verwendet 77 Nanite-Geländekacheln aus dem 8-m-Höhenraster.
 
 **Entwicklungsstand:** 46 swisstopo-Rasterkacheln bilden den vermessenen Seegrund im Maßstab 1:1 ab. Drei Uferstarts bei Weesen Strandbad, Murg West und Mols/Lediwracks ermöglichen Gehen, Waten, Schwimmen und die Rückkehr an Land. Die Zugangsplattformen und Treppen sind modellierte Spielgeometrie auf örtlichen Höhendaten. Die bisherigen Offshore-Starts bleiben wählbar. Gelände wird um den Taucher nachgeladen; die Tiefenkarte zeigt Position und Spur. Umliegende Berge basieren auf swissALTI3D; Berge und Ufer tragen registrierte SWISSIMAGE-Luftbilder des Kacheljahrs 2025. Räumliche Gebäude/Vegetation, originalgetreue Zugangsanlagen, fotorealistische Grafik und die vollständige Anforderungsabnahme bleiben offen. Das Spielmodell ist kein Werkzeug zur Planung realer Tauchgänge.
 
@@ -67,9 +67,13 @@ python -m unittest discover -s Tests -p 'test_*.py'
 ./Tools/Build.ps1 -Target Content -OnlyEnvironment # Nur Wasser, Wolken und Regen erneuern
 python Tools/create_audio.py         # Originale PCM-Klänge reproduzieren
 ./Tools/Build.ps1 -Target Content -OnlyAudio # Nur Audiomaterial importieren
+./Tools/Build.ps1 -Target Landscape   # 8-m-Höhendaten als Nanite-Geländekacheln bauen
+./Tools/Build.ps1 -Target LandscapeCheck # Höhen, UVs und Build-Aktualität prüfen
+python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenreferenz
 ./Tools/SmokeTest.ps1                 # 22 Sekunden automatisiertes Gameplay
 ./Tools/Build.ps1 -Target Package     # Eigenständiger Windows-Development-Build
 ./Tools/SmokeTest.ps1 -Packaged       # Derselbe Ablauf in der verpackten Anwendung
+./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -DisableNanite # Konventionellen Gelände-Fallback prüfen
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario stream  # 90 s, Kachelwechsel
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface         # 38 s, Auftauchen
 ./Tools/SmokeTest.ps1 -Packaged -Scenario surface-calm    # Windstille

@@ -181,3 +181,38 @@ Die Aufnahmen zeigen geografisch zugeordnete Wald-, Feld- und Wegflächen. Gebä
 ![Rückkehr zum Ufer mit fotografierter Bodenbedeckung](Images/Imagery_Return.png)
 
 ![Menü mit Quellenangaben](Images/Imagery_Menu.png)
+
+## Gekachelte Nanite-Landschaft (25. November 2026)
+
+Die Landschaft verwendet jetzt alle 8-m-Höhensamples statt eines einzelnen Meshes mit 32-m-Abstand. 77 Kacheln enthalten insgesamt 4.501.560 Quellvertices einschließlich gemeinsamer Randvertices und 8.167.046 Dreiecke nach Aussparung von See und Uferergänzungen. Die Quelle bleibt das aus nativen 2-m-Daten gemittelte swissALTI3D-Raster; die höhere Meshdichte fügt keine Vermessungsdetails unterhalb von 8 m hinzu.
+
+- Die erneute unabhängige Datenprüfung bestätigt alle 286 offiziellen SHA256 sowie 858 native 4 × 4-Pixelmittel mit höchstens 0,00006104 m Float32-Abweichung. Beleg: `artifacts/validate-landscape-nanite.log`.
+- Der Bake-/Prüfcommandlet vergleicht sämtliche gespeicherten Quellvertices mit dem Raster (Toleranz 0,02 cm für Float32 in Unreal-Zentimetern), sämtliche Vertex-Instanz-UVs mit der Kartenregistrierung und prüft Einheitsnormalen, senkrechte Tangenten, Topologieanzahl und Nanite-Daten. Nanite verwendet ungekürzte Quelldreiecke und 1 cm Positionsquantisierung; die später ausgewählte Renderdetailstufe und der konventionelle Fallback sind davon zu unterscheiden.
+- `Tools/validate_landscape_meshes.py` bestätigt unabhängig 77 eindeutige Kacheln, die vollständigen Randzeilen/-spalten, Weltursprünge, Vertex-/Dreiecksummen und identische Eingangsprüfsummen bei LF-/CRLF-Zeilenenden. Die Unreal-Quellassetprüfung bleibt zusätzlich erforderlich.
+- Die Buildprüfung wurde mit einer geänderten Quellenmanifest-Referenz ausgelöst: `LandscapeCheck` lehnt den veralteten Stand mit Exitcode 1 ab, bevor Assets geschrieben werden. Beleg: `artifacts/land-check-stale-full.log`. Anschließend wurden die Assets mit den endgültigen Quellenreferenzen neu gebaut.
+- Das Landschaftsmaterial erhält ausdrücklich die Nanite-Verwendungsfreigabe. Im Editor wartet das Laden auf die fertig kompilierte Textur: Ein zuerst beobachteter 32 × 32-Platzhalter ist damit behoben, ohne die Dimensions-/Mip-Prüfung abzuschwächen.
+- Diagnose vor der Umstellung: Bilder mit unveränderter Beleuchtung, ohne GI, ohne Lumen-Screen-Traces und ohne Beleuchtung wurden verglichen (`artifacts/land-light-*.png`). Das Abschalten der Screen-Traces beseitigt die dunklen Bergflanken nicht; die unbeleuchtete Ansicht zeigt dort Bilddetails. Daraus folgt noch keine abschließend nachgewiesene einzelne Ursache.
+
+Die neue Geometrie verbessert Konturen und kleine Geländekanten. Die dunklen Flanken, im Orthobild enthaltene Schatten, flache fotografierte Bäume/Gebäude und gestreckte Texturen an steilen Flächen bleiben sichtbar. Beleuchtung und Nahansichten sind weiterhin nicht fotorealistisch abgenommen. Alle Landschaftskomponenten werden beim Start geladen; Nanite streamt seine Geometrieseiten. Fernes Land bleibt ohne Spielerkollision. Ein Render-Fallback unter Windows ist kein Nachweis für einen vollständigen macOS-Spielbuild, und kurze Smoke-Läufe ersetzen weder Performance-Abnahme noch zweistündigen Dauertest.
+
+Abschließender Editor-Build und Windows-Package `Builds/WindowsTerrain/divingsim.exe` erfolgreich. Die vorgeschaltete Prüfung bestätigt alle 77 Assets; Belege: `artifacts/build-terrain-verified.log` und `artifacts/package-terrain-verified.log`. Beim Neuaufbau gab es vorübergehende Dateisperren; Unreals Wiederholungsversuche und die anschließende vollständige Assetprüfung waren erfolgreich.
+
+| Vollständiger Uferablauf im endgültigen Package | Dauer inkl. Landweg | Maximale Tiefe | Strecke | Gespeicherte Messpunkte |
+|---|---:|---:|---:|---:|
+| Weesen / Strandbad | 41,08 s | 6,11 m | 44,64 m | 42 |
+| Murg / West | 41,92 s | 4,27 m | 46,50 m | 42 |
+| Mols / Lediwracks | 46,64 s | 4,76 m | 51,83 m | 47 |
+
+Alle drei Läufe bestehen Uferwechsel, Rückkehr, Bodenkontakt, Sprunggrenze und das erneut gelesene abgeschlossene Logbuch. Nachtregression: 22,02 s, 5,67 m maximale Tiefe, 23 Messpunkte und alle drei Handgelenkseiten. Regen-/Oberflächenregression: 38,02 s, 5,72 m maximale Tiefe, 31,50 m Strecke und 39 Messpunkte. Gestreamte Seebodenkacheln bleiben auf neun begrenzt. Belege: `artifacts/terrain-shore-0-full.log` bis `terrain-shore-2-full.log`, `terrain-wrist-night-full.log` und `terrain-surface-rain-full.log`.
+
+Der zusätzliche Package-Lauf mit `-DisableNanite` bestätigt `r.Nanite = "0"`, die weiterhin sichtbare Landschaft, vollständige Texturen und die drei Ufer-Kollisionsstrahlen. Der konventionelle Fallback enthält insgesamt 897.526 Dreiecke. Ein siebter Lauf mit `-ExecCmds="r.Nanite.Visualize Clusters"` zeigt die Landschaft in der tatsächlichen Nanite-Clusteransicht. Beide Bilder wurden geprüft; Belege: `artifacts/terrain-fallback-full.log` und `artifacts/terrain-nanite-clusters.log`. Alle sieben Package-Läufe bestehen `DIVE_SMOKE_PASS`, `DIVE_LANDSCAPE_PASS` und `DIVE_IMAGERY_PASS`.
+
+![Feineres Geländeraster bei Weesen](Images/Terrain_Start_0.png)
+
+![Feineres Geländeraster bei Murg](Images/Terrain_Start_1.png)
+
+![Feineres Geländeraster bei Mols](Images/Terrain_Start_2.png)
+
+![Konventioneller Render-Fallback bei ausgeschaltetem Nanite](Images/Terrain_Fallback.png)
+
+![Nanite-Clusterdiagnose der tatsächlich gerenderten Berggeometrie](Images/Terrain_NaniteClusters.png)

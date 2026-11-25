@@ -12,5 +12,7 @@ public class DiveSim : ModuleRules
             "Core", "CoreUObject", "Engine", "InputCore", "ProceduralMeshComponent"
         });
         PrivateDependencyModuleNames.AddRange(new string[] { "Json", "JsonUtilities", "SlateCore", "Slate", "AudioMixer" });
+        if (Target.bBuildEditor)
+            PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "MeshDescription", "StaticMeshDescription", "AssetRegistry" });
     }
 }

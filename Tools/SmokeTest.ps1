@@ -1,6 +1,6 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged,
     [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','stream','wrist','wrist-night','logbook','audio','controls','tutorial','profiles','shore-preview','shore')][string]$Scenario='dive',
-    [string]$PackageDirectory='')
+    [string]$PackageDirectory='', [switch]$DisableNanite)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
@@ -8,6 +8,7 @@ $logPath=Join-Path $repo 'artifacts/DiveSmoke.log'
 New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $arguments='-DiveSmokeTest -windowed -ResX=1600 -ResY=900 -nosplash -unattended -abslog="{0}"' -f $logPath
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
+if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
 $executable="$EngineRoot/Engine/Binaries/Win64/UnrealEditor.exe"
 if($Packaged) {
     if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' }
@@ -21,6 +22,8 @@ if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }
+if($log -notmatch 'DIVE_LANDSCAPE_PASS') { throw "Landscape asset test failed. See $logPath." }
+if($DisableNanite -and $log -notmatch 'r.Nanite = "0"') { throw 'Nanite fallback override was not applied.' }
 if($Scenario -eq 'logbook' -and $log -notmatch 'DIVE_LOGBOOK_PASS') { throw "Logbook smoke test failed. See $logPath." }
 if($Scenario -eq 'audio' -and ($log -notmatch 'DIVE_AUDIO_PASS' -or $log -notmatch 'DIVE_AUDIO_SETTINGS_PASS')) { throw "Audio smoke test failed. See $logPath." }
 if($Scenario -eq 'controls' -and $log -notmatch 'DIVE_INPUT_PASS') { throw "Input smoke test failed. See $logPath." }

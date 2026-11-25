@@ -93,7 +93,7 @@ def main():
         vertical_crs='EPSG:5728',water_elevation_m=419,west=west,south=south,east=east,north=north,
         spacing_m=SPACING,rows=grid.shape[0],columns=grid.shape[1],file=output.name,
         encoding='little-endian float32 metres relative to 419 m LN02, north-to-south cell centres',
-        resampling='Area average from 2 m source to 8 m runtime grid; distant mesh uses 32 m spacing',
+        resampling='Area average from 2 m source to 8 m runtime grid; landscape mesh generation is recorded separately in landscape_meshes.json',
         sha256=hashlib.sha256(output.read_bytes()).hexdigest(),tiles=tiles,
         licence='https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste')
     (DEST/'landscape.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
@@ -101,9 +101,9 @@ def main():
         'Surrounding terrain: © swisstopo, swissALTI3D. Source tile editions in landscape.json.\n'
         'https://www.swisstopo.admin.ch/en/height-model-swissalti3d\n'
         'https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste\n'
-        '2 m source terrain, averaged to 8 m; distant display mesh at 32 m.\n'
+        '2 m source terrain, averaged to 8 m; Nanite display tiles use the full 8 m raster.\n'
         'LV95 / LN02; fixed scenario water reference 419 m LN02.\n'
-        'Vegetation/rock colours are illustrative, not surveyed land-cover data.\n',encoding='utf-8')
+        'Surface imagery has separate SWISSIMAGE attribution in IMAGERY_NOTICE.txt.\n',encoding='utf-8')
     print(f'Landscape ready: {grid.shape}, {grid.min()+419:.2f}..{grid.max()+419:.2f} m LN02',flush=True)
 
 
