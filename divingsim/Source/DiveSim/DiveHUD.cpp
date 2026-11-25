@@ -54,18 +54,17 @@ void ADiveHUD::DrawHUD()
     Super::DrawHUD();
     Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver || !Canvas) return;
     if(Diver->Equipment&&Diver->Equipment->Avatar)
-        Diver->Equipment->Avatar->SetInspection(Diver->bMenu&&bLoadoutPage&&bAvatarView&&!bProfilesPage&&!bControlsPage&&!Diver->bLogbook&&!Diver->bSummary);
+        Diver->Equipment->Avatar->SetInspection(Diver->bMenu&&bLoadoutPage&&bAvatarView&&!bEntryMapPage&&!bProfilesPage&&!bControlsPage&&!Diver->bLogbook&&!Diver->bSummary);
     Scale=FMath::Min(Canvas->SizeX/1600.f,Canvas->SizeY/900.f);
     OffsetX=(Canvas->SizeX-1600*Scale)/2; OffsetY=(Canvas->SizeY-900*Scale)/2;
     if(Diver->bMenu)
     {
         DrawRect(FLinearColor(0,.012,.014,.62),0,0,Canvas->SizeX,Canvas->SizeY);
-        if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
+        if(bEntryMapPage) Map(true); else if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
     }
     else
     {
         if(Diver->bShowInstruments||Diver->Simulation.Settings.Rules().PermanentHUD) Instruments();
-        if(Diver->bShowMap) Map();
         if(Diver->bTutorialActive) TutorialOverlay();
         if(GetWorld()->GetTimeSeconds()<Diver->NoticeUntil)
         {
@@ -73,7 +72,8 @@ void ADiveHUD::DrawHUD()
         }
         if(Diver->Simulation.Settings.Rules().AutomaticHints&&Diver->CanFinishDive())
         { Rect(570,680,460,48,Dark); Text(TEXT("[ ")+Diver->KeyText(EDiveAction::Finish)+TEXT(" ]  ")+Diver->Local(TEXT("Tauchgang abschliessen"),TEXT("Finish dive")),590,693,20,Accent); }
-        Text(TEXT("+"),795,445,14,FLinearColor(.75,.9,.86,.45));
+        if(Diver->bShowMap) Map();
+        else Text(TEXT("+"),795,445,14,FLinearColor(.75,.9,.86,.45));
     }
 }
 
@@ -248,47 +248,6 @@ void ADiveHUD::Instruments()
 
 }
 
-void ADiveHUD::Map()
-{
-    const auto& data=Diver->Environment->Terrain;
-    if(!MapTexture && data.Overview.Num()>0)
-    {
-        MapTexture=UTexture2D::CreateTransient(FDiveTerrain::MapWidth,FDiveTerrain::MapHeight,PF_B8G8R8A8);
-        auto* pixels=static_cast<FColor*>(MapTexture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE));
-        for(int i=0;i<data.Overview.Num();++i)
-        {
-            const float depth=data.Overview[i];
-            if(depth<0) { pixels[i]=FColor(11,22,25); continue; }
-            const float t=FMath::Clamp(depth/155.f,0.f,1.f);
-            FLinearColor color=FMath::Lerp(FLinearColor(.18,.62,.46),FLinearColor(.015,.07,.16),t);
-            // Ten-metre contours are derived from the measured raster.
-            if(i%FDiveTerrain::MapWidth>0 && data.Overview[i-1]>=0 &&
-               FMath::FloorToInt(depth/10)!=FMath::FloorToInt(data.Overview[i-1]/10)) color*=.55f;
-            pixels[i]=color.ToFColor(true);
-        }
-        MapTexture->GetPlatformData()->Mips[0].BulkData.Unlock();
-        MapTexture->Filter=TF_Bilinear; MapTexture->SRGB=true; MapTexture->UpdateResource();
-    }
-    Rect(180,150,1240,580,Dark);
-    Text(Diver->Local(TEXT("WALENSEE / VERMESSENE TIEFENKARTE"),TEXT("WALENSEE / SURVEYED DEPTH MAP")),210,180,23,Accent);
-    Text(TEXT("N ^      swissBATHY3D 2020 / © swisstopo"),210,222,15,Muted);
-    if(MapTexture) DrawTexture(MapTexture,OffsetX+210*Scale,OffsetY+270*Scale,1180*Scale,295*Scale,0,0,1,1,FLinearColor::White,BLEND_Opaque);
-    auto point=[&](FVector pos,FLinearColor color,float size)
-    {
-        const FVector2D survey=data.ToSurvey(pos);
-        const float x=210+(survey.X-data.MapWest)/(data.MapEast-data.MapWest)*1180;
-        const float y=270+(data.MapNorth-survey.Y)/(data.MapNorth-data.MapSouth)*295;
-        Rect(x-size*.5f,y-size*.5f,size,size,color);
-    };
-    for(int i=0;i<Diver->Samples.Num();i+=5) point(Diver->Samples[i].Position,FLinearColor(.75,.85,.8,1),3);
-    for(const auto& entry:data.EntryList(Diver->PendingConfig.StartOnShore)) point(entry.Position,Amber,7);
-    point(Diver->GetActorLocation(),Accent,12);
-    Text(Diver->Local(TEXT("Gruen: du    Gelb: Spielstarts    Dunkel: keine Messdaten"),TEXT("Green: you    Yellow: game starts    Dark: no survey data")),210,595,17,White);
-    Text(Diver->Local(TEXT("Hell: flach    Dunkelblau: tief    Tiefenlinien: 10 m    Bezugspegel: 419 m LN02"),TEXT("Light: shallow    Dark blue: deep    Contours: 10 m    Water reference: 419 m LN02")),210,631,16,Muted);
-    const FVector2D survey=data.ToSurvey(Diver->GetActorLocation());
-    Text(FString::Printf(TEXT("LV95  E %.1f / N %.1f     |     %s: %s"),survey.X,survey.Y,*Diver->KeyText(EDiveAction::Map),Diver->bEnglish?TEXT("close"):TEXT("schliessen")),210,678,16,White);
-}
-
 void ADiveHUD::Summary()
 {
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
@@ -322,6 +281,7 @@ void ADiveHUD::Summary()
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
     Super::NotifyHitBoxClick(Id); if(!Diver||ConfigDialog) return;
+    if(bEntryMapPage) { MapClick(Id); return; }
     if(Id==TEXT("profiles")) { OpenProfiles(); return; }
     if(bProfilesPage) { ProfileClick(Id); return; }
     if(Id==TEXT("controls")) { OpenControls(); return; }
@@ -367,6 +327,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         return;
     }
     auto& c=Diver->PendingConfig;
+    if(Id==TEXT("entry")) { OpenEntryMap(); return; }
     if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; bAudioPage=bLoadoutPage=false; return; }
     if(Id==TEXT("audio")) { bAudioPage=!bAudioPage; bLoadoutPage=false; return; }
     if(Id==TEXT("loadout")) { bLoadoutPage=!bLoadoutPage; bAudioPage=bEnvironmentPage=false; return; }
@@ -406,7 +367,6 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
     {
         if(OpenConfigInput(Id)) return;
         if(Id==TEXT("mode")) c.GameMode=static_cast<Dive::Mode>((static_cast<int>(c.GameMode)+1)%3);
-        else if(Id==TEXT("entry")) Diver->EntryIndex=(Diver->EntryIndex+1)%3;
         else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
         else if(Id==TEXT("exploration_trim")&&c.GameMode==Dive::Mode::Exploration) c.ManualExplorationBuoyancy=!c.ManualExplorationBuoyancy;
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;

@@ -1,16 +1,17 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
+    [ValidateSet('1600x900','1920x1080','2560x1440','3840x2160','1280x1024')][string]$Viewport='1600x900',
     [ValidateRange(0,2)][int]$Torch=0,
     [ValidateRange(2,40)][double]$Visibility=14,
     [ValidateRange(0,100)][double]$Battery=100,
     [ValidateRange(0,30)][double]$ParticleScale=1,
-    [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
+    [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
@@ -20,7 +21,8 @@ $project=Join-Path $repo 'divingsim/divingsim.uproject'
 if($EditorSandbox) { $project=Join-Path $repo 'Builds/EditorSandbox/divingsim/divingsim.uproject' }
 $logPath=if($RuntimeLog) { [IO.Path]::GetFullPath($RuntimeLog) } else { Join-Path $repo 'artifacts/DiveSmoke.log' }
 New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
-$arguments='-DiveSmokeTest -windowed -ResX=1600 -ResY=900 -nosplash -unattended -abslog="{0}"' -f $logPath
+$size=$Viewport.Split('x')
+$arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -unattended -abslog="{0}"' -f $logPath,$size[0],$size[1]
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 if($Scenario -eq 'modes') { $arguments+=' -DiveModeCase='+$ModeCase }
 if($Scenario -in @('loadout','avatar')) { $arguments+=' -DiveLoadoutCase='+$LoadoutCase }
@@ -36,6 +38,7 @@ if($PSBoundParameters.ContainsKey('Hour')) { $arguments+=' -DiveHour='+$Hour.ToS
 if($Date) { $arguments+=" -DiveDate=$Date" }
 $arguments+=' -DiveTorch='+$Torch+' -DiveTorchBattery='+$Battery.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments+=' -DiveParticleScale='+$ParticleScale.ToString([Globalization.CultureInfo]::InvariantCulture)
+if($NavShore) { $arguments+=' -DiveNavShore' }
 if($NoBubbles) { $arguments+=' -DiveNoBubbles' }
 if($AutomaticEnvironment) { $arguments+=' -DiveAutomaticEnvironment' }
 if($PSBoundParameters.ContainsKey('Visibility')) { $arguments+=' -DiveVisibility='+$Visibility.ToString([Globalization.CultureInfo]::InvariantCulture) }
@@ -51,6 +54,7 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($Scenario -eq 'navigation' -and ($log -notmatch 'DIVE_NAV_PASS' -or $log -match 'DIVE_NAV_FAIL|DIVE_NAV_PHASE \d+ FAIL')) { throw 'Navigation selection test failed.' }
 if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -notmatch 'DIVE_SEDIMENT_PAUSE_PASS' -or $log -match 'DIVE_SEDIMENT_FAIL')) { throw 'Sediment lifecycle or pause failed.' }
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }

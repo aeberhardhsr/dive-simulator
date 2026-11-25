@@ -28,6 +28,10 @@ public:
     bool EnvironmentSmokeTest(int Phase);
     bool LoadoutSmokeTest(int Phase);
     bool AvatarSmokeTest(int Phase);
+    bool NavigationSmokeTest(int Phase);
+    void OpenEntryMap();
+    bool EntryMapOpen() const { return bEntryMapPage; }
+    void CloseEntryMap() { bEntryMapPage=false; }
     int32 AvatarPausedUpdates=0;
     float AvatarPausedPhase=0;
     bool ConfigInputOpen() const { return ConfigDialog.IsValid(); }
@@ -59,7 +63,12 @@ private:
     TSharedPtr<class SEditableTextBox> ConfigEditor;
     void Instruments();
     void Summary();
-    void Map();
+    void Map(bool SelectionPage=false);
+    void MapClick(FName Id);
+    bool bEntryMapPage=false,MapDraftShore=true;
+    int32 MapDraftEntry=0;
+    int32 MapSmokeEntry=0;
+    double MapPausedSeconds=0;
     void Logbook();
     void ControlsMenu();
     void TutorialOverlay();

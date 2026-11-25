@@ -60,6 +60,8 @@ Auch der Root-Starter `Builds/WindowsCelestial/divingsim.exe` startete nachweisl
 
 ## Grenzen zur Spezifikation
 
+Ein späterer Test der Kartenauswahl am östlichen Einstieg deckte einen zusätzlichen Fehler bei pausierter Uhr auf: Die native Beobachter-Neuzentrierung überschreibt nach mehr als zehn Kilometern Versatz die ephemeridische Mondphase. Der Build `WindowsNavigation` stellt die berechnete Phase nach diesem nativen Tick wieder her. Ursache, Umsetzung und zugehörige Prüfungen stehen in [NAVIGATION.md](NAVIGATION.md).
+
 ENV-001/ENV-002 und der Datumsteil von CONF-003 sind erweitert. Jahreszeitabhängige Temperaturen, Wetter, Sichtweite, Eis/Schnee, Vegetation und Tierpopulation sind damit nicht umgesetzt. Die sommerlichen Orthobilder bleiben auch im Winter sichtbar. Die vollständige optische/fachliche Abnahme und die gesamte Requirements Specification bleiben offen.
 
 ## Primärquellen

@@ -11,6 +11,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/ConfigInput.h"
 #include "../divingsim/Source/DiveSim/Simulation/Bubbles.h"
 #include "../divingsim/Source/DiveSim/Simulation/Sediment.h"
+#include "../divingsim/Source/DiveSim/Simulation/Navigation.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -24,6 +25,18 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        using namespace Dive::Navigation;
+        close(Bearing(1,0),0,1e-12,"Map north agrees with world X");
+        close(Bearing(0,1),90,1e-12,"Map east agrees with world Y");
+        close(Bearing(-1,0),180,1e-12,"South bearing");
+        close(Bearing(0,-1),270,1e-12,"West bearing");
+        check(DisplayHeading(359.8)==0&&DisplayHeading(-90)==270,"Compass rounding wraps at north");
+        const auto corner=Project(100,240,100,200,80,40),center=Project(140,220,100,200,80,40);
+        close(corner.X,0,0,"West edge");close(corner.Y,0,0,"North edge is screen top");
+        close(center.X,.5,0,"Equal east-west map scale");close(center.Y,.5,0,"Equal north-south map scale");
+        check(center.Inside()&&!Project(181,220,100,200,80,40).Inside(),"Outside positions are not clamped onto the map");
+    }
     {
         using namespace Dive::Sediment;
         close(StirRate(.1,0,true,true),0,0,"Still fins do not stir sediment");

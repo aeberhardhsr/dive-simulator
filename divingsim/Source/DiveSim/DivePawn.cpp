@@ -172,7 +172,7 @@ void ADivePawn::BeginPlay()
                 if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-12,shore.Yaw,0));
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
-            else if(SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
+            else if(SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
             double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
@@ -208,6 +208,8 @@ void ADivePawn::ToggleMenu()
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ProfilesOpen()) { hud->CloseProfiles(); return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ControlsOpen()) { hud->CloseControls(); return; }
+    if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->EntryMapOpen()) { hud->CloseEntryMap(); return; }
     if(bLogbook) { bLogbook=false; return; }
     SetMenu(!bMenu || !bDiveActive);
 }
@@ -389,7 +391,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -656,7 +658,7 @@ void ADivePawn::SimulateStep(float Step)
     auto* PC=Cast<APlayerController>(GetController()); if(!PC) return;
     auto Down=[this,PC](EDiveAction Action)
     {
-        if(!bSmokeTest||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
+        if(!bSmokeTest||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
         if(SmokeScenario==TEXT("avatar")&&ControlsSmokePhase>=16&&ControlsSmokePhase<=18)
             return Action==EDiveAction::Ascend?1.f:0.f;
@@ -861,7 +863,7 @@ void ADivePawn::FinishDive(const FString& Reason)
 {
     if(!bDiveActive) return;
     if(auto* pc=Cast<APlayerController>(GetController()))
-        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) { hud->CloseControls(); hud->CloseProfiles(true); }
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) { hud->CloseControls(); hud->CloseProfiles(true); hud->CloseEntryMap(); }
     Samples.Add({Simulation.Data,GetActorLocation()});
     Outcome=Reason; bDiveActive=false; bSummary=true;
     if(!SaveLog(Reason)) Outcome+=TEXT(" / log_save_failed");

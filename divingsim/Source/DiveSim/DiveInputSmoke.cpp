@@ -33,6 +33,22 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("navigation"))
+    {
+        if(ControlsSmokePhase<=12&&ControlsSmokeClock>(ControlsSmokePhase+1)*1.5)
+        {
+            const bool ok=hud->NavigationSmokeTest(ControlsSmokePhase);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_NAV_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));
+            if(!ok) { UE_LOG(LogTemp,Error,TEXT("DIVE_NAV_FAIL phase=%d"),ControlsSmokePhase);FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            ++ControlsSmokePhase;
+        }
+        if(ControlsSmokePhase==13&&ControlsSmokeClock>21.5)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_NAV_PASS entry=%d shore=%d selection=1 hitboxes=1 persistence=1 cancel=1 active_guard=1 pause=1"),EntryIndex,PendingConfig.StartOnShore);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS navigation=1"));FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("avatar"))
     {
         TestLessonAge+=Dt;

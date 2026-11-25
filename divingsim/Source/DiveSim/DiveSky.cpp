@@ -1,5 +1,6 @@
 #include "DiveWorld.h"
 #include "DivePawn.h"
+#include "DiveCelestialActor.h"
 #include "CelestialMaths.h"
 #include "CelestialVaultDaySequenceActor.h"
 #include "Components/DirectionalLightComponent.h"
@@ -37,7 +38,7 @@ void ADiveWorld::CreateSky()
     const int day=static_cast<int>(std::floor(clock.UTCSeconds/86400.));
     const float hour=SequenceHour(clock.UTCSeconds,day);
     Celestial=GetWorld()->SpawnActorDeferred<ACelestialVaultDaySequenceActor>(
-        ACelestialVaultDaySequenceActor::StaticClass(),FTransform::Identity,this);
+        ADiveCelestialActor::StaticClass(),FTransform::Identity,this);
     Celestial->bUseCurrentDate=false; Celestial->GMT_TimeZone=0;
     Celestial->DaylightSavingsMode=EDaylightSavingsMode::None;
     Celestial->Latitude=Latitude; Celestial->Longitude=Longitude;
@@ -131,7 +132,7 @@ void ADiveWorld::UpdateDaylight()
         MoonPhaseAge=.5+(elongationRA<=12?-1:1)*phaseAngle/(2*PI);
         LastMoonPhaseUTC=clock.UTCSeconds;
     }
-    Celestial->SetMoonDiscAge(MoonPhaseAge);
+    CastChecked<ADiveCelestialActor>(Celestial)->ApplyEphemerisPhase(MoonPhaseAge);
     // The template sequence also animates cloud coverage. The selected weather
     // owns these parameters; apply it after sequence evaluation, on the actual MID.
     if(CloudMaterial)
