@@ -186,13 +186,11 @@ void ADiveHUD::Logbook()
     Button(TEXT("logeventprev"),TEXT("< !"),510,734,70,36);
     Button(TEXT("logeventnext"),TEXT("! >"),590,734,70,36);
     FString warnings;
-    const TCHAR* warnDE[]={TEXT("Druck niedrig"),TEXT("Aufstieg schnell"),TEXT("ppO2 hoch"),TEXT("Unterkuehlt"),TEXT("Dekotiefe unterschritten"),TEXT("Flasche leer"),TEXT("Tiefenplan"),TEXT("Zeitplan")};
-    const TCHAR* warnEN[]={TEXT("Low gas"),TEXT("Fast ascent"),TEXT("High ppO2"),TEXT("Cold"),TEXT("Above ceiling"),TEXT("Cylinder empty"),TEXT("Depth plan"),TEXT("Time plan")};
+    const TCHAR* warnDE[]={TEXT("Druck niedrig"),TEXT("Aufstieg schnell"),TEXT("ppO2 hoch"),TEXT("Kaelte"),TEXT("Dekogrenze"),TEXT("Flasche leer"),TEXT("Tiefenplan"),TEXT("Zeitplan"),TEXT("Keine Atemluft"),TEXT("Reglerdefekt"),TEXT("Narkose"),TEXT("Panik"),TEXT("Dekobelastung")};
+    const TCHAR* warnEN[]={TEXT("Low gas"),TEXT("Fast ascent"),TEXT("High ppO2"),TEXT("Cold"),TEXT("Above ceiling"),TEXT("Cylinder empty"),TEXT("Depth plan"),TEXT("Time plan"),TEXT("No supply"),TEXT("Regulator fault"),TEXT("Narcosis"),TEXT("Panic"),TEXT("Deco strain")};
     int count=0;
-    for(int bit=0;bit<8;++bit) if(sample.Warnings&(1u<<bit))
-    { if(count++) warnings+=count==5?TEXT("\n"):TEXT(" / "); warnings+=L(warnDE[bit],warnEN[bit]); }
-    if(sample.Warnings&Dive::NoBreathingSupply)
-    { if(!warnings.IsEmpty()) warnings+=TEXT(" / "); warnings+=L(TEXT("Keine Atemluft"),TEXT("No breathing supply")); }
+    for(int bit=0;bit<13;++bit) if(sample.Warnings&(1u<<bit))
+    { if(count) warnings+=count%5==0?TEXT("\n"):TEXT(" / "); ++count; warnings+=L(warnDE[bit],warnEN[bit]); }
     Text(warnings.IsEmpty()?L(TEXT("Keine aktive Warnung an diesem Zeitpunkt"),TEXT("No active warning at this time")):warnings,685,742,14,warnings.IsEmpty()?Muted:Amber);
     if(log.bBreathingContext)
     {
@@ -204,5 +202,9 @@ void ADiveHUD::Logbook()
             FString::Printf(TEXT("%.1f C"),sample.EnvironmentTemperatureC)+
             (log.bBreathReserveContext?L(TEXT("    Atemreserve "),TEXT("    Breath reserve "))+FString::Printf(TEXT("%.0f%%"),sample.BreathReserve*100):TEXT("")),510,796,16,Accent);
     }
-    Text(L(TEXT("Kurven: gespeicherte Spielwerte. Gelbe Marken: neue Warnungen."),TEXT("Curves: recorded game values. Yellow marks: new warnings.")),510,834,14,Muted);
+    if(log.bImpairmentContext)
+        Text(L(TEXT("Leistung / Narkose / Panik / Deko: "),TEXT("Capacity / narcosis / panic / deco: "))+
+            FString::Printf(TEXT("%.0f / %.0f / %.0f / %.0f%%   "),100*sample.MotorCapacity,100*sample.Narcosis,100*sample.Panic,100*sample.DecompressionBurden)+
+            (sample.RegulatorFreeflow?L(TEXT("Reglerdefekt: "),TEXT("Regulator fault: "))+FString::Printf(TEXT("%.0f L"),sample.FreeflowLostLitres):TEXT("")),510,834,14,Muted);
+    else Text(L(TEXT("Kurven: gespeicherte Spielwerte. Gelbe Marken: neue Warnungen."),TEXT("Curves: recorded game values. Yellow marks: new warnings.")),510,834,14,Muted);
 }

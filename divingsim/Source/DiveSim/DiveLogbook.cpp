@@ -15,10 +15,11 @@ bool Parse(const FString& Json,FDiveLog& Log)
     if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),root)||!root)
         return fail(TEXT("Invalid JSON"));
     double version=0;
-    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4))
+    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4&&version!=5))
         return fail(TEXT("Unsupported log version"));
     Log.bBreathingContext=version>=3;
     Log.bBreathReserveContext=version>=4;
+    Log.bImpairmentContext=version>=5;
     auto number=[](const TSharedPtr<FJsonObject>& obj,const TCHAR* key,double& value,double lo,double hi)
     {
         const auto field=obj->TryGetField(key);
@@ -75,9 +76,25 @@ bool Parse(const FString& Json,FDiveLog& Log)
            !number(o,TEXT("ceiling_m"),s.CeilingMetres,0,1000)||
            !number(o,TEXT("ndl_minutes"),s.NDLMinutes,0,1000)||
            !number(o,TEXT("distance_m"),s.DistanceMetres,0,Log.Distance+.05)||s.DistanceMetres<lastDistance||
-           !number(o,TEXT("warnings"),warnings,0,version>=3?511:255)||warnings!=FMath::FloorToDouble(warnings))
+           !number(o,TEXT("warnings"),warnings,0,version>=5?8191:version>=3?511:255)||warnings!=FMath::FloorToDouble(warnings))
             return fail(TEXT("Invalid or unordered sample values"));
         s.EnvironmentTemperatureC=s.WaterTemperatureC;
+        if(Log.bImpairmentContext)
+        {
+            if(!number(o,TEXT("narcosis"),s.Narcosis,0,1)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("panic"),s.Panic,0,1)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("cold_strain"),s.ColdStrain,0,1)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("decompression_burden"),s.DecompressionBurden,0,1)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("motor_capacity"),s.MotorCapacity,0.15,1)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("visual_impairment"),s.VisualImpairment,0,1)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("regulator_temperature_c"),s.RegulatorTemperatureC,-500,100)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("freeze_exposure"),s.FreezeExposure,0,120)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("freeflow_local_lps"),s.FreeflowLocalLPS,0,6.001)) return fail(TEXT("Invalid impairment or fault context"));
+            if(!number(o,TEXT("freeflow_lost_litres"),s.FreeflowLostLitres,0,9000.01)) return fail(TEXT("Invalid impairment or fault context"));
+            const auto fault=o->TryGetField(TEXT("regulator_freeflow"));
+            if(!fault||fault->Type!=EJson::Boolean) return fail(TEXT("Missing regulator state"));
+            s.RegulatorFreeflow=fault->AsBool();
+        }
         if(Log.bBreathReserveContext&&!number(o,TEXT("breath_reserve"),s.BreathReserve,0,1))
             return fail(TEXT("Invalid or missing breath reserve"));
         if(Log.bBreathingContext)

@@ -182,11 +182,12 @@ void ADiveEquipment::DrawDisplay(UCanvas* Canvas,int32 Width,int32 Height)
     FString warning;
     if(s.Warnings&Dive::NoBreathingSupply) warning=L(TEXT("! KEINE ATEMLUFT  Reserve "),TEXT("! NO SUPPLY  Reserve "))+FString::Printf(TEXT("%.0f%%"),s.BreathReserve*100);
     else if(s.Warnings&Dive::OutOfGas) warning=L(TEXT("! FLASCHE LEER"),TEXT("! CYLINDER EMPTY"));
+    else if(s.Warnings&Dive::EquipmentFailure) warning=L(TEXT("! REGLERDEFEKT / GASFLUSS"),TEXT("! REGULATOR FAULT / FREEFLOW"));
     else if(s.Warnings&Dive::CeilingViolation) warning=L(TEXT("! DEKOTIEFE UNTERSCHRITTEN"),TEXT("! ABOVE CEILING"));
-    else if(s.Warnings&Dive::FastAscent) warning=L(TEXT("! AUFSTIEG VERLANGSAMEN"),TEXT("! SLOW ASCENT"));
+    else if(s.Warnings&Dive::FastAscent) warning=L(TEXT("! HOHE AUFSTIEGSRATE"),TEXT("! HIGH ASCENT RATE"));
     else if(s.Warnings&Dive::LowGas) warning=L(TEXT("! NIEDRIGER DRUCK"),TEXT("! LOW GAS"));
     else if(s.Warnings&Dive::HighPO2) warning=L(TEXT("! HOHER ppO2"),TEXT("! HIGH ppO2"));
-    else if(s.Warnings&Dive::Cold) warning=L(TEXT("! KOERPERTEMPERATUR NIEDRIG"),TEXT("! LOW CORE TEMPERATURE"));
+    else if(s.Warnings&Dive::Cold) warning=L(TEXT("! KAELTEBELASTUNG"),TEXT("! COLD STRAIN"));
     else if(s.Warnings&Dive::DepthPlan) warning=L(TEXT("! GEPLANTE TIEFE UEBERSCHRITTEN"),TEXT("! BEYOND PLANNED DEPTH"));
     else if(s.Warnings&Dive::TimePlan) warning=L(TEXT("! GEPLANTE ZEIT UEBERSCHRITTEN"),TEXT("! BEYOND PLANNED TIME"));
     text(warning.IsEmpty()?FString::Printf(TEXT("%d/3    R %s    C %s"),Page+1,*L(TEXT("Seite"),TEXT("Page")),*L(TEXT("senken"),TEXT("lower"))):warning,24,465,30,warning.IsEmpty()?dim:amber);

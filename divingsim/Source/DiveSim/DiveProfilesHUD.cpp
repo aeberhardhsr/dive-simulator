@@ -168,7 +168,7 @@ void ADiveHUD::ProfilesMenu()
     Text(place+TEXT("  /  ")+modes[static_cast<int>(c.GameMode)]+(c.StartOnShore?L(TEXT("  /  Uferstart"),TEXT("  /  Shore start")):FString()),585,280,21,Accent);
     Text(FString::Printf(TEXT("%.0f L   /   %.1f bar   /   O2 %.0f %%   /   %.1f kg"),c.CylinderLitres,c.StartPressureBar,c.OxygenFraction*100,c.WeightKg),585,325,20,White);
     const FString suit=c.DrySuit?L(TEXT("Trockentauchanzug"),TEXT("Dry suit")):L(TEXT("Nassanzug"),TEXT("Wet suit"));
-    const bool autoTrim=c.AutoBuoyancy||c.GameMode==Dive::Mode::Exploration;
+    const bool autoTrim=c.AssistedBuoyancy();
     Text(suit+TEXT("   /   ")+(autoTrim?L(TEXT("Automatische Tarierung"),TEXT("Automatic buoyancy")):L(TEXT("Manuelle Tarierung"),TEXT("Manual buoyancy"))),585,365,19,White);
     const FString hour=UTF8_TO_TCHAR(Dive::FormatConfigInput(*Dive::FindConfigInput("hour"),c.Hour).c_str());
     Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f deg"),*(FString(UTF8_TO_TCHAR(c.Date.Text().c_str()))+TEXT("  ")+hour),*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);

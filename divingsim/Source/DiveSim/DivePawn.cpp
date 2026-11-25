@@ -69,6 +69,20 @@ void ADivePawn::BeginPlay()
         FParse::Value(FCommandLine::Get(),TEXT("DiveEntry="),EntryIndex);
         FParse::Value(FCommandLine::Get(),TEXT("DiveScenario="),SmokeScenario);
         bPerformance=SmokeScenario.StartsWith(TEXT("perf-"));
+        if(SmokeScenario==TEXT("modes"))
+        {
+            FParse::Value(FCommandLine::Get(),TEXT("DiveModeCase="),ModeSmokeCase);
+            if(ModeSmokeCase!=TEXT("exploration")&&ModeSmokeCase!=TEXT("manual")&&ModeSmokeCase!=TEXT("simulation")&&
+                ModeSmokeCase!=TEXT("hardcore")&&ModeSmokeCase!=TEXT("warm")&&ModeSmokeCase!=TEXT("hypoxia"))
+            { UE_LOG(LogTemp,Error,TEXT("DIVE_SMOKE_FAIL unknown mode fixture")); FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            PendingConfig.GameMode=(ModeSmokeCase==TEXT("exploration")||ModeSmokeCase==TEXT("manual"))?Dive::Mode::Exploration:
+                (ModeSmokeCase==TEXT("hardcore")||ModeSmokeCase==TEXT("warm"))?Dive::Mode::Hardcore:Dive::Mode::Simulation;
+            PendingConfig.ManualExplorationBuoyancy=ModeSmokeCase==TEXT("manual");
+            PendingConfig.SurfaceTemperatureC=PendingConfig.BottomTemperatureC=ModeSmokeCase==TEXT("warm")?20:1;
+            PendingConfig.CylinderLitres=30;PendingConfig.StartPressureBar=300;
+            PendingConfig.CurrentMetresPerSecond=PendingConfig.WindMetresPerSecond=0;
+            PendingConfig.PlannedDepthMetres=60;PendingConfig.PlannedMinutes=120;PendingConfig.DrySuit=false;
+        }
         if(bPerformance)
         {
             PendingConfig.GameMode=Dive::Mode::Exploration;
@@ -77,7 +91,7 @@ void ADivePawn::BeginPlay()
         if(SmokeScenario==TEXT("stream")) PendingConfig.GameMode=Dive::Mode::Exploration;
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
         if(SmokeScenario==TEXT("torch"))
-        { PendingConfig.Hour=23; PendingConfig.Date={2026,12,23}; PendingConfig.CurrentMetresPerSecond=0; PendingConfig.WindMetresPerSecond=0; PendingConfig.AutoBuoyancy=true; }
+        { PendingConfig.Hour=23; PendingConfig.Date={2026,12,23}; PendingConfig.CurrentMetresPerSecond=0; PendingConfig.WindMetresPerSecond=0; }
         if(SmokeScenario==TEXT("daycycle")) { PendingConfig.Hour=17+59./60; PendingConfig.WindMetresPerSecond=0; }
         FParse::Value(FCommandLine::Get(),TEXT("DiveHour="),PendingConfig.Hour);
         FParse::Value(FCommandLine::Get(),TEXT("DiveTorch="),PendingConfig.TorchModel);
@@ -173,7 +187,7 @@ void ADivePawn::LookYaw(float Value)
 void ADivePawn::LookPitch(float Value)
 { if(!bMenu) AddControllerPitchInput(Value*MouseSensitivity*(Controls.InvertY?1:-1)); }
 void ADivePawn::ToggleLamp() { if(!bMenu) bLamp=!bLamp; }
-void ADivePawn::ToggleHUD() { if(!bMenu) bShowInstruments=!bShowInstruments; }
+void ADivePawn::ToggleHUD() { if(!bMenu&&!Simulation.Settings.Rules().PermanentHUD) bShowInstruments=!bShowInstruments; }
 void ADivePawn::ToggleComputer() { if(!bMenu) bShowComputer=!bShowComputer; }
 void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(ComputerPage+1)%3; }
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
@@ -311,7 +325,10 @@ void ADivePawn::StartDive()
         IFileManager::Get().Delete(*(FPaths::ProjectSavedDir()/TEXT("AudioQA/DiveMix.wav")));
         UAudioMixerBlueprintLibrary::StartRecordingOutput(this,60);
     }
-    Notify(Local(TEXT("F1 Steuerung und Hilfe  |  ESC Pause"),TEXT("F1 controls and help  |  ESC pause")));
+    NextAutomaticHint=20; FreeflowBubbleClock=0; Notice.Empty(); NoticeUntil=0;
+    if(Simulation.Settings.Rules().PermanentHUD) bShowInstruments=true;
+    if(Simulation.Settings.Rules().AutomaticHints)
+        Notify(Local(TEXT("F1 Steuerung und Hilfe  |  ESC Pause"),TEXT("F1 controls and help  |  ESC pause")));
 }
 
 void ADivePawn::Tick(float DeltaSeconds)
@@ -496,7 +513,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("torch")&&SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(!bPerformance&&SmokeScenario!=TEXT("shore")&&SmokeScenario!=TEXT("modes")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("torch")&&SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
         if(SmokeScenario.StartsWith(TEXT("wrist")))
         {
             const double t=Simulation.Data.ElapsedSeconds;
@@ -537,7 +554,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -597,9 +614,11 @@ void ADivePawn::Tick(float DeltaSeconds)
     Camera->PostProcessBlendWeight=1;
     PP.bOverride_ColorSaturation=true;
     PP.ColorSaturation=FMath::Lerp(FVector4(1,1,1,1),FVector4(.68,.85,.9,1),underwater);
+    const float impairment=bDiveActive?static_cast<float>(Simulation.Data.VisualImpairment):0.f;
+    PP.ColorSaturation.W=1-.8f*impairment;
     PP.bOverride_SceneColorTint=true;
     PP.SceneColorTint=FMath::Lerp(FLinearColor::White,FLinearColor(.48,.83,.78),underwater);
-    PP.bOverride_VignetteIntensity=true; PP.VignetteIntensity=.35f;
+    PP.bOverride_VignetteIntensity=true; PP.VignetteIntensity=.35f+.6f*impairment;
     PP.bOverride_AutoExposureMethod=true; PP.AutoExposureMethod=EAutoExposureMethod::AEM_Manual;
     PP.bOverride_AutoExposureApplyPhysicalCameraExposure=true; PP.AutoExposureApplyPhysicalCameraExposure=true;
     PP.bOverride_CameraISO=true; PP.CameraISO=100;
@@ -613,6 +632,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);
     UpdateTorch();
+    if(bSmokeTest&&SmokeScenario==TEXT("modes")) TickModeTest();
     if(bPerformance) TickPerformance();
 }
 
@@ -623,6 +643,12 @@ void ADivePawn::SimulateStep(float Step)
     {
         if(!bSmokeTest||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
+        if(SmokeScenario==TEXT("modes"))
+        {
+            if(Action==EDiveAction::Forward||Action==EDiveAction::Sprint) return 1.f;
+            if(Action==EDiveAction::Descend&&t<8) return .5f;
+            return 0.f;
+        }
         if(SmokeScenario==TEXT("torch")) return 0.f;
         if(bPerformance)
         {
@@ -670,9 +696,12 @@ void ADivePawn::SimulateStep(float Step)
     const FVector current=FVector(0,Simulation.Settings.CurrentMetresPerSecond,0)+
         Environment->WaveVelocity(old,Simulation.Data.ElapsedSeconds);
     const FVector relative=VelocityMetres-current;
-    const float fatigue=1.f-static_cast<float>(Simulation.Data.Fatigue)*.35f;
+    const float fatigue=static_cast<float>(Simulation.Data.MotorCapacity);
     FVector force=wish*SwimForceNewtons*(sprint>0?1.7f:1.f)*fatigue;
     force.Z+=Simulation.Data.BuoyancyNewtons;
+    // Optical fixture holds vertical position; production modes always use their
+    // own buoyancy rules. Gas/vitals still advance normally in this test.
+    if(bSmokeTest&&SmokeScenario==TEXT("torch")) force.Z=0;
     // Gradually lose displaced body volume as the head crosses the surface.
     // Upward swimming can lift the eyes into air, without allowing flight.
     const double now=Simulation.Data.ElapsedSeconds;
@@ -723,6 +752,15 @@ void ADivePawn::SimulateStep(float Step)
     exposure.RegulatorInMouth=bRegulatorInMouth;
     Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp,exposure);
     const auto& s=Simulation.Data;
+    if(Simulation.Settings.Rules().AutomaticHints&&!bTutorialActive&&s.ElapsedSeconds>=NextAutomaticHint)
+    {
+        FString hint;
+        if(s.Warnings&Dive::NoBreathingSupply) hint=Local(TEXT("Atmung unterbrochen. Pruefe den Atemregler und deine Position."),TEXT("Breathing interrupted. Check the regulator and your position."));
+        else if(s.Warnings&Dive::FastAscent) hint=Local(TEXT("Du steigst schnell auf. Pruefe deinen Auftrieb."),TEXT("You are ascending quickly. Check your buoyancy."));
+        else if(s.Warnings&Dive::LowGas) hint=Local(TEXT("Wenig Atemgas. Behalte deinen Rueckweg im Blick."),TEXT("Breathing gas is low. Keep track of your return route."));
+        else if(s.MotorCapacity<.8) hint=Local(TEXT("Deine Leistungsfaehigkeit sinkt. Pruefe Vitalwerte und Tauchprofil."),TEXT("Your capacity is falling. Check vitals and your dive profile."));
+        if(!hint.IsEmpty()) { Notify(hint); NextAutomaticHint=s.ElapsedSeconds+30; }
+    }
     bEnteredWater|=s.DepthMetres>.2;
     if(bTutorialActive)
     {
@@ -734,6 +772,12 @@ void ADivePawn::SimulateStep(float Step)
     const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
     if(Audio->Advance(Step,s,Simulation.Settings,eyeDepth)&&s.MouthSubmerged)
         Environment->EmitBreath(physicalEye-FVector(0,0,12),Camera->GetForwardVector(),s.AmbientBar);
+    FreeflowBubbleClock+=Step;
+    if(s.FreeflowLocalLPS>0&&s.MouthSubmerged&&FreeflowBubbleClock>=.2)
+    {
+        Environment->EmitBreath(physicalEye-FVector(0,0,12),Camera->GetForwardVector(),s.AmbientBar);
+        FreeflowBubbleClock=0;
+    }
     TelemetryAccumulator+=Step;
     if(TelemetryAccumulator>=1)
     {
@@ -742,7 +786,7 @@ void ADivePawn::SimulateStep(float Step)
             Notify(Local(TEXT("Zwischenspeichern fehlgeschlagen. Aktuelle Messpunkte nur im Arbeitsspeicher."),
                          TEXT("Autosave failed. Latest log data remains in memory.")));
     }
-    if(s.SpO2<60 && PendingConfig.GameMode!=Dive::Mode::Exploration)
+    if(s.SpO2<60 && Simulation.Settings.Rules().Physiology)
         FinishDive(s.CylinderBar<=.1?TEXT("out_of_gas"):TEXT("no_breathing_supply"));
 }
 

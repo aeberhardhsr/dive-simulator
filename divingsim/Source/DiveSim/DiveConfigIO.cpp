@@ -24,6 +24,7 @@ void DiveConfigIO::Write(const TSharedPtr<FJsonObject>& Obj,const Dive::Config& 
     Obj->SetNumberField(TEXT("weather"),Config.Weather); Obj->SetNumberField(TEXT("mode"),static_cast<int>(Config.GameMode));
     Obj->SetNumberField(TEXT("entry"),Entry); Obj->SetBoolField(TEXT("dry_suit"),Config.DrySuit);
     Obj->SetBoolField(TEXT("auto_buoyancy"),Config.AutoBuoyancy);
+    Obj->SetBoolField(TEXT("manual_exploration_buoyancy"),Config.ManualExplorationBuoyancy);
     Obj->SetBoolField(TEXT("start_on_shore"),Config.StartOnShore);
     Obj->SetBoolField(TEXT("auto_visibility"),Config.AutoVisibility);
     Obj->SetBoolField(TEXT("auto_temperature"),Config.AutoTemperature);
@@ -68,6 +69,7 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
     if(Obj->HasField(TEXT("start_on_shore"))&&!boolean(TEXT("start_on_shore"),candidate.StartOnShore)) return false;
     if(Obj->HasField(TEXT("auto_visibility"))&&!boolean(TEXT("auto_visibility"),candidate.AutoVisibility)) return false;
     if(Obj->HasField(TEXT("auto_temperature"))&&!boolean(TEXT("auto_temperature"),candidate.AutoTemperature)) return false;
+    if(Obj->HasField(TEXT("manual_exploration_buoyancy"))&&!boolean(TEXT("manual_exploration_buoyancy"),candidate.ManualExplorationBuoyancy)) return false;
     // Additive date: old profiles retain the previous summer scenario.
     if(const auto value=Obj->TryGetField(TEXT("scenario_date")))
     {
@@ -87,5 +89,5 @@ bool DiveConfigIO::Read(const TSharedPtr<FJsonObject>& Obj,Dive::Config& Config,
 bool DiveConfigIO::Equal(const Dive::Config& A,int32 EntryA,const Dive::Config& B,int32 EntryB)
 {
     for(const auto& n:Numbers) if(A.*(n.Member)!=B.*(n.Member)) return false;
-    return A.AutoVisibility==B.AutoVisibility&&A.AutoTemperature==B.AutoTemperature&&A.CurrentSource==B.CurrentSource&&A.TorchModel==B.TorchModel&&A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
+    return A.ManualExplorationBuoyancy==B.ManualExplorationBuoyancy&&A.AutoVisibility==B.AutoVisibility&&A.AutoTemperature==B.AutoTemperature&&A.CurrentSource==B.CurrentSource&&A.TorchModel==B.TorchModel&&A.Date==B.Date&&EntryA==EntryB&&A.GameMode==B.GameMode&&A.Weather==B.Weather&&A.DrySuit==B.DrySuit&&A.AutoBuoyancy==B.AutoBuoyancy&&A.StartOnShore==B.StartOnShore;
 }

@@ -59,6 +59,7 @@ public:
     FString Outcome, LastLogPath, Notice;
     FString DiveStartedUTC;
     double NoticeUntil=0;
+    double NextAutomaticHint=0,FreeflowBubbleClock=0;
     float GraphicsQuality=2;
     Dive::AudioLevels AudioLevels;
     UPROPERTY() TObjectPtr<UDiveAudio> Audio;
@@ -117,6 +118,11 @@ private:
     int32 DayCycleSmokePhase=0;
     double DayCyclePauseWall=0,DayCyclePauseSeconds=0,DayCyclePauseHour=0;
     void TickDayCycleTest(float DeltaSeconds);
+    FString ModeSmokeCase;
+    int32 ModeSmokePhase=0;
+    double ModeSmokeCapturedAt=0;
+    bool bModeSmokeValid=true;
+    void TickModeTest();
     void UpdateTorch();
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;

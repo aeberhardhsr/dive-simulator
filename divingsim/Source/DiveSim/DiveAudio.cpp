@@ -5,16 +5,16 @@
 
 namespace
 {
-const TCHAR* Names[]={TEXT("A_Inhale"),TEXT("A_Exhale"),TEXT("A_Bubbles"),TEXT("A_Inflate"),TEXT("A_Vent"),TEXT("A_Heart"),TEXT("A_Underwater"),TEXT("A_Surface"),TEXT("A_Wind"),TEXT("A_Rain"),TEXT("A_Warning")};
-constexpr int Categories[]={2,2,2,2,2,3,1,1,1,1,4};
-bool Loop(int i) { return i==3||i==4||(i>=6&&i<=9); }
+const TCHAR* Names[]={TEXT("A_Inhale"),TEXT("A_Exhale"),TEXT("A_Bubbles"),TEXT("A_Inflate"),TEXT("A_Vent"),TEXT("A_Heart"),TEXT("A_Underwater"),TEXT("A_Surface"),TEXT("A_Wind"),TEXT("A_Rain"),TEXT("A_Warning"),TEXT("A_Vent")};
+constexpr int Categories[]={2,2,2,2,2,3,1,1,1,1,4,2};
+bool Loop(int i) { return i==3||i==4||i==11||(i>=6&&i<=9); }
 }
 void UDiveAudio::Initialize(USceneComponent* InListener)
 {
     Listener=InListener;
     for(int i=0;i<Count;++i)
     {
-        auto* sound=NewObject<UAudioComponent>(GetOwner(),FName(Names[i]));
+        auto* sound=NewObject<UAudioComponent>(GetOwner(),FName(*FString::Printf(TEXT("DiveAudio_%d"),i)));
         sound->bAutoActivate=false; sound->bAutoDestroy=false;
         sound->SetupAttachment(Listener); sound->bAllowSpatialization=i==Bubbles;
         if(i==Bubbles)
@@ -64,6 +64,7 @@ bool UDiveAudio::Advance(float Dt,const Dive::State& s,const Dive::Config& c,dou
     // Smooth continuous channels; single shots remain timed to simulation events.
     Gain(Inflate,Dive::Approach(Gains[Inflate],.65*Dive::Clamp(s.BCDInflowLPS/2,0,1),18,Dt));
     Gain(Vent,Dive::Approach(Gains[Vent],.7*Dive::Clamp(s.BCDOutflowLPS/3,0,1),18,Dt));
+    Gain(Freeflow,Dive::Approach(Gains[Freeflow],.85*Dive::Clamp(s.FreeflowLocalLPS/6,0,1),18,Dt));
     Gain(Underwater,Dive::Approach(Gains[Underwater],.55*a.Wet,6,Dt));
     Gain(Surface,Dive::Approach(Gains[Surface],.5*a.Surface,6,Dt));
     Gain(Wind,Dive::Approach(Gains[Wind],.6*a.Wind,6,Dt));

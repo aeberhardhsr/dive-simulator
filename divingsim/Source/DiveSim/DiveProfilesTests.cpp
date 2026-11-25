@@ -27,6 +27,20 @@ Dive::Config Varied()
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveConfigPersistence,"DiveSim.Profiles.Configuration",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveConfigPersistence::RunTest(const FString&)
 {
+    for(int mode=0;mode<3;++mode) for(bool manual:{false,true})
+    {
+        Dive::Config original;original.GameMode=static_cast<Dive::Mode>(mode);original.ManualExplorationBuoyancy=manual;
+        auto object=MakeShared<FJsonObject>();DiveConfigIO::Write(object,original,0);
+        Dive::Config loaded;int entry=0;FString error;
+        TestTrue(TEXT("Mode and trim load"),DiveConfigIO::Read(object,loaded,entry,true,error));
+        TestTrue(TEXT("Mode and trim roundtrip"),DiveConfigIO::Equal(original,0,loaded,entry));
+        object->SetStringField(TEXT("manual_exploration_buoyancy"),TEXT("false"));
+        TestFalse(TEXT("Mistyped trim rejected atomically"),DiveConfigIO::Read(object,loaded,entry,true,error));
+        TestTrue(TEXT("Rejected trim preserves previous selection"),DiveConfigIO::Equal(original,0,loaded,entry));
+        object->RemoveField(TEXT("manual_exploration_buoyancy"));
+        TestTrue(TEXT("Legacy mode loads"),DiveConfigIO::Read(object,loaded,entry,true,error));
+        TestFalse(TEXT("Legacy exploration remains assisted"),loaded.ManualExplorationBuoyancy);
+    }
     for(int flags=0;flags<4;++flags) for(int source=0;source<5;++source)
     {
         auto original=Varied(); original.AutoTemperature=(flags&1)!=0;original.AutoVisibility=(flags&2)!=0;

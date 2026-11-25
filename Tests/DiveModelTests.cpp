@@ -24,6 +24,64 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 int main()
 {
     {
+        Dive::Config c; c.GameMode=static_cast<Dive::Mode>(99); c.Sanitize();
+        check(c.GameMode==Dive::Mode::Simulation,"Unknown mode falls back to simulation");
+        c.GameMode=Dive::Mode::Exploration; c.WeightKg=20;
+        Dive::Model explore(c); const auto tissues=explore.Data.NitrogenBar;
+        explore.Step(180,55,1,-1,1,10,true,{1,true,false});
+        close(explore.Data.CylinderBar,200,0,"Exploration cannot spend tank gas");
+        close(explore.Data.MotorCapacity,1,0,"Exploration has no movement impairment");
+        close(explore.Data.VisualImpairment,0,0,"Exploration has no visual impairment");
+        close(explore.Data.BreathReserve,1,0,"Exploration reserve remains full without supply");
+        check(explore.Data.NitrogenBar==tissues,"Exploration does not run tissue loading");
+        check(c.Rules().PermanentHUD&&c.Rules().AutomaticHints&&!c.Rules().EquipmentFailures,"Exploration interface and failure policy");
+        check(std::abs(explore.Data.BuoyancyNewtons)<7,"Exploration assists buoyancy by default");
+        c.ManualExplorationBuoyancy=true; Dive::Model manual(c); manual.Step(.1,20,0,0,0,0,false);
+        check(manual.Data.BuoyancyNewtons<-100,"Exploration permits manual buoyancy with ballast");
+        for(auto mode:{Dive::Mode::Simulation,Dive::Mode::Hardcore})
+        {
+            c.GameMode=mode;c.AutoBuoyancy=true;
+            Dive::Model limited(c);limited.Step(.1,20,0,0,0,0,false);
+            check(limited.Data.BuoyancyNewtons<-100,"Legacy auto flag cannot bypass manual mode buoyancy");
+            check(c.Rules().Decompression&&!c.Rules().PermanentHUD,"Advanced modes have deco and optional HUD");
+            check(c.Rules().AutomaticHints==(mode==Dive::Mode::Simulation),"Hardcore disables coaching only");
+        }
+        c=Dive::Config{};c.CylinderLitres=30;c.StartPressureBar=300;c.PlannedDepthMetres=60;
+        Dive::Model shallow(c),deep(c);run(shallow,60,10);run(deep,60,50);
+        check(deep.Data.Narcosis>.4&&shallow.Data.Narcosis==0,"Narcosis follows inert partial pressure");
+        check(deep.Data.MotorCapacity<shallow.Data.MotorCapacity&&deep.Data.VisualImpairment>.1,"Narcosis has perceptible consequences");
+        const double narcosis=deep.Data.Narcosis;run(deep,30,5);
+        check(deep.Data.Narcosis<narcosis*.1,"Narcosis recedes after reduced pressure");
+        Dive::Model loss(c);loss.Step(70,5,1,0,0,0,false,{1,true,false});
+        check(loss.Data.Panic>.4&&loss.Data.SpO2<80&&loss.Data.MotorCapacity<.5&&loss.Data.VisualImpairment>.5,"Prolonged supply loss couples panic and progressive impairment");
+        const double impairment=loss.Data.VisualImpairment;run(loss,120,0);
+        check(loss.Data.VisualImpairment<impairment*.1,"Restored ventilation gradually recovers capacity");
+        c.DrySuit=false;c.SurfaceTemperatureC=c.BottomTemperatureC=4;
+        Dive::Model cold(c);run(cold,900,5);
+        c.DrySuit=true;Dive::Model dry(c);run(dry,900,5);
+        check(cold.Data.ColdStrain>dry.Data.ColdStrain*3&&cold.Data.MotorCapacity<dry.Data.MotorCapacity,"Suit and exposure control cold impairment");
+        c.SurfaceTemperatureC=c.BottomTemperatureC=20;
+        Dive::Model deco(c);run(deco,600,50);check(deco.Data.CeilingMetres>0,"Exposure creates a ceiling before violation");
+        run(deco,60,0);check(deco.Data.DecompressionBurden>.15,"Sustained ceiling violation accumulates impairment");
+        const double burden=deco.Data.DecompressionBurden;run(deco,30,30);
+        check(deco.Data.DecompressionBurden<burden&&deco.Data.DecompressionBurden>burden*.9,"Decompression strain persists after returning below ceiling");
+        c.GameMode=Dive::Mode::Hardcore;c.SurfaceTemperatureC=c.BottomTemperatureC=4;
+        Dive::Model fault(c),partition(c);run(fault,90,40,1);partition.Step(90,40,1,0,0,0,false);
+        check(fault.Data.RegulatorFreeflow&&fault.Data.FreeflowLostLitres>100,"Hardcore cold high flow causes a real gas leak");
+        close(fault.Data.CylinderBar,partition.Data.CylinderBar,1e-7,"Fault timing/gas independent of frame partition");
+        close(fault.Data.MotorCapacity,partition.Data.MotorCapacity,1e-7,"Coupled impairment independent of frame partition");
+        const double lost=fault.Data.FreeflowLostLitres;const double before=fault.Data.CylinderBar;
+        run(fault,1,40,0);check(fault.Data.FreeflowLostLitres>lost&&fault.Data.CylinderBar<before,"Fault persists without strenuous breathing");
+        run(fault,300,40);check(fault.Data.CylinderBar==0&&fault.Data.FreeflowLocalLPS==0,"Empty tank stops physical freeflow without negative gas");
+        check(fault.Data.FreeflowLostLitres<=9000,"Leaked gas cannot exceed initial tank contents");
+        fault.Reset(c);check(!fault.Data.RegulatorFreeflow&&fault.Data.FreeflowLostLitres==0,"A new dive services the regulator");
+        c.GameMode=Dive::Mode::Simulation;Dive::Model noFault(c);run(noFault,90,40,1);
+        check(!noFault.Data.RegulatorFreeflow&&noFault.Data.CylinderBar>partition.Data.CylinderBar,"Identical simulation exposure cannot trigger equipment faults");
+        c.GameMode=Dive::Mode::Hardcore;c.SurfaceTemperatureC=c.BottomTemperatureC=20;
+        Dive::Model warm(c);run(warm,90,40,1);
+        check(!warm.Data.RegulatorFreeflow,"Warm high flow does not trigger cold icing fault");
+    }
+    {
         // Independent published data points, not values read back from the table.
         using E=Dive::EnvironmentScenario;
         close(E::Temperature({2026,2,15},0),5.836,1e-12,"Winter surface observation");

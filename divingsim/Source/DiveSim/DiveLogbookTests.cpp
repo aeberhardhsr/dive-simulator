@@ -40,6 +40,21 @@ FString Fixture(int32 Seconds=2,int32 Version=1,const FString& Status=TEXT("comp
             if(i==1) s->SetNumberField(TEXT("warnings"),Dive::NoBreathingSupply);
         }
         if(Version>=4) s->SetNumberField(TEXT("breath_reserve"),i==1?.4:1);
+        if(Version==5)
+        {
+            s->SetNumberField(TEXT("narcosis"),0.3);
+            s->SetNumberField(TEXT("panic"),0.3);
+            s->SetNumberField(TEXT("cold_strain"),0.3);
+            s->SetNumberField(TEXT("decompression_burden"),0.3);
+            s->SetNumberField(TEXT("motor_capacity"),0.6);
+            s->SetNumberField(TEXT("visual_impairment"),0.3);
+            s->SetNumberField(TEXT("regulator_temperature_c"),0.3);
+            s->SetNumberField(TEXT("freeze_exposure"),0.3);
+            s->SetNumberField(TEXT("freeflow_local_lps"),6);
+            s->SetNumberField(TEXT("freeflow_lost_litres"),100);
+            s->SetBoolField(TEXT("regulator_freeflow"),true);
+            s->SetNumberField(TEXT("warnings"),Dive::EquipmentFailure|Dive::NarcosisWarning);
+        }
         rows.Add(MakeShared<FJsonValueObject>(s));
     }
     root->SetArrayField(TEXT("samples"),rows);
@@ -67,6 +82,11 @@ bool FDiveLogReadTest::RunTest(const FString&)
     TestTrue(TEXT("No-supply source and ninth warning retained"),breathing.Samples.Num()==3&&
         breathing.Samples[1].BreathSource==Dive::BreathingSource::None&&breathing.Warnings==Dive::NoBreathingSupply);
     FDiveLog reserve;
+    FDiveLog effects;
+    TestTrue(TEXT("Schema 5 retains impairments"),DiveLogbook::Parse(Fixture(2,5),effects));
+    TestTrue(TEXT("Fault, effects and warning bits roundtrip"),effects.bImpairmentContext&&effects.Samples.Num()==3&&
+        effects.Samples[1].RegulatorFreeflow&&effects.Samples[1].MotorCapacity==.6&&effects.Samples[1].FreeflowLostLitres==100&&
+        effects.Warnings==(Dive::EquipmentFailure|Dive::NarcosisWarning));
     TestTrue(TEXT("Schema 4 loads reserve"),DiveLogbook::Parse(Fixture(2,4),reserve));
     TestTrue(TEXT("Schema 4 reserve context retained"),reserve.bBreathReserveContext);
     if(reserve.Samples.Num()==3) TestEqual(TEXT("Recorded reserve preserved"),reserve.Samples[1].BreathReserve,.4);
@@ -91,6 +111,13 @@ bool FDiveLogRejectTest::RunTest(const FString&)
     FDiveLog log;
     TestFalse(TEXT("Truncated file"),DiveLogbook::Parse(Fixture().Left(100),log));
     TestFalse(TEXT("Unknown schema"),DiveLogbook::Parse(Fixture(2,99),log));
+    for(const TCHAR* key:{TEXT("motor_capacity"),TEXT("regulator_freeflow"),TEXT("freeflow_lost_litres"),TEXT("narcosis")})
+    {
+        TSharedPtr<FJsonObject> root;FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Fixture(2,5)),root);
+        root->GetArrayField(TEXT("samples"))[0]->AsObject()->RemoveField(key);
+        FString bad;FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&bad));
+        TestFalse(TEXT("Schema 5 cannot invent missing effect data"),DiveLogbook::Parse(bad,log));
+    }
     for(int invalid=0;invalid<3;++invalid)
     {
         TSharedPtr<FJsonObject> reserve;

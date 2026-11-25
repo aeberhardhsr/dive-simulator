@@ -6,9 +6,9 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
-Der aktuelle Windows-Build liegt lokal unter **`Builds/WindowsEnvironment/divingsim.exe`**. Unter **Wetter und Wasser** sind jetzt automatische saisonale Wassertemperaturen, Sichtweite und Strömung sowie manuelle Einstellungen wählbar. Temperaturprofile basieren auf veröffentlichten Eawag-Daten; Sicht und Strömung sind gestaltete Szenariowerte, keine Live-Messungen. Details: [AUTOMATIC_ENVIRONMENT.md](Documentation/AUTOMATIC_ENVIRONMENT.md). Kalender/Himmel, drei Lampen, GPU-Schwebeteilchen und transparente Atemblasen sind enthalten. Der gesamte Paketordner wird benötigt; vorherige Builds bleiben unter `Builds/WindowsParticles`, `Builds/WindowsTorch` und `Builds/WindowsCelestial` erhalten.
+Der aktuelle Windows-Build liegt lokal unter **`Builds/WindowsModes/divingsim.exe`**. Exploration, Simulation und Hardcore verwenden unterschiedliche Regeln für Gas, Tarierung, körperliche Folgen, HUD und Hilfetexte. Hardcore enthält einen kälteabhängigen Reglerdefekt mit Gasverlust; Details und Modellgrenzen stehen in [MODES.md](Documentation/MODES.md). Automatische saisonale Wassertemperaturen, Sichtweite und Strömung bleiben unter **Wetter und Wasser** wählbar; Herkunft: [AUTOMATIC_ENVIRONMENT.md](Documentation/AUTOMATIC_ENVIRONMENT.md). Kalender/Himmel, drei Lampen, GPU-Schwebeteilchen und transparente Atemblasen sind enthalten. Der gesamte Paketordner wird benötigt; vorherige Builds einschließlich `Builds/WindowsEnvironment` bleiben erhalten.
 
-Nach einem lokalen Package-Build: `Builds/Windows/divingsim.exe` starten. Der gesamte benachbarte Ordner wird benötigt. Im Menü Ausrüstung, Umgebung und **Start: am Ufer / direkt im Wasser** einstellen, dann starten. Neue Einstellungen beginnen am Ufer; ältere gespeicherte Pläne behalten ihren Wasserstart. **Exploration** bietet unbegrenztes Gas und automatische Tarierung; **Simulation** verwendet manuelle Tarierung und begrenztes Gas. Hardcore ist derzeit als noch nicht vollständig implementiert gekennzeichnet.
+Nach einem lokalen Package-Build ohne eigenes Zielverzeichnis: `Builds/Windows/divingsim.exe` starten. Im Menü Ausrüstung, Umgebung und **Start: am Ufer / direkt im Wasser** einstellen, dann starten. Neue Einstellungen beginnen am Ufer; ältere gespeicherte Pläne behalten ihren Wasserstart. **Exploration** bietet unbegrenztes Gas, wählbare automatische/manuelle Tarierung und keine körperlichen Beeinträchtigungen. **Simulation** verwendet manuelle Tarierung, begrenztes Gas und gekoppelte Beeinträchtigungen. **Hardcore** ergänzt Reglervereisung und deaktiviert automatische Hilfetexte. Die Modelle bleiben gestaltete Spielmechaniken; die vollständige Anforderungsabnahme ist offen.
 
 Aus dem Quellprojekt:
 
@@ -34,7 +34,7 @@ Benötigt: Unreal Engine **5.8.4**, Visual Studio 2022 C++ Build Tools/MSVC 14.4
 | R | Computerseite wechseln, wenn angehoben: Tauchdaten / Vitalwerte / Gas |
 | M | Walensee-Tiefenkarte mit Position und Spur |
 | P | Foto |
-| H | Instrumente aus-/einblenden |
+| H | Instrumente aus-/einblenden; in Exploration immer sichtbar |
 | Esc | Pause und Menü |
 | F1 | Steuerung und Hilfe öffnen |
 | F | Nach dem Tauchen auf dem Startpodest abschließen; beim Wasserstart nahe der Einstiegsboje |

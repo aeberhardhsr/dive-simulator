@@ -19,7 +19,7 @@ public:
     bool Validate(FString& Error) const;
     int32 Inhales=0,Exhales=0,Heartbeats=0,Warnings=0,InflationSteps=0,VentSteps=0;
 private:
-    enum Channel { Inhale,Exhale,Bubbles,Inflate,Vent,Heart,Underwater,Surface,Wind,Rain,Warning,Count };
+    enum Channel { Inhale,Exhale,Bubbles,Inflate,Vent,Heart,Underwater,Surface,Wind,Rain,Warning,Freeflow,Count };
     UPROPERTY() TArray<TObjectPtr<UAudioComponent>> Sounds;
     UPROPERTY() TObjectPtr<USceneComponent> Listener;
     Dive::AudioModel Model;

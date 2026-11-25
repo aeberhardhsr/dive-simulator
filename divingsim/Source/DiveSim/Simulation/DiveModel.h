@@ -10,6 +10,7 @@
 #include "ScenarioClock.h"
 #include "Torch.h"
 #include "EnvironmentScenario.h"
+#include "ModeRules.h"
 
 namespace Dive
 {
@@ -21,11 +22,11 @@ inline double Clamp(double v, double a, double b) { return std::clamp(v, a, b); 
 inline double Approach(double v, double target, double rate, double dt)
 { return target + (v - target) * std::exp(-rate * dt); }
 
-enum class Mode { Exploration, Simulation, Hardcore };
 enum Warning : uint32_t
 {
     None=0, LowGas=1, FastAscent=2, HighPO2=4, Cold=8,
-    CeilingViolation=16, OutOfGas=32, DepthPlan=64, TimePlan=128, NoBreathingSupply=256
+    CeilingViolation=16, OutOfGas=32, DepthPlan=64, TimePlan=128, NoBreathingSupply=256,
+    EquipmentFailure=512, NarcosisWarning=1024, PanicWarning=2048, DecompressionSymptoms=4096
 };
 enum class BreathingSource { Regulator=0, Air=1, None=2 };
 struct Exposure
@@ -59,9 +60,12 @@ struct Config
     int Weather = 0; // 0 clear, 1 overcast, 2 rain, 3 storm; not live weather.
     bool DrySuit = true;
     bool AutoBuoyancy = false;
+    bool ManualExplorationBuoyancy = false; // Old exploration profiles retain assisted trim.
     bool StartOnShore = false; // Legacy/instant start remains compatible.
     bool AutoVisibility = false,AutoTemperature = false;
     CurrentSetting CurrentSource = CurrentSetting::Custom;
+    ModeRules Rules() const { return ModeRules::For(GameMode); }
+    bool AssistedBuoyancy() const { return GameMode==Mode::Exploration&&!ManualExplorationBuoyancy; }
     void SelectWeather(int Value)
     {
         Weather=std::clamp(Value,0,WeatherScenario::Count-1);
@@ -86,6 +90,7 @@ struct Config
         clean(ThermoclineMetres,10,3,25); clean(ThermoclineWidthMetres,2,.5,5);
         Weather=std::clamp(Weather,0,WeatherScenario::Count-1);
         TorchModel=std::clamp(TorchModel,0,Torch::Count-1);
+        if(static_cast<int>(GameMode)<0||static_cast<int>(GameMode)>2) GameMode=Mode::Simulation;
         CurrentSource=static_cast<CurrentSetting>(std::clamp(static_cast<int>(CurrentSource),0,4));
     }
     // Keep manual values in the plan; resolve an independent frozen dive config.
@@ -123,6 +128,12 @@ struct State
     bool RegulatorInMouth=true,MouthSubmerged=true;
     BreathingSource BreathSource=BreathingSource::Regulator;
     double Stress=0, Fatigue=0, Exertion=0;
+    // Normalized authored gameplay effects, not diagnostic probabilities.
+    double Narcosis=0, Panic=0, ColdStrain=0, DecompressionBurden=0;
+    double MotorCapacity=1, VisualImpairment=0;
+    double RegulatorTemperatureC=18, FreezeExposure=0;
+    bool RegulatorFreeflow=false;
+    double FreeflowLocalLPS=0, FreeflowLostLitres=0;
     double SurfaceRMV=16, RemainingGasMinutes=0;
     double AscentMetresPerMinute=0, BreathPhase=0, BuoyancyNewtons=0;
     double CeilingMetres=0, NDLMinutes=99, StopRemainingSeconds=180;
@@ -150,6 +161,7 @@ public:
         Data.AmbientBar=cfg.SurfacePressureBar;
         Data.PPO2=Data.AmbientBar*cfg.OxygenFraction;
         Data.WaterTemperatureC=cfg.SurfaceTemperatureC;
+        Data.RegulatorTemperatureC=cfg.SurfaceTemperatureC;
         // Surface tissues equilibrate with air before switching the selected tank mix.
         Data.NitrogenBar.fill((cfg.SurfacePressureBar-.0627)*.79);
     }
@@ -179,7 +191,8 @@ private:
     void Integrate(double dt,double depth,double effort,double inflate,double vz,double distance,bool lamp,const Exposure& exposure)
     {
         auto& s=Data; const auto& c=Settings;
-        const bool unlimited=c.GameMode==Mode::Exploration;
+        const auto rules=c.Rules();
+        const bool unlimited=!rules.LimitedGas;
         s.ElapsedSeconds+=dt; s.DepthMetres=std::max(0.0,depth);
         s.MaxDepthMetres=std::max(s.MaxDepthMetres,s.DepthMetres);
         s.BodyImmersion=Clamp(exposure.BodyImmersion,0,1);
@@ -198,10 +211,12 @@ private:
         const double stressTarget=Clamp((s.CylinderBar<50?.35:0)+(depth>c.PlannedDepthMetres?.2:0)
             +(s.AscentMetresPerMinute>9?.35:0)+(!hasBreathingSupply?.7:0),0,1);
         s.Stress=Approach(s.Stress,unlimited?stressTarget*.25:stressTarget,.12,dt);
-        s.Fatigue=Clamp(s.Fatigue+dt*(s.Exertion*.00035-(1-s.Exertion)*.00012),0,1);
-        s.HeartBPM=Approach(s.HeartBPM,68+62*s.Exertion+36*s.Stress+12*s.Fatigue,.3,dt);
-        s.RespiratoryBPM=Approach(s.RespiratoryBPM,12+15*s.Exertion+13*s.Stress,.4,dt);
-        s.SurfaceRMV=16+24*s.Exertion+18*s.Stress+5*s.Fatigue;
+        s.Fatigue=rules.Physiology?Clamp(s.Fatigue+dt*(s.Exertion*.00035-(1-s.Exertion)*.00012),0,1):0;
+        const double panicTarget=Clamp((s.Stress-.45)*1.8+(1-s.BreathReserve)*.5+s.Exertion*s.Stress*.2,0,1);
+        s.Panic=rules.Physiology?Approach(s.Panic,panicTarget,.08,dt):0;
+        s.HeartBPM=Approach(s.HeartBPM,68+62*s.Exertion+36*s.Stress+12*s.Fatigue+18*s.Panic,.3,dt);
+        s.RespiratoryBPM=Approach(s.RespiratoryBPM,12+15*s.Exertion+13*s.Stress+8*s.Panic,.4,dt);
+        s.SurfaceRMV=16+24*s.Exertion+18*s.Stress+5*s.Fatigue+12*s.Panic;
         const double breathingLitres=s.BreathSource==BreathingSource::Regulator?s.SurfaceRMV*s.AmbientBar/60*dt:0;
         double injected=std::max(0.0,Clamp(inflate,-1,1))*2.0*s.AmbientBar*dt;
         if(!unlimited) injected=std::min(injected,std::max(0.0,s.CylinderBar*c.CylinderLitres-breathingLitres));
@@ -214,25 +229,49 @@ private:
         s.BCDSurfaceLitres=Clamp(s.BCDSurfaceLitres,0,18*s.AmbientBar); // overpressure relief
         s.BCDLitres=s.BCDSurfaceLitres/s.AmbientBar;
         if(!unlimited) s.CylinderBar=std::max(0.0,s.CylinderBar-(breathingLitres+injected)/c.CylinderLitres);
-        s.RemainingGasMinutes=std::max(0.0,(s.CylinderBar-50)*c.CylinderLitres/(s.SurfaceRMV*s.AmbientBar));
+        // Expansion cooling / icing is qualitative. The regulator and thresholds
+        // are fictional equipment parameters, not a real product failure forecast.
+        s.FreeflowLocalLPS=0;
+        if(rules.EquipmentFailures)
+        {
+            const double flow=(breathingLitres+injected)/dt;
+            const double target=s.BodyImmersion*s.WaterTemperatureC+(1-s.BodyImmersion)*c.AirTemperatureC
+                -3.5*flow;
+            s.RegulatorTemperatureC=Approach(s.RegulatorTemperatureC,target,.05,dt);
+            s.FreezeExposure=Clamp(s.FreezeExposure+dt*(s.BodyImmersion>.5&&flow>0?
+                std::max(0.0,-s.RegulatorTemperatureC)-std::max(0.0,s.RegulatorTemperatureC)*.5:-2),0,120);
+            if(s.FreezeExposure>=60) s.RegulatorFreeflow=true;
+            if(s.RegulatorFreeflow)
+            {
+                const double lost=std::min(s.CylinderBar*c.CylinderLitres,6*s.AmbientBar*dt);
+                s.CylinderBar=std::max(0.0,s.CylinderBar-lost/c.CylinderLitres);
+                s.FreeflowLostLitres+=lost;
+                s.FreeflowLocalLPS=lost/(s.AmbientBar*dt);
+            }
+        }
+        s.RemainingGasMinutes=std::max(0.0,(s.CylinderBar-50)*c.CylinderLitres/
+            ((s.SurfaceRMV+60*s.FreeflowLocalLPS)*s.AmbientBar));
         if(previousSource!=s.BreathSource&&hasBreathingSupply) s.BreathPhase=0;
         s.BreathPhase=std::fmod(s.BreathPhase+dt*s.RespiratoryBPM/60,1.0);
         const double lungDelta=hasBreathingSupply?.65*std::sin(s.BreathPhase*2*Pi):0;
         const double suitLift=(c.DrySuit?3:5)/std::pow(s.AmbientBar/c.SurfacePressureBar,.7);
         const double gasMass=s.CylinderBar*c.CylinderLitres*.0012;
         const double netKg=2+suitLift+s.BCDLitres+lungDelta-c.WeightKg-gasMass;
-        s.BuoyancyNewtons=(c.AutoBuoyancy || unlimited)?lungDelta*Gravity:netKg*Gravity;
+        s.BuoyancyNewtons=c.AssistedBuoyancy()?lungDelta*Gravity:netKg*Gravity;
         const double suitCooling=c.DrySuit?.0000015:.000007;
         // Qualitative heat-loss model: exposed air area cools more slowly than
         // immersed area. Wind affects air cooling only; no wet-suit drying model.
         const double coldLoad=suitCooling*(s.BodyImmersion*std::max(0.0,22-s.WaterTemperatureC)
             +(1-s.BodyImmersion)*.05*(1+c.WindMetresPerSecond/12)*std::max(0.0,22-c.AirTemperatureC));
-        s.CoreTemperatureC=Clamp(s.CoreTemperatureC+dt*((37-s.CoreTemperatureC)*.0001-coldLoad),32,37.5);
+        s.CoreTemperatureC=rules.Physiology?Clamp(s.CoreTemperatureC+dt*((37-s.CoreTemperatureC)*.0001-coldLoad),32,37.5):37;
+        const double coldTarget=Clamp((18-s.EnvironmentTemperatureC)/18,0,1)*(c.DrySuit?.25:1);
+        s.ColdStrain=rules.Physiology?Approach(s.ColdStrain,coldTarget,1./600,dt):0;
         // A brief loss of supply spends reserve before saturation falls. Demand
         // follows activity; ventilation restores reserve over time, never on a toggle.
         // These constants tune gameplay and are not physiological reference values.
         const double demand=1+2*s.Exertion+.5*s.Stress+.5*s.Fatigue;
-        if(hasBreathingSupply) s.BreathReserve=Approach(s.BreathReserve,1,.12,dt);
+        if(!rules.Physiology) s.BreathReserve=1;
+        else if(hasBreathingSupply) s.BreathReserve=Approach(s.BreathReserve,1,.12,dt);
         else s.BreathReserve=Clamp(s.BreathReserve-dt*demand/120,0,1);
         const double saturationTarget=45+53*Clamp(s.BreathReserve/.25,0,1);
         const double suppliedTarget=hasBreathingSupply?saturationTarget:std::min(s.SpO2,saturationTarget);
@@ -247,7 +286,7 @@ private:
         // alveolar gas and breath-hold physiology are not modeled independently.
         const double inspired=s.BreathSource==BreathingSource::Air?(c.SurfacePressureBar-.0627)*.79:
             (s.AmbientBar-.0627)*(1-c.OxygenFraction);
-        for(size_t i=0;i<16;++i)
+        for(size_t i=0;rules.Decompression&&i<16;++i)
         {
             const double k=std::log(2.0)/(HalfTimes[i]*60);
             s.NitrogenBar[i]=inspired+(s.NitrogenBar[i]-inspired)*std::exp(-k*dt);
@@ -261,6 +300,19 @@ private:
         }
         s.CeilingMetres=unlimited?0:std::max(0.0,(ceilingBar-c.SurfacePressureBar)/BarPerMetre);
         s.NDLMinutes=unlimited?99:Clamp(ndl,0,99);
+        if(rules.Physiology)
+        {
+            const double inertPressure=s.BreathSource==BreathingSource::Air?
+                c.SurfacePressureBar*.79:s.AmbientBar*(1-c.OxygenFraction);
+            const double narcoticTarget=Clamp((inertPressure-2.8)/3.5,0,1);
+            s.Narcosis=Approach(s.Narcosis,narcoticTarget,.12,dt);
+            const double violation=std::max(0.0,s.CeilingMetres-depth-.5);
+            s.DecompressionBurden=Clamp(s.DecompressionBurden+dt*(violation>0?violation/600:-s.DecompressionBurden/1800),0,1);
+            const double hypoxia=Clamp((96-s.SpO2)/36,0,1);
+            s.MotorCapacity=Clamp(1-.35*s.Fatigue-.25*s.ColdStrain-.25*s.Narcosis
+                -.2*s.Panic-.45*s.DecompressionBurden-.7*hypoxia,.15,1);
+            s.VisualImpairment=Clamp(.35*s.Narcosis+.25*s.Panic+.35*s.DecompressionBurden+.9*hypoxia,0,1);
+        }
         s.Warnings=None;
         if(!unlimited && s.CylinderBar<50) s.Warnings|=LowGas;
         if(!unlimited && s.CylinderBar<=.1) s.Warnings|=OutOfGas;
@@ -271,6 +323,11 @@ private:
         if(s.CeilingMetres>depth+.5) s.Warnings|=CeilingViolation;
         if(depth>c.PlannedDepthMetres+1) s.Warnings|=DepthPlan;
         if(s.ElapsedSeconds>c.PlannedMinutes*60) s.Warnings|=TimePlan;
+        if(s.RegulatorFreeflow) s.Warnings|=EquipmentFailure;
+        if(s.Narcosis>.25) s.Warnings|=NarcosisWarning;
+        if(s.Panic>.4) s.Warnings|=PanicWarning;
+        if(s.DecompressionBurden>.15) s.Warnings|=DecompressionSymptoms;
+        if(s.ColdStrain>.5) s.Warnings|=Cold;
     }
 };
 }

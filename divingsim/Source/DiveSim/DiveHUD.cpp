@@ -60,14 +60,14 @@ void ADiveHUD::DrawHUD()
     }
     else
     {
-        if(Diver->bShowInstruments) Instruments();
+        if(Diver->bShowInstruments||Diver->Simulation.Settings.Rules().PermanentHUD) Instruments();
         if(Diver->bShowMap) Map();
         if(Diver->bTutorialActive) TutorialOverlay();
         if(GetWorld()->GetTimeSeconds()<Diver->NoticeUntil)
         {
             Rect(320,610,960,48,Dark); Text(Diver->Notice,340,622,17,White);
         }
-        if(Diver->CanFinishDive())
+        if(Diver->Simulation.Settings.Rules().AutomaticHints&&Diver->CanFinishDive())
         { Rect(570,680,460,48,Dark); Text(TEXT("[ ")+Diver->KeyText(EDiveAction::Finish)+TEXT(" ]  ")+Diver->Local(TEXT("Tauchgang abschliessen"),TEXT("Finish dive")),590,693,20,Accent); }
         Text(TEXT("+"),795,445,14,FLinearColor(.75,.9,.86,.45));
     }
@@ -139,7 +139,7 @@ void ADiveHUD::Menu()
     }
     else
     {
-    const FString modes[]={L(TEXT("Exploration"),TEXT("Exploration")),L(TEXT("Simulation"),TEXT("Simulation")),L(TEXT("Hardcore *"),TEXT("Hardcore *"))};
+    const FString modes[]={TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};
     Field(TEXT("mode"),L(TEXT("MODUS"),TEXT("MODE")),modes[static_cast<int>(c.GameMode)],x,250,w);
     Field(TEXT("entry"),c.StartOnShore?L(TEXT("UFERZUGANG"),TEXT("SHORE ACCESS")):L(TEXT("START IM SEE"),TEXT("OFFSHORE START")),ready?Diver->EntryName():TEXT("Geodata unavailable"),x+w+gap,250,w);
     Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x+2*(w+gap),250,w);
@@ -155,9 +155,13 @@ void ADiveHUD::Menu()
     Field(TEXT("duration"),L(TEXT("GEPLANTE DAUER"),TEXT("PLANNED DURATION")),ConfigValue(TEXT("duration")),x+w+gap,550,w);
     Field(TEXT("motion"),L(TEXT("KAMERABEWEGUNG"),TEXT("CAMERA MOTION")),Diver->bCameraMotion?L(TEXT("Sanft"),TEXT("Gentle")):L(TEXT("Stabil"),TEXT("Stable")),x+2*(w+gap),550,w);
     Button(TEXT("shore"),c.StartOnShore?L(TEXT("Start: am Ufer"),TEXT("Start: on shore")):L(TEXT("Start: direkt im Wasser"),TEXT("Start: in the water")),x,625,350,32,c.StartOnShore);
-    Text(c.GameMode==Dive::Mode::Exploration?L(TEXT("Unbegrenztes Atemgas und automatische Tarierung."),TEXT("Unlimited gas and automatic buoyancy.")):
+    if(c.GameMode==Dive::Mode::Exploration)
+        Button(TEXT("exploration_trim"),c.ManualExplorationBuoyancy?L(TEXT("Tarierung: manuell"),TEXT("Buoyancy: manual")):L(TEXT("Tarierung: automatisch"),TEXT("Buoyancy: assisted")),x+390,625,350,32);
+    Text(c.GameMode==Dive::Mode::Exploration?L(TEXT("Unbegrenztes Atemgas, keine koerperlichen Folgen, HUD immer sichtbar."),TEXT("Unlimited gas, no physiological consequences, permanent HUD.")):
         Diver->KeyText(EDiveAction::Inflate)+TEXT(" / ")+Diver->KeyText(EDiveAction::Deflate)+L(TEXT(": Jacket fuellen / entleeren. Luft dehnt sich beim Aufstieg aus."),TEXT(": inflate / deflate BCD. Air expands as you ascend.")),x,665,15,Muted);
-    if(c.GameMode==Dive::Mode::Hardcore) Text(L(TEXT("* Bisher wie Simulation; Ausruestungsdefekte sind noch offen."),TEXT("* Currently simulation rules; equipment failures are pending.")),x,681,14,Amber);
+    if(c.GameMode!=Dive::Mode::Exploration) Text(c.GameMode==Dive::Mode::Hardcore?
+        L(TEXT("Koerperliche Folgen + Reglervereisung. Keine automatischen Hilfetexte."),TEXT("Physiological effects + regulator icing. No automatic coaching.")):
+        L(TEXT("Koerperliche Folgen und Dekompression. Hilfetexte aktiv; keine Defekte."),TEXT("Physiological effects and decompression. Coaching on; no equipment faults.")),x,687,14,Muted);
     }
     Button(TEXT("start"),Diver->bDiveActive?L(TEXT("Tauchgang fortsetzen"),TEXT("Resume dive")):
         c.StartOnShore?L(TEXT("Am Ufer starten   >"),TEXT("Start on shore   >")):L(TEXT("Abtauchen   >"),TEXT("Begin dive   >")),x,720,558,58,true);
@@ -219,16 +223,22 @@ void ADiveHUD::Instruments()
     { Rect(1050,110,500,45,Dark); Text(L(TEXT("SICHERHEITSSTOPP  3-6 m   "),TEXT("SAFETY STOP  3-6 m   "))+Time(s.StopRemainingSeconds),1070,123,18,Accent); }
     int row=0;
     auto warning=[&](uint32 Flag,const TCHAR* German,const TCHAR* English)
-    { if(s.Warnings&Flag) { Rect(1030,180+row*45,520,38,Dark); Text(TEXT("!  ")+L(German,English),1048,189+row*45,17,Amber); ++row; } };
-    warning(Dive::NoBreathingSupply,TEXT("KEINE ATEMLUFT - REGLER / OBERFLAECHE"),TEXT("NO BREATHING SUPPLY - REGULATOR / SURFACE"));
+    { if(s.Warnings&Flag) { if(row<8) { Rect(1030,180+row*45,520,38,Dark); Text(TEXT("!  ")+L(German,English),1048,189+row*45,17,Amber); } ++row; } };
+    warning(Dive::NoBreathingSupply,TEXT("KEINE ATEMLUFT"),TEXT("NO BREATHING SUPPLY"));
     warning(Dive::OutOfGas,TEXT("FLASCHE LEER"),TEXT("CYLINDER EMPTY"));
+    warning(Dive::EquipmentFailure,TEXT("REGLERDEFEKT / FREIER GASFLUSS"),TEXT("REGULATOR FAULT / FREEFLOW"));
     warning(Dive::LowGas,TEXT("NIEDRIGER FLASCHENDRUCK"),TEXT("LOW CYLINDER PRESSURE"));
-    warning(Dive::FastAscent,TEXT("AUFSTIEG VERLANGSAMEN"),TEXT("SLOW YOUR ASCENT"));
+    warning(Dive::FastAscent,TEXT("HOHE AUFSTIEGSGESCHWINDIGKEIT"),TEXT("HIGH ASCENT RATE"));
     warning(Dive::HighPO2,TEXT("ERHOEHTER SAUERSTOFFPARTIALDRUCK"),TEXT("HIGH OXYGEN PARTIAL PRESSURE"));
     warning(Dive::CeilingViolation,TEXT("DEKOMPRESSIONSTIEFE UNTERSCHRITTEN"),TEXT("ABOVE DECOMPRESSION CEILING"));
     warning(Dive::DepthPlan,TEXT("GEPLANTE TIEFE UEBERSCHRITTEN"),TEXT("BEYOND PLANNED DEPTH"));
     warning(Dive::TimePlan,TEXT("GEPLANTE ZEIT UEBERSCHRITTEN"),TEXT("BEYOND PLANNED TIME"));
-    warning(Dive::Cold,TEXT("KOERPERTEMPERATUR NIEDRIG"),TEXT("LOW CORE TEMPERATURE"));
+    warning(Dive::Cold,TEXT("KAELTEBELASTUNG"),TEXT("COLD STRAIN"));
+    warning(Dive::NarcosisWarning,TEXT("NARKOSEWIRKUNG / SPIELMODELL"),TEXT("NARCOSIS EFFECT / GAME MODEL"));
+    warning(Dive::PanicWarning,TEXT("PANIKREAKTION"),TEXT("PANIC RESPONSE"));
+    warning(Dive::DecompressionSymptoms,TEXT("DEKOBELASTUNG / SPIELMODELL"),TEXT("DECOMPRESSION STRAIN / GAME MODEL"));
+    if(row>8) Text(FString::Printf(TEXT("+ %d"),row-8),1048,550,17,Amber);
+    if(s.MotorCapacity<.98) Text(L(TEXT("LEISTUNG "),TEXT("CAPACITY "))+FString::Printf(TEXT("%.0f%%"),100*s.MotorCapacity),50,655,18,Amber);
 
 }
 
@@ -382,6 +392,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         if(Id==TEXT("mode")) c.GameMode=static_cast<Dive::Mode>((static_cast<int>(c.GameMode)+1)%3);
         else if(Id==TEXT("entry")) Diver->EntryIndex=(Diver->EntryIndex+1)%3;
         else if(Id==TEXT("shore")) c.StartOnShore=!c.StartOnShore;
+        else if(Id==TEXT("exploration_trim")&&c.GameMode==Dive::Mode::Exploration) c.ManualExplorationBuoyancy=!c.ManualExplorationBuoyancy;
         else if(Id==TEXT("tank")) c.CylinderLitres=c.CylinderLitres==10?12:c.CylinderLitres==12?15:10;
         else if(Id==TEXT("suit")) c.DrySuit=!c.DrySuit;
         else if(Id==TEXT("torch")) c.TorchModel=(c.TorchModel+1)%Dive::Torch::Count;

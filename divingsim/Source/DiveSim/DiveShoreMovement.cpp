@@ -18,7 +18,7 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         const FRotationMatrix rotation(FRotator(0,pc->GetControlRotation().Yaw,0));
         Wish=(rotation.GetUnitAxis(EAxis::X)*Forward+rotation.GetUnitAxis(EAxis::Y)*Side).GetClampedToMaxSize(1);
         Effort=Wish.Size()*(Sprint>0?.7f:.35f);
-        const FVector target=Wish*WalkSpeed(Sprint>0,Simulation.Data.Fatigue);
+        const FVector target=Wish*WalkSpeed(Sprint>0,0)*Simulation.Data.MotorCapacity;
         const FVector horizontal(VelocityMetres.X,VelocityMetres.Y,0);
         const FVector change=(target-horizontal).GetClampedToMaxSize(2.5*Step);
         VelocityMetres=horizontal+change;
@@ -44,7 +44,7 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
         Effort=Wish.Size()*(Sprint>0?1.f:.45f);
         const FVector current=(FVector(0,Simulation.Settings.CurrentMetresPerSecond,0)+Environment->WaveVelocity(old,Simulation.Data.ElapsedSeconds))*immersion;
         const FVector relative=VelocityMetres-current;
-        const double fatigue=1-Simulation.Data.Fatigue*.35;
+        const double fatigue=Simulation.Data.MotorCapacity;
         FVector force=Wish*SwimForceNewtons*(Sprint>0?1.7:1)*fatigue*immersion;
         force.Z+=VerticalForce(Simulation.Data.BuoyancyNewtons,immersion);
         force-=relative*relative.Size()*FMath::Lerp(1.5,static_cast<double>(DragCoefficient),immersion);
