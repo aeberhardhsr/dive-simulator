@@ -1,6 +1,7 @@
 #include "DiveHUD.h"
 #include "DivePawn.h"
 #include "DiveWorld.h"
+#include "DiveAudio.h"
 #include "Engine/Canvas.h"
 #include "Engine/Font.h"
 #include "Engine/Texture2D.h"
@@ -89,10 +90,25 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,650,15,Muted);
     Button(TEXT("logbook"),L(TEXT("Logbuch ansehen   >"),TEXT("Open logbook   >")),73,720,437,58);
     const float x=650,w=265,gap=28;
-    Text(Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
-    Text(Diver->bDiveActive?L(TEXT("Tauchplan und Umwelt bleiben waehrend des Tauchgangs fest."),TEXT("Dive plan and environment are fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
+    Text(bAudioPage?L(TEXT("KLANG UND LAUTSTAERKE"),TEXT("SOUND AND VOLUME")):Diver->bDiveActive?L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")):L(TEXT("DEIN TAUCHGANG"),TEXT("YOUR DIVE")),x,160,23,White);
+    Text(bAudioPage?L(TEXT("Auch in der Pause einstellbar. 0 % schaltet den Kanal stumm."),TEXT("Adjustable while paused. 0% mutes the channel.")):Diver->bDiveActive?L(TEXT("Tauchplan und Umwelt bleiben waehrend des Tauchgangs fest."),TEXT("Dive plan and environment are fixed during the dive.")):L(TEXT("Werte anklicken, um sie zu wechseln"),TEXT("Click a value to cycle options")),x,198,15,Muted);
     const bool ready=Diver->Environment && Diver->Environment->bTerrainReady;
-    if(bEnvironmentPage)
+    if(bAudioPage)
+    {
+        const FString labels[]={L(TEXT("GESAMT"),TEXT("MASTER")),L(TEXT("UMGEBUNG"),TEXT("ENVIRONMENT")),L(TEXT("ATEM / AUSRUESTUNG"),TEXT("BREATH / EQUIPMENT")),L(TEXT("HERZSCHLAG"),TEXT("HEARTBEAT")),L(TEXT("WARNSIGNALE"),TEXT("WARNINGS"))};
+        for(int i=0;i<5;++i)
+        {
+            const float fx=x+(i%3)*(w+gap),fy=250+(i/3)*140;
+            Text(labels[i],fx,fy,14,Muted);
+            Button(FName(*FString::Printf(TEXT("audio_minus_%d"),i)),TEXT("-"),fx,fy+27,55,45);
+            Text(FString::Printf(TEXT("%.0f %%"),Diver->AudioLevels.Values[i]*100),fx+85,fy+39,22,White);
+            Button(FName(*FString::Printf(TEXT("audio_plus_%d"),i)),TEXT("+"),fx+w-55,fy+27,55,45);
+        }
+        Text(L(TEXT("Atmung und Puls folgen den simulierten Vitalwerten."),TEXT("Breathing and heartbeat follow the simulated vital signs.")),x,550,17,White);
+        Text(L(TEXT("Wind, Regen und Wasser wechseln mit Wetter und Eintauchtiefe."),TEXT("Wind, rain and water blend with weather and immersion depth.")),x,585,16,Muted);
+        Text(L(TEXT("Eigene synthetische Klaenge; Klangabstimmung in Entwicklung."),TEXT("Original synthesized sounds; sound design is in development.")),x,655,15,Muted);
+    }
+    else if(bEnvironmentPage)
     {
         const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain"))};
         Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,250,w);
@@ -133,6 +149,7 @@ void ADiveHUD::Menu()
     Line(70,815,1530,815,Muted,.5);
     Button(TEXT("language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),70,835,185,40);
     Button(TEXT("quality"),FString::Printf(TEXT("Grafik / Quality: %.0f"),Diver->GraphicsQuality),275,835,235,40);
+    Button(TEXT("audio"),bAudioPage?TEXT("< Audio"):TEXT("Audio >"),530,835,105,40,bAudioPage);
     Text(L(TEXT("WASD Schwimmen  SPACE/CTRL Hoehe  Q/E BCD  L Licht  C Handgelenk  R Seite  M Karte"),
         TEXT("WASD Swim  SPACE/CTRL Vertical  Q/E BCD  L Torch  C Wrist  R Page  M Map")),650,846,14,Muted);
 }
@@ -281,7 +298,19 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
         return;
     }
     auto& c=Diver->PendingConfig;
-    if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; return; }
+    if(Id==TEXT("environment")) { bEnvironmentPage=!bEnvironmentPage; bAudioPage=false; return; }
+    if(Id==TEXT("audio")) { bAudioPage=!bAudioPage; return; }
+    if(Id.ToString().StartsWith(TEXT("audio_minus_"))||Id.ToString().StartsWith(TEXT("audio_plus_")))
+    {
+        const FString name=Id.ToString();
+        const int i=FCString::Atoi(*name.Right(1));
+        if(i>=0&&i<5)
+        {
+            Diver->AudioLevels.Values[i]=FMath::Clamp(Diver->AudioLevels.Values[i]+(name.StartsWith(TEXT("audio_plus_"))?.05:-.05),0.,1.);
+            Diver->Audio->ApplyLevels(Diver->AudioLevels); Diver->SaveSettings();
+        }
+        return;
+    }
     if(Id==TEXT("start")) { if(Diver->bDiveActive) Diver->ResumeDive(); else Diver->StartDive(); return; }
     if(Id==TEXT("abort")) { Diver->FinishDive(TEXT("aborted")); return; }
     if(Id==TEXT("new")) { Diver->bSummary=false; return; }

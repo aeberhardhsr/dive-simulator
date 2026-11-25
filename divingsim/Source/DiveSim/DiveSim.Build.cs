@@ -8,6 +8,6 @@ public class DiveSim : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[] {
             "Core", "CoreUObject", "Engine", "InputCore", "ProceduralMeshComponent"
         });
-        PrivateDependencyModuleNames.AddRange(new string[] { "Json", "JsonUtilities", "SlateCore" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Json", "JsonUtilities", "SlateCore", "AudioMixer" });
     }
 }

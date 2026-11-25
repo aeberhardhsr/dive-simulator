@@ -87,3 +87,17 @@ Exposure-compensated emission keeps the display readable in dark water. Numeric 
 ## Core test coverage
 
 `Tools/TestCore.cmd` builds a standalone C++ test executable without Unreal. It checks hydrostatic pressure, depth scaling of gas use, exertion coupling, BCD consumption, expansion/relief, step partition invariance, exploration, tank exhaustion, tissue uptake/release, ceilings, stop timing and input sanitization. A passing result establishes internal consistency, not medical validity.
+
+## Zustandsgekoppeltes Audio
+
+`Simulation/AudioModel.h` erzeugt Einatmungsereignisse beim Phasenwechsel und Ausatmung bei Atemphase 0,52. Die Atemfrequenz stammt unmittelbar aus `DiveModel`; Tonhöhe und Dauer der Reglerklänge folgen dieser Frequenz. Lautstärke reagiert auf Anstrengung. Bei leerer Flasche beginnt kein neuer Atemzug; ein bereits eingeatmeter letzter Atemzug kann noch ausgeatmet werden. Sichtbare Blasen und der räumliche Blasenton nutzen dasselbe Ereignis. Über Wasser entstehen keine sichtbaren Atemblasen.
+
+Der doppelte Herzton wird einmal je simuliertem Herzzyklus gestartet. Er wird bei Stress/Belastung deutlicher und besitzt einen eigenen Lautstärkeregler. Dies ist ein Komfort-/Feedbackeffekt, keine validierte Körperakustik. Das Jacket liefert tatsächlichen Ein-/Auslassfluss in lokalen Litern pro Sekunde einschließlich Überdruckablass. Leere Gasquelle bzw. leeres Jacket erzeugen keinen fiktiven Ventilfluss.
+
+`UDiveAudio` verwaltet elf Kanäle. Ein Blasencluster startet 25 cm vor/15 cm unter dem Kopf und steigt mit 0,3 m/s im Weltkoordinatensystem auf; Distanzabschwächung und Stereoortung erfolgen durch Unreal. Die übrigen körpernahen Signale bleiben im Kopfhörermittelpunkt. Wasser-, Oberflächen-, Wind- und Regenkulisse sind unabhängige Stereoschleifen. Die Überblendung folgt der Kameratiefe unter der tatsächlichen Wellenoberfläche über 0–0,5 m. Oberflächengeräusche nehmen darunter exponentiell mit 3 m Skala ab; der Tiefpass läuft von 20 kHz auf 650 Hz. Dies sind abgestimmte Spielparameter, kein Schallausbreitungsmodell im See.
+
+Neue Warnungen erzeugen einen Doppelton mit zwei Sekunden Schutz vor schnellem Wiederholen. Ein neuer Leerflaschenalarm umgeht diese Sperre. Anhaltende Warnungen bleiben visuell sichtbar, ohne in jedem Simulationsschritt zu piepen. Gesamt-, Umgebungs-, Ausrüstungs-, Herz- und Warnlautstärke werden multipliziert, auf 0–1 begrenzt und in den Einstellungen gespeichert. Pause hält sämtliche Quellen und Ereignisphasen an; Fortsetzen führt den Klang fort.
+
+Die 48-kHz-PCM-Quellen entstehen deterministisch in `Tools/create_audio.py`. Schleifen verwenden eine 250-ms-Überblendung statt einer regelmäßigen stillen Stelle. Fremdaufnahmen werden nicht verwendet. Realistische Klangreferenzen, klangliche Abnahme auf Kopfhörern/Lautsprechern sowie eine detaillierte Unterwasserakustik bleiben offen.
+
+Der Audiotest zeichnet den tatsächlich gerenderten Mastermix über [Unreals Submix-Aufnahme](https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/AudioMixer/UAudioMixerBlueprintLibrary/StopRecordingOutput) auf. Er misst Signal, Übersteuerung, Pause, Stummschaltung und Wiederaufnahme. Diese technische Prüfung ersetzt keine Hörabnahme.

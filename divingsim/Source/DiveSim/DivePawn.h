@@ -2,12 +2,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Simulation/DiveModel.h"
+#include "Simulation/AudioModel.h"
 #include "DivePawn.generated.h"
 
 class UCameraComponent;
 class UCapsuleComponent;
 class USpotLightComponent;
 class UAudioComponent;
+class UDiveAudio;
 class ADiveWorld;
 class ADiveEquipment;
 class UMaterialInstanceDynamic;
@@ -52,6 +54,8 @@ public:
     FString DiveStartedUTC;
     double NoticeUntil=0;
     float GraphicsQuality=2;
+    Dive::AudioLevels AudioLevels;
+    UPROPERTY() TObjectPtr<UDiveAudio> Audio;
 
     void StartDive();
     void FinishDive(const FString& Reason);
@@ -65,17 +69,13 @@ public:
     FString Local(const TCHAR* German,const TCHAR* English) const { return bEnglish?English:German; }
 private:
     float Accumulator=0, TelemetryAccumulator=0;
-    double LastBreathPhase=0;
-    uint32_t PreviousWarnings=0;
     bool bSmokeTest=false, bSmokeCaptured=false, bSmokeUnderwaterCaptured=false, bSmokeSecondaryCaptured=false;
     FString SmokeScenario;
     double SmokeLogbookStarted=0,SmokeLogbookTime=0;
     uint32 SmokeLogbookCaptured=0;
     bool bSmokeSurfaceReached=false, bSmokeChunkLimit=true;
-    UPROPERTY() TObjectPtr<UAudioComponent> BreathAudio;
-    UPROPERTY() TObjectPtr<UAudioComponent> AmbientAudio;
-    UPROPERTY() TObjectPtr<USoundBase> WarningSound;
-    UPROPERTY() TObjectPtr<USoundBase> BreathSound;
+    double AudioSmokeClock=0,AudioExportStarted=0;
+    bool bAudioMenuChecked=false,bAudioMenuCaptured=false;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> UnderwaterMaterial;
     void LookYaw(float Value);
     void LookPitch(float Value);

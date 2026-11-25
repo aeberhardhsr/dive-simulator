@@ -1,6 +1,8 @@
 #include "DivePawn.h"
 #include "DiveWorld.h"
 #include "DiveEquipment.h"
+#include "DiveAudio.h"
+#include "AudioMixerBlueprintLibrary.h"
 #include "DiveHUD.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -19,6 +21,7 @@
 #include "Misc/DateTime.h"
 #include "Misc/Guid.h"
 #include "Misc/CommandLine.h"
+#include "Misc/App.h"
 #include "Misc/Parse.h"
 #include "HAL/PlatformMisc.h"
 #include "HAL/FileManager.h"
@@ -60,10 +63,7 @@ ADivePawn::ADivePawn()
     Lamp->SetInnerConeAngle(12); Lamp->SetOuterConeAngle(27);
     Lamp->SetLightColor(FLinearColor(.8f,.92f,1));
     Lamp->SetCastShadows(true);
-    BreathAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("Regulator"));
-    BreathAudio->SetupAttachment(Camera); BreathAudio->bAutoActivate=false;
-    AmbientAudio=CreateDefaultSubobject<UAudioComponent>(TEXT("UnderwaterAmbience"));
-    AmbientAudio->SetupAttachment(Camera); AmbientAudio->bAutoActivate=false;
+    Audio=CreateDefaultSubobject<UDiveAudio>(TEXT("DiveAudio"));
     AutoPossessPlayer=EAutoReceiveInput::Player0;
 }
 
@@ -80,6 +80,7 @@ void ADivePawn::BeginPlay()
         if(SmokeScenario==TEXT("wrist-night")) PendingConfig.Hour=23;
         if(SmokeScenario==TEXT("surface-calm")) PendingConfig.WindMetresPerSecond=0;
         if(SmokeScenario==TEXT("surface-rain")) { PendingConfig.WindMetresPerSecond=12; PendingConfig.Weather=2; }
+        if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
     }
     Environment=GetWorld()->SpawnActor<ADiveWorld>();
     Environment->Diver=this;
@@ -99,11 +100,7 @@ void ADivePawn::BeginPlay()
         PC->PlayerCameraManager->ViewPitchMin=-85;
         PC->PlayerCameraManager->ViewPitchMax=85;
     }
-    BreathSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/Diving/Audio/A_Breath.A_Breath"));
-    WarningSound=LoadObject<USoundBase>(nullptr,TEXT("/Game/Diving/Audio/A_Warning.A_Warning"));
-    BreathAudio->SetSound(BreathSound); BreathAudio->SetVolumeMultiplier(.45f);
-    if(auto* Sound=LoadObject<USoundBase>(nullptr,TEXT("/Game/Diving/Audio/A_Ambience.A_Ambience")))
-    { AmbientAudio->SetSound(Sound); AmbientAudio->SetVolumeMultiplier(.22f); AmbientAudio->Play(); }
+    Audio->Initialize(Camera); Audio->ApplyLevels(AudioLevels);
     SetMenu(true);
     if(auto* material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_Underwater.M_Underwater")))
         UnderwaterMaterial=UMaterialInstanceDynamic::Create(material,this);
@@ -157,7 +154,7 @@ void ADivePawn::SetMenu(bool Open)
         }
         else PC->SetInputMode(FInputModeGameOnly());
     }
-    if(Open) BreathAudio->Stop();
+    Audio->SetPaused(Open);
 }
 
 void ADivePawn::StartDive()
@@ -176,18 +173,67 @@ void ADivePawn::StartDive()
     const double suit=(PendingConfig.DrySuit?3:5)/std::pow(pressure/PendingConfig.SurfacePressureBar,.7);
     Simulation.Data.BCDSurfaceLitres=FMath::Max(0.0,PendingConfig.WeightKg+
         PendingConfig.StartPressureBar*PendingConfig.CylinderLitres*.0012-2-suit)*pressure;
-    Samples.Reset(); PreviousWarnings=0; Accumulator=0; TelemetryAccumulator=0; LastBreathPhase=0;
+    Samples.Reset(); Accumulator=0; TelemetryAccumulator=0;
+    Audio->Reset(); Audio->ApplyLevels(AudioLevels);
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
     Outcome.Empty(); LastLogPath.Empty();
     bLogbook=false; DiveStartedUTC=FDateTime::UtcNow().ToIso8601();
     if(!bSmokeTest) SaveSettings();
     SetMenu(false);
+    if(bSmokeTest&&SmokeScenario==TEXT("audio"))
+    {
+        // The unattended test is deliberately hidden; capture its own mix anyway.
+        FApp::SetUnfocusedVolumeMultiplier(1);
+        IFileManager::Get().Delete(*(FPaths::ProjectSavedDir()/TEXT("AudioQA/DiveMix.wav")));
+        UAudioMixerBlueprintLibrary::StartRecordingOutput(this,60);
+    }
     Notify(Local(TEXT("WASD schwimmen  |  Q/E tarieren  |  L Lampe  |  ESC Pause"),TEXT("WASD swim  |  Q/E buoyancy  |  L torch  |  ESC pause")));
 }
 
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+    if(bSmokeTest&&SmokeScenario==TEXT("audio"))
+    {
+        AudioSmokeClock+=DeltaSeconds;
+        if(AudioExportStarted>0)
+        {
+            if(AudioSmokeClock-AudioExportStarted>3)
+            {
+                const bool saved=IFileManager::Get().FileSize(*(FPaths::ProjectSavedDir()/TEXT("AudioQA/DiveMix.wav")))>100000;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_AUDIO_%s inhale=%d exhale=%d heart=%d warnings=%d inflate=%d vent=%d"),
+                    saved?TEXT("PASS"):TEXT("FAIL"),Audio->Inhales,Audio->Exhales,Audio->Heartbeats,Audio->Warnings,Audio->InflationSteps,Audio->VentSteps);
+                FPlatformMisc::RequestExitWithStatus(false,saved?0:1);
+            }
+            return;
+        }
+        const bool paused=AudioSmokeClock>=8&&AudioSmokeClock<11;
+        if(bMenu!=paused) { SetMenu(paused); UE_LOG(LogTemp,Display,TEXT("DIVE_AUDIO_PAUSE t=%.3f value=%d"),AudioSmokeClock,paused); }
+        if(paused&&!bAudioMenuChecked)
+        {
+            auto* PC=Cast<APlayerController>(GetController());
+            auto* HUD=PC?Cast<ADiveHUD>(PC->GetHUD()):nullptr;
+            if(!HUD) { FPlatformMisc::RequestExitWithStatus(false,1); return; }
+            HUD->NotifyHitBoxClick(TEXT("audio"));
+            for(int i=0;i<5;++i) HUD->NotifyHitBoxClick(FName(*FString::Printf(TEXT("audio_minus_%d"),i)));
+            const auto changed=AudioLevels;
+            AudioLevels=Dive::AudioLevels{}; LoadSettings();
+            bool restored=true;
+            for(int i=0;i<5;++i) restored&=FMath::Abs(AudioLevels.Values[i]-changed.Values[i])<1e-9;
+            HUD->NotifyHitBoxClick(TEXT("language"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_AUDIO_SETTINGS_%s"),restored?TEXT("PASS"):TEXT("FAIL"));
+            if(!restored) { FPlatformMisc::RequestExitWithStatus(false,1); return; }
+            bAudioMenuChecked=true;
+        }
+        if(paused&&AudioSmokeClock>9&&!bAudioMenuCaptured)
+        {
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/AudioMenu.png"),true,false);
+            bAudioMenuCaptured=true;
+        }
+        const double master=AudioSmokeClock>=17&&AudioSmokeClock<20?0:.8;
+        if(AudioLevels.Values[0]!=master)
+        { AudioLevels.Values[0]=master; Audio->ApplyLevels(AudioLevels); UE_LOG(LogTemp,Display,TEXT("DIVE_AUDIO_MASTER t=%.3f value=%.2f"),AudioSmokeClock,master); }
+    }
     if(bSmokeTest&&SmokeLogbookStarted>0)
     {
         auto* PC=Cast<APlayerController>(GetController());
@@ -219,9 +265,12 @@ void ADivePawn::Tick(float DeltaSeconds)
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
-    const double smokeDuration=SmokeScenario.StartsWith(TEXT("surface"))?38:SmokeScenario==TEXT("stream")?90:22;
+    const double smokeDuration=(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:SmokeScenario==TEXT("stream")?90:22;
     if(bSmokeTest && bDiveActive)
     {
+        FString audioError;
+        if(!Audio->Validate(audioError))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_AUDIO_FAIL %s"),*audioError); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         FString ecologyError;
         if(!Environment->ValidateEcology(ecologyError))
         {
@@ -281,7 +330,8 @@ void ADivePawn::Tick(float DeltaSeconds)
             SmokeScenario==TEXT("stream")?displacement>80:true;
         const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
             (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
-        const bool valid=extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
+        const bool audioReady=SmokeScenario!=TEXT("audio")||(Audio->Inhales>4&&Audio->Exhales>4&&Audio->Heartbeats>30&&Audio->InflationSteps>100&&Audio->VentSteps>100);
+        const bool valid=audioReady && extended && wristReady && bSmokeChunkLimit && Simulation.Data.DistanceMetres>5
             && (SmokeScenario==TEXT("stream")||Simulation.Data.MaxDepthMetres>2.5)
             && (SmokeScenario==TEXT("stream")||Simulation.Data.CylinderBar<199)
             && Samples.Num()>=static_cast<int>(smokeDuration)-1 && FMath::IsFinite(GetActorLocation().Z);
@@ -298,7 +348,14 @@ void ADivePawn::Tick(float DeltaSeconds)
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_DETAIL entry=%d scenario=%s displacement=%.2f surface=%d chunks=%d bounded=%d"),
             EntryIndex,*SmokeScenario,displacement,bSmokeSurfaceReached,Environment->TerrainChunkCount(),bSmokeChunkLimit);
         UE_LOG(LogTemp,Display,TEXT("DIVE_EQUIPMENT_CHECK updates=%d wrist=%.3f page=%d rendered_pages=%u"),Equipment->DisplayUpdates,Equipment->WristBlend,ComputerPage,Equipment->DisplayedPages);
-        if(SmokeScenario==TEXT("logbook")&&valid&&saved)
+        if(SmokeScenario==TEXT("audio")&&valid&&saved)
+        {
+            const FString path=FPaths::ConvertRelativePathToFull(FPaths::ProjectSavedDir()/TEXT("AudioQA"));
+            IFileManager::Get().MakeDirectory(*path,true);
+            UAudioMixerBlueprintLibrary::StopRecordingOutput(this,EAudioRecordingExportType::WavFile,TEXT("DiveMix"),path);
+            AudioExportStarted=AudioSmokeClock;
+        }
+        else if(SmokeScenario==TEXT("logbook")&&valid&&saved)
         {
             auto* PC=Cast<APlayerController>(GetController());
             if(auto* HUD=PC?Cast<ADiveHUD>(PC->GetHUD()):nullptr)
@@ -311,7 +368,6 @@ void ADivePawn::Tick(float DeltaSeconds)
     const FVector eye=Camera->GetComponentLocation();
     const float depth=FMath::Max(0.f,static_cast<float>((Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100));
     const float underwater=FMath::Clamp(depth*2.f,0.f,1.f);
-    AmbientAudio->SetVolumeMultiplier(FMath::Lerp(.035f,.22f,underwater));
     if(UnderwaterMaterial)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),PendingConfig.VisibilityMetres*100);
@@ -342,7 +398,7 @@ void ADivePawn::SimulateStep(float Step)
         if(!bSmokeTest) return PC->IsInputKeyDown(Key)?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
         if(SmokeScenario==TEXT("stream")) return Key==EKeys::W?1.f:0.f;
-        if(SmokeScenario.StartsWith(TEXT("surface")) && t>16) return Key==EKeys::SpaceBar?1.f:0.f;
+        if((SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio")) && t>16) return Key==EKeys::SpaceBar?1.f:0.f;
         if(Key==EKeys::W) return t<10?1.f:0.f;
         if(Key==EKeys::LeftControl) return t<7?.7f:0.f;
         if(Key==EKeys::E) return t<4?.3f:0.f;
@@ -399,15 +455,10 @@ void ADivePawn::SimulateStep(float Step)
     const double nextDepth=Environment->PressureDepth(position,now+Step);
     Simulation.Step(Step,nextDepth,effort,inflate,(previousDepth-nextDepth)/Step,(position-old).Size()/100,bLamp);
     const auto& s=Simulation.Data;
-    if(s.BreathPhase>=.52 && LastBreathPhase<.52)
-    {
+    const FVector eye=Camera->GetComponentLocation();
+    const double eyeDepth=(Environment->SurfaceZ(eye.X,eye.Y,s.ElapsedSeconds)-eye.Z)/100;
+    if(Audio->Advance(Step,s,PendingConfig,eyeDepth)&&eyeDepth>0)
         Environment->EmitBreath(position,Camera->GetForwardVector(),s.AmbientBar);
-        if(BreathSound) { BreathAudio->SetPitchMultiplier(s.RespiratoryBPM/16); BreathAudio->Play(); }
-    }
-    LastBreathPhase=s.BreathPhase;
-    if((s.Warnings&~PreviousWarnings)!=0 && WarningSound)
-        UGameplayStatics::PlaySound2D(this,WarningSound,.25f);
-    PreviousWarnings=s.Warnings;
     TelemetryAccumulator+=Step;
     if(TelemetryAccumulator>=1)
     {
@@ -527,14 +578,16 @@ void ADivePawn::SaveSettings()
     obj->SetBoolField(TEXT("english"),bEnglish);
     obj->SetBoolField(TEXT("camera_motion"),bCameraMotion);
     obj->SetNumberField(TEXT("entry"),EntryIndex);
+    AudioLevels.Sanitize();
+    for(int i=0;i<5;++i) obj->SetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
     FString json; auto writer=TJsonWriterFactory<>::Create(&json);
     FJsonSerializer::Serialize(obj,writer);
-    FFileHelper::SaveStringToFile(json,*(FPaths::ProjectSavedDir()/TEXT("DiveSettings.json")));
+    FFileHelper::SaveStringToFile(json,*(FPaths::ProjectSavedDir()/(bSmokeTest?TEXT("DiveSettingsTest.json"):TEXT("DiveSettings.json"))));
 }
 
 void ADivePawn::LoadSettings()
 {
-    FString json; if(!FFileHelper::LoadFileToString(json,*(FPaths::ProjectSavedDir()/TEXT("DiveSettings.json")))) return;
+    FString json; if(!FFileHelper::LoadFileToString(json,*(FPaths::ProjectSavedDir()/(bSmokeTest?TEXT("DiveSettingsTest.json"):TEXT("DiveSettings.json"))))) return;
     TSharedPtr<FJsonObject> obj; if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(json),obj)||!obj) return;
     obj->TryGetNumberField(TEXT("weather"),PendingConfig.Weather);
     obj->TryGetNumberField(TEXT("wind_mps"),PendingConfig.WindMetresPerSecond);
@@ -557,4 +610,6 @@ void ADivePawn::LoadSettings()
     obj->TryGetBoolField(TEXT("camera_motion"),bCameraMotion);
     obj->TryGetNumberField(TEXT("entry"),EntryIndex); EntryIndex=FMath::Clamp(EntryIndex,0,2);
     PendingConfig.Sanitize();
+    for(int i=0;i<5;++i) obj->TryGetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
+    AudioLevels.Sanitize();
 }

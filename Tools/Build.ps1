@@ -2,7 +2,8 @@ param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
     [ValidateSet('Editor','Game','Content','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
-    [switch]$OnlyEnvironment
+    [switch]$OnlyEnvironment,
+    [switch]$OnlyAudio
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -14,6 +15,7 @@ if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' 
 # normal build; it does not change those structures.
 if ($Target -eq 'Content') {
     $script = Join-Path $PSScriptRoot 'build_unreal_content.py'
+    if($OnlyAudio) { $script=Join-Path $PSScriptRoot 'build_audio_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions

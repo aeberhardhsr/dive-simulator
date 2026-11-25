@@ -15,8 +15,13 @@ SM_LeftGlove / SM_RightGlove,Tools/create_equipment_assets.py,Original procedura
 SM_WristComputer,Tools/create_equipment_assets.py,Original procedural project asset,Generic wrist housing and straps; live render target display
 SM_DiveTorch,Tools/create_equipment_assets.py,Original procedural project asset,Generic handheld torch; light originates at lens
 DivingAssets.blend,Tools/create_blender_assets.py,Original procedural project asset,Reproducible source
-A_Breath,Tools/create_audio.py,Original synthesized project audio,Placeholder regulator/exhalation sound
-A_Ambience,Tools/create_audio.py,Original synthesized project audio,Placeholder underwater loop
+A_Breath,Original prototype generator,Original synthesized project audio,Legacy unused placeholder
+A_Ambience,Original prototype generator,Original synthesized project audio,Legacy unused placeholder
+A_Inhale / A_Exhale,Tools/create_audio.py,Original synthesized project audio,48 kHz mono regulator inhale and exhale
+A_Bubbles,Tools/create_audio.py,Original synthesized project audio,48 kHz mono damped bubble oscillations; spatial runtime source
+A_Inflate / A_Vent,Tools/create_audio.py,Original synthesized project audio,Looped valve noise driven by actual local BCD gas flow
+A_Heart,Tools/create_audio.py,Original synthesized project audio,Double pulse triggered at simulated heart rate
+A_Underwater / A_Surface / A_Wind / A_Rain,Tools/create_audio.py,Original synthesized project audio,Stereo 12-second ambience loops with overlap crossfades
 A_Warning,Tools/create_audio.py,Original synthesized project audio,Computer beep
 Engine basic shapes,Installed Unreal Engine,Unreal Engine distribution terms,Runtime primitives
 Existing DemoTemplate assets,User-provided Unreal project,Existing project rights unchanged,Not evaluated for independent distribution

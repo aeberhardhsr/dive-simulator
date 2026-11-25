@@ -39,7 +39,7 @@ private:
     TFuture<FDiveLogIndex> IndexTask;
     TFuture<FDiveLog> DetailTask;
     bool bIndexLoading=false,bDetailLoading=false;
-    bool bEnvironmentPage=false;
+    bool bEnvironmentPage=false,bAudioPage=false;
     int32 LogSelection=INDEX_NONE,LogPage=0,LogCursor=INDEX_NONE,LogFilter=0;
     FString PreferredLog;
     TArray<int32> VisibleLogs() const;

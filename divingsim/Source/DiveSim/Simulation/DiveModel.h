@@ -68,6 +68,7 @@ struct State
     double ElapsedSeconds=0, DepthMetres=0, MaxDepthMetres=0;
     double CylinderBar=200, AmbientBar=.965, PPO2=.203;
     double BCDSurfaceLitres=4, BCDLitres=4;
+    double BCDInflowLPS=0, BCDOutflowLPS=0; // Actual gas flow, local litres/second.
     double HeartBPM=70, RespiratoryBPM=12, SpO2=98;
     double CoreTemperatureC=37, WaterTemperatureC=18;
     double Stress=0, Fatigue=0, Exertion=0;
@@ -142,7 +143,11 @@ private:
         double injected=std::max(0.0,Clamp(inflate,-1,1))*2.0*s.AmbientBar*dt;
         if(!unlimited) injected=std::min(injected,std::max(0.0,s.CylinderBar*c.CylinderLitres-breathingLitres));
         s.BCDSurfaceLitres+=injected;
-        s.BCDSurfaceLitres-=std::max(0.0,-inflate)*3*s.AmbientBar*dt;
+        const double vented=std::min(s.BCDSurfaceLitres,std::max(0.0,-inflate)*3*s.AmbientBar*dt);
+        s.BCDSurfaceLitres-=vented;
+        const double relief=std::max(0.,s.BCDSurfaceLitres-18*s.AmbientBar);
+        s.BCDInflowLPS=injected/(s.AmbientBar*dt);
+        s.BCDOutflowLPS=(vented+relief)/(s.AmbientBar*dt);
         s.BCDSurfaceLitres=Clamp(s.BCDSurfaceLitres,0,18*s.AmbientBar); // overpressure relief
         s.BCDLitres=s.BCDSurfaceLitres/s.AmbientBar;
         if(!unlimited) s.CylinderBar=std::max(0.0,s.CylinderBar-(breathingLitres+injected)/c.CylinderLitres);

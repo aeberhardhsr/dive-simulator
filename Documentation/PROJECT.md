@@ -29,7 +29,7 @@ Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Bluep
 | EQPM | Datengetriebene Ausrüstung, BCD, Atemregler, Computer, Lampe, Kompass, Isolation und Gewicht, 3D-Modelle | Sichtbare Unterarme/Handschuhe, Handgelenkcomputer und Handlampe implementiert; vollständiger Ausrüstungskatalog und Körpermodelle offen |
 | HUD | Tiefe/max., Dauer, Druck, Nullzeit, Puls, SpO2, Atmung, Temperatur, Aufstiegsrate, Kompass, Warnungen; digital und Handgelenk | Bildschirm-HUD und dreiseitiger 3D-Handgelenkcomputer vorhanden; vollständige Qualitätsabnahme offen |
 | ENV | Tag/Nacht, Sonnenstand, Bewölkung, Wetter/Wellen, Tiefentemperatur/Thermokline, Sichtweite | Einstellbare Wetter-/Wind-/Temperaturprofile, volumetrische Wolken und gemeinsames Wellenmodell für Darstellung/Simulation implementiert; visuelle und fachliche Gesamtabnahme offen |
-| AUD | Atmung und Blasen synchron, Belastung, Herzschlag, Tiefe, Oberfläche, Dämpfung, Warnungen, BCD, räumlich | Offen |
+| AUD | Atmung und Blasen synchron, Belastung, Herzschlag, Tiefe, Oberfläche, Dämpfung, Warnungen, BCD, räumlich | Zustandsgekoppelte Ein-/Ausatmung, räumliche Blasen, Puls, Ventile, gefilterte Wetter-/Wasserkulisse und fünf persistierte Lautstärkeregler implementiert; akustische Qualitätsabnahme offen |
 | MODE | Exploration, Simulation, Hardcore auf gemeinsamem Kern; Unterschiede transparent konfiguriert | Offen |
 | NAV | Kompass, Walenseekarte, Tiefenkarte, Einstieg; optional Wegpunkte, Fotos und Entdeckungen | Offen |
 | LOG | Automatische Speicherung, Tiefe/Gas/Vitalwerte/Temperatur/Strecke/Warnungen, grafische Auswertung | Automatische JSON-Speicherung, Logbuchbrowser mit Modusfilter, vier Diagrammgruppen und Warnereignissen implementiert; vollständige Abnahme offen |

@@ -2,6 +2,7 @@
 #include "../divingsim/Source/DiveSim/Simulation/HeightGrid.h"
 #include "../divingsim/Source/DiveSim/Simulation/Ecology.h"
 #include "../divingsim/Source/DiveSim/Simulation/WaterSurface.h"
+#include "../divingsim/Source/DiveSim/Simulation/AudioModel.h"
 #include <iostream>
 #include <cstdlib>
 #include <limits>
@@ -15,6 +16,50 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    Dive::AudioModel sound;
+    Dive::State audioState; Dive::Config audioConfig;
+    int inhales=0,exhales=0,beats=0;
+    audioState.HeartBPM=90; audioState.RespiratoryBPM=20;
+    for(int i=0;i<3000;++i)
+    {
+        audioState.BreathPhase=std::fmod(i*.02*20/60,1.);
+        const auto frame=sound.Step(.02,audioState,audioConfig,2);
+        inhales+=frame.Inhale; exhales+=frame.Exhale; beats+=frame.Heartbeat;
+    }
+    check(inhales==20&&exhales==20,"Audio inhale and exhale follow 20 breaths/minute without duplicate events");
+    check(beats==90,"Audio heartbeat follows 90 bpm for one minute");
+    Dive::AudioModel emptyAudio; audioState.CylinderBar=0;
+    audioState.BreathPhase=0;
+    check(!emptyAudio.Step(.02,audioState,audioConfig,10).Inhale,"Empty cylinder cannot produce regulator inhalation");
+    audioState.BreathPhase=.6;
+    check(!emptyAudio.Step(.02,audioState,audioConfig,10).Exhale,"No new lungful means no exhale bubbles");
+    Dive::AudioModel lastBreath; audioState.CylinderBar=1; audioState.BreathPhase=0;
+    check(lastBreath.Step(.02,audioState,audioConfig,10).Inhale,"Gas starts a breath");
+    audioState.CylinderBar=0; audioState.BreathPhase=.6;
+    check(lastBreath.Step(.02,audioState,audioConfig,10).Exhale,"Last lungful can be exhaled after gas exhaustion");
+    audioConfig.Weather=2; audioConfig.WindMetresPerSecond=12;
+    const auto above=sound.Step(.02,audioState,audioConfig,-.1);
+    const auto deepAudio=sound.Step(.02,audioState,audioConfig,20);
+    check(above.Wet==0&&above.Wind==1&&above.Rain==1,"Air exposes wind and rain");
+    check(deepAudio.Wet==1&&deepAudio.Wind<.001&&deepAudio.Rain<.001&&deepAudio.CutoffHz<1000,"Depth attenuates and low-pass filters surface layers");
+    audioState.Warnings=Dive::LowGas;
+    check(sound.Step(.02,audioState,audioConfig,2).Warning,"New warning produces an alert");
+    check(!sound.Step(.02,audioState,audioConfig,2).Warning,"Persistent warning does not repeat every frame");
+    audioState.Warnings|=Dive::OutOfGas;
+    check(sound.Step(.02,audioState,audioConfig,2).Warning,"Out of gas bypasses warning cooldown");
+    Dive::AudioLevels levels; levels.Values[0]=0;
+    for(size_t i=1;i<5;++i) close(levels.Gain(i),0,0,"Master mute covers every category");
+    levels.Values[2]=std::numeric_limits<double>::quiet_NaN(); levels.Sanitize();
+    close(levels.Values[2],.85,0,"Invalid audio preferences use finite defaults");
+    Dive::Model valves; valves.Data.CylinderBar=0; valves.Data.BCDSurfaceLitres=0;
+    valves.Step(.02,10,0,1,0,0,false);
+    close(valves.Data.BCDInflowLPS,0,0,"Empty cylinder has no inflation flow or hiss");
+    valves.Step(.02,10,0,-1,0,0,false);
+    close(valves.Data.BCDOutflowLPS,0,0,"Empty BCD has no venting flow or sound");
+    valves.Reset({}); valves.Step(.02,10,0,1,0,0,false);
+    close(valves.Data.BCDInflowLPS,2,1e-12,"Inflation audio uses actual local flow");
+    valves.Step(.02,10,0,-1,0,0,false);
+    close(valves.Data.BCDOutflowLPS,3,1e-12,"Venting audio uses actual local flow");
     Dive::WaterSurface water; water.Configure(0,90);
     close(water.Sample(30,-50,10).Height,0,0,"No wind gives a flat geometric surface");
     close(water.PressureDepth(30,-50,-20,10),20,1e-12,"Calm water preserves hydrostatic depth");

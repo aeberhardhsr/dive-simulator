@@ -253,19 +253,11 @@ if not ONLY_ENVIRONMENT:
         data.set_editor_property('vertex_color_import_option',u.VertexColorImportOption.REPLACE)
         task.set_editor_property('options',options)
         tasks.append(task)
-    for source in ASSETS.glob('*.wav'):
-        task=u.AssetImportTask()
-        task.set_editor_property('filename',str(source))
-        task.set_editor_property('destination_path',BASE+'/Audio')
-        task.set_editor_property('automated',True)
-        task.set_editor_property('save',True)
-        task.set_editor_property('replace_existing',True)
-        tasks.append(task)
     TOOLS.import_asset_tasks(tasks)
-    ambient=u.load_asset(BASE+'/Audio/A_Ambience')
-    if ambient:
-        ambient.set_editor_property('looping',True)
-        u.EditorAssetLibrary.save_loaded_asset(ambient)
+    import sys
+    sys.path.insert(0,str(ROOT/'Tools'))
+    from build_audio_content import import_audio
+    import_audio()
     fish_meshes=['SM_Perch','SM_Roach','SM_Pike','SM_Whitefish','SM_Burbot']
     plant_meshes=['SM_Pondweed','SM_Stonewort','SM_Milfoil']
     equipment_meshes=['SM_LeftSleeve','SM_RightSleeve','SM_LeftGlove','SM_RightGlove','SM_WristComputer','SM_DiveTorch']
