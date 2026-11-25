@@ -11,7 +11,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(2,40)][double]$Visibility=14,
     [ValidateRange(0,100)][double]$Battery=100,
     [ValidateRange(0,30)][double]$ParticleScale=1,
-    [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
+    [switch]$PopulationChecks, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
@@ -38,6 +38,7 @@ if($PSBoundParameters.ContainsKey('Hour')) { $arguments+=' -DiveHour='+$Hour.ToS
 if($Date) { $arguments+=" -DiveDate=$Date" }
 $arguments+=' -DiveTorch='+$Torch+' -DiveTorchBattery='+$Battery.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments+=' -DiveParticleScale='+$ParticleScale.ToString([Globalization.CultureInfo]::InvariantCulture)
+if($PopulationChecks) { $arguments+=' -DivePopulationChecks' }
 if($NavShore) { $arguments+=' -DiveNavShore' }
 if($NoBubbles) { $arguments+=' -DiveNoBubbles' }
 if($AutomaticEnvironment) { $arguments+=' -DiveAutomaticEnvironment' }
@@ -54,6 +55,7 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($PopulationChecks -and ($log -notmatch 'DIVE_POPULATION_PASS' -or $log -match 'DIVE_POPULATION_FAIL')) { throw 'Population streaming checks failed.' }
 if($Scenario -eq 'navigation' -and ($log -notmatch 'DIVE_NAV_PASS' -or $log -match 'DIVE_NAV_FAIL|DIVE_NAV_PHASE \d+ FAIL')) { throw 'Navigation selection test failed.' }
 if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -notmatch 'DIVE_SEDIMENT_PAUSE_PASS' -or $log -match 'DIVE_SEDIMENT_FAIL')) { throw 'Sediment lifecycle or pause failed.' }
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }

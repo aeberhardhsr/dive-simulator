@@ -59,7 +59,7 @@ void ADivePawn::TickSedimentTest(float Dt)
     else if(SiltSmokePhase==6&&t>=67)
     {
         if(Environment->SedimentLive()!=0||Environment->SedimentBorn()>SiltBornAtStop+2)
-        { fail(TEXT("Stopped fins kept emitting or old clouds did not expire"));return; }
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_SEDIMENT_STOP_DETAIL %s born_at_stop=%d"),*detail,SiltBornAtStop);fail(TEXT("Stopped fins kept emitting or old clouds did not expire"));return; }
         shot(TEXT("Clear"));SiltSmokePhase=7;
         UE_LOG(LogTemp,Display,TEXT("DIVE_SEDIMENT_PASS %s"),*detail);
     }

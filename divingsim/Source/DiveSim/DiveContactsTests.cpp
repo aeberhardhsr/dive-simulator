@@ -11,6 +11,23 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveStoppedKick,"DiveSim.Contacts.StoppedKick",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveStoppedKick::RunTest(const FString&)
+{
+    FDivePoseState pose;pose.Swim=1;pose.Motion=1;pose.Phase=1.2f;
+    const float stopped=pose.Phase;
+    for(int i=0;i<100;++i)
+    {
+        // Reproduce a contact keeping the amplitude at its previous value.
+        pose.Motion=1;pose.Advance(.02f,FRotator::ZeroRotator,false,true,false,0,0,true);
+        TestEqual(TEXT("No new kick cycle without input, even while the pose is constrained"),pose.Phase,stopped);
+    }
+    TestTrue(TEXT("Reading the computer remains possible"),pose.Wrist>.99f);
+    pose.Advance(.02f,FRotator::ZeroRotator,false,true,true,1,.45f,false);
+    TestTrue(TEXT("Active swimming resumes the kick cycle"),pose.Phase>stopped);
+    return true;
+}
+
 namespace
 {
 struct FContactWorld

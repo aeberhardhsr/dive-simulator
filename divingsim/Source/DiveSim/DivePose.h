@@ -15,7 +15,9 @@ struct FDivePoseState
         Gaze=FDiveBodyFrame::View(View.Pitch,View.Yaw);Walking=IsWalking;
         Swim=FMath::FInterpTo(Swim,Swimming?1.f:0.f,Dt,3);
         Motion=FMath::FInterpTo(Motion,Moving?1.f:0.f,Dt,5);
-        Phase=FMath::Fmod(Phase+Dt*(Walking?Speed*7:4+4*Effort),2*PI);
+        // A contact may temporarily prevent the motion blend from relaxing.
+        // Do not start fresh kicks from that retained pose after input stops.
+        if(Moving) Phase=FMath::Fmod(Phase+Dt*(Walking?Speed*7:4+4*Effort),2*PI);
         Wrist=FMath::FInterpTo(Wrist,ReadComputer?1.f:0.f,Dt,8);
         KneeTuck=FMath::FInterpTo(KneeTuck,0.f,Dt,2);
         BodyPitch=FMath::FInterpTo(BodyPitch,FMath::Max(-80*Swim,static_cast<float>(Gaze.Pitch)-90),Dt,5);

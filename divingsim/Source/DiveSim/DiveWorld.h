@@ -25,11 +25,18 @@ struct FDiveBubble
 };
 struct FDiveFish
 {
-    FVector Position, Velocity, Home;
+    FVector Position=FVector::ZeroVector, Velocity=FVector::ZeroVector, Home=FVector::ZeroVector;
     float Phase=0, TailCycle=0, Scale=1;
     int32 Species=0, Instance=0;
+    bool Active=false;
 };
 struct FDiveRock { FVector Position; float Radius=0; };
+USTRUCT()
+struct FDivePopulationCell
+{
+    GENERATED_BODY()
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Components;
+};
 struct FDiveSilt
 {
     FVector Origin,Position;
@@ -60,6 +67,7 @@ public:
     TArray<FDiveAccess> Accesses;
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
+    bool TestPopulationStreaming(FString& Detail);
     bool ValidateImagery(FString& Error) const;
     bool ValidateLandscape(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
@@ -133,6 +141,10 @@ private:
     void RenderSediment(float Dt);
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
+    UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
+    FIntPoint PopulationCell=FIntPoint(MAX_int32,MAX_int32);
+    double LastFishRefill=-1;
+    bool bPopulationChecked=false;
     FRandomStream Random{1948};
     float Flow=.08f, VisibleDistance=14, WorldTime=0;
     double DayHour=12;
@@ -160,6 +172,10 @@ private:
     void CreateAccess();
     UMaterialInstanceDynamic* ImageryMaterial(const TCHAR* Base,const FString& TexturePath);
     void Populate();
+    void StreamPopulation(const FVector& Player,bool Initial=false);
+    void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
+    void CreatePopulationCell(FIntPoint Key);
+    void RefillFish(const FVector& Player,bool Initial);
     void TickFish(float Dt,const FVector& Player);
     void InitializeParticles();
     void UpdateParticles(float Dt,const FVector& Player);

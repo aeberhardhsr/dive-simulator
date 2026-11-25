@@ -157,63 +157,18 @@ void ADiveWorld::Populate()
         component->SetMaterial(0,Mat(TEXT("M_Fish")));
     }
     InitializeParticles();
-    // Habitat dressing is procedural, not part of the surveyed height data.
-    Random.Initialize(static_cast<uint32>(FMath::FloorToInt(PopulationOrigin.X/6400))*73856093u ^
-        static_cast<uint32>(FMath::FloorToInt(PopulationOrigin.Y/6400))*19349663u);
-    for(int i=0;i<400;++i)
-    {
-        const double x=PopulationOrigin.X+Random.FRandRange(-8500.f,8500.f);
-        const double y=PopulationOrigin.Y+Random.FRandRange(-8500.f,8500.f);
-        float z; if(!Terrain.Sample(x,y,z)||z>-250||z<-6000) continue;
-        if(FVector2D(x-PopulationOrigin.X,y-PopulationOrigin.Y).Size()<350) continue;
-        const float size=Random.FRandRange(.4f,2.6f);
-        Rocks->AddInstance(FTransform(FRotator(Random.FRandRange(-15.f,15.f),Random.FRandRange(0.f,360.f),0),
-            FVector(x,y,z+size*15),FVector(size,size*.85,size*.7)));
-        RockState.Add({FVector(x,y,z+size*15),size*105});
-    }
-    for(int i=0;i<1800;++i)
-    {
-        const double x=PopulationOrigin.X+Random.FRandRange(-8000.f,8000.f);
-        const double y=PopulationOrigin.Y+Random.FRandRange(-8000.f,8000.f);
-        float z,n,e;
-        if(!Terrain.Sample(x,y,z)||!Terrain.Sample(x+100,y,n)||!Terrain.Sample(x,y+100,e)) continue;
-        if(FMath::Sin(x*.002)+FMath::Cos(y*.003)<-.1) continue;
-        const int32 species=i%Plants.Num();
-        const float slope=FMath::Sqrt(FMath::Square(n-z)+FMath::Square(e-z))/100;
-        if(!Dive::PlantHabitat(Dive::PlantProfiles[species],-z/100,slope,VisibleDistance)) continue;
-        bool blocked=false;
-        for(const auto& rock:RockState)
-            if(FVector::Dist2D(rock.Position,FVector(x,y,z))<rock.Radius) { blocked=true; break; }
-        if(blocked) continue;
-        const float size=Random.FRandRange(.65f,1.2f);
-        Plants[species]->AddInstance(FTransform(FRotator(0,Random.FRandRange(0.f,360.f),0),FVector(x,y,z+2),FVector(size)));
-    }
-    const FVector center=PopulationOrigin+PopulationForward*1800;
+    for(auto& pair:PopulationCells)
+        for(const auto& component:pair.Value.Components) component->DestroyComponent();
+    PopulationCells.Reset();PopulationCell=FIntPoint(MAX_int32,MAX_int32);LastFishRefill=-1;
     for(int32 species=0;species<Fish.Num();++species)
-    {
-        const auto& profile=Dive::FishProfiles[species];
-        for(int count=0,attempt=0;count<profile.Count&&attempt<profile.Count*30;++attempt)
+        for(int i=0;i<Dive::FishProfiles[species].Count;++i)
         {
-            FDiveFish fish; fish.Species=species; fish.Scale=Random.FRandRange(.75f,1.15f);
-            FVector pos=center+FVector(Random.FRandRange(-3500.f,3500.f),Random.FRandRange(-3500.f,3500.f),0);
-            float z; if(!Terrain.Sample(pos.X,pos.Y,z)) continue;
-            const auto band=Dive::FishDepthBand(profile,-z/100,fish.Scale);
-            if(!band.Valid) continue;
-            pos.Z=-100*Random.FRandRange(band.Shallow,band.Deep);
-            bool blocked=false;
-            for(const auto& rock:RockState)
-                if(FVector::Dist(rock.Position,pos)<rock.Radius+profile.LengthMetres*50*fish.Scale) { blocked=true; break; }
-            if(blocked) continue;
-            fish.Position=pos; fish.Home=pos;
-            fish.Velocity=PopulationForward*profile.CruiseSpeed*100;
-            fish.Phase=Random.FRandRange(0.f,6.28f);
-            fish.Instance=Fish[species]->AddInstance(FTransform(PopulationForward.Rotation(),pos,FVector(fish.Scale)));
-            FishState.Add(fish); ++count;
+            FDiveFish fish;fish.Species=species;
+            fish.Instance=Fish[species]->AddInstance(FTransform(FRotator::ZeroRotator,PopulationOrigin,FVector::ZeroVector));
+            FishState.Add(fish);
         }
-        UE_LOG(LogTemp,Display,TEXT("DIVE_ECOLOGY fish=%s count=%d"),UTF8_TO_TCHAR(profile.Mesh),Fish[species]->GetInstanceCount());
-    }
-    for(int32 species=0;species<Plants.Num();++species)
-        UE_LOG(LogTemp,Display,TEXT("DIVE_ECOLOGY plant=%s count=%d"),UTF8_TO_TCHAR(Dive::PlantProfiles[species].Mesh),Plants[species]->GetInstanceCount());
+    Random.Initialize(uint32(FMath::FloorToInt(PopulationOrigin.X/9600))*73856093u^uint32(FMath::FloorToInt(PopulationOrigin.Y/9600))*19349663u^1948u);
+    StreamPopulation(PopulationOrigin,true);
 
 }
 
@@ -339,8 +294,14 @@ void ADiveWorld::Tick(float DeltaSeconds)
     if(bTerrainReady)
     {
         StreamTerrain(player);
-        if(FVector::Dist2D(player,PopulationOrigin)>5500)
-        { PopulationOrigin=player; Populate(); }
+        StreamPopulation(player);
+        if(bOpticsSmoke&&!bPopulationChecked&&WorldTime>2&&FParse::Param(FCommandLine::Get(),TEXT("DivePopulationChecks")))
+        {
+            bPopulationChecked=true;FString detail;
+            const bool valid=TestPopulationStreaming(detail);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*detail);
+            if(!valid) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+        }
     }
     UpdateAtmosphere();
     TickFish(dt,player);

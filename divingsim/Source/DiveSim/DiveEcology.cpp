@@ -5,6 +5,14 @@
 
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
+    if(PopulationCells.Num()!=9) { Error=TEXT("Population window must contain nine cells");return false; }
+    for(const auto& pair:PopulationCells)
+    {
+        if(pair.Value.Components.Num()!=4) { Error=TEXT("Incomplete population cell");return false; }
+        for(int i=0;i<4;++i)
+            if(!IsValid(pair.Value.Components[i])||pair.Value.Components[i]->GetStaticMesh()!=(i?Plants[i-1]->GetStaticMesh():Rocks->GetStaticMesh()))
+            { Error=TEXT("Missing streamed population mesh");return false; }
+    }
     for(int32 species=0;species<Fish.Num();++species)
     {
         const auto mesh=Fish[species]->GetStaticMesh();
@@ -19,6 +27,7 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
     }
     for(const auto& fish:FishState)
     {
+        if(!fish.Active) continue;
         float ground;
         if(fish.Position.ContainsNaN()||fish.Velocity.ContainsNaN()||!Terrain.Sample(fish.Position.X,fish.Position.Y,ground))
         { Error=TEXT("Fish outside measured water"); return false; }
@@ -39,6 +48,7 @@ void ADiveWorld::TickFish(float Dt,const FVector& Player)
     const auto previous=FishState;
     for(auto& fish:FishState)
     {
+        if(!fish.Active) continue;
         const auto& profile=Dive::FishProfiles[fish.Species];
         const float bodyRadius=profile.LengthMetres*50*fish.Scale;
         const FVector away=fish.Position-Player;
@@ -53,7 +63,7 @@ void ADiveWorld::TickFish(float Dt,const FVector& Player)
         int32 neighbours=0;
         for(const auto& other:previous)
         {
-            if(other.Species==fish.Species&&other.Instance==fish.Instance) continue;
+            if(!other.Active||(other.Species==fish.Species&&other.Instance==fish.Instance)) continue;
             const FVector delta=fish.Position-other.Position;
             const float d=delta.Size();
             const float spacing=bodyRadius+Dive::FishProfiles[other.Species].LengthMetres*50*other.Scale+12;

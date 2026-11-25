@@ -1,0 +1,212 @@
+{
+  "metadata": {
+    "scenario": "perf-stream",
+    "csv": "O:/games/dive game/Builds/WindowsPopulation/divingsim/Saved/Performance/perf-stream_565E61A0/Capture.csv",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+    "engine": "5.8.4-58902052+++UE5+Release-5.8",
+    "width": 1920,
+    "height": 1080,
+    "quality": 2,
+    "warmup_seconds": 15,
+    "requested_capture_seconds": 120,
+    "simulation_seconds": 135.01999698206782,
+    "distance_m": 216.4250311332374,
+    "depth_m": 31.343444834196518,
+    "walking": false,
+    "sediment_born": 0,
+    "sediment_live": 0,
+    "r.ScreenPercentage": 100,
+    "r.SecondaryScreenPercentage.GameViewport": 100,
+    "r.DynamicRes.OperationMode": 0,
+    "r.VSync": 0,
+    "t.MaxFPS": 0,
+    "sg.ViewDistanceQuality": 2,
+    "sg.AntiAliasingQuality": 2,
+    "sg.ShadowQuality": 2,
+    "sg.GlobalIlluminationQuality": 2,
+    "sg.ReflectionQuality": 2,
+    "sg.PostProcessQuality": 2,
+    "sg.TextureQuality": 2,
+    "sg.EffectsQuality": 2,
+    "sg.FoliageQuality": 2
+  },
+  "host": {
+    "started_utc": "2026-11-25T23:43:15.9360639Z",
+    "editor": false,
+    "background_processes": [
+      {
+        "Id": 33256,
+        "ProcessName": "UnrealEditor",
+        "StartTime": "2026-11-25T23:14:35.6953429+01:00",
+        "WorkingSet64": 765169664
+      }
+    ],
+    "gpu_before": [
+      "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+      "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3360 MiB, 6 %"
+    ]
+  },
+  "frames": 12631,
+  "discarded_boundary_frames": 2,
+  "measured_seconds": 119.97894740000001,
+  "average_fps": 105.27680292017631,
+  "one_percent_low_fps": 89.17354520031468,
+  "frame": {
+    "mean_ms": 9.498768696065236,
+    "p50_ms": 9.4728,
+    "p95_ms": 10.3965,
+    "p99_ms": 10.8787,
+    "max_ms": 15.2582
+  },
+  "game_thread": {
+    "mean_ms": 2.1598703586414376,
+    "p50_ms": 2.1441,
+    "p95_ms": 2.588,
+    "p99_ms": 2.8895,
+    "max_ms": 11.1978
+  },
+  "render_thread": {
+    "mean_ms": 9.4916156836355,
+    "p50_ms": 9.4626,
+    "p95_ms": 10.3792,
+    "p99_ms": 10.8708,
+    "max_ms": 15.2435
+  },
+  "rhi_thread": {
+    "mean_ms": 2.4740476288496556,
+    "p50_ms": 2.4167,
+    "p95_ms": 3.1235,
+    "p99_ms": 3.6915,
+    "max_ms": 6.4921
+  },
+  "gpu": {
+    "mean_ms": 8.931669669859868,
+    "p50_ms": 8.8966,
+    "p95_ms": 9.6167,
+    "p99_ms": 10.0062,
+    "max_ms": 11.1288
+  },
+  "frames_over_16_67_ms": 0,
+  "frames_over_33_33_ms": 0,
+  "frames_over_100_ms": 0,
+  "all_frames_within_30fps_budget": true,
+  "memory_mb": {
+    "start": 2429.2812,
+    "end": 2362.4609,
+    "max": 2439.0234
+  },
+  "terrain_chunks": {
+    "min": 7.0,
+    "max": 9.0,
+    "frames_below_nine": 8
+  },
+  "distance_m": 193.13070000000002,
+  "top_gpu_passes_ms_not_additive": [
+    {
+      "name": "GPU/ShadowDepths",
+      "mean_ms": 1.3665552054469163
+    },
+    {
+      "name": "GPU/VolumetricCloudShadow",
+      "mean_ms": 1.1628088274879265
+    },
+    {
+      "name": "GPU/Unaccounted",
+      "mean_ms": 0.7783196896524424
+    },
+    {
+      "name": "GPU/TemporalSuperResolution",
+      "mean_ms": 0.6787110838413427
+    },
+    {
+      "name": "GPU/LumenReflections",
+      "mean_ms": 0.5434980919958832
+    },
+    {
+      "name": "GPU/NaniteVisBuffer",
+      "mean_ms": 0.45938836988361964
+    },
+    {
+      "name": "GPU/ShadowProjection",
+      "mean_ms": 0.31906314622753545
+    },
+    {
+      "name": "GPU/SingleLayerWater",
+      "mean_ms": 0.2835965481751247
+    },
+    {
+      "name": "GPU/Postprocessing",
+      "mean_ms": 0.27241279391972134
+    },
+    {
+      "name": "GPU/LumenSceneUpdate",
+      "mean_ms": 0.254591180429103
+    },
+    {
+      "name": "GPU/GlobalDistanceFieldUpdate",
+      "mean_ms": 0.22516159448974746
+    },
+    {
+      "name": "GPU/NaniteBasePass",
+      "mean_ms": 0.2222454437495052
+    }
+  ],
+  "population_cell_crossings": [
+    {
+      "seconds_after_capture_begin": 46.719,
+      "cell": [
+        9,
+        93
+      ],
+      "loaded": 3,
+      "unloaded": 3,
+      "active_cells": 9,
+      "rocks": 434,
+      "update_ms": 3.58
+    },
+    {
+      "seconds_after_capture_begin": 60.743,
+      "cell": [
+        10,
+        93
+      ],
+      "loaded": 3,
+      "unloaded": 3,
+      "active_cells": 9,
+      "rocks": 180,
+      "update_ms": 2.631
+    }
+  ],
+  "evidence": {
+    "Runtime.log": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-stream-1080p-q2-20261126-004315-935\\Runtime.log",
+      "sha256": "6df081074259535e041bdb6b6ccbcbffd9e7cf56353017cf071b0546aaadc939"
+    },
+    "Host.json": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-stream-1080p-q2-20261126-004315-935\\Host.json",
+      "sha256": "800da9a1e2aa956060009f634bdcf96795bb777444a582266bd5a2d40163af79"
+    },
+    "Metadata.json": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-stream-1080p-q2-20261126-004315-935\\Metadata.json",
+      "sha256": "3a008cb8b75d410f0bbff94607a490bb8458492cbceb04538eea8056e0f85790"
+    },
+    "Capture.csv": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-stream-1080p-q2-20261126-004315-935\\Capture.csv",
+      "sha256": "e01a92cffc86a5a135f6dad1126e00d5f3d4e99974577ee4af71c2e171aac141"
+    },
+    "Frame.png": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-stream-1080p-q2-20261126-004315-935\\Frame.png",
+      "sha256": "a26a7a753cfd30e4dc0a585172166a5d3386efaa44b29073a1d645b2b64ed91f"
+    }
+  },
+  "executable": {
+    "path": "O:\\games\\dive game\\Builds\\WindowsPopulation\\divingsim\\Binaries\\Win64\\divingsim-Population.exe",
+    "sha256": "d09daa75a08b66493fd03882c42ccb8cac2bc657f286809d7e85d4c81871df6c"
+  },
+  "limits": [
+    "The user editor remains open; this is not an isolated hardware benchmark.",
+    "Population update timings measure that CPU task, not the complete rendered frame.",
+    "This is one Murg streaming route; it does not establish minimum hardware or worst visible vegetation density."
+  ]
+}
