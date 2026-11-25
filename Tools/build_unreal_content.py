@@ -160,15 +160,34 @@ float2 fadeSlope=-6*f*(1-f)/16*delta/max(.001,d);
 material('M_Water',(.012,.035,.028),.13,water=True,
          custom_wpo=wave_code+'return float3(0,0,h*100*fade);',
          custom_normal=wave_code+'''
-// Filter each procedural ripple over its pixel footprint. Unfiltered world-space
-// sinusoids alias into bright stripes at grazing angles and in the distance.
-float4 ripplePhase=float4(P.x*.13+P.y*.025+T*1.7, P.y*.057-T*2.1,
-    P.y*.11+P.x*.018+T*1.5, P.x*.19-T*2.9);
-float4 footprint=abs(ddx(ripplePhase))+abs(ddy(ripplePhase));
-float4 filtered=exp(-.5*footprint*footprint);
-float2 micro=float2(sin(ripplePhase.x)*.025*filtered.x+cos(ripplePhase.y)*.015*filtered.y,
-    cos(ripplePhase.z)*.02*filtered.z+sin(ripplePhase.w)*.01*filtered.w)*WindStrength;
-return normalize(float3(-slope*fade-h*fadeSlope+micro,1));''')
+// Three advected, rotated noise gradients replace the globally repeating
+// pattern of the previous four sine ripples.
+// Quintic interpolation gives a continuous slope at cell boundaries.
+float2 micro=0;
+float4 layers[3]={float4(.024,.9563,.2924,.025),
+    float4(.053,.3256,.9455,.013),float4(.118,.7986,-.6018,.007)};
+float2 wind=Wave0.xy/max(length(Wave0.xy),.0001);
+for(int j=0;j<3;++j) {
+    float4 layer=layers[j];
+    float2 moving=P.xy*layer.x-wind*T*(.7+j*.31);
+    float2 q=float2(layer.y*moving.x-layer.z*moving.y,
+        layer.z*moving.x+layer.y*moving.y);
+    float2 cell=floor(q), f=frac(q);
+    float4 seed=float4(dot(cell,float2(127.1,311.7)),
+        dot(cell+float2(1,0),float2(127.1,311.7)),
+        dot(cell+float2(0,1),float2(127.1,311.7)),
+        dot(cell+float2(1,1),float2(127.1,311.7)));
+    float4 values=frac(sin(seed)*43758.5453);
+    float2 blend=f*f*f*(f*(f*6-15)+10);
+    float2 derivative=30*f*f*(f*(f-2)+1);
+    float2 gradient=derivative*float2(lerp(values.y-values.x,values.w-values.z,blend.y),
+        lerp(values.z-values.x,values.w-values.y,blend.x));
+    float2 dx=ddx(q),dy=ddy(q);
+    float filter=exp(-2*(dot(dx,dx)+dot(dy,dy)));
+    micro+=layer.w*filter*float2(layer.y*gradient.x+layer.z*gradient.y,
+        -layer.z*gradient.x+layer.y*gradient.y);
+}
+return normalize(float3(-slope*fade-h*fadeSlope+micro*WindStrength,1));''')
 if not ONLY_WATER:
     cloud_path=BASE+'/Materials/MI_Cloud'
     if not u.EditorAssetLibrary.does_asset_exist(cloud_path):
