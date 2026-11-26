@@ -35,7 +35,7 @@ struct FDiveFish
     int32 Species=0, Instance=0;
     bool Active=false;
 };
-struct FDiveRock { FVector Position; float Radius=0; };
+struct FDiveRock { FVector Position; float Radius=0; int32 Variant=0; };
 USTRUCT()
 struct FDivePopulationCell
 {
@@ -74,6 +74,7 @@ public:
     bool ValidateEcology(FString& Error) const;
     double TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End) const;
     bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation,bool FinOnly=false);
+    bool SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation);
     bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
     TArray<FString> PhotographSpecies(const FVector& Eye,const FVector& Forward) const;
     bool TestPopulationStreaming(FString& Detail);
@@ -138,7 +139,7 @@ private:
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rain;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> Buoys;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuoyLines;
-    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rocks;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Rocks;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Plants;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Bubbles;

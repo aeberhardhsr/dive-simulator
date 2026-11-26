@@ -65,6 +65,8 @@ Kopf, Maske und Atemregler folgen nun der Blickrichtung; die Augenposition bleib
 
 ## Reihenfolge
 
+Aktuelle Nutzerpriorität vom 26. November 2026: Zuerst Grafik und Unterwasserwelt optimieren. Anschließend das Rendering außerhalb des Wassers – insbesondere Berge, Wiesen und Geländetopologie – auf ein vergleichbares Realitätsniveau bringen. Die visuelle Abnahme umfasst dafür Formen und Silhouetten, Nah-/Ferndetails, Oberflächen, Vegetation, Beleuchtung sowie zusammenhängende Land-Wasser-Übergänge. Die reale Walensee-Geografie und Maßstäblichkeit bleiben maßgeblich; detailliertere Texturen allein erfüllen diese Vorgabe nicht.
+
 1. Toolchain, reproduzierbarer Build, Simulationskern und spielbarer Tauchablauf.
 2. Wasserbild, animierte Tiere/Pflanzen, Ton und Instrumente im kleinen Ausschnitt prüfen.
 3. Schweizer Geodaten integrieren; drei reale Einstiegspunkte. Vollständiger swisstopo-Walensee-Datensatz ist mit geprüfter SHA256 in 46 Rasterkacheln eingebunden. Die aktuelle Implementierung verwendet neun lokal erzeugte Geländekacheln mit Nachladen statt World Partition. Zusätzlich zu den Offshore-Starts bestehen drei örtliche Uferstarts mit modellierten begehbaren Zugängen. Originalgetreue Anlagen und Landbedeckung bleiben offen. Provenienz: `WALENSEE_DATA.json`, Laufzeitformat: `GEODATA.md`.

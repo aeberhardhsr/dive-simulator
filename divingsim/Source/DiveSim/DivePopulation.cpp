@@ -32,7 +32,9 @@ void ADiveWorld::GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArr
         }
         if(blocked) continue;
         Transforms.Add(FTransform(rotation,position,FVector(size,size*.85,size*.7)));
-        States.Add({position,size*105});
+        // Separate hash keeps the existing placement random stream unchanged.
+        const int32 variant=(CellSeed(Key)^uint32(i)*2654435761u)%Rocks.Num();
+        States.Add({position,size*105,variant});
     }
 }
 
@@ -47,11 +49,11 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
         component->SetCollisionProfileName(collision?TEXT("BlockAll"):TEXT("NoCollision"));
         component->RegisterComponent();cell.Components.Add(component);return component;
     };
-    auto* rocks=create(Rocks,true);
+    for(const auto& source:Rocks) create(source,true);
     for(const auto& source:Plants) create(source,false);
     TArray<FTransform> transforms;TArray<FDiveRock> states;
     GenerateRocks(Key,transforms,states);
-    for(const auto& transform:transforms) rocks->AddInstance(transform);
+    for(int32 i=0;i<transforms.Num();++i) cell.Components[states[i].Variant]->AddInstance(transforms[i]);
     // Include neighbouring rock footprints when planting across a cell edge.
     // Only footprints close enough to this cell are kept for the inner loop.
     TArray<FDiveRock> nearby;
@@ -76,7 +78,7 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
         bool blocked=false;
         for(const auto& rock:nearby)
             if(FVector::DistSquared2D(rock.Position,FVector(x,y,z))<FMath::Square(rock.Radius)) { blocked=true;break; }
-        if(!blocked) cell.Components[species+1]->AddInstance(FTransform(FRotator(0,yaw,0),FVector(x,y,z+2),FVector(size)));
+        if(!blocked) cell.Components[species+Rocks.Num()]->AddInstance(FTransform(FRotator(0,yaw,0),FVector(x,y,z+2),FVector(size)));
     }
 }
 

@@ -156,6 +156,7 @@ private:
     void TickModeTest();
     void TickDecompressionTest(float Dt);
     void TickFishInspection(float Dt);
+    void TickRockInspection(float Dt);
     void UpdateTorch();
     double AudioSmokeClock=0,AudioExportStarted=0;
     bool bAudioMenuChecked=false,bAudioMenuCaptured=false;

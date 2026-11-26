@@ -10,10 +10,16 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
     if(PopulationCells.Num()!=9) { Error=TEXT("Population window must contain nine cells");return false; }
     for(const auto& pair:PopulationCells)
     {
-        if(pair.Value.Components.Num()!=4) { Error=TEXT("Incomplete population cell");return false; }
-        for(int i=0;i<4;++i)
-            if(!IsValid(pair.Value.Components[i])||pair.Value.Components[i]->GetStaticMesh()!=(i?Plants[i-1]->GetStaticMesh():Rocks->GetStaticMesh()))
+        if(pair.Value.Components.Num()!=Rocks.Num()+Plants.Num()) { Error=TEXT("Incomplete population cell");return false; }
+        for(int i=0;i<pair.Value.Components.Num();++i)
+            if(!IsValid(pair.Value.Components[i])||pair.Value.Components[i]->GetStaticMesh()!=(i<Rocks.Num()?Rocks[i]->GetStaticMesh():Plants[i-Rocks.Num()]->GetStaticMesh()))
             { Error=TEXT("Missing streamed population mesh");return false; }
+    }
+    for(int32 i=0;i<Rocks.Num();++i)
+    {
+        const auto mesh=Rocks[i]->GetStaticMesh();
+        if(!mesh||mesh->GetName()!=FString::Printf(TEXT("SM_LakeRock%d"),i+1)||mesh->GetNumLODs()!=4)
+        { Error=TEXT("Missing detailed rock variant or fallback LODs");return false; }
     }
     for(int32 species=0;species<Fish.Num();++species)
     {

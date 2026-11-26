@@ -43,7 +43,11 @@ ADiveWorld::ADiveWorld()
         component->SetupAttachment(RootComponent); component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
         return component;
     };
-    Rocks=create(TEXT("Limestone")); Rocks->SetCollisionProfileName(TEXT("BlockAll"));
+    for(int32 i=0;i<3;++i)
+    {
+        auto* component=create(*FString::Printf(TEXT("LakeRock%d"),i+1));
+        component->SetCollisionProfileName(TEXT("BlockAll"));Rocks.Add(component);
+    }
     for(const auto& profile:Dive::PlantProfiles)
         Plants.Add(create(UTF8_TO_TCHAR(profile.Mesh)));
     for(const auto& profile:Dive::FishProfiles)
@@ -135,9 +139,14 @@ UStaticMeshComponent* ADiveWorld::Prop(const FString& Name,const FString& MeshPa
 
 void ADiveWorld::Populate()
 {
-    Rocks->ClearInstances(); FishState.Reset(); RockState.Reset();
-    Rocks->SetStaticMesh(Mesh(TEXT("/Game/Diving/Meshes/SM_Rock.SM_Rock")));
-    Rocks->SetMaterial(0,Mat(TEXT("M_RockSurface")));
+    FishState.Reset(); RockState.Reset();
+    for(int32 i=0;i<Rocks.Num();++i)
+    {
+        const FString name=FString::Printf(TEXT("SM_LakeRock%d"),i+1);
+        Rocks[i]->ClearInstances();
+        Rocks[i]->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Rocks/")+name+TEXT(".")+name)));
+        Rocks[i]->SetMaterial(0,Mat(TEXT("M_RockSurface")));
+    }
     for(int32 species=0;species<Plants.Num();++species)
     {
         auto* component=Plants[species].Get(); component->ClearInstances();
