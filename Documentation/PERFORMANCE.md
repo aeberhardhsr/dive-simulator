@@ -1,5 +1,18 @@
 # Gerenderte Leistungsmessung
 
+## WindowsPlantGrowth: gebogene Triebe und dichtere Blattbereiche
+
+Asset-/Quellstand `6759dc0`, unveränderter C++-Spielcode, neue Pflanzen in neu erzeugten Inhaltscontainern. RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Je 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Beide Läufe sind an die EXE **und** Container der neun bestandenen Paketfälle gebunden. [Paketnachweis](PLANT_GROWTH_PACKAGE_RESULTS.json), [Formen und Quellen](PLANT_GROWTH.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 72,97 FPS | 61,37 FPS | 15,37 ms | 17,08 ms | 0 / 4376 | 3,50 ms |
+| Murg Schwimmen/Nachladen, 90 s | 100,50 FPS | 80,11 FPS | 10,90 ms | 45,07 ms | 1 / 9043 | 3,14 ms |
+
+Die GPU-Zeit beträgt im Mittel 13,09 / 9,34 ms. Gegenüber der vorherigen Pflanzenverteilung mit den älteren Modellen steigt sie im Unterwasserlauf von 12,76 auf 13,09 ms; die mittlere Spielthreadzeit bleibt mit 3,50 statt 3,49 ms nahezu gleich. Das sind einzelne aufeinanderfolgende Messungen, keine isolierte Bestimmung der Kosten jedes Pflanzenmodells. Die zusätzliche Geometrie führt in dieser Szene zu einem moderaten Rückgang des FPS-Mittelwerts von 74,76 auf 72,97.
+
+Vier Unterwasserbilder überschreiten 16,67 ms. Der einzelne Nachlade-Ausreisser mit 45,07 ms bleibt offen. Die Messbilder zeigen den Weesener Grund mit Bewuchs bei 5,2 Metern und das Ende der Murg-Strecke in freiem Wasser bei 24,7 Metern. Die Strecke belegt keine dauerhaft dichte Fels-/Pflanzennahansicht. Durchgehend 60 FPS, ein aktueller Langzeittest und die vollständige visuelle Zielqualität sind weiterhin nicht nachgewiesen.
+
 ## WindowsPlantBedsReady: Pflanzengruppen
 
 Quellstand `96f0f25`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Je 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Beide Läufe verwenden dieselbe EXE und dieselben Inhaltscontainer wie die acht bestandenen Paketfälle. [Ergebnisbericht einschliesslich erster Fehlversuche](PLANT_BEDS_RESULTS.json), [Verteilung und Bilder](PLANT_BEDS.md).

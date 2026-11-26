@@ -1,0 +1,282 @@
+{
+  "status": "PASS",
+  "scope": "Curved authored plant models; full scene reference remains open",
+  "package": {
+    "file": "Documentation/PLANT_GROWTH_PACKAGE_RESULTS.json",
+    "sha256": "900fe7f9c2a912212a0dc184c7a8f3cbb2eabdb6e3a104fcac36a5532a5ca986",
+    "bytes": 62358
+  },
+  "manifest": {
+    "schema": 1,
+    "revision": "curved-shoots",
+    "units": "metres",
+    "authorship": "Original procedural game geometry; botanical groups, not species-identification models",
+    "assets": [
+      {
+        "name": "SM_Pondweed",
+        "triangles": 10136,
+        "vertices": 6342,
+        "height_metres": 1.031468152999878,
+        "uv_channels": 2,
+        "root_weight": 0,
+        "file": "blender/exports/Plants/SM_Pondweed.fbx",
+        "sha256": "06b00d6e8f82115f4fad270846b165586069168ccb2e8d729e50c55667d8f6a4"
+      },
+      {
+        "name": "SM_Stonewort",
+        "triangles": 48366,
+        "vertices": 30171,
+        "height_metres": 0.43947532773017883,
+        "uv_channels": 2,
+        "root_weight": 0,
+        "file": "blender/exports/Plants/SM_Stonewort.fbx",
+        "sha256": "ebbe67ee4f1ca4964b23bb24076e8a93de2a9eb4dd825656e8ef0f57b62bd66a"
+      },
+      {
+        "name": "SM_Milfoil",
+        "triangles": 67032,
+        "vertices": 59290,
+        "height_metres": 0.8674871921539307,
+        "uv_channels": 2,
+        "root_weight": 0,
+        "file": "blender/exports/Plants/SM_Milfoil.fbx",
+        "sha256": "24726b445c6a64bd193c610beebba6cd11f3d1c8669b8f7b7347ad2093116bc3"
+      }
+    ]
+  },
+  "imported": [
+    {
+      "name": "SM_Pondweed",
+      "triangles": [
+        10136,
+        4562,
+        1621,
+        557
+      ],
+      "source_uv_channels": 2,
+      "source_sha256": "06b00d6e8f82115f4fad270846b165586069168ccb2e8d729e50c55667d8f6a4"
+    },
+    {
+      "name": "SM_Stonewort",
+      "triangles": [
+        48366,
+        21764,
+        7738,
+        2660
+      ],
+      "source_uv_channels": 2,
+      "source_sha256": "ebbe67ee4f1ca4964b23bb24076e8a93de2a9eb4dd825656e8ef0f57b62bd66a"
+    },
+    {
+      "name": "SM_Milfoil",
+      "triangles": [
+        67032,
+        30165,
+        10726,
+        3686
+      ],
+      "source_uv_channels": 2,
+      "source_sha256": "24726b445c6a64bd193c610beebba6cd11f3d1c8669b8f7b7347ad2093116bc3"
+    }
+  ],
+  "files": [
+    {
+      "file": "Tools/create_aquatic_plants.py",
+      "sha256": "80a5584d48e43331a50b6a03d0e7642204074d8e72e914e93163bd4a7254e85d",
+      "bytes": 10965
+    },
+    {
+      "file": "blender/AquaticPlants.blend",
+      "sha256": "e5149e39028b59378983d950151488c454ecc7151c2a44c2b0f653ed13ae99da",
+      "bytes": 4367715
+    },
+    {
+      "file": "blender/exports/Plants/Manifest.json",
+      "sha256": "56b962de9865d2fced955926a6f57804816f3ed5ddc0394d4de1d2a45e30ddd0",
+      "bytes": 1200
+    },
+    {
+      "file": "artifacts/PlantContentBuild.json",
+      "sha256": "7b4e03ea1e66ee7f47196f1ec9740b83c6b7aed9993401e69785974efc4e32d5",
+      "bytes": 721
+    },
+    {
+      "file": "artifacts/plant-structure-bounded-blender.log",
+      "sha256": "3bbb4f03d6d3514534961dfe351a2855bc97f39e3ec73e04a3421f582004cf31",
+      "bytes": 1488
+    },
+    {
+      "file": "artifacts/plant-structure-bounded-content.log",
+      "sha256": "f8ffbce6f08af005169e49d597c50374131b681e77621ec23b7bb94c04f62dd6",
+      "bytes": 22219
+    },
+    {
+      "file": "artifacts/plant-structure-blender.log",
+      "sha256": "b4276e45df25a2b1c719080f1a8c6ea86ada1373185e726f3df1d586f1a26a53",
+      "bytes": 1489
+    },
+    {
+      "file": "artifacts/plant-structure-content-build.log",
+      "sha256": "ade9654f685094b138dc638e63c737256331c9d54481b7a17a3bab5cefa9a2a0",
+      "bytes": 22974
+    },
+    {
+      "file": "blender/exports/Plants/SM_Pondweed.fbx",
+      "sha256": "06b00d6e8f82115f4fad270846b165586069168ccb2e8d729e50c55667d8f6a4",
+      "bytes": 431356
+    },
+    {
+      "file": "blender/exports/Plants/SM_Stonewort.fbx",
+      "sha256": "ebbe67ee4f1ca4964b23bb24076e8a93de2a9eb4dd825656e8ef0f57b62bd66a",
+      "bytes": 1970428
+    },
+    {
+      "file": "blender/exports/Plants/SM_Milfoil.fbx",
+      "sha256": "24726b445c6a64bd193c610beebba6cd11f3d1c8669b8f7b7347ad2093116bc3",
+      "bytes": 3439900
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/AquaticPlant.ush",
+      "sha256": "4e4ed5c90729ae589e27d8ad68bf04a9554c126243e6e383d575241b7518e820",
+      "bytes": 1520
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/create_aquatic_plants.py",
+      "sha256": "cd83f943100a4b3c6e781030b62aad42c266fbbffd37d269c3e3fe25c067b970",
+      "bytes": 9458
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/Manifest.json",
+      "sha256": "5ddd9380e3a0574e381e34c10321b1703306dd05293c200b3cdf61094aa020be",
+      "bytes": 1167
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/M_AquaticPlant.uasset",
+      "sha256": "500196b8b3d22205f42086d4222d9442b1a6a291e75441138bc6cf247d525127",
+      "bytes": 13006
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/SM_Milfoil.uasset",
+      "sha256": "4283c7126b380dbe15dc71f5874948a16113998103d907b9c452b1caca099377",
+      "bytes": 1723755
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/SM_Pondweed.uasset",
+      "sha256": "a011ea337c13b08af90400d453c2b228bddc0117be4f95e6344a0ea9a6682f30",
+      "bytes": 232949
+    },
+    {
+      "file": "artifacts/plant-structure-source-before/SM_Stonewort.uasset",
+      "sha256": "f51091d56817bf1d03d26dae362f08862e6a5a03583a7d48a6294254fa117ca1",
+      "bytes": 749862
+    }
+  ],
+  "comparisons": [
+    {
+      "species": "Pondweed",
+      "view": 0,
+      "before": {
+        "file": "artifacts/plant-structure-before/Plant_1_0.png",
+        "sha256": "3836fd558b231514267ac3380ed6a14299c3d346dd82fbc50bdd05a40cdb8a55",
+        "bytes": 1836692
+      },
+      "after": {
+        "file": "artifacts/plant-structure-after/Plant_1_0.png",
+        "sha256": "227609d360deca9930fd0e75b057c61a6113b0c76cdb26bb9ab70da5710aa347",
+        "bytes": 1818934
+      }
+    },
+    {
+      "species": "Pondweed",
+      "view": 1,
+      "before": {
+        "file": "artifacts/plant-structure-before/Plant_1_1.png",
+        "sha256": "c8b37793dc104f1dd697f6e83b63891c738d96ae8b698f1767d5fa3668bc51a0",
+        "bytes": 1714755
+      },
+      "after": {
+        "file": "artifacts/plant-structure-after/Plant_1_1.png",
+        "sha256": "7203425c7682fe17caf0cadc100dd14621954a385f285c999bda7674a2b55d8f",
+        "bytes": 1714414
+      }
+    },
+    {
+      "species": "Stonewort",
+      "view": 0,
+      "before": {
+        "file": "artifacts/plant-structure-before/Plant_3_0.png",
+        "sha256": "bb6ced8b87297ffef5197ef8e82030c1158225cbcbf86f7aa8038d7d617493e8",
+        "bytes": 1882316
+      },
+      "after": {
+        "file": "artifacts/plant-structure-after/Plant_3_0.png",
+        "sha256": "b7f9394f646a37e97544915a86c85d867640c27d567dbb27e0853de72968f89d",
+        "bytes": 2001498
+      }
+    },
+    {
+      "species": "Stonewort",
+      "view": 1,
+      "before": {
+        "file": "artifacts/plant-structure-before/Plant_3_1.png",
+        "sha256": "e4cb4b939b0439abba02b3b2f52033ae6e18d8a3a580724318df1e04dfaeb81f",
+        "bytes": 1606489
+      },
+      "after": {
+        "file": "artifacts/plant-structure-after/Plant_3_1.png",
+        "sha256": "82f43f9a17ca3e8392c9f3055089515857e70df4d69e7afa80af66d4253c2b52",
+        "bytes": 1613381
+      }
+    },
+    {
+      "species": "Milfoil",
+      "view": 0,
+      "before": {
+        "file": "artifacts/plant-structure-before/Plant_5_0.png",
+        "sha256": "7277ae7d165cb26ff145381492eebe5275b7b7f35efb21a9fc08dea6a46585ab",
+        "bytes": 2054267
+      },
+      "after": {
+        "file": "artifacts/plant-structure-after/Plant_5_0.png",
+        "sha256": "63ad8798a7f06634bb084c5cc53ab06fbf683745f5c0246f21534041d7b6be09",
+        "bytes": 2160175
+      }
+    },
+    {
+      "species": "Milfoil",
+      "view": 1,
+      "before": {
+        "file": "artifacts/plant-structure-before/Plant_5_1.png",
+        "sha256": "37b476d46e0b5f610c71c0f385cc2f5f75d7412e0397d144b08cbaed1d7ecabb",
+        "bytes": 1708590
+      },
+      "after": {
+        "file": "artifacts/plant-structure-after/Plant_5_1.png",
+        "sha256": "07c0f5840491e10eb5bc1307c88c9f85f9f25deae7be2355c5666fce7a782f77",
+        "bytes": 1724376
+      }
+    }
+  ],
+  "native_logs": [
+    {
+      "file": "artifacts/plant-structure-before.log",
+      "sha256": "ebbe69293129adabc13bee964813083db056bc2c02a7ab8437ee469f36246ed9",
+      "bytes": 228622
+    },
+    {
+      "file": "artifacts/plant-structure-after.log",
+      "sha256": "e271baaf5eb0520832d5a658a66b10d8208bc44cce4b3fd5076adba8a5c074dd",
+      "bytes": 224902
+    },
+    {
+      "file": "artifacts/plant-structure-habitat.log",
+      "sha256": "01723e5fc568acbd39559a64d67a64a8d4b5506661f7c5bec5d9fbe1bcb9b417",
+      "bytes": 230326
+    }
+  ],
+  "limitations": [
+    "General botanical groups, not species-identification models or surveyed local vegetation",
+    "More detailed geometry retains automatic distance simplification and subpixel foliage limits",
+    "Screenshot checks and short benchmarks do not prove full visual or endurance acceptance"
+  ]
+}

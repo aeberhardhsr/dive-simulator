@@ -53,7 +53,8 @@ def main():
         logs.append(record(path))
     files=[ROOT/'Tools/create_aquatic_plants.py',ROOT/'blender/AquaticPlants.blend',manifest_path,
         ROOT/'artifacts/PlantContentBuild.json',ROOT/'artifacts/plant-structure-bounded-blender.log',
-        ROOT/'artifacts/plant-structure-bounded-content.log']
+        ROOT/'artifacts/plant-structure-bounded-content.log',ROOT/'artifacts/plant-structure-blender.log',
+        ROOT/'artifacts/plant-structure-content-build.log']
     files += [ROOT/x['file'] for x in manifest['assets']]
     files += list(backup.iterdir())
     result=dict(status='PASS',scope='Curved authored plant models; full scene reference remains open',

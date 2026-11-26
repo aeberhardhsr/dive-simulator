@@ -41,8 +41,10 @@ def main():
                 assert marker in log,marker
         if case['name']=='after':assert all(n>0 and short>0 and tall>0 for legacy,n,short,tall,unique in checks)
         if case['name']=='raster':assert 'r.Nanite = "0"' in log
+        if case['name']=='forms':assert 'DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12' in log
         images=sorted(folder.glob('*.png'));assert len(images)==case['screenshots']
         if expected[case['name']] is not None:assert len(images)==expected[case['name']]
+        if case['name']=='forms':assert {x.name for x in images}=={f'Plant_{v}_{i}.png' for v in range(6) for i in range(2)}
         if case['name']=='discoveries':
             required={f'Discoveries_0_{x}.png' for x in ['Gallery_DE','Species_DE','Species_EN','Logbook','Plant_EN']}
             names={x.name for x in images}

@@ -1,6 +1,8 @@
 # Unterwasserbewuchs: Formen und Oberflächen
 
-## Weiterentwicklung der feinen Blattstruktur
+Aktuelle Weiterentwicklung: [gebogene Triebe und dichtere Blattbereiche](PLANT_GROWTH.md). Sie ersetzt die unten beschriebenen detaillierten Formen durch ungleichmässigere Wuchshöhen, näher zusammengerückte obere Blattansätze und getrennte Stängel-/Gewebefarben. Die [Pflanzengruppen](PLANT_BEDS.md) bestimmen weiterhin ihre Platzierung. Die folgenden Abschnitte dokumentieren die vorherigen Entwicklungsstände.
+
+## Vorheriger Stand: feine Blattstruktur
 
 Der nächste Stand ersetzt beim Tausendblatt die röhrenförmigen Blattfiedern durch schmale, gebogene, zweiseitig schattierte Blattflächen mit einer flachen Mittelrippe. Die Blattquirle stehen zum Triebende dichter; zwei kleinere Quirle schließen die vorher kahlen Spitzen. Pro Blatt entstehen sechs bis zehn unterschiedlich lange Fiederpaare. Die Armleuchteralgen behalten ihre räumlichen Röhren; das Material unterscheidet nun zwischen Stängeln, lichtdurchlässigeren grünen Seitenzweigen und Blattflächen. Nur Blattflächen erhalten die Blattadern. Pflanzendichte, Habitatverteilung und bestehende Bewegung bleiben unverändert.
 
