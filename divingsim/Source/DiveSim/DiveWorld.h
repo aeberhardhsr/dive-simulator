@@ -242,6 +242,8 @@ private:
     void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
     void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
     void CreatePopulationCell(FIntPoint Key);
+    void BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& Nearby,TArray<TArray<FTransform>>& Instances) const;
+    bool TestPlantBeds(FString& Detail) const;
     void CreateGravelCell(FIntPoint Key);
     void StreamGravel(const FVector& Player,bool Immediate=false);
     void RefillFish(const FVector& Player,bool Initial);

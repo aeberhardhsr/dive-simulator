@@ -62,6 +62,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
+    FString plantDetail;valid&=TestPlantBeds(plantDetail);
     const bool rubbleDisabled=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"));
     valid&=rubbleDisabled?rubble==0:rubble>0;
     valid&=rubbleDisabled||rubbleContacts>0;
@@ -192,6 +193,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     for(int i=0;i<8&&PopulationCells.Num()!=9;++i) StreamPopulation(original);
     valid&=boundedLayouts();
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_LAYOUT_%s layouts=%d max=25 fresh_equal=1"),valid?TEXT("PASS"):TEXT("FAIL"),RockLayouts.Num());
+    valid&=TestPlantBeds(plantDetail);
     for(auto& fish:FishState) fish.Active=false;
     LastFishRefill=WorldTime-2;RefillFish(original,false);
     for(const auto& fish:FishState) if(fish.Active)

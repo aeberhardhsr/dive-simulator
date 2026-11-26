@@ -5,7 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
-    [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$LegacyRockSurface,
+    [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater,
@@ -119,6 +119,8 @@ if($Date) { $arguments+=" -DiveDate=$Date" }
 $arguments+=' -DiveTorch='+$Torch+' -DiveTorchBattery='+$Battery.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments+=' -DiveParticleScale='+$ParticleScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 if($PopulationChecks) { $arguments+=' -DivePopulationChecks' }
+if($LegacyPlantPlacement) { $arguments+=' -DiveLegacyPlantPlacement' }
+if($HabitatLowView) { $arguments+=' -DiveHabitatLowView' }
 if($FinInspection) { $arguments+=' -DiveFinInspection' }
 if($NavShore) { $arguments+=' -DiveNavShore' }
 if($NoBubbles) { $arguments+=' -DiveNoBubbles' }

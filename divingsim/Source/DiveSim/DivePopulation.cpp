@@ -161,8 +161,85 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
     {
         transforms.Reset();states.Reset();GenerateRocks(Key+FIntPoint(x,y),transforms,states);
         for(const auto& rock:states)
-            if(rock.Position.X>=Key.X*CellWidth-rock.Radius&&rock.Position.X<=(Key.X+1)*CellWidth+rock.Radius&&
-               rock.Position.Y>=Key.Y*CellWidth-rock.Radius&&rock.Position.Y<=(Key.Y+1)*CellWidth+rock.Radius) nearby.Add(rock);
+            if(rock.Position.X>=Key.X*CellWidth-rock.Radius-600&&rock.Position.X<=(Key.X+1)*CellWidth+rock.Radius+600&&
+               rock.Position.Y>=Key.Y*CellWidth-rock.Radius-600&&rock.Position.Y<=(Key.Y+1)*CellWidth+rock.Radius+600) nearby.Add(rock);
+    }
+    BuildPlantLayout(Key,nearby,instances);
+    for(int i=0;i<cell.Components.Num();++i)
+    {
+        cell.Components[i]->AddInstances(instances[i],false,false,false);
+        cell.Components[i]->RegisterComponent();
+    }
+}
+
+void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,TArray<TArray<FTransform>>& instances) const
+{
+    if(!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyPlantPlacement"))))
+    {
+        // Complete 4 m plot halo, evaluated before ownership filtering. Root
+        // spacing and species stay stable when a group crosses a cell border.
+        constexpr int Plots=24;
+        Dive::RockIndex footprints;
+        for(const auto& rock:nearby) footprints.Add(rock.Position.X,rock.Position.Y,rock.Radius);
+        for(int ay=Key.Y*Plots-1;ay<=(Key.Y+1)*Plots;++ay)
+        for(int ax=Key.X*Plots-1;ax<=(Key.X+1)*Plots;++ax)
+        {
+            FRandomStream random(Dive::BedDistribution::Hash(ax,ay)^0x4b93e71du);
+            const FVector anchor((ax+.5)*400+random.FRandRange(-110.f,110.f),
+                (ay+.5)*400+random.FRandRange(-110.f,110.f),0);
+            const double patch=Dive::BedDistribution::Noise(anchor.X/900,anchor.Y/900)+
+                .25*Dive::BedDistribution::Noise(anchor.X/230,anchor.Y/230);
+            const double cover=Dive::BedDistribution::Smooth(.32,.76,patch);
+            if(random.FRand()>.95*cover) continue;
+            float bed,n,e;
+            if(!Terrain.Sample(anchor.X,anchor.Y,bed)||!Terrain.Sample(anchor.X+100,anchor.Y,n)||!Terrain.Sample(anchor.X,anchor.Y+100,e)) continue;
+            const double slope=FMath::Sqrt(FMath::Square(n-bed)+FMath::Square(e-bed))/100;
+            const int dominant=FMath::Min(Plants.Num()-1,int(Dive::BedDistribution::Noise(anchor.X/1700+31,anchor.Y/1700-19)*Plants.Num()));
+            double weights[3]={},total=0;
+            for(int species=0;species<Plants.Num();++species)
+            {
+                const auto& profile=Dive::PlantProfiles[species];
+                if(!Dive::PlantHabitat(profile,-bed/100,slope,VisibleDistance)) continue;
+                const double limit=FMath::Min(profile.MaxDepth,double(VisibleDistance)*1.3);
+                weights[species]=(species==dominant?3.:.6)*(1-Dive::BedDistribution::Smooth(limit*.65,limit,-bed/100))*
+                    (1-Dive::BedDistribution::Smooth(profile.MaxSlope*.5,profile.MaxSlope,slope));
+                total+=weights[species];
+            }
+            if(total<=0) continue;
+            auto pick=[&]()
+            {
+                double choice=random.FRand()*total;
+                for(int species=0;species<Plants.Num();++species) if((choice-=weights[species])<0) return species;
+                for(int species=Plants.Num()-1;species>=0;--species) if(weights[species]>0) return species;
+                return 0;
+            };
+            const int group=pick();TArray<FVector> accepted;
+            for(int i=0;i<6;++i)
+            {
+                const int species=i==5?pick():group;
+                const double reach=i?FMath::Sqrt(random.FRand())*170:0;
+                const double angle=random.FRand()*2*PI;
+                const FVector p=anchor+FVector(FMath::Cos(angle)*reach,FMath::Sin(angle)*reach,0);
+                const float width=random.FRandRange(.65f,1.1f),height=random.FRandRange(.6f,1.1f)*(1-.42*reach/170)*(.65+.35*cover);
+                const float yaw=random.FRandRange(0.f,360.f);
+                float z,north,east;
+                if(!Terrain.Sample(p.X,p.Y,z)||!Terrain.Sample(p.X+100,p.Y,north)||!Terrain.Sample(p.X,p.Y+100,east)) continue;
+                const auto& profile=Dive::PlantProfiles[species];
+                const float localSlope=FMath::Sqrt(FMath::Square(north-z)+FMath::Square(east-z))/100;
+                if(!Dive::PlantHabitat(profile,-z/100,localSlope,VisibleDistance)||-z/100<profile.MaxHeight*height+.3) continue;
+                bool blocked=false;
+                for(const auto& other:accepted) if(FVector::DistSquared2D(p,other)<35.*35.) blocked=true;
+                for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
+                    if(FVector::DistSquared2D(p,entry.Position)<350.*350.) blocked=true;
+                for(const int index:footprints.Query(p.X,p.Y,p.X,p.Y,10))
+                    if(FVector::DistSquared2D(p,nearby[index].Position)<FMath::Square(nearby[index].Radius+10)) blocked=true;
+                if(blocked) continue;
+                accepted.Add(p);
+                if(CellAt(p)!=Key) continue;
+                instances[species+Rocks.Num()].Add(FTransform(FRotator(0,yaw,0),FVector(p.X,p.Y,z+2),FVector(width,width,height)));
+            }
+        }
+        return;
     }
     FRandomStream random(CellSeed(Key)^0x7a319fb1u);
     for(int i=0;i<4096;++i)
@@ -183,11 +260,6 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
         for(const auto& rock:nearby)
             if(FVector::DistSquared2D(rock.Position,FVector(x,y,z))<FMath::Square(rock.Radius)) { blocked=true;break; }
         if(!blocked) instances[species+Rocks.Num()].Add(FTransform(FRotator(0,yaw,0),FVector(x,y,z+2),FVector(size)));
-    }
-    for(int i=0;i<cell.Components.Num();++i)
-    {
-        cell.Components[i]->AddInstances(instances[i],false,false,false);
-        cell.Components[i]->RegisterComponent();
     }
 }
 
