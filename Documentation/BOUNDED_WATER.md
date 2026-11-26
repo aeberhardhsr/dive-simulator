@@ -1,6 +1,6 @@
 # Räumlich begrenztes Wassermedium
 
-Der Modus `-DiveBoundedWater` begrenzt die native Volumenstreuung auf den Bereich unter der bewegten Wasseroberfläche. Zusammen mit `-DiveWaterInterface` macht er Himmel und Sonne im Sichtfenster nach oben wieder sichtbar. Er ergänzt die [getrennte Wasserunterseite](WATER_INTERFACE.md). Beide Schalter sind weiterhin auf Smoke-Test-Läufe beschränkt; das normale Spielpaket bleibt `WindowsRockAprons`.
+Der Modus `-DiveBoundedWater` begrenzt die native Volumenstreuung auf den Bereich unter der bewegten Wasseroberfläche. Zusammen mit `-DiveWaterInterface` macht er Himmel und Sonne im Sichtfenster nach oben wieder sichtbar. Er ergänzt die [getrennte Wasserunterseite](WATER_INTERFACE.md). Beide Schalter sind weiterhin auf Smoke-Test-Läufe beschränkt; die jeweils aktuelle Spielvorschau steht im [README](../README.md).
 
 ## Lichtweg und Darstellung
 

@@ -10,6 +10,7 @@ from ReportRocks import package_check
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('run',type=Path);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--performance',type=Path,nargs='*',default=[])
     a=p.parse_args();run=a.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
@@ -49,14 +50,38 @@ def main():
         for item in source['maps'].values():assert sha(ROOT/item['file'])==item['sha256']
     content=json.loads((ROOT/'artifacts/RockSurfaceContentBuild.json').read_text())
     assert len(content)==3 and all(x['uv_channels']>=1 for x in content)
+    published=[]
+    launcher=None;performance=[]
+    if host['packaged']:
+        for case,name in [('forms-legacy','RockSurface_Before.png'),('forms-scan','RockSurface_After.png')]:
+            path=ROOT/'Documentation/Images'/name
+            assert sha(path)==sha(run/case/'Rock_1_0.png')
+            published.append(record(path))
+        if (run/'Launcher.json').exists():
+            launcher=json.loads((run/'Launcher.json').read_text(encoding='utf-8-sig'))
+            assert launcher['status']=='PASS' and launcher['exit_code']==0
+            assert launcher['executable_sha256'].lower()==host['sha256'].lower()
+            assert launcher['log_sha256'].lower()==sha(run/'Launcher.log')
+        for folder in a.performance:
+            folder=folder.resolve()
+            summary=json.loads((folder/'Summary.json').read_text(encoding='utf-8-sig'))
+            h=summary['host'];m=summary['metadata']
+            assert not h['editor'] and not h['background_processes']
+            assert h['executable_sha256']==host['sha256'].lower()
+            assert sorted(h['package_containers'],key=lambda x:x['file'])==sorted(host['package_containers'],key=lambda x:x['file'])
+            assert m['width']==1920 and m['height']==1080 and m['quality']==2
+            assert m['r.ScreenPercentage']==100 and m['r.VSync']==0 and m['t.MaxFPS']==0
+            performance.append(dict(summary=summary,files=[record(folder/name) for name in ['Host.json','Metadata.json','Summary.json','Capture.csv','Frame.png','Runtime.log']]))
+        if a.performance:assert {x['summary']['metadata']['scenario'] for x in performance}=={'perf-underwater','perf-stream'} and len(performance)==2
     result=dict(status='PASS',scope='Matching scanned rock surfaces, rendering and streaming; not overall visual acceptance',host=host,cases=evidence,
-        screenshot_count=sum(c['screenshots'] for c in cases),comparisons=differences,content_audit=content,content_audit_file=record(ROOT/'artifacts/RockSurfaceContentBuild.json'),
-        source_manifest=record(ROOT/'Documentation/ROCK_SURFACES.json'),limitations=[
+        screenshot_count=sum(c['screenshots'] for c in cases),comparisons=differences,published=published,content_audit=content,content_audit_file=record(ROOT/'artifacts/RockSurfaceContentBuild.json'),
+        source_manifest=record(ROOT/'Documentation/ROCK_SURFACES.json'),launcher=launcher,performance=performance,limitations=[
             'Source boulders are not Walensee geological surveys; colour desaturation and wet coatings are authored',
             'Two-kilopixel source maps retain ordinary texture streaming and mip filtering',
             'No mesh, collision or terrain reshaping; spatial texture scale follows the existing instance scale',
             'Bounded water remains a separate experimental smoke-test mode',
-            'This report does not establish frame rate, endurance, full shoreline quality or the requested overall reference fidelity'])
+            'Any attached benchmarks are short scenario measurements, not sustained frame-rate or endurance acceptance',
+            'Full shoreline quality and requested overall reference fidelity remain incomplete'])
     a.output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(f'PASS {len(cases)} cases / {result["screenshot_count"]} captures -> {a.output}')
 

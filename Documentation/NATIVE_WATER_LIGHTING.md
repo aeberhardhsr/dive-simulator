@@ -1,6 +1,6 @@
 # Räumliche Wasserbeleuchtung: Entwicklungsstand
 
-Die [Streulichtdiagnose](SCATTERING_INVESTIGATION.md) führte zu einer neuen Renderingvariante. Sie ist **experimentell, nur in Diagnoseläufen aktivierbar und kein neuer Spielstandard**. Der spielbare Paketstand bleibt `WindowsRockAprons`. Die gewünschte [visuelle Qualität](VISUAL_TARGET.md) ist weiterhin offen.
+Die [Streulichtdiagnose](SCATTERING_INVESTIGATION.md) führte zu einer neuen Renderingvariante. Sie ist **experimentell, nur in Diagnoseläufen aktivierbar und kein neuer Spielstandard**. Der damalige spielbare Paketstand war `WindowsRockAprons`; neuere Spielpakete stehen im [README](../README.md). Die gewünschte [visuelle Qualität](VISUAL_TARGET.md) ist weiterhin offen.
 
 ## Implementierte Variante
 

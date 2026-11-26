@@ -1,5 +1,16 @@
 # Gerenderte Leistungsmessung
 
+## WindowsRockSurfaces: passende Scandetails
+
+Quellstand `f0e8fb3`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; die protokollierten Listen weiterer Unreal-/Spielinstanzen sind leer. Die normale Spielbeleuchtung ist aktiv; die Messung aktiviert das experimentelle Wasservolumen nicht.
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 73,17 FPS | 62,04 FPS | 15,28 ms | 16,96 ms | 0 / 4389 |
+| Murg Schwimmen/Nachladen, 90 s | 100,79 FPS | 79,80 FPS | 10,89 ms | 36,82 ms | 1 / 9069 |
+
+Die Messbilder wurden angesehen: Der Unterwasserlauf zeigt die neue Felsoberfläche bei 5,2 Metern Tiefe. Die Murg-Strecke endet wie zuvor in freiem Wasser bei 24,7 Metern; ihr Mittelwert belegt deshalb keine Leistung für dauerhaft dichte Felsnahansichten. Der einzelne Ruckler beim Nachladen bleibt offen. Die Werte liegen nahe am vorherigen Paket; einzelne Durchläufe erlauben keine isolierte Kostenzuordnung oder allgemeine Leistungszusage. Ein aktueller Langzeittest sowie die gesamte Referenzabnahme bleiben offen. [Paket-, Launcher-, Bild- und Rohdatennachweise](ROCK_SURFACES_RESULTS.json).
+
 ## WindowsRockAprons: Kies näher am Felsfuß
 
 Quellstand `5b58239`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen, keine weitere Unreal-/Spielinstanz. Die GPU-Auslastung vor dem Start liegt beim Unterwasserlauf bei 18 Prozent und beim Murg-Lauf bei 27 Prozent.

@@ -4,7 +4,7 @@ Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.m
 
 Aktuelle Materialarbeit: [passende Scandetails für jede Felsform](ROCK_SURFACES.md) ersetzen die gemeinsame Steinprojektion. Bruchkanten, Poren und Rauheit folgen dadurch den jeweiligen UVs. Die Gesamtszene und die Qualität der Übergänge bleiben weiter in Arbeit.
 
-Aktuelle Entwicklung: [räumlich begrenztes Wassermedium](BOUNDED_WATER.md) zusammen mit der [getrennten Wasserunterseite](WATER_INTERFACE.md). Himmel und Sonne sind wieder durch die Oberfläche sichtbar. Das integrierte Streulicht wird nicht mehr nachträglich über die gesamte Hintergrundentfernung abgedunkelt; dadurch verschwindet der beobachtete schwarze Fernstreifen. Vollständige spektrale Lichtwege, Brechung, Reflexionsdetails und die Gesamtabstimmung bleiben offen. Die Varianten sind weiterhin auf Diagnoseläufe begrenzt. Das aktuelle Spielpaket bleibt `WindowsRockAprons`.
+Aktuelle Entwicklung: [räumlich begrenztes Wassermedium](BOUNDED_WATER.md) zusammen mit der [getrennten Wasserunterseite](WATER_INTERFACE.md). Himmel und Sonne sind wieder durch die Oberfläche sichtbar. Das integrierte Streulicht wird nicht mehr nachträglich über die gesamte Hintergrundentfernung abgedunkelt; dadurch verschwindet der beobachtete schwarze Fernstreifen. Vollständige spektrale Lichtwege, Brechung, Reflexionsdetails und die Gesamtabstimmung bleiben offen. Die Varianten sind weiterhin auf Diagnoseläufe begrenzt. Die aktuelle Spielvorschau ist `WindowsRockSurfaces`; die experimentellen Wasserpfade sind dort weiterhin kein normaler Spielstandard.
 
 ## Geröllsäume am Felsfuß
 

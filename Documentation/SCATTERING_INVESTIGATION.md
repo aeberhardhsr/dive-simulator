@@ -1,6 +1,6 @@
 # Untersuchung der Unterwasserbeleuchtung
 
-Stand: 26. November 2026. Die [visuelle Referenz](VISUAL_TARGET.md) ist weiterhin nicht erreicht. Diese Untersuchung liefert Vergleichsbilder und eine reproduzierbare Trennung zweier Aufhellungsanteile. Sie enthält **keine neue freigegebene Beleuchtung und kein neues Spielpaket**. Der zuletzt geprüfte Spielstand bleibt `WindowsRockAprons`.
+Stand: 26. November 2026. Die [visuelle Referenz](VISUAL_TARGET.md) ist weiterhin nicht erreicht. Diese Untersuchung liefert Vergleichsbilder und eine reproduzierbare Trennung zweier Aufhellungsanteile. Sie enthält **keine neue freigegebene Beleuchtung und kein neues Spielpaket**. Der damals zuletzt geprüfte Spielstand war `WindowsRockAprons`; neuere Spielpakete stehen im [README](../README.md).
 
 ## Fragestellung und Versuch
 
