@@ -42,6 +42,8 @@ Dieses Inkrement setzt BIOL-014, NAV-008, LOG-008 und LOG-009 für die vorhanden
 
 ## Offener Gelände-Befund
 
+Die anschließende seeweite Datenaufbereitung ist unter [COAST_MODEL.md](COAST_MODEL.md) dokumentiert. Sie verändert dieses Spielpaket noch nicht.
+
 Die Aufnahme am östlichen Einstieg zeigt eine harte offene Bodenbegrenzung. Sie bleibt auch nach dem vollständigen Nachladen der örtlichen Geländekacheln sichtbar. Im 151 × 151 m großen Rasterfenster um diesen Einstieg sind 10.690 der 22.801 Zellen unvermessen; die vorhandene Bodenpipeline lässt solche Zellen aus. Diese Datenlücken und ihre sichtbaren Übergänge sind durch die Fotofunktion nicht behoben. Die Funktionsprüfungen gelten nicht als visuelle Abnahme dieser Landschaft.
 
 ![Sichtbare offene Bodenbegrenzung am östlichen Einstieg](Images/Discoveries_Boundary.png)

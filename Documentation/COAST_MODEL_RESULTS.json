@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "status": "intermediate data; runtime integration pending",
+  "bounds": [
+    2725632,
+    1219072,
+    2741760,
+    1222656
+  ],
+  "horizontal_crs": "EPSG:2056",
+  "vertical_crs": "EPSG:5728",
+  "water_elevation_m": 419,
+  "spacing_m": 1,
+  "halo_cells": 1,
+  "tile_core_metres": 128,
+  "encoding": "little-endian float32 metres relative to 419 m LN02, north-to-south cell centres",
+  "source_outline": {
+    "url": "https://data.geo.admin.ch/ch.swisstopo.swisstlm3d/swisstlm3d_2026-02/swisstlm3d_2026-02_2056_5728.shp.zip",
+    "archive_size": 3591345815,
+    "etag": "\"3618b4a91dc66d9113f2c13b03fc7016-69\"",
+    "files": [
+      {
+        "file": "swissTLM3D_TLM_STEHENDES_GEWAESSER.cpg",
+        "size": 5,
+        "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+      },
+      {
+        "file": "swissTLM3D_TLM_STEHENDES_GEWAESSER.prj",
+        "size": 600,
+        "sha256": "f160fd6f149ff8288abd2a59f56556d034e87a0fda3dbf463761faf4210c30f5"
+      },
+      {
+        "file": "swissTLM3D_TLM_STEHENDES_GEWAESSER.shx",
+        "size": 345732,
+        "sha256": "0ae2db1552ba385188f9655ef81540d64f2d99e00f6f3e3cc1f84ed337e36b35"
+      },
+      {
+        "file": "swissTLM3D_TLM_STEHENDES_GEWAESSER.dbf",
+        "size": 26441554,
+        "sha256": "e634be61198d2646a92e3b2022bc567d10cdde454316c0465ddf4710e0524b25"
+      },
+      {
+        "file": "swissTLM3D_TLM_STEHENDES_GEWAESSER.shp",
+        "size": 40856516,
+        "sha256": "984cb2844fe3870574bf875f3f9ca0fdc7e92c2edd9786767ae66eedb8c9f8c3"
+      }
+    ],
+    "feature_count": 75,
+    "ring_count": 4,
+    "area_m2": 24106087.352613218,
+    "bounds": [
+      2725905.090999998,
+      1219381.3889999986,
+      2741422.484000001,
+      1222315.6700000018
+    ],
+    "outline_elevation_range_m": [
+      418.9560000000056,
+      418.96199999999953
+    ],
+    "polygon_sha256": "c47616b4a0f763efaab2f04befa578c8e01fa7a4fe5c85949d70f4c900b450d9",
+    "feature_revision_years": [
+      2019,
+      2022
+    ],
+    "attribution": "© swisstopo",
+    "horizontal_crs": "EPSG:2056",
+    "vertical_crs": "EPSG:5728",
+    "licence": "https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste"
+  },
+  "provenance": {
+    "1": "Original swissBATHY3D cell; unchanged apart from float32 representation",
+    "2": "Native 2 m swissALTI3D land, bilinear at 1 m; outside lake outline",
+    "3": "Modeled lake gap: harmonic interpolation, not surveyed depth"
+  },
+  "method": "Four-neighbour Laplace equation on lake cells without bathymetry. Fixed land-side solver constraints capped at scenario water level; original land values retained. Cell-centre rasterization excludes all three island holes.",
+  "uncertainty": "No estimated accuracy. Outline, terrain and bathymetry have different acquisition dates and resolutions; this is a game surface, not a navigation or diving survey.",
+  "solver": {
+    "unknown_cells": 771759,
+    "iterations": 1133,
+    "residual_m": 6.106137817596391e-11,
+    "stored_residual_m": 1.430511474609375e-06,
+    "shore_constraints_clipped_to_water": 37410,
+    "estimated_depth_range_m": [
+      1.3644758337855783e-09,
+      23.509359195395604
+    ]
+  },
+  "lake_cells": 24106100,
+  "measured_lake_cells": 23334341,
+  "measured_cells_outside_outline": 138,
+  "tile_count": 634,
+  "manifest_sha256": "864d5f7540c47ba537772761fa938066524b892235bc9e37b771832c6b572226",
+  "land_source_count": 68,
+  "bathymetry_source_count": 46,
+  "elapsed_seconds": 15.74,
+  "output_bytes": 53573000
+}
