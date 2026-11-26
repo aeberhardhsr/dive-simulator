@@ -2,9 +2,12 @@
 import hashlib
 import json
 from pathlib import Path
+import sys
 import unreal as u
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT/'Tools'))
+from texture_color import set_scan_source_encoding
 BASE='/Game/Diving'
 
 
@@ -36,6 +39,7 @@ float IsRock=1;
                 u.EditorAssetLibrary.set_metadata_tag(texture,'DiveScanSHA256',item['sha256'])
             for key,value in dict(srgb=kind=='Diffuse',compression_settings=u.TextureCompressionSettings.TC_NORMALMAP if kind=='nor_dx' else u.TextureCompressionSettings.TC_MASKS if kind=='arm' else u.TextureCompressionSettings.TC_DEFAULT,
                 flip_green_channel=False,lod_bias=0,max_texture_size=2048,never_stream=False).items():texture.set_editor_property(key,value)
+            set_scan_source_encoding(texture, kind == 'Diffuse')
             if not u.EditorAssetLibrary.save_loaded_asset(texture):raise RuntimeError(path)
             textures[pin]=texture
         name=f'M_RockScan{index+1}';path=BASE+'/Materials/'+name

@@ -7,6 +7,7 @@ import unreal as u
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'Tools'))
+from texture_color import set_scan_source_encoding
 BASE = '/Game/Diving'
 
 
@@ -37,7 +38,7 @@ def build_bed(material_names=None):
                 texture = u.load_asset(path)
                 if not texture: raise RuntimeError('Failed to import ' + name)
                 u.EditorAssetLibrary.set_metadata_tag(texture, 'DiveBedSHA256', item['sha256'])
-            texture.set_editor_property('srgb', kind == 'Diffuse')
+            set_scan_source_encoding(texture, kind == 'Diffuse')
             texture.set_editor_property('compression_settings', u.TextureCompressionSettings.TC_NORMALMAP if kind == 'nor_dx'
                                         else u.TextureCompressionSettings.TC_MASKS if kind == 'arm' else u.TextureCompressionSettings.TC_DEFAULT)
             texture.set_editor_property('flip_green_channel', False)
