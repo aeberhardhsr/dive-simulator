@@ -174,6 +174,8 @@ import sys
 if str(ROOT/'Tools') not in sys.path:sys.path.insert(0,str(ROOT/'Tools'))
 from build_water_interface_content import build_underwater_interface
 build_underwater_interface(wave_code)
+from build_water_volume_content import build_water_volume
+build_water_volume(wave_code)
 if not ONLY_WATER:
     cloud_path=BASE+'/Materials/MI_Cloud'
     if not u.EditorAssetLibrary.does_asset_exist(cloud_path):

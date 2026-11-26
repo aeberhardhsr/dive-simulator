@@ -2,7 +2,7 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
-Aktuelle Entwicklung: [getrennte Wasserunterseite mit winkelabhängiger Reflexion](WATER_INTERFACE.md), ergänzend zur [experimentellen räumlichen Wasserbeleuchtung](NATIVE_WATER_LIGHTING.md) und der [Trennung der Streulichtanteile](SCATTERING_INVESTIGATION.md). Die Unterseite spiegelt beim flachen Blick die Unterwasserumgebung. Die Durchsicht nach oben übernimmt jedoch noch zu viel globalen Wassernebel; der Lichtweg durch Wasser und Luft muss getrennt werden. Beide Renderingvarianten bleiben auf Diagnoseläufe begrenzt. Das aktuelle Spielpaket bleibt `WindowsRockAprons`.
+Aktuelle Entwicklung: [räumlich begrenztes Wassermedium](BOUNDED_WATER.md) zusammen mit der [getrennten Wasserunterseite](WATER_INTERFACE.md). Himmel und Sonne sind wieder durch die Oberfläche sichtbar. Das integrierte Streulicht wird nicht mehr nachträglich über die gesamte Hintergrundentfernung abgedunkelt; dadurch verschwindet der beobachtete schwarze Fernstreifen. Vollständige spektrale Lichtwege, Brechung, Reflexionsdetails und die Gesamtabstimmung bleiben offen. Die Varianten sind weiterhin auf Diagnoseläufe begrenzt. Das aktuelle Spielpaket bleibt `WindowsRockAprons`.
 
 ## Geröllsäume am Felsfuß
 

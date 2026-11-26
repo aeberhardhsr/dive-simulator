@@ -50,6 +50,12 @@ void ADiveWorld::CreateSky()
     Celestial->Pause();
     StarMaterial=LoadObject<UMaterialInterface>(nullptr,TEXT("/CelestialVault/Materials/MI_Stars_EnergyConservative.MI_Stars_EnergyConservative"));
     Celestial->StarsComponent->SetMaterial(0,StarMaterial);
+    // This dome includes atmosphere luminance as well as the artistic galactic
+    // texture. Keep it in sky captures; excluding it also removes daylight.
+    // Disable the uncalibrated artistic background without changing catalog
+    // stars or atmosphere. A photometric Milky Way calibration remains pending.
+    auto* deepMaterial=Celestial->DeepSkyComponent->CreateDynamicMaterialInstance(0);
+    deepMaterial->SetScalarParameterValue(TEXT("Background Intensity"),0);
     if(bOpticsSmoke)
     {
         FString hide; FParse::Value(FCommandLine::Get(),TEXT("DiveHideSky="),hide,false);
@@ -61,8 +67,8 @@ void ADiveWorld::CreateSky()
         for(const auto& layer:layers)
         {
             if(hide.Contains(layer.Name)) layer.Mesh->SetVisibility(false);
-            UE_LOG(LogTemp,Display,TEXT("DIVE_SKY_LAYER name=%s object=%s material=%s visible=%d"),
-                layer.Name,*layer.Mesh->GetName(),*GetPathNameSafe(layer.Mesh->GetMaterial(0)),layer.Mesh->IsVisible());
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SKY_LAYER name=%s object=%s material=%s visible=%d sky_capture=%d"),
+                layer.Name,*layer.Mesh->GetName(),*GetPathNameSafe(layer.Mesh->GetMaterial(0)),layer.Mesh->IsVisible(),layer.Mesh->bVisibleInRealTimeSkyCaptures?1:0);
         }
     }
     Celestial->AddTickPrerequisiteActor(this);
@@ -155,6 +161,9 @@ void ADiveWorld::UpdateDaylight()
     const auto* moon=Celestial->MoonLightComponent.Get();
     const double moonElevation=FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(-moon->GetForwardVector().Z,-1.,1.)));
     Lighting=Dive::EnvironmentLight::AtElevation(elevation,WeatherSettings.Weather,moonElevation,moon->Intensity);
+    if(bOpticsSmoke&&LastSkyUTC<0)
+        UE_LOG(LogTemp,Display,TEXT("DIVE_SKY_LIGHT sun_elevation=%.6f moon_elevation=%.6f moon_lux=%.9f water_diffuse=%.12f sky_intensity=%.6f lower_black=%d"),
+            elevation,moonElevation,moon->Intensity,Lighting.Diffuse,Sky->Intensity,Sky->bLowerHemisphereIsBlack?1:0);
     LastSkyUTC=clock.UTCSeconds;
     // Physics also advances the celestial clock between world actor ticks.
     // Publish the matching ray/time immediately, before gameplay validation.
@@ -163,6 +172,11 @@ void ADiveWorld::UpdateDaylight()
 
 bool ADiveWorld::ValidateCelestial(FString& Error) const
 {
+    if(Celestial&&!Celestial->DeepSkyComponent->bVisibleInRealTimeSkyCaptures)
+    {Error=TEXT("Atmospheric sky dome is absent from skylight capture");return false;}
+    auto* deep=Celestial?Cast<UMaterialInstanceDynamic>(Celestial->DeepSkyComponent->GetMaterial(0)):nullptr;
+    if(!deep||FMath::Abs(deep->K2_GetScalarParameterValue(TEXT("Background Intensity")))>1.e-6)
+    {Error=TEXT("Uncalibrated galactic background is active");return false;}
     const auto clock=CurrentMoment();
     const double expectedJD=2440587.5+clock.UTCSeconds/86400.;
     if(!Celestial||!Celestial->IsPaused()||FMath::Abs(Celestial->GetJulianDate()-expectedJD)*86400>.1)

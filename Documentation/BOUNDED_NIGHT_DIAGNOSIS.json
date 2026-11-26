@@ -1,0 +1,118 @@
+{
+  "scope": "Historical source-isolation probes before the sky-background correction; not current-build acceptance",
+  "cases": [
+    {
+      "group": "artifacts/bounded-night-isolation",
+      "case": "direct",
+      "mean": 5.654376202694035,
+      "p999": 16.0,
+      "image": {
+        "file": "artifacts/bounded-night-isolation/direct/DiveUnderwater_0_torch.png",
+        "sha256": "3886de39693500fd93ac0e50f0507b134d08b71c16f87839603093a2384787fc",
+        "bytes": 935265
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-isolation/direct/Runtime.log",
+        "sha256": "da977a176a7b225fe77280456c94f845a5db43986cb550fd9ebc7fde636393dd",
+        "bytes": 389602
+      }
+    },
+    {
+      "group": "artifacts/bounded-night-isolation",
+      "case": "indirect",
+      "mean": 3.07919339320077,
+      "p999": 12.0,
+      "image": {
+        "file": "artifacts/bounded-night-isolation/indirect/DiveUnderwater_0_torch.png",
+        "sha256": "7abb9dbb22111efaab9eca13d1b0b7a355c0f764f569d3adf8a389e6ef18959b",
+        "bytes": 706401
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-isolation/indirect/Runtime.log",
+        "sha256": "37764c67f28a782bb2a6f80ceacf9014adf05a80659fad035bbb1f0573a41952",
+        "bytes": 405259
+      }
+    },
+    {
+      "group": "artifacts/bounded-night-isolation",
+      "case": "sky",
+      "mean": 0.002257857601026299,
+      "p999": 1.0,
+      "image": {
+        "file": "artifacts/bounded-night-isolation/sky/DiveUnderwater_0_torch.png",
+        "sha256": "32271395a7cac9aa847e8668285ad2b9d619b38ed740c7a91ff47dff2dc26d62",
+        "bytes": 89425
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-isolation/sky/Runtime.log",
+        "sha256": "08c68b22b21bfb23ebaa46113ebd2e6f134bb5f658bff5b57becea0becdc7c40",
+        "bytes": 400983
+      }
+    },
+    {
+      "group": "artifacts/bounded-night-layers",
+      "case": "deep",
+      "mean": 0.0,
+      "p999": 0.0,
+      "image": {
+        "file": "artifacts/bounded-night-layers/deep/DiveUnderwater_0_torch.png",
+        "sha256": "b8c0689fd24b231194e5c8dfda4c1b151da13cc299975753b86ff407cebf9188",
+        "bytes": 84830
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-layers/deep/Runtime.log",
+        "sha256": "d5a91c7409dd3475f15f3932b9a9a608e5e33d3b57dc679b3db70bedf8c57737",
+        "bytes": 391917
+      }
+    },
+    {
+      "group": "artifacts/bounded-night-layers",
+      "case": "moon-planets",
+      "mean": 5.651193072482361,
+      "p999": 16.0,
+      "image": {
+        "file": "artifacts/bounded-night-layers/moon-planets/DiveUnderwater_0_torch.png",
+        "sha256": "1bb7a67fe7721d086c6f962ae1e0cdc99e22844d989d41b7dffaa70501969a63",
+        "bytes": 936172
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-layers/moon-planets/Runtime.log",
+        "sha256": "442de375c5f526f719426da1ca718dc9f105dbd9eb73b8dee730795c4b664ee4",
+        "bytes": 401334
+      }
+    },
+    {
+      "group": "artifacts/bounded-night-layers",
+      "case": "proxy",
+      "mean": 5.670105837075048,
+      "p999": 16.0,
+      "image": {
+        "file": "artifacts/bounded-night-layers/proxy/DiveUnderwater_0_torch.png",
+        "sha256": "2c2a405a3d38f625bce0d4d5d60695133c1382314a17ae0c4a712f1b3fce2124",
+        "bytes": 936297
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-layers/proxy/Runtime.log",
+        "sha256": "c71768fb19de32a3e6f130a37b02d2f002bbed8ddef589226bc56f8310bfed61",
+        "bytes": 389716
+      }
+    },
+    {
+      "group": "artifacts/bounded-night-layers",
+      "case": "stars",
+      "mean": 5.656330981398332,
+      "p999": 16.0,
+      "image": {
+        "file": "artifacts/bounded-night-layers/stars/DiveUnderwater_0_torch.png",
+        "sha256": "894fc28126623b47ffc116af02780fd66b56bf78709778efd9ffe526c4941270",
+        "bytes": 936229
+      },
+      "runtime": {
+        "file": "artifacts/bounded-night-layers/stars/Runtime.log",
+        "sha256": "8db585454ba6ac274754eaebb042ecc2cc4cbbfb53aff1fe4da74f12bd3ea729",
+        "bytes": 398704
+      }
+    }
+  ],
+  "interpretation": "DeepSky includes both atmosphere and Milky Way; excluding the component from sky captures was rejected after the air comparison and visual inspection. The final implementation keeps it captured and disables only the uncalibrated Background Intensity texture term."
+}

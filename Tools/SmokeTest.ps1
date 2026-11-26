@@ -8,8 +8,10 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$HabitatClose, [switch]$NoRockAprons,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
-    [switch]$WaterInterface, [switch]$HardwareLumen,
+    [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater,
+    [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
+    [ValidateSet('none','direct','sky','indirect')][string]$LightIsolation='none',
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
@@ -23,6 +25,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($PSBoundParameters.ContainsKey('WaterVolumeGain') -and -not $BoundedWater) {throw 'WaterVolumeGain requires BoundedWater.'}
 if($DisableLighting -and $Packaged) { throw 'Unlit diagnostic requires the native editor runtime.' }
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
@@ -46,6 +49,9 @@ if($Scenario -in @('loadout','avatar')) { $arguments+=' -DiveLoadoutCase='+$Load
 $consoleCommands=@()
 if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
 if($DisableShadows) { $consoleCommands+='ShowFlag.DynamicShadows 0' }
+if($LightIsolation -eq 'direct') {$consoleCommands+='ShowFlag.DirectLighting 0'}
+if($LightIsolation -eq 'sky') {$consoleCommands+='ShowFlag.SkyLighting 0'}
+if($LightIsolation -eq 'indirect') {$consoleCommands+='ShowFlag.GlobalIllumination 0'}
 if($DisableVolumetrics) { $consoleCommands+='r.VolumetricFog 0' }
 if($HardwareLumen) { $consoleCommands+='r.Lumen.HardwareRayTracing 1' }
 if($DisableLighting) { $consoleCommands+='viewmode unlit'; $consoleCommands+='ShowFlag.PostProcessing 0' }
@@ -65,6 +71,8 @@ if($HabitatClose) {
 if($NoRockAprons) {$arguments+=' -DiveNoRockAprons'}
 if($NativeScattering) {$arguments+=' -DiveNativeScattering'}
 if($WaterInterface) {$arguments+=' -DiveWaterInterface'}
+if($BoundedWater) {$arguments+=' -DiveBoundedWater'}
+if($PSBoundParameters.ContainsKey('WaterVolumeGain')) {$arguments+=' -DiveWaterVolumeGain='+$WaterVolumeGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($HabitatSunView) {
     if(-not $HabitatView -or $HabitatClose) {throw 'HabitatSunView requires HabitatView without HabitatClose.'}
     $arguments+=' -DiveHabitatSunView'
@@ -168,6 +176,11 @@ if($log -match 'DIVE_BUILDINGS_READY|DIVE_BUILDINGS_FAIL') {
 }
 if($log -notmatch 'DIVE_MEDIUM_PASS') { throw "Camera medium test failed. See $logPath." }
 if($WaterInterface -and $log -notmatch 'DIVE_WATER_INTERFACE_PASS layers=2') {throw 'Requested water interface was not validated.'}
+if($BoundedWater) {
+    $native=if($DisableVolumetrics){0}else{1}
+    $gain=$WaterVolumeGain.ToString('F3',[Globalization.CultureInfo]::InvariantCulture)
+    if($log -notmatch "DIVE_BOUNDED_WATER_PASS native=$native[^\r\n]*gain=$gain") {throw 'Requested bounded water volume or fallback was not validated.'}
+}
 if($HardwareLumen -and $log -notmatch 'r.Lumen.HardwareRayTracing = "1"') {throw 'Hardware Lumen override was not applied.'}
 if($NativeScattering) {
     $expected=if($DisableVolumetrics){'native=0 requested=1'}else{'native=1 requested=1'}

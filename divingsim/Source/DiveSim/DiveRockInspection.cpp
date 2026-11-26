@@ -28,6 +28,7 @@ void ADiveWorld::RefreshInspectionMedium()
     {
         if(!FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"))) UpdateAtmosphere();
         UpdateCaustics();
+        if(bBoundedWater&&Diver) UpdateWaterVolume(Diver->GetPawnViewLocation());
     }
 }
 

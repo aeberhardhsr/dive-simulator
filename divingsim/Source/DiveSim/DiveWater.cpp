@@ -133,14 +133,29 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     }
     const auto* fog=Fog.Get();
     const float water=static_cast<float>(OpticalMedium.Water);
-    const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB();
-    if(!fog||FMath::Abs(fog->FogDensity-OpticalMedium.Density)>1.e-6||
-        FMath::Abs(fog->VolumetricFogExtinctionScale-(NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f))>1.e-5||
-        FMath::Abs(fog->FogHeightFalloff-OpticalMedium.HeightFalloff)>1.e-6||
-        !fog->FogInscatteringLuminance.Equals(FLinearColor(280,1150,950)*(water*WaterAmbient*FogScatteringGain),.001f)||
-        !fog->SkyAtmosphereAmbientContributionColorScale.Equals(FLinearColor(1-water,1-water,1-water),1.e-5f)||
+    const float fogWater=bBoundedWater?0:water;
+    const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),fogWater).ToFColorSRGB();
+    if(!fog||FMath::Abs(fog->FogDensity-(bBoundedWater?Dive::WeatherScenario::At(WeatherSettings.Weather).AirFog:OpticalMedium.Density))>1.e-6||
+        FMath::Abs(fog->VolumetricFogExtinctionScale-(!bBoundedWater&&NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f))>1.e-5||
+        FMath::Abs(fog->FogHeightFalloff-(bBoundedWater?.2f:OpticalMedium.HeightFalloff))>1.e-6||
+        !fog->FogInscatteringLuminance.Equals(bBoundedWater?FLinearColor::Black:FLinearColor(280,1150,950)*(fogWater*WaterAmbient*FogScatteringGain),.001f)||
+        !fog->SkyAtmosphereAmbientContributionColorScale.Equals(FLinearColor(1-fogWater,1-fogWater,1-fogWater),1.e-5f)||
         fog->VolumetricFogAlbedo!=albedo)
     { Error=TEXT("Air/water fog parameters do not match camera medium"); return false; }
+    if(bBoundedWater)
+    {
+        if(!WaterVolume||!WaterVolumeMaterial||WaterVolume->GetMaterial(0)!=WaterVolumeMaterial||
+            !WaterVolume->IsRegistered()||WaterVolume->GetCollisionEnabled()!=ECollisionEnabled::NoCollision||
+            FMath::Abs(WaterVolumeMaterial->K2_GetScalarParameterValue(TEXT("VisibilityMetres"))-VisibleDistance)>1.e-5||
+            FMath::Abs(WaterVolumeMaterial->K2_GetScalarParameterValue(TEXT("DensityGain"))-WaterVolumeGain)>1.e-5||
+            FMath::Abs(WaterVolumeMaterial->K2_GetScalarParameterValue(TEXT("WaveTime"))-WaterMaterial->K2_GetScalarParameterValue(TEXT("WaveTime")))>1.e-5)
+        {Error=TEXT("Bounded water volume is missing or has stale visibility");return false;}
+        for(const FName name:{FName(TEXT("Viewer")),FName(TEXT("Wave0")),FName(TEXT("Wave1")),FName(TEXT("Wave2")),FName(TEXT("Wave3")),FName(TEXT("WavePhase"))})
+            if(!WaterVolumeMaterial->K2_GetVectorParameterValue(name).Equals(WaterMaterial->K2_GetVectorParameterValue(name),1.e-5f))
+            {Error=TEXT("Water volume surface does not follow shared waves");return false;}
+        UE_LOG(LogTemp,Display,TEXT("DIVE_BOUNDED_WATER_PASS native=%d air_density=%.6f visibility=%.3f gain=%.3f"),
+            NativeWaterScattering()?1:0,fog->FogDensity,VisibleDistance,WaterVolumeGain);
+    }
     const auto* section=Water?Water->GetProcMeshSection(0):nullptr;
     if(!section||section->ProcVertexBuffer.Num()<66000||!WaterMaterial||!CloudMaterial||!Rain->GetMaterial(0))
     { Error=TEXT("Missing water geometry or environment materials"); return false; }

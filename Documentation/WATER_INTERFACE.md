@@ -1,5 +1,7 @@
 # Wasseroberfläche von unten: getrennte Grenzfläche
 
+Nachfolgender Stand: Das [räumlich begrenzte Wassermedium](BOUNDED_WATER.md) behebt die hier dokumentierte graue Durchsicht im kombinierten Testmodus. Die nachstehenden Befunde und Bilder beschreiben den ursprünglichen Grenzflächen-Prototyp.
+
 Der experimentelle Modus `-DiveWaterInterface` trennt die Ober- und Unterseite der Wasserfläche. Er ist ausschließlich zusammen mit `-DiveSmokeTest` aktiv. Das normale Spiel verwendet weiterhin `M_Water`; das aktuelle spielbare Paket bleibt `Builds/WindowsRockAprons/divingsim.exe`. Die Referenzqualität ist noch nicht erreicht.
 
 ## Umsetzung

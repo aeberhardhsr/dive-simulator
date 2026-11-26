@@ -669,7 +669,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),Simulation.Settings.VisibilityMetres*100);
         UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->CameraScatteringAmbientAt(eye));
-        UnderwaterMaterial->SetScalarParameterValue(TEXT("NativeScattering"),Environment->NativeWaterScattering()?1.f:0.f);
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("NativeScattering"),Environment->NativeWaterScattering()?(Environment->BoundedWaterEnabled()?2.f:1.f):0.f);
         UnderwaterMaterial->SetScalarParameterValue(TEXT("EyeDepthCm"),depth*100);
         Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
     }
@@ -715,7 +715,7 @@ bool ADivePawn::ValidateCameraMedium(FString& Error) const
     const FVector eye=Camera->GetComponentLocation();
     const double depth=FMath::Max(0.,(Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100);
     if(!Camera->PostProcessSettings.SceneColorTint.Equals(FLinearColor::White,1.e-5f)||
-        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("NativeScattering"))-(Environment->NativeWaterScattering()?1.f:0.f))>1.e-5||
+        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("NativeScattering"))-(Environment->NativeWaterScattering()?(Environment->BoundedWaterEnabled()?2.f:1.f):0.f))>1.e-5||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("EyeDepthCm"))-depth*100)>.01||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("VisibilityCm"))-Simulation.Settings.VisibilityMetres*100)>.01||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("AmbientLight"))-Environment->CameraScatteringAmbientAt(eye))>1.e-5)

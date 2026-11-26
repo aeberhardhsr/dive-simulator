@@ -9,6 +9,13 @@ float wetFraction=Ray.z>0 ? saturate(max(0,EyeDepth)/max(.001,Ray.z)) : 1;
 float waterPath=distanceCm*wetFraction;
 float transmission=exp(-waterPath/max(150,Visibility)*1.45);
 float3 absorption=exp(-waterPath*float3(.00045,.00009,.00012));
+// The bounded medium has already integrated extinction AND in-scattering.
+// Multiplying the whole result by scene-depth absorption also absorbs the
+// accumulated foreground fog, making distant silhouettes turn black. Keep
+// that integrated radiance intact. Native fog has scalar extinction with
+// coloured albedo; full spectral transport remains a separate requirement.
+if(NativeScattering>1.5) return Scene.rgb
+    + .3*float3(250,1050,900)*saturate(Ambient)*(1-transmission);
 // Native volume integration already includes view-path extinction and shadowed
 // direct in-scattering. Do not attenuate that integrated result a second time.
 // Retain a smaller homogeneous diffuse-water term for unresolved ambient

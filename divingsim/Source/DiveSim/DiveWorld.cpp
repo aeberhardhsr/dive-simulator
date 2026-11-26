@@ -192,6 +192,10 @@ void ADiveWorld::BeginPlay()
     {
         bNativeWaterScattering=FParse::Param(FCommandLine::Get(),TEXT("DiveNativeScattering"));
         bWaterInterface=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterInterface"));
+        bBoundedWater=FParse::Param(FCommandLine::Get(),TEXT("DiveBoundedWater"));
+        bNativeWaterScattering|=bBoundedWater;
+        FParse::Value(FCommandLine::Get(),TEXT("DiveWaterVolumeGain="),WaterVolumeGain);
+        WaterVolumeGain=FMath::IsFinite(WaterVolumeGain)?FMath::Clamp(WaterVolumeGain,0.f,1.f):1.f;
         FParse::Value(FCommandLine::Get(),TEXT("DiveFogScatterGain="),FogScatteringGain);
         FParse::Value(FCommandLine::Get(),TEXT("DiveViewScatterGain="),ViewScatteringGain);
         FogScatteringGain=FMath::IsFinite(FogScatteringGain)?FMath::Clamp(FogScatteringGain,0.f,1.f):1.f;
@@ -249,6 +253,7 @@ void ADiveWorld::BeginPlay()
     Fog->SetWorldLocation(FVector(0,0,-150));
     Fog->SetVolumetricFog(true);
     Fog->SetVolumetricFogScatteringDistribution(.55f);
+    if(bBoundedWater) CreateWaterVolume();
     Configure(Dive::Config{});
 }
 
@@ -326,23 +331,28 @@ void ADiveWorld::UpdateAtmosphere()
     // Use the same half-metre transition as the camera to avoid a waterline pop.
     if(WaterMaterial) WaterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),14.f/VisibleDistance*(1-water));
     auto* fog=Fog.Get();
-    fog->SetFogDensity(OpticalMedium.Density);
-    fog->SetFogHeightFalloff(OpticalMedium.HeightFalloff);
+    fog->SetFogDensity(bBoundedWater?Dive::WeatherScenario::At(WeatherSettings.Weather).AirFog:OpticalMedium.Density);
+    fog->SetFogHeightFalloff(bBoundedWater?.2f:OpticalMedium.HeightFalloff);
     // UE converts density to inverse centimetres with /1000 and applies .5
     // in MaterialSetupCS. 0.35*14/visibility therefore needs this scale to
     // represent the former 1.45/visibility view-path extinction in the volume.
-    fog->SetVolumetricFogExtinctionScale(NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f);
+    fog->SetVolumetricFogExtinctionScale(!bBoundedWater&&NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f);
     // Black additive colour leaves aerial fog lighting to Sky Atmosphere.
     // Its contribution fades out below water, where the lake tint takes over.
-    fog->SetFogInscatteringColor(FLinearColor(280,1150,950)*(water*WaterAmbient*FogScatteringGain));
+    fog->SetFogInscatteringColor(bBoundedWater?FLinearColor::Black:FLinearColor(280,1150,950)*(water*WaterAmbient*FogScatteringGain));
     fog->SetDirectionalInscatteringColor(FLinearColor::Black);
-    fog->SetSkyAtmosphereAmbientContributionColorScale(FLinearColor(1-water,1-water,1-water));
-    fog->SetVolumetricFogAlbedo(FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB());
+    fog->SetSkyAtmosphereAmbientContributionColorScale(bBoundedWater?FLinearColor::White:FLinearColor(1-water,1-water,1-water));
+    fog->SetVolumetricFogAlbedo((bBoundedWater?FLinearColor::White:FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water)).ToFColorSRGB());
     // Concentrate underwater froxels on the visible water, instead of kilometres
     // of atmosphere; native shadowed volumetrics provide the torch beam.
     fog->SetVolumetricFogDistance(FMath::Lerp(60000.f,static_cast<float>(FMath::Clamp(static_cast<double>(VisibleDistance)*200,1000.,8000.)),water));
     fog->SetVolumetricFogStartDistance(0);
     fog->SetVolumetricFogNearFadeInDistance(10);
+    if(bBoundedWater)
+    {
+        fog->SetVolumetricFogDistance(FMath::Lerp(60000.f,static_cast<float>(FMath::Clamp(VisibleDistance*400.,2000.,16000.)),water));
+        UpdateWaterVolume(eye);
+    }
 }
 
 void ADiveWorld::Tick(float DeltaSeconds)
