@@ -9,7 +9,7 @@
 void ADiveWorld::CreateLandscape()
 {
     FString json; TSharedPtr<FJsonObject> manifest;
-    const TArray<TSharedPtr<FJsonValue>>* tiles=nullptr; double schema=0,spacing=0;
+    const TArray<TSharedPtr<FJsonValue>>* tiles=nullptr; double schema=0,spacing=0,precision=0;
     const auto& grid=Terrain.Landscape;
     const int expected=FMath::DivideAndRoundUp(grid.Columns-1,256)*FMath::DivideAndRoundUp(grid.Rows-1,256);
     auto fail=[this](const TCHAR* reason)
@@ -20,6 +20,7 @@ void ADiveWorld::CreateLandscape()
     if(!FFileHelper::LoadFileToString(json,*(FPaths::ProjectContentDir()/TEXT("Diving/Geodata/landscape_meshes.json")))||
         !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(json),manifest)||!manifest||
         !manifest->TryGetNumberField(TEXT("schema"),schema)||schema!=1||
+        !manifest->TryGetNumberField(TEXT("nanite_position_precision"),precision)||precision!=FDiveTerrain::NanitePositionPrecision||
         !manifest->TryGetNumberField(TEXT("spacing_m"),spacing)||spacing!=grid.Spacing||
         !manifest->TryGetArrayField(TEXT("tiles"),tiles)||tiles->Num()!=expected)
     { fail(TEXT("Landschaftsmeshes fehlen: Tools/Build.ps1 -Target Landscape.")); return; }
@@ -48,8 +49,6 @@ void ADiveWorld::CreateLandscape()
         { fail(TEXT("Landschaftskachel falsch registriert.")); return; }
         visited.Add(key);
         auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
-        if(mesh&&mesh->GetNaniteSettings().PositionPrecision!=FDiveTerrain::NanitePositionPrecision)
-        { fail(TEXT("Landschaftskachel mit veralteter Nanite-Präzision.")); return; }
         if(!mesh||mesh->GetNumTriangles(0)<=0) { fail(TEXT("Landschaftsasset oder Fallback-Geometrie fehlt.")); return; }
         naniteAssets+=mesh->HasValidNaniteData()?1:0;
         auto* component=NewObject<UStaticMeshComponent>(this,*name);

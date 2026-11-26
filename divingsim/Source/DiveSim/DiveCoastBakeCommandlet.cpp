@@ -114,6 +114,7 @@ int32 UDiveCoastBakeCommandlet::Main(const FString& Params)
                 if(!UPackage::SavePackage(package,mesh,*FPackageName::LongPackageNameToFilename(packageName,FPackageName::GetAssetPackageExtension()),args)) return 1;
             }
             const auto* source=mesh->GetMeshDescription(0);
+            if(mesh->GetNaniteSettings().PositionPrecision!=FDiveTerrain::NanitePositionPrecision) return 1;
             FTriMeshCollisionData collision;
             if(!source||source->Triangles().Num()!=triangles||source->Vertices().Num()!=N*N||!mesh->HasValidNaniteData()||
                !mesh->GetBodySetup()||mesh->GetBodySetup()->CollisionTraceFlag!=CTF_UseComplexAsSimple||
@@ -135,6 +136,7 @@ int32 UDiveCoastBakeCommandlet::Main(const FString& Params)
         CollectGarbage(RF_NoFlags);
     }
     auto root=MakeShared<FJsonObject>();root->SetNumberField(TEXT("schema"),1);root->SetNumberField(TEXT("baker_version"),Version);
+    root->SetNumberField(TEXT("nanite_position_precision"),FDiveTerrain::NanitePositionPrecision);
     root->SetStringField(TEXT("source_md5"),terrain.CoastSourceHash);root->SetArrayField(TEXT("tiles"),entries);
     root->SetNumberField(TEXT("triangles"),total);root->SetNumberField(TEXT("assets"),assets);
     FString json;FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&json));

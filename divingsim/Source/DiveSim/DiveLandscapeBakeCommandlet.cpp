@@ -165,6 +165,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
             vertices=FCString::Atoi(*package->GetMetaData().GetValue(mesh,TEXT("DiveLandscapeVertices")));
         }
         const auto* description=mesh->GetMeshDescription(0);
+        if(mesh->GetNaniteSettings().PositionPrecision!=FDiveTerrain::NanitePositionPrecision) return 1;
         if(!description||description->Vertices().Num()!=nx*ny||description->Triangles().Num()!=triangles||
             !mesh->HasValidNaniteData()||vertices!=nx*ny)
         { UE_LOG(LogTemp,Error,TEXT("Landscape source topology mismatch %s"),*name); return 1; }
@@ -207,6 +208,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
     }
     auto root=MakeShared<FJsonObject>();
     root->SetNumberField(TEXT("schema"),1); root->SetNumberField(TEXT("baker_version"),Version);
+    root->SetNumberField(TEXT("nanite_position_precision"),FDiveTerrain::NanitePositionPrecision);
     root->SetStringField(TEXT("input_md5"),sourceHash);
     root->SetNumberField(TEXT("spacing_m"),grid.Spacing); root->SetNumberField(TEXT("tile_cells"),TileCells);
     root->SetNumberField(TEXT("triangles"),triangleTotal); root->SetNumberField(TEXT("vertices"),vertexTotal);

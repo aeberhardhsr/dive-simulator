@@ -34,6 +34,7 @@ def main():
     origin = json.loads((DATA / "manifest.json").read_text(encoding="utf-8"))
     meshes = json.loads((DATA / "landscape_meshes.json").read_text(encoding="utf-8"))
     assert meshes["schema"] == 1 and meshes["baker_version"] == 4
+    assert meshes["nanite_position_precision"] == 6
     assert meshes["spacing_m"] == grid["spacing_m"] == 8
     assert meshes["tile_cells"] == 256
     hashes = {input_digest(), input_digest("\n"), input_digest("\r\n")}
