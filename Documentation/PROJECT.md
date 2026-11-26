@@ -65,6 +65,8 @@ Kopf, Maske und Atemregler folgen nun der Blickrichtung; die Augenposition bleib
 
 ## Reihenfolge
 
+Die beiden vom Nutzer am 26. November 2026 gelieferten Beispielbilder sind als gemeinsame Qualitätsreferenz für das fertige Erlebnis hinterlegt: [Visuelles Qualitätsziel](VISUAL_TARGET.md). Sie bestimmen Detailgrad und gestalterische Wirkung, keine 1:1-Szenenkopie. Der aktuelle Spielstand hat dieses Niveau noch nicht erreicht.
+
 Aktuelle Nutzerpriorität vom 26. November 2026: Zuerst Grafik und Unterwasserwelt optimieren. Anschließend das Rendering außerhalb des Wassers – insbesondere Berge, Wiesen und Geländetopologie – auf ein vergleichbares Realitätsniveau bringen. Die visuelle Abnahme umfasst dafür Formen und Silhouetten, Nah-/Ferndetails, Oberflächen, Vegetation, Beleuchtung sowie zusammenhängende Land-Wasser-Übergänge. Die reale Walensee-Geografie und Maßstäblichkeit bleiben maßgeblich; detailliertere Texturen allein erfüllen diese Vorgabe nicht.
 
 1. Toolchain, reproduzierbarer Build, Simulationskern und spielbarer Tauchablauf.
