@@ -33,8 +33,8 @@ void ADivePawn::TickSedimentTest(float Dt)
     else if(SiltSmokePhase==2&&t>=21)
     {
         FVector2D pixel;const bool projected=pc->ProjectWorldLocationToScreen(Environment->SedimentCenter(),pixel);
-        UE_LOG(LogTemp,Display,TEXT("DIVE_SEDIMENT_VIEW projected=%d pixel=%s center=%s eyes=%s gaze=%s"),projected,*pixel.ToString(),
-            *Environment->SedimentCenter().ToString(),*PhysicalEyes().ToString(),*PhysicalPose.Gaze.ToString());
+        UE_LOG(LogTemp,Display,TEXT("DIVE_SEDIMENT_VIEW projected=%d pixel=%s center=%s eyes=%s gaze=%s head_yaw=%.3f body_yaw=%.3f"),projected,*pixel.ToString(),
+            *Environment->SedimentCenter().ToString(),*PhysicalEyes().ToString(),*PhysicalPose.Gaze.ToString(),PhysicalPose.HeadYaw,PhysicalPose.BodyYaw());
         SiltBornAtStop=Environment->SedimentBorn();shot(TEXT("Cloud"));SiltSmokePhase=3;
     }
     else if(SiltSmokePhase==3&&t>=23)

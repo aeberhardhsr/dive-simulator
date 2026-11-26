@@ -7,33 +7,39 @@
 struct FDiveBodyFrame
 {
     FTransform BodyWorld,HeadLocal;
-    float BodyPitch=0,HeadPitch=0;
+    float BodyPitch=0;
     static FVector Eyes() { return FVector(8,0,170); }
     static FVector Neck() { return FVector(0,0,149); }
     static FVector Mouth() { return FVector(11.5,0,158.5); }
     static FRotator View(float Pitch,float Yaw)
     { return FRotator(FRotator::NormalizeAxis(Pitch),Yaw,0); }
 
-    static void ApplyLocalPitch(USceneComponent* Component,const FVector& Location,float Pitch)
+    // SceneComponent stores Euler angles. Its usual quaternion conversion
+    // snaps a small neighbourhood of +/-90 degrees to the singularity.
+    // Extract the actual axes instead so off-origin head meshes stay anchored.
+    static void ApplyLocalFrame(USceneComponent* Component,const FTransform& Frame)
     {
-        Component->SetRelativeLocation(Location);
-        Component->SetRelativeRotationExact(FRotator(Pitch,0,0));
-        // Exact writes the stored Euler angles after moving the component;
-        // refresh the world transform from those exact angles as well.
+        const FQuat q=Frame.GetRotation();
+        const FVector x=q.GetAxisX(),y=q.GetAxisY(),z=q.GetAxisZ();
+        const double horizontal=FMath::Sqrt(x.X*x.X+x.Y*x.Y);
+        const FRotator angles(FMath::RadiansToDegrees(FMath::Atan2(x.Z,horizontal)),
+            FMath::RadiansToDegrees(horizontal>1.e-10?FMath::Atan2(x.Y,x.X):FMath::Atan2(-y.X,y.Y)),
+            horizontal>1.e-10?FMath::RadiansToDegrees(FMath::Atan2(-y.Z,z.Z)):0.);
+        Component->SetRelativeLocation(Frame.GetLocation());
+        Component->SetRelativeRotationExact(angles);
         Component->UpdateComponentToWorld();
     }
 
-    static FDiveBodyFrame FromEyes(const FVector& EyeWorld,float RequestedBodyPitch,float Yaw,float ViewPitch)
+    static FDiveBodyFrame FromEyes(const FVector& EyeWorld,float RequestedBodyPitch,float Yaw,float ViewPitch,float HeadYaw=0)
     {
         FDiveBodyFrame result;
         const float pitch=FRotator::NormalizeAxis(ViewPitch);
         // At extreme gaze angles the shoulders follow, keeping the head within
         // its animated neck range while preserving the player's gaze exactly.
         result.BodyPitch=FMath::Clamp(RequestedBodyPitch,pitch-90.f,pitch+60.f);
-        result.HeadPitch=pitch-result.BodyPitch;
-        const FQuat head=FRotator(result.HeadPitch,0,0).Quaternion();
+        const FQuat body=FRotator(result.BodyPitch,Yaw-HeadYaw,0).Quaternion();
+        const FQuat head=(body.Inverse()*View(pitch,Yaw).Quaternion()).GetNormalized();
         result.HeadLocal=FTransform(head,Neck()-head.RotateVector(Neck()));
-        const FQuat body=FRotator(result.BodyPitch,Yaw,0).Quaternion();
         result.BodyWorld=FTransform(body,EyeWorld-body.RotateVector(result.HeadLocal.TransformPosition(Eyes())));
         return result;
     }

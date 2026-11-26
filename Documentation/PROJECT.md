@@ -27,6 +27,8 @@ WATR-011 ist als begrenztes Spielmodell implementiert: kollisionsgeprüfte Floss
 
 Wassertemperatur, Sichtweite und Strömung können jetzt automatisch aus dem Szenario bestimmt oder manuell eingestellt werden. Das Temperaturmodell interpoliert veröffentlichte saisonale Eawag-Tiefenprofile; Sicht und Strömung bleiben ausdrücklich gestaltete Spielwerte. Auswahl und manuelle Werte bleiben in Profilen erhalten; Protokolle speichern die tatsächlichen Bedingungen einschließlich Temperaturstützstellen. Herkunft, Reproduktion und Grenzen: [AUTOMATIC_ENVIRONMENT.md](AUTOMATIC_ENVIRONMENT.md).
 
+Bei blockierter Körperdrehung kann ein kollisionsgeprüfter Kopfblick bis ±65° übernommen werden. Maske, Atemregler und physischer Mund folgen dem Kopf; Hände und Flossen behalten die seitliche Körperrichtung. Eine vollständige Drehung nach hinten benötigt weiterhin Platz. Umsetzung und Grenzen: [HEAD_TURN.md](HEAD_TURN.md).
+
 ## Fachlicher Gesamtumfang und noch zu prüfende Abnahme
 
 | Bereich | Umfang aus Spezifikation | Abnahme |

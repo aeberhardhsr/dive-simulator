@@ -27,7 +27,7 @@ void ADivePawn::MoveAtShore(float Step,float Forward,float Side,float Vertical,f
     const double immersion=Immersion(old.Z/100,surface/100);
     if(bWalking)
     {
-        const FRotationMatrix rotation(FRotator(0,pc->GetControlRotation().Yaw,0));
+        const FRotationMatrix rotation(FRotator(0,PhysicalPose.BodyYaw(),0));
         Wish=(rotation.GetUnitAxis(EAxis::X)*Forward+rotation.GetUnitAxis(EAxis::Y)*Side).GetClampedToMaxSize(1);
         Effort=Wish.Size()*(Sprint>0?.7f:.35f);
         const FVector target=Wish*WalkSpeed(Sprint>0,0)*Simulation.Data.MotorCapacity;

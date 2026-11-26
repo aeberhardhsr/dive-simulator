@@ -6,13 +6,26 @@
 struct FDivePoseState
 {
     FRotator Gaze=FRotator::ZeroRotator;
-    float Swim=0,BodyPitch=0,Motion=0,Phase=0,Wrist=0,KneeTuck=0;
+    float Swim=0,BodyPitch=0,HeadYaw=0,Motion=0,Phase=0,Wrist=0,KneeTuck=0;
     float FloorPitch[2]={-90,-90};
     bool Walking=false;
 
+    float BodyYaw() const { return FRotator::NormalizeAxis(Gaze.Yaw-HeadYaw); }
+    FRotator BodyHeadingView() const { return FDiveBodyFrame::View(Gaze.Pitch,BodyYaw()); }
+
+    // An authored 65 degree sideways look is available when shoulders/gear
+    // cannot turn. The caller still collision-tests the entire articulated rig.
+    void LookWithoutBody(const FRotator& View)
+    {
+        const float yaw=BodyYaw();
+        HeadYaw=FMath::Clamp(static_cast<float>(FMath::FindDeltaAngleDegrees(yaw,View.Yaw)),-65.f,65.f);
+        Gaze=FDiveBodyFrame::View(FMath::Clamp(static_cast<float>(FRotator::NormalizeAxis(View.Pitch)),
+            FMath::Max(-85.f,BodyPitch-60.f),FMath::Min(85.f,BodyPitch+90.f)),yaw+HeadYaw);
+    }
+
     void Advance(float Dt,const FRotator& View,bool IsWalking,bool Swimming,bool Moving,float Speed,float Effort,bool ReadComputer)
     {
-        Gaze=FDiveBodyFrame::View(View.Pitch,View.Yaw);Walking=IsWalking;
+        Gaze=FDiveBodyFrame::View(View.Pitch,View.Yaw);HeadYaw=0;Walking=IsWalking;
         Swim=FMath::FInterpTo(Swim,Swimming?1.f:0.f,Dt,3);
         Motion=FMath::FInterpTo(Motion,Moving?1.f:0.f,Dt,5);
         // A contact may temporarily prevent the motion blend from relaxing.

@@ -117,7 +117,7 @@ void ADiveEquipment::Update(float DeltaSeconds)
     Meshes[0]->SetRelativeScale3D(FVector(1,sleeveScale,sleeveScale));
     Meshes[3]->SetRelativeScale3D(FVector(1,sleeveScale,sleeveScale));
     WristBlend=Diver->PhysicalPose.Wrist;
-    SetActorTransform(FTransform(Diver->PhysicalPose.Gaze,Diver->PhysicalEyes()));
+    SetActorTransform(FTransform(Diver->PhysicalPose.BodyHeadingView(),Diver->PhysicalEyes()));
     LeftWrist->SetRelativeTransform(Diver->PhysicalPose.Hand(true));
     RightHand->SetRelativeTransform(Diver->PhysicalPose.Hand(false));
     if(Avatar) Avatar->UpdatePose(DeltaSeconds,LeftWrist,RightHand);
@@ -127,7 +127,7 @@ void ADiveEquipment::Update(float DeltaSeconds)
         DisplayTimer=0; DisplayState=Diver->Simulation.Data;
         bEnglish=Diver->bEnglish; bUnlimited=Diver->PendingConfig.GameMode==Dive::Mode::Exploration;
         Page=Diver->ComputerPage;
-        Heading=FMath::Fmod(Diver->GetControlRotation().Yaw+360,360);
+        Heading=FMath::Fmod(Diver->PhysicalPose.BodyYaw()+360,360);
         Display->UpdateResource();
     }
 }

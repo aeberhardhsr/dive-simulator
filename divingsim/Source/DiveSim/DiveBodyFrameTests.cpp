@@ -1,4 +1,5 @@
 #include "DiveBodyFrame.h"
+#include "DivePose.h"
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
 
@@ -12,8 +13,40 @@ bool FDiveHeadComponent::RunTest(const FString&)
     {
         const auto frame=FDiveBodyFrame::FromEyes(FVector(120034,-327804,416.75),0,127,pitch);
         root->SetWorldTransform(frame.BodyWorld);
-        FDiveBodyFrame::ApplyLocalPitch(head,frame.HeadLocal.GetLocation(),frame.HeadPitch);
+        FDiveBodyFrame::ApplyLocalFrame(head,frame.HeadLocal);
         TestTrue(TEXT("Engine component preserves the eye anchor near the Euler singularity"),head->GetComponentTransform().TransformPosition(FDiveBodyFrame::Eyes()).Equals(FVector(120034,-327804,416.75),.01));
+    }
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveSidewaysHead,"DiveSim.Body.SidewaysHeadAndLimits",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveSidewaysHead::RunTest(const FString&)
+{
+    const FVector eye(120034,-327804,416.75);
+    auto* root=NewObject<USceneComponent>();auto* component=NewObject<USceneComponent>();component->SetupAttachment(root);
+    for(float body:{-80.f,-40.f,0.f})
+    for(float yaw:{-179.f,0.f,179.f})
+    for(float pitch:{-85.f,-60.f,0.f,9.99f,10.f,65.f,85.f,89.99f,90.f})
+    for(float offset:{-65.f,-.01f,0.f,.01f,65.f})
+    {
+        const auto frame=FDiveBodyFrame::FromEyes(eye,body,yaw,pitch,offset);
+        root->SetWorldTransform(frame.BodyWorld);FDiveBodyFrame::ApplyLocalFrame(component,frame.HeadLocal);
+        const auto head=component->GetComponentTransform();
+        TestTrue(TEXT("Sideways head keeps physical eyes anchored"),head.TransformPosition(FDiveBodyFrame::Eyes()).Equals(eye,.01));
+        TestTrue(TEXT("Sideways head preserves full gaze without camera roll"),head.GetRotation().Equals(FDiveBodyFrame::View(pitch,yaw).Quaternion(),.00001));
+        TestTrue(TEXT("Neck stays attached to torso"),component->GetRelativeTransform().TransformPosition(FDiveBodyFrame::Neck()).Equals(FDiveBodyFrame::Neck(),.01));
+        TestTrue(TEXT("Sideways mouth matches breathing landmark"),head.TransformPosition(FDiveBodyFrame::Mouth()).Equals(FDiveBodyFrame::PhysicalMouth(eye,FRotator(pitch,yaw,0)),.01));
+        for(float blend:{0.f,.5f,1.f})
+        {
+            const auto regulator=frame.RegulatorLocal(blend);FDiveBodyFrame::ApplyLocalFrame(component,regulator);
+            TestTrue(TEXT("Regulator component follows quaternion transition"),component->GetRelativeTransform().Equals(regulator,.00001));
+        }
+        FDivePoseState pose;pose.BodyPitch=body;pose.Gaze=FRotator(0,yaw,0);
+        pose.LookWithoutBody(FRotator(pitch,yaw+120,0));
+        TestTrue(TEXT("Head-only turn preserves body yaw across wrap"),FMath::Abs(FMath::FindDeltaAngleDegrees(pose.BodyYaw(),yaw))<.001);
+        TestTrue(TEXT("Head-only motion stays inside yaw and pitch limits"),pose.HeadYaw==65&&pose.Gaze.Pitch-body>=-60&&pose.Gaze.Pitch-body<=90);
+        pose.LookWithoutBody(FRotator(0,yaw-120,0));
+        TestEqual(TEXT("Opposite head-only request uses the same shoulder heading"),pose.HeadYaw,-65.f);
     }
     return true;
 }

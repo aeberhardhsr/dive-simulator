@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "scenario": "perf-sediment",
+    "csv": "O:/games/dive game/Builds/WindowsHeadTurn/divingsim/Saved/Performance/perf-sediment_C3CCBA41/Capture.csv",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+    "engine": "5.8.4-58902052+++UE5+Release-5.8",
+    "width": 1920,
+    "height": 1080,
+    "quality": 2,
+    "warmup_seconds": 15,
+    "requested_capture_seconds": 60,
+    "simulation_seconds": 75.0399983227253,
+    "distance_m": 25.071255224051974,
+    "depth_m": 5.613914011369515,
+    "walking": false,
+    "sediment_born": 24,
+    "sediment_live": 0,
+    "r.ScreenPercentage": 100,
+    "r.SecondaryScreenPercentage.GameViewport": 100,
+    "r.DynamicRes.OperationMode": 0,
+    "r.VSync": 0,
+    "t.MaxFPS": 0,
+    "sg.ViewDistanceQuality": 2,
+    "sg.AntiAliasingQuality": 2,
+    "sg.ShadowQuality": 2,
+    "sg.GlobalIlluminationQuality": 2,
+    "sg.ReflectionQuality": 2,
+    "sg.PostProcessQuality": 2,
+    "sg.TextureQuality": 2,
+    "sg.EffectsQuality": 2,
+    "sg.FoliageQuality": 2
+  },
+  "host": {
+    "started_utc": "2026-11-26T00:22:47.4163780Z",
+    "editor": false,
+    "background_processes": [
+      {
+        "Id": 33256,
+        "ProcessName": "UnrealEditor",
+        "StartTime": "2026-11-25T23:14:35.6953429+01:00",
+        "WorkingSet64": 759857152
+      }
+    ],
+    "gpu_before": [
+      "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+      "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3259 MiB, 2 %"
+    ]
+  },
+  "frames": 5452,
+  "discarded_boundary_frames": 2,
+  "measured_seconds": 59.981062,
+  "average_fps": 90.89535627095098,
+  "one_percent_low_fps": 74.3904815890997,
+  "frame": {
+    "mean_ms": 11.001662142333089,
+    "p50_ms": 10.9695,
+    "p95_ms": 12.5056,
+    "p99_ms": 13.1154,
+    "max_ms": 14.3271
+  },
+  "game_thread": {
+    "mean_ms": 2.3476710014673516,
+    "p50_ms": 2.2649,
+    "p95_ms": 3.4203,
+    "p99_ms": 3.932,
+    "max_ms": 5.3966
+  },
+  "render_thread": {
+    "mean_ms": 10.99523626192223,
+    "p50_ms": 10.963,
+    "p95_ms": 12.4837,
+    "p99_ms": 13.0836,
+    "max_ms": 14.2507
+  },
+  "rhi_thread": {
+    "mean_ms": 2.4216,
+    "p50_ms": 2.3886,
+    "p95_ms": 2.8684,
+    "p99_ms": 3.217,
+    "max_ms": 4.4087
+  },
+  "gpu": {
+    "mean_ms": 10.41625520909758,
+    "p50_ms": 10.4056,
+    "p95_ms": 11.7487,
+    "p99_ms": 12.233,
+    "max_ms": 12.9592
+  },
+  "frames_over_16_67_ms": 0,
+  "frames_over_33_33_ms": 0,
+  "frames_over_100_ms": 0,
+  "all_frames_within_30fps_budget": true,
+  "memory_mb": {
+    "start": 2438.7031,
+    "end": 2424.0586,
+    "max": 2451.8906
+  },
+  "terrain_chunks": {
+    "min": 9.0,
+    "max": 9.0,
+    "frames_below_nine": 0
+  },
+  "distance_m": 12.8176,
+  "top_gpu_passes_ms_not_additive": [
+    {
+      "name": "GPU/ShadowDepths",
+      "mean_ms": 2.5259294754218637
+    },
+    {
+      "name": "GPU/VolumetricCloudShadow",
+      "mean_ms": 1.1196596478356566
+    },
+    {
+      "name": "GPU/Unaccounted",
+      "mean_ms": 0.834529713866471
+    },
+    {
+      "name": "GPU/TemporalSuperResolution",
+      "mean_ms": 0.699098899486427
+    },
+    {
+      "name": "GPU/LumenReflections",
+      "mean_ms": 0.4740468451944241
+    },
+    {
+      "name": "GPU/ShadowProjection",
+      "mean_ms": 0.4533737894350697
+    },
+    {
+      "name": "GPU/Basepass",
+      "mean_ms": 0.4026268708730741
+    },
+    {
+      "name": "GPU/NaniteVisBuffer",
+      "mean_ms": 0.34564026045487894
+    },
+    {
+      "name": "GPU/LumenSceneUpdate",
+      "mean_ms": 0.29342943873807775
+    },
+    {
+      "name": "GPU/Postprocessing",
+      "mean_ms": 0.27797019442406457
+    },
+    {
+      "name": "GPU/GlobalDistanceFieldUpdate",
+      "mean_ms": 0.2720417278063096
+    },
+    {
+      "name": "GPU/Lights",
+      "mean_ms": 0.23211089508437271
+    }
+  ],
+  "evidence": {
+    "Runtime.log": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-sediment-1080p-q2-20261126-012247-415\\Runtime.log",
+      "sha256": "fc9077ed56f085384c6fd63a9459124f8aced3a4046ecca08d80607d1413e06b"
+    },
+    "Host.json": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-sediment-1080p-q2-20261126-012247-415\\Host.json",
+      "sha256": "f7a6387ba0f19b7153f4fd18120210575fc8a251a30581cf4c929833f2f88314"
+    },
+    "Metadata.json": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-sediment-1080p-q2-20261126-012247-415\\Metadata.json",
+      "sha256": "13948f25008743bb626668e0eb4a6431cd975855b65e590778e64c78ff76ad7a"
+    },
+    "Capture.csv": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-sediment-1080p-q2-20261126-012247-415\\Capture.csv",
+      "sha256": "e991ec90bbaa21a0b56271212a1bf0718beeb6f9390434d8bff61d3edce269b4"
+    },
+    "Frame.png": {
+      "path": "O:\\games\\dive game\\artifacts\\perf-sediment-1080p-q2-20261126-012247-415\\Frame.png",
+      "sha256": "cd2f51ede9d7b0d6000a3a72d636f04ca1b2a7291bad311926d953e9740a579a"
+    }
+  },
+  "executable": {
+    "path": "O:\\games\\dive game\\Builds\\WindowsHeadTurn\\divingsim\\Binaries\\Win64\\divingsim-HeadTurn.exe",
+    "sha256": "3904f9a9c48c31cffe4616a2ecbdc134a5996b5f9ae3ae21ba3b2c9132a072a5"
+  },
+  "limits": [
+    "The user editor remains open; this is not an isolated hardware benchmark.",
+    "This is one near-bed sediment route, not a controlled worst-case blocked-head-turn benchmark.",
+    "No minimum-hardware, photorealism or native macOS acceptance is implied."
+  ]
+}

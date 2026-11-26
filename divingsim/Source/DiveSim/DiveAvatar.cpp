@@ -163,16 +163,13 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
         MotionPhase=bPreviewSwimming?FMath::Fmod(MotionPhase+DeltaSeconds*4,2*PI):0;
         BodyPitch=FMath::FInterpTo(BodyPitch,-80*SwimBlend,DeltaSeconds,5);
     }
-    const auto frame=FDiveBodyFrame::FromEyes(eyes,BodyPitch,gaze.Yaw,viewPitch);
+    const auto frame=FDiveBodyFrame::FromEyes(eyes,BodyPitch,gaze.Yaw,viewPitch,Diver->bDiveActive?Diver->PhysicalPose.HeadYaw:0);
     BodyPitch=frame.BodyPitch;
     PoseEyes=eyes;PoseGaze=FDiveBodyFrame::View(viewPitch,gaze.Yaw).Vector();
     SetActorTransform(frame.BodyWorld);
     for(int index:{Hood,Mask})
     {
-        // Preserve the known single-axis Euler rotation. Converting the local
-        // quaternion back to a rotator snaps near 90 degrees in Unreal, moving
-        // these off-origin meshes despite a mathematically exact eye anchor.
-        FDiveBodyFrame::ApplyLocalPitch(Parts[index],frame.HeadLocal.GetLocation(),frame.HeadPitch);
+        FDiveBodyFrame::ApplyLocalFrame(Parts[index],frame.HeadLocal);
     }
     for(FName name:BoneOrder) Suit->SetBoneTransformByName(name,Reference[name],EBoneSpaces::ComponentSpace);
     // FBX handedness is established by imported rest coordinates, not a label assumption.
@@ -192,9 +189,9 @@ void ADiveAvatar::UpdatePose(float DeltaSeconds,USceneComponent* Left,USceneComp
     Leg(leftIsL?TEXT("l"):TEXT("r"),-1,MotionPhase);
     Leg(leftIsL?TEXT("r"):TEXT("l"),1,MotionPhase+PI);
     RegulatorBlend=FMath::FInterpTo(RegulatorBlend,Diver->bRegulatorInMouth?1.f:0.f,DeltaSeconds,8);
-    FDiveBodyFrame::ApplyLocalPitch(Parts[Regulator],frame.RegulatorLocal(RegulatorBlend).GetLocation(),frame.HeadPitch*RegulatorBlend);
+    FDiveBodyFrame::ApplyLocalFrame(Parts[Regulator],frame.RegulatorLocal(RegulatorBlend));
     Parts[Regulator]->SetOwnerNoSee(RegulatorBlend>.7);
-    const FRotator heading(0,0,-Diver->GetControlRotation().Yaw);
+    const FRotator heading(0,0,-(Diver->bDiveActive?Diver->PhysicalPose.BodyYaw():gaze.Yaw));
     const FVector compassCenter(14,8.5,131);
     Parts[Compass]->SetRelativeRotation(heading);
     Parts[Compass]->SetRelativeLocation(compassCenter-heading.RotateVector(compassCenter));
@@ -210,7 +207,7 @@ FDiveLegPose ADiveAvatar::LegPose(const TCHAR* Side,float Sign,const FDivePoseSt
     {
         const FQuat current=Body.GetRotation()*pose.Foot.Quaternion();
         const double pitch=FMath::Max(static_cast<double>(current.Rotator().Pitch),static_cast<double>(State.FloorPitch[Sign<0?0:1])+3);
-        pose.Foot=(Body.GetRotation().Inverse()*FRotator(pitch,State.Gaze.Yaw+Sign*7,0).Quaternion()).Rotator();
+        pose.Foot=(Body.GetRotation().Inverse()*FRotator(pitch,State.BodyYaw()+Sign*7,0).Quaternion()).Rotator();
     }
     return pose;
 }
@@ -218,7 +215,7 @@ FDiveLegPose ADiveAvatar::LegPose(const TCHAR* Side,float Sign,const FDivePoseSt
 void ADiveAvatar::ContactPose(FDivePoseState& State,const FVector& Eyes,TArray<FDiveContactShape>& Shapes,FTransform& Left,FTransform& Right)
 {
     Configure();Shapes.Reset();
-    const auto frame=FDiveBodyFrame::FromEyes(Eyes,State.BodyPitch,State.Gaze.Yaw,State.Gaze.Pitch);
+    const auto frame=FDiveBodyFrame::FromEyes(Eyes,State.BodyPitch,State.Gaze.Yaw,State.Gaze.Pitch,State.HeadYaw);
     const auto& body=frame.BodyWorld;const FTransform head=frame.HeadLocal*body;
     auto capsule=[&](FName Name,const FVector& A,const FVector& B,double Radius,const FTransform& Transform)
     { Shapes.Add(FDiveContactShape::Capsule(Name,Transform.TransformPosition(A),Transform.TransformPosition(B),Radius)); };
@@ -237,7 +234,7 @@ void ADiveAvatar::ContactPose(FDivePoseState& State,const FVector& Eyes,TArray<F
     Shapes.Add(FDiveContactShape::Capsule(TEXT("Cylinder"),cylinder.TransformPosition(FVector(0,0,bounds.Min.Z+radius/scale)),
         cylinder.TransformPosition(FVector(0,0,bounds.Max.Z-radius/scale)),radius));
     const bool leftIsL=Reference[TEXT("upper_l")].GetLocation().Y<0;
-    const FTransform camera(State.Gaze,Eyes);
+    const FTransform camera(State.BodyHeadingView(),Eyes);
     Left=State.Hand(true)*camera;Right=State.Hand(false)*camera;
     for(int i=0;i<2;++i)
     {
@@ -252,7 +249,7 @@ void ADiveAvatar::ContactPose(FDivePoseState& State,const FVector& Eyes,TArray<F
         if(State.Walking&&Diver->Environment)
         {
             const auto initial=LegPose(side,sign,State,body);
-            const FVector ankle=body.TransformPosition(initial.Ankle),forward=FRotator(0,State.Gaze.Yaw+sign*7,0).Vector();
+            const FVector ankle=body.TransformPosition(initial.Ankle),forward=FRotator(0,State.BodyYaw()+sign*7,0).Vector();
             float heel=0,toe=0;
             if(Diver->Environment->SupportZ(ankle.X,ankle.Y,heel,ankle.Z)&&
                Diver->Environment->SupportZ(ankle.X+forward.X*60,ankle.Y+forward.Y*60,toe,ankle.Z+50))

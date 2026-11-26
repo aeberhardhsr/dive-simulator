@@ -72,6 +72,11 @@ void ADivePawn::AdvanceContactPose(float Step,float Effort)
             if(!accepted) desired=requested;
         }
         if(!accepted) { desired.Swim=PhysicalPose.Swim;desired.BodyPitch=PhysicalPose.BodyPitch;accepted=clear(); }
+        if(!accepted)
+        {
+            desired=PhysicalPose;desired.LookWithoutBody(RequestedGaze);
+            accepted=clear();
+        }
         ++BlockedPoseSteps;LastBodyContact=contact;
         if(bSmokeTest&&(BlockedPoseSteps<=3||BlockedPoseSteps%200==0))
             UE_LOG(LogTemp,Display,TEXT("DIVE_CONTACT_POSE part=%s accepted=%d swim=%.3f desired=%.3f walking=%d"),*contact.ToString(),accepted,PhysicalPose.Swim,desired.Swim,bWalking);
@@ -81,6 +86,9 @@ void ADivePawn::AdvanceContactPose(float Step,float Effort)
     bBlockedGaze=!accepted||!desired.Gaze.Equals(RequestedGaze,.001);
     if(accepted)
     {
+        if(bSmokeTest&&FMath::Abs(desired.HeadYaw-PhysicalPose.HeadYaw)>5)
+            UE_LOG(LogTemp,Display,TEXT("DIVE_CONTACT_HEAD yaw=%.3f body=%.3f gaze=%.3f requested=%.3f"),
+                desired.HeadYaw,desired.BodyYaw(),desired.Gaze.Yaw,RequestedGaze.Yaw);
         if(Environment&&!desired.Walking&&desired.Swim>.5&&desired.Motion>.05&&
             FMath::Abs(desired.Phase-PhysicalPose.Phase)>.00001)
             for(int i=0;i<candidate.Num();++i)

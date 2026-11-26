@@ -721,7 +721,7 @@ void ADivePawn::SimulateStep(float Step)
     const float sprint=Down(EDiveAction::Sprint);
     AdvanceContactPose(Step,FMath::Min(1.f,FVector(forward,side,vertical).Size())*(sprint>0?1.f:.45f));
     const FVector old=GetActorLocation();
-    const FRotationMatrix orientation(PC->GetControlRotation());
+    const FRotationMatrix orientation(PhysicalPose.BodyHeadingView());
     FVector wish=orientation.GetUnitAxis(EAxis::X)*forward+orientation.GetUnitAxis(EAxis::Y)*side+FVector::UpVector*vertical;
     wish=wish.GetClampedToMaxSize(1);
     float effort=wish.Size()*(sprint>0?1.f:.45f);

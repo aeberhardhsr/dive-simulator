@@ -93,6 +93,9 @@ public:
     bool SaveLog(const FString& Reason);
     FString Local(const TCHAR* German,const TCHAR* English) const { return bEnglish?English:German; }
 private:
+#if WITH_DEV_AUTOMATION_TESTS
+    friend class FDiveBlockedHeadTurn;
+#endif
     FDiveRecordingWriter RecordingWriter;
     float Accumulator=0, TelemetryAccumulator=0;
     double CameraBaseHeight=0;

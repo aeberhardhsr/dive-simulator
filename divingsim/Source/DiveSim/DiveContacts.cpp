@@ -60,8 +60,9 @@ bool DiveContacts::PosePathClear(UWorld* World,const FDivePoseState& Before,FDiv
 {
     const double yaw=FMath::FindDeltaAngleDegrees(Before.Gaze.Yaw,After.Gaze.Yaw);
     const double pitch=FMath::FindDeltaAngleDegrees(Before.Gaze.Pitch,After.Gaze.Pitch);
+    const double bodyYaw=yaw-(After.HeadYaw-Before.HeadYaw);
     const float phase=FMath::FindDeltaAngleRadians(Before.Phase,After.Phase);
-    const double angle=FMath::Max3(FMath::Abs(yaw),FMath::Abs(pitch),static_cast<double>(FMath::Abs(After.BodyPitch-Before.BodyPitch)));
+    const double angle=FMath::Max(FMath::Abs(bodyYaw),FMath::Max3(FMath::Abs(yaw),FMath::Abs(pitch),static_cast<double>(FMath::Abs(After.BodyPitch-Before.BodyPitch))));
     const double joints=FMath::Max(FMath::Abs(After.KneeTuck-Before.KneeTuck)*100.,
         FMath::Max3(FMath::Abs(After.Swim-Before.Swim)*90.,FMath::Abs(After.Wrist-Before.Wrist)*90.,FMath::Abs(phase)*180./PI));
     const int steps=FMath::Max(1,FMath::CeilToInt(FMath::Max(angle,joints)/2.));
@@ -71,6 +72,9 @@ bool DiveContacts::PosePathClear(UWorld* World,const FDivePoseState& Before,FDiv
         const float t=static_cast<float>(i)/steps;
         auto pose=After;
         pose.Gaze=FRotator(Before.Gaze.Pitch+pitch*t,Before.Gaze.Yaw+yaw*t,0);
+        // Keep the head inside its authored range, including when the shortest
+        // gaze arc requires the shoulders to take a slightly longer turn.
+        pose.HeadYaw=FMath::Lerp(Before.HeadYaw,After.HeadYaw,t);
         pose.BodyPitch=FMath::Lerp(Before.BodyPitch,After.BodyPitch,t);
         pose.Swim=FMath::Lerp(Before.Swim,After.Swim,t);pose.Wrist=FMath::Lerp(Before.Wrist,After.Wrist,t);
         pose.KneeTuck=FMath::Lerp(Before.KneeTuck,After.KneeTuck,t);

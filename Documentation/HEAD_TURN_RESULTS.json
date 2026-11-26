@@ -1,0 +1,565 @@
+{
+  "status": "PASS",
+  "host": {
+    "started_utc": "2026-11-26T00:11:34.1155036Z",
+    "executable_sha256": "3904F9A9C48C31CFFE4616A2ECBDC134A5996B5F9AE3AE21BA3B2C9132A072A5",
+    "source_head": "2a9fc821a9f4d0b5263096fd7dff3a776028bae2",
+    "source_dirty": true,
+    "executable": "O:\\games\\dive game\\Builds\\WindowsHeadTurn\\divingsim\\Binaries\\Win64\\divingsim-HeadTurn.exe"
+  },
+  "cases": [
+    {
+      "entry": 0,
+      "scenario": "sediment",
+      "screenshots": 7,
+      "started_utc": "2026-11-26T00:11:34.8471354Z",
+      "name": "sediment0",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 7,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Runtime.log",
+        "sha256": "ba595dd8fb263af3dc0ddd1d164eb82ca4b0b3ec1f2428bfd16276e8c878af14"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\DiveUnderwater_0_sediment.png",
+          "sha256": "1a176d4873d2764b0f64881f7deca8de3b8b43e2efa84a0e3e1e7072dd9f0ee7"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Sediment_0_Clear.png",
+          "sha256": "9dd3b690a3bff720ea8166f2dbcd9a654ce56fb326ac9c3ce5a7fef1328c3930"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Sediment_0_Cloud.png",
+          "sha256": "0325399eb8b441001a10b8278513bc03561b9b42996904beb812a96fd6330863"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Sediment_0_Hidden.png",
+          "sha256": "9dd6c2c28e2e556988ba4a0c6c0e9e9e1e360adab7ea13990f72cc557858164b"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Sediment_0_Settling.png",
+          "sha256": "71c1d7f34bba59eb3c44011f033e7a5b218168a1fe9f65bcc9336d2383a12783"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Sediment_0_Start.png",
+          "sha256": "8f57e9ae776b0c8e28070ad96f2d78783ea6a8cc0d17ae68f469f3fe2cc4b6d4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment0\\Sediment_0_Visible.png",
+          "sha256": "32f66e8d5c7ea6dcf6d381cb1f4cec02fb903ce47ae629aa267d81e28c31f230"
+        }
+      ],
+      "head_events": [
+        {
+          "head_yaw": 65.0,
+          "body_yaw": 171.87,
+          "gaze_yaw": 236.87,
+          "requested_yaw": -8.538
+        },
+        {
+          "head_yaw": 0.0,
+          "body_yaw": -8.538,
+          "gaze_yaw": -8.538,
+          "requested_yaw": -8.538
+        }
+      ],
+      "sediment_view": [
+        "projected=0 pixel=X=0.000 Y=0.000 center=X=267450.231 Y=8729.134 Z=-586.503 eyes=X=265743.678 Y=8948.085 Z=-452.319 gaze=P=-0.090733 Y=236.869888 R=0.000000 head_yaw=65.000 body_yaw=171.870"
+      ]
+    },
+    {
+      "entry": 1,
+      "scenario": "sediment",
+      "screenshots": 7,
+      "started_utc": "2026-11-26T00:12:54.1083692Z",
+      "name": "sediment1",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 7,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Runtime.log",
+        "sha256": "2d9deeb3000c02fbc3b9e44d70ae3f8fedd204f4344705409f88c315728d2016"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\DiveUnderwater_1_sediment.png",
+          "sha256": "0da2e12af6c5aa4fdead95d2c3b91dc94f461d136749e1547f0f01ee1e2a0853"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Sediment_1_Clear.png",
+          "sha256": "669d0913c960e11688d2442b112f9d494ee5516675a10a0720e1648246054f18"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Sediment_1_Cloud.png",
+          "sha256": "26ddad168f68c223c81b7b32dedd25c5963b4299f8ef79ffde08865f72cea740"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Sediment_1_Hidden.png",
+          "sha256": "f073d9f5425bf1c6b0dc77a29b9e5df29dcea18b888d81f19efd85a1df98db41"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Sediment_1_Settling.png",
+          "sha256": "8276ecbb86c15a00229204dd7e26df0130bfb52b71f087d552bf4c18cadd7b02"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Sediment_1_Start.png",
+          "sha256": "35f6d4e012f83a7f4fcbe3c21673d3be32c88fc40c102617dbea8e0c47ef8df4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment1\\Sediment_1_Visible.png",
+          "sha256": "de27e02677a10c4d7287a587a0d1acd2da678f13afc035a6a1f0e6bafef3a7ed"
+        }
+      ],
+      "head_events": [],
+      "sediment_view": [
+        "projected=1 pixel=X=796.710 Y=366.373 center=X=85914.378 Y=889464.060 Z=-1190.937 eyes=X=86797.130 Y=889771.910 Z=-1593.805 gaze=P=17.196800 Y=-160.528549 R=0.000000 head_yaw=0.000 body_yaw=-160.529"
+      ]
+    },
+    {
+      "entry": 2,
+      "scenario": "sediment",
+      "screenshots": 7,
+      "started_utc": "2026-11-26T00:14:12.1361491Z",
+      "name": "sediment2",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 7,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Runtime.log",
+        "sha256": "d896397a3697ee7ce6340ae428bf650b4fff8d5f7549d65cd4b3b2676df9bb0c"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\DiveUnderwater_2_sediment.png",
+          "sha256": "3bcbac5714c07e5cbaaddf4750ab4e75a3e2502f4d217e67e68654f26d9a7e45"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Sediment_2_Clear.png",
+          "sha256": "f31e8c5194587ce6630e2b478dfd88af4c34dbc3ea70e548bdd4f9121af1e8cb"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Sediment_2_Cloud.png",
+          "sha256": "1d455acbeeeb458d4d72ee4457ebb0a74ed1286f2ecc5b00534015d57a38127c"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Sediment_2_Hidden.png",
+          "sha256": "f84d2c6ca20d18fbbb03ce86e4c862de3f5bd2f8bd20192e78233679d0290856"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Sediment_2_Settling.png",
+          "sha256": "80255f006f221341b96896d7ff55164e46d3086bdf66535a0bb6eccd6ce2777f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Sediment_2_Start.png",
+          "sha256": "a86f95bdb294029b2598aef526d260be5484776152af25b72c3bfc710bd77c6f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\sediment2\\Sediment_2_Visible.png",
+          "sha256": "ce963263051e15e640dcc6dc0d4c2e8ecf71ed3d9382a110e3e40940ad05b153"
+        }
+      ],
+      "head_events": [],
+      "sediment_view": [
+        "projected=1 pixel=X=861.760 Y=538.491 center=X=160553.995 Y=1510078.542 Z=-1085.090 eyes=X=160340.585 Y=1509889.199 Z=-1097.470 gaze=P=8.741770 Y=37.068737 R=0.000000 head_yaw=0.000 body_yaw=37.069"
+      ]
+    },
+    {
+      "entry": 0,
+      "scenario": "shore",
+      "screenshots": 9,
+      "started_utc": "2026-11-26T00:15:30.1706061Z",
+      "name": "shore0",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 9,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\Runtime.log",
+        "sha256": "4f24cae6e17a1f25ee8ba3e3c3451f190a07dfa67484286daf08f7b35ccd53e9"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\DiveSmoke_0_shore.png",
+          "sha256": "7622b03dd4352780290ce76c037e2b1209876af8b2c8019627a611f345614cef"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\DiveUnderwater_0_shore.png",
+          "sha256": "6bbf4f97afc999ee466a61d4fea96b08f14900f8040e3bb125a0586197acbfa3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreComplete_0.png",
+          "sha256": "cd367816646939ea1ef1d65fcbc15f3b82c4bff935ee78b8b7b2955bcc4deaa6"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreDive_0.png",
+          "sha256": "14f43f181345ce6968051b003c41cd4e94f1fe9cc277c9137266e841ac84d6a5"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreMenu_0.png",
+          "sha256": "c4dc6d340b83c46cfcb5f54746590c1a754c9f2646eb59a5a4bb436413bf6bb2"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreReturn_0.png",
+          "sha256": "4c55d824238249cc8dcf4ac3de541bb38c70b066fd766bae2648e57e37f7684a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreStart_0.png",
+          "sha256": "9f1fa1f2afd7744bf586e5e995ccb307a9c37d3ca7e68dfba127287a2d1a8016"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreSurface_0.png",
+          "sha256": "34818629a5a87e6419d4b1511fbfd8337f8bc74aafd3f5a19f6f500e6f82d26b"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore0\\ShoreWater_0.png",
+          "sha256": "6c680fbbeaf48fc617cfa7c67910c22677030ae8256ae74f5b8d291a84bbbd45"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 1,
+      "scenario": "shore",
+      "screenshots": 9,
+      "started_utc": "2026-11-26T00:16:25.2519547Z",
+      "name": "shore1",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 9,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\Runtime.log",
+        "sha256": "ff591fca7dae4d8fb02159522a88d4e0b853dc9d35136998f7f83f57448353d9"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\DiveSmoke_1_shore.png",
+          "sha256": "50c143c3c0e7e1f174bab880826a36f6354eb5c6f9116e9b3651618953a6aed6"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\DiveUnderwater_1_shore.png",
+          "sha256": "d088ce5b70e0834506dcb70cd55cd2979ae78ebd0e6887701f228ff61cd02b16"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreComplete_1.png",
+          "sha256": "2dd474b128725692a72e45b337f30720f3a343cd074db10af52a50088be79e67"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreDive_1.png",
+          "sha256": "01766984d953a623b8ee801a064c166bc9df950fde2526180891fd19769bcafb"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreMenu_1.png",
+          "sha256": "9d69122c386319059a9b404750849eb0f77d919508b4d94632bb94829b0f6675"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreReturn_1.png",
+          "sha256": "48abc1e852c42e070ef21a6e4f6d6a4c349428bd1971516ea1bad0f93be1d21a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreStart_1.png",
+          "sha256": "6ea5689550fa46df656572f55d3dfd44bada952537b74f3eea6d46748432536f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreSurface_1.png",
+          "sha256": "d5bf033833563d2aba4736b31e0fe14cc629374d0c27a0ad8b19f8fd698e21be"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore1\\ShoreWater_1.png",
+          "sha256": "40473ccadb2a07d15b1eb2c935666e516c01cde533e30c626d1d3033cf81378a"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 2,
+      "scenario": "shore",
+      "screenshots": 9,
+      "started_utc": "2026-11-26T00:17:21.3257776Z",
+      "name": "shore2",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 9,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\Runtime.log",
+        "sha256": "1f0c1aa6c1f22f2e92e3ab9c51c2b1964b6f91bc999f66249de00c64ede7368b"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\DiveSmoke_2_shore.png",
+          "sha256": "73832e0a453c71b77f7f3fec7679ca902cdd4fb3feb110bbf4c14c3f4311f4df"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\DiveUnderwater_2_shore.png",
+          "sha256": "ed45ddb5edd14c12ff2ee596f982c465c86ecfad04b44c7adfc57b79c5ad87c3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreComplete_2.png",
+          "sha256": "dcc0995b7bafc633a50b8f05d201f5b00369772d0e3bf11eabcfbaf7520ee1a5"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreDive_2.png",
+          "sha256": "cb2032fff856e082f6eff9ed0d0a0459e65a6f2dc372a10cca3a47b2bd9bdb94"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreMenu_2.png",
+          "sha256": "7157f3d038da1f1aebff3314925d5cd01779657dfbd8fac06e9713eef27f1f31"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreReturn_2.png",
+          "sha256": "83188b61c4edf1275ee53c80e92398cd4a918c53561cd77c485b816d11f56239"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreStart_2.png",
+          "sha256": "dfe3547a7a134c5ff3117cd191b2dbbe03ad6e2b8d9767d5eac027c5b3fa595d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreSurface_2.png",
+          "sha256": "68027aa7443a041a2b3b68da4ad2d34840b17d3893d6b0f2920011a4692c0602"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\shore2\\ShoreWater_2.png",
+          "sha256": "f5d65a877ae1b8a2ce3d3bd3add553ab72dfaf22fb5e4f9abb3e131239044eb7"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 0,
+      "scenario": "avatar",
+      "screenshots": 13,
+      "started_utc": "2026-11-26T00:18:23.3621978Z",
+      "name": "avatar0",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 13,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Runtime.log",
+        "sha256": "59ffeeecbf9925965c9bcdf55f13dd7dfe9505b771bd5622d6a80852d04a9d88"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_Back.png",
+          "sha256": "39362bb358242109d2354106ad70ffd20ad7bfe372359daf7e7b459026ad8c1c"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_Computer.png",
+          "sha256": "b3b66a150ff19e8f6f3149ba134289c203fbcf5238b1ee2236c6bebfdcd3230c"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_Detail.png",
+          "sha256": "f265220452399172f2ebb13ff8a6bcb20e9325e1bbd1031d43414336eb1d5093"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_FirstPerson.png",
+          "sha256": "dc9934a0ae729942c77150090a2a95ae2d28c6e2ea9c267cc6af54fab49167a9"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_Front.png",
+          "sha256": "cc948a719bba7b0fd76aa3b2fea884a7a5f43ecc9bc329474353a28abba7ada3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_LookDown.png",
+          "sha256": "980237cf1acf4df2190440d5f8e1f211fea04ede528a722a3fed08a7c2e97958"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_LookUp.png",
+          "sha256": "5b34aabf766eae52c0e4eb71914789d05c60d9053b22d70ba088f58af1cb40fc"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_Paused.png",
+          "sha256": "53098db75645ca23904437d72429cea3769d676cd5a65f84200b20373ab0d0cc"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_RegulatorIn.png",
+          "sha256": "17051d30a12d565bfb2e883791e370382671885d746a0617f58c6a765ab4e3af"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_RegulatorOut.png",
+          "sha256": "0b2cb54721bb2be8d15238478c0805ab12e3019ad97e1e88a75ba8de272bdb0f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\Avatar_0_Swimming.png",
+          "sha256": "6ce90a70ad305771f830ea379e2842c94948a8010525d410e488f6e804ede211"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\DiveSmoke_0_avatar.png",
+          "sha256": "a1ec261e97cf873576859e84fa92eeb556e0acf5bb566f01753eaba4efe03bf1"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar0\\DiveUnderwater_0_avatar.png",
+          "sha256": "79363ed4ef54d3d6dffa9506ff412ea192301e75dc79df2c88e59d8599780834"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 0,
+      "scenario": "avatar",
+      "screenshots": 13,
+      "started_utc": "2026-11-26T00:19:18.4246673Z",
+      "name": "avatar5",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 13,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Runtime.log",
+        "sha256": "c2a7a1ee1f98a4c13677d2be94825ab43697a0d4b1a0ab05f89e92c66e4d12e8"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_Back.png",
+          "sha256": "b76cace4c543851572480e7a04566e2da7b1a44947575f1e288884697c5dd280"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_Computer.png",
+          "sha256": "8cb5200a306cdaaa23cc871721f39ca871d9e3d42ae864318a709ca3b27dc05b"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_Detail.png",
+          "sha256": "63eb447ed170ca713963451a6bd8323178426e4987f34f94769f8026c7f3b9b3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_FirstPerson.png",
+          "sha256": "39fbbc51a21b9cfc336392062c2d772d83f90faa3ca751bc53cfbd52377adc3f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_Front.png",
+          "sha256": "294de785898c0fc29c366c7951ada8543c4666cab2bd588b4229790a5dd2cfc7"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_LookDown.png",
+          "sha256": "4fb15b0a90b7a9410ef3c4cde77f9751c190e7f0d18882cdb60e7c5368a41866"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_LookUp.png",
+          "sha256": "55b04f11e43bdccb910c1f9c846d207c21b8c05fe0be2edd70a4740dbfe3a20e"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_Paused.png",
+          "sha256": "07e120f91d5b82f970dfb5c0f09e7ae629a57c49623828f3e4fa1a15c1208d0b"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_RegulatorIn.png",
+          "sha256": "d4fa60a578f0580591a2734e30f5f9c0f2b40deb9032c1411f7660422cacbab4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_RegulatorOut.png",
+          "sha256": "fd403944585d4af70cb4d83ff7866d2dafd945063ed987359d8543eb2e56daf5"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\Avatar_5_Swimming.png",
+          "sha256": "5557853b0ac2b2b9e6a3d46f3a490592a514a10cdef60da05a80d63f94d7d1f1"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\DiveSmoke_0_avatar.png",
+          "sha256": "5eb0d1a7e3d2bdd18fbbc0abc1efd56dd868b36e20c0c14a418e33d7f840f560"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\avatar5\\DiveUnderwater_0_avatar.png",
+          "sha256": "1075593110e84c4599dcaa95e415563d851955d8bb1693290ede69602a73ac94"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 0,
+      "scenario": "breathing",
+      "screenshots": 4,
+      "started_utc": "2026-11-26T00:20:13.4796446Z",
+      "name": "breathing",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 4,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\breathing\\Runtime.log",
+        "sha256": "66068756417ce6c9bbaa31d0b479d9232994dad1683ddbce85449704caaf4143"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\breathing\\Breathing_Air.png",
+          "sha256": "0efa0fc4df474e44324b82b8054451463a88652de3a3fdeb0e7a823d90acff2e"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\breathing\\Breathing_NoSupply.png",
+          "sha256": "5897b90f4b6f3342e3e0cb2532852c7a6295f76732abe3d284530241c02fdc1a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\breathing\\DiveSmoke_0_breathing.png",
+          "sha256": "88edf0d9c2cc3bb2200cd1a11cd68370dfda9ec92389813bcf001b23e52b180d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\breathing\\DiveUnderwater_0_breathing.png",
+          "sha256": "a73753e386a8384d2af21fe862258c27544633f05f213d3a8f30f83a7128a640"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 1,
+      "scenario": "wrist",
+      "screenshots": 4,
+      "started_utc": "2026-11-26T00:20:47.4688961Z",
+      "name": "wrist",
+      "status": "PASS",
+      "display_texture_exports": 1,
+      "viewport_captures": 3,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\wrist\\Runtime.log",
+        "sha256": "80b9a1be2172b013237c21532082c2eb5a04711340b297528fa42e9b41eee96a"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\wrist\\DiveSmoke_1_wrist.png",
+          "sha256": "f780ceb0bc77c46369dcfed468425853ea86663ebe3badec5c47a7edc82c6f03"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\wrist\\DiveUnderwater_1_wrist.png",
+          "sha256": "1f6f85e69dd0ae2fcbea06bef1bfda44557c5be823cccdf08c0dd32c6aa20d3d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\wrist\\WristTexture_wrist.png",
+          "sha256": "9e398895998e3ec7dc4be5e119a69cdad7b0cc896d819ec4f415fa5368fdec03"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\wrist\\WristVitals_wrist.png",
+          "sha256": "c753ef7e0f225c6d0569b4cdc8eae9d4d50d4fef63242feb5ac34b8973b58235"
+        }
+      ],
+      "head_events": []
+    },
+    {
+      "entry": 1,
+      "scenario": "stream",
+      "screenshots": 2,
+      "started_utc": "2026-11-26T00:21:13.4056461Z",
+      "name": "stream1",
+      "status": "PASS",
+      "display_texture_exports": 0,
+      "viewport_captures": 2,
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\stream1\\Runtime.log",
+        "sha256": "6217838b62c2872b35fb37c1a052275a7d8ef4ec94b0533ef69c78487945ff0c"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\stream1\\DiveSmoke_1_stream.png",
+          "sha256": "920f93340b1a966206668d3786053ce33a3d97f45d4eb779cda244ed9d6cdd06"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\headturn-validation-20261126-011134\\stream1\\DiveUnderwater_1_stream.png",
+          "sha256": "23a3ff6e03ecb91da3517dc3ff8a3d3a5530e4726abfaf2d229e5bf5eb143966"
+        }
+      ],
+      "head_events": [],
+      "displacement_metres": 110.85
+    }
+  ],
+  "accepted_sideways_head_events": 1,
+  "limits": [
+    "65 degrees is an animation limit, not an anatomical validation.",
+    "A contact-checked head fallback is implemented; unrestricted free look and full-body turns still require clearance.",
+    "These capped Windows runs are not a performance or native macOS acceptance test.",
+    "Sediment projection alone does not prove visible optical contrast."
+  ]
+}

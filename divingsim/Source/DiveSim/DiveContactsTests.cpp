@@ -10,6 +10,7 @@
 #include "Components/PoseableMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "GameFramework/PlayerController.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveStoppedKick,"DiveSim.Contacts.StoppedKick",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveStoppedKick::RunTest(const FString&)
@@ -56,12 +57,73 @@ struct FContactWorld
 };
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveBlockedHeadTurn,"DiveSim.Contacts.BlockedBodyAllowsHeadTurn",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveBlockedHeadTurn::RunTest(const FString&)
+{
+    FContactWorld fixture;auto* pawn=fixture.Diver();
+    auto* controller=fixture.World->SpawnActor<APlayerController>();controller->Possess(pawn);
+    pawn->bWalking=false;pawn->Simulation.Data.DepthMetres=5;pawn->ResetContactPose();
+    const auto initial=pawn->PhysicalPose;
+    auto build=[&](FDivePoseState& pose,TArray<FDiveContactShape>& shapes)
+    {
+        FTransform left,right;pawn->Equipment->Avatar->ContactPose(pose,pawn->PhysicalEyes(),shapes,left,right);
+        pawn->Equipment->HandContacts(left,right,shapes);
+    };
+    auto turned=initial;turned.Gaze.Yaw=90;TArray<FDiveContactShape> shapes;build(turned,shapes);
+    const auto* cylinder=shapes.FindByPredicate([](const auto& shape){return shape.Name==TEXT("Cylinder");});
+    if(!TestNotNull(TEXT("Cylinder exists"),cylinder)) return false;
+    auto* obstruction=fixture.Box(cylinder->World.GetLocation(),FVector(2));
+    TestFalse(TEXT("Initial body is outside the obstacle"),DiveContacts::Overlap(fixture.World,pawn->ContactShapes,pawn));
+    controller->SetControlRotation(FRotator(0,90,0));pawn->AdvanceContactPose(.02f,0);
+    TestTrue(TEXT("Blocked cylinder leaves shoulders facing forward"),FMath::Abs(pawn->PhysicalPose.BodyYaw())<.001);
+    TestTrue(TEXT("Actual pawn accepts bounded head turn"),FMath::IsNearlyEqual(pawn->PhysicalPose.HeadYaw,65.f,.001f));
+    TestTrue(TEXT("Hands and swimming thrust retain shoulder heading during sideways look"),pawn->PhysicalPose.BodyHeadingView().Vector().Equals(FVector::ForwardVector,.001));
+    TestTrue(TEXT("Camera uses accepted head direction"),controller->GetControlRotation().Equals(pawn->PhysicalPose.Gaze,.001));
+    TestFalse(TEXT("Head-only pose keeps all equipment clear"),DiveContacts::Overlap(fixture.World,pawn->ContactShapes,pawn));
+    pawn->AdvanceContactPose(.02f,0);
+    TestTrue(TEXT("Neck limit stays fixed while the requested turn is pending"),FMath::IsNearlyEqual(pawn->PhysicalPose.HeadYaw,65.f,.001f)&&pawn->bBlockedGaze);
+    obstruction->SetActorEnableCollision(false);
+    pawn->AdvanceContactPose(.02f,0);
+    TestTrue(TEXT("Clearing the obstacle releases the preserved full turn"),pawn->PhysicalPose.Gaze.Equals(FRotator(0,90,0),.001)&&FMath::Abs(pawn->PhysicalPose.HeadYaw)<.001&&!pawn->bBlockedGaze);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveHeadObstacle,"DiveSim.Contacts.SidewaysMaskCannotCrossObstacle",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FDiveHeadObstacle::RunTest(const FString&)
+{
+    FContactWorld fixture;auto* pawn=fixture.Diver();
+    auto build=[&](FDivePoseState& pose,TArray<FDiveContactShape>& shapes)
+    {
+        FTransform left,right;pawn->Equipment->Avatar->ContactPose(pose,FVector::ZeroVector,shapes,left,right);
+        pawn->Equipment->HandContacts(left,right,shapes);
+    };
+    FDivePoseState start;start.Swim=1;start.BodyPitch=-80;
+    auto end=start;end.LookWithoutBody(FRotator(0,65,0));
+    TArray<FDiveContactShape> before,after;build(start,before);build(end,after);
+    const auto* mask=after.FindByPredicate([](const auto& shape){return shape.Name==TEXT("Mask");});
+    if(!TestNotNull(TEXT("Imported mask exists"),mask)) return false;
+    AActor* obstruction=nullptr;
+    for(int i=0;i<8&&!obstruction;++i)
+    {
+        const FVector corner=mask->Size*FVector(i&1?1:-1,i&2?1:-1,i&4?1:-1)*.95;
+        auto* candidate=fixture.Box(mask->World.TransformPosition(corner),FVector(.3));
+        if(DiveContacts::Overlap(fixture.World,before,pawn,nullptr,.5f)) candidate->SetActorEnableCollision(false);
+        else obstruction=candidate;
+    }
+    if(!TestNotNull(TEXT("Obstacle is clear of the initial rig and inside the turned mask"),obstruction)) return false;
+    FName part;
+    TestFalse(TEXT("Independent head turn collision-tests its entire path"),DiveContacts::PosePathClear(fixture.World,start,end,before,after,build,pawn,&part));
+    TestTrue(TEXT("Mask or head blocks the requested look"),part==TEXT("Mask")||part==TEXT("Head")||part==TEXT("Mouthpiece"));
+    return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveActualRigContact,"DiveSim.Contacts.ImportedRigMatchesContactJoints",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveActualRigContact::RunTest(const FString&)
 {
     FContactWorld fixture;auto* pawn=fixture.Diver();auto* avatar=pawn->Equipment->Avatar.Get();
     for(int variant=0;variant<6;++variant)
     for(int posture=0;posture<4;++posture)
+    for(float headYaw:{-65.f,0.f,65.f})
     {
         pawn->PendingConfig.CylinderMaterial=variant/3;pawn->PendingConfig.BCDModel=variant%3;
         pawn->PendingConfig.CylinderLitres=variant%3==0?10:variant%3==1?12:15;pawn->PendingConfig.DrySuit=variant%2==0;
@@ -69,6 +131,7 @@ bool FDiveActualRigContact::RunTest(const FString&)
         auto& pose=pawn->PhysicalPose;pose=FDivePoseState();
         pose.Swim=posture==0?0:posture==1?.5f:1;pose.BodyPitch=-80*pose.Swim;
         pose.Gaze=FRotator(posture==2?-65:posture==3?85:0,37,0);pose.Wrist=posture%2;
+        pose.HeadYaw=headYaw;
         pose.Motion=.7;pose.Phase=1.3;pose.Walking=posture==0;
         pose.KneeTuck=posture==1?.6f:0.f;
         TArray<FDiveContactShape> shapes;FTransform left,right;
