@@ -16,4 +16,6 @@ Die Laufzeitprüfung kontrolliert eindeutige Wurzeln, Zellzuordnung, Bodenkontak
 
 ## Offene Qualität
 
+Der erste Windows-Prüflauf (`artifacts/plant-beds-20261126-232628`, Quellstand `7eb222a`) besteht den Vorher-/Nachhervergleich sowie Murg und Lediwracks. Der folgende Fall ohne Nanite erzeugt seine drei Bilder, führt aber die angeforderten Weltprüfungen nicht aus: Die Aufnahme friert den Welttick nach vier Sekunden Aufnahmezeit ein; bei langsamen Startbildern hat die begrenzte Simulationszeit die Zwei-Sekunden-Prüfschwelle noch nicht erreicht. Der Prüftreiber weist den Lauf deshalb zurück. Die Korrektur wartet ausdrücklich auf die angeforderten Weltprüfungen, bevor sie die Szene einfriert, und bricht bei ausbleibender Bereitschaft nach 30 Sekunden ab. Sie ändert nur den Diagnoseablauf. Der unvollständige Lauf bleibt erhalten.
+
 Die Gruppen sind in der Nahansicht erkennbar; die bestehenden dünnen, hellen Pflanzenmodelle wirken weiterhin künstlich. Felsoberflächen, Sedimentübergänge, Licht und Wasser benötigen weitere Arbeit für das [visuelle Ziel](VISUAL_TARGET.md). Dieser Schritt ist keine Abnahme der Unterwasserwelt. Danach folgen die Überwasserlandschaft und erst anschliessend das bereits festgehaltene [Menü-/HUD-/FPV-Design](UI_UX_TARGET.md).

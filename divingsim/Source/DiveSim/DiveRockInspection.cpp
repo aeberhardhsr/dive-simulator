@@ -39,6 +39,11 @@ void ADiveWorld::RefreshInspectionMedium()
     }
 }
 
+bool ADiveWorld::InspectionChecksReady() const
+{
+    return bVegetationChecked&&(!FParse::Param(FCommandLine::Get(),TEXT("DivePopulationChecks"))||bPopulationChecked);
+}
+
 bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation)
 {
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
@@ -221,6 +226,14 @@ void ADivePawn::TickRockInspection(float Dt)
     if(ControlsSmokePhase==0)
     {
         if(ControlsSmokeClock<4) return;
+        // World time clamps long frames; wall-clock warmup alone can finish
+        // before its checks on slow raster starts. Never freeze them out.
+        if(!Environment->InspectionChecksReady())
+        {
+            if(ControlsSmokeClock>30)
+            {UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_INSPECTION_FAIL world checks did not complete"));FPlatformMisc::RequestExitWithStatus(false,1);}
+            return;
+        }
         Environment->SetActorTickEnabled(false);bLamp=false;bShowInstruments=false;bShowComputer=false;bShowMap=false;NoticeUntil=0;
         Equipment->SetActorHiddenInGame(true);if(Equipment->Avatar) Equipment->Avatar->SetActorHiddenInGame(true);
         if(auto* pc=Cast<APlayerController>(GetController())) if(pc->GetHUD()) pc->GetHUD()->bShowHUD=false;

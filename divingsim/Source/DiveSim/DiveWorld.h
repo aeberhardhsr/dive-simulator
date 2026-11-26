@@ -97,6 +97,7 @@ public:
     double CurrentHour() const;
     void UpdateDaylight();
     void RefreshInspectionMedium();
+    bool InspectionChecksReady() const;
     bool ValidateCelestial(FString& Error) const;
     double WaterAmbientAt(const FVector& Eye) const;
     double CameraScatteringAmbientAt(const FVector& Eye) const;

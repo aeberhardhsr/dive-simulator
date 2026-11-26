@@ -14,6 +14,8 @@ def main():
     p.add_argument('--performance',type=Path,nargs=2)
     p.add_argument('--publish-view',type=int,choices=range(3),default=0)
     p.add_argument('--prior-run',type=Path)
+    p.add_argument('--incomplete-run',type=Path)
+    p.add_argument('--slow-start',type=Path)
     a=p.parse_args();run=a.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
@@ -87,7 +89,27 @@ def main():
             assert 'DIVE_SMOKE_PASS' in log and 'DIVE_PLANT_BEDS_PASS' in log
             assert re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',log)==poses[0]
             prior['files']+=[record(old/name/'Runtime.log')]+[record(old/name/f'Habitat_0_{i}.png') for i in range(3)]
-    result=dict(status='PASS',scope='Authored plant groups; not full visual reference acceptance',host=host,cases=evidence,prior_attempt=prior,
+    incomplete=None
+    if a.incomplete_run:
+        old=a.incomplete_run.resolve()
+        completed=json.loads((old/'Cases.json').read_text(encoding='utf-8-sig'))
+        assert {c['name'] for c in completed}=={'before','after','murg','ledi'}
+        log=(old/'raster/Runtime.log').read_text(encoding='utf-8-sig')
+        assert 'DIVE_SMOKE_PASS' in log and 'DIVE_POPULATION_PASS' not in log and 'DIVE_PLANT_BEDS_PASS' not in log
+        incomplete=dict(status='INCOMPLETE_CHECKS',reason='Raster scene froze world ticking before clamped world time reached the scheduled population checks; captures succeeded but the required checks never ran.',
+            host=record(old/'Host.json'),cases=record(old/'Cases.json'),files=[record(x) for x in sorted(old.glob('*/*')) if x.is_file()])
+    slow=None
+    if a.slow_start:
+        path=a.slow_start.resolve();h=path.with_name(path.stem+'-host.json')
+        context=json.loads(h.read_text(encoding='utf-8-sig'))
+        assert context['status']=='PASS' and context['max_fps']==2 and context['runtime_sha256']==sha(path)
+        for item in context['files']:assert sha(ROOT/item['file'])==item['sha256']
+        log=path.read_text(encoding='utf-8-sig')
+        assert 'DIVE_SMOKE_PASS' in log and 'DIVE_PLANT_BEDS_PASS' in log and 'r.Nanite = "0"' in log
+        assert log.index('DIVE_POPULATION_PASS')<log.index('DIVE_ROCK_CAPTURE')
+        assert not re.search(r'DIVE_\w*FAIL|Fatal error:',log)
+        slow=dict(host=record(h),runtime=record(path),max_fps=2)
+    result=dict(status='PASS',scope='Authored plant groups; not full visual reference acceptance',host=host,cases=evidence,prior_attempt=prior,incomplete_attempt=incomplete,slow_start=slow,
         screenshot_count=sum(c['screenshots'] for c in cases),comparisons=comparisons,launcher=launcher,published=published,performance=performance,
         limitations=['Groups and species weights are authored, not surveyed Walensee distributions',
             'Plant models and surfaces retain their existing quality limitations',
