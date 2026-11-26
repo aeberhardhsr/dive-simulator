@@ -43,25 +43,9 @@ def build_imagery():
         texture.set_editor_property("never_stream",True)
         if not u.EditorAssetLibrary.save_loaded_asset(texture): raise RuntimeError("Cannot save "+path)
         u.log("DIVE_IMAGERY_TEXTURE "+item["asset"])
-    path="/Game/Diving/Materials/M_LandscapePhoto"
-    existing=u.load_asset(path) if u.EditorAssetLibrary.does_asset_exist(path) else None
-    material=existing or u.AssetToolsHelpers.get_asset_tools().create_asset(
-        "M_LandscapePhoto","/Game/Diving/Materials",u.Material,u.MaterialFactoryNew())
-    for node in list(lib.get_material_expressions(material)): lib.delete_material_expression(material,node)
-    material.set_editor_property("two_sided",True)
-    material.set_editor_property("used_with_nanite",True)
-    photo=lib.create_material_expression(material,u.MaterialExpressionTextureSampleParameter2D)
-    photo.set_editor_property("parameter_name","Ortho")
-    photo.set_editor_property("texture",u.load_asset("/Game/Diving/Textures/T_Ortho_landscape"))
-    lib.connect_material_property(photo,"RGB",u.MaterialProperty.MP_BASE_COLOR)
-    rough=lib.create_material_expression(material,u.MaterialExpressionConstant)
-    rough.set_editor_property("r",.92)
-    lib.connect_material_property(rough,"",u.MaterialProperty.MP_ROUGHNESS)
-    lib.recompile_material(material)
-    if not u.EditorAssetLibrary.save_loaded_asset(material): raise RuntimeError("Cannot save landscape photo material")
     sys.path.insert(0,str(ROOT/"Tools"))
-    from build_shore_content import build_shore_material
-    build_shore_material("M_ShorePhoto",True)
+    from build_ground_content import build_landscape_ground
+    build_landscape_ground()
     u.log("DIVE_IMAGERY_CONTENT_OK")
 
 

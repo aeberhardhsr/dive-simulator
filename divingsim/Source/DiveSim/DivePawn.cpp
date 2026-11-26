@@ -177,6 +177,8 @@ void ADivePawn::BeginPlay()
                 SetActorLocation(Environment->ShoreStart(EntryIndex)+FVector(0,0,80)); bShowInstruments=false; SetMenu(false);
                 const bool lookBack=FParse::Param(FCommandLine::Get(),TEXT("DiveShoreLookBack"));
                 if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(lookBack?0:-12,shore.Yaw+(lookBack?180:0),0));
+                if(FParse::Param(FCommandLine::Get(),TEXT("DiveGroundView")))
+                    if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-60,shore.Yaw+(lookBack?180:0),0));
                 if(FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView")))
                 {
                     TArray<FDiveBuildingTile> tiles;int32 count=0;FString error;
@@ -405,6 +407,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(ControlsSmokeClock>3&&!bSmokeCaptured)
         {
             const FString suffix=FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView"))?TEXT("_Buildings"):
+                FParse::Param(FCommandLine::Get(),TEXT("DiveGroundView"))?TEXT("_Ground"):
                 FParse::Param(FCommandLine::Get(),TEXT("DiveShoreLookBack"))?TEXT("_Land"):TEXT("");
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Shore_%d%s.png"),EntryIndex,*suffix),true,false);
             bSmokeCaptured=true;

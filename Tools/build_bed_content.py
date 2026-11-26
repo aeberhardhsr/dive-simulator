@@ -2,9 +2,11 @@
 import hashlib
 import json
 from pathlib import Path
+import sys
 import unreal as u
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'Tools'))
 BASE = '/Game/Diving'
 
 
@@ -50,6 +52,8 @@ def build_bed(material_names=None):
             textures[prefix + suffix] = texture
 
     code = (ROOT / 'Tools/Shaders/Lakebed.ush').read_text(encoding='utf-8')
+    from build_ground_content import import_ground_textures, wire_ground, ground_code
+    ground_textures = import_ground_textures() if material_names is None or 'M_ShorePhoto' in material_names else {}
     for name, is_rock in [('M_Lakebed', 0), ('M_RockSurface', 1), ('M_ShorePhoto', 0)]:
         if material_names is not None and name not in material_names:
             continue
@@ -70,18 +74,13 @@ def build_bed(material_names=None):
         shader = code
         if name == 'M_ShorePhoto':
             shader = shader.replace('// BED_FINAL_OUTPUT', '''
-float land=smoothstep(0,120,P.z);
-SurfaceNormal=normalize(lerp(SurfaceNormal,n,land));
-Roughness=lerp(Roughness,.92,land);
-Occlusion=lerp(Occlusion,1,land);
 float2 farUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
-float3 shorePhoto=lerp(Texture2DSample(FarPhoto,FarPhotoSampler,farUV).rgb,Photo,saturate(PatchBlend));
-result=lerp(result,shorePhoto,land);
-''')
+float3 GroundPhoto=lerp(Texture2DSample(FarPhoto,FarPhotoSampler,farUV).rgb,Photo,saturate(PatchBlend));
+''' + ground_code())
         custom.set_editor_property('code', shader)
         custom.set_editor_property('output_type', u.CustomMaterialOutputType.CMOT_FLOAT3)
         names = ['P', 'N', 'T', 'IsRock'] + list(textures)
-        if name == 'M_ShorePhoto': names.extend(['Photo', 'FarPhoto', 'PatchBlend'])
+        if name == 'M_ShorePhoto': names.extend(['Photo', 'FarPhoto', 'PatchBlend', 'Camera', 'DetailStrength'] + list(ground_textures))
         inputs = []
         for input_name in names:
             item = u.CustomInput(); item.set_editor_property('input_name', input_name); inputs.append(item)
@@ -106,6 +105,7 @@ result=lerp(result,shorePhoto,land);
                                      else u.MaterialSamplerType.SAMPLERTYPE_COLOR)
             if not lib.connect_material_expressions(node, '', custom, input_name): raise RuntimeError(input_name)
         if name == 'M_ShorePhoto':
+            wire_ground(material, custom, ground_textures)
             photo = lib.create_material_expression(material, u.MaterialExpressionTextureSampleParameter2D)
             photo.set_editor_property('parameter_name', 'Ortho')
             photo.set_editor_property('texture', u.load_asset(BASE + '/Textures/T_Ortho_weesen_strandbad'))

@@ -2,6 +2,8 @@
 #include "DiveWorld.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Engine/Texture2D.h"
@@ -66,6 +68,13 @@ UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FS
     FTextureCompilingManager::Get().FinishCompilation({texture});
 #endif
     auto* instance=UMaterialInstanceDynamic::Create(material,this);
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveGroundOff"))) instance->SetScalarParameterValue(TEXT("GroundDetailStrength"),0);
+#if WITH_EDITOR
+    TArray<UTexture*> groundTextures;
+    for(const TCHAR* suffix:{TEXT("Woodland"),TEXT("GrassColor"),TEXT("GrassNormal"),TEXT("GrassARM"),TEXT("ForestColor"),TEXT("ForestNormal"),TEXT("ForestARM")})
+        if(auto* ground=instance->K2_GetTextureParameterValue(FName(FString(TEXT("Ground"))+suffix))) groundTextures.Add(ground);
+    FTextureCompilingManager::Get().FinishCompilation(groundTextures);
+#endif
     instance->SetTextureParameterValue(TEXT("Ortho"),texture); ImageryMaterials.Add(instance);
     return instance;
 }
@@ -94,6 +103,28 @@ bool ADiveWorld::ValidateImagery(FString& Error) const
             *texture->GetName(),texture->GetSizeX(),texture->GetSizeY(),texture->GetNumMips(),
             texture->GetStreamableResourceState().NumResidentLODs,texture->CalcTextureMemorySizeEnum(TMC_AllMips));
     }
+    const bool groundOff=FParse::Param(FCommandLine::Get(),TEXT("DiveGroundOff"));
+    uint64 groundBytes=0;
+    for(int i=0;i<ImageryMaterials.Num();++i)
+    {
+        auto* material=ImageryMaterials[i].Get();
+        if(!FMath::IsNearlyEqual(material->K2_GetScalarParameterValue(TEXT("GroundDetailStrength")),groundOff?0.f:1.f))
+        { Error=TEXT("Ground detail material strength mismatch"); return false; }
+        for(const TCHAR* suffix:{TEXT("Woodland"),TEXT("GrassColor"),TEXT("GrassNormal"),TEXT("GrassARM"),TEXT("ForestColor"),TEXT("ForestNormal"),TEXT("ForestARM")})
+        {
+            const FString name(suffix);const bool mask=name==TEXT("Woodland"),color=name.EndsWith(TEXT("Color")),normal=name.EndsWith(TEXT("Normal"));
+            const auto* texture=Cast<UTexture2D>(material->K2_GetTextureParameterValue(FName(FString(TEXT("Ground"))+name)));
+            const auto compression=normal?TC_Normalmap:color?TC_Default:TC_Masks;
+            const int size=mask?4096:2048;
+            if(!texture||texture->GetName()!=TEXT("T_Ground_")+name||texture->GetSizeX()!=size||texture->GetSizeY()!=size||
+                texture->GetNumMips()<12||texture->GetStreamableResourceState().NumResidentLODs!=texture->GetNumMips()||
+                texture->SRGB!=color||!texture->NeverStream||texture->CompressionSettings!=compression||
+                texture->AddressX!=(mask?TA_Clamp:TA_Wrap)||texture->AddressY!=(mask?TA_Clamp:TA_Wrap))
+            { Error=FString::Printf(TEXT("Ground detail texture invalid: material=%d %s"),i,*name); return false; }
+            if(i==0) groundBytes+=texture->CalcTextureMemorySizeEnum(TMC_AllMips);
+        }
+    }
+    UE_LOG(LogTemp,Display,TEXT("DIVE_GROUND_PASS materials=5 textures=7 enabled=%d resident_bytes=%llu"),!groundOff,groundBytes);
     // UVs must be north-up and tied to the same LV95 extents as the images.
     auto registered=[this](UProceduralMeshComponent* mesh,const Dive::SurfaceGrid& grid)
     {
