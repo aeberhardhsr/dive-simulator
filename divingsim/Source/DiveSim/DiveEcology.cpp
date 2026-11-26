@@ -26,8 +26,8 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
         const auto* render=mesh->GetRenderData();
         if(!render) { Error=TEXT("Missing fish render data");return false; }
         for(const auto& lod:render->LODResources)
-            if(lod.VertexBuffers.ColorVertexBuffer.GetNumVertices()==0)
-            { Error=TEXT("Fish tint and animation weights missing");return false; }
+            if(lod.VertexBuffers.ColorVertexBuffer.GetNumVertices()==0||lod.VertexBuffers.StaticMeshVertexBuffer.GetNumTexCoords()<3)
+            { Error=TEXT("Fish tint, animation weights or fin rig missing");return false; }
     }
     for(int32 species=0;species<Plants.Num();++species)
     {
@@ -106,6 +106,7 @@ void ADiveWorld::TickFish(float Dt,const FVector& Player)
             else direction-=fish.Velocity.GetSafeNormal()*3;
         }
         else direction-=fish.Velocity.GetSafeNormal()*3;
+        const FVector beforeVelocity=fish.Velocity;
         const FVector target=direction.GetSafeNormal()*speed;
         fish.Velocity=FMath::Lerp(fish.Velocity,target,FMath::Min(1.f,Dt*(fleeing?3.f:1.2f)));
         FVector next=fish.Position+(fish.Velocity+FVector(0,Flow*100,0))*Dt;
@@ -128,12 +129,16 @@ void ADiveWorld::TickFish(float Dt,const FVector& Player)
         auto* component=Fish[fish.Species].Get();
         component->UpdateInstanceTransform(fish.Instance,FTransform(rotation,fish.Position,FVector(fish.Scale)),false,false,true);
         const FVector right=FRotationMatrix(rotation).GetUnitAxis(EAxis::Y);
-        fish.TailCycle=FMath::Fmod(fish.TailCycle+Dt*profile.TailHz*(fleeing?2.2:activity)*2*PI,2*PI);
-        component->SetCustomDataValue(fish.Instance,0,fish.TailCycle,false);
+        const FVector up=FRotationMatrix(rotation).GetUnitAxis(EAxis::Z);
+        const double yawRate=Dt>0?FMath::FindDeltaAngleRadians(FMath::Atan2(beforeVelocity.Y,beforeVelocity.X),FMath::Atan2(fish.Velocity.Y,fish.Velocity.X))/Dt:0;
+        fish.Motion.Step(Dt,fish.Velocity.Size()/100,profile.CruiseSpeed,profile.TailHz,yawRate);
+        component->SetCustomDataValue(fish.Instance,0,fish.Motion.Tail,false);
         component->SetCustomDataValue(fish.Instance,1,right.X,false);
         component->SetCustomDataValue(fish.Instance,2,right.Y,false);
         component->SetCustomDataValue(fish.Instance,3,fish.Phase,false);
-        component->SetCustomDataValue(fish.Instance,4,profile.LengthMetres*7*fish.Scale,false);
+        component->SetCustomDataValue(fish.Instance,4,profile.LengthMetres*7*fish.Scale*fish.Motion.TailAmplitude(),false);
+        const float extra[]={float(right.Z),float(up.X),float(up.Y),float(up.Z),float(fish.Motion.Fin),float(fish.Motion.Effort),float(fish.Motion.Turn),float(profile.LengthMetres*100*fish.Scale)};
+        for(int i=0;i<8;++i) component->SetCustomDataValue(fish.Instance,5+i,extra[i],false);
     }
     for(const auto& component:Fish) component->MarkRenderStateDirty();
 }

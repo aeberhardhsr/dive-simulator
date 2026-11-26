@@ -13,9 +13,13 @@ ROOT=Path(__file__).resolve().parents[1]
 def create_fish(mesh_object,export):
     records=[]
     for name,cfg in FISH.items():
-        length=cfg['length']; vertices=[]; faces=[]; uv=[]; colors=[]
-        def add(p,tex=(.99,.99),rgb=(1,1,1)):
+        length=cfg['length']; vertices=[]; faces=[]; uv=[]; colors=[];fin_offsets=[];fin_kinds=[]
+        def add(p,tex=(.99,.99),rgb=(1,1,1),rig=None):
             vertices.append(tuple(v*length for v in p));uv.append(tex)
+            # Extra UV channels carry dimensionless hinge offsets, type and
+            # longitudinal root position. Keep the color atlas independent.
+            dy,dz,kind,rootx=rig if rig else (0,0,0,0)
+            fin_offsets.append((.5+dy,.5+dz));fin_kinds.append((kind/8,.5+rootx))
             w=max(0,min(1,(.18-p[0])/.65))**1.5
             colors.append((*rgb,w));return len(vertices)-1
         # Main body atlas occupies V=0..0.72. Duplicate seam vertices give
@@ -34,9 +38,9 @@ def create_fish(mesh_object,export):
             indices=[ring*(sides+1)+i for i in range(sides)]
             faces.append(tuple(reversed(indices)) if reverse else tuple(indices))
         # Ruled fin surfaces: UV rays are attached to the topology, not world
-        # space. A subtle thickness is added at export by the solidify modifier.
+        # space. Two-sided rendering supplies the thin fin membrane.
         fin_count=0
-        def fin(roots,tips,tint=(1,1,1),spines=False):
+        def fin(roots,tips,tint=(1,1,1),spines=False,kind=0):
             nonlocal fin_count
             fin_count+=1;start=len(vertices);segments=6
             for j,(root,tip) in enumerate(zip(roots,tips)):
@@ -48,11 +52,12 @@ def create_fish(mesh_object,export):
                     shade=1
                     if name=='Perch' and spines:
                         shade-=.82*math.exp(-((j/(len(roots)-1)-.16)/.12)**2-((t-.65)/.38)**2)
-                    add(p,(j/(len(roots)-1),.76+t*.17),tuple(c*shade for c in tint))
+                    add(p,(j/(len(roots)-1),.76+t*.17),tuple(c*shade for c in tint),
+                        (p.y-root.y,p.z-root.z,kind,root.x))
                     if j and k:
                         v=start+j*(segments+1)+k
                         faces.append((v-segments-2,v-segments-1,v,v-1))
-        def dorsal(start,end,rise,sign=1,spines=False,tint=(1,1,1),rays=22):
+        def dorsal(start,end,rise,sign=1,spines=False,tint=(1,1,1),rays=22,kind=None):
             roots=[];tips=[]
             for j in range(rays*2+1):
                 t=j/(rays*2);x=start+(end-start)*t
@@ -61,7 +66,7 @@ def create_fish(mesh_object,export):
                 if spines:h=rise*max(0,min(t/.35,(1-t)/.16))**.5
                 if spines and j%2:h*=.82
                 roots.append((x,0,z-sign*.004));tips.append((x-.018*math.sin(math.pi*t),0,z+sign*h))
-            fin(roots,tips,tint,spines)
+            fin(roots,tips,tint,spines,kind if kind is not None else 2 if spines else 1)
         grey=(.55,.58,.52);orange=(1,.40,.18);brown=(.58,.48,.30)
         tint=orange if name in ('Perch','Roach') else brown if name=='Burbot' else grey
         # Caudal fin: broad attached root and curved fork, rather than one
@@ -87,7 +92,7 @@ def create_fish(mesh_object,export):
         else:
             dorsal(-.10,.12,.112,tint=grey,rays=14)
             dorsal(-.27,-.13,.075,-1,tint=tint,rays=12)
-            if name=='Whitefish':dorsal(-.28,-.22,.026,tint=grey,rays=5)
+            if name=='Whitefish':dorsal(-.28,-.22,.026,tint=grey,rays=5,kind=0)
         for sign in (-1,1):
             # Fan-shaped pectoral fins attached behind the gill cover.
             roots=[];tips=[]
@@ -96,7 +101,7 @@ def create_fish(mesh_object,export):
                 t=j/24;z=-.005-.035*t
                 roots.append((px-.022*t,sign*shape(name,px,'width')*.92,z))
                 tips.append((px-.04-.14*math.sin(math.pi*t*.8),sign*(.065+.07*math.sin(math.pi*t)),z-.035*math.sin(math.pi*t)))
-            fin(roots,tips,tint)
+            fin(roots,tips,tint,kind=3 if sign>0 else 4)
             # Perch pelvic insertion is below the pectoral; burbot anterior.
             px=.20 if name=='Burbot' else .12 if name=='Perch' else -.015
             roots=[];tips=[]
@@ -104,7 +109,7 @@ def create_fish(mesh_object,export):
                 t=j/18;x=px-.055*t;z=shape(name,x,'centre')-shape(name,x,'height')*.82
                 roots.append((x,sign*.022,z))
                 tips.append((x-.07*math.sin(math.pi*t),sign*(.025+.035*math.sin(math.pi*t)),z-.055*math.sin(math.pi*t)))
-            fin(roots,tips,tint)
+            fin(roots,tips,tint,kind=5 if sign>0 else 6)
         # Small tubes follow the actual body surface: mouth lips, gill margin
         # and burbot chin barbel. These are original modeled features.
         def tube(points,radius,tex=(.18,.975),tint=(1,1,1)):
@@ -137,6 +142,9 @@ def create_fish(mesh_object,export):
         fish=mesh_object('SM_'+name,vertices,faces,colors)
         layer=fish.data.uv_layers.new(name='UVMap')
         for loop in fish.data.loops:layer.data[loop.index].uv=uv[loop.vertex_index]
+        for label,values in [('FinOffset',fin_offsets),('FinKind',fin_kinds)]:
+            extra=fish.data.uv_layers.new(name=label)
+            for loop in fish.data.loops:extra.data[loop.index].uv=values[loop.vertex_index]
         # The two end caps need area in UV space, even though they sample a
         # nearly uniform lip swatch. Collapsed UVs produce invalid tangents.
         for poly in fish.data.polygons:
@@ -159,7 +167,15 @@ def create_fish(mesh_object,export):
                 for loop in eye.data.loops:
                     old=eye.data.uv_layers.active.data[loop.index].uv.copy()
                     eye.data.uv_layers.active.data[loop.index].uv=((.76 if pupil else .48)+old.x*.18,.957+old.y*.036)
+                # Joining meshes preserves all three channels, including a
+                # neutral rig on eyes. Material coordinates remain channel 0.
+                for label in ['FinOffset','FinKind']:
+                    extra=eye.data.uv_layers.new(name=label)
+                    for value in extra.data:value.uv=(0,.5) if label=='FinKind' else (.5,.5)
                 parts.append(eye)
+        for obj in parts:
+            obj.data.uv_layers.active_index=0
+            obj.data.uv_layers[0].active_render=True
         bpy.ops.object.select_all(action='DESELECT')
         for obj in parts:obj.select_set(True)
         bpy.context.view_layer.objects.active=fish;bpy.ops.object.join()

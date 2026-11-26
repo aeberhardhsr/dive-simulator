@@ -12,7 +12,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(2,40)][double]$Visibility=14,
     [ValidateRange(0,100)][double]$Battery=100,
     [ValidateRange(0,30)][double]$ParticleScale=1,
-    [switch]$PopulationChecks, [switch]$VegetationChecks, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
+    [switch]$PopulationChecks, [switch]$VegetationChecks, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [switch]$FinInspection, [string]$RuntimeLog='',
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
@@ -62,6 +62,7 @@ if($Date) { $arguments+=" -DiveDate=$Date" }
 $arguments+=' -DiveTorch='+$Torch+' -DiveTorchBattery='+$Battery.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments+=' -DiveParticleScale='+$ParticleScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 if($PopulationChecks) { $arguments+=' -DivePopulationChecks' }
+if($FinInspection) { $arguments+=' -DiveFinInspection' }
 if($NavShore) { $arguments+=' -DiveNavShore' }
 if($NoBubbles) { $arguments+=' -DiveNoBubbles' }
 if($AutomaticEnvironment) { $arguments+=' -DiveAutomaticEnvironment' }

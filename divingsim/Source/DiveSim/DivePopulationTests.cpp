@@ -8,6 +8,20 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     const FVector original=Diver?Diver->GetActorLocation():PopulationOrigin;
     const auto savedFish=FishState;const auto savedRandom=Random;const double savedRefill=LastFishRefill;
     bool valid=true;int retained=0,reloaded=0,nearFish=0,spawned=0;
+    // Exercise the actual world pause gate, including the GPU instance values.
+    if(Diver&&Diver->bDiveActive)
+    {
+        TArray<TArray<float>> gpu;for(const auto& component:Fish) gpu.Add(component->PerInstanceSMCustomData);
+        const bool menu=Diver->bMenu;const auto clock=WorldTime;
+        Diver->bMenu=true;Tick(.1f);Diver->bMenu=menu;
+        bool paused=WorldTime==clock;
+        for(int i=0;i<FishState.Num();++i)
+            paused&=FishState[i].Motion.Tail==savedFish[i].Motion.Tail&&FishState[i].Motion.Fin==savedFish[i].Motion.Fin&&FishState[i].Position==savedFish[i].Position;
+        for(int i=0;i<Fish.Num();++i) paused&=gpu[i]==Fish[i]->PerInstanceSMCustomData;
+        UE_LOG(LogTemp,Display,TEXT("DIVE_FIN_PAUSE_%s gpu=1 phases=1 position=1"),paused?TEXT("PASS"):TEXT("FAIL"));
+        valid&=paused;
+    }
+    else valid=false;
     auto capture=[](const FDivePopulationCell& cell)
     {
         TArray<TArray<FTransform>> result;
@@ -49,7 +63,8 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         {
             ++nearFish;const auto& a=beforeFish[i];const auto& b=FishState[i];
             valid&=b.Active&&a.Position==b.Position&&a.Velocity==b.Velocity&&a.Home==b.Home&&
-                a.Instance==b.Instance&&a.TailCycle==b.TailCycle&&a.Phase==b.Phase&&a.Scale==b.Scale;
+                a.Instance==b.Instance&&a.Motion.Tail==b.Motion.Tail&&a.Motion.Fin==b.Motion.Fin&&
+                a.Motion.Effort==b.Motion.Effort&&a.Motion.Turn==b.Motion.Turn&&a.Phase==b.Phase&&a.Scale==b.Scale;
         }
     LastFishRefill=WorldTime;StreamPopulation(after+FVector(38400,0,0));
     for(const auto& pair:snapshots) valid&=!PopulationCells.Contains(pair.Key);

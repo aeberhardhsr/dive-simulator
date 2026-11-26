@@ -114,7 +114,8 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
             if(blocked) continue;
             fish.Active=true;fish.Scale=scale;fish.Position=fish.Home=position;
             fish.Velocity=(Initial?PopulationForward:FVector(FMath::Cos(angle+PI),FMath::Sin(angle+PI),0))*profile.CruiseSpeed*100;
-            fish.Phase=Random.FRandRange(0.f,2*PI);fish.TailCycle=fish.Phase;
+            fish.Phase=Random.FRandRange(0.f,2*PI);fish.Motion={};
+            fish.Motion.Tail=fish.Phase;fish.Motion.Fin=fish.Phase*.7;
             Fish[fish.Species]->UpdateInstanceTransform(fish.Instance,FTransform(fish.Velocity.Rotation(),position,FVector(scale)),false,true,true);
             break;
         }

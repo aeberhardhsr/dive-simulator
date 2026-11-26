@@ -49,7 +49,7 @@ ADiveWorld::ADiveWorld()
     for(const auto& profile:Dive::FishProfiles)
     {
         auto* component=create(UTF8_TO_TCHAR(profile.Mesh));
-        component->NumCustomDataFloats=5;
+        component->NumCustomDataFloats=13;
         Fish.Add(component);
     }
     Bubbles=create(TEXT("BreathBubbles")); Particles=create(TEXT("SuspendedParticles"));

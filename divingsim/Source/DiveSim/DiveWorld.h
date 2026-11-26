@@ -8,6 +8,7 @@
 #include "Simulation/VisualMedium.h"
 #include "Simulation/EnvironmentLight.h"
 #include "Simulation/Sediment.h"
+#include "Simulation/FishMotion.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -27,7 +28,8 @@ struct FDiveBubble
 struct FDiveFish
 {
     FVector Position=FVector::ZeroVector, Velocity=FVector::ZeroVector, Home=FVector::ZeroVector;
-    float Phase=0, TailCycle=0, Scale=1;
+    float Phase=0, Scale=1;
+    Dive::FishMotion Motion;
     int32 Species=0, Instance=0;
     bool Active=false;
 };
@@ -68,7 +70,7 @@ public:
     TArray<FDiveAccess> Accesses;
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
-    bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation);
+    bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation,bool FinOnly=false);
     bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
     TArray<FString> PhotographSpecies(const FVector& Eye,const FVector& Forward) const;
     bool TestPopulationStreaming(FString& Detail);

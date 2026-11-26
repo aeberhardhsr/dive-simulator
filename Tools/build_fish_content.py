@@ -43,11 +43,12 @@ def build_fish():
     output(samples['Normal'],'RGB',u.MaterialProperty.MP_NORMAL);output(samples['Surface'],'G',u.MaterialProperty.MP_ROUGHNESS)
     output(samples['Surface'],'B',u.MaterialProperty.MP_OPACITY);output(mul,'',u.MaterialProperty.MP_SUBSURFACE_COLOR)
     spec=props(node(u.MaterialExpressionConstant),r=.45);output(spec,'',u.MaterialProperty.MP_SPECULAR)
-    names=['Weight','Cycle','RX','RY','Phase','Amplitude']
+    names=['Weight','Cycle','RX','RY','Phase','Amplitude','RZ','UX','UY','UZ','FinCycle','Effort','Turn','Length','Offset','Rig']
     bend=props(node(u.MaterialExpressionCustom),inputs=[props(u.CustomInput(),input_name=name) for name in names],output_type=u.CustomMaterialOutputType.CMOT_FLOAT3,
-        code='float sway=sin(Cycle+Phase-Weight*3)*Amplitude*Weight; return float3(RX*sway,RY*sway,0);')
+        code=(ROOT/'Tools/fish_motion_shader.hlsl').read_text(encoding='utf-8'))
     wire(vertex,'A',bend,'Weight')
-    for index,name in enumerate(names[1:]):wire(props(node(u.MaterialExpressionPerInstanceCustomData),data_index=index),'',bend,name)
+    for index,name in enumerate(names[1:14]):wire(props(node(u.MaterialExpressionPerInstanceCustomData),data_index=index),'',bend,name)
+    for index,name in [(1,'Offset'),(2,'Rig')]:wire(props(node(u.MaterialExpressionTextureCoordinate),coordinate_index=index),'',bend,name)
     output(bend,'',u.MaterialProperty.MP_WORLD_POSITION_OFFSET);lib.recompile_material(material);save(material)
     flag='Interchange.FeatureFlags.Import.FBX';previous=u.SystemLibrary.get_console_variable_int_value(flag)
     u.SystemLibrary.execute_console_command(None,flag+' 0')
@@ -73,7 +74,7 @@ def build_fish():
             settings=[props(u.StaticMeshReductionSettings(),percent_triangles=p,screen_size=s) for p,s in [(1.,1.),(.45,.35),(.18,.12),(.065,.04)]]
             reduction=props(u.StaticMeshReductionOptions(),auto_compute_lod_screen_size=False,reduction_settings=settings)
             if editor.set_lods(mesh,reduction)!=4:raise RuntimeError('Fish LOD creation failed '+name)
-            props(mesh,positive_bounds_extension=u.Vector(8,8,1),negative_bounds_extension=u.Vector(8,8,1));save(mesh)
+            props(mesh,positive_bounds_extension=u.Vector(12,12,8),negative_bounds_extension=u.Vector(12,12,8));save(mesh)
             records.append(dict(name=name,lods=editor.get_lod_count(mesh),material=instance.get_path_name(),uv_channels=editor.get_num_uv_channels(mesh,0)))
     finally:u.SystemLibrary.execute_console_command(None,flag+' '+str(previous))
     (ROOT/'artifacts/FishContentBuild.json').write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8')
