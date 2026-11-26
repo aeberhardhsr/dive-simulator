@@ -1,0 +1,2255 @@
+{
+  "status": "PASS",
+  "scope": "Native volume contribution, matched cameras, air control, storm transitions and night; not visual acceptance",
+  "host": {
+    "packaged": false,
+    "started_utc": "2026-11-26T23:28:02.5843398Z",
+    "native_editor": true,
+    "source_head": "9feaecd885e75fae81c6eb6eae2537499c48b631",
+    "files": [
+      {
+        "file": "divingsim/Source/DiveSim/DiveAccess.cpp",
+        "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAudio.cpp",
+        "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAudio.h",
+        "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatar.cpp",
+        "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatar.h",
+        "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp",
+        "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+        "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBodyFrame.h",
+        "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp",
+        "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildings.cpp",
+        "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildings.h",
+        "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+        "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+        "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+        "sha256": "6bc2c4cb8b709aee40ea1c527acb42d90a27b67e4eca5a45e607a971e99007fe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+        "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp",
+        "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.h",
+        "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoast.cpp",
+        "sha256": "90fdbdd9655b101d757ac55abdf49cc3e4160893646bec4757e22002945eb49f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+        "sha256": "75c97a2a5ab6fbe38bbebe81df4c1284f3af6c64d6586667662bd28a628cf819"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h",
+        "sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp",
+        "sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp",
+        "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp",
+        "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.h",
+        "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveContacts.cpp",
+        "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveContacts.h",
+        "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+        "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControls.cpp",
+        "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControls.h",
+        "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp",
+        "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp",
+        "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp",
+        "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp",
+        "sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp",
+        "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.h",
+        "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp",
+        "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+        "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp",
+        "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp",
+        "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEcology.cpp",
+        "sha256": "2e0593271b9e3db485d4d0ef81a44d9c3468bcd0796841bc43063158a07c1246"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp",
+        "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEquipment.cpp",
+        "sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEquipment.h",
+        "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp",
+        "sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp",
+        "sha256": "6d60bd17cf6f025f4d1a0f02d42f66798de2a720b2a6a35b9d827c11f6579f68"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveGameMode.cpp",
+        "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveGameMode.h",
+        "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveGravel.cpp",
+        "sha256": "6b3654dd9991eecb8991bf6d2e92ee83bca82f2078a3a5d6ab1b50c15cf56b45"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveHUD.cpp",
+        "sha256": "98d497a8c649030b96888329c4b7bafe88d1e27a06f81a92a8e2904f025f94af"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveHUD.h",
+        "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveImagery.cpp",
+        "sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+        "sha256": "31f7c60239fa146ac1edfa8f7b3438e2172b3a3eb14a0fd64924d98540fde7a0"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+        "sha256": "eb607f0a1d9674846388ba38296696fe1896c82d0b1889a38dfd378593be21d8"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+        "sha256": "7a85fd583a418e0c7c38c0c6cbdb8fc3ba7ec1085723de0f4fa3147edee941ef"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+        "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp",
+        "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp",
+        "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbook.cpp",
+        "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbook.h",
+        "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp",
+        "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp",
+        "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp",
+        "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp",
+        "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp",
+        "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp",
+        "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveParticles.cpp",
+        "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePawn.cpp",
+        "sha256": "e20ba29308f1d754e44517c9cdaf5868dbc7d1be14895476d7b87fab53d80ae0"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePawn.h",
+        "sha256": "b0d6af6fc530eb4408b353d72385ad50e48f205475c3da9ec10edb37a7d5976a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp",
+        "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePerformance.cpp",
+        "sha256": "4327caf4ce19e8934fb4397696dd8187c53c44efeba7ad3067a8dfb8a9c7fdff"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePhotograph.cpp",
+        "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePlantBedsTests.cpp",
+        "sha256": "9daec5ad3a5208066ddf6a43f4454d7d837cbcfcf1723be7e0620d156a937af1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePlayerController.cpp",
+        "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePlayerController.h",
+        "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePopulation.cpp",
+        "sha256": "5b182864efcad2baed519eda2365138a50920eaa27e5eaead9c128b4f9188cea"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+        "sha256": "86951dcffdeb26cb5dde28bebc2045e515a379f54ce1b8fff2c9394c2ca6c07a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePose.h",
+        "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfiles.cpp",
+        "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfiles.h",
+        "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp",
+        "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp",
+        "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRecording.cpp",
+        "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRecording.h",
+        "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+        "sha256": "2926ea4adf986db7c28d0a02b942478b2c077056eda17e0b508f1ec3032b41dc"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRockSearchTests.cpp",
+        "sha256": "0395297ff23d7ceaf8b69ee9c0f824862b1ea21c76590876ad8d648a3fe8fe14"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSediment.cpp",
+        "sha256": "f3c08475bb83a5d85b79e2c19e37d0f85269a5086d5f2a8e953a365ceaf5edec"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp",
+        "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveShoreline.cpp",
+        "sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+        "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSim.Build.cs",
+        "sha256": "b7e7428ef210c4b10a611469bd91ca80de3035fa85c112e961942bdb5d93a985"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSim.cpp",
+        "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSky.cpp",
+        "sha256": "b01b6b36c16e9e04c2a71911e5997bc052956cbf1ceb242d6c997af8bd1ee519"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSoak.cpp",
+        "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTerrain.cpp",
+        "sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTerrain.h",
+        "sha256": "68def7d5e0a9340e4e9199f1f54af0014d1edd7c1d341065f80871c26ab41b57"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTextDialog.h",
+        "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.cpp",
+        "sha256": "c5135287c9e73fdb2ebe02cd95cfd66457be04941cd953f797e04211f4b9e0d7"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.h",
+        "sha256": "f9ac559cdd3b88525004915a9ecd528f76b6336fcce4c4d2f0c4f43176cb1d31"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTorch.cpp",
+        "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveVegetation.cpp",
+        "sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveVegetation.h",
+        "sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWater.cpp",
+        "sha256": "5761544324b5a757ebba03bdb4b9b2768fe4e86b36d8a5745130f14d90ea8671"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp",
+        "sha256": "cdaa25b66b35a7f6d5a48eb0fe3b01bbfbca5be773ed4554cf91b5b4bddc2683"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp",
+        "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.h",
+        "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp",
+        "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp",
+        "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp",
+        "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+        "sha256": "c214ba1f2eacef1fa2305f41270b63725cd8775928e7166d0ba2fc4c4d6bb177"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWorld.h",
+        "sha256": "e18257279f2d86079f133566bd4359781543c7858924c5a26f64b96c4c0f224c"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h",
+        "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h",
+        "sha256": "7c6db5c705c037ddd4b6de5289a9370c2d6c17b7bc8c9edf6dc8be89eeb65898"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h",
+        "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h",
+        "sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h",
+        "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Decompression.h",
+        "sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h",
+        "sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Ecology.h",
+        "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h",
+        "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h",
+        "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h",
+        "sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h",
+        "sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+        "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Loadout.h",
+        "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h",
+        "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Navigation.h",
+        "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/RockIndex.h",
+        "sha256": "6eac3be8b7d8f3ba7b35fe2f7f77d1a66929df60a2ffcae9c98a3b2b4f51b805"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h",
+        "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Sediment.h",
+        "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h",
+        "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h",
+        "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h",
+        "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Torch.h",
+        "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h",
+        "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h",
+        "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+        "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h",
+        "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Weather.h",
+        "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf"
+      },
+      {
+        "file": "Tools/SmokeTest.ps1",
+        "sha256": "d10324b2d54559c8c5a4bef2e0b3cae5b4e3427366a4562402be2ba6f5831c36"
+      },
+      {
+        "file": "Tools/TestBoundedWater.ps1",
+        "sha256": "f5468e2913d24c0391bc6048737fb2266f83ed6f057337e2d7d67dfb185bc616"
+      },
+      {
+        "file": "Tools/build_water_volume_content.py",
+        "sha256": "0a0184f8ad01ceaad461150dc96081a79877154c3a3d56335d7e592f37fefa9b"
+      },
+      {
+        "file": "Tools/Shaders/WaterVolume.ush",
+        "sha256": "6357792a7b9cbd143e50495e5062294a4319d1bb4b12091c1ac702e72d88f8d4"
+      },
+      {
+        "file": "Tools/Shaders/UnderwaterView.ush",
+        "sha256": "f80dc3cc5c1bbc88cdc8975669aea35d61a6192084b9eb06078deeac212cb132"
+      },
+      {
+        "file": "Tools/build_optics_content.py",
+        "sha256": "b18898b17d26356dca0a6cfd830e6fbf2fe64fde52256ca68ad4cf5390ad6888"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset",
+        "sha256": "f89df9e863d9e329b4ac417ec35a89536f532cfdb486c363dc0bc9a263cac936"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset",
+        "sha256": "6e65cd5a85876f24604eb589c021f8789d3ee0edff0173606f1a3cbbd18bc14e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset",
+        "sha256": "1da912c8eb089c1250dde4ac9060c6a5f08697b3f41c88318ccb3e47323df1ee"
+      },
+      {
+        "file": "Tools/build_water_interface_content.py",
+        "sha256": "1ff26d4508415efbccfa5c86d8a6942c829fcf72a337d0d486e58aa95a6b14c2"
+      },
+      {
+        "file": "Tools/build_unreal_content.py",
+        "sha256": "cb143ee08b1240c7e78022f9713d396bf11150fc8519d2ad6a470b6290c7e482"
+      },
+      {
+        "file": "Tools/Shaders/WaterInterfaceFresnel.ush",
+        "sha256": "e37168e7d10e0572cb3b91d9b339164c87ddad141c6d310151c7bc19ab63ee8a"
+      },
+      {
+        "file": "Tools/Shaders/WaterOptics.ush",
+        "sha256": "31eaf9809a80c970ac982b269bb4d2cc8c1b9dc17dacb62c3a6e1d938de8cb22"
+      },
+      {
+        "file": "divingsim/Config/DefaultEngine.ini",
+        "sha256": "c68ab50cf9ef0b292575beb33146a0b1477a5a6fece1c3060500da6cdd0ab46e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Water.uasset",
+        "sha256": "764a534b0df3b56357bb150498b9ae7c11fb74966ce1f9e2f51565e737112e6e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_WaterTop.uasset",
+        "sha256": "a1ff42d0c89191b7fcf65b609c314ab0a62737839027c05996ef4bfe42917b83"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_WaterUnder.uasset",
+        "sha256": "e2573840a6cd1643673801699a346f835362ac7313af7e19029687657f297e8a"
+      },
+      {
+        "file": "Builds/EditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+        "sha256": "9719a08c14e2d01d678e9ccd16c541cd48830eff41133d068bade49027a3eb58"
+      }
+    ]
+  },
+  "host_file": {
+    "file": "artifacts/bounded-water-20261127-002802/Host.json",
+    "sha256": "5d168b44b6864fe5305d43cf1369fa1485a8cc02fe44c1b94aa4d306fa61fd48",
+    "bytes": 25448
+  },
+  "supplementary_optics_source": null,
+  "build": {
+    "file": "artifacts/bounded-camera-optics-content.log",
+    "sha256": "95d8a698bf11dcdfdb5fbbe64b15f5f1ab6f9ed0475e9cb6eda71e11fee60fda",
+    "bytes": 230122
+  },
+  "cases": [
+    {
+      "bounded": false,
+      "name": "surface-before",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/surface-before/Runtime.log",
+        "sha256": "e87f3b0219f79f17913466b5525aa8109708a8f1885459cb31b66e1e0ad0fdad",
+        "bytes": 225429
+      },
+      "poses": [
+        "state=1 view=0 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=1 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=2 eye=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=0.000000 exposure=-4.672135 visibility=14.000"
+      ],
+      "actual_water_cameras": [
+        "actual=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1",
+        "actual=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1",
+        "actual=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=-0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1"
+      ],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-before/Water_1_0.png",
+          "sha256": "c2c1ef6e7791f6109a7ca3969d21d5cfbdf522363978a54ac71d65965051bbbe",
+          "bytes": 1368826
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-before/Water_1_1.png",
+          "sha256": "01c3b0ce73554371f33c89fc71e1436269370c96e5c8678dda3180880380ee80",
+          "bytes": 1265960
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-before/Water_1_2.png",
+          "sha256": "33c7089225242cd22edc2d8167ebbc828cb106d9c52a4269e89d43abd03d79bb",
+          "bytes": 1941818
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.10:312][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.20:411][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.28.20:411][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.28.20:411][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.28.20:411][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.28.20:411][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "surface-bounded",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Runtime.log",
+        "sha256": "96d7e87836eea51090636babf7d393998cfa92523ee45d81adabe5bb7bde065f",
+        "bytes": 237295
+      },
+      "poses": [
+        "state=1 view=0 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=1 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=2 eye=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=0.000000 exposure=-4.672135 visibility=14.000"
+      ],
+      "actual_water_cameras": [
+        "actual=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1",
+        "actual=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1",
+        "actual=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=-0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1"
+      ],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Water_1_0.png",
+          "sha256": "9326d9a18f2461131b031568388d1258f219bab5345a8ef3ee159294ac563769",
+          "bytes": 1596382
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Water_1_1.png",
+          "sha256": "c9e866b7e4a7ea4b6277887755e3e3eeeb364d2dbd920976efdf02e7271eb2f8",
+          "bytes": 1273821
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Water_1_2.png",
+          "sha256": "601a79253f78d5cab0324080b90dea440c0965e4ff4e168f1ec3745d7bc59e58",
+          "bytes": 1954713
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.45:550][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.28.55:580][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.28.55:580][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.28.55:580][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.28.55:580][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.28.55:580][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "surface-zero-density",
+      "fallback": false,
+      "zero": true,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Runtime.log",
+        "sha256": "a4f2caf22c3c184198a114687a56b2fad16b7bd6f3b05a30314a28b04cf2eb9f",
+        "bytes": 224597
+      },
+      "poses": [
+        "state=1 view=0 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=1 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=2 eye=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=0.000000 exposure=-4.672135 visibility=14.000"
+      ],
+      "actual_water_cameras": [
+        "actual=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1",
+        "actual=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1",
+        "actual=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=-0.000000 bed=-571.000 sampled=1 pp_weight=1.000 materials=1"
+      ],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Water_1_0.png",
+          "sha256": "6708589d6146ef048fc75988a400af9b866dcdf5d41c4d180480c350b3191a34",
+          "bytes": 2147884
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Water_1_1.png",
+          "sha256": "6fa64dd328bd7d8dd18416feb8f7e83899a7dea7045da8bc1f76e738dc0851ea",
+          "bytes": 1275057
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Water_1_2.png",
+          "sha256": "f0542ca2572c83b9231035bbebbaee27f1207d3bc9520df790e566efcc33e648",
+          "bytes": 1961818
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.20:474][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.30:618][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.29.30:618][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.29.30:618][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.29.30:618][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.29.30:618][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": false,
+      "name": "bed-before",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/bed-before/Runtime.log",
+        "sha256": "2dd7d8b74d383b60d160636d86b16c989f0bea136aaea4aa2c2b59aee3f25f29",
+        "bytes": 223024
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=70.000000 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=120.000000 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000"
+      ],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/bed-before/Habitat_0_0.png",
+          "sha256": "555ea6a2d3763ed62665f70051bbcd825673dfc39addeacb350a0757911c7e9b",
+          "bytes": 1919499
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/bed-before/Habitat_0_1.png",
+          "sha256": "b9343ad33dbbbae59bd223e74e5b837b2753d30766e4be2caef33786c839b422",
+          "bytes": 1791126
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/bed-before/Habitat_0_2.png",
+          "sha256": "e401e9dd3632cacaf40cfbfde4b17e67176d2cbdaab0e54d710902e0db7e1058",
+          "bytes": 1759001
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.29.56:509][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.06:829][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.30.06:829][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.30.06:829][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.30.06:829][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.30.06:829][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "bed-bounded",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Runtime.log",
+        "sha256": "171d4ffbedb38c84d99652f7cd96c2c8d550518366885d1244abb6b01eb6e38a",
+        "bytes": 240506
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=70.000000 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=120.000000 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000"
+      ],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Habitat_0_0.png",
+          "sha256": "188e021471f48f1c0ac000ace17530606dea75c992ccd035189f28fe61958a7a",
+          "bytes": 1973982
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Habitat_0_1.png",
+          "sha256": "df819a066444c46201dba7311fc66193363431c1741cab9cc57f089c5832cef7",
+          "bytes": 1864898
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Habitat_0_2.png",
+          "sha256": "5f6f0d4570a6898910de5d8ac00ea664a68218d595e9f757d8d7b7a8f4751a67",
+          "bytes": 1875420
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.32:523][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.30.42:749][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.30.42:749][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.30.42:749][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.30.42:749][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.30.42:749][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "sun-bounded",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Runtime.log",
+        "sha256": "3693e41c16f7db65521f2b0c580eca65ba1906446f49b0cfbdf69b3bd408fec3",
+        "bytes": 225239
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=12.000000 Y=135.556233 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=60.807285 Y=135.556233 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=0.000000 Y=315.556233 R=0.000000"
+      ],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Habitat_0_0.png",
+          "sha256": "f45649cc775983129be226eb0b52fc7b0e122ed73458ee78121fa95467dcf085",
+          "bytes": 1450585
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Habitat_0_1.png",
+          "sha256": "a80f4c2b572bf4e5c721d32435b0e15b2a389d3622471d9ae73edcef5f6f97ea",
+          "bytes": 1303755
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Habitat_0_2.png",
+          "sha256": "89c495816d817b15cd2aea054d4bd4070f07b9c87e6ae9c1f496d0dd07d34d07",
+          "bytes": 1587476
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.08:483][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.18:373][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.31.18:374][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.31.18:374][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.31.18:374][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.31.18:374][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "storm-bounded",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/storm-bounded/Runtime.log",
+        "sha256": "37829c873288dff9b87406c80ce2c23302bb95eb56dea61bbbe87852616cd521",
+        "bytes": 541318
+      },
+      "poses": [],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/storm-bounded/DiveSmoke_1_surface-storm.png",
+          "sha256": "d14687a1e61260edb0bb82ecaf62b1e3a508e65332805b9849438785684305ce",
+          "bytes": 1363377
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/storm-bounded/DiveUnderwater_1_surface-storm.png",
+          "sha256": "826e1b7305e37bbba4b31693a09194e0f9c8c4aefa14890ac0d06d762d8e4530",
+          "bytes": 1319540
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/storm-bounded/SurfaceAir_1_surface-storm.png",
+          "sha256": "6810f8c9c4a0179922a048002570dfd69f9aa50fb10d3ab2b22a6ffa8de62d89",
+          "bytes": 1439060
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.43:398][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.31.53:229][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.31.53:229][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.31.53:229][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.31.53:229][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.31.53:229][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "dark-bounded-on",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/dark-bounded-on/Runtime.log",
+        "sha256": "13da7f3a1953c509261d641271657e38736636675a7f7d396ee8c8fbf31f01d8",
+        "bytes": 394366
+      },
+      "poses": [],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-on/DiveSmoke_0_torch.png",
+          "sha256": "d5e48e634b54f195415b9148d6f43e732165c798385234ba39c1cd28d546cd85",
+          "bytes": 1030808
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-on/DiveUnderwater_0_torch.png",
+          "sha256": "ac6f55735811cae631ea76ce7166069f24b48873aec5637ca5b3a4c400ad265a",
+          "bytes": 984257
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:489][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:490][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.40:490][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.32.50:763][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.32.50:763][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.32.50:763][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.32.50:763][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.32.50:763][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "dark-bounded-off",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/dark-bounded-off/Runtime.log",
+        "sha256": "035834c14faad954adbc11de04018ee1256d992f4917fcb496bfa50f89acd2b3",
+        "bytes": 405380
+      },
+      "poses": [],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-off/DiveSmoke_0_torch.png",
+          "sha256": "38c44ffafbda7f8ea7fe66345c8d8c6c01fb86199441f35aa75c2403dd2274ed",
+          "bytes": 84499
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-off/DiveUnderwater_0_torch.png",
+          "sha256": "1f6ce1e241a1667cb5688c2dd82740301393b9789bbca5e74b94b1cafc63a175",
+          "bytes": 84834
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.22:653][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.33.33:037][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.33.33:037][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.33.33:037][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.33.33:037][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.33.33:037][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "night-sky",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/night-sky/Runtime.log",
+        "sha256": "819ea0d11bc00f252d676845fb67fbf8a721ea11249a8cf6f5ac5b109be2e392",
+        "bytes": 528280
+      },
+      "poses": [],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/night-sky/DiveSmoke_0_surface-calm.png",
+          "sha256": "d8a3219eda34e101406c1d35e1c2611cc80b5f00b4d5ba732874117412ca6ffa",
+          "bytes": 90005
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/night-sky/DiveUnderwater_0_surface-calm.png",
+          "sha256": "ef3b490ff43e0f327349da01c30276cc4c9cbc54ff9687ccd25f3303a29b585d",
+          "bytes": 798797
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/night-sky/SurfaceAir_0_surface-calm.png",
+          "sha256": "2f0e1596406e7b1c32a29ba032faed3a874b9dd38fbafdb08b46e589d5f78baa",
+          "bytes": 92772
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.04:760][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.34.14:673][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.34.14:673][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.34.14:673][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.34.14:673][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.34.14:673][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "dark-moonlit",
+      "fallback": false,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/dark-moonlit/Runtime.log",
+        "sha256": "5cadc2b66a6078c5078709277fd350f24d71ef04a67c50b4cee6920ade1aee5d",
+        "bytes": 390547
+      },
+      "poses": [],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/dark-moonlit/DiveSmoke_0_torch.png",
+          "sha256": "bb7c1f98f94bd59bca3a7e625b6a6a65bec3b7fc6ed395127d0be206b61c35a7",
+          "bytes": 1405037
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/dark-moonlit/DiveUnderwater_0_torch.png",
+          "sha256": "08059869f9cd9618b7e1ec129c91c796737a1236d392a9c1560e9f49f30aabbe",
+          "bytes": 1381932
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.02:093][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.12:183][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.35.12:183][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.35.12:183][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.35.12:183][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.35.12:183][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "bounded": true,
+      "name": "fallback",
+      "fallback": true,
+      "zero": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "runtime_log": {
+        "file": "artifacts/bounded-water-20261127-002802/fallback/Runtime.log",
+        "sha256": "373b05a6849dd6d889125757ba478302466d49171a31e8e45df5b0f94bf8b4e5",
+        "bytes": 227389
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=70.000000 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=120.000000 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000"
+      ],
+      "actual_water_cameras": [],
+      "images": [
+        {
+          "file": "artifacts/bounded-water-20261127-002802/fallback/Habitat_0_0.png",
+          "sha256": "4b9729691eb36a027782dc16e516d78346b47c4491a1ded2c31f9aeeaeb867b5",
+          "bytes": 1975146
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/fallback/Habitat_0_1.png",
+          "sha256": "f60a7d91e5715730ee947d961f6bc9ca1ab77e6ad9296cf7fabe95122bfa3956",
+          "bytes": 1849163
+        },
+        {
+          "file": "artifacts/bounded-water-20261127-002802/fallback/Habitat_0_2.png",
+          "sha256": "0c4451bafbe5cd8e77a5256d20381ce639fca77d6060ab60384a73bdb3f7ed73",
+          "bytes": 1837869
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.44:059][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-23.35.54:296][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-23.35.54:296][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-23.35.54:296][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-23.35.54:296][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-23.35.54:296][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    }
+  ],
+  "screenshot_count": 33,
+  "comparisons": [
+    {
+      "first": "surface-before",
+      "second": "surface-bounded",
+      "view": 0,
+      "mean_absolute_rgb_difference": 37.40144930555556
+    },
+    {
+      "first": "surface-before",
+      "second": "surface-bounded",
+      "view": 1,
+      "mean_absolute_rgb_difference": 34.46068449074074
+    },
+    {
+      "first": "surface-before",
+      "second": "surface-bounded",
+      "view": 2,
+      "mean_absolute_rgb_difference": 2.0236638888888887
+    },
+    {
+      "first": "surface-zero-density",
+      "second": "surface-bounded",
+      "view": 0,
+      "mean_absolute_rgb_difference": 24.660552314814815
+    },
+    {
+      "first": "surface-zero-density",
+      "second": "surface-bounded",
+      "view": 1,
+      "mean_absolute_rgb_difference": 8.471162268518519
+    },
+    {
+      "first": "surface-zero-density",
+      "second": "surface-bounded",
+      "view": 2,
+      "mean_absolute_rgb_difference": 2.0360171296296294
+    },
+    {
+      "first": "bed-before",
+      "second": "bed-bounded",
+      "view": 0,
+      "mean_absolute_rgb_difference": 18.095069675925927
+    },
+    {
+      "first": "bed-before",
+      "second": "bed-bounded",
+      "view": 1,
+      "mean_absolute_rgb_difference": 24.16245439814815
+    },
+    {
+      "first": "bed-before",
+      "second": "bed-bounded",
+      "view": 2,
+      "mean_absolute_rgb_difference": 22.576264814814813
+    }
+  ],
+  "air_region": {
+    "rect": [
+      400,
+      0,
+      1200,
+      80
+    ],
+    "mean_absolute_rgb_difference": 0.9619322916666667
+  },
+  "night": {
+    "mask_source": "Tools/validate_lighting_frames.py:scene",
+    "off_p999": 0.0,
+    "off_mean": 0.0,
+    "lit_pixels": 255488,
+    "mean_difference": 45.91023091725465
+  },
+  "moonlit_control": {
+    "sun_elevation": -33.424141,
+    "moon_elevation": 56.794833,
+    "moon_lux": 0.092388026,
+    "scene_mean": 6.180723220012829
+  },
+  "published": [],
+  "bounded_camera_passthrough": true,
+  "production_enabled": false,
+  "sky_background_fix_enabled_by_default": true,
+  "limitations": [
+    "Native editor only; no packaged build, performance or long-term stability result",
+    "Unreal volume uses scalar extinction and coloured albedo; no full spectral absorption transport",
+    "Volume boundary is smoothed over 20 cm; finite froxel resolution and distance fade remain",
+    "Refraction remains pixel-normal offset; full Snell projection and reflection detail remain unresolved",
+    "The uncalibrated Milky Way texture is disabled; atmosphere, sun, moon and catalog stars remain in the sky",
+    "The captured air-region control does not validate all above-water scenes"
+  ],
+  "camera_comparison": {
+    "prior_report": {
+      "file": "artifacts/bounded-water-20261127-001718/Results.json",
+      "sha256": "c7f86a7902277b010fb6080a1b72082090c8d7d4a222948df4ba97c447cb9db5",
+      "bytes": 73759
+    },
+    "changed_inputs": [
+      "Tools/Shaders/UnderwaterView.ush",
+      "divingsim/Content/Diving/Materials/M_Underwater.uasset"
+    ],
+    "pairs": [
+      {
+        "case": "surface-before",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-before/Water_1_0.png",
+          "sha256": "ad887c057b1009b941fcf4fc20d2554e84bd404c729681f258860bc7c8ad281f",
+          "bytes": 1371384
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-before/Water_1_0.png",
+          "sha256": "c2c1ef6e7791f6109a7ca3969d21d5cfbdf522363978a54ac71d65965051bbbe",
+          "bytes": 1368826
+        },
+        "mean_absolute_rgb_difference": 0.196,
+        "before_mean_rgb": [
+          8.723998611111112,
+          42.637652083333336,
+          34.5351
+        ],
+        "after_mean_rgb": [
+          8.72407638888889,
+          42.63596111111111,
+          34.53271180555556
+        ]
+      },
+      {
+        "case": "surface-before",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-before/Water_1_1.png",
+          "sha256": "d4d93aa20c2352efd878283716263908404e476f93c468cfd1b1c7a7b051eefd",
+          "bytes": 1265313
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-before/Water_1_1.png",
+          "sha256": "01c3b0ce73554371f33c89fc71e1436269370c96e5c8678dda3180880380ee80",
+          "bytes": 1265960
+        },
+        "mean_absolute_rgb_difference": 0.2315400462962963,
+        "before_mean_rgb": [
+          63.32782708333333,
+          82.15312569444444,
+          69.25130347222222
+        ],
+        "after_mean_rgb": [
+          63.330930555555554,
+          82.15787222222222,
+          69.25407222222222
+        ]
+      },
+      {
+        "case": "surface-before",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-before/Water_1_2.png",
+          "sha256": "cac3a01a09c3d7a87e05ec9de29abf9b74cfdabb86852f2af647ce6c4f704e60",
+          "bytes": 1942728
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-before/Water_1_2.png",
+          "sha256": "33c7089225242cd22edc2d8167ebbc828cb106d9c52a4269e89d43abd03d79bb",
+          "bytes": 1941818
+        },
+        "mean_absolute_rgb_difference": 0.44876481481481484,
+        "before_mean_rgb": [
+          43.06172222222222,
+          78.09310208333333,
+          91.05579930555555
+        ],
+        "after_mean_rgb": [
+          43.07121319444445,
+          78.10873055555555,
+          91.09480486111111
+        ]
+      },
+      {
+        "case": "surface-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-bounded/Water_1_0.png",
+          "sha256": "41b9cfd3f737c9ee3074ee24ca3abf731ae0c7c7305242f5ba2e748ff1bf5d3b",
+          "bytes": 1601710
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Water_1_0.png",
+          "sha256": "9326d9a18f2461131b031568388d1258f219bab5345a8ef3ee159294ac563769",
+          "bytes": 1596382
+        },
+        "mean_absolute_rgb_difference": 2.255392824074074,
+        "before_mean_rgb": [
+          36.39393472222222,
+          88.59523333333334,
+          79.80946736111112
+        ],
+        "after_mean_rgb": [
+          35.35429375,
+          85.72226944444445,
+          77.02026180555555
+        ]
+      },
+      {
+        "case": "surface-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-bounded/Water_1_1.png",
+          "sha256": "e269736f4b7b683b8e3bc3500121be5d32c54e64fdc2281919b3ce6298e6e712",
+          "bytes": 1277893
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Water_1_1.png",
+          "sha256": "c9e866b7e4a7ea4b6277887755e3e3eeeb364d2dbd920976efdf02e7271eb2f8",
+          "bytes": 1273821
+        },
+        "mean_absolute_rgb_difference": 0.5423046296296297,
+        "before_mean_rgb": [
+          68.41776666666667,
+          111.38743472222222,
+          133.39607847222223
+        ],
+        "after_mean_rgb": [
+          68.21295486111111,
+          110.74791111111111,
+          133.00814166666666
+        ]
+      },
+      {
+        "case": "surface-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-bounded/Water_1_2.png",
+          "sha256": "609c5a0faa835d4ace8407ae93a33afe5d6fd8c8d8e624358337ab24abbf987d",
+          "bytes": 1950181
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-bounded/Water_1_2.png",
+          "sha256": "601a79253f78d5cab0324080b90dea440c0965e4ff4e168f1ec3745d7bc59e58",
+          "bytes": 1954713
+        },
+        "mean_absolute_rgb_difference": 0.454825,
+        "before_mean_rgb": [
+          41.279724305555554,
+          76.76291597222222,
+          89.83346388888889
+        ],
+        "after_mean_rgb": [
+          41.264550694444445,
+          76.73967291666666,
+          89.80160138888888
+        ]
+      },
+      {
+        "case": "surface-zero-density",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-zero-density/Water_1_0.png",
+          "sha256": "afa549991c9f53722275ad5053d1c63db381eb79e1ced71efaaf1f63b52fb989",
+          "bytes": 2119553
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Water_1_0.png",
+          "sha256": "6708589d6146ef048fc75988a400af9b866dcdf5d41c4d180480c350b3191a34",
+          "bytes": 2147884
+        },
+        "mean_absolute_rgb_difference": 3.189108564814815,
+        "before_mean_rgb": [
+          44.76009305555556,
+          57.48841736111111,
+          65.50852638888888
+        ],
+        "after_mean_rgb": [
+          43.84168402777778,
+          52.768501388888886,
+          61.73792152777778
+        ]
+      },
+      {
+        "case": "surface-zero-density",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-zero-density/Water_1_1.png",
+          "sha256": "fddbc878a7fb7e7e22e6cc2f5c2e316fd90a32a71b5999cea16dff0f3071c3f4",
+          "bytes": 1276969
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Water_1_1.png",
+          "sha256": "6fa64dd328bd7d8dd18416feb8f7e83899a7dea7045da8bc1f76e738dc0851ea",
+          "bytes": 1275057
+        },
+        "mean_absolute_rgb_difference": 0.5975409722222222,
+        "before_mean_rgb": [
+          63.66251875,
+          93.73333472222222,
+          133.29384861111112
+        ],
+        "after_mean_rgb": [
+          63.43525972222222,
+          92.89304861111111,
+          132.8854861111111
+        ]
+      },
+      {
+        "case": "surface-zero-density",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/surface-zero-density/Water_1_2.png",
+          "sha256": "41c55efc94ba34ef7a6b3d2ceb879f33a06de976abea6d25118b6e1fd05941d8",
+          "bytes": 1965961
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/surface-zero-density/Water_1_2.png",
+          "sha256": "f0542ca2572c83b9231035bbebbaee27f1207d3bc9520df790e566efcc33e648",
+          "bytes": 1961818
+        },
+        "mean_absolute_rgb_difference": 0.3709462962962963,
+        "before_mean_rgb": [
+          43.31790347222222,
+          78.36169861111111,
+          91.69575902777778
+        ],
+        "after_mean_rgb": [
+          43.31346388888889,
+          78.34718680555555,
+          91.67702013888889
+        ]
+      },
+      {
+        "case": "bed-before",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/bed-before/Habitat_0_0.png",
+          "sha256": "94528868fb1f22deccd2733b699b88eee42edeb1aa98ae9110b8a42b9d62bfc4",
+          "bytes": 1919505
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/bed-before/Habitat_0_0.png",
+          "sha256": "555ea6a2d3763ed62665f70051bbcd825673dfc39addeacb350a0757911c7e9b",
+          "bytes": 1919499
+        },
+        "mean_absolute_rgb_difference": 0.21484189814814814,
+        "before_mean_rgb": [
+          38.971615972222224,
+          57.01125833333333,
+          42.24103958333333
+        ],
+        "after_mean_rgb": [
+          38.97013333333334,
+          57.00685,
+          42.237779861111115
+        ]
+      },
+      {
+        "case": "bed-before",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/bed-before/Habitat_0_1.png",
+          "sha256": "b3323f93775186665dbb93dcd822c8bc4e0fee0c13684e0c607c81c5369c0bdd",
+          "bytes": 1792529
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/bed-before/Habitat_0_1.png",
+          "sha256": "b9343ad33dbbbae59bd223e74e5b837b2753d30766e4be2caef33786c839b422",
+          "bytes": 1791126
+        },
+        "mean_absolute_rgb_difference": 0.23669837962962964,
+        "before_mean_rgb": [
+          37.40194513888889,
+          58.642358333333334,
+          44.47000763888889
+        ],
+        "after_mean_rgb": [
+          37.40129375,
+          58.640153472222224,
+          44.46842291666667
+        ]
+      },
+      {
+        "case": "bed-before",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/bed-before/Habitat_0_2.png",
+          "sha256": "6f6777954818733e662ce7de5367e1a902eaf6c4869b68c84c60b939281c3b7b",
+          "bytes": 1759286
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/bed-before/Habitat_0_2.png",
+          "sha256": "e401e9dd3632cacaf40cfbfde4b17e67176d2cbdaab0e54d710902e0db7e1058",
+          "bytes": 1759001
+        },
+        "mean_absolute_rgb_difference": 0.22933310185185185,
+        "before_mean_rgb": [
+          23.07555763888889,
+          50.064982638888885,
+          38.40940486111111
+        ],
+        "after_mean_rgb": [
+          23.07566597222222,
+          50.06489027777778,
+          38.40876458333334
+        ]
+      },
+      {
+        "case": "bed-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/bed-bounded/Habitat_0_0.png",
+          "sha256": "cef53f1b15319508f191047a8673026d1a5f5cac3b218e9c87f2043747ea7d9e",
+          "bytes": 1974674
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Habitat_0_0.png",
+          "sha256": "188e021471f48f1c0ac000ace17530606dea75c992ccd035189f28fe61958a7a",
+          "bytes": 1973982
+        },
+        "mean_absolute_rgb_difference": 2.1619425925925926,
+        "before_mean_rgb": [
+          52.48649652777778,
+          78.16115416666666,
+          68.26251319444444
+        ],
+        "after_mean_rgb": [
+          51.78307083333333,
+          75.22317222222222,
+          65.46476388888888
+        ]
+      },
+      {
+        "case": "bed-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/bed-bounded/Habitat_0_1.png",
+          "sha256": "6e12dc6cdc387cc584ce03e91d822de2a518266031368e750aa6e07c2f116d0b",
+          "bytes": 1881030
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Habitat_0_1.png",
+          "sha256": "df819a066444c46201dba7311fc66193363431c1741cab9cc57f089c5832cef7",
+          "bytes": 1864898
+        },
+        "mean_absolute_rgb_difference": 2.2092627314814814,
+        "before_mean_rgb": [
+          56.47857777777778,
+          87.14703194444445,
+          75.91412847222222
+        ],
+        "after_mean_rgb": [
+          55.70377777777778,
+          84.22422569444444,
+          73.05687291666666
+        ]
+      },
+      {
+        "case": "bed-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/bed-bounded/Habitat_0_2.png",
+          "sha256": "b166500d8392fea3f91dcc03ea93f7315f41716567fcdcf7250fd7bd12b7dbb3",
+          "bytes": 1871761
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/bed-bounded/Habitat_0_2.png",
+          "sha256": "5f6f0d4570a6898910de5d8ac00ea664a68218d595e9f757d8d7b7a8f4751a67",
+          "bytes": 1875420
+        },
+        "mean_absolute_rgb_difference": 2.8269581018518517,
+        "before_mean_rgb": [
+          40.18097361111111,
+          78.66081666666666,
+          68.82478958333333
+        ],
+        "after_mean_rgb": [
+          39.19521666666667,
+          74.866825,
+          65.19330416666666
+        ]
+      },
+      {
+        "case": "sun-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/sun-bounded/Habitat_0_0.png",
+          "sha256": "d1c981561f5a149885b30c863da19222241dbf8d28d30cfbf23674f57b23c084",
+          "bytes": 1461880
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Habitat_0_0.png",
+          "sha256": "f45649cc775983129be226eb0b52fc7b0e122ed73458ee78121fa95467dcf085",
+          "bytes": 1450585
+        },
+        "mean_absolute_rgb_difference": 2.3050824074074074,
+        "before_mean_rgb": [
+          47.04153541666667,
+          108.18085555555555,
+          91.35706875
+        ],
+        "after_mean_rgb": [
+          45.85826180555556,
+          105.33169583333333,
+          88.48018402777778
+        ]
+      },
+      {
+        "case": "sun-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/sun-bounded/Habitat_0_1.png",
+          "sha256": "56cb56d64702684f154d29b92aa2103f8c5c5815991d243dfad40f04876fea97",
+          "bytes": 1300970
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Habitat_0_1.png",
+          "sha256": "a80f4c2b572bf4e5c721d32435b0e15b2a389d3622471d9ae73edcef5f6f97ea",
+          "bytes": 1303755
+        },
+        "mean_absolute_rgb_difference": 0.8300662037037037,
+        "before_mean_rgb": [
+          72.379825,
+          126.22867013888889,
+          131.8296875
+        ],
+        "after_mean_rgb": [
+          71.9278375,
+          125.17865277777778,
+          131.01160625
+        ]
+      },
+      {
+        "case": "sun-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/sun-bounded/Habitat_0_2.png",
+          "sha256": "e5203559755ffd804b69ab991d533da2e4530cf640cda24fbd6d098d0163011d",
+          "bytes": 1582549
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/sun-bounded/Habitat_0_2.png",
+          "sha256": "89c495816d817b15cd2aea054d4bd4070f07b9c87e6ae9c1f496d0dd07d34d07",
+          "bytes": 1587476
+        },
+        "mean_absolute_rgb_difference": 3.4702759259259257,
+        "before_mean_rgb": [
+          23.41774513888889,
+          77.11148333333334,
+          74.04358680555555
+        ],
+        "after_mean_rgb": [
+          21.940736805555556,
+          72.38083888888889,
+          69.89156319444444
+        ]
+      },
+      {
+        "case": "storm-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/storm-bounded/DiveSmoke_1_surface-storm.png",
+          "sha256": "b6d76c8fc6198bc92966a3c321b7ee5d8a70087c7556be1361e8dd768fda08dd",
+          "bytes": 1365415
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/storm-bounded/DiveSmoke_1_surface-storm.png",
+          "sha256": "d14687a1e61260edb0bb82ecaf62b1e3a508e65332805b9849438785684305ce",
+          "bytes": 1363377
+        },
+        "mean_absolute_rgb_difference": 0.3102462962962963,
+        "before_mean_rgb": [
+          27.03389027777778,
+          43.14825069444444,
+          41.14926111111111
+        ],
+        "after_mean_rgb": [
+          27.06291111111111,
+          43.16602777777778,
+          41.170175694444445
+        ]
+      },
+      {
+        "case": "storm-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/storm-bounded/DiveUnderwater_1_surface-storm.png",
+          "sha256": "ab48ba330e146059fbd3e48494c759e79d9e3fbde72e70694d93d3998f2d6a90",
+          "bytes": 1344763
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/storm-bounded/DiveUnderwater_1_surface-storm.png",
+          "sha256": "826e1b7305e37bbba4b31693a09194e0f9c8c4aefa14890ac0d06d762d8e4530",
+          "bytes": 1319540
+        },
+        "mean_absolute_rgb_difference": 2.748150462962963,
+        "before_mean_rgb": [
+          9.827079166666667,
+          40.0335,
+          35.13616458333333
+        ],
+        "after_mean_rgb": [
+          9.313697222222222,
+          36.081697222222225,
+          31.46832708333333
+        ]
+      },
+      {
+        "case": "storm-bounded",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/storm-bounded/SurfaceAir_1_surface-storm.png",
+          "sha256": "2645492266f06a939745119ab933fe180f7030d6736230e3423fb3aa11766be0",
+          "bytes": 1520660
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/storm-bounded/SurfaceAir_1_surface-storm.png",
+          "sha256": "6810f8c9c4a0179922a048002570dfd69f9aa50fb10d3ab2b22a6ffa8de62d89",
+          "bytes": 1439060
+        },
+        "mean_absolute_rgb_difference": 1.488625925925926,
+        "before_mean_rgb": [
+          24.753821527777777,
+          41.57282569444445,
+          42.21483958333334
+        ],
+        "after_mean_rgb": [
+          25.46649236111111,
+          41.936233333333334,
+          42.412147222222224
+        ]
+      },
+      {
+        "case": "dark-bounded-on",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/dark-bounded-on/DiveSmoke_0_torch.png",
+          "sha256": "d8dc3ea6e148f0aeb5411bcd582acf4ea9fbc1b2ea34c4db2bf60df6c8a9f7a8",
+          "bytes": 1030681
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-on/DiveSmoke_0_torch.png",
+          "sha256": "d5e48e634b54f195415b9148d6f43e732165c798385234ba39c1cd28d546cd85",
+          "bytes": 1030808
+        },
+        "mean_absolute_rgb_difference": 0.14267083333333333,
+        "before_mean_rgb": [
+          24.563604861111113,
+          29.687390277777777,
+          25.441959722222222
+        ],
+        "after_mean_rgb": [
+          24.566240277777776,
+          29.69017291666667,
+          25.4440375
+        ]
+      },
+      {
+        "case": "dark-bounded-on",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/dark-bounded-on/DiveUnderwater_0_torch.png",
+          "sha256": "d05e1c26af8927bf802770792674ef494a405f213e606c0b808f9fdfd8691f40",
+          "bytes": 984426
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-on/DiveUnderwater_0_torch.png",
+          "sha256": "ac6f55735811cae631ea76ce7166069f24b48873aec5637ca5b3a4c400ad265a",
+          "bytes": 984257
+        },
+        "mean_absolute_rgb_difference": 0.12417685185185186,
+        "before_mean_rgb": [
+          24.028909722222224,
+          28.827009722222222,
+          24.730956944444443
+        ],
+        "after_mean_rgb": [
+          24.027526388888887,
+          28.822075,
+          24.727368055555555
+        ]
+      },
+      {
+        "case": "dark-bounded-off",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/dark-bounded-off/DiveSmoke_0_torch.png",
+          "sha256": "c25506f4a16808ea71995fa37936fc3fc39c4755b7adaf88827dd1f73315afac",
+          "bytes": 84415
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-off/DiveSmoke_0_torch.png",
+          "sha256": "38c44ffafbda7f8ea7fe66345c8d8c6c01fb86199441f35aa75c2403dd2274ed",
+          "bytes": 84499
+        },
+        "mean_absolute_rgb_difference": 0.00023009259259259258,
+        "before_mean_rgb": [
+          5.109323611111111,
+          7.832407638888889,
+          7.773913194444445
+        ],
+        "after_mean_rgb": [
+          5.109343055555556,
+          7.832523611111111,
+          7.7739819444444445
+        ]
+      },
+      {
+        "case": "dark-bounded-off",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/dark-bounded-off/DiveUnderwater_0_torch.png",
+          "sha256": "5838604256d8c25ac6948837eec06f779eb3ab227ec064ef941e79bbf856f0f6",
+          "bytes": 84859
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/dark-bounded-off/DiveUnderwater_0_torch.png",
+          "sha256": "1f6ce1e241a1667cb5688c2dd82740301393b9789bbca5e74b94b1cafc63a175",
+          "bytes": 84834
+        },
+        "mean_absolute_rgb_difference": 0.00010138888888888889,
+        "before_mean_rgb": [
+          5.114685416666667,
+          7.837861111111111,
+          7.7789020833333336
+        ],
+        "after_mean_rgb": [
+          5.114634027777778,
+          7.8378194444444444,
+          7.778857638888889
+        ]
+      },
+      {
+        "case": "night-sky",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/night-sky/DiveSmoke_0_surface-calm.png",
+          "sha256": "1e54ad5e0041e2cfd38be869818fd16b31bc0ec5df3c8c9746ede71a1c1a8b5f",
+          "bytes": 90176
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/night-sky/DiveSmoke_0_surface-calm.png",
+          "sha256": "d8a3219eda34e101406c1d35e1c2611cc80b5f00b4d5ba732874117412ca6ffa",
+          "bytes": 90005
+        },
+        "mean_absolute_rgb_difference": 0.00026944444444444444,
+        "before_mean_rgb": [
+          5.486689583333333,
+          8.452939583333333,
+          8.371154166666667
+        ],
+        "after_mean_rgb": [
+          5.486686111111111,
+          8.45286736111111,
+          8.371097916666667
+        ]
+      },
+      {
+        "case": "night-sky",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/night-sky/DiveUnderwater_0_surface-calm.png",
+          "sha256": "cb358a5beeacbeac5463d621455f26a33cfc1d3760d3bba33dfffabf6a3bce11",
+          "bytes": 801934
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/night-sky/DiveUnderwater_0_surface-calm.png",
+          "sha256": "ef3b490ff43e0f327349da01c30276cc4c9cbc54ff9687ccd25f3303a29b585d",
+          "bytes": 798797
+        },
+        "mean_absolute_rgb_difference": 0.785856712962963,
+        "before_mean_rgb": [
+          13.159638194444444,
+          21.649522916666665,
+          18.199626388888888
+        ],
+        "after_mean_rgb": [
+          13.070499305555556,
+          21.560385416666666,
+          18.12388263888889
+        ]
+      },
+      {
+        "case": "night-sky",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/night-sky/SurfaceAir_0_surface-calm.png",
+          "sha256": "ae6883ca667111b9b063c58a3e8e1c852f9b7530581ec2bceee6ee0c4b28f11b",
+          "bytes": 92731
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/night-sky/SurfaceAir_0_surface-calm.png",
+          "sha256": "2f0e1596406e7b1c32a29ba032faed3a874b9dd38fbafdb08b46e589d5f78baa",
+          "bytes": 92772
+        },
+        "mean_absolute_rgb_difference": 0.0002578703703703704,
+        "before_mean_rgb": [
+          6.5262520833333335,
+          10.123071527777778,
+          10.039220138888888
+        ],
+        "after_mean_rgb": [
+          6.526235416666666,
+          10.123011805555555,
+          10.039178472222222
+        ]
+      },
+      {
+        "case": "dark-moonlit",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/dark-moonlit/DiveSmoke_0_torch.png",
+          "sha256": "57bf79737708c806f0d837e09bbe7a2d4d3f817cafdb839724fa22fe19c2c559",
+          "bytes": 1411656
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/dark-moonlit/DiveSmoke_0_torch.png",
+          "sha256": "bb7c1f98f94bd59bca3a7e625b6a6a65bec3b7fc6ed395127d0be206b61c35a7",
+          "bytes": 1405037
+        },
+        "mean_absolute_rgb_difference": 0.2886685185185185,
+        "before_mean_rgb": [
+          10.178147916666667,
+          13.120991666666667,
+          13.449059027777778
+        ],
+        "after_mean_rgb": [
+          10.153089583333333,
+          12.899734027777777,
+          13.254115277777778
+        ]
+      },
+      {
+        "case": "dark-moonlit",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/dark-moonlit/DiveUnderwater_0_torch.png",
+          "sha256": "8c16d9586b1c425e78aa04bc72296d53e4a0890ddb15ce9d5e50da7be5bbda0d",
+          "bytes": 1397353
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/dark-moonlit/DiveUnderwater_0_torch.png",
+          "sha256": "08059869f9cd9618b7e1ec129c91c796737a1236d392a9c1560e9f49f30aabbe",
+          "bytes": 1381932
+        },
+        "mean_absolute_rgb_difference": 0.16765925925925926,
+        "before_mean_rgb": [
+          9.43066875,
+          12.236256944444444,
+          12.45932013888889
+        ],
+        "after_mean_rgb": [
+          9.382646527777778,
+          12.011604166666666,
+          12.267014583333333
+        ]
+      },
+      {
+        "case": "fallback",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/fallback/Habitat_0_0.png",
+          "sha256": "7d3e07171b0cf13faf859510a1363f0356cbe72edb475044322ab639ca5b0c3d",
+          "bytes": 1972017
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/fallback/Habitat_0_0.png",
+          "sha256": "4b9729691eb36a027782dc16e516d78346b47c4491a1ded2c31f9aeeaeb867b5",
+          "bytes": 1975146
+        },
+        "mean_absolute_rgb_difference": 0.27918333333333334,
+        "before_mean_rgb": [
+          37.95995416666667,
+          57.29531736111111,
+          50.11330208333333
+        ],
+        "after_mean_rgb": [
+          37.95701944444444,
+          57.29381736111111,
+          50.11317708333333
+        ]
+      },
+      {
+        "case": "fallback",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/fallback/Habitat_0_1.png",
+          "sha256": "2594ab9b8b6f4b7474216dc2d7585bae8ea465b0f67d234ed5fd67c450334c10",
+          "bytes": 1847400
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/fallback/Habitat_0_1.png",
+          "sha256": "f60a7d91e5715730ee947d961f6bc9ca1ab77e6ad9296cf7fabe95122bfa3956",
+          "bytes": 1849163
+        },
+        "mean_absolute_rgb_difference": 0.27824305555555556,
+        "before_mean_rgb": [
+          37.09774375,
+          59.68364236111111,
+          52.994759027777775
+        ],
+        "after_mean_rgb": [
+          37.094821527777775,
+          59.681185416666665,
+          52.99439513888889
+        ]
+      },
+      {
+        "case": "fallback",
+        "before": {
+          "file": "artifacts/bounded-water-20261127-001718/fallback/Habitat_0_2.png",
+          "sha256": "a0bcd9589465be1d6a3fd27bcb54fd16f5266a838ef5caf5d931a0223dad7d74",
+          "bytes": 1840380
+        },
+        "after": {
+          "file": "artifacts/bounded-water-20261127-002802/fallback/Habitat_0_2.png",
+          "sha256": "0c4451bafbe5cd8e77a5256d20381ce639fca77d6060ab60384a73bdb3f7ed73",
+          "bytes": 1837869
+        },
+        "mean_absolute_rgb_difference": 0.28106435185185186,
+        "before_mean_rgb": [
+          23.017186111111112,
+          50.815159027777774,
+          44.87152638888889
+        ],
+        "after_mean_rgb": [
+          23.01792777777778,
+          50.81580208333333,
+          44.871965277777775
+        ]
+      }
+    ],
+    "note": "Includes moving lighting and temporal rendering variation; image differences are not a perceptual quality score",
+    "published": [
+      {
+        "file": "Documentation/Images/BoundedCamera_Before.png",
+        "sha256": "cef53f1b15319508f191047a8673026d1a5f5cac3b218e9c87f2043747ea7d9e",
+        "bytes": 1974674
+      },
+      {
+        "file": "Documentation/Images/BoundedCamera_After.png",
+        "sha256": "188e021471f48f1c0ac000ace17530606dea75c992ccd035189f28fe61958a7a",
+        "bytes": 1973982
+      }
+    ]
+  }
+}

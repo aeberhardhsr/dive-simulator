@@ -12,6 +12,9 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('run',type=Path)
     parser.add_argument('--output',type=Path,default=ROOT/'Documentation/BOUNDED_WATER_RESULTS.json')
+    parser.add_argument('--skip-published',action='store_true',help='Skip the original surface-image set; prior-report comparisons still validate their own published images')
+    parser.add_argument('--build-log',type=Path,default=ROOT/'artifacts/bounded-water-sky-material-build.log')
+    parser.add_argument('--prior-report',type=Path,help='Previously validated baseline for matched camera comparisons')
     args=parser.parse_args();run=args.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     assert host['native_editor'] and not host['packaged']
@@ -78,26 +81,63 @@ def main():
     moon_frame=scene(run/'dark-moonlit/DiveUnderwater_0_torch.png')
     moon=dict(sun_elevation=sun,moon_elevation=altitude,moon_lux=lux,scene_mean=float(moon_frame.mean()))
     assert moon['scene_mean']>night['off_mean']+.1,moon
-    build=ROOT/'artifacts/bounded-water-sky-material-build.log'
-    assert 'Result: Succeeded' in build.read_text(encoding='utf-8-sig')
+    build=args.build_log.resolve()
+    build_text=build.read_text(encoding='utf-8-sig')
+    assert 'Result: Succeeded' in build_text or ('DIVE_OPTICS_CONTENT_OK' in build_text and 'Success - 0 error(s)' in build_text)
     published=[]
-    for name,image,filename in [('surface-before','Water_1_1.png','BoundedWater_Before.png'),
-                                ('surface-bounded','Water_1_1.png','BoundedWater_Window.png'),
-                                ('surface-bounded','Water_1_0.png','BoundedWater_Surface.png')]:
-        path=ROOT/'Documentation/Images'/filename
-        assert sha(path)==sha(run/name/image)
-        published.append(record(path))
+    if not args.skip_published:
+        for name,image,suffix in [('surface-before','Water_1_1.png','Before'),
+                                  ('surface-bounded','Water_1_1.png','Window'),
+                                  ('surface-bounded','Water_1_0.png','Surface')]:
+            path=ROOT/'Documentation/Images'/f'BoundedWater_{suffix}.png'
+            assert sha(path)==sha(run/name/image)
+            published.append(record(path))
+    bounded_passthrough='if(NativeScattering>1.5) return Scene.rgb;' in (ROOT/'Tools/Shaders/UnderwaterView.ush').read_text()
     result=dict(status='PASS',scope='Native volume contribution, matched cameras, air control, storm transitions and night; not visual acceptance',
         host=host,host_file=record(run/'Host.json'),supplementary_optics_source=supplementary,build=record(build),cases=evidence,
         screenshot_count=sum(c['screenshots'] for c in cases),comparisons=comparisons,air_region=air_region,night=night,moonlit_control=moon,
-        published=published,production_enabled=False,sky_background_fix_enabled_by_default=True,limitations=[
+        published=published,bounded_camera_passthrough=bounded_passthrough,production_enabled=False,sky_background_fix_enabled_by_default=True,limitations=[
             'Native editor only; no packaged build, performance or long-term stability result',
             'Unreal volume uses scalar extinction and coloured albedo; no full spectral absorption transport',
-            'A reduced unshadowed analytic ambient term remains in the camera pass',
             'Volume boundary is smoothed over 20 cm; finite froxel resolution and distance fade remain',
             'Refraction remains pixel-normal offset; full Snell projection and reflection detail remain unresolved',
             'The uncalibrated Milky Way texture is disabled; atmosphere, sun, moon and catalog stars remain in the sky',
             'The captured air-region control does not validate all above-water scenes'])
+    if not bounded_passthrough:
+        result['limitations'].append('A reduced unshadowed analytic ambient term remains in the camera pass')
+    if args.prior_report:
+        prior_path=args.prior_report.resolve()
+        prior=json.loads(prior_path.read_text(encoding='utf-8-sig'))
+        assert prior['status']=='PASS' and prior['screenshot_count']==33
+        assert not prior['bounded_camera_passthrough'] and bounded_passthrough
+        old_sources={item['file']:item['sha256'] for item in prior['host']['files']}
+        new_sources={item['file']:item['sha256'] for item in host['files']}
+        assert old_sources.keys()==new_sources.keys()
+        changed=sorted(key for key in old_sources if old_sources[key]!=new_sources[key])
+        assert changed==['Tools/Shaders/UnderwaterView.ush','divingsim/Content/Diving/Materials/M_Underwater.uasset'],changed
+        pairs=[]
+        assert len(prior['cases'])==len(evidence)
+        for before,after in zip(prior['cases'],evidence):
+            assert before['name']==after['name'] and before['poses']==after['poses']
+            assert before['actual_water_cameras']==after['actual_water_cameras']
+            assert len(before['images'])==len(after['images'])
+            for item in [before['runtime_log'],*before['images']]:
+                assert sha(ROOT/item['file'])==item['sha256'],item['file']
+            for old_image,new_image in zip(before['images'],after['images']):
+                assert Path(old_image['file']).name==Path(new_image['file']).name
+                a=pixels(ROOT/old_image['file']);b=pixels(ROOT/new_image['file'])
+                pairs.append(dict(case=before['name'],before=old_image,after=new_image,
+                    mean_absolute_rgb_difference=float(np.abs(a-b).mean()),
+                    before_mean_rgb=a.mean(axis=(0,1)).tolist(),after_mean_rgb=b.mean(axis=(0,1)).tolist()))
+        result['camera_comparison']=dict(prior_report=record(prior_path),changed_inputs=changed,pairs=pairs,
+            note='Includes moving lighting and temporal rendering variation; image differences are not a perceptual quality score')
+        bed_pair=next(pair for pair in pairs if pair['case']=='bed-bounded' and Path(pair['after']['file']).name=='Habitat_0_0.png')
+        published_comparison=[]
+        for side in ['before','after']:
+            path=ROOT/'Documentation/Images'/f'BoundedCamera_{side.title()}.png'
+            assert sha(path)==bed_pair[side]['sha256']
+            published_comparison.append(record(path))
+        result['camera_comparison']['published']=published_comparison
     args.output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(f'PASS: 12 bounded-water cases / {result["screenshot_count"]} native captures -> {args.output}')
 
