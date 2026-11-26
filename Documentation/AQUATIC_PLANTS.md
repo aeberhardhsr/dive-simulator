@@ -1,5 +1,13 @@
 # Unterwasserbewuchs: Formen und Oberflächen
 
+## Weiterentwicklung der feinen Blattstruktur
+
+Der nächste Stand ersetzt beim Tausendblatt die röhrenförmigen Blattfiedern durch schmale, gebogene, zweiseitig schattierte Blattflächen mit einer flachen Mittelrippe. Die Blattquirle stehen zum Triebende dichter; zwei kleinere Quirle schließen die vorher kahlen Spitzen. Pro Blatt entstehen sechs bis zehn unterschiedlich lange Fiederpaare. Die Armleuchteralgen behalten ihre räumlichen Röhren; das Material unterscheidet nun zwischen Stängeln, lichtdurchlässigeren grünen Seitenzweigen und Blattflächen. Nur Blattflächen erhalten die Blattadern. Pflanzendichte, Habitatverteilung und bestehende Bewegung bleiben unverändert.
+
+Die höchste Tausendblatt-Detailstufe steigt von 45.304 auf 50.456 Dreiecke. Ihre weiteren Stufen besitzen 22.706, 8.073 und 2.776 Dreiecke. Laichkraut und Armleuchteralgen behalten ihre bisherigen Dreieckszahlen. Die zwölf nativen Vergleichsaufnahmen bestehen; Nah- und Gesamtansicht zeigen die neue Struktur. Der eigenständige Paketnachweis und die Leistungsmessung werden für diesen Stand gesondert festgehalten. Die bisher unten dokumentierten Paket- und Leistungswerte gelten weiterhin ausschließlich für die dort benannte ältere Version.
+
+Beim Erzeugen wurde ein Windows-/Blender-Speicherproblem erkannt: Das Ersetzen der vorhandenen `.blend` über Blenders Umbenennungs-/Backupfolge schlug fehl. Die anschließende FBX-Prüfsummenprüfung verhinderte einen Import mit veraltetem Manifest. Der Generator speichert deshalb zunächst in eine frische temporäre Datei und kopiert das geschlossene Ergebnis an den versionierten Zielpfad; das Manifest wird erst nach erfolgreichem Abschluss geschrieben. Für automatisierte Blender-Aufrufe ist `--python-exit-code 1` zu verwenden.
+
 Die Nutzerreferenz verlangt räumlich glaubwürdigen Bewuchs als Teil einer zusammenhängenden Unterwasserwelt. Die bisherigen breiten Blätter wirkten in echten Spielaufnahmen kantig und gleichmäßig grün. Der neue Entwicklungsstand ersetzt ihre flachen Stängelbänder durch räumliche, gekrümmte Stängel und detailliertere Blätter. Die fein verzweigten Gruppen erhalten weichere Verzweigungen und differenzierte Oberflächen. Die Gesamtqualität der Referenz ist damit noch nicht erreicht.
 
 ## Modelle und Material

@@ -1,7 +1,10 @@
 // Original analytic plant surface; UV0 follows each blade/branch, UV1 contains
 // blade membership and deterministic per-part variation. No world-space sliding.
 float2 uv=float2(UV.x,1-UV.y);
-float blade=saturate(Detail.x),age=saturate(Detail.y);
+// UV1.x distinguishes stems (0), photosynthetic branchlets (.55), blades (1).
+// Fine green branchlets transmit light without inheriting broad-leaf veins.
+float tissue=saturate(Detail.x);
+float blade=smoothstep(.75,1,tissue),age=saturate(Detail.y);
 float broad=.5+.5*sin(uv.x*14+sin(uv.y*11+age*6)*1.4)*sin(uv.y*19+age*9);
 float fine=.5+.5*sin(uv.x*147+age*17)*sin(uv.y*211+age*23);
 fine=lerp(.5,fine,saturate(1-max(fwidth(uv.x),fwidth(uv.y))*120));
@@ -18,6 +21,6 @@ Roughness=clamp(.58+mottling*.22+margin*.07,.54,.9);
 float groove=sin(uv.x*50.2655+.13*sin(uv.y*3.14159));
 float detailFade=saturate(1-max(fwidth(uv.x),fwidth(uv.y))*24);
 SurfaceNormal=normalize(float3(blade*groove*.065*detailFade,blade*cos(uv.y*28+age)*.018*detailFade,1));
-Transmission=color*lerp(.12,.65,blade);
-Density=lerp(.96,.68,blade);
+Transmission=color*lerp(.12,.8,tissue);
+Density=lerp(.96,.58,tissue);
 return color;

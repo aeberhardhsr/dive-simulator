@@ -4,6 +4,8 @@ import hashlib
 import json
 import math
 import random
+import shutil
+import tempfile
 from pathlib import Path
 from mathutils import Vector
 
@@ -24,7 +26,7 @@ class Plant:
         rgb=(.19,.255,.075) if self.name=='Pondweed' else (.18,.235,.065) if self.name=='Milfoil' else (.23,.28,.105)
         self.colors.append(tuple(c*(.7+.5*tint) for c in rgb)+(max(0,min(1,p.z/self.height)),))
         return i
-    def tube(self,points,radius,tint,sides=5):
+    def tube(self,points,radius,tint,sides=5,tissue=0):
         points=[Vector(p) for p in points];rings=[]
         for i,p in enumerate(points):
             tangent=(points[min(i+1,len(points)-1)]-points[max(0,i-1)]).normalized()
@@ -32,11 +34,35 @@ class Plant:
             right=tangent.cross(axis).normalized();up=tangent.cross(right).normalized()
             r=radius*(1-.35*i/(len(points)-1))
             rings.append([self.vertex(p+r*(right*math.cos(j*2*math.pi/sides)+up*math.sin(j*2*math.pi/sides)),
-                (j/sides,i/(len(points)-1)),0,tint) for j in range(sides)])
+                (j/sides,i/(len(points)-1)),tissue,tint) for j in range(sides)])
         for a,b in zip(rings,rings[1:]):
             for j in range(sides):
                 k=(j+1)%sides;self.faces.extend([(a[j],a[k],b[k]),(a[j],b[k],b[j])])
         self.faces.extend([tuple(reversed(rings[0])),tuple(rings[-1])])
+    def pinnule(self,root,tip,width,tint):
+        # A narrow, curved leaf surface rather than a round twig. Three rows
+        # across retain its shallow ridge; the two-sided material shades below.
+        first_face=len(self.faces)
+        direction=(tip-root).normalized()
+        side=direction.cross(Vector((0,0,1))).normalized()
+        rows=[]
+        for j in range(4):
+            v=j/3
+            center=root.lerp(tip,v)+Vector((0,0,.004*math.sin(math.pi*v)))
+            if j in (0,3):
+                rows.append([self.vertex(center,(.5,v),1,tint)])
+            else:
+                w=width*math.sin(math.pi*v)**.65
+                rows.append([self.vertex(center+side*w*s+Vector((0,0,.0004*(1-abs(s)))),
+                    ((s+1)/2,v),1,tint) for s in (-1,0,1)])
+        for a,b in zip(rows,rows[1:]):
+            if len(a)==1:
+                for k in range(2):self.faces.append((a[0],b[k],b[k+1]))
+            elif len(b)==1:
+                for k in range(2):self.faces.append((a[k],b[0],a[k+1]))
+            else:
+                for k in range(2):self.faces.extend([(a[k],b[k],b[k+1]),(a[k],b[k+1],a[k+1])])
+        self.faces[first_face:]=[tuple(reversed(face)) for face in self.faces[first_face:]]
     def leaf(self,root,angle,length,width,tint,tilt):
         first_face=len(self.faces)
         direction=Vector((math.cos(angle),math.sin(angle),tilt)).normalized()
@@ -97,8 +123,9 @@ for name,height,count,seed in [('Pondweed',1.15,7,4721),('Stonewort',.45,12,4722
         bend=Vector((r.uniform(-.16,.16),r.uniform(-.16,.16),0));phase=r.uniform(0,6.28)
         def center(t):return base+Vector((0,0,h*t))+bend*t*t+Vector((.015*math.sin(t*3+phase),.012*math.cos(t*4+phase),0))*t
         tint=r.random();plant.tube([center(i/16) for i in range(17)],.0028 if name=='Pondweed' else .0017,tint,6)
-        for level in range(1,9):
-            t=.12+level*.09;p=center(t)
+        levels=[.16,.29,.41,.52,.62,.71,.79,.86,.92,.97] if name=='Milfoil' else [.12+i*.09 for i in range(1,9)]
+        for level,t in enumerate(levels,1):
+            p=center(t)
             if name=='Pondweed':
                 a=phase+level*2.6+r.uniform(-.25,.25)
                 plant.leaf(p,a,r.uniform(.11,.19)*(1-.35*t),r.uniform(.016,.03),r.random(),r.uniform(-.18,.48))
@@ -106,20 +133,31 @@ for name,height,count,seed in [('Pondweed',1.15,7,4721),('Stonewort',.45,12,4722
                 rays=6 if name=='Stonewort' else 4
                 for j in range(rays):
                     a=phase+j*math.tau/rays+level*.3
-                    direction=Vector((math.cos(a),math.sin(a),.22));side=Vector((-math.sin(a),math.cos(a),.12))
+                    lift=.22+.18*math.sin(phase+level*.8) if name=='Milfoil' else .22
+                    direction=Vector((math.cos(a),math.sin(a),lift));side=Vector((-math.sin(a),math.cos(a),.12))
                     reach=(.075 if name=='Stonewort' else .115)*(1-.55*t)*r.uniform(.8,1.15)
+                    tip_scale=max(.25,min(1,(1-t)/.13)) if name=='Milfoil' else 1
+                    reach*=tip_scale
                     path=[p+direction*reach*u+Vector((0,0,.016*u*u)) for u in (0,.33,.66,1)]
-                    plant.tube(path,.0016,tint,4)
+                    plant.tube(path,.0016,tint,4,tissue=.55)
                     if name=='Milfoil':
-                        for k in range(1,7):
-                            u=k/7;q=p+direction*reach*u+Vector((0,0,.016*u*u))
+                        pairs=6 if t>.88 else 10
+                        for k in range(1,pairs+1):
+                            u=k/(pairs+1);q=p+direction*reach*u+Vector((0,0,.016*u*u))
                             for sign in (-1,1):
-                                tip=q+side*sign*(.027*(1-u*.8))+direction*.012
-                                plant.tube([q,(q+tip)*.5+Vector((0,0,.002)),tip],.0009,r.random(),3)
+                                length=.037*(1-u*.8)*r.uniform(.88,1.12)*tip_scale
+                                tip=q+side*sign*length+direction*(.008+.01*u)
+                                plant.pinnule(q,tip,.0015*(1-.45*u),r.random())
                     else:
                         tip=path[-1]
-                        for sign in (-1,1):plant.tube([tip,tip+side*sign*.009+Vector((0,0,.015))],.0006,tint,3)
+                        for sign in (-1,1):plant.tube([tip,tip+side*sign*.009+Vector((0,0,.015))],.0006,tint,3,tissue=.55)
     plant.finish()
-bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'blender/AquaticPlants.blend'))
+# Save to a fresh temporary path: Blender's rename/backup sequence can fail
+# while Windows indexes an existing .blend. Copy the closed result afterwards.
+bpy.context.preferences.filepaths.save_version=0
+with tempfile.TemporaryDirectory(prefix='dive-plants-') as temporary:
+    generated=Path(temporary)/'AquaticPlants.blend'
+    bpy.ops.wm.save_as_mainfile(filepath=str(generated))
+    shutil.copyfile(generated,ROOT/'blender/AquaticPlants.blend')
 (OUT/'Manifest.json').write_text(json.dumps(report,indent=2)+'\n')
 print('AQUATIC_PLANT_GEOMETRY_PASS',json.dumps(report))
