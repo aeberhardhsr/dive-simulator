@@ -12,7 +12,21 @@ Das bleibt eine homogene, gestaltete Mediennäherung. Wellenbrechung kommt weite
 
 Die Laufzeitprüfung kontrolliert nun die tatsächlichen Sichtweiten-, Augentiefen- und Umgebungslichtparameter sowie das Materialgewicht an der Wasserlinie. Ein separater Vergleichskamerafehler ist ebenfalls korrigiert: Nach einer Kameraversetzung bei eingefrorenem Welttick wird das Medium aktualisiert. Pflanzen-/Fels-Nahansichten hatten teilweise noch die Nebeleinstellung vom Einstieg behalten. Historische Nahansichten sind deshalb keine Beleuchtungsabnahme dieses neuen Standes. Die Habitatansichten hatten bereits eine Aktualisierung pro Bild; diese findet jetzt zusätzlich nach der Positionierung statt.
 
-Die nativen Prüfungen für Ledi-Habitat, Blick zur Oberfläche und den Übergang Wasser/Luft bestehen. Der Paketnachweis für diesen Stand wird getrennt von den folgenden älteren Ergebnisberichten geführt.
+Das eigenständige Paket `Builds/WindowsViewPath/divingsim.exe` aus Quellstand `f19bd3f` besteht 15 Szenenfälle mit 41 Bildern sowie eine kontrollierte Lichtmusterprüfung mit vier Bildern. Geprüft werden alle drei Habitatansichten/Einstiege, 4/14/40 Meter Sichtweite, Tag-/Nachtblick zur Oberfläche, Wasser/Luft-Übergänge an allen drei Einstiegen, Sturm und Lampenlicht. Der normale Launcher-Start besteht ebenfalls. Die Quellprüfungen für Windows, macOS und Linux sind [erfolgreich](https://github.com/aeberhardhsr/dive-simulator/actions/runs/45852139404); dies ist kein nativer Unreal-Mac-Build.
+
+Die Nachtprüfung unterscheidet jetzt Dämmerung und vollständige Nacht. Am 21. Juni um 00:00 CEST liegt die simulierte Sonne bei −16,877 Grad; nach Entfernen des konstanten Filters bleiben sehr schwache Konturen sichtbar. Die ursprünglich darauf angewandte strenge Dunkelheitsprüfung schlägt mit P99,9 = 7/255 fehl (vorheriges Paket: 2/255). Dieser Befund wird erhalten, nicht als fehlerfreie Schwarzaufnahme umgedeutet. Um 01:30 CEST steht die Sonne bei −19,447 Grad: Im geprüften Umgebungsbereich beträgt der maximale Farbkanal ohne Lampe durchgehend 0; mit Lampe überschreiten 257.442 Pixel den Wert 20/255. Die strenge Schwarzprüfung gilt für diesen konkreten Zustand, nicht pauschal für jede Nacht mit Mondlicht.
+
+Die Lichtmusterprüfung hält Kamera, Licht und Uhrzeit gezielt fest. Auf der beleuchteten Empfangsfläche beträgt der mittlere Bildunterschied zwischen ein-/ausgeschaltetem Lichtmuster 4,33/255, im Schatten nur 0,38/255. Eine veränderte Wellenzeit bewegt das Muster (6,13/255), eine eingefrorene Zeit bleibt nahezu unverändert (0,44/255). Diese Bildstatistiken prüfen die Wirkung und Kopplung, nicht photometrische Genauigkeit.
+
+Die Bildpaare zeigen dieselbe Kamera bei 14 Metern Sichtweite. Im nahen Felsausschnitt sinkt der feste Grünanteil relativ zu den eigenen Materialfarben; der Kontrastverlust in der Entfernung bleibt bestehen. Die separate klare/trübe Szene bestätigt stärkeren Detailverlust bei 4 Metern. Ein einzelnes günstiges Standbild gilt weiterhin nicht als Gesamtabnahme.
+
+![Bisherige zusätzliche Kamerafärbung](Images/ViewPath_Before.png)
+
+![Wasserfärbung entlang des Blickwegs](Images/ViewPath_After.png)
+
+`Tools/TestViewPath.ps1` erzeugt die Szenen- und Lichtmusteraufnahmen; `Tools/ReportViewPath.py` verbindet Bildprüfung, Quelldateien, Paket und Leistungsmessung. [Prüfbericht](VIEW_PATH_RESULTS.json). Die älteren folgenden Ergebnisberichte beziehen sich jeweils auf ihre ausdrücklich benannten Pakete.
+
+Der neue 60-Sekunden-Lauf erreicht bei 1080p/Hoch 67,92 FPS im Mittel und 54,37 FPS im langsamsten Prozent. Kein Bild überschreitet 33,33 ms, durchgehend 60 FPS werden jedoch weiterhin verfehlt. [Messbedingungen](PERFORMANCE.md). Die Referenzqualität, insbesondere zusammenhängende geologische Formen, Bewuchs, überzeugende Lichtstrahlen und vollständige Unterwasserbrechung, bleibt offen. Die bekannten scharfkantigen Lampenschatten und der alte CelestialVault-Sternmaterialverweis sind in diesem Schritt nicht behoben.
 
 ## Größenstufen des Seegrunds
 

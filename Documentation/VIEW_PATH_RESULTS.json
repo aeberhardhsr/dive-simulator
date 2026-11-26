@@ -1,0 +1,1000 @@
+{
+  "status": "PASS",
+  "host": {
+    "executable": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Binaries\\Win64\\divingsim-ViewPath.exe",
+    "sha256": "7419F16117FF75054A5823118DB6BA54E1A5DBEDFDDEE45AE58B1DCDF0501571",
+    "package_containers": [
+      {
+        "file": "divingsim-Windows.pak",
+        "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71",
+        "bytes": 105898051
+      },
+      {
+        "file": "divingsim-Windows.ucas",
+        "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89",
+        "bytes": 1426992896
+      },
+      {
+        "file": "divingsim-Windows.utoc",
+        "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024",
+        "bytes": 1176903
+      },
+      {
+        "file": "global.ucas",
+        "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+        "bytes": 3245776
+      },
+      {
+        "file": "global.utoc",
+        "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+        "bytes": 794
+      }
+    ],
+    "source_head": "f19bd3ff5c6084821d57529eb70e69e894ae4425",
+    "packaged": true,
+    "started_utc": "2026-11-26T15:49:24.1229872Z"
+  },
+  "launcher": {
+    "finished_utc": "2026-11-26T15:56:51.7204626Z",
+    "status": "PASS",
+    "started_utc": "2026-11-26T15:56:21.3784068Z",
+    "executable_sha256": "7419F16117FF75054A5823118DB6BA54E1A5DBEDFDDEE45AE58B1DCDF0501571",
+    "log_sha256": "18DBEA4B1C9AEA1F69A082FB5856F6DE3C6461246C6FD5D2A364A252333EC4EB",
+    "child_id": 58260,
+    "child": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Binaries\\Win64\\divingsim-ViewPath.exe",
+    "exit_code": 0
+  },
+  "cases": [
+    {
+      "scenario": "rocks",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 0,
+      "visibility": 14,
+      "name": "habitat0",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/habitat0/Runtime.log",
+        "sha256": "cd9b17a9f68d65ded9acbc628fb38347e6e68d852e097d75fafdc598d65fc128",
+        "bytes": 111442
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat0/Habitat_0_0.png",
+          "sha256": "9de83787248c0a07057e5706138cf25c9c3b44668fe99a9ad4c2455516b9e2af",
+          "bytes": 1817343
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat0/Habitat_0_1.png",
+          "sha256": "886022a3af2e0f066d95dfee8c3a240c2da5584e96791c859ad5324f26984533",
+          "bytes": 1749399
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat0/Habitat_0_2.png",
+          "sha256": "609c507c05010e69d04a285b9b5e0cc5fcae4e1c2d31770569658a60f7090246",
+          "bytes": 1801341
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.49.26:179][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 1,
+      "visibility": 14,
+      "name": "habitat1",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/habitat1/Runtime.log",
+        "sha256": "3ec39212d8401a894a3a07f5f7968a0a932676877c61c85bb94d1c973973b4b7",
+        "bytes": 109686
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat1/Habitat_0_0.png",
+          "sha256": "fc2db4dd291c36bb07f1259620bca000050b9ed670bcfd487e2db8402f3a30e4",
+          "bytes": 1713138
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat1/Habitat_0_1.png",
+          "sha256": "37e8de328851403d15d80a8d3dc05b9ff4964ca077b86a60c197e2662ceaa2de",
+          "bytes": 1543324
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat1/Habitat_0_2.png",
+          "sha256": "aa39e032cf39f470d1707fa865cba00e2fabf14fd280f31930f63026effd12e9",
+          "bytes": 1482691
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.49.54:845][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 2,
+      "visibility": 14,
+      "name": "habitat2",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/habitat2/Runtime.log",
+        "sha256": "7630de423e2cb01c6c10f3aaba7b2e7f316f12bbd76b1ec822753653f26f04db",
+        "bytes": 109935
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat2/Habitat_0_0.png",
+          "sha256": "0e15d61949e4fd2d0ff365908613d50323f4ea0e437c8af453348acc2ac2490b",
+          "bytes": 1895557
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat2/Habitat_0_1.png",
+          "sha256": "366149e78428510efda3e896aff74f82a7238c7f1ae46455487f66693e31c0c1",
+          "bytes": 1775499
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/habitat2/Habitat_0_2.png",
+          "sha256": "64a27d308ad184b11e19ddf759b07e731b4cc4970c51aee3d6ef3de5c7b09b7f",
+          "bytes": 1820170
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.50.19:102][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 2,
+      "visibility": 4,
+      "name": "murky",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/murky/Runtime.log",
+        "sha256": "78e9beb64dc45042fe9fe724840b06552d91ea4adf8b2c6142030213ce8963f2",
+        "bytes": 109845
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/murky/Habitat_0_0.png",
+          "sha256": "ddc95f31bb0d6fc60c835c5d00409435514e68fa2e06758c625abf25b7f6fecd",
+          "bytes": 1528667
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/murky/Habitat_0_1.png",
+          "sha256": "17f6e30966d80f52239a8d937666e06d7c457a14265d0b5f325da0355e30c2cb",
+          "bytes": 1260492
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/murky/Habitat_0_2.png",
+          "sha256": "6c0e1119875f0234bd571368c9eab6f9aa07ca9beea93a4a9c0749f64212ac77",
+          "bytes": 1112967
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.50.43:388][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 2,
+      "visibility": 40,
+      "name": "clear",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/clear/Runtime.log",
+        "sha256": "bca62c9db22dbc21e307612924262673a4a2727c30eb32de985becec6cbfd3dc",
+        "bytes": 109849
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/clear/Habitat_0_0.png",
+          "sha256": "dabee3ef926d398ba0011f7fd38693879054abe84a3ec8586cbdc94a49bdc686",
+          "bytes": 2150356
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/clear/Habitat_0_1.png",
+          "sha256": "30182b3e337436988adbae43b7e50784caba61dccd4f822c2845d7de9bedf4a2",
+          "bytes": 2045178
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/clear/Habitat_0_2.png",
+          "sha256": "7fc2966d6c65a76aa853c9c0e7147839a91d2de2bbabceb37d92da921f21545c",
+          "bytes": 2231836
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.51.07:644][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 0,
+      "visibility": 14,
+      "name": "look-day",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/look-day/Runtime.log",
+        "sha256": "4f69379a6fa42fef00c4af0808e3914b212d662cf9297693723430880f0a140b",
+        "bytes": 111113
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/look-day/Water_1_0.png",
+          "sha256": "2da867fcfb9d874823fdb6129cdac0af6645b34c325415f78165b646188c8c06",
+          "bytes": 1447327
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/look-day/Water_1_1.png",
+          "sha256": "7de4ec11d212c776e32365a3d2214fb60031f78b5d40f918a80248a5a2c4add3",
+          "bytes": 1252423
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/look-day/Water_1_2.png",
+          "sha256": "784204699f147f7d0728f65380216bdf91ee9bfc43e7b23c70edb60b96448c91",
+          "bytes": 1999974
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.51.31:957][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "hour": 0,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 0,
+      "visibility": 14,
+      "name": "look-night",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/look-night/Runtime.log",
+        "sha256": "0c92f7bac57ac9c122973a48a0320edaf6c5dddc8a81de55d73e0364b9935555",
+        "bytes": 111116
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/look-night/Water_1_0.png",
+          "sha256": "bcafda882f469448e52dc4bf77ea36b06a461ff7c2b4dea168825646c207bd15",
+          "bytes": 662193
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/look-night/Water_1_1.png",
+          "sha256": "f513dce904e610d402c7d0f1f22926697eb34760cded681a92246d9acdf21f64",
+          "bytes": 1176667
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/look-night/Water_1_2.png",
+          "sha256": "abc7c622753c291194210f81b72c09190a2d3f3435208cc91c10165771ba4c1b",
+          "bytes": 969479
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.51.55:198][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "surface",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 0,
+      "visibility": 14,
+      "name": "surface0",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/surface0/Runtime.log",
+        "sha256": "e83a5eea14d4bdaecfcd1cd75d3e83a5c9f09b1edccc7b0a6bf08a90cfa30281",
+        "bytes": 117312
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface0/DiveSmoke_0_surface.png",
+          "sha256": "2d1c0f269f5bc89a68a2e7e1350b51375120432d5fa6a15b8f1b743624151938",
+          "bytes": 1736720
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface0/DiveUnderwater_0_surface.png",
+          "sha256": "b9408c7fbb50fa37c07b5884c8e13ff336992f6901aeb55eb8bf44b95943a20d",
+          "bytes": 1611865
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface0/SurfaceAir_0_surface.png",
+          "sha256": "b3418978a3ede68ab29973f001fdcb6e8f7e85f9042c3ec472ce238873ed9a6e",
+          "bytes": 1764562
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.52.18:466][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "surface",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 1,
+      "visibility": 14,
+      "name": "surface1",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/surface1/Runtime.log",
+        "sha256": "cde7b59ce3fc31f2b7501707a4467a84f473b09bd97d386dfa28897e0b947827",
+        "bytes": 117908
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface1/DiveSmoke_1_surface.png",
+          "sha256": "a6521c7e64ac63c0be645bceccc2bb8a10087e6c6e7bdd69abad3a12c3d2e209",
+          "bytes": 1863829
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface1/DiveUnderwater_1_surface.png",
+          "sha256": "5b1686051293b69aac492b9351f8d144baa13a7e7488f970d239a4e366a14c0e",
+          "bytes": 1192354
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface1/SurfaceAir_1_surface.png",
+          "sha256": "a924e390104d161a82682ac028f594a16b500f80ff4a50f9db29547fd9ffa7aa",
+          "bytes": 1199569
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.53.03:757][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "surface",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 2,
+      "visibility": 14,
+      "name": "surface2",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/surface2/Runtime.log",
+        "sha256": "1b4ccf332cf96be47ed25bf946cb6a69fdf749a5ad0e7817c4d9e516fc4a0be8",
+        "bytes": 117614
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface2/DiveSmoke_2_surface.png",
+          "sha256": "072b18e94dbe5a1856051a8f38887081ac96aa958f7a7151b81f5a047209f3e4",
+          "bytes": 1766149
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface2/DiveUnderwater_2_surface.png",
+          "sha256": "06ace5be1cf0d64f6276d1893895a0f93c04bf5d2636c9ba7dd419487ddd612c",
+          "bytes": 1327347
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/surface2/SurfaceAir_2_surface.png",
+          "sha256": "c3a248edcfd674b0967963d6a7ecd0ea8439604db3a61cd0a8703c6a4fdba549",
+          "bytes": 1758110
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.53.50:041][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "surface-storm",
+      "hour": 12,
+      "status": "PASS",
+      "screenshots": 3,
+      "entry": 0,
+      "visibility": 14,
+      "name": "storm",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/storm/Runtime.log",
+        "sha256": "06a5326e6a8a49affa1fc34d07e518903c394ad9c5d5def8303f7f3e2cf91fd1",
+        "bytes": 117854
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/storm/DiveSmoke_0_surface-storm.png",
+          "sha256": "77eae0afb6c228ba910dc098d42886eab770466670d8d443c2ac3b1fc14c6f67",
+          "bytes": 1402927
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/storm/DiveUnderwater_0_surface-storm.png",
+          "sha256": "c10664a5ec2db11f02d4d64e5e967d5e3256efe4c21d9775df925d93d65ab160",
+          "bytes": 1199940
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/storm/SurfaceAir_0_surface-storm.png",
+          "sha256": "f27804dfcb8cda5469fb2802c4baf9c71a7af634e47fd9becaf61232af512eac",
+          "bytes": 1080662
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.54.36:357][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "torch",
+      "hour": 0,
+      "status": "PASS",
+      "screenshots": 2,
+      "entry": 0,
+      "visibility": 14,
+      "name": "night-on",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/night-on/Runtime.log",
+        "sha256": "0504f22607773708801ff684b244affbd796667eff25e1a9840dd1b1543dcc45",
+        "bytes": 111019
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/night-on/DiveSmoke_0_torch.png",
+          "sha256": "0490ce37f1aaae56fc6344e277e8497d56aeb294a99920700a2035d3148234b9",
+          "bytes": 758108
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/night-on/DiveUnderwater_0_torch.png",
+          "sha256": "b6aa9ca087102cfaa01e775a1a5b4aabab4900ea1bc347927ac46ca8e07a8322",
+          "bytes": 734839
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.55.21:684][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "torch",
+      "hour": 0,
+      "status": "PASS",
+      "screenshots": 2,
+      "entry": 0,
+      "visibility": 14,
+      "name": "night-off",
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/night-off/Runtime.log",
+        "sha256": "8e2b4bc37263274232de55fc07478e02ba6d64e7f3c56350d1fde029c7add9ae",
+        "bytes": 110463
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/night-off/DiveSmoke_0_torch.png",
+          "sha256": "ccd3f04a24bb40bcf8f57116c995449288ec785673746732b9c67f59bc0d4ccf",
+          "bytes": 169250
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/night-off/DiveUnderwater_0_torch.png",
+          "sha256": "ccbba3545b4383885968529b60dfb4e988c4c54dcbf39333c9bf369ef0f36088",
+          "bytes": 159258
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.55.51:954][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "torch",
+      "hour": 1.5,
+      "screenshots": 2,
+      "name": "dark-on",
+      "status": "PASS",
+      "entry": 0,
+      "visibility": 14,
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/dark-on/Runtime.log",
+        "sha256": "b9ea9301ec447f3725cb5155e6dd42b95874d23e51202c9d629d231f4ef0c00d",
+        "bytes": 111022
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/dark-on/DiveSmoke_0_torch.png",
+          "sha256": "53fa529cef4d04e568bc789e51047115d6bbfbcf81e80b1ef4b5505ea875e592",
+          "bytes": 757657
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/dark-on/DiveUnderwater_0_torch.png",
+          "sha256": "36f07eeaf9ea83ef1568015d83522c9660f70edfdfea890b65da144af48210f9",
+          "bytes": 734277
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-16.00.19:722][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "scenario": "torch",
+      "hour": 1.5,
+      "screenshots": 2,
+      "name": "dark-off",
+      "status": "PASS",
+      "entry": 0,
+      "visibility": 14,
+      "log": {
+        "file": "artifacts/view-path-validation-20261126-164922/dark-off/Runtime.log",
+        "sha256": "7f349ac4a0fd0b85934e9c8cf3edb21146f58b1f6295d77603ad4fd72bdf2b4b",
+        "bytes": 110615
+      },
+      "images": [
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/dark-off/DiveSmoke_0_torch.png",
+          "sha256": "e433ea01ae53b08f2f6714b39b4490255279099cd36eee25727619f3fd965c76",
+          "bytes": 84678
+        },
+        {
+          "file": "artifacts/view-path-validation-20261126-164922/dark-off/DiveUnderwater_0_torch.png",
+          "sha256": "9cb1d6351565c3694ee07a9ebf8e78f1b1dc6429afd5fbbb93b21d5679e0ca87",
+          "bytes": 84851
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-16.02.10:769][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "file": "Tools/Shaders/UnderwaterView.ush",
+      "sha256": "a261ac4edb37e7e6d42f213259e37fe02cff3ca9aa1b0f90c458542cf653cd5c",
+      "bytes": 997
+    },
+    {
+      "file": "Tools/build_optics_content.py",
+      "sha256": "f308a4448f5f417d4ad7a2b50e7a8351a4e950d0b549b628b53c428ed3181f3d",
+      "bytes": 3055
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePawn.cpp",
+      "sha256": "475d9c8e965601d47b1a3d8f32616278a2578135fa482b86551180195c0dffd8",
+      "bytes": 63048
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePawn.h",
+      "sha256": "b0d6af6fc530eb4408b353d72385ad50e48f205475c3da9ec10edb37a7d5976a",
+      "bytes": 7752
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+      "sha256": "5c9f99bbb7eec204f1bddb109f4fc73bb621664091b667a598e4cae88b0f0437",
+      "bytes": 19932
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.h",
+      "sha256": "426a33e3dfd3c9d28cee46931d87da6c776264d18806edf3ade2404389811eec",
+      "bytes": 10792
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+      "sha256": "4ef05d7eaf21b2917705ef1f603f7efe15a12c737ebe19956d297bfa67e85ae7",
+      "bytes": 14048
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset",
+      "sha256": "6a70e757d267c94bff6c91c52b0af40cd0ae3d0b99fa753358a40eb2cc2539f3",
+      "bytes": 10146
+    }
+  ],
+  "build": {
+    "file": "artifacts/viewpath-package-build.log",
+    "sha256": "8d41b87ebc62cae7422a3db111e3ac318733f512de28a2f5371c6cd5947c4269",
+    "bytes": 301415
+  },
+  "comparison": {
+    "previous_host": {
+      "started_utc": "2026-11-26T15:25:57.5597099Z",
+      "source_head": "68b9022b5a03ec43725a35cc5deecc76b6e7b36f",
+      "packaged": true,
+      "package_containers": [
+        {
+          "file": "divingsim-Windows.pak",
+          "bytes": 105898051,
+          "sha256": "54e0361b50b5219fc36755ee73b438f9fa3953fc3be3578273adac0cb57fc72b"
+        },
+        {
+          "file": "divingsim-Windows.ucas",
+          "bytes": 1426990848,
+          "sha256": "31dc7299f73450fb0acdb70fd8a55dd8987ae24a8209e4cbd7af62570f455c15"
+        },
+        {
+          "file": "divingsim-Windows.utoc",
+          "bytes": 1176903,
+          "sha256": "5a5feb4d9dd3af7f4d1170c0bb510647bd16900a682b1b8710f30ef47a8474d5"
+        },
+        {
+          "file": "global.ucas",
+          "bytes": 3245776,
+          "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5"
+        },
+        {
+          "file": "global.utoc",
+          "bytes": 794,
+          "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa"
+        }
+      ],
+      "executable": "O:\\games\\dive game\\Builds\\WindowsPlantCanopy\\divingsim\\Binaries\\Win64\\divingsim-PlantCanopy.exe",
+      "sha256": "9D2FDFC335858D3862C523F257F1CD151B85DD4373A06BB7BC916C4B8398B470"
+    },
+    "pose": "DIVE_HABITAT_VIEW view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000",
+    "before": {
+      "file": "artifacts/plant-canopy-validation-20261126-162555/entry2/Habitat_0_2.png",
+      "sha256": "a9f82e1e29ec4fbfa5fc07c736651caf983965346d7e9ae830163388a42f1eda",
+      "bytes": 1662731
+    },
+    "after": {
+      "file": "artifacts/view-path-validation-20261126-164922/habitat2/Habitat_0_2.png",
+      "sha256": "64a27d308ad184b11e19ddf759b07e731b4cc4970c51aee3d6ef3de5c7b09b7f",
+      "bytes": 1820170
+    },
+    "roi_xyxy": [
+      50,
+      600,
+      550,
+      850
+    ],
+    "before_mean_rgb": [
+      39.67316,
+      62.539312,
+      43.526424
+    ],
+    "after_mean_rgb": [
+      52.107896,
+      71.453264,
+      50.36244
+    ],
+    "red_green_ratio_change": 1.1495762185310898
+  },
+  "night": {
+    "off_p999": 0.0,
+    "lit_pixels": 257442,
+    "mean_difference": 43.82147370109044
+  },
+  "summer_midnight": {
+    "hour": 0,
+    "sun_elevation": -16.877,
+    "off_p999": 7.0,
+    "off_mean": 0.162692431045542,
+    "previous_off_p999": 2.0,
+    "previous_off_mean": 0.04158274534958307,
+    "previous_image": {
+      "file": "artifacts/viewpath-previous-midnight.png",
+      "sha256": "4575a7097b4430fd230715231cf18f68171ee309bcdc9c2291531d88fd9165ff",
+      "bytes": 125301
+    },
+    "previous_log": {
+      "file": "artifacts/viewpath-previous-midnight.log",
+      "sha256": "fa37324669bcc8fd0c92d400bfa4eb3de32eb233a25d400d655820bfb8618639",
+      "bytes": 120442
+    },
+    "note": "The initial <=2 darkness check fails at summer midnight (astronomical twilight). Retained as a separate observation; strict darkness is checked at 01:30 with solar elevation below -18 degrees."
+  },
+  "visibility": {
+    "roi_xyxy": [
+      650,
+      180,
+      1150,
+      450
+    ],
+    "cases": {
+      "murky": {
+        "mean": 32.459669454814815,
+        "std": 0.8763424333232942
+      },
+      "clear": {
+        "mean": 61.00986137185185,
+        "std": 16.800448882843384
+      }
+    }
+  },
+  "caustics": {
+    "status": "PASS",
+    "directory": "O:\\games\\dive game\\artifacts\\caustics-day-validation-20261126-165709",
+    "host": {
+      "started_utc": "2026-11-26T15:57:09.3679957Z",
+      "executable": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Binaries\\Win64\\divingsim-ViewPath.exe",
+      "case": "day",
+      "package_archives": [
+        {
+          "sha256": "2BA73E3E98E7AFD84A4448970C438F16C7CCA2C7899F047A66BD3ED662B60B71",
+          "path": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Content\\Paks\\divingsim-Windows.pak"
+        },
+        {
+          "sha256": "B09DB1C20242D447092238C675809ECB1675851C4D789715A47A187C64707D89",
+          "path": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Content\\Paks\\divingsim-Windows.ucas"
+        },
+        {
+          "sha256": "9127AE792E072D393A69031D73BFD1D76B961FF855C01F80C0AE7075DD05E024",
+          "path": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Content\\Paks\\divingsim-Windows.utoc"
+        },
+        {
+          "sha256": "5C90747CD607F02406F31180CC708EB3AFCF32541F70E2D669DD7573549350F5",
+          "path": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Content\\Paks\\global.ucas"
+        },
+        {
+          "sha256": "7A6A850E6AA83ACA7D93C55C84742B0ED2C132E36714FB053197CB8C9FA3B9AA",
+          "path": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Content\\Paks\\global.utoc"
+        }
+      ],
+      "executable_sha256": "7419F16117FF75054A5823118DB6BA54E1A5DBEDFDDEE45AE58B1DCDF0501571",
+      "head": "f19bd3ff5c6084821d57529eb70e69e894ae4425",
+      "packaged": true
+    },
+    "mean_absolute_rgb8_difference": {
+      "enabled_vs_disabled": {
+        "lit": 4.325886363636363,
+        "shadow": 0.3815925925925926,
+        "sphere": 3.5097712418300655
+      },
+      "moving_pattern": {
+        "lit": 6.129896464646465,
+        "shadow": 0.4376481481481482,
+        "sphere": 3.802287581699346
+      },
+      "frozen_clock": {
+        "lit": 0.4403838383838384,
+        "shadow": 0.3662592592592593,
+        "sphere": 0.41683006535947714
+      }
+    },
+    "regions_xyxy": {
+      "lit": [
+        250,
+        580,
+        1350,
+        820
+      ],
+      "shadow": [
+        900,
+        410,
+        1200,
+        470
+      ],
+      "sphere": [
+        350,
+        15,
+        520,
+        75
+      ]
+    },
+    "images": [
+      {
+        "file": "Caustics_00.png",
+        "sha256": "fccb5a1164417412741adb26ff344616f880a9ce705eb5a7ba94dbddec94a4f7"
+      },
+      {
+        "file": "Caustics_01.png",
+        "sha256": "481e9ea8a114e8abdb472204226d1d2fbd20aabcdfaf4733ad66ce54366e6834"
+      },
+      {
+        "file": "Caustics_02.png",
+        "sha256": "34f046aa8e6f5451d282bfd6428908755dbf3ae75231526461348c6afcd9f3ac"
+      },
+      {
+        "file": "Caustics_03.png",
+        "sha256": "c23ee39bdf241bea7973f4bf74161abc745192742237b3d6e6c1d3204a6bffdd"
+      }
+    ],
+    "log_sha256": "db0da7a0a1e658c2eb1229ebe94625e8d66a7662b1e3bbb7edf33614e6b324df"
+  },
+  "performance": {
+    "summary": {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsViewPath/divingsim/Saved/Performance/perf-underwater_6AC3CE76/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 75.01999832317233,
+        "distance_m": 10.383045621460052,
+        "depth_m": 5.224785957632414,
+        "walking": false,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-26T16:03:32.2863180Z",
+        "editor": false,
+        "disable_nanite": false,
+        "background_processes": [],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2635 MiB, 25 %"
+        ],
+        "executable": "O:\\games\\dive game\\Builds\\WindowsViewPath\\divingsim\\Binaries\\Win64\\divingsim-ViewPath.exe",
+        "executable_sha256": "7419f16117ff75054a5823118db6ba54e1a5dbedfddee45ae58b1dcdf0501571",
+        "package_containers": [
+          {
+            "bytes": 105898051,
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71",
+            "file": "divingsim-Windows.pak"
+          },
+          {
+            "bytes": 1426992896,
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89",
+            "file": "divingsim-Windows.ucas"
+          },
+          {
+            "bytes": 1176903,
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024",
+            "file": "divingsim-Windows.utoc"
+          },
+          {
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+            "file": "global.ucas"
+          },
+          {
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+            "file": "global.utoc"
+          }
+        ]
+      },
+      "frames": 4073,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.968316200000004,
+      "average_fps": 67.91919897193978,
+      "one_percent_low_fps": 54.36848092077398,
+      "frame": {
+        "mean_ms": 14.72337741222686,
+        "p50_ms": 14.3385,
+        "p95_ms": 17.3357,
+        "p99_ms": 18.0745,
+        "max_ms": 19.7798
+      },
+      "game_thread": {
+        "mean_ms": 5.808308838693837,
+        "p50_ms": 5.7906,
+        "p95_ms": 6.3278,
+        "p99_ms": 6.5991,
+        "max_ms": 8.9972
+      },
+      "render_thread": {
+        "mean_ms": 14.717074883378345,
+        "p50_ms": 14.329,
+        "p95_ms": 17.3287,
+        "p99_ms": 18.0698,
+        "max_ms": 19.7958
+      },
+      "rhi_thread": {
+        "mean_ms": 2.6061153940584334,
+        "p50_ms": 2.5911,
+        "p95_ms": 3.0253,
+        "p99_ms": 3.3425,
+        "max_ms": 4.9131
+      },
+      "gpu": {
+        "mean_ms": 14.115652786643752,
+        "p50_ms": 13.7165,
+        "p95_ms": 16.6147,
+        "p99_ms": 17.1564,
+        "max_ms": 17.9737
+      },
+      "frames_over_16_67_ms": 503,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 4442.7109,
+        "end": 4404.25,
+        "max": 4447.2734
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 5.6705000000000005,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 4.364275104345691
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 1.1973412472379081
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 0.8990026761600786
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8622528357476061
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7019266633930763
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.6644086668303462
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.6401899582617235
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.5796253621409281
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.39915111711269335
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.3703724527375399
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.33261367542352077
+        },
+        {
+          "name": "GPU/RenderVelocities",
+          "mean_ms": 0.3299176528357476
+        }
+      ]
+    },
+    "files": [
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-170332-282/Host.json",
+        "sha256": "27dabbc7899c8cae6c84e0c956702e2127e50b3e754bfe150192fe3adf6a6fc9",
+        "bytes": 1359
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-170332-282/Metadata.json",
+        "sha256": "b71bc9df3c85960d265ba7e7c58df5bd2b191d739848071dd55cb7348897a49f",
+        "bytes": 994
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-170332-282/Summary.json",
+        "sha256": "64300ded9bf8b6059ac2a6b375a7f5c7422c20fb4cd84609f73fa681981a1e73",
+        "bytes": 4974
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-170332-282/Runtime.log",
+        "sha256": "eec135c0d7fb79ba2bdb53c66533e41a464f7224c31d94129a5524c0e57c6639",
+        "bytes": 125490
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-170332-282/Capture.csv",
+        "sha256": "d8687427cae8bc62fe6d4ad41a6624836128522fa24e06b608f31aa8e0f9fcea",
+        "bytes": 9242677
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-170332-282/Frame.png",
+        "sha256": "06a0755656ea1e713e37b13d859c3fcb00800e84364c9feb49b7f3f39bf7b5da",
+        "bytes": 2365206
+      }
+    ]
+  },
+  "limitations": [
+    "Authored homogeneous water medium, not a measured radiative-transfer model.",
+    "Local water-level clipping does not trace a complete refracted ray through moving waves.",
+    "Display-space image statistics verify changes, not photorealistic or photometric acceptance.",
+    "Reference visual quality, endurance, all viewpoints and native macOS acceptance remain open."
+  ]
+}

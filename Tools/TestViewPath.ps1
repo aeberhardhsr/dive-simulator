@@ -16,7 +16,8 @@ $cases=@(@{name='habitat0';entry=0;habitat=$true},@{name='habitat1';entry=1;habi
     @{name='murky';entry=2;habitat=$true;visibility=4},@{name='clear';entry=2;habitat=$true;visibility=40},
     @{name='look-day';entry=0;water=$true},@{name='look-night';entry=0;water=$true;night=$true},
     @{name='surface0';entry=0;surface=$true},@{name='surface1';entry=1;surface=$true},@{name='surface2';entry=2;surface=$true},
-    @{name='storm';entry=0;storm=$true},@{name='night-on';entry=0;night=$true},@{name='night-off';entry=0;night=$true;off=$true})
+    @{name='storm';entry=0;storm=$true},@{name='night-on';entry=0;night=$true},@{name='night-off';entry=0;night=$true;off=$true},
+    @{name='dark-on';entry=0;night=$true;hour=1.5},@{name='dark-off';entry=0;night=$true;hour=1.5;off=$true})
 $completed=@()
 foreach($case in $cases) {
     $folder=Join-Path $result $case.name
@@ -29,6 +30,7 @@ foreach($case in $cases) {
     elseif($case.storm) {$options.Scenario='surface-storm'}
     else {$options.Scenario='torch'}
     if($case.night) {$options.Hour=0}
+    if($case.hour) {$options.Hour=$case.hour}
     if($case.off) {$options.LampOff=$true}
     if($case.visibility) {$options.Visibility=$case.visibility}
     $started=[DateTime]::UtcNow
@@ -45,4 +47,6 @@ foreach($case in $cases) {
     Write-Output "PASS $($case.name) $folder"
 }
 & (Join-Path $PSScriptRoot 'TestPackageLauncher.ps1') -PackageDirectory $PackageDirectory -OutputDirectory $result
+& (Join-Path $PSScriptRoot 'TestCaustics.ps1') -PackageDirectory $PackageDirectory -Case day |
+    Set-Content (Join-Path $result 'CausticsRun.txt') -Encoding utf8
 Write-Output "VIEW_PATH_VALIDATION=$result"

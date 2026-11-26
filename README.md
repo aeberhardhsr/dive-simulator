@@ -6,7 +6,9 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
-Die neueste **Grafikvorschau** liegt unter **`Builds/WindowsPlantCanopy/divingsim.exe`**. Das Tausendblatt erhält schmale, gebogene Blattfiedern und kleinere Triebspitzen; grüne Seitenzweige werden differenzierter durchleuchtet. Die bisherigen Bodenbeläge und präziseren Geländeübergänge sind enthalten. Fünf Paketfälle mit 23 Bildern sowie der normale Launcher-Start bestehen. [Pflanzen, Vergleichsbilder und Grenzen](Documentation/AQUATIC_PLANTS.md). Die Zielqualität deiner Referenzen bleibt offen.
+Die neueste **Grafikvorschau** liegt unter **`Builds/WindowsViewPath/divingsim.exe`**. Die Wasserfärbung folgt dem Blickweg; nahe Oberflächen tragen keinen zusätzlichen konstanten Grünfilter mehr. Der Blick in die Luft berücksichtigt nur den Weg bis zur örtlichen Wasseroberfläche. 16 Szenen-/Lichtmusterprüfungen mit 45 Bildern und der normale Launcher-Start bestehen. [Vergleichsbilder und Grenzen](Documentation/UNDERWATER_SCENE.md), [Prüfbericht](Documentation/VIEW_PATH_RESULTS.json). Die Zielqualität deiner Referenzen bleibt offen.
+
+Die vorherige Vorschau bleibt unter **`Builds/WindowsPlantCanopy/divingsim.exe`** erhalten. Das Tausendblatt erhält schmale, gebogene Blattfiedern und kleinere Triebspitzen; grüne Seitenzweige werden differenzierter durchleuchtet. Die bisherigen Bodenbeläge und präziseren Geländeübergänge sind enthalten. Fünf Paketfälle mit 23 Bildern sowie der normale Launcher-Start bestehen. [Pflanzen, Vergleichsbilder und Grenzen](Documentation/AQUATIC_PLANTS.md).
 
 Die vorherige Vorschau bleibt unter **`Builds/WindowsBenthic/divingsim.exe`** erhalten. Felsen, Kies und Sediment erhalten fleckige Beläge und Ablagerungen; eine höhere Nanite-Präzision beseitigt die untersuchten feinen Lücken an Bodenübergängen. Neun Paketfälle mit 20 Bildern und der normale Launcher-Start bestehen. Der zugehörige 60-Sekunden-Unterwasserlauf erreicht bei 1080p/Hoch durchschnittlich 68,34 FPS, zeitweise weniger als 60 FPS. [Vergleichsbilder und Grenzen](Documentation/UNDERWATER_SCENE.md), [Prüfbericht](Documentation/BENTHIC_RESULTS.json).
 
