@@ -220,8 +220,11 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
             if(!band.Valid) continue;
             position.Z=-100*Random.FRandRange(band.Shallow,band.Deep);
             bool blocked=false;
-            for(const auto& rock:RockState)
+            for(const int32 index:RockSearch.Query(position.X,position.Y,position.X,position.Y,profile.LengthMetres*50*scale))
+            {
+                const auto& rock=RockState[index];
                 if(FVector::DistSquared(position,rock.Position)<FMath::Square(rock.Radius+profile.LengthMetres*50*scale)) { blocked=true;break; }
+            }
             if(blocked) continue;
             fish.Active=true;fish.Scale=scale;fish.Position=fish.Home=position;
             fish.Velocity=(Initial?PopulationForward:FVector(FMath::Cos(angle+PI),FMath::Sin(angle+PI),0))*profile.CruiseSpeed*100;
@@ -279,6 +282,8 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
             {
                 TArray<FTransform> transforms;GenerateRocks(center+FIntPoint(x,y),transforms,RockState);
             }
+            RockSearch.Reset();
+            for(const auto& rock:RockState) RockSearch.Add(rock.Position.X,rock.Position.Y,rock.Radius);
         }
         PopulationCell=center;
         int plantCount=0;

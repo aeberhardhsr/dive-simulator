@@ -140,7 +140,7 @@ UStaticMeshComponent* ADiveWorld::Prop(const FString& Name,const FString& MeshPa
 
 void ADiveWorld::Populate()
 {
-    FishState.Reset(); RockState.Reset(); RockLayouts.Reset();
+    FishState.Reset(); RockState.Reset(); RockSearch.Reset(); RockLayouts.Reset();
     for(int32 i=0;i<Rocks.Num();++i)
     {
         const FString name=FString::Printf(TEXT("SM_LakeRock%d"),i+1);

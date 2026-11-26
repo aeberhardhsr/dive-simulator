@@ -14,6 +14,8 @@ def main():
     p.add_argument('--performance',type=Path,nargs='*',default=[])
     p.add_argument('--repeat-underwater',type=Path)
     p.add_argument('--prior-run',type=Path);p.add_argument('--prior-driver',type=Path)
+    p.add_argument('--rock-search',action='store_true')
+    p.add_argument('--baseline-run',type=Path)
     a=p.parse_args();run=a.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
@@ -29,6 +31,7 @@ def main():
         assert 'DIVE_SMOKE_PASS' in log
         assert not re.search(r'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:',log)
         checks=[]
+        search_checks=[]
         if case['name']!='shore':
             checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_RUBBLE_PASS fragments=(\d+) disabled=(\d+) contacts=(\d+)',log)]
             assert checks
@@ -36,13 +39,17 @@ def main():
                        for n,disabled,contacts in checks)
             for marker in ['DIVE_POPULATION_PASS','DIVE_ROCK_LAYOUT_PASS','DIVE_STEERING_WORLD_PASS','DIVE_GRAVEL_PASS']:
                 assert marker in log,marker
+            if a.rock_search:
+                search_checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_ROCK_SEARCH_PASS queries=(\d+) candidates=(\d+) exhaustive=(\d+) rocks=(\d+) exact_force=1 exact_trace=1',log)]
+                assert len(search_checks)>=6
+                assert all(q>0 and 0<c<e/3 and e==q*n for q,c,e,n in search_checks)
         if case['name']=='raster':assert 'r.Nanite = "0"' in log
         images=sorted(folder.glob('*.png'));assert len(images)==case['screenshots']==expected[case['name']]
         if case['name']=='shore':
             assert {x.name for x in images}=={'DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png',
                 'ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png'}
         for image in images:pixels(image)
-        evidence.append(dict(**case,rubble_checks=checks,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],
+        evidence.append(dict(**case,rubble_checks=checks,search_checks=search_checks,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],
             engine_error_lines=[s for s in log.splitlines() if ': Error:' in s]))
     poses=[re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',logs[name]) for name in ['close-before','close-after']]
     assert len(poses[0])==3 and poses[0]==poses[1]
@@ -57,7 +64,8 @@ def main():
         assert launcher['status']=='PASS' and launcher['exit_code']==0
         assert launcher['executable_sha256'].lower()==host['sha256'].lower()
         assert launcher['log_sha256'].lower()==sha(run/'Launcher.log')
-        for case,name in [('close-before','RockRubble_Before.png'),('close-after','RockRubble_After.png')]:
+        published_cases=[('close-after','RockSearch_Close.png')] if a.rock_search else [('close-before','RockRubble_Before.png'),('close-after','RockRubble_After.png')]
+        for case,name in published_cases:
             image=ROOT/'Documentation/Images'/name
             assert sha(image)==sha(run/case/'Habitat_0_0.png');published.append(record(image))
         perf_folders=[(folder,'primary') for folder in a.performance]
@@ -96,7 +104,20 @@ def main():
             host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
             shore_runtime=record(previous/'shore/Runtime.log'),shore_images=[record(x) for x in sorted((previous/'shore').glob('*.png'))])
         assert len(prior['shore_images'])==9
-    result=dict(status='PASS',scope='Authored rock-foot fragments; not full environment acceptance',host=host,prior_attempt=prior,
+    baseline=None
+    if a.rock_search:
+        assert a.baseline_run
+        old=a.baseline_run.resolve();old_host=json.loads((old/'Host.json').read_text(encoding='utf-8-sig'))
+        assert old_host['packaged']==host['packaged']
+        before_log=(old/'close-after/Runtime.log').read_text(encoding='utf-8-sig')
+        assert re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',before_log)==poses[1]
+        old_assets={x['file']:x['sha256'] for x in old_host['files'] if '/Content/' in x['file']}
+        assets={x['file']:x['sha256'] for x in host['files'] if '/Content/' in x['file']}
+        assert old_assets and old_assets==assets
+        baseline=dict(host=record(old/'Host.json'),runtime=record(old/'close-after/Runtime.log'),same_cameras=True,same_rock_assets=True,
+            images=[record(old/'close-after'/f'Habitat_0_{i}.png') for i in range(3)])
+    else:assert not a.baseline_run
+    result=dict(status='PASS',scope='Conservative rock queries; not full environment acceptance' if a.rock_search else 'Authored rock-foot fragments; not full environment acceptance',host=host,prior_attempt=prior,baseline=baseline,
         cases=evidence,screenshot_count=sum(expected.values()),comparisons=comparisons,launcher=launcher,published=published,performance=performance,
         limitations=['Fragments are authored dressing, not surveyed Walensee geology',
                     'Collision probes sample individual fragment bodies; not every contact direction',

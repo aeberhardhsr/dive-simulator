@@ -27,6 +27,10 @@ if errorlevel 1 exit /b 1
 cl /nologo /std:c++17 /EHsc /W4 /O2 Tests\BedDistributionTests.cpp /Fo:artifacts\BedDistributionTests.obj /Fe:artifacts\BedDistributionTests.exe
 if errorlevel 1 exit /b 1
 artifacts\BedDistributionTests.exe
+if errorlevel 1 exit /b 1
+cl /nologo /std:c++17 /EHsc /W4 /O2 Tests\RockIndexTests.cpp /Fo:artifacts\RockIndexTests.obj /Fe:artifacts\RockIndexTests.exe
+if errorlevel 1 exit /b 1
+artifacts\RockIndexTests.exe
 set result=%errorlevel%
 popd
 exit /b %result%

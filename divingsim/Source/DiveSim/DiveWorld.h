@@ -10,6 +10,7 @@
 #include "Simulation/Sediment.h"
 #include "Simulation/FishMotion.h"
 #include "Simulation/FishSteering.h"
+#include "Simulation/RockIndex.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -77,7 +78,7 @@ public:
     TArray<FDiveAccess> Accesses;
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
-    double TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End) const;
+    double TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End,bool FullScan=false) const;
     bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation,bool FinOnly=false);
     bool SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation);
     bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
@@ -192,6 +193,8 @@ private:
     void RenderSediment(float Dt);
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
+    Dive::RockIndex RockSearch;
+    bool TestRockSearch(FString& Detail) const;
     // Deterministic geometry only; no UObject ownership. The visible 3x3
     // population window plus its planting halo needs at most 5x5 layouts.
     mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;

@@ -1,15 +1,16 @@
 #include "DiveWorld.h"
 #include "Simulation/Ecology.h"
 
-double ADiveWorld::TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End) const
+double ADiveWorld::TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End,bool FullScan) const
 {
     if(Start.ContainsNaN()||End.ContainsNaN()) return 0;
     const auto& profile=Dive::FishProfiles[Species];
     const double bodyRadius=profile.LengthMetres*50*Scale;
     const FVector delta=End-Start;const double distance=delta.Size();
     double fraction=1;
-    for(const auto& rock:RockState)
+    for(const int32 index:RockSearch.Query(Start.X,Start.Y,End.X,End.Y,bodyRadius,FullScan))
     {
+        const auto& rock=RockState[index];
         const double radius=rock.Radius+bodyRadius;
         if(FVector::DistSquared(Start,rock.Position)>FMath::Square(radius+distance)) continue;
         const double hit=Dive::FishSteering::SphereFraction(

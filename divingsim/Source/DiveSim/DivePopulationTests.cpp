@@ -70,6 +70,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATION_%s connected_large_pairs=%d"),connectedLargePairs>8?TEXT("PASS"):TEXT("FAIL"),connectedLargePairs);
     auto boundedLayouts=[&]()
     {
+        FString searchDetail;if(!TestRockSearch(searchDetail)) return false;
         if(RockLayouts.Num()>25) return false;
         for(const auto& pair:RockLayouts)
             if(FMath::Abs(pair.Key.X-PopulationCell.X)>2||FMath::Abs(pair.Key.Y-PopulationCell.Y)>2) return false;
@@ -104,7 +105,12 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         for(int step=0;step<60;++step)
         {
             const auto result=Dive::FishSteering::Advance(state,position,desired,{0,double(Flow),0},.5,.05,1.5,.8,
-                [&](const auto& a,const auto& b){return TraceFishPath(fish.Species,fish.Scale,FVector(a[0],a[1],a[2])*100,FVector(b[0],b[1],b[2])*100);});
+                [&](const auto& a,const auto& b)
+                {
+                    const FVector start=FVector(a[0],a[1],a[2])*100,end=FVector(b[0],b[1],b[2])*100;
+                    const double indexed=TraceFishPath(fish.Species,fish.Scale,start,end);
+                    valid&=indexed==TraceFishPath(fish.Species,fish.Scale,start,end,true);return indexed;
+                });
             valid&=result.Turn<=.075001;largestTurn=FMath::Max(largestTurn,result.Turn);turned+=result.Turn;
             const FVector a(position[0]*100,position[1]*100,position[2]*100),b(result.Position[0]*100,result.Position[1]*100,result.Position[2]*100);
             valid&=TraceFishPath(fish.Species,fish.Scale,a,b)>.999999;position=result.Position;

@@ -115,8 +115,9 @@ void ADiveWorld::TickFish(float Dt,const FVector& Player)
         if(neighbours)
             direction+=(cohesion/neighbours-fish.Position).GetSafeNormal()*.55+alignment/neighbours*.8;
         if(fleeing) direction+=away.GetSafeNormal()*4;
-        for(const auto& rock:RockState)
+        for(const int32 index:RockSearch.Query(fish.Position.X,fish.Position.Y,fish.Position.X,fish.Position.Y,bodyRadius+180))
         {
+            const auto& rock=RockState[index];
             const FVector delta=fish.Position-rock.Position;
             const float range=rock.Radius+bodyRadius+180;
             if(delta.SizeSquared()<range*range)
