@@ -1,10 +1,11 @@
-param([string]$PackageDirectory='Builds/WindowsFinMotion')
+param([string]$PackageDirectory='Builds/WindowsFinMotion',[switch]$SteeringChecks)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $exe=Resolve-DivePackageExecutable $PackageDirectory
-$result=Join-Path $repo ('artifacts/fin-validation-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
+$runPrefix=if($SteeringChecks){'artifacts/steering-validation-'}else{'artifacts/fin-validation-'}
+$result=Join-Path $repo ($runPrefix+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $result -Force | Out-Null
 $saved=Join-Path $PackageDirectory 'divingsim/Saved/Screenshots'
 $containers=@(Get-ChildItem -LiteralPath (Join-Path $PackageDirectory 'divingsim/Content/Paks') -File | Sort-Object Name | ForEach-Object {
@@ -22,6 +23,7 @@ $cases=@(
     @{name='discoveries';scenario='discoveries';entry=0},
     @{name='decompression';scenario='decompression';entry=0}
 )
+if($SteeringChecks) { $cases=@($cases | Where-Object {$_.name -in @('weesen','murg','mols','stream','discoveries')}) }
 $completed=@()
 foreach($case in $cases) {
     $folder=Join-Path $result $case.name
@@ -37,6 +39,7 @@ foreach($case in $cases) {
     if($case.scenario -eq 'fish' -and $log -notmatch 'DIVE_FISH_INSPECTION_PASS species=5 views=20 captures=40 lods=4') { throw 'Incomplete fish inspection' }
     if($case.fins -and $log -notmatch 'DIVE_FIN_INSPECTION_PASS species=5 views=20 captures=40 rotated=10 fixed_tail=1') { throw 'Incomplete isolated fin inspection' }
     if($case.population -and $log -notmatch 'DIVE_FIN_PAUSE_PASS gpu=1 phases=1 position=1') { throw 'Fish pause check failed' }
+    if($SteeringChecks -and $case.population -and $log -notmatch 'DIVE_STEERING_WORLD_PASS species=5 steps_per_species=60') { throw 'World steering check failed' }
     $captures=@(Get-ChildItem -LiteralPath $saved -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
     if($captures.Count -lt 1) { throw 'Missing fresh rendered captures.' }
     $captures | Copy-Item -Destination $folder

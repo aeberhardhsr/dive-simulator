@@ -9,6 +9,7 @@
 #include "Simulation/EnvironmentLight.h"
 #include "Simulation/Sediment.h"
 #include "Simulation/FishMotion.h"
+#include "Simulation/FishSteering.h"
 #include "DiveWorld.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -30,6 +31,7 @@ struct FDiveFish
     FVector Position=FVector::ZeroVector, Velocity=FVector::ZeroVector, Home=FVector::ZeroVector;
     float Phase=0, Scale=1;
     Dive::FishMotion Motion;
+    Dive::FishSteering::State Steering;
     int32 Species=0, Instance=0;
     bool Active=false;
 };
@@ -70,6 +72,7 @@ public:
     TArray<FDiveAccess> Accesses;
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
+    double TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End) const;
     bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation,bool FinOnly=false);
     bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
     TArray<FString> PhotographSpecies(const FVector& Eye,const FVector& Forward) const;

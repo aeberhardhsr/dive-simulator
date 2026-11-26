@@ -10,12 +10,14 @@ def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
 def sha(p):
     with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('run',type=Path);parser.add_argument('--performance',type=Path,required=True);a=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('run',type=Path);parser.add_argument('--performance',type=Path,required=True);parser.add_argument('--steering',action='store_true');a=parser.parse_args()
+    prefix='steering' if a.steering else 'fin'
     run=a.run.resolve();host=read(run/'Host.json');exe=Path(host['executable']);assert sha(exe)==host['sha256'].lower()
     containers=[dict(file=p.name,bytes=p.stat().st_size,sha256=sha(p)) for p in sorted((exe.parents[3]/'divingsim/Content/Paks').iterdir()) if p.is_file()]
     assert containers==sorted(host['package_containers'],key=lambda p:p['file'])
-    cases=read(run/'Cases.json');assert len(cases)==8
-    assert {x['name'] for x in cases}=={'fish','fins','weesen','murg','mols','stream','discoveries','decompression'}
+    expected={'weesen','murg','mols','stream','discoveries'} if a.steering else {'fish','fins','weesen','murg','mols','stream','discoveries','decompression'}
+    cases=read(run/'Cases.json');assert len(cases)==len(expected)
+    assert {x['name'] for x in cases}==expected
     evidence=[];fin_changes=[]
     for case in cases:
         folder=run/case['name'];log=(folder/'Runtime.log').read_text(encoding='utf-8-sig')
@@ -40,6 +42,7 @@ def main():
                         fin_changes.append(dict(species=species,lod=view,paired_fin_changed_pixels=paired,head_changed_pixels=head,threshold_luma=8))
         if case['name']=='fins':assert 'DIVE_FIN_INSPECTION_PASS species=5 views=20 captures=40 rotated=10 fixed_tail=1' in log
         if case['name']=='stream':assert 'DIVE_POPULATION_PASS' in log and 'DIVE_FIN_PAUSE_PASS gpu=1 phases=1 position=1' in log
+        if a.steering and case['name']=='stream':assert 'DIVE_STEERING_WORLD_PASS species=5 steps_per_species=60' in log
         if case['name']=='discoveries':assert 'DIVE_DISCOVERY_VISIBILITY_PASS' in log
         if case['name']=='decompression':assert 'DIVE_DECOMPRESSION_PASS' in log
         images=[]
@@ -59,15 +62,16 @@ def main():
     editorlog=ROOT/'artifacts/fin-editor-inspection.log';text=editorlog.read_text(encoding='utf-8-sig')
     for index in range(5):assert re.search(rf'DIVE_FISH_MESH species={index} .*colors=[1-9]\d+ tinted=[1-9]\d+ alpha=0\.\.255',text)
     for index in range(5):assert re.search(rf'DIVE_FIN_RIG species={index} uv=[34] roots=[1-9]\d+ tips=[1-9]\d+ paired=[1-9]\d+/[1-9]\d+',text)
-    core=ROOT/'artifacts/fin-core.log';assert 'PASS: fish animation response (0 failures)' in core.read_text(encoding='utf-8-sig')
+    core=ROOT/f'artifacts/{prefix}-core.log';core_text=core.read_text(encoding='utf-8-sig');assert 'PASS: fish animation response (0 failures)' in core_text
+    if a.steering:assert 'PASS: swept fish steering (0 failures)' in core_text
     perf=a.performance.resolve();summary=read(perf/'Summary.json')
     assert summary['host']['executable_sha256']==sha(exe) and not summary['host']['editor']
     assert summary['host']['package_containers']==host['package_containers']
     assert summary['metadata']['width']==1920 and summary['metadata']['height']==1080 and summary['metadata']['quality']==2
     assert 59<=summary['measured_seconds']<=61
-    launcher=read(ROOT/'artifacts/fin-bootstrap.json');assert launcher['status']=='PASS' and launcher['executable_sha256'].lower()==sha(exe)
-    assert sha(ROOT/'artifacts/fin-bootstrap.log')==launcher['log_sha256'].lower()
-    package=ROOT/'artifacts/fin-package.log';assert 'BUILD SUCCESSFUL' in package.read_text(encoding='utf-8-sig')
+    launcher=read(ROOT/f'artifacts/{prefix}-bootstrap.json');assert launcher['status']=='PASS' and launcher['executable_sha256'].lower()==sha(exe)
+    assert sha(ROOT/f'artifacts/{prefix}-bootstrap.log')==launcher['log_sha256'].lower()
+    package=ROOT/f'artifacts/{prefix}-package.log';assert 'BUILD SUCCESSFUL' in package.read_text(encoding='utf-8-sig')
     sources=[]
     for directory in ['Source','Config']:
         for p in sorted((ROOT/'divingsim'/directory).rglob('*')):
@@ -80,15 +84,23 @@ def main():
         if '/Textures/Fish/' in p.as_posix() or p.stem in ['M_Fish']+['SM_'+n for n in ['Perch','Roach','Pike','Whitefish','Burbot']] or p.stem.startswith('MI_Fish_'):
             assets.append(dict(file=p.relative_to(ROOT).as_posix(),sha256=sha(p)))
     assert len(assets)==26
-    baseline=ROOT/'Builds/WindowsFish/divingsim/Binaries/Win64/divingsim-Fish.exe'
-    assert sha(baseline)=='682ffe2b7dfa3218d7574eb6088a529594f2fe104c3bb4f358a3567b5961bd1c'
-    previous=read(ROOT/'Documentation/FISH_RESULTS.json')['executable']['package_containers']
-    for item in previous:assert sha(ROOT/'Builds/WindowsFish/divingsim/Content/Paks'/item['file'])==item['sha256']
+    previous_report=read(ROOT/'Documentation'/('FIN_MOTION_RESULTS.json' if a.steering else 'FISH_RESULTS.json'))
+    baseline=Path(previous_report['executable']['executable']);assert sha(baseline)==previous_report['executable']['sha256'].lower()
+    previous=previous_report['executable']['package_containers']
+    for item in previous:assert sha(baseline.parents[2]/'Content/Paks'/item['file'])==item['sha256']
     report=dict(status='PASS',executable=host,cases=evidence,isolated_fin_image_changes=fin_changes,sources=sources,assets=assets,mesh_audit=mesh,content_build=content,
         root_launcher=launcher,performance=summary,performance_files={n:sha(perf/n) for n in ['Capture.csv','Metadata.json','Host.json','Runtime.log','Frame.png','Summary.json']},
         import_log_sha256=sha(importlog),editor_color_audit_sha256=sha(editorlog),package_log_sha256=sha(package),core_log_sha256=sha(core),shader_sha256=sha(ROOT/'Tools/fish_motion_shader.hlsl'),
-        preserved_fish_executable_sha256=sha(baseline),preserved_fish_containers=previous,
+        preserved_previous_executable=str(baseline),preserved_fish_executable_sha256=sha(baseline),preserved_fish_containers=previous,
         limits='Authored fin hinge/wave response, not measured species kinematics or hydrodynamic validation. Isolated image comparison covers paired fins; body/median fins move together in the normal fixture. Meshes/textures are not scans or expert anatomical/photorealistic acceptance. Whitefish remains a group. Close-up fixtures force four LODs at fixed locations; natural AI is checked separately. One development-host performance capture, not minimum-hardware/macOS/endurance certification.')
-    (ROOT/'Documentation/FIN_MOTION_RESULTS.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-    print('FIN_REPORT_PASS cases=8 images='+str(sum(x['screenshots'] for x in cases)))
+    if a.steering:report['steering_limits']='Bounded kinematic turns, analytic conservative rock-sphere sweeps and quarter-metre habitat/bathymetry samples; not a full fish-body contact or hydrodynamic solver.'
+    if a.steering:
+        assert assets==previous_report['assets'],'Steering-only run must preserve the already-verified fin artwork'
+        report['unchanged_fin_asset_evidence']='Documentation/FIN_MOTION_RESULTS.json; asset hashes identical. Isolated fin/body fixtures were not rerun for the steering-only change.'
+        native=ROOT/'artifacts/steering-editor-stream.log';native_text=native.read_text(encoding='utf-8-sig')
+        assert 'DIVE_STEERING_WORLD_PASS species=5 steps_per_species=60' in native_text and 'DIVE_SMOKE_PASS' in native_text
+        assert not re.search(r'DIVE_\w+_FAIL',native_text)
+        report['native_world_log_sha256']=sha(native)
+    (ROOT/'Documentation'/('FISH_STEERING_RESULTS.json' if a.steering else 'FIN_MOTION_RESULTS.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    print(prefix.upper()+'_REPORT_PASS cases='+str(len(cases))+' images='+str(sum(x['screenshots'] for x in cases)))
 if __name__=='__main__':main()

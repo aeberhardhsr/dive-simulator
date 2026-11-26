@@ -16,12 +16,33 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         Diver->bMenu=true;Tick(.1f);Diver->bMenu=menu;
         bool paused=WorldTime==clock;
         for(int i=0;i<FishState.Num();++i)
-            paused&=FishState[i].Motion.Tail==savedFish[i].Motion.Tail&&FishState[i].Motion.Fin==savedFish[i].Motion.Fin&&FishState[i].Position==savedFish[i].Position;
+            paused&=FishState[i].Motion.Tail==savedFish[i].Motion.Tail&&FishState[i].Motion.Fin==savedFish[i].Motion.Fin&&FishState[i].Position==savedFish[i].Position&&
+                FishState[i].Steering.Yaw==savedFish[i].Steering.Yaw&&FishState[i].Steering.Pitch==savedFish[i].Steering.Pitch&&FishState[i].Steering.Speed==savedFish[i].Steering.Speed;
         for(int i=0;i<Fish.Num();++i) paused&=gpu[i]==Fish[i]->PerInstanceSMCustomData;
         UE_LOG(LogTemp,Display,TEXT("DIVE_FIN_PAUSE_%s gpu=1 phases=1 position=1"),paused?TEXT("PASS"):TEXT("FAIL"));
         valid&=paused;
     }
     else valid=false;
+    // Exercise the portable steering against actual loaded bathymetry and rocks
+    // without moving gameplay instances or changing the random stream.
+    TSet<int32> tested;double largestTurn=0;
+    for(const auto& fish:savedFish)
+    {
+        if(!fish.Active||tested.Contains(fish.Species)) continue;tested.Add(fish.Species);
+        auto state=fish.Steering;Dive::FishSteering::Vec position={fish.Position.X/100,fish.Position.Y/100,fish.Position.Z/100};
+        const auto desired=Dive::FishSteering::Scale(state.Facing(),-1);double turned=0;
+        for(int step=0;step<60;++step)
+        {
+            const auto result=Dive::FishSteering::Advance(state,position,desired,{0,double(Flow),0},.5,.05,1.5,.8,
+                [&](const auto& a,const auto& b){return TraceFishPath(fish.Species,fish.Scale,FVector(a[0],a[1],a[2])*100,FVector(b[0],b[1],b[2])*100);});
+            valid&=result.Turn<=.075001;largestTurn=FMath::Max(largestTurn,result.Turn);turned+=result.Turn;
+            const FVector a(position[0]*100,position[1]*100,position[2]*100),b(result.Position[0]*100,result.Position[1]*100,result.Position[2]*100);
+            valid&=TraceFishPath(fish.Species,fish.Scale,a,b)>.999999;position=result.Position;
+        }
+        valid&=turned>.1;
+    }
+    valid&=tested.Num()>0;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_STEERING_WORLD_%s species=%d steps_per_species=60 max_turn=%.6f limit=0.075001"),valid?TEXT("PASS"):TEXT("FAIL"),tested.Num(),largestTurn);
     auto capture=[](const FDivePopulationCell& cell)
     {
         TArray<TArray<FTransform>> result;
@@ -64,7 +85,8 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             ++nearFish;const auto& a=beforeFish[i];const auto& b=FishState[i];
             valid&=b.Active&&a.Position==b.Position&&a.Velocity==b.Velocity&&a.Home==b.Home&&
                 a.Instance==b.Instance&&a.Motion.Tail==b.Motion.Tail&&a.Motion.Fin==b.Motion.Fin&&
-                a.Motion.Effort==b.Motion.Effort&&a.Motion.Turn==b.Motion.Turn&&a.Phase==b.Phase&&a.Scale==b.Scale;
+                a.Motion.Effort==b.Motion.Effort&&a.Motion.Turn==b.Motion.Turn&&a.Phase==b.Phase&&a.Scale==b.Scale&&
+                a.Steering.Yaw==b.Steering.Yaw&&a.Steering.Pitch==b.Steering.Pitch&&a.Steering.Speed==b.Steering.Speed;
         }
     LastFishRefill=WorldTime;StreamPopulation(after+FVector(38400,0,0));
     for(const auto& pair:snapshots) valid&=!PopulationCells.Contains(pair.Key);
@@ -87,9 +109,12 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     valid&=spawned>0&&FishState.Num()==77;
     FishState=savedFish;Random=savedRandom;LastFishRefill=savedRefill;
     for(const auto& fish:FishState)
+    {
+        const auto facing=fish.Steering.Facing();
         Fish[fish.Species]->UpdateInstanceTransform(fish.Instance,
-            FTransform(fish.Active?fish.Velocity.Rotation():FRotator::ZeroRotator,
+            FTransform(fish.Active?FVector(facing[0],facing[1],facing[2]).Rotation():FRotator::ZeroRotator,
                 fish.Active?fish.Position:original,FVector(fish.Active?fish.Scale:0)),false,true,true);
+    }
     Detail=FString::Printf(TEXT("retained_cells=%d reloaded_cells=%d unchanged_near_fish=%d distant_spawns=%d active_cells=%d slots=%d"),
         retained,reloaded,nearFish,spawned,PopulationCells.Num(),FishState.Num());
     UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_TEST_END"));
