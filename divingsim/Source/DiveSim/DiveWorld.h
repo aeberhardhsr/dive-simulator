@@ -68,6 +68,7 @@ public:
     TArray<FDiveAccess> Accesses;
     int32 TerrainChunkCount() const { return Chunks.Num(); }
     bool ValidateEcology(FString& Error) const;
+    bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation);
     bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
     TArray<FString> PhotographSpecies(const FVector& Eye,const FVector& Forward) const;
     bool TestPopulationStreaming(FString& Detail);

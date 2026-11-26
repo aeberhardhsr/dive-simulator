@@ -1,5 +1,5 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression','fish')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,

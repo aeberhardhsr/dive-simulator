@@ -155,11 +155,38 @@ Clear, overcast, rain and storm are selectable scenario presets with default win
 
 Initial fish placement is seeded from the selected entry's population cell. Up to 77 fish are placed only where actual bathymetry intersects the species envelope; the Weesen start can have no burbot. Individual scale varies from 0.75 to 1.15. Same-species neighbours contribute cohesion/alignment; all fish contribute short-range separation. The diver causes escape steering. Terrain look-ahead, missing-data rejection and conservative rock exclusion volumes constrain movement. Runtime smoke tests check mesh identity, finite state, depth envelopes and rock exclusion every frame. Fish-to-fish separation is steering, not a rigid-body contact solver. Feeding, reproduction and seasonal ecology remain open. Fixed 96-metre dressing cells now preserve nearby geometry across travel; a bounded 77-slot fish pool preserves nearby individual state and recycles only distant animals. Details, exact distances and evidence: [POPULATION_STREAMING.md](POPULATION_STREAMING.md).
 
-Models use original geometry and vertex colours: two dorsal fins and bars for perch, red iris for roach, elongated spotted pike, adipose fin for whitefish, rounded tail and chin barbel for burbot. Tail deformation uses vertex weights and per-instance world-side vectors, species-dependent cycles and escape rate. Accumulated animation phase avoids jumps when speed changes and pauses with the simulation. This is procedural vertex animation, not a skeletal anatomy simulation. Photorealistic textures, finer fin motion and independent anatomical review remain pending.
+### Fish geometry and surface detail
+
+The five models now use smooth body profiles, attached caudal fans, subdivided fins, gill margins, mouth seams and separate eyes. Perch has two dorsal fins, a spiny leading fin, a dark posterior dorsal patch and flank bars; roach has a red iris; pike has an elongated head and posterior dorsal/anal fins; the whitefish group has an adipose fin; burbot has a rounded tail, long rear dorsal/anal fins and a chin barbel. Model lengths remain 30/24/75/38/55 cm before individual scaling.
+
+The morphology review used the identification descriptions and photographs on printed pages 86 and 93 of [Inland Fisheries Ireland's 2019 ageing manual](https://www.fisheriesireland.ie/sites/default/files/migrated/docman/ifish/IFISH_VOL1_Manual%20on%20Ageing_2019-v2.pdf), the two whitefish forms illustrated in figure 4-12 on printed page 15 of the [Eawag Walensee report](https://www.fischereiberatung.ch/fileadmin/sites/fiber/angebot/andere_publ/projet_lac/projet_lac_walensee.pdf), and the [British Columbia burbot conservation strategy](https://www2.gov.bc.ca/assets/gov/environment/plants-animals-and-ecosystems/fish-fish-habitat/fishery-resources/region-4-kootenay-boundary/finalburbotcs-3-2-05.pdf). These references informed authored shapes; no source photograph pixels were copied into game assets, and the meshes are not specimen scans or measured reconstructions. The whitefish taxonomy remains explicitly a group.
+
+Each model has original 2048×2048 color, DirectX normal and surface-property atlases, with staggered scale margins, lateral-line detail, species-dependent bars/spots/mottling, fin rays and eye regions. Burbot's embedded scales are deliberately much less visible. The shared lit material uses roughness variation and a subsurface approximation for the fins. These are designed optical parameters, not measured fish-skin properties. [FISH_TEXTURES.json](FISH_TEXTURES.json) records the source maps and hashes; [FISH_MESH_AUDIT.json](FISH_MESH_AUDIT.json) verifies finite geometry, length, polygon areas, atlas coordinates and animation weights.
+
+Four generated mesh LODs target 100%, 45%, 18% and 6.5% of triangles, with screen-size thresholds 1.0/0.35/0.12/0.04. Texture mipmaps stream normally. Tail deformation uses vertex alpha weights and per-instance world-side vectors, species-dependent cycles and escape rate. Accumulated animation phase avoids jumps when speed changes and pauses with the simulation. The FBX reimport policy is explicitly set on both task and existing asset: retaining an old IGNORE policy discarded tint and movement weights, which is now rejected by asset/runtime checks. This remains procedural vertex animation; independent fin articulation, gill ventilation, mouth opening, physiological skin optics, expert anatomical review and photorealistic acceptance remain open.
+
+Rebuild the authored artwork with `Tools/prepare_fish_textures.py` in the NumPy/Pillow environment, then run `Tools/create_fish_assets.py`, `Tools/audit_fish_assets.py` and `Tools/sync_fish_scene.py` through Blender's background Python runner. `FishAssets.blend` is the dedicated source scene; the sync script updates only its five fish in `DivingAssets.blend`. `create_blender_assets.py` also delegates fish generation to the same implementation. `preview_fish_assets.py` renders the actual meshes and atlases for inspection.
+
+```powershell
+./Tools/Build.ps1 -Target Editor -EditorSandbox
+./Tools/Build.ps1 -Target Content -EditorSandbox -OnlyFish
+./Tools/Build.ps1 -Target Package -EditorSandbox -BuildSlot Fish -PackageDirectory Builds/WindowsFish
+./Tools/TestFish.ps1
+./Tools/TestFishLauncher.ps1
+./Tools/Benchmark.ps1 -PackageDirectory Builds/WindowsFish -Scenario underwater -Resolution 1080p -Quality 2 -Seconds 60
+```
+
+The close-up fixture uses the normal instanced meshes, per-instance deformation inputs and materials, but places each fish at a fixed location and forces each of four LODs. Two animation phases are captured for every species/LOD combination, with alternating side/oblique views. Reduced LODs are deliberately shown close up for inspection; this is not their normal game viewing distance. Natural placement, movement, terrain/rock avoidance and streaming are checked separately at the three entries and on the streaming route. The photo and decompression cases provide regression coverage. The fixture's placement and camera bypass ordinary player movement and are not evidence of natural fish behavior.
+
+![Current fish geometry and atlases in neutral Blender lighting; visual sizes normalized for comparison, not relative species scale](Images/FishAssets.png)
+
+![Perch in the packaged close-up fixture, highest detail](Images/Fish_Perch.png)
+
+![Burbot in the packaged close-up fixture, highest detail](Images/Fish_Burbot.png)
 
 Three illustrative vegetation forms are available: broad-leaved pondweed, whorled stonewort and feathery milfoil. They are generic freshwater growth types, **not confirmed species records at the simulated locations**. References: [InfoFlora pondweeds](https://www.infoflora.ch/de/flora/potamogeton.html), [stonewort habitats](https://www.infoflora.ch/de/lebensraeume/typoch/1.1.1-armleuchteralgengesellschaft.html) and [milfoil morphology, Fisheries and Oceans Canada](https://www.dfo-mpo.gc.ca/species-especes/profiles-profils/eurasian-water-milfoil-myriophylle-epis-eng.html). Plant placement rejects steep slopes, rock footprints and insufficient light/depth. Visibility limits vegetation depth; maximum game depths are 10/18/7 m respectively. Vertex-weighted sway keeps stem bases fixed. Exact species, lake-specific mapping, seasonal growth and a physical plant-flow model remain open.
 
-![Original Blender model overview, neutral inspection lighting](Images/EcologyAssets.png)
+![Earlier Blender overview showing the vegetation forms and superseded fish models](Images/EcologyAssets.png)
 
 ## First-person equipment and wrist display
 

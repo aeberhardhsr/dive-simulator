@@ -150,7 +150,7 @@ void ADiveWorld::Populate()
         auto* component=Fish[species].Get(); component->ClearInstances();
         const FString name=UTF8_TO_TCHAR(Dive::FishProfiles[species].Mesh);
         component->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
-        component->SetMaterial(0,Mat(TEXT("M_Fish")));
+        component->SetMaterial(0,Mat(*(TEXT("MI_Fish_")+name.RightChop(3))));
     }
     InitializeParticles();
     for(auto& pair:PopulationCells)

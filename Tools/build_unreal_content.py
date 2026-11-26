@@ -260,6 +260,8 @@ if not ONLY_ENVIRONMENT:
         mesh.set_material(0,u.load_asset(BASE+'/Materials/'+mat_name))
         u.EditorAssetLibrary.save_loaded_asset(mesh)
 
+    from build_fish_content import build_fish
+    build_fish()
     map_path=BASE+'/Maps/L_DiveTraining'
     if not u.EditorAssetLibrary.does_asset_exist(map_path):
         world=u.EditorLoadingAndSavingUtils.new_blank_map(False)

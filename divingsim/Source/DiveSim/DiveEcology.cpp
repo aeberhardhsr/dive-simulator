@@ -2,6 +2,8 @@
 #include "Simulation/Ecology.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
+#include "StaticMeshResources.h"
 
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
@@ -18,6 +20,14 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
         const auto mesh=Fish[species]->GetStaticMesh();
         if(!mesh||mesh->GetName()!=UTF8_TO_TCHAR(Dive::FishProfiles[species].Mesh))
         { Error=TEXT("Missing species mesh"); return false; }
+        const auto material=Fish[species]->GetMaterial(0);
+        if(mesh->GetNumLODs()!=4||!material||material->GetName()!=TEXT("MI_Fish_")+mesh->GetName().RightChop(3))
+        { Error=TEXT("Missing species PBR material or distance LODs");return false; }
+        const auto* render=mesh->GetRenderData();
+        if(!render) { Error=TEXT("Missing fish render data");return false; }
+        for(const auto& lod:render->LODResources)
+            if(lod.VertexBuffers.ColorVertexBuffer.GetNumVertices()==0)
+            { Error=TEXT("Fish tint and animation weights missing");return false; }
     }
     for(int32 species=0;species<Plants.Num();++species)
     {

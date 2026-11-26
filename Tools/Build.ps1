@@ -18,7 +18,8 @@ param(
     [switch]$OnlyWater,
     [switch]$OnlyBuildings,
     [switch]$OnlyVegetation,
-    [switch]$OnlyGround
+    [switch]$OnlyGround,
+    [switch]$OnlyFish
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -45,6 +46,7 @@ if ($Target -eq 'Content') {
     if($OnlyBuildings) { $script=Join-Path $PSScriptRoot 'build_buildings_content.py' }
     if($OnlyVegetation) { $script=Join-Path $PSScriptRoot 'build_vegetation_content.py' }
     if($OnlyGround) { $script=Join-Path $PSScriptRoot 'build_ground_content.py' }
+    if($OnlyFish) { $script=Join-Path $PSScriptRoot 'build_fish_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
     if($OnlyCaustics) { $script=Join-Path $PSScriptRoot 'build_caustics_content.py' }
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }

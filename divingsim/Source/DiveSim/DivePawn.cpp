@@ -515,14 +515,14 @@ void ADivePawn::Tick(float DeltaSeconds)
     }
     if(bSmokeTest&&SmokeScenario==TEXT("daycycle")) TickDayCycleTest(DeltaSeconds);
     if(bSmokeTest&&SmokeScenario==TEXT("decompression")) TickDecompressionTest(DeltaSeconds);
-    if(bDiveActive && !bMenu && !(bSmokeTest&&SmokeScenario==TEXT("decompression")))
+    if(bDiveActive && !bMenu && !(bSmokeTest&&(SmokeScenario==TEXT("decompression")||SmokeScenario==TEXT("fish"))))
     {
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
     UpdateTorch(); // Current battery output before diagnostics; attachment is refreshed again after camera motion.
     const double smokeDuration=SmokeScenario==TEXT("sediment")?70:(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:(SmokeScenario==TEXT("stream")||SmokeScenario==TEXT("daycycle"))?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
-    if(bSmokeTest && bDiveActive && SmokeScenario!=TEXT("decompression"))
+    if(bSmokeTest && bDiveActive && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("fish"))
     {
         FString audioError;
         if(!Audio->Validate(audioError))
@@ -692,6 +692,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(bSmokeTest&&SmokeScenario==TEXT("modes")) TickModeTest();
     if(bSmokeTest&&SmokeScenario==TEXT("sediment")) TickSedimentTest(DeltaSeconds);
     if(bPerformance) TickPerformance();
+    if(bSmokeTest&&SmokeScenario==TEXT("fish")) TickFishInspection(DeltaSeconds);
 }
 
 void ADivePawn::SimulateStep(float Step)
