@@ -29,6 +29,8 @@ def package_check(host):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('run', type=Path)
+    parser.add_argument('--launcher-observation', type=Path,
+                        help='Read-only evidence of the user-started root launcher and its actual child')
     args = parser.parse_args()
     run = args.run.resolve()
     host = read(run/'Host.json')
@@ -88,6 +90,7 @@ def main():
     assert len(assets) == 3
     assets.append(ROOT/'divingsim/Content/Diving/Materials/M_RockSurface.uasset')
     logs = {}
+    editor_startup_issues = []
     for name, marker in [('rock-content-full.log', 'DIVE_ROCK_CONTENT_PASS'),
                          ('rock-editor-inspection.log', 'DIVE_ROCK_INSPECTION_PASS'),
                          ('rock-editor-stream.log', 'DIVE_POPULATION_PASS'),
@@ -96,11 +99,32 @@ def main():
                          ('rock-package.log', 'BUILD SUCCESSFUL')]:
         path = ROOT/'artifacts'/name
         text = path.read_text(encoding='utf-8-sig')
-        assert marker in text and not re.search(r'DIVE_\w+_FAIL|LogPython: Error:|Default Material will be used', text)
+        assert marker in text and not re.search(r'DIVE_\w+_FAIL|Default Material will be used', text), name
+        errors = re.findall(r'LogPython: Error: (.*)', text)
+        if errors:
+            # The editor's optional ToolsetRegistry test registration runs in
+            # -game too, where PythonTestRunner is absent. Accept only this
+            # exact engine-only traceback; import/audit commandlets stay strict.
+            assert name.startswith('rock-editor-') and len(errors) == 5, (name, errors)
+            assert errors[0] == 'Traceback (most recent call last):'
+            assert errors[1].endswith('/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py", line 7, in <module>')
+            assert errors[2].strip() == 'tests._toolset_registry_test_runner = unreal.PythonTestRunner.create('
+            assert set(errors[3].strip()) == {'^'}
+            assert errors[4] == "AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+            editor_startup_issues.append(dict(log=name, error=errors[4], source='Installed engine ToolsetRegistry init_unreal.py:7'))
         logs[name] = sha(path)
-    launcher = read(ROOT/'artifacts/rock-bootstrap.json')
-    assert launcher['status'] == 'PASS' and launcher['executable_sha256'].lower() == host['sha256'].lower()
-    assert sha(ROOT/'artifacts/rock-bootstrap.log') == launcher['log_sha256'].lower()
+    if args.launcher_observation:
+        launcher = read(args.launcher_observation)
+        assert launcher['status'] == 'OBSERVED_RUNNING'
+        assert launcher['child_parent_id'] == launcher['launcher_id']
+        assert Path(launcher['child']).resolve() == Path(host['executable']).resolve()
+        assert launcher['executable_sha256'].lower() == host['sha256'].lower()
+        assert Path(launcher['launcher']).resolve() == Path(host['executable']).parents[3]/'divingsim.exe'
+        assert sha(Path(launcher['launcher'])) == launcher['launcher_sha256'].lower()
+    else:
+        launcher = read(ROOT/'artifacts/rock-bootstrap.json')
+        assert launcher['status'] == 'PASS' and launcher['executable_sha256'].lower() == host['sha256'].lower()
+        assert sha(ROOT/'artifacts/rock-bootstrap.log') == launcher['log_sha256'].lower()
     baseline = read(ROOT/'Documentation/FISH_STEERING_RESULTS.json')['executable']
     package_check(baseline)
     ci = read(ROOT/'Documentation/ROCK_GEOMETRY_CI.json')
@@ -109,7 +133,7 @@ def main():
     report = dict(status='PASS', scope='Packaged rendering and gameplay regression; performance and endurance acceptance pending',
                   executable=host, cases=evidence, sources=files, geometry=geometry, content_build=content, render_data_audit=render_audit,
                   assets=[dict(file=p.relative_to(ROOT).as_posix(), sha256=sha(p)) for p in sorted(assets)],
-                  logs=logs, root_launcher=launcher, preserved_baseline=baseline, source_ci=ci,
+                  logs=logs, editor_startup_issues=editor_startup_issues, root_launcher=launcher, preserved_baseline=baseline, source_ci=ci,
                   limits='Three rescaled CC0 forms with authored placement and shared lake-rock material, not local geology scans. Convex diver collision and conservative fish exclusion. Fixed-camera Nanite/raster comparisons do not establish every LOD transition or overall photorealism. Concurrent baseline soak is recorded in Host.json; these capped runs are not performance measurements.')
     (ROOT/'Documentation/ROCK_GEOMETRY_RESULTS.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     print(f'ROCK_REPORT_PASS cases={len(cases)} images={sum(c["screenshots"] for c in cases)}')

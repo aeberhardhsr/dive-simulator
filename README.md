@@ -6,6 +6,8 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
+Die neue **Grafikvorschau** liegt unter **`Builds/WindowsRockDetail/divingsim.exe`**. Drei detaillierte Felsformen ersetzen das bisher wiederholte einfache Modell. Neun Paketprüfungen mit 54 Aufnahmen bestehen, einschließlich aller drei Einstiege und der Darstellung ohne Nanite; die eigene Leistungs- und Dauerlaufabnahme steht noch aus. Bilder und Grenzen: [Felsgeometrie](Documentation/ROCK_GEOMETRY.md). Die vom Nutzer vorgegebene [visuelle Zielqualität](Documentation/VISUAL_TARGET.md) ist damit noch nicht erreicht.
+
 Der aktuelle Stand liegt unter **`Builds/WindowsFishSteering/divingsim.exe`**. Fische wenden jetzt in begrenzten Kurven, prüfen Hindernisse voraus und bremsen bei blockierten Wegen. Die frühere schlagartige Umkehr entfällt; Richtung und Tempo bleiben auch beim Pausieren und Nachladen erhalten. Umsetzung, Paketprüfungen und Grenzen: [Fischbewegung](Documentation/FISH_STEERING.md). Die Bewegungsparameter sind gestaltet; artspezifische Validierung und vollständige Körperkontakte bleiben offen.
 
 Der vorherige Stand unter **`Builds/WindowsFinMotion/divingsim.exe`** bleibt erhalten. Seine eigenständige Brust-/Bauchflossenbewegung und kleineren Rücken-/Afterflossenausschläge sind im aktuellen Paket enthalten. Tempo und Kurven beeinflussen die Animation. Bilder und Prüfgrenzen: [Flossenbewegung](Documentation/FIN_MOTION.md). Kiemen-/Maulbewegung und die fotorealistische Qualitätsabnahme bleiben offen.

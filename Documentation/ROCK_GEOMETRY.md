@@ -1,6 +1,6 @@
 # Detailed underwater rock forms
 
-The previous underwater dressing repeated one deformed low-detail sphere. Three distinct source-based forms now replace it in the working source. The native editor-game comparison and Murg streaming regression pass. Packaged acceptance is still pending; the last verified playable package is WindowsFishSteering.
+The previous underwater dressing repeated one deformed low-detail sphere. Three distinct source-based forms now replace it. The graphical preview is `Builds/WindowsRockDetail/divingsim.exe`: nine packaged cases and 54 fresh captures pass. Performance and endurance acceptance for this package remain pending. The measured FishSteering baseline is preserved unchanged.
 
 ## Sources and interpretation
 
@@ -20,7 +20,23 @@ The Unreal importer enables Nanite, generates four raster LODs (100 / 35 / 10 / 
 
 On 26 November 2026 the editor-game comparison produced eight fresh views with the intended material. An initial run exposed a missing Nanite material usage flag; the importer now explicitly sets and saves it, and the corrected run contains no fallback-material warning. A separate 90-second Murg streaming run passes population retention and all five species' steering checks. These checks ran alongside the unchanged FishSteering endurance package and are not isolated performance measurements.
 
-The first `WindowsRocks` package passed nine technical render/gameplay cases, but visual comparison exposed the automatically reduced fallback described above. Changing LOD screen thresholds alone did not fix it. Explicit PercentTriangles fallback does: the corrected native raster comparison retains the source fractures, and the built-data audit confirms the triangle counts. The refined `WindowsRockDetail` package still requires its own packaged checks. The overall target remains the user's [visual references](VISUAL_TARGET.md), far beyond acceptance of these three meshes alone.
+The first `WindowsRocks` package passed nine technical render/gameplay cases, but visual comparison exposed the automatically reduced fallback described above. Changing LOD screen thresholds alone did not fix it. Explicit PercentTriangles fallback does: corrected native and packaged raster comparisons retain the source fractures, and the built-data audit confirms the triangle counts. The overall target remains the user's [visual references](VISUAL_TARGET.md), far beyond acceptance of these three meshes alone.
+
+The refined package passes the old/new comparison with Nanite on and off, population/steering streaming routes at all three entries, complete shore routes at all three entries, and the discoveries scenario. [ROCK_GEOMETRY_RESULTS.json](ROCK_GEOMETRY_RESULTS.json) binds the executable and cooked files to 54 captures, source/config hashes, asset hashes and the built-data audit. [CI](ROCK_GEOMETRY_CI.json) records portable checks on Windows, macOS and Linux; this is not a native macOS game acceptance.
+
+The user opened the root launcher through Explorer during the final discovery test. The subsequent automated launcher test correctly refused to start another instance. Read-only process evidence instead verifies that the actual root launcher started the expected packaged child. This does not claim an automated launcher playthrough or exit. The user's instance was left running. Three editor-game logs additionally contain the installed engine's optional ToolsetRegistry PythonTestRunner registration error; the report records that exact engine-only traceback. Import/audit commandlets and packaged cases do not receive that exception.
+
+Previous form, identical controlled location and camera:
+
+![Previous rounded form in the packaged comparison](Images/Rock_Previous.png)
+
+Detailed form, ordinary raster fallback after correction:
+
+![Detailed rock with preserved close-range fractures](Images/Rock_Detail.png)
+
+Another of the three forms:
+
+![Block-shaped variation in the same comparison](Images/Rock_Block.png)
 
 `preview_rock_assets.py` produces a neutral Blender geometry review, not a game screenshot. The `rocks` smoke scenario compares the old form and three new forms at the same location, scale and two camera angles in surveyed water. It keeps the ordinary ground/water material and light configuration, but hides other dressing and equipment and holds simulation still. This controlled fixture does not prove natural placement, collision response, performance or all LOD transitions. The ordinary entry and streaming routes must be checked separately, along with a Nanite-disabled rendering case.
 
