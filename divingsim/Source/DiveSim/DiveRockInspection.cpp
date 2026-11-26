@@ -3,6 +3,7 @@
 #include "DiveEquipment.h"
 #include "DiveAvatar.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "PhysicsEngine/BodySetup.h"
@@ -14,13 +15,53 @@
 #include "Simulation/BedDistribution.h"
 #include "Simulation/Ecology.h"
 #include "Materials/MaterialInterface.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Components/ExponentialHeightFogComponent.h"
+#include "ProceduralMeshComponent.h"
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
 // the three new forms use the same position, scale, material and camera.
 bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation)
 {
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
-    if(!bOpticsSmoke||!Diver||Variant<0||Variant>(plantView?5:3)) return false;
+    const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
+    if(!bOpticsSmoke||!Diver||Variant<0||Variant>(waterView?9:plantView?5:3)) return false;
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView")))
+    {
+        if(!WaterMaterial||Variant>9||View>2) return false;
+        // Diagnostic only. Bits 0/1/2 disable the surface water volume, use air
+        // fog, and omit camera attenuation. States 8/9 are clear-air controls.
+        // The old entry marker occupied the exact spawn XY; an eye inside its
+        // two-sided rope sees an opaque solid colour rather than the surface.
+        // Pick surveyed water away from every rope before testing the surface.
+        bool clear=false;
+        for(int angle=0;angle<360&&!clear;angle+=30)
+        {
+            Eye=Diver->EntryLocation+FRotator(0,angle,0).Vector()*500;
+            float bed=0;if(!Terrain.Sample(Eye.X,Eye.Y,bed)||bed>-350) continue;
+            clear=true;
+            for(const auto& rope:BuoyLines)
+                if(FVector::DistSquared2D(Eye,rope->GetComponentLocation())<FMath::Square(200.)) {clear=false;break;}
+        }
+        if(!clear) return false;
+        Eye.Z=View==2?150:-150;
+        Rotation=FRotator(View==0?15:View==1?65:-15,180,0);
+        UpdateAtmosphere();
+        Fog->SetVisibility(Variant<8);
+        Water->SetVisibility(Variant!=8);
+        WaterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),
+            (Variant&1)&&View!=2?0.f:14.f/VisibleDistance);
+        if((Variant&2)&&View!=2)
+        {
+            // Isolate the global underwater fog that also covers the sky in
+            // the scene-color buffer behind the surface. Post-process stays on.
+            Fog->SetFogDensity(Dive::WeatherScenario::At(WeatherSettings.Weather).AirFog);
+            Fog->SetFogHeightFalloff(.2f);
+            Fog->SetFogInscatteringColor(FLinearColor::Black);
+            Fog->SetSkyAtmosphereAmbientContributionColorScale(FLinearColor::White);
+        }
+        return true;
+    }
     const bool gravelView=FParse::Param(FCommandLine::Get(),TEXT("DiveGravelView"));
     FVector centre=Diver->EntryLocation;bool found=false;
     for(int radius=5;radius<100&&!found;radius+=5)
@@ -92,6 +133,10 @@ void ADivePawn::TickRockInspection(float Dt)
 {
     const bool gravelView=FParse::Param(FCommandLine::Get(),TEXT("DiveGravelView"));
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
+    const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
+    const int views=waterView?3:2;
+    int end=9;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterEnd="),end);
+    end=FMath::Clamp(end,0,9);
     ControlsSmokeClock+=Dt;
     if(ControlsSmokePhase==0)
     {
@@ -99,28 +144,57 @@ void ADivePawn::TickRockInspection(float Dt)
         Environment->SetActorTickEnabled(false);bLamp=false;bShowInstruments=false;bShowComputer=false;bShowMap=false;NoticeUntil=0;
         Equipment->SetActorHiddenInGame(true);if(Equipment->Avatar) Equipment->Avatar->SetActorHiddenInGame(true);
         if(auto* pc=Cast<APlayerController>(GetController())) if(pc->GetHUD()) pc->GetHUD()->bShowHUD=false;
-        ControlsSmokePhase=1;ControlsSmokeClock=0;TestLessonStage=0;
+        int start=0;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterStart="),start);
+        ControlsSmokePhase=1+FMath::Clamp(start,0,9)*views;ControlsSmokeClock=0;TestLessonStage=0;
     }
-    if(ControlsSmokePhase>(plantView?12:gravelView?4:8))
+    if(ControlsSmokePhase>(waterView?(end+1)*views:plantView?12:gravelView?4:8))
     {
-        if(plantView) {UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12"));}
+        if(waterView) {UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INSPECTION_PASS final_state=%d views=3 diagnostic=1"),end);}
+        else if(plantView) {UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12"));}
         else if(gravelView) {UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_INSPECTION_PASS states=2 views=2 captures=4"));}
         else {UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_INSPECTION_PASS forms=4 views=2 captures=8"));}
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS rocks=1"));FPlatformMisc::RequestExitWithStatus(false,0);return;
     }
-    const int variant=(ControlsSmokePhase-1)/2,view=(ControlsSmokePhase-1)%2;
+    const int variant=(ControlsSmokePhase-1)/views,view=(ControlsSmokePhase-1)%views;
     FVector eye;FRotator rotation;
     if(!Environment->SetRockInspection(variant,view,eye,rotation))
     {UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_INSPECTION_FAIL phase=%d"),ControlsSmokePhase);FPlatformMisc::RequestExitWithStatus(false,1);return;}
     SetActorLocation(eye-FVector(0,0,CameraBaseHeight));ResetContactPose();
     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(rotation);
-    Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(50);
+    Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(waterView?70:50);
+    if(waterView) Camera->PostProcessSettings.AutoExposureBias=Environment->ExposureBiasAt(eye);
+    if(waterView&&((variant&4)||variant>=8)) Camera->PostProcessSettings.WeightedBlendables.Array.Reset();
+    if(waterView&&variant>=8)
+    {
+        Camera->PostProcessSettings.WeightedBlendables.Array.Reset();
+        Camera->PostProcessSettings.SceneColorTint=FLinearColor::White;
+        Camera->PostProcessSettings.ColorSaturation=FVector4(1,1,1,1);
+        Camera->PostProcessSettings.VignetteIntensity=0;
+    }
+    Equipment->SetActorHiddenInGame(true);if(Equipment->Avatar) Equipment->Avatar->SetActorHiddenInGame(true);
     if(ControlsSmokeClock>3&&!TestLessonStage)
     {
         TestLessonStage=1;
-        const FString name=FString::Printf(TEXT("%s_%d_%d.png"),plantView?TEXT("Plant"):gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
+        const FString name=FString::Printf(TEXT("%s_%d_%d.png"),waterView?TEXT("Water"):plantView?TEXT("Plant"):gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/name,true,false);
         UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_CAPTURE variant=%d view=%d file=%s"),variant,view,*name);
+        if(waterView) UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_VIEW state=%d view=%d eye=%s rotation=%s exposure=%.6f visibility=%.3f"),
+            variant,view,*eye.ToString(),*rotation.ToString(),Camera->PostProcessSettings.AutoExposureBias,Simulation.Settings.VisibilityMetres);
+        if(waterView)
+        {
+            float bed=0;const bool sampled=Environment->Terrain.Sample(eye.X,eye.Y,bed);
+            auto* pc=Cast<APlayerController>(GetController());
+            if(pc)
+            {
+                const auto& pov=pc->PlayerCameraManager->GetCameraCacheView();
+                UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_CACHED_PP weight=%.3f materials=%d vignette=%.3f tint=%s"),
+                    pov.PostProcessBlendWeight,pov.PostProcessSettings.WeightedBlendables.Array.Num(),pov.PostProcessSettings.VignetteIntensity,*pov.PostProcessSettings.SceneColorTint.ToString());
+            }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_CAMERA actual=%s rotation=%s bed=%.3f sampled=%d pp_weight=%.3f materials=%d"),
+                pc?*pc->PlayerCameraManager->GetCameraLocation().ToString():TEXT("missing"),
+                pc?*pc->PlayerCameraManager->GetCameraRotation().ToString():TEXT("missing"),bed,sampled,Camera->PostProcessBlendWeight,
+                Camera->PostProcessSettings.WeightedBlendables.Array.Num());
+        }
     }
     if(ControlsSmokeClock>4){++ControlsSmokePhase;ControlsSmokeClock=0;TestLessonStage=0;}
 }

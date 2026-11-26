@@ -111,6 +111,16 @@ void ADiveWorld::UpdateWater(const FVector& Player)
 bool ADiveWorld::ValidateWater(FString& Error) const
 {
     if(!ValidateCaustics(Error)) return false;
+    if(Buoys.Num()!=Terrain.Entries.Num()||BuoyLines.Num()!=Buoys.Num())
+    { Error=TEXT("Entry buoy/rope count differs from dive entries");return false; }
+    for(int i=0;i<Buoys.Num();++i)
+    {
+        const FVector marker=Buoys[i]->GetComponentLocation(),rope=BuoyLines[i]->GetComponentLocation();
+        float bed=0;
+        if(FVector::Dist2D(marker,Terrain.Entries[i].Position)<150||
+            FVector::Dist2D(marker,rope)>.01||!Terrain.Sample(marker.X,marker.Y,bed)||bed>=-100)
+        { Error=TEXT("Entry marker obstructs the spawn or has no submerged anchor");return false; }
+    }
     const auto* fog=Fog.Get();
     const float water=static_cast<float>(OpticalMedium.Water);
     const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB();
@@ -127,7 +137,7 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     {
         const auto& config=Diver->Simulation.Settings;
         if(FMath::Abs(VisibleDistance-config.VisibilityMetres)>1.e-5||FMath::Abs(Flow-config.CurrentMetresPerSecond)>1.e-6||
-            FMath::Abs(WaterMaterial->K2_GetScalarParameterValue(TEXT("OpticalScale"))-14/config.VisibilityMetres)>1.e-5)
+            FMath::Abs(WaterMaterial->K2_GetScalarParameterValue(TEXT("OpticalScale"))-14/config.VisibilityMetres*(1-water))>1.e-5)
         { Error=TEXT("Resolved dive visibility/current disagree with world and water material");return false; }
     }
     const double displacement=Waves.AmplitudeBound()*100+1;

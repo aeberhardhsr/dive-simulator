@@ -4,7 +4,9 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
-    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView,
+    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView,
+    [ValidateRange(0,9)][int]$WaterStart=0,
+    [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
     [ValidateSet('1600x900','1920x1080','2560x1440','3840x2160','1280x1024')][string]$Viewport='1600x900',
@@ -50,6 +52,12 @@ if($PlantView) {
     if($Scenario -ne 'rocks' -or $GravelView) { throw 'PlantView requires the rocks scenario without GravelView.' }
     $arguments+=' -DivePlantView'
 }
+if($WaterView) {
+    if($Scenario -ne 'rocks' -or $GravelView -or $PlantView) { throw 'WaterView requires the rocks scenario without other comparisons.' }
+    if($WaterStart -gt $WaterEnd) { throw 'WaterStart must not exceed WaterEnd.' }
+    $arguments+=' -DiveWaterView -DiveWaterStart='+$WaterStart+' -DiveWaterEnd='+$WaterEnd
+}
+if(($WaterStart -or $WaterEnd -ne 9) -and -not $WaterView) { throw 'WaterStart/WaterEnd require WaterView.' }
 if($GroundView) {
     if($Scenario -ne 'shore-preview') { throw 'GroundView applies to shore-preview only.' }
     $arguments+=' -DiveGroundView'
@@ -87,6 +95,14 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($WaterView) {
+    if($log -notmatch "DIVE_WATER_INSPECTION_PASS final_state=$WaterEnd views=3 diagnostic=1") { throw 'Water comparison did not finish.' }
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    foreach($state in $WaterStart..$WaterEnd) { foreach($view in 0..2) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "Water_${state}_${view}.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh water comparison: $state/$view" }
+    } }
+}
 if($PopulationChecks -and ($log -notmatch 'DIVE_POPULATION_PASS' -or $log -match 'DIVE_POPULATION_FAIL')) { throw 'Population streaming checks failed.' }
 if($Scenario -eq 'waypoints' -and ($log -notmatch 'DIVE_WAYPOINT_PASS' -or $log -match 'DIVE_WAYPOINT_FAIL')) { throw 'Waypoint test failed.' }
 if($Scenario -eq 'navigation' -and ($log -notmatch 'DIVE_NAV_PASS' -or $log -match 'DIVE_NAV_FAIL|DIVE_NAV_PHASE \d+ FAIL')) { throw 'Navigation selection test failed.' }

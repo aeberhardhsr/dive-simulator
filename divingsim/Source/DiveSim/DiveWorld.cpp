@@ -201,11 +201,25 @@ void ADiveWorld::BeginPlay()
         SetEntry(0);
         for(int i=0;i<Terrain.Entries.Num();++i)
         {
-            const FVector p=Terrain.Entries[i].Position;
-            const float bottom=GroundZ(p.X,p.Y);
+            const auto& entry=Terrain.Entries[i];
+            FVector p;float bottom=0;bool found=false;
+            // Keep the canonical dive spawn clear of the marker's two-sided
+            // rope. Starting inside the cylinder otherwise fills the view.
+            for(int angle=0;angle<360;angle+=30)
+            {
+                p=entry.Position+FRotator(0,entry.Yaw+90+angle,0).Vector()*200;
+                if(Terrain.Sample(p.X,p.Y,bottom)&&bottom<-100) {found=true;break;}
+            }
+            if(!found)
+            {
+                bTerrainReady=false;Terrain.Error=TEXT("No submerged buoy anchor beside entry");
+                UE_LOG(LogTemp,Error,TEXT("DIVE_ENTRY_MARKER_FAIL entry=%d"),i);return;
+            }
             Buoys.Add(Prop(FString::Printf(TEXT("EntryBuoy%d"),i),Sphere,FVector(p.X,p.Y,15),FVector(.55,.55,.75),TEXT("M_Buoy"),false));
             BuoyLines.Add(Prop(FString::Printf(TEXT("EntryLine%d"),i),TEXT("/Engine/BasicShapes/Cylinder.Cylinder"),
                 FVector(p.X,p.Y,bottom*.5),FVector(.025,.025,-bottom/100),TEXT("M_Rope"),false));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_ENTRY_MARKER entry=%d spawn=%s marker=%s clearance_cm=%.3f bed_cm=%.3f"),
+                i,*entry.Position.ToString(),*p.ToString(),FVector::Dist2D(p,entry.Position),bottom);
         }
     }
     else UE_LOG(LogTemp,Error,TEXT("WALENSEE_DATA_FAILED: %s"),*Terrain.Error);
@@ -281,6 +295,11 @@ void ADiveWorld::UpdateAtmosphere()
     OpticalMedium=Dive::VisualMedium::At((SurfaceZ(eye.X,eye.Y)-eye.Z)/100,WeatherSettings.Weather,VisibleDistance);
     WaterAmbient=WaterAmbientAt(eye);
     const float water=static_cast<float>(OpticalMedium.Water);
+    // Single Layer Water integrates the medium behind the surface. From below
+    // that is air: retaining lake absorption incorrectly darkens even the sun.
+    // The camera post-process still attenuates the submerged path to the surface.
+    // Use the same half-metre transition as the camera to avoid a waterline pop.
+    if(WaterMaterial) WaterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),14.f/VisibleDistance*(1-water));
     auto* fog=Fog.Get();
     fog->SetFogDensity(OpticalMedium.Density);
     fog->SetFogHeightFalloff(OpticalMedium.HeightFalloff);
