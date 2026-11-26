@@ -14,7 +14,7 @@ OUT=ROOT/'blender/exports/Plants'
 OUT.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
-report=dict(schema=1,units='metres',authorship='Original procedural game geometry; botanical groups, not species-identification models',assets=[])
+report=dict(schema=1,revision='curved-shoots',units='metres',authorship='Original procedural game geometry; botanical groups, not species-identification models',assets=[])
 
 class Plant:
     def __init__(self,name,height,seed):
@@ -23,8 +23,14 @@ class Plant:
     def vertex(self,p,uv,leaf,tint):
         i=len(self.vertices)
         self.vertices.append(tuple(p));self.uv.append(uv);self.detail.append((leaf,tint))
-        rgb=(.19,.255,.075) if self.name=='Pondweed' else (.18,.235,.065) if self.name=='Milfoil' else (.23,.28,.105)
-        self.colors.append(tuple(c*(.7+.5*tint) for c in rgb)+(max(0,min(1,p.z/self.height)),))
+        # Stem and photosynthetic tissue have different colour, with subdued
+        # older lower growth. These are authored linear reflectance values.
+        green=(.12,.205,.052) if self.name=='Pondweed' else (.105,.175,.044) if self.name=='Milfoil' else (.13,.205,.065)
+        stem=(.12,.085,.035) if self.name=='Milfoil' else (.09,.13,.038)
+        tissue=max(0,min(1,leaf*1.8))
+        rgb=tuple(a+(b-a)*tissue for a,b in zip(stem,green))
+        growth=max(0,min(1,p.z/self.height))
+        self.colors.append(tuple(c*(.72+.4*tint)*(.8+.2*growth) for c in rgb)+(growth,))
         return i
     def tube(self,points,radius,tint,sides=5,tissue=0):
         points=[Vector(p) for p in points];rings=[]
@@ -32,7 +38,7 @@ class Plant:
             tangent=(points[min(i+1,len(points)-1)]-points[max(0,i-1)]).normalized()
             axis=Vector((0,0,1)) if abs(tangent.z)<.9 else Vector((0,1,0))
             right=tangent.cross(axis).normalized();up=tangent.cross(right).normalized()
-            r=radius*(1-.35*i/(len(points)-1))
+            r=radius*(1-.72*i/(len(points)-1))
             rings.append([self.vertex(p+r*(right*math.cos(j*2*math.pi/sides)+up*math.sin(j*2*math.pi/sides)),
                 (j/sides,i/(len(points)-1)),tissue,tint) for j in range(sides)])
         for a,b in zip(rings,rings[1:]):
@@ -95,6 +101,11 @@ class Plant:
         # shades its reverse side when the diver sees it from below.
         self.faces[first_face:]=[tuple(reversed(face)) for face in self.faces[first_face:]]
     def finish(self):
+        # Curved side shoots must stay inside the habitat's declared height.
+        top=max(v[2] for v in self.vertices)
+        height_scale=min(1,self.height/top)
+        self.vertices=[(x,y,z*height_scale) for x,y,z in self.vertices]
+        self.colors=[c[:3]+(max(0,min(1,p[2]/self.height)),) for p,c in zip(self.vertices,self.colors)]
         mesh=bpy.data.meshes.new('SM_'+self.name)
         mesh.from_pydata(self.vertices,[],self.faces);mesh.update()
         if any(not math.isfinite(c) for p in self.vertices for c in p):raise RuntimeError('Invalid plant coordinates')
@@ -116,41 +127,54 @@ class Plant:
             height_metres=max(v[2] for v in self.vertices),uv_channels=2,root_weight=0,
             file=path.relative_to(ROOT).as_posix(),sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
 
-for name,height,count,seed in [('Pondweed',1.15,7,4721),('Stonewort',.45,12,4722),('Milfoil',.9,7,4723)]:
+for name,height,count,seed in [('Pondweed',1.15,7,4721),('Stonewort',.45,9,4722),('Milfoil',.9,7,4723)]:
     plant=Plant(name,height,seed);r=plant.rng
     for stalk in range(count):
-        h=height*r.uniform(.52,.94);base=Vector((r.uniform(-.22,.22),r.uniform(-.22,.22),0))
-        bend=Vector((r.uniform(-.16,.16),r.uniform(-.16,.16),0));phase=r.uniform(0,6.28)
-        def center(t):return base+Vector((0,0,h*t))+bend*t*t+Vector((.015*math.sin(t*3+phase),.012*math.cos(t*4+phase),0))*t
+        h=height*r.uniform(.42,.94);base=Vector((r.uniform(-.2,.2),r.uniform(-.2,.2),0))
+        bend=Vector((r.uniform(-.26,.26),r.uniform(-.22,.22),0))*(h/height)
+        phase=r.uniform(0,6.28)
+        def center(t):
+            return base+Vector((0,0,h*t))+bend*math.sin(t*math.pi*.65)+Vector((.025*math.sin(t*5+phase),.018*math.cos(t*6+phase),0))*t
         tint=r.random();plant.tube([center(i/16) for i in range(17)],.0028 if name=='Pondweed' else .0017,tint,6)
-        levels=[.16,.29,.41,.52,.62,.71,.79,.86,.92,.97] if name=='Milfoil' else [.12+i*.09 for i in range(1,9)]
+        # Unequal internodes become closer near the growing tip. Broad leaves
+        # and fine whorls retain their distinct topology instead of pine cones.
+        nodes=10 if name=='Stonewort' else 12
+        levels=sorted(.09+.88*(i/nodes)**.75+r.uniform(-.012,.012) for i in range(1,nodes+1))
         for level,t in enumerate(levels,1):
             p=center(t)
             if name=='Pondweed':
                 a=phase+level*2.6+r.uniform(-.25,.25)
-                plant.leaf(p,a,r.uniform(.11,.19)*(1-.35*t),r.uniform(.016,.03),r.random(),r.uniform(-.18,.48))
+                envelope=.65+.35*math.sin(math.pi*t)
+                tip_scale=max(.2,min(1,(1-t)/.09))
+                plant.leaf(p,a,r.uniform(.12,.21)*envelope*tip_scale,r.uniform(.016,.03)*tip_scale,r.random(),r.uniform(-.3,.65))
             else:
-                rays=6 if name=='Stonewort' else 4
+                rays=r.randint(5,8) if name=='Stonewort' else 4
                 for j in range(rays):
-                    a=phase+j*math.tau/rays+level*.3
-                    lift=.22+.18*math.sin(phase+level*.8) if name=='Milfoil' else .22
+                    a=phase+j*math.tau/rays+level*.3+r.uniform(-.18,.18)
+                    lift=r.uniform(-.12,.5)+.45*t
                     direction=Vector((math.cos(a),math.sin(a),lift));side=Vector((-math.sin(a),math.cos(a),.12))
-                    reach=(.075 if name=='Stonewort' else .115)*(1-.55*t)*r.uniform(.8,1.15)
-                    tip_scale=max(.25,min(1,(1-t)/.13)) if name=='Milfoil' else 1
+                    reach=(.095 if name=='Stonewort' else .13)*(.6+.4*math.sin(math.pi*t))*r.uniform(.7,1.2)
+                    tip_scale=max(.2,min(1,(1-t)/.08))
                     reach*=tip_scale
-                    path=[p+direction*reach*u+Vector((0,0,.016*u*u)) for u in (0,.33,.66,1)]
-                    plant.tube(path,.0016,tint,4,tissue=.55)
+                    arch=r.uniform(.006,.025)
+                    path=[p+direction*reach*u+Vector((0,0,arch*u*u)) for u in (0,.25,.5,.75,1)]
+                    plant.tube(path,.0013 if name=='Milfoil' else .0018,tint,5,tissue=.55)
                     if name=='Milfoil':
                         pairs=6 if t>.88 else 10
                         for k in range(1,pairs+1):
-                            u=k/(pairs+1);q=p+direction*reach*u+Vector((0,0,.016*u*u))
+                            u=k/(pairs+1);q=p+direction*reach*u+Vector((0,0,arch*u*u))
                             for sign in (-1,1):
-                                length=.037*(1-u*.8)*r.uniform(.88,1.12)*tip_scale
+                                length=.045*(1-u*.75)*r.uniform(.8,1.2)*tip_scale
                                 tip=q+side*sign*length+direction*(.008+.01*u)
-                                plant.pinnule(q,tip,.0015*(1-.45*u),r.random())
+                                plant.pinnule(q,tip,.0018*(1-.45*u),r.random())
                     else:
-                        tip=path[-1]
-                        for sign in (-1,1):plant.tube([tip,tip+side*sign*.009+Vector((0,0,.015))],.0006,tint,3,tissue=.55)
+                        # Short pointed branchlets arise at uneven nodes along
+                        # each ray, rather than identical two-pronged tips.
+                        for u in (.43,.72):
+                            q=p+direction*reach*u+Vector((0,0,arch*u*u))
+                            for sign in (-1,1):
+                                tip=q+side*sign*r.uniform(.007,.014)+direction*.012+Vector((0,0,r.uniform(.006,.017)))
+                                plant.tube([q,tip],.0008,tint,3,tissue=.55)
     plant.finish()
 # Save to a fresh temporary path: Blender's rename/backup sequence can fail
 # while Windows indexes an existing .blend. Copy the closed result afterwards.

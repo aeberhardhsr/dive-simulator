@@ -13,6 +13,7 @@ def main():
     p.add_argument('run',type=Path);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--performance',type=Path,nargs=2)
     p.add_argument('--publish-view',type=int,choices=range(3),default=0)
+    p.add_argument('--publish-prefix',default='PlantBeds')
     p.add_argument('--prior-run',type=Path)
     p.add_argument('--incomplete-run',type=Path)
     p.add_argument('--slow-start',type=Path)
@@ -23,6 +24,7 @@ def main():
     assert not (host['packaged'] and host['preview'])
     expected={'before':3,'after':3}
     if not host['preview']:expected.update(murg=3,ledi=3,raster=3,stream=2,shore=9,discoveries=None)
+    if host.get('plant_forms'):expected['forms']=12
     cases=json.loads((run/'Cases.json').read_text(encoding='utf-8-sig'))
     assert len(cases)==len(expected) and {c['name'] for c in cases}==set(expected)
     evidence=[];logs={}
@@ -62,7 +64,7 @@ def main():
         assert launcher['status']=='PASS' and launcher['exit_code']==0
         assert launcher['executable_sha256'].lower()==host['sha256'].lower()
         assert launcher['log_sha256'].lower()==sha(run/'Launcher.log')
-        for case,name in [('before','PlantBeds_Before.png'),('after','PlantBeds_After.png')]:
+        for case,name in [('before',a.publish_prefix+'_Before.png'),('after',a.publish_prefix+'_After.png')]:
             path=ROOT/'Documentation/Images'/name
             assert sha(path)==sha(run/case/f'Habitat_0_{a.publish_view}.png');published.append(record(path))
         assert a.performance

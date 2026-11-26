@@ -1,4 +1,4 @@
-param([switch]$Packaged,[switch]$Preview,[string]$PackageDirectory='Builds/WindowsPlantBedsReady')
+param([switch]$Packaged,[switch]$Preview,[switch]$PlantForms,[string]$PackageDirectory='Builds/WindowsPlantBedsReady')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 if($Packaged -and $Preview) {throw 'Packaged validation requires all cases.'}
@@ -6,7 +6,7 @@ if(Get-Process | Where-Object {$_.ProcessName -like 'UnrealEditor*' -or $_.Proce
 $root=Join-Path $repo ('artifacts/plant-beds-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Force $root | Out-Null
 $runtime=Join-Path $repo 'Builds/EditorSandbox/divingsim'
-$hostRecord=@{packaged=[bool]$Packaged;preview=[bool]$Preview;source_head=(& git -C $repo rev-parse HEAD);started_utc=[DateTime]::UtcNow.ToString('o')}
+$hostRecord=@{packaged=[bool]$Packaged;preview=[bool]$Preview;plant_forms=[bool]$PlantForms;source_head=(& git -C $repo rev-parse HEAD);started_utc=[DateTime]::UtcNow.ToString('o')}
 if($Packaged) {
     if(-not [IO.Path]::IsPathRooted($PackageDirectory)) {$PackageDirectory=Join-Path $repo $PackageDirectory}
     . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
@@ -25,13 +25,14 @@ $hostRecord.files=@($files | Sort-Object FullName -Unique | ForEach-Object {@{fi
 $hostRecord | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
 $cases=@(@{name='before';entry=0;legacy=$true;low=$true},@{name='after';entry=0;low=$true})
 if(-not $Preview) {$cases+=@(@{name='murg';entry=1},@{name='ledi';entry=2},@{name='raster';entry=0;low=$true;raster=$true},@{name='stream';entry=1;scenario='stream'},@{name='shore';entry=0;scenario='shore'},@{name='discoveries';entry=0;scenario='discoveries'})}
+if($PlantForms) {$cases+=@{name='forms';entry=0;forms=$true}}
 $completed=@()
 foreach($case in $cases) {
     $folder=Join-Path $root $case.name;New-Item -ItemType Directory -Force $folder | Out-Null
     $opts=@{Entry=$case.entry;Scenario='rocks';Hour=12;Date='2026-06-21';MaxFPS=30;RuntimeLog=(Join-Path $folder 'Runtime.log');LegacyPlantPlacement=[bool]$case.legacy}
     if($Packaged) {$opts.Packaged=$true;$opts.PackageDirectory=$PackageDirectory} else {$opts.EditorSandbox=$true}
     if($case.scenario) {$opts.Scenario=$case.scenario;$opts.PopulationChecks=$case.scenario -eq 'stream'}
-    else {$opts.HabitatView=$true;$opts.HabitatLowView=[bool]$case.low;$opts.PopulationChecks=$true;$opts.DisableNanite=[bool]$case.raster}
+    else {$opts.HabitatView=-not $case.forms;$opts.PlantView=[bool]$case.forms;$opts.HabitatLowView=[bool]$case.low;$opts.PopulationChecks=$true;$opts.DisableNanite=[bool]$case.raster}
     $started=[DateTime]::UtcNow
     & (Join-Path $PSScriptRoot 'SmokeTest.ps1') @opts *> (Join-Path $folder 'Summary.log')
     $log=Get-Content $opts.RuntimeLog -Raw
@@ -43,7 +44,7 @@ foreach($case in $cases) {
         $allowed=$required+@('DiveSmoke_0_discoveries.png','DiveUnderwater_0_discoveries.png')
         if(@($required | Where-Object {$_ -notin $images.Name}).Count -or @($images.Name | Where-Object {$_ -notin $allowed}).Count) {throw 'Missing or unexpected discovery capture.'}
     } else {
-        $expected=if($case.name -eq 'shore'){9}elseif($case.name -eq 'stream'){2}else{3}
+        $expected=if($case.name -eq 'shore'){9}elseif($case.name -eq 'stream'){2}elseif($case.forms){12}else{3}
         if($images.Count -ne $expected) {throw "Capture count $($case.name): $($images.Count)/$expected"}
     }
     $images | Copy-Item -Destination $folder
