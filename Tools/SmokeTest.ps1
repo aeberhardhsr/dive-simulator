@@ -6,6 +6,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [switch]$HabitatClose, [switch]$NoRockAprons,
+    [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
@@ -58,6 +59,12 @@ if($HabitatClose) {
     $arguments+=' -DiveHabitatClose'
 }
 if($NoRockAprons) {$arguments+=' -DiveNoRockAprons'}
+foreach($parameter in @('FogScatterGain','ViewScatterGain')) {
+    if($PSBoundParameters.ContainsKey($parameter)) {
+        $value=$PSBoundParameters[$parameter].ToString([Globalization.CultureInfo]::InvariantCulture)
+        $arguments+=" -Dive$parameter=$value"
+    }
+}
 if($GravelView) {
     if($Scenario -ne 'rocks') { throw 'GravelView requires the rocks comparison scenario.' }
     $arguments+=' -DiveGravelView'
@@ -150,6 +157,10 @@ if($log -match 'DIVE_BUILDINGS_READY|DIVE_BUILDINGS_FAIL') {
     if($log -notmatch 'DIVE_BUILDINGS_PASS' -or $log -match 'DIVE_BUILDINGS_FAIL') { throw "Building registration/collision test failed. See $logPath." }
 }
 if($log -notmatch 'DIVE_MEDIUM_PASS') { throw "Camera medium test failed. See $logPath." }
+if($PSBoundParameters.ContainsKey('FogScatterGain') -or $PSBoundParameters.ContainsKey('ViewScatterGain')) {
+    $expected='DIVE_SCATTER_MODEL fog_gain={0} view_gain={1}' -f $FogScatterGain.ToString('F3',[Globalization.CultureInfo]::InvariantCulture),$ViewScatterGain.ToString('F3',[Globalization.CultureInfo]::InvariantCulture)
+    if(-not $log.Contains($expected)) {throw 'Scattering diagnostic gains were not applied.'}
+}
 if($log -notmatch 'DIVE_OPTICS_PASS' -or $log -notmatch 'DIVE_LIGHT_PASS') { throw "Lighting/material stage test failed. See $logPath." }
 if($log -notmatch 'Set CVar \[\[r.EyeAdaptation.CachedLightingPreExposure:8\]\]') { throw 'Lighting cache exposure range was not applied.' }
 if($LampOff -and $Scenario -eq 'dive' -and $log -notmatch 'DIVE_TORCH_PASS on=0') { throw 'Night comparison did not switch the torch off.' }

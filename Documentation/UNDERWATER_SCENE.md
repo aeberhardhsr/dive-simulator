@@ -2,6 +2,8 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
+Aktuelle Untersuchung: [Unterwasserbeleuchtung und getrennte Streulichtanteile](SCATTERING_INVESTIGATION.md). Vier native Vergleichsläufe mit zwölf Aufnahmen zeigen, dass insbesondere die Kameraaufhellung Felsschatten abschwächt. Ihr Entfernen allein liefert noch keine überzeugende Wasserbeleuchtung. Die Produktionswerte bleiben unverändert; das aktuelle Spielpaket ist weiterhin `WindowsRockAprons`.
+
 ## Geröllsäume am Felsfuß
 
 Quellstand `5b58239` verkleinert die Ausschlusszone für kleine Bodensteine. Die bisher verwendete vollständige Hindernishülle umschließt auch den freiliegenden oberen Felsen; sie ist größer als dessen teilweise vergrabener Bodenanschluss. Dadurch entstanden sichtbar leere Ränder. Kleine Steine dürfen jetzt näher an die Oberfläche heranreichen. Einzelne bleiben im undurchsichtigen Fels verborgen; die Änderung berechnet keinen exakten Schnitt zwischen Mesh und Gelände. Die Kollisions- und Ausweichhüllen für Taucher und Fische behalten ihre bisherigen Größen.

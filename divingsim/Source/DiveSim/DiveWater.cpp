@@ -126,7 +126,7 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB();
     if(!fog||FMath::Abs(fog->FogDensity-OpticalMedium.Density)>1.e-6||
         FMath::Abs(fog->FogHeightFalloff-OpticalMedium.HeightFalloff)>1.e-6||
-        !fog->FogInscatteringLuminance.Equals(FLinearColor(280,1150,950)*(water*WaterAmbient),.001f)||
+        !fog->FogInscatteringLuminance.Equals(FLinearColor(280,1150,950)*(water*WaterAmbient*FogScatteringGain),.001f)||
         !fog->SkyAtmosphereAmbientContributionColorScale.Equals(FLinearColor(1-water,1-water,1-water),1.e-5f)||
         fog->VolumetricFogAlbedo!=albedo)
     { Error=TEXT("Air/water fog parameters do not match camera medium"); return false; }

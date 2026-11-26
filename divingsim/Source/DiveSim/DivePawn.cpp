@@ -665,7 +665,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(UnderwaterMaterial)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),Simulation.Settings.VisibilityMetres*100);
-        UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->WaterAmbientAt(eye));
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->CameraScatteringAmbientAt(eye));
         UnderwaterMaterial->SetScalarParameterValue(TEXT("EyeDepthCm"),depth*100);
         Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
     }
@@ -710,7 +710,7 @@ bool ADivePawn::ValidateCameraMedium(FString& Error) const
     if(!Camera->PostProcessSettings.SceneColorTint.Equals(FLinearColor::White,1.e-5f)||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("EyeDepthCm"))-depth*100)>.01||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("VisibilityCm"))-Simulation.Settings.VisibilityMetres*100)>.01||
-        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("AmbientLight"))-Environment->WaterAmbientAt(eye))>1.e-5)
+        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("AmbientLight"))-Environment->CameraScatteringAmbientAt(eye))>1.e-5)
     { Error=TEXT("Camera water path uniforms disagree with the actual eye/environment");return false; }
     for(const auto& blend:Camera->PostProcessSettings.WeightedBlendables.Array)
         if(blend.Object==UnderwaterMaterial&&FMath::Abs(blend.Weight-Dive::CameraWaterBlend(depth))<1.e-5)
