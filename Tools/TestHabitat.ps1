@@ -15,10 +15,12 @@ $containers=@(Get-ChildItem -LiteralPath (Join-Path $PackageDirectory 'divingsim
 $cases=@()
 foreach($entry in 0..2) {
     $cases+=@{name="look$entry";scenario='rocks';entry=$entry;HabitatView=$true}
+}
+$cases+=@{name='look-raster';scenario='rocks';entry=0;HabitatView=$true;DisableNanite=$true}
+foreach($entry in 0..2) {
     $cases+=@{name="stream$entry";scenario='stream';entry=$entry;PopulationChecks=$true}
     $cases+=@{name="shore$entry";scenario='shore';entry=$entry}
 }
-$cases+=@{name='look-raster';scenario='rocks';entry=0;HabitatView=$true;DisableNanite=$true}
 $cases+=@{name='sediment';scenario='sediment';entry=0;NoBubbles=$true}
 $cases+=@{name='navigation';scenario='navigation';entry=2;NavShore=$true}
 $completed=@()

@@ -30,14 +30,24 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     {
         // Camera selection depends only on surveyed terrain, never population.
         // Retain exactly the same viewpoints across distribution revisions.
-        for(int radius=20;radius<=80;radius+=5) for(int angle=0;angle<360;angle+=30)
+        // Murg has no shallow flat patch within this radius. A second pass
+        // permits the surveyed bank instead of silently omitting that entry.
+        for(int pass=0;pass<2;++pass)
+        for(int radius=pass?5:20;radius<=80;radius+=5) for(int angle=0;angle<360;angle+=30)
         {
             const FVector p=Diver->EntryLocation+FRotator(0,angle,0).Vector()*radius*100;
             float bed=0,north=0,east=0;
             if(!Terrain.Sample(p.X,p.Y,bed)||!Terrain.Sample(p.X+200,p.Y,north)||!Terrain.Sample(p.X,p.Y+200,east)||
-                bed>-550||bed<-1100||FMath::Abs(north-bed)>50||FMath::Abs(east-bed)>50) continue;
+                bed>-550||bed<(pass?-2200:-1100)||FMath::Abs(north-bed)>(pass?300:50)||FMath::Abs(east-bed)>(pass?300:50)) continue;
             Eye=FVector(p.X,p.Y,bed+300);
             Rotation=FRotator(-18,angle+(View-1)*50,0);
+            if(pass)
+            {
+                const FVector ahead=p+FRotator(0,Rotation.Yaw,0).Vector()*800;
+                float aheadBed=0;
+                if(Terrain.Sample(ahead.X,ahead.Y,aheadBed))
+                    Rotation.Pitch=FMath::Clamp(FMath::RadiansToDegrees(FMath::Atan2(aheadBed+60-Eye.Z,800.)),-65.,-18.);
+            }
             StreamPopulation(Eye);StreamGravel(Eye,true);UpdateAtmosphere();
             return true;
         }

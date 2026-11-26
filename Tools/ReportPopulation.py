@@ -32,7 +32,7 @@ def report(folder):
             case['unchanged_near_fish']=int(result[1]);case['distant_spawns']=int(result[2])
             # Exclude the synthetic query fixture and initial entry setup.
             ordinary=text.split('DIVE_POPULATION_TEST_END',1)[1]
-            transitions=re.findall(r'DIVE_POPULATION_CELL x=(-?\d+) y=(-?\d+) loaded=(\d+) unloaded=(\d+) active=9 rocks=(\d+) milliseconds=([\d.]+)',ordinary)
+            transitions=re.findall(r'DIVE_POPULATION_CELL x=(-?\d+) y=(-?\d+) loaded=(\d+) unloaded=(\d+) active=9 rocks=(\d+)(?: plants=\d+)? milliseconds=([\d.]+)',ordinary)
             case['ordinary_cell_transitions']=[{'x':int(x),'y':int(y),'loaded':int(a),'unloaded':int(b),'rocks':int(r),'milliseconds':float(ms)} for x,y,a,b,r,ms in transitions]
             detail=re.search(r'DIVE_SMOKE_DETAIL entry=(\d) scenario=stream displacement=([\d.]+)',text)
             if not detail or int(detail[1])!=case['entry'] or float(detail[2])<50:raise ValueError('Stream route did not travel 50 m')
