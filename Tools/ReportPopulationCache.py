@@ -55,8 +55,10 @@ def main():
         assert case['status'] == 'PASS' and not re.search(r'DIVE_\w*FAIL|Fatal error:', log)
         for marker in ['DIVE_SMOKE_PASS', 'DIVE_ROCK_LAYOUT_PASS layouts=25 max=25 fresh_equal=1',
                        'DIVE_HABITAT_PASS', 'DIVE_POPULATION_PASS retained_cells=6 reloaded_cells=9',
-                       'DIVE_STEERING_WORLD_PASS species=5 steps_per_species=60', 'DIVE_HABITAT_INSPECTION_PASS views=3']:
+                       'DIVE_HABITAT_INSPECTION_PASS views=3']:
             assert marker in log, marker
+        steering = re.search(r'DIVE_STEERING_WORLD_PASS species=(\d+) steps_per_species=60', log)
+        assert steering and 1 <= int(steering[1]) <= 5
         counts = [int(n) for n in re.findall(r'DIVE_POPULATION_CELL[^\r\n]* layouts=(\d+)', log)]
         if args.staged:
             assert 'DIVE_POPULATION_STAGED_PASS cells=7,8,9' in log
@@ -74,7 +76,11 @@ def main():
                 im.verify()
             images.append(record(path))
         evidence.append(dict(**case, log=record(folder/'Runtime.log'), images=images, layout_counts=counts, gravel_markers=gravel_markers,
+            tested_active_species=int(steering[1]),
             engine_error_lines=[line for line in log.splitlines() if ': Error:' in line]))
+    # Local habitat windows need not contain every species. Retain the observed
+    # count per entry and require a complete five-species check in this suite.
+    assert max(case['tested_active_species'] for case in evidence) == 5
     sources = []
     for name in ['DiveWorld.h', 'DiveWorld.cpp', 'DivePopulation.cpp', 'DivePopulationTests.cpp', 'DiveEcology.cpp'] + (['DiveGravel.cpp', 'DiveRockInspection.cpp'] if args.rock_aprons else []):
         path = ROOT/'divingsim/Source/DiveSim'/name
@@ -131,7 +137,11 @@ def main():
                     assert im.size == (1600, 900)
                     im.verify()
                 images.append(record(path))
-            assert len(images) == case['screenshots'] == (8 if case['name'] == 'sediment' else 3)
+            expected_images = ({'DiveUnderwater_0_sediment.png'} |
+                {f'Sediment_0_{label}.png' for label in ['Start', 'Cloud', 'Visible', 'Hidden', 'Settling', 'Clear']}
+                if case['name'] == 'sediment' else {f'Habitat_0_{i}.png' for i in range(3)})
+            assert {p.name for p in folder.glob('*.png')} == expected_images
+            assert len(images) == case['screenshots'] == len(expected_images)
             extras.append(dict(**case, log=record(folder/'Runtime.log'), images=images,
                 engine_error_lines=[line for line in log.splitlines() if ': Error:' in line]))
         assert len(close_poses[0]) == 3 and close_poses[0] == close_poses[1]

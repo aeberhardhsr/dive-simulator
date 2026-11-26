@@ -2,6 +2,30 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
+## Geröllsäume am Felsfuß
+
+Quellstand `5b58239` verkleinert die Ausschlusszone für kleine Bodensteine. Die bisher verwendete vollständige Hindernishülle umschließt auch den freiliegenden oberen Felsen; sie ist größer als dessen teilweise vergrabener Bodenanschluss. Dadurch entstanden sichtbar leere Ränder. Kleine Steine dürfen jetzt näher an die Oberfläche heranreichen. Einzelne bleiben im undurchsichtigen Fels verborgen; die Änderung berechnet keinen exakten Schnitt zwischen Mesh und Gelände. Die Kollisions- und Ausweichhüllen für Taucher und Fische behalten ihre bisherigen Größen.
+
+Um größere Blöcke entstehen zusätzlich unregelmäßige, weich auslaufende Geröllsäume. Eine weltfeste Verteilung unterbricht die Säume, damit keine geschlossenen kreisförmigen Ringe entstehen. Zwischen 25 und 40 Metern Tiefe fällt der Zusatz aus. Die vorhandenen Sediment-/Kiesfelder bleiben erhalten; Größe, Materialien und Detailstufen der kleinen Steine ändern sich nicht. Weiterhin gelten neun 32-Meter-Zellen mit je höchstens 4.096 Kandidaten und maximal sechs Zentimetern Halbachse entlang der Bodennormalen. Gelände wird nicht angehoben. Die Verteilung ist gestaltet und keine Messung örtlicher Erosion oder Ablagerung.
+
+Die neue Diagnose `-HabitatView -HabitatClose` wählt stabile Nahansichten realer Felsgruppen. `-NoRockAprons` stellt darin die bisherige Kies-Ausschlussregel wieder her. Nur Diagnoseläufe berücksichtigen diesen Schalter. Felsen, Kamera und Materialien stimmen in beiden Zuständen überein; die Prüfung vergleicht zusätzlich weiterhin die weiten Ansichten an allen drei Einstiegen. Der native Nahvergleich zeigt mehr kleine Steine zwischen Felsfuß und freiem Boden; in der weiten Ansicht ist die Änderung deutlich weniger auffällig.
+
+Das Paket **`Builds/WindowsRockAprons/divingsim.exe`** enthält diesen Stand und besteht sieben Szenenfälle mit 25 Bildern sowie den normalen Launcher-Start: drei Habitat-/Nachladeprüfungen, zwei Zustände der Nahansicht, Nanite-Ersatzdarstellung und Sediment. Die Kontaktproben sowie Entladen/Wiederherstellen bestehen an allen drei Einstiegen. Der Zähler `edge_stones` erfasst Steine innerhalb der früheren großen Ausschlussradien; er ist kein Maß für tatsächlich sichtbare Steine. Der Sedimentlauf endet mit vier erzeugten und null verbleibenden Wolken. Die [CI-Quellprüfungen](https://github.com/aeberhardhsr/dive-simulator/actions/runs/45864287319) sind erfolgreich.
+
+Gleiche Nahkamera mit bisheriger Ausschlusszone:
+
+![Felsfuß mit großer Kies-Ausschlusszone](Images/RockAprons_Before.png)
+
+Gleiche Nahkamera mit Geröllsäumen:
+
+![Zusätzliche kleine Steine am Felsfuß](Images/RockAprons_After.png)
+
+Die Felsformen und Materialien sind in diesem Paar identisch. Bewegte Fische und Lichtmuster können sich zwischen den Läufen geringfügig unterscheiden. Materialdetails, Bewuchs, Lichtwirkung und die gesamte visuelle Referenzabnahme bleiben offen.
+
+Der [gebundene Prüfbericht](ROCK_APRONS_RESULTS.json) enthält Quellstand, Paketcontainer, sieben Fälle, alle Vergleichsbilder und zwei Leistungsmessungen. Die Spiel-EXE hat SHA-256 `e70538614375e50d4111cbe0f4f3950252fdb8e23c331570de56dac69557722d`. Die Ausweichprüfung erfasst die jeweils aktiven Fischarten: vier in Weesen, fünf in Murg und fünf bei Lediwracks. Der Berichtsprüfer verlangt eine gültige lokale Artenzahl und mindestens einen vollständigen Fünf-Arten-Fall, statt fünf Arten an jedem Ort vorauszusetzen. Die sieben Sedimentbilder decken Start, Wolke, Sichtbarkeit, ausgeblendete Kontrolle, Absetzen, freien Zustand und die allgemeine Unterwasseraufnahme ab.
+
+Bei 1080p/Hoch erreicht der 60-Sekunden-Unterwasserlauf 73,08 FPS im Mittel und 61,56 FPS im langsamsten Prozent, ohne Bild über 33,33 ms. Die 90-Sekunden-Murg-Strecke erreicht 100,75 / 80,49 FPS und enthält einen einzelnen Ruckler mit 37,04 ms; dieser Leistungsbefund bleibt offen. [Messbedingungen und Grenzen](PERFORMANCE.md). Reproduktion: `Tools/TestPopulationCache.ps1 -PackageDirectory Builds/WindowsRockAprons -RequireStaged -RockAprons`; der Bericht wird mit `Tools/ReportPopulationCache.py --staged --rock-aprons` und den im JSON gebundenen Laufverzeichnissen erzeugt.
+
 ## Zusammenhängende Felsgruppen
 
 Die Platzierung aus Quellstand `1a18dfc` verbindet größere Blöcke zu kurzen Felsrücken. Eine kontinuierliche Verteilung erzeugt dichtere Bereiche und freiere Sedimentflächen. Die Hauptrichtung ändert sich langsam über die Umgebung und folgt an steileren Stellen der örtlichen Höhenlinie. Bis zu vier größere Blöcke je Gruppe überlappen teilweise; kleinere Felsen und Geröll bleiben am Rand lockerer verteilt. Das vergrößert die räumlichen Formen, ohne die vermessene Geländetopologie zu verändern. Es handelt sich um gestaltete Formationen, nicht um vermessene einzelne Felsvorkommen.

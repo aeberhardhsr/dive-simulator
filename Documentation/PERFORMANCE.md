@@ -1,5 +1,20 @@
 # Gerenderte Leistungsmessung
 
+## WindowsRockAprons: Kies näher am Felsfuß
+
+Quellstand `5b58239`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen, keine weitere Unreal-/Spielinstanz. Die GPU-Auslastung vor dem Start liegt beim Unterwasserlauf bei 18 Prozent und beim Murg-Lauf bei 27 Prozent.
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 73,08 FPS | 61,56 FPS | 15,34 ms | 17,36 ms | 0 / 4.383 |
+| Murg Schwimmen/Nachladen, 90 s | 100,75 FPS | 80,49 FPS | 10,85 ms | 37,04 ms | 1 / 9.066 |
+
+Die vollständigen Bildintervalle umfassen 59,973 bzw. 89,983 Sekunden. Vier bzw. fünf Bilder überschreiten 16,67 ms. GPU/Spielthread benötigen im Mittel 13,07/6,54 ms in Weesen und 9,32/4,74 ms in Murg. Die Murg-Strecke beträgt wie beim Vorgänger 144,86 Meter; die höchste Spielthreadzeit liegt bei 36,47 ms. Der einzelne Ruckler liegt numerisch über den 34,36 ms des vorherigen Laufs. Unterschiedliche Hintergrundauslastung und einzelne Durchläufe erlauben keine isolierte Kostenzuordnung.
+
+Die Messbilder sind geprüft: Weesen zeigt Boden und Felsen bei 5,2 Metern, Murg am Ende freies Wasser bei 24,7 Metern. Der Murg-Mittelwert belegt keine Bildrate für dauerhaft dichte Nahansichten. Durchgehend 60 FPS und ein aktueller Langzeittest bleiben offen. [Paket-, Bild- und Rohdatennachweise](ROCK_APRONS_RESULTS.json).
+
+## Messverfahren
+
 Die Messung verwendet den eigenständigen Windows-Development-Build mit der tatsächlich gerenderten Spielwelt. Der Unreal-CSV-Profiler erfasst Bildzeiten sowie Game-, Render-, RHI- und GPU-Zeiten. Sie ersetzt weder die visuelle Abnahme noch einen zweistündigen Dauertest.
 
 ## Reproduzieren
