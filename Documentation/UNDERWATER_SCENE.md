@@ -118,4 +118,20 @@ Die Untersuchung der geraden dunklen Bodenlinien erfolgt aus derselben Lediwrack
 
 Der reguläre Aufbau verwendet deshalb für Ufer- und Landschaftskacheln dieselbe Nanite-Positionsstufe von `2^-6 cm` (0,015625 cm) statt 1 cm. So ist die Rundung an Grenzen zur prozeduralen Bathymetrie erheblich kleiner. Quellhöhen, Dreiecke und Kollisionsflächen werden nicht verschoben; die Bake-Prüfungen vergleichen die Ausgangsgeometrie weiterhin mit den Geländedaten. Die neue Aufbauversion und die Laufzeitprüfungen verhindern, dass ältere Assets mit Zentimeterpräzision als aktueller Stand geladen werden.
 
+Unreal stellt die Nanite-Aufbaueinstellungen nur im Editor bereit. Deshalb prüfen die Bake-Commandlets jedes Asset einschließlich seiner tatsächlichen Positionsstufe und schreiben diese in die Gelände-Manifeste. Das verpackte Spiel prüft den Manifestwert. Der erste Paketbau mit einem direkten Laufzeitzugriff auf die Editor-Einstellung scheiterte beim Kompilieren; dieser Lauf bleibt als fehlgeschlagener Versuch erhalten und zählt nicht zur Paketprüfung.
+
 Reproduktion: `Tools/Build.ps1 -EditorSandbox -Target Content -OnlyBenthic` baut die vier gemeinsam verwendeten Materialgraphen; `-Target Coast` und `-Target Landscape` erzeugen die Geländedarstellungen. `Tools/SmokeTest.ps1 -EditorSandbox -Scenario rocks -HabitatView -Entry 2 -Hour 12 -DisableLighting` erzeugt die unbeleuchtete Diagnose. `-DisableShadows` und `-DisableNanite` erlauben getrennte Kontrollaufnahmen. Diese Optionen verändern keine gespeicherten Spiel-Grafikeinstellungen.
+
+Die spielbare Vorschau **`Builds/WindowsBenthic/divingsim.exe`** enthält den Laufzeitstand `4f6e4e457996232a12a4a0bd1500c64602098498`. Die Spiel-EXE hat SHA-256 `1502b3ea65451f0b1435c43e8d5c3f50c78c97e22f0780923d417e326490475c`. Neun Paketfälle mit 20 frischen Bildern und der zusätzliche normale Launcher-Start bestehen: drei Tagesansichten, die Nanite-Ersatzdarstellung, eine feste Nachtansicht ohne Lampe, drei Ufer-Bodenansichten und ein zusätzlicher Nachtfall mit Lampe und geprüftem beleuchtetem Ziel. Die Nachtansicht ohne Lampe ist nahezu schwarz und belegt keine Materiallesbarkeit; der zusätzliche Lampenfall liefert dafür die sichtbare Kontrolle. Die scharf abgestuften Lampenschatten bleiben ein offenes Qualitätsthema.
+
+Der [Prüfbericht](BENTHIC_RESULTS.json) bindet Quellstände, 573 Gelände-Assets, die vier Materialgraphen, Paketcontainer, Diagnosebilder und die Leistungsmessung. Auch der vollständig neu aufgebaute Stand enthält im festgelegten unbeleuchteten Diagnoseausschnitt null schwarze Lückenpixel. Ein neuer Langzeit- oder Streaming-Leistungsvergleich ist damit nicht belegt. Die 60-Sekunden-Unterwassermessung erreicht 68,34 FPS im Mittel und 55,21 FPS im langsamsten Prozent; durchgehend 60 FPS werden weiterhin nicht eingehalten. Details: [Leistung](PERFORMANCE.md).
+
+Gleiche Kamera vor der Überarbeitung:
+
+![Boden und Felsen vor Belägen und Präzisionskorrektur](Images/Benthic_Before.png)
+
+Aktuelles Paket mit Belägen und korrigierter Geländepräzision:
+
+![Aktueller Unterwasserstand mit fleckigen Felsbelägen](Images/Benthic_After.png)
+
+Die Referenzqualität ist weiterhin offen. Besonders die dünnen Pflanzen, die gleichförmige Grundstruktur in größeren Bereichen sowie die Licht- und Schattenwirkung brauchen weitere Überarbeitung. Die Bilder belegen diesen Zwischenstand und keine vollständige visuelle Abnahme.

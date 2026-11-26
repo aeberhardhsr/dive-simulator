@@ -14,13 +14,15 @@ $containers=@(Get-ChildItem (Join-Path $PackageDirectory 'divingsim/Content/Paks
     ConvertTo-Json -Depth 6 | Set-Content (Join-Path $result 'Host.json') -Encoding utf8
 $cases=@(@{name='entry0';entry=0},@{name='entry1';entry=1},@{name='entry2';entry=2},
     @{name='raster';entry=2;raster=$true},@{name='night';entry=0;night=$true},
-    @{name='shore0';entry=0;shore=$true},@{name='shore1';entry=1;shore=$true},@{name='shore2';entry=2;shore=$true})
+    @{name='shore0';entry=0;shore=$true},@{name='shore1';entry=1;shore=$true},@{name='shore2';entry=2;shore=$true},
+    @{name='torch';entry=0;torch=$true})
 $completed=@()
 foreach($case in $cases) {
     $folder=Join-Path $result $case.name
     New-Item -ItemType Directory -Force $folder | Out-Null
     $options=@{Packaged=$true;PackageDirectory=$PackageDirectory;Entry=$case.entry;MaxFPS=30;Hour=12;RuntimeLog=(Join-Path $folder 'Runtime.log')}
-    if($case.shore) {$options.Scenario='shore-preview';$options.ShoreLookBack=$true;$options.GroundView=$true}
+    if($case.torch) {$options.Scenario='torch';$options.Hour=0}
+    elseif($case.shore) {$options.Scenario='shore-preview';$options.ShoreLookBack=$true;$options.GroundView=$true}
     else {$options.Scenario='rocks';$options.HabitatView=$true;$options.PopulationChecks=$true}
     if($case.raster) {$options.DisableNanite=$true}
     if($case.night) {$options.Hour=0}
@@ -29,9 +31,9 @@ foreach($case in $cases) {
     $log=Get-Content $options.RuntimeLog -Raw
     if($log -notmatch 'DIVE_SMOKE_PASS' -or $log -match 'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:') {throw "Benthic check failed: $($case.name)"}
     $images=@(Get-ChildItem (Join-Path $PackageDirectory 'divingsim/Saved/Screenshots') -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
-    if($images.Count -lt 1 -or (-not $case.shore -and $images.Count -ne 3)) {throw 'Missing fresh captures'}
+    if($images.Count -lt 1 -or (-not $case.shore -and -not $case.torch -and $images.Count -ne 3)) {throw 'Missing fresh captures'}
     $images | Copy-Item -Destination $folder
-    $completed+=@{name=$case.name;entry=$case.entry;raster=[bool]$case.raster;night=[bool]$case.night;shore=[bool]$case.shore;status='PASS';screenshots=$images.Count}
+    $completed+=@{name=$case.name;entry=$case.entry;raster=[bool]$case.raster;night=[bool]$case.night;shore=[bool]$case.shore;torch=[bool]$case.torch;status='PASS';screenshots=$images.Count}
     $completed | ConvertTo-Json | Set-Content (Join-Path $result 'Cases.json') -Encoding utf8
     Write-Output "PASS $($case.name) $folder"
 }

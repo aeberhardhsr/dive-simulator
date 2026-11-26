@@ -33,13 +33,15 @@ def main():
     assert launcher['executable_sha256'].lower() == host['sha256'].lower()
     assert launcher['log_sha256'].lower() == sha(run/'Launcher.log')
     cases = read(run/'Cases.json')
-    assert {c['name'] for c in cases} == {'entry0','entry1','entry2','raster','night','shore0','shore1','shore2'} and len(cases)==8
+    assert {c['name'] for c in cases} == {'entry0','entry1','entry2','raster','night','shore0','shore1','shore2','torch'} and len(cases)==9
     evidence = []
     for case in cases:
         folder = run/case['name']
         log = logcheck(folder/'Runtime.log')
         assert case['status'] == 'PASS'
-        if not case['shore']:
+        if case.get('torch'):
+            assert 'DIVE_TORCH_PASS on=1' in log and '-DiveHour=0' in log
+        elif not case['shore']:
             for marker in ['DIVE_HABITAT_INSPECTION_PASS views=3', 'DIVE_POPULATION_PASS',
                            'DIVE_ROCK_LAYOUT_PASS', 'DIVE_POPULATION_STAGED_PASS', 'DIVE_POPULATION_NEAR_TELEPORT_PASS']:
                 assert marker in log
@@ -99,8 +101,20 @@ def main():
         assert marker in build_log
     content=read(ROOT/'artifacts/BenthicContentBuild.json')
     assert len(content)==4
+    previous=ROOT/'artifacts/population-staged-validation-20261126-152000'
+    previous_host=read(previous/'Host.json')
+    package_check(previous_host)
+    before=previous/'entry2/Habitat_0_2.png'
+    after=run/'entry2/Habitat_0_2.png'
+    old_pose=re.findall(r'DIVE_HABITAT_VIEW view=2[^\r\n]*',logcheck(previous/'entry2/Runtime.log'))[-1]
+    new_pose=re.findall(r'DIVE_HABITAT_VIEW view=2[^\r\n]*',logcheck(run/'entry2/Runtime.log'))[-1]
+    assert old_pose==new_pose
+    assert sha(ROOT/'Documentation/Images/Benthic_Before.png')==sha(before)
+    assert sha(ROOT/'Documentation/Images/Benthic_After.png')==sha(after)
     report=dict(status='PASS',host=host,launcher=launcher,cases=evidence,inputs=[record(p) for p in paths],
         build=record(build),content=content,diagnostics=dict(roi_xyxy=[180,170,560,250],max_channel_threshold=8,cases=diagnostics),
+        comparison=dict(previous_host=previous_host,pose=new_pose,before=record(before),after=record(after),
+            previous_log=record(previous/'entry2/Runtime.log')),
         performance=dict(summary=summary,files=[record(perf/n) for n in ['Host.json','Metadata.json','Summary.json','Runtime.log','Capture.csv','Frame.png']]),
         limitations=['Authored coating, not surveyed species coverage or physical growth simulation.',
             'The fixed seam crop does not establish absence of all seams everywhere.',
