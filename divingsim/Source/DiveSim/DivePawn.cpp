@@ -153,6 +153,8 @@ void ADivePawn::BeginPlay()
         PC->PlayerCameraManager->ViewPitchMax=85;
     }
     Audio->Initialize(Camera); Audio->ApplyLevels(AudioLevels);
+    Camera->PostProcessSettings.bOverride_LumenFrontLayerTranslucencyReflections=true;
+    Camera->PostProcessSettings.LumenFrontLayerTranslucencyReflections=Environment->WaterInterfaceEnabled();
     SetMenu(true);
     if(auto* material=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_Underwater.M_Underwater")))
     {
@@ -707,6 +709,9 @@ bool ADivePawn::ValidateCameraMedium(FString& Error) const
 {
     if(!Environment||!Camera||!UnderwaterMaterial)
     { Error=TEXT("Missing underwater camera material");return false; }
+    if(!Camera->PostProcessSettings.bOverride_LumenFrontLayerTranslucencyReflections||
+        Camera->PostProcessSettings.LumenFrontLayerTranslucencyReflections!=Environment->WaterInterfaceEnabled())
+    {Error=TEXT("Water interface reflection mode differs from camera settings");return false;}
     const FVector eye=Camera->GetComponentLocation();
     const double depth=FMath::Max(0.,(Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100);
     if(!Camera->PostProcessSettings.SceneColorTint.Equals(FLinearColor::White,1.e-5f)||

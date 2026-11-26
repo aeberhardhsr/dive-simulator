@@ -100,6 +100,7 @@ public:
     double WaterAmbientAt(const FVector& Eye) const;
     double CameraScatteringAmbientAt(const FVector& Eye) const;
     bool NativeWaterScattering() const;
+    bool WaterInterfaceEnabled() const {return bWaterInterface;}
     double ExposureBiasAt(const FVector& Eye) const;
     double SurfaceZ(double X,double Y,double Seconds=-1) const;
     double PressureDepth(const FVector& Position,double Seconds) const;
@@ -142,6 +143,7 @@ private:
     UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Water;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterUnderMaterial;
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> CloudMaterial;
     UPROPERTY() TObjectPtr<UMaterialInterface> StarMaterial;
     UPROPERTY() TObjectPtr<class UVolumetricCloudComponent> Clouds;
@@ -205,6 +207,7 @@ private:
     double WaterAmbient=0;
     float FogScatteringGain=1,ViewScatteringGain=1;
     bool bNativeWaterScattering=false;
+    bool bWaterInterface=false;
     bool bOpticsSmoke=false;
     uint8 ObservedOpticalMedia=0;
     UPROPERTY() TObjectPtr<class ACelestialVaultDaySequenceActor> Celestial;

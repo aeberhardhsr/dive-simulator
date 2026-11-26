@@ -2,7 +2,7 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
-Aktuelle Entwicklung: [experimentelle räumliche Wasserbeleuchtung](NATIVE_WATER_LIGHTING.md), aufbauend auf der [Trennung der Streulichtanteile](SCATTERING_INVESTIGATION.md). Die Variante verlagert Auslöschung ins native Volumen und ergänzt die Sonnenprojektion, erfüllt das visuelle Ziel aber noch nicht. Sie bleibt auf Diagnoseläufe begrenzt. Die Wasserunterseite ist als nächster grundlegender Renderingpunkt zu bearbeiten; das aktuelle Spielpaket bleibt `WindowsRockAprons`.
+Aktuelle Entwicklung: [getrennte Wasserunterseite mit winkelabhängiger Reflexion](WATER_INTERFACE.md), ergänzend zur [experimentellen räumlichen Wasserbeleuchtung](NATIVE_WATER_LIGHTING.md) und der [Trennung der Streulichtanteile](SCATTERING_INVESTIGATION.md). Die Unterseite spiegelt beim flachen Blick die Unterwasserumgebung. Die Durchsicht nach oben übernimmt jedoch noch zu viel globalen Wassernebel; der Lichtweg durch Wasser und Luft muss getrennt werden. Beide Renderingvarianten bleiben auf Diagnoseläufe begrenzt. Das aktuelle Spielpaket bleibt `WindowsRockAprons`.
 
 ## Geröllsäume am Felsfuß
 

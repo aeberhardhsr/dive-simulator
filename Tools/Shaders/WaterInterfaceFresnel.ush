@@ -1,0 +1,11 @@
+// Unpolarised dielectric Fresnel, from water (1.333) into air (1).
+// Use the same wave normal as shading, including the geometric fade gradient.
+// Beyond the critical angle no propagating transmitted ray exists.
+float cosine=saturate(dot(normal,normalize(View)));
+float eta=1.333;
+float transmittedCosineSquared=1-eta*eta*(1-cosine*cosine);
+if(transmittedCosineSquared<=0) return 1;
+float transmittedCosine=sqrt(transmittedCosineSquared);
+float perpendicular=(eta*cosine-transmittedCosine)/max(.00001,eta*cosine+transmittedCosine);
+float parallel=(cosine-eta*transmittedCosine)/max(.00001,cosine+eta*transmittedCosine);
+return saturate(.5*(perpendicular*perpendicular+parallel*parallel));

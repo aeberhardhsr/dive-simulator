@@ -191,6 +191,7 @@ void ADiveWorld::BeginPlay()
     if(bOpticsSmoke)
     {
         bNativeWaterScattering=FParse::Param(FCommandLine::Get(),TEXT("DiveNativeScattering"));
+        bWaterInterface=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterInterface"));
         FParse::Value(FCommandLine::Get(),TEXT("DiveFogScatterGain="),FogScatteringGain);
         FParse::Value(FCommandLine::Get(),TEXT("DiveViewScatterGain="),ViewScatteringGain);
         FogScatteringGain=FMath::IsFinite(FogScatteringGain)?FMath::Clamp(FogScatteringGain,0.f,1.f):1.f;
@@ -232,8 +233,13 @@ void ADiveWorld::BeginPlay()
     }
     else UE_LOG(LogTemp,Error,TEXT("WALENSEE_DATA_FAILED: %s"),*Terrain.Error);
     CreateWater();
-    WaterMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("M_Water")),this);
+    WaterMaterial=UMaterialInstanceDynamic::Create(Mat(bWaterInterface?TEXT("M_WaterTop"):TEXT("M_Water")),this);
     Water->SetMaterial(0,WaterMaterial);
+    if(bWaterInterface)
+    {
+        WaterUnderMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("M_WaterUnder")),this);
+        Water->SetMaterial(1,WaterUnderMaterial);
+    }
     Water->SetCastShadow(false);
     CreateSky();
     CloudMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("MI_Cloud")),this);
@@ -253,16 +259,16 @@ void ADiveWorld::Configure(const Dive::Config& Config)
     BubbleState.Reset();RenderedBubbleIndices.Reset();Bubbles->ClearInstances();BubblesBorn=BubblesSurfaced=0;bParticleUniformsReady=false;
     VisibleDistance=WeatherSettings.VisibilityMetres; Flow=WeatherSettings.CurrentMetresPerSecond; DayHour=WeatherSettings.Hour;
     Waves.Configure(WeatherSettings.WindMetresPerSecond,WeatherSettings.WindDirectionDegrees);
-    if(WaterMaterial)
+    for(auto* waterMaterial:{WaterMaterial.Get(),WaterUnderMaterial.Get()}) if(waterMaterial)
     {
         for(int i=0;i<4;++i)
         {
             const auto& w=Waves.Waves[i];
-            WaterMaterial->SetVectorParameterValue(FName(*FString::Printf(TEXT("Wave%d"),i)),FLinearColor(w.Kx,w.Ky,w.Omega,w.Amplitude));
+            waterMaterial->SetVectorParameterValue(FName(*FString::Printf(TEXT("Wave%d"),i)),FLinearColor(w.Kx,w.Ky,w.Omega,w.Amplitude));
         }
-        WaterMaterial->SetVectorParameterValue(TEXT("WavePhase"),FLinearColor(Waves.Waves[0].Phase,Waves.Waves[1].Phase,Waves.Waves[2].Phase,Waves.Waves[3].Phase));
-        WaterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),14.f/VisibleDistance);
-        WaterMaterial->SetScalarParameterValue(TEXT("WindStrength"),FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.));
+        waterMaterial->SetVectorParameterValue(TEXT("WavePhase"),FLinearColor(Waves.Waves[0].Phase,Waves.Waves[1].Phase,Waves.Waves[2].Phase,Waves.Waves[3].Phase));
+        waterMaterial->SetScalarParameterValue(TEXT("OpticalScale"),14.f/VisibleDistance);
+        waterMaterial->SetScalarParameterValue(TEXT("WindStrength"),FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.));
     }
     if(CloudMaterial)
     {

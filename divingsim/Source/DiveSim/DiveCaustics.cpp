@@ -20,6 +20,7 @@ void ADiveWorld::UpdateCaustics()
     const float clock=Diver?Diver->Simulation.Data.ElapsedSeconds:0;
     SolarWater->SetScalarParameterValue(TEXT("Clock"),clock);
     if(WaterMaterial) WaterMaterial->SetScalarParameterValue(TEXT("WaveTime"),clock);
+    if(WaterUnderMaterial) WaterUnderMaterial->SetScalarParameterValue(TEXT("WaveTime"),clock);
     SolarWater->SetScalarParameterValue(TEXT("WindStrength"),FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.));
     SolarWater->SetScalarParameterValue(TEXT("Extinction"),1.45/VisibleDistance);
     SolarWater->SetScalarParameterValue(TEXT("CausticStrength"),CausticsStrength);

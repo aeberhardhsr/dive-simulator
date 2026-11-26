@@ -8,6 +8,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$HabitatClose, [switch]$NoRockAprons,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
+    [switch]$WaterInterface, [switch]$HardwareLumen,
     [switch]$DisableShadows, [switch]$DisableLighting,
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
@@ -46,6 +47,7 @@ $consoleCommands=@()
 if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
 if($DisableShadows) { $consoleCommands+='ShowFlag.DynamicShadows 0' }
 if($DisableVolumetrics) { $consoleCommands+='r.VolumetricFog 0' }
+if($HardwareLumen) { $consoleCommands+='r.Lumen.HardwareRayTracing 1' }
 if($DisableLighting) { $consoleCommands+='viewmode unlit'; $consoleCommands+='ShowFlag.PostProcessing 0' }
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }
@@ -62,6 +64,7 @@ if($HabitatClose) {
 }
 if($NoRockAprons) {$arguments+=' -DiveNoRockAprons'}
 if($NativeScattering) {$arguments+=' -DiveNativeScattering'}
+if($WaterInterface) {$arguments+=' -DiveWaterInterface'}
 if($HabitatSunView) {
     if(-not $HabitatView -or $HabitatClose) {throw 'HabitatSunView requires HabitatView without HabitatClose.'}
     $arguments+=' -DiveHabitatSunView'
@@ -164,6 +167,8 @@ if($log -match 'DIVE_BUILDINGS_READY|DIVE_BUILDINGS_FAIL') {
     if($log -notmatch 'DIVE_BUILDINGS_PASS' -or $log -match 'DIVE_BUILDINGS_FAIL') { throw "Building registration/collision test failed. See $logPath." }
 }
 if($log -notmatch 'DIVE_MEDIUM_PASS') { throw "Camera medium test failed. See $logPath." }
+if($WaterInterface -and $log -notmatch 'DIVE_WATER_INTERFACE_PASS layers=2') {throw 'Requested water interface was not validated.'}
+if($HardwareLumen -and $log -notmatch 'r.Lumen.HardwareRayTracing = "1"') {throw 'Hardware Lumen override was not applied.'}
 if($NativeScattering) {
     $expected=if($DisableVolumetrics){'native=0 requested=1'}else{'native=1 requested=1'}
     if($log -notmatch ('DIVE_SCATTER_MODEL[^\r\n]*'+$expected)) {throw 'Requested native scattering mode or its fallback was not applied.'}

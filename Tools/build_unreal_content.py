@@ -19,13 +19,13 @@ def clear_expressions(material):
         raise RuntimeError('Material graph could not be cleared: '+material.get_name())
 
 def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_wpo=None,
-             translucent=False, opacity=.4, unlit=False, custom_normal=None, water=False):
+             translucent=False, opacity=.4, unlit=False, custom_normal=None, water=False, two_sided=True):
     path=BASE+'/Materials'
     full=path+'/'+name
     existing=u.load_asset(full) if u.EditorAssetLibrary.does_asset_exist(full) else None
     m=existing or TOOLS.create_asset(name,path,u.Material,u.MaterialFactoryNew())
     if existing: clear_expressions(m)
-    m.set_editor_property('two_sided',True)
+    m.set_editor_property('two_sided',two_sided)
     m.set_editor_property('used_with_instanced_static_meshes',True)
     m.set_editor_property('blend_mode',u.BlendMode.BLEND_OPAQUE)
     m.set_editor_property('shading_model',u.MaterialShadingModel.MSM_DEFAULT_LIT)
@@ -163,6 +163,17 @@ DiveWaterOptics optical;
 float height;float2 allSlope;float3 curvature;
 optical.Surface(xy,T,waves,WavePhase,WindStrength,ddx(xy),ddy(xy),height,allSlope,curvature);
 return normalize(float3(-slope*fade-h*fadeSlope-(allSlope-slope),1));''')
+material('M_WaterTop',(.012,.035,.028),.13,water=True,two_sided=False,
+         custom_wpo=wave_code+'return float3(0,0,h*100*fade);',
+         custom_normal=(ROOT/'Tools/Shaders/WaterOptics.ush').read_text()+wave_code+'''
+DiveWaterOptics optical;
+float height;float2 allSlope;float3 curvature;
+optical.Surface(xy,T,waves,WavePhase,WindStrength,ddx(xy),ddy(xy),height,allSlope,curvature);
+return normalize(float3(-slope*fade-h*fadeSlope-(allSlope-slope),1));''')
+import sys
+if str(ROOT/'Tools') not in sys.path:sys.path.insert(0,str(ROOT/'Tools'))
+from build_water_interface_content import build_underwater_interface
+build_underwater_interface(wave_code)
 if not ONLY_WATER:
     cloud_path=BASE+'/Materials/MI_Cloud'
     if not u.EditorAssetLibrary.does_asset_exist(cloud_path):

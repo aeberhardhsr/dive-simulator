@@ -44,6 +44,16 @@ void ADiveWorld::CreateWater()
     Water->GetProcMeshSection(0)->SectionLocalBox=Water->GetProcMeshSection(0)->SectionLocalBox.ExpandBy(FVector(0,0,displacement));
     const FProcMeshSection expanded=*Water->GetProcMeshSection(0);
     Water->SetProcMeshSection(0,expanded);
+    if(bWaterInterface)
+    {
+        TArray<int32> underside=indices;
+        for(int32 i=0;i<underside.Num();i+=3) Swap(underside[i+1],underside[i+2]);
+        for(auto& normal:normals) normal=-normal;
+        Water->CreateMeshSection_LinearColor(1,vertices,underside,normals,uv,colors,tangents,false);
+        Water->GetProcMeshSection(1)->SectionLocalBox=expanded.SectionLocalBox;
+        const FProcMeshSection underExpanded=*Water->GetProcMeshSection(1);
+        Water->SetProcMeshSection(1,underExpanded);
+    }
     UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_MESH vertices=%d triangles=%d"),vertices.Num(),indices.Num()/3);
 }
 
@@ -72,10 +82,10 @@ void ADiveWorld::UpdateWater(const FVector& Player)
 {
     const double t=Diver?Diver->Simulation.Data.ElapsedSeconds:0;
     Water->SetWorldLocation(FVector(FMath::GridSnap(Player.X,3200.),FMath::GridSnap(Player.Y,3200.),0));
-    if(WaterMaterial)
+    for(auto* material:{WaterMaterial.Get(),WaterUnderMaterial.Get()}) if(material)
     {
-        WaterMaterial->SetScalarParameterValue(TEXT("WaveTime"),t);
-        WaterMaterial->SetVectorParameterValue(TEXT("Viewer"),FLinearColor(Player.X/100,Player.Y/100,0,0));
+        material->SetScalarParameterValue(TEXT("WaveTime"),t);
+        material->SetVectorParameterValue(TEXT("Viewer"),FLinearColor(Player.X/100,Player.Y/100,0,0));
     }
     for(int i=0;i<Buoys.Num();++i)
     {
@@ -134,6 +144,33 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     const auto* section=Water?Water->GetProcMeshSection(0):nullptr;
     if(!section||section->ProcVertexBuffer.Num()<66000||!WaterMaterial||!CloudMaterial||!Rain->GetMaterial(0))
     { Error=TEXT("Missing water geometry or environment materials"); return false; }
+    if(bWaterInterface)
+    {
+        const auto* under=Water->GetProcMeshSection(1);
+        if(!under||!WaterUnderMaterial||Water->GetMaterial(1)!=WaterUnderMaterial||
+            WaterMaterial->IsTwoSided()||WaterUnderMaterial->IsTwoSided()||
+            WaterUnderMaterial->GetBlendMode()!=BLEND_Translucent||
+            under->ProcVertexBuffer.Num()!=section->ProcVertexBuffer.Num()||
+            under->ProcIndexBuffer.Num()!=section->ProcIndexBuffer.Num())
+        {Error=TEXT("Water interface layers or material modes are invalid");return false;}
+        for(int32 i=0;i<under->ProcVertexBuffer.Num();++i)
+            if(!under->ProcVertexBuffer[i].Position.Equals(section->ProcVertexBuffer[i].Position)||
+                !under->ProcVertexBuffer[i].Normal.Equals(-section->ProcVertexBuffer[i].Normal))
+            {Error=TEXT("Water interface geometry is not coincident with opposite normals");return false;}
+        for(int32 i=0;i<under->ProcIndexBuffer.Num();i+=3)
+            if(under->ProcIndexBuffer[i]!=section->ProcIndexBuffer[i]||
+                under->ProcIndexBuffer[i+1]!=section->ProcIndexBuffer[i+2]||
+                under->ProcIndexBuffer[i+2]!=section->ProcIndexBuffer[i+1])
+            {Error=TEXT("Water underside triangle winding is not reversed");return false;}
+        for(const FName name:{FName(TEXT("WaveTime")),FName(TEXT("WindStrength"))})
+            if(FMath::Abs(WaterMaterial->K2_GetScalarParameterValue(name)-WaterUnderMaterial->K2_GetScalarParameterValue(name))>1.e-5)
+            {Error=TEXT("Water interface clocks or wind differ");return false;}
+        for(const FName name:{FName(TEXT("Viewer")),FName(TEXT("Wave0")),FName(TEXT("Wave1")),FName(TEXT("Wave2")),FName(TEXT("Wave3")),FName(TEXT("WavePhase"))})
+            if(!WaterMaterial->K2_GetVectorParameterValue(name).Equals(WaterUnderMaterial->K2_GetVectorParameterValue(name),1.e-5f))
+            {Error=TEXT("Water interface wave parameters differ");return false;}
+        UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INTERFACE_PASS layers=2 vertices=%d triangles=%d shared_waves=1"),
+            under->ProcVertexBuffer.Num(),under->ProcIndexBuffer.Num()/3);
+    }
     if(Diver&&Diver->bDiveActive)
     {
         const auto& config=Diver->Simulation.Settings;
