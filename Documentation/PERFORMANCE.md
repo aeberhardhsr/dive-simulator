@@ -1,6 +1,19 @@
 # Gerenderte Leistungsmessung
 
-## WindowsRockSearch: räumliche Hindernisabfragen
+## WindowsRockSearchReady: geprüftes Paket mit räumlicher Suche
+
+Quellstand `f47b30c`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Beide Läufe verwenden exakt die EXE und Inhaltscontainer der bestandenen acht Paketfälle. [Gebundener Ergebnisbericht](ROCK_SEARCH_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 72,78 FPS | 60,48 FPS | 15,38 ms | 18,14 ms | 0 / 4365 | 3,40 ms |
+| Murg Schwimmen/Nachladen, 90 s | 100,81 FPS | 79,89 FPS | 10,90 ms | 45,33 ms | 1 / 9071 | 3,04 ms |
+
+Die Spielthreadzeit bestätigt den Befund des ersten Suchraster-Pakets. Gegenüber den älteren Geröllläufen mit rund 11,1 ms unter Wasser und 6,01 ms auf der Strecke besteht deutlich mehr CPU-Reserve. Die GPU-Zeiten bleiben bei 13,13 / 9,31 ms, die Bildrate bleibt entsprechend ähnlich. Die beiden zwischenzeitlichen Korrekturen betreffen ausschliesslich die Welt-Testfunktion: leere Fenster sind zulässig und Double-Kraftsummen werden mit einer engen Toleranz von 10⁻¹² verglichen. Die Suchimplementierung ist unverändert.
+
+Die geprüften Messbilder zeigen den Grund bei 5,2 Metern sowie das Ende der Murg-Strecke in freiem Wasser bei 24,7 Metern. Der einzelne Nachlade-Ausreisser bleibt offen. Dass der aktuelle Unterwasserlauf keinen Ausreisser über 33,33 ms enthält, beweist keine dauerhafte Behebung der zuvor beobachteten Ruckler. Einzelne Bilder liegen weiterhin über 16,67 ms. Die Messungen sind keine durchgehende 60-FPS-Abnahme aller Spielszenen und kein aktueller Langzeittest. Der folgende erste Prüfstand bleibt getrennt erhalten und wird nicht durch den günstigeren Verlauf ersetzt.
+
+## WindowsRockSearch: erster Prüfstand mit räumlichen Hindernisabfragen
 
 Quellstand `33fe764`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Felsen, Pflanzen, Materialien und gewöhnliche Wasserbeleuchtung behalten den Geröllstand. [Umsetzung und Grenzen](ROCK_SEARCH.md), [Paket und Rohdaten](ROCK_SEARCH_RESULTS.json).
 
