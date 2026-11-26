@@ -60,7 +60,7 @@ void ADiveHUD::DrawHUD()
     if(Diver->bMenu)
     {
         DrawRect(FLinearColor(0,.012,.014,.62),0,0,Canvas->SizeX,Canvas->SizeY);
-        if(bEntryMapPage) Map(true); else if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
+        if(bWaypointPage||bEntryMapPage) Map(true); else if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
     }
     else
     {
@@ -198,6 +198,7 @@ void ADiveHUD::Instruments()
     const int clockMinutes=FMath::FloorToInt(clock.Hour*60+1.e-8)%1440;
     Text(FString::Printf(TEXT("%s  %02d:%02d %s"),UTF8_TO_TCHAR(clock.Date.Text().c_str()),clockMinutes/60,clockMinutes%60,
         clock.OffsetMinutes==120?TEXT("CEST"):TEXT("CET")),672,100,14,Muted);
+    WaypointInstrument();
     Text(TEXT("WALENSEE / ")+Diver->EntryName(),50,46,16,White);
     Text((Diver->PendingConfig.StartOnShore?L(TEXT("Rueckkehr zum Startpodest  /  "),TEXT("Return to the starting platform  /  ")):L(TEXT("Einstieg an der Boje  /  "),TEXT("Entry at buoy  /  ")))+Diver->KeyText(EDiveAction::Finish)+L(TEXT(" zum Beenden"),TEXT(" to finish")),50,76,13,Muted);
     if(Diver->PendingConfig.StartOnShore) Text(Diver->bWalking?L(TEXT("GEHEN / WATEN"),TEXT("WALKING / WADING")):L(TEXT("SCHWIMMEN"),TEXT("SWIMMING")),50,102,14,Accent);
@@ -282,6 +283,7 @@ void ADiveHUD::Summary()
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
     Super::NotifyHitBoxClick(Id); if(!Diver||ConfigDialog) return;
+    if(bWaypointPage) { WaypointClick(Id);return; }
     if(bEntryMapPage) { MapClick(Id); return; }
     if(Id==TEXT("profiles")) { OpenProfiles(); return; }
     if(bProfilesPage) { ProfileClick(Id); return; }

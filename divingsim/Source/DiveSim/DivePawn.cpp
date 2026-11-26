@@ -190,7 +190,7 @@ void ADivePawn::BeginPlay()
                 }
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
-            else if(SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
+            else if(SmokeScenario!=TEXT("waypoints")&&SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
             double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
@@ -219,6 +219,8 @@ void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(Com
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
 void ADivePawn::ToggleMenu()
 {
+    if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->WaypointsOpen()) { hud->CloseWaypoints();return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ConfigInputOpen()) { hud->CloseConfigInput(); return; }
     if(CapturingAction!=INDEX_NONE) { CapturingAction=INDEX_NONE; ControlMessage=Local(TEXT("Belegung unveraendert."),TEXT("Binding unchanged.")); return; }
@@ -281,6 +283,10 @@ void ADivePawn::PerformAction(EDiveAction Action)
     case EDiveAction::Computer: ToggleComputer(); break;
     case EDiveAction::ComputerPage: NextComputerPage(); break;
     case EDiveAction::Map: ToggleMap(); break;
+    case EDiveAction::Waypoints:
+        if(!bMenu) if(auto* pc=Cast<APlayerController>(GetController()))
+            if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) hud->OpenWaypoints();
+        break;
     case EDiveAction::Finish: Interact(); break;
     case EDiveAction::Photo: Photograph(); break;
     case EDiveAction::Regulator:
@@ -411,7 +417,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {

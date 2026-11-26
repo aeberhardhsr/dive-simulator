@@ -1,8 +1,8 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
-    [string]$PackageDirectory='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
+    [string]$PackageDirectory='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
@@ -24,6 +24,10 @@ New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $size=$Viewport.Split('x')
 $arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -unattended -abslog="{0}"' -f $logPath,$size[0],$size[1]
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
+if($WaypointVerify) {
+    if($Scenario -ne 'waypoints' -or $WaypointVerify.Contains('"')) { throw 'WaypointVerify requires the waypoints scenario and an unquoted file path.' }
+    $arguments+=' -DiveWaypointVerify="'+[IO.Path]::GetFullPath($WaypointVerify)+'"'
+}
 if($Scenario -eq 'modes') { $arguments+=' -DiveModeCase='+$ModeCase }
 if($Scenario -in @('loadout','avatar')) { $arguments+=' -DiveLoadoutCase='+$LoadoutCase }
 $consoleCommands=@()
@@ -64,6 +68,7 @@ if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($PopulationChecks -and ($log -notmatch 'DIVE_POPULATION_PASS' -or $log -match 'DIVE_POPULATION_FAIL')) { throw 'Population streaming checks failed.' }
+if($Scenario -eq 'waypoints' -and ($log -notmatch 'DIVE_WAYPOINT_PASS' -or $log -match 'DIVE_WAYPOINT_FAIL')) { throw 'Waypoint test failed.' }
 if($Scenario -eq 'navigation' -and ($log -notmatch 'DIVE_NAV_PASS' -or $log -match 'DIVE_NAV_FAIL|DIVE_NAV_PHASE \d+ FAIL')) { throw 'Navigation selection test failed.' }
 if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -notmatch 'DIVE_SEDIMENT_PAUSE_PASS' -or $log -match 'DIVE_SEDIMENT_FAIL')) { throw 'Sediment lifecycle or pause failed.' }
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }

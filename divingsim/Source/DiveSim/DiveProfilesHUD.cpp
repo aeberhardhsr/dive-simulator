@@ -35,7 +35,7 @@ FString ShortName(const FString& Name)
 
 }
 void ADiveHUD::EndPlay(const EEndPlayReason::Type Reason)
-{ CloseConfigInput(false); CloseProfileName(false); Super::EndPlay(Reason); }
+{ CloseConfigInput(false); CloseProfileName(false); CloseWaypointName(false); Super::EndPlay(Reason); }
 void ADiveHUD::OpenProfiles()
 {
     Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver) return;

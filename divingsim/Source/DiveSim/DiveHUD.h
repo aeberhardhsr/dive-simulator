@@ -3,6 +3,7 @@
 #include "GameFramework/HUD.h"
 #include "DiveLogbook.h"
 #include "DiveProfiles.h"
+#include "DiveWaypoints.h"
 #include "Async/Future.h"
 #include "DiveHUD.generated.h"
 
@@ -29,6 +30,10 @@ public:
     bool LoadoutSmokeTest(int Phase);
     bool AvatarSmokeTest(int Phase);
     bool NavigationSmokeTest(int Phase);
+    bool WaypointSmokeTest(int Phase);
+    void OpenWaypoints();
+    void CloseWaypoints(bool Resume=true);
+    bool WaypointsOpen() const { return bWaypointPage; }
     void OpenEntryMap();
     bool EntryMapOpen() const { return bEntryMapPage; }
     void CloseEntryMap() { bEntryMapPage=false; }
@@ -65,6 +70,23 @@ private:
     void Summary();
     void Map(bool SelectionPage=false);
     void MapClick(FName Id);
+    void EnsureWaypoints();
+    void WaypointClick(FName Id);
+    void WaypointPanel();
+    void DrawWaypoints();
+    void WaypointInstrument();
+    bool PickWaypoint(double X,double Y);
+    void OpenWaypointName(bool Rename);
+    bool SubmitWaypointName(const FString& Name);
+    void CloseWaypointName(bool RestoreFocus=true);
+    FString WaypointError() const;
+    FDiveWaypoints Waypoints;
+    bool bWaypointPage=false,bWaypointResume=false,bWaypointPick=false,bWaypointRename=false,bWaypointDelete=false;
+    int32 WaypointPage=0;
+    FString WaypointSelected,WaypointMessage,WaypointNameError;
+    FDiveWaypoint WaypointDraft;
+    TSharedPtr<class SWidget> WaypointDialog;
+    double WaypointPausedSeconds=0;
     bool bEntryMapPage=false,MapDraftShore=true;
     int32 MapDraftEntry=0;
     int32 MapSmokeEntry=0;

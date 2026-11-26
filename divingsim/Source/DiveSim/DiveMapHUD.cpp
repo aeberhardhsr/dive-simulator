@@ -23,6 +23,7 @@ void ADiveHUD::OpenEntryMap()
 void ADiveHUD::MapClick(FName Id)
 {
     if(!bEntryMapPage||!Diver) return;
+    if(Id==TEXT("map_waypoints")) { OpenWaypoints();return; }
     if(Id==TEXT("map_back")) { CloseEntryMap();return; }
     if(Id==TEXT("map_language")) { Diver->bEnglish=!Diver->bEnglish;Diver->SaveSettings();return; }
     // The same page can be inspected in the pause menu, but cannot change a dive.
@@ -42,7 +43,7 @@ void ADiveHUD::Map(bool SelectionPage)
 {
     if(!Diver||!Diver->Environment) return;
     const auto& data=Diver->Environment->Terrain;
-    const bool choosing=SelectionPage&&!Diver->bDiveActive;
+    const bool choosing=SelectionPage&&!Diver->bDiveActive&&!bWaypointPage;
     const bool shore=choosing?MapDraftShore:Diver->PendingConfig.StartOnShore;
     const int selected=choosing?MapDraftEntry:Diver->EntryIndex;
     const auto& entries=data.EntryList(shore);
@@ -75,10 +76,11 @@ void ADiveHUD::Map(bool SelectionPage)
     }
     if(!SelectionPage) Rect(0,0,1600,900,FLinearColor(0,.012f,.014f,.78f));
     Rect(80,80,1440,740,Dark);
-    Text(choosing?L(TEXT("WALENSEE / EINSTIEG WAEHLEN"),TEXT("WALENSEE / CHOOSE ENTRY")):
+    Text(bWaypointPage?L(TEXT("WALENSEE / DEINE WEGPUNKTE"),TEXT("WALENSEE / YOUR WAYPOINTS")):choosing?L(TEXT("WALENSEE / EINSTIEG WAEHLEN"),TEXT("WALENSEE / CHOOSE ENTRY")):
         L(TEXT("WALENSEE / TIEFENKARTE"),TEXT("WALENSEE / DEPTH MAP")),120,110,28,Accent);
     if(SelectionPage)
     {
+        if(!bWaypointPage) Button(TEXT("map_waypoints"),L(TEXT("Wegpunkte"),TEXT("Waypoints")),875,105,185,40);
         Button(TEXT("map_language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),1080,105,180,40);
         Button(TEXT("map_back"),L(TEXT("< Zurueck / Esc"),TEXT("< Back / Esc")),1280,105,200,40);
     }
@@ -86,7 +88,8 @@ void ADiveHUD::Map(bool SelectionPage)
     if(MapTexture) DrawTexture(MapTexture,OffsetX+MapX*Scale,OffsetY+MapY*Scale,MapW*Scale,MapH*Scale,0,0,1,1,FLinearColor::White,BLEND_Opaque);
     Text(TEXT("N"),MapX+16,MapY+12,18,White);Line(MapX+24,MapY+60,MapX+24,MapY+36,White,2);
     Line(MapX+24,MapY+36,MapX+18,MapY+44,White,2);Line(MapX+24,MapY+36,MapX+30,MapY+44,White,2);
-    if(!choosing)
+    if(bWaypointPage&&bWaypointPick) AddHitBox(FVector2D(OffsetX+MapX*Scale,OffsetY+MapY*Scale),FVector2D(MapW*Scale,MapH*Scale),TEXT("waypoint_pick"),true,10);
+    if(!choosing&&Diver->bDiveActive)
         for(int i=0;i<Diver->Samples.Num();i+=5)
         { const auto p=pixel(Diver->Samples[i].Position);if(inMap(p)) Rect(p.X-1,p.Y-1,3,3,Muted); }
     for(int i=0;i<entries.Num();++i)
@@ -99,7 +102,7 @@ void ADiveHUD::Map(bool SelectionPage)
         if(choosing) AddHitBox(FVector2D(OffsetX+(p.X-20)*Scale,OffsetY+(p.Y-20)*Scale),FVector2D(40*Scale,40*Scale),
             FName(*FString::Printf(TEXT("map_marker_%d"),i)),true);
     }
-    if(!choosing)
+    if(!choosing&&Diver->bDiveActive)
     {
         const FVector2D start=pixel(Diver->EntryLocation),here=pixel(Diver->GetActorLocation());
         if(inMap(start))
@@ -119,17 +122,19 @@ void ADiveHUD::Map(bool SelectionPage)
         }
         const FVector delta=(Diver->EntryLocation-Diver->GetActorLocation())/100;
         const double distance=FVector2D(delta.X,delta.Y).Size();
-        Text(distance<1?L(TEXT("Am Startpunkt"),TEXT("At the start point")):
+        if(!bWaypointPage) Text(distance<1?L(TEXT("Am Startpunkt"),TEXT("At the start point")):
             FString::Printf(TEXT("%s: %.0f m / %03d deg"),*L(TEXT("Zum Start, Luftlinie"),TEXT("To start, straight line")),distance,
                 Dive::Navigation::DisplayHeading(Dive::Navigation::Bearing(delta.X,delta.Y))),120,181,17,White);
         Text(inMap(here)?L(TEXT("Gruenes Dreieck: du und Blickrichtung   /   Raute: dein Start"),TEXT("Green triangle: you and heading   /   Diamond: your start")):
             L(TEXT("Deine Position liegt ausserhalb dieses Kartenausschnitts."),TEXT("Your position lies outside this map extent.")),120,712,17,Accent);
     }
+    DrawWaypoints();
     const float kilometre=MapW*1000/(data.MapEast-data.MapWest);
     Line(MapX,570,MapX+kilometre,570,White,2);Line(MapX,566,MapX,574,White,2);Line(MapX+kilometre,566,MapX+kilometre,574,White,2);
     Text(TEXT("1 km"),MapX+kilometre+12,559,14,White);
     Text(L(TEXT("Tiefenlinien 10 m   /   dunkel: keine Messdaten   /   Bezugspegel 419 m LN02"),
         TEXT("Contours 10 m   /   dark: no survey data   /   water reference 419 m LN02")),360,559,14,Muted);
+    if(bWaypointPage) { WaypointPanel();return; }
     const float card=(MapW-40)/3;
     for(int i=0;i<entries.Num()&&i<3;++i)
     {
@@ -155,5 +160,6 @@ void ADiveHUD::Map(bool SelectionPage)
         const FString gas=Diver->Simulation.Settings.Rules().LimitedGas?FString::Printf(TEXT("%.0f bar"),state.CylinderBar):TEXT("INF");
         Text(FString::Printf(TEXT("%.1f m   /   %s   /   %s"),state.DepthMetres,*gas,
             *L(Diver->bMenu?TEXT("Tauchgang pausiert"):TEXT("Simulation laeuft weiter"),Diver->bMenu?TEXT("Dive paused"):TEXT("Simulation continues"))),120,789,14,White);
+        Text(Diver->KeyText(EDiveAction::Waypoints)+L(TEXT(" Wegpunkte bearbeiten (Pause)"),TEXT(" edit waypoints (pause)")),850,789,14,Accent);
     }
 }

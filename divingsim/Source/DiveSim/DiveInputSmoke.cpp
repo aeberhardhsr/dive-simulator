@@ -33,6 +33,32 @@ void ADivePawn::InputSmokeTick(float Dt)
     };
     auto shot=[this](const FString& Name)
     { FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/(Name+TEXT(".png")),true,false); };
+    if(SmokeScenario==TEXT("waypoints"))
+    {
+        FString restore;
+        if(FParse::Value(FCommandLine::Get(),TEXT("DiveWaypointVerify="),restore))
+        {
+            if(ControlsSmokePhase==0&&ControlsSmokeClock>2)
+            {
+                const bool ok=hud->WaypointSmokeTest(0);
+                if(!ok) { UE_LOG(LogTemp,Error,TEXT("DIVE_WAYPOINT_FAIL restart"));FPlatformMisc::RequestExitWithStatus(false,1);return; }
+                ++ControlsSmokePhase;
+            }
+            if(ControlsSmokePhase==1&&ControlsSmokeClock>5)
+            { UE_LOG(LogTemp,Display,TEXT("DIVE_WAYPOINT_PASS restart=1"));UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS waypoints=1"));FPlatformMisc::RequestExitWithStatus(false,0); }
+            return;
+        }
+        if(ControlsSmokePhase<21&&ControlsSmokeClock>(ControlsSmokePhase+1)*2)
+        {
+            const bool ok=hud->WaypointSmokeTest(ControlsSmokePhase);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_WAYPOINT_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));
+            if(!ok) { UE_LOG(LogTemp,Error,TEXT("DIVE_WAYPOINT_FAIL phase=%d"),ControlsSmokePhase);FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            ++ControlsSmokePhase;
+        }
+        if(ControlsSmokePhase==21&&ControlsSmokeClock>44)
+        { UE_LOG(LogTemp,Display,TEXT("DIVE_WAYPOINT_PASS phases=21 entry=%d"),EntryIndex);UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS waypoints=1"));FPlatformMisc::RequestExitWithStatus(false,0); }
+        return;
+    }
     if(SmokeScenario==TEXT("navigation"))
     {
         if(ControlsSmokePhase<=12&&ControlsSmokeClock>(ControlsSmokePhase+1)*1.5)
