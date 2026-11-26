@@ -26,6 +26,8 @@ Geodata/VegetationSource/*.geojson filter=lfs diff=lfs merge=lfs -text
 Documentation/WALENSEE_VEGETATION_SOURCE.json -text whitespace=cr-at-eol
 Documentation/VEGETATION_BEECH_SOURCE.json -text whitespace=cr-at-eol
 Documentation/VEGETATION_ASSETS.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_SOURCE_AUDIT.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_PLACEMENT_AUDIT.json -text whitespace=cr-at-eol
 blender/exports/Vegetation/Manifest.json -text whitespace=cr-at-eol
 # Keep the pinned catalogue byte checksum identical on every checkout platform.
 divingsim/Content/Diving/Geodata/buildings_sources.json text eol=crlf
