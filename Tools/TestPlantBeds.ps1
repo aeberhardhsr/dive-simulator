@@ -1,4 +1,4 @@
-param([switch]$Packaged,[switch]$Preview,[string]$PackageDirectory='Builds/WindowsPlantBeds')
+param([switch]$Packaged,[switch]$Preview,[string]$PackageDirectory='Builds/WindowsPlantBedsReady')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 if($Packaged -and $Preview) {throw 'Packaged validation requires all cases.'}

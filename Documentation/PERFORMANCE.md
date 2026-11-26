@@ -1,5 +1,18 @@
 # Gerenderte Leistungsmessung
 
+## WindowsPlantBedsReady: Pflanzengruppen
+
+Quellstand `96f0f25`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Je 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Beide Läufe verwenden dieselbe EXE und dieselben Inhaltscontainer wie die acht bestandenen Paketfälle. [Ergebnisbericht einschliesslich erster Fehlversuche](PLANT_BEDS_RESULTS.json), [Verteilung und Bilder](PLANT_BEDS.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 74,76 FPS | 64,01 FPS | 14,82 ms | 20,31 ms | 0 / 4484 | 3,49 ms |
+| Murg Schwimmen/Nachladen, 90 s | 100,89 FPS | 80,03 FPS | 10,91 ms | 43,00 ms | 2 / 9078 | 3,08 ms |
+
+Die GPU-Zeit beträgt im Mittel 12,76 / 9,30 ms. Die CPU-Reserve des räumlichen Felssuchrasters bleibt in diesen Szenen erhalten. Die geänderte Pflanzenverteilung senkt die lokale Anzahl und Höhe in Weesen; der etwas höhere FPS-Mittelwert gegenüber dem vorherigen Paket ist ein Einzelbefund, kein allgemeiner Leistungsgewinn. Das geprüfte Unterwasserbild zeigt Grund, Felsen und Pflanzen bei 5,2 Metern. Die Murg-Strecke endet in freiem Wasser bei 24,7 Metern und steht nicht für dauerhaft dichte Nahansichten.
+
+Der Unterwasserlauf enthält ein Bild über 16,67 ms. Die zwei Nachladebilder über 33,33 ms bleiben offen; ihre Ursache wird durch diesen Lauf nicht geklärt. Die Messungen ersetzen weder eine durchgehende 60-FPS-Abnahme noch einen aktuellen Langzeittest oder die visuelle Referenzabnahme.
+
 ## WindowsRockSearchReady: geprüftes Paket mit räumlicher Suche
 
 Quellstand `f47b30c`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Beide Läufe verwenden exakt die EXE und Inhaltscontainer der bestandenen acht Paketfälle. [Gebundener Ergebnisbericht](ROCK_SEARCH_RESULTS.json).
