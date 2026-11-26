@@ -83,3 +83,18 @@ Der Build `Builds/WindowsContacts` erreicht in zwei getrennten 60-Sekunden-Läuf
 Zwei getrennte 60-Sekunden-Fenster nach je 15 Sekunden Aufwärmzeit, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Qualität 2, 100 Prozent Renderauflösung: Sedimentszenario 87.34 FPS im Mittel / 67.03 FPS im langsamsten Prozent, gewöhnlicher Unterwasserlauf 86.45 / 69.90 FPS. Im Sedimentlauf enthalten 5238 von 5238 gemessenen Bildern aktive Wolken (Minimum 6, Maximum 24, Mittel 19.51). Die Zählung erfasst simulierte Wolken, keine garantierte Bildabdeckung oder maximale Transparenzlast. Auch der gewöhnliche Unterwasserlauf erzeugt bis zu zwei Wolken. Die Szenarien fahren unterschiedliche Wege; ihre Differenz ist kein isolierter Effektkostenvergleich. Ein vom Nutzer geöffneter Unreal-Editor lief parallel; die Messungen sind daher keine isolierten Vergleiche.
 
 Vollständige Zeiten, langsame Bilder, Einstellungen und Artefakt-Prüfsummen: [Sediment](SEDIMENT_PERFORMANCE.json), [Unterwasser](SEDIMENT_UNDERWATER_PERFORMANCE.json). Die kurzen Messungen belegen weder Mindesthardware noch native macOS-Leistung oder eine Langzeitfreigabe.
+
+## WindowsHabitat: gruppierte Felsen und dichterer Bewuchs
+
+Zwei getrennte Messungen des Pakets aus Laufzeitstand `c14eaa5`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Qualität 2, 100 Prozent Renderauflösung, ohne Bildratenbegrenzung und nach jeweils 15 Sekunden Aufwärmzeit. Beim Start war keine weitere Unreal-Spiel- oder Editorinstanz aktiv. Alle inneren Messbilder bleiben in der Auswertung; nur je ein Randbild wird verworfen.
+
+| Szenario | Messdauer | Mittel | 1%-Low | P95 Bildzeit | Höchste Bildzeit | Bilder >33,33 ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Unterwasseransicht Weesen | 60 s | 68,18 FPS | 54,48 FPS | 17,25 ms | 19,70 ms | 0 / 4.089 |
+| Schwimmen/Nachladen Murg | 90 s | 100,53 FPS | 77,34 FPS | 10,84 ms | 68,83 ms | 2 / 9.046 |
+
+Der Murg-Lauf legt im Messfenster 144,86 Meter zurück und endet im offenen Wasser bei rund 24,7 Metern Tiefe. Er ist deshalb kein Vergleich derselben sichtbaren Objektdichte mit der bodennahen Weesen-Aufnahme. Der Unterwasserlauf erreicht keine durchgehend eingehaltenen 60 FPS; der Streckenlauf enthält zwei kurze Ausreißer. Diese Einschränkungen bleiben Teil des Ergebnisses.
+
+In der Weesen-Aufnahme liegt die mittlere GPU-Zeit bei 14,05 ms, der Spielthread bei 5,87 ms. `ShadowDepths` ist mit 4,35 ms der größte aufgezeichnete GPU-Pass. Im Murg-Lauf dauern reguläre Aufbauten neuer Populationszellen laut Protokoll 34–51 ms; der Spielthread erreicht maximal 68,71 ms. Die Messungen liefern damit Ansatzpunkte für Schatten- und Nachladeoptimierung, ohne deren genaue Ursachen bereits durch einen isolierten Abschaltvergleich zu beweisen.
+
+EXE-/Paketidentität, vollständige Einstellungen, CSV-Dateien, Bilder und Prüfsummen stehen im [Habitat-Prüfbericht](HABITAT_RESULTS.json). Die kurzen Läufe ersetzen weder einen Langzeittest dieses Pakets noch eine Mindesthardware- oder visuelle Qualitätsabnahme.

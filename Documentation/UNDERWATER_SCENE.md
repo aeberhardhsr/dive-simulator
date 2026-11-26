@@ -67,3 +67,43 @@ Dieselbe Kamera mit korrigierter Volumenbehandlung; Unterwassertrübung bleibt a
 Normaler Tauchlauf im Paket; die Umgebung bleibt deutlich unter dem angestrebten Detailniveau:
 
 ![Spielansicht mit korrigierter Wasseroptik](Images/Underwater_Surface_Game.png)
+
+
+## Zusammenhängende Fels- und Pflanzenbereiche
+
+Die nächste Überarbeitung ersetzt die weitgehend gleichmäßige Verteilung einzelner großer Felsen durch unregelmäßige Gruppen. Eine Gruppe enthält einen größeren Fels, mehrere mittlere Steine und kleinere Bruchstücke. Die vorhandenen drei Felsformen werden dafür unterschiedlich skaliert, gedreht, teilweise eingegraben und an der vermessenen Bodenneigung ausgerichtet. Die kleinen Kiesinstanzen bleiben eine eigene Größenstufe. Freie Sedimentflächen bleiben zwischen den Gruppen erhalten.
+
+Die Pflanzen folgen kontinuierlichen räumlichen Feldern statt wiederkehrenden Sinusbändern. Innerhalb eines Bereichs überwiegt eine Art, mit eingestreutem Mischbewuchs. Bestehende Grenzen für Tiefe, Sichtweite und Hangneigung gelten weiter; Felsflächen werden beim Pflanzen ausgespart. Das ist eine gestaltete Spielumgebung, keine kartierte Verteilung realer Walensee-Lebensräume.
+
+Die Verteilung hängt von Weltkoordinaten ab. Felsgruppen werden einschließlich ihres Randbereichs berechnet; jeder Stein gehört genau der Zelle seiner endgültigen Position. Damit können Gruppen Zellgrenzen überschreiten, ohne doppelte Steine oder bei einer Rückkehr andere Anordnungen zu erzeugen. Einstiege und Zugangswege behalten ihre festen Freiräume. Instanzen werden gebündelt angelegt, bevor ihre Komponenten registriert werden.
+
+`Tools/SmokeTest.ps1 -EditorSandbox -Scenario rocks -HabitatView -Hour 12` erzeugt drei Ansichten ohne HUD. Die Kamerawahl hängt ausschließlich vom vermessenen Gelände ab, nicht von der jeweils getesteten Objektverteilung. Der native Vergleich hält Positionen und Blickwinkel zwischen dem vorherigen Stand und der überarbeiteten Verteilung gleich. Er zeigt eine dichtere Staffelung und mehr Bewuchs; Materialien, Beleuchtung und die Gesamtwirkung liegen weiterhin deutlich unter der Nutzerreferenz. Die erste Variante mit weiter auseinanderliegenden Gruppen wurde nach Sichtprüfung verdichtet.
+
+Vorher, native Spielaufnahme:
+
+![Vorherige Verteilung von Felsen und Pflanzen](Images/Habitat_Before.png)
+
+Überarbeitete Verteilung aus derselben Kamera:
+
+![Gruppierte Felsen, Geröll und Pflanzen](Images/Habitat_After.png)
+
+
+Die erste Paketserie (`artifacts/habitat-validation-20261126-142507`) wurde nach drei erfolgreichen Weesen-Fällen beim Murg-Kameratest abgebrochen. Die ursprüngliche Suche fand dort keinen flachen Bereich im vorgegebenen Tiefenband. Die Vergleichsprüfung erlaubt nun in einem zweiten Suchdurchlauf einen steileren vermessenen Hang und richtet den Blick an dessen Bodenverlauf aus. Weesens Vergleichskamera bleibt unverändert. Der abgebrochene Lauf bleibt erhalten und wird nicht als vollständige Paketfreigabe gewertet.
+
+
+Bei der Sichtprüfung bleiben neben den einheitlichen Felsfarben und den dünnen Pflanzenoberflächen feine Linien auf einzelnen Bodenflächen sichtbar, unter anderem im Lediwracks-Vergleich. Ihre Ursache ist noch nicht isoliert; sie werden nicht als Bestandteil einer natürlichen Sedimentstruktur gewertet. Die nächste Bodenüberarbeitung muss auch diese sichtbaren Übergänge prüfen.
+
+
+Die drei Streaming-Prüfungen des überarbeiteten Pakets erfassen im jeweiligen anfänglichen 3×3-Zellfenster folgende Instanzen. Die Zahlen beschreiben geladene Bereiche und nicht die gleichzeitig im Bild sichtbaren Objekte:
+
+| Einstieg | Felsen und Geröll | Wasserpflanzen |
+| --- | ---: | ---: |
+| Weesen | 3.722 | 3.430 |
+| Murg | 5.886 | 96 |
+| Mols/Lediwracks | 5.750 | 723 |
+
+Die unterschiedliche Pflanzendichte folgt den bestehenden Tiefen-, Sichtweiten- und Hanggrenzen. Alle drei Läufe prüfen eindeutige Zellzugehörigkeit, freien Einstiegsraum, sechs unverändert behaltene und neun identisch wiederhergestellte Zellen sowie die Ausweichbewegung aller fünf Fischarten.
+
+Die vollständige abschließende Serie `artifacts/habitat-validation-20261126-143554` besteht mit **zwölf Fällen und 60 frischen Aufnahmen** sowie einem zusätzlichen Start-/Spiellauf über die Root-EXE. Das Paket `Builds/WindowsHabitat/divingsim.exe` wurde aus Laufzeitstand `c14eaa5` gebaut. Der [Prüfbericht](HABITAT_RESULTS.json) bindet EXE, Paketcontainer, Quellstände, Protokolle und Bilder über SHA-256. Die bekannte CelestialVault-Startmeldung bleibt im Bericht erhalten. Ein neuer Langzeitlauf ist damit nicht belegt. Die automatischen Simulationsprüfungen für diesen Quellstand bestehen auf GitHub ebenfalls ([Lauf](https://github.com/aeberhardhsr/dive-simulator/actions/runs/45830285311)).
+
+Die ergänzenden 1080p-Leistungsmessungen erreichen 68,18 FPS im Unterwasserlauf und 100,53 FPS auf der Murg-Strecke. Der Unterwasserlauf unterschreitet zeitweise 60 FPS, der Streckenlauf enthält zwei Bilder über 33,33 ms (Maximum 68,83 ms). Die Ansichten und Tiefen unterscheiden sich; die Zahlen sind kein isolierter Vergleich der Detailkosten. Schattenkosten und Nachladespitzen bleiben zu optimieren. Methodik und vollständige Grenzen: [Leistung](PERFORMANCE.md).

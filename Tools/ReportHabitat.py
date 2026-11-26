@@ -96,6 +96,7 @@ def main():
         limitations=['Authored rock and plant placement; not surveyed habitat distribution.',
             'The screenshots still fall short of the supplied realism reference, especially substrate, vegetation surfaces and lighting.',
             'Short performance captures do not establish long-term stability or performance everywhere.',
+            'Underwater and streaming scenarios use different views and depths; their FPS are not a controlled object-density comparison.',
             'Menu/HUD/FPV redesign follows underwater and above-water graphics work.'])
     output = ROOT/'Documentation/HABITAT_RESULTS.json'
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
