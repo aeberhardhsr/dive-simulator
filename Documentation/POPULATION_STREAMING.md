@@ -49,3 +49,13 @@ The user editor (PID 33256) remained open throughout this measurement, so it is 
 The ordinary root launcher started the expected Population executable and passed its separate 22-second dive scenario with exit code zero. [Launcher evidence](POPULATION_LAUNCHER.json) records the child path, executable hash and log hash.
 
 This work addresses continuity in WRLD-004/009 and individual state retention in BIOL-005/006. Full visual reference acceptance, lake-wide persistent ecology, native macOS gameplay, reference hardware and the complete specification remain open.
+
+## Bounded reuse of clustered rock layouts
+
+The later clustered habitat revision increased the number of rock placement queries. Each newly created population cell requested its own layout and all eight neighbouring layouts to keep plants outside rock footprints. Rebuilding the canonical fish collision array requested those layouts again. The same deterministic geometry was consequently generated several times during a cell crossing.
+
+Rock transforms and collision states are now cached by world cell. The cache contains at most the 5×5 neighbourhood needed by the visible 3×3 population window plus its planting halo. Layouts outside that neighbourhood are removed before loading a new window, and `Populate` clears the cache when rebuilding a dive. It owns no Unreal objects and does not extend component or fish lifetimes. Rock placement, plant placement, visible density, collision radii and canonical ordering remain unchanged.
+
+The extended population fixture compares cached transforms, positions, radii and mesh variants against a fresh calculation exactly. It also checks the 25-cell bound after boundary crossings, remote unloading and return. The existing retained-component, restored-transform, fish-state, steering and gravel checks still run. `Tools/TestPopulationCache.ps1` combines these checks with three fixed rendered views at each entry and a separate root-launcher dive.
+
+The original `WindowsHabitat` package and its measured Murg route are retained as the performance baseline. Native fixture timings are not substituted for normal gameplay measurements; the fixture intentionally unloads and reloads distant regions in one frame.

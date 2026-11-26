@@ -173,7 +173,8 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
 void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
 {
     const FIntPoint center=CellAt(Player);
-    if(center!=PopulationCell)
+    const bool shifted=center!=PopulationCell;
+    if(shifted||PopulationCells.Num()!=9)
     {
         const double started=FPlatformTime::Seconds();
         int loaded=0,unloaded=0;
@@ -185,13 +186,35 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
                 for(const auto& component:it.Value().Components) component->DestroyComponent();
                 it.RemoveCurrent();++unloaded;
             }
-        for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
-            if(!PopulationCells.Contains(center+FIntPoint(x,y))) { CreatePopulationCell(center+FIntPoint(x,y));++loaded; }
-        RockState.Reset();
-        // Canonical order also keeps avoidance sums independent of travel direction.
-        for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
+        TArray<FIntPoint> missing;
+        bool immediate=Initial||PopulationCells.IsEmpty();
+        auto distance=[&Player](FIntPoint key)
         {
-            TArray<FTransform> transforms;GenerateRocks(center+FIntPoint(x,y),transforms,RockState);
+            const FVector closest(FMath::Clamp(Player.X,key.X*CellWidth,(key.X+1)*CellWidth),
+                FMath::Clamp(Player.Y,key.Y*CellWidth,(key.Y+1)*CellWidth),Player.Z);
+            return FVector::DistSquared2D(Player,closest);
+        };
+        for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
+            if(!PopulationCells.Contains(center+FIntPoint(x,y)))
+            {
+                const auto key=center+FIntPoint(x,y);missing.Add(key);
+                // A normal boundary crossing adds cells at least 96 m away.
+                // Any missing cell inside the 80 m fish radius is loaded now,
+                // including short teleports within an adjacent cell.
+                immediate|=distance(key)<=RetireDistance*RetireDistance;
+            }
+        missing.Sort([&](FIntPoint A,FIntPoint B){return distance(A)<distance(B);});
+        for(const auto& key:missing)
+        {CreatePopulationCell(key);++loaded;if(!immediate) break;}
+        if(shifted)
+        {
+            RockState.Reset();
+            // Collision/avoidance always describes the complete target window.
+            // Only distant component creation is spread across frames.
+            for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
+            {
+                TArray<FTransform> transforms;GenerateRocks(center+FIntPoint(x,y),transforms,RockState);
+            }
         }
         PopulationCell=center;
         int plantCount=0;

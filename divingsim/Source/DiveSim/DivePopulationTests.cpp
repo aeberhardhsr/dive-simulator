@@ -109,12 +109,18 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     const double boundary=FMath::RoundToDouble(anchor.X/9600)*9600;
     const FVector before(boundary-1,anchor.Y,anchor.Z),after(boundary+1,anchor.Y,anchor.Z);
     LastFishRefill=WorldTime;StreamPopulation(before);
+    for(int i=0;i<8&&PopulationCells.Num()!=9;++i) StreamPopulation(before);
     TMap<FIntPoint,TArray<TArray<FTransform>>> snapshots;
     TMap<FIntPoint,UInstancedStaticMeshComponent*> identities;
     for(const auto& pair:PopulationCells) { snapshots.Add(pair.Key,capture(pair.Value));identities.Add(pair.Key,pair.Value.Components[0]); }
     const auto beforeFish=FishState;
     LastFishRefill=WorldTime;StreamPopulation(after);
     valid&=boundedLayouts();
+    bool staged=PopulationCells.Num()==7;
+    StreamPopulation(after);staged&=PopulationCells.Num()==8;
+    StreamPopulation(after);staged&=PopulationCells.Num()==9;
+    valid&=staged;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_STAGED_%s cells=7,8,9"),staged?TEXT("PASS"):TEXT("FAIL"));
     for(const auto& pair:PopulationCells)
         if(const auto* expected=snapshots.Find(pair.Key))
         { ++retained;valid&=identities[pair.Key]==pair.Value.Components[0]&&same(pair.Value,*expected); }
@@ -127,11 +133,16 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
                 a.Motion.Effort==b.Motion.Effort&&a.Motion.Turn==b.Motion.Turn&&a.Phase==b.Phase&&a.Scale==b.Scale&&
                 a.Steering.Yaw==b.Steering.Yaw&&a.Steering.Pitch==b.Steering.Pitch&&a.Steering.Speed==b.Steering.Speed;
         }
+    // An adjacent-cell teleport may land close to its far edge. Unlike an
+    // ordinary boundary crossing, nearby missing geometry must load at once.
+    LastFishRefill=WorldTime;StreamPopulation(after+FVector(18400,0,0));
+    const bool nearbyTeleport=PopulationCells.Num()==9&&boundedLayouts();valid&=nearbyTeleport;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_NEAR_TELEPORT_%s immediate=1"),nearbyTeleport?TEXT("PASS"):TEXT("FAIL"));
     LastFishRefill=WorldTime;StreamPopulation(after+FVector(38400,0,0));
-    valid&=boundedLayouts();
+    valid&=boundedLayouts()&&PopulationCells.Num()==9;
     for(const auto& pair:snapshots) valid&=!PopulationCells.Contains(pair.Key);
     LastFishRefill=WorldTime;StreamPopulation(before);
-    valid&=boundedLayouts();
+    valid&=boundedLayouts()&&PopulationCells.Num()==9;
     for(const auto& pair:snapshots)
     {
         const auto* cell=PopulationCells.Find(pair.Key);
@@ -140,6 +151,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     valid&=PopulationCells.Num()==9&&retained==6&&reloaded==9&&nearFish>0;
     // Restore all gameplay state before the ordinary update/render of this frame.
     LastFishRefill=WorldTime;StreamPopulation(original);
+    for(int i=0;i<8&&PopulationCells.Num()!=9;++i) StreamPopulation(original);
     valid&=boundedLayouts();
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_LAYOUT_%s layouts=%d max=25 fresh_equal=1"),valid?TEXT("PASS"):TEXT("FAIL"),RockLayouts.Num());
     for(auto& fish:FishState) fish.Active=false;

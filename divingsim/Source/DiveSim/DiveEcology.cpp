@@ -1,4 +1,5 @@
 #include "DiveWorld.h"
+#include "DivePawn.h"
 #include "Simulation/Ecology.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -8,9 +9,21 @@
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
     if(!ValidateGravel(Error)) return false;
-    if(PopulationCells.Num()!=9) { Error=TEXT("Population window must contain nine cells");return false; }
+    if(PopulationCells.IsEmpty()||PopulationCells.Num()>9) { Error=TEXT("Invalid population window size");return false; }
+    const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
+    for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
+    {
+        const auto key=PopulationCell+FIntPoint(x,y);
+        if(PopulationCells.Contains(key)) continue;
+        const FVector closest(FMath::Clamp(player.X,key.X*9600.,(key.X+1)*9600.),
+            FMath::Clamp(player.Y,key.Y*9600.,(key.Y+1)*9600.),player.Z);
+        if(FVector::DistSquared2D(player,closest)<=8000.*8000.)
+        {Error=TEXT("Missing population geometry inside the active fish radius");return false;}
+    }
     for(const auto& pair:PopulationCells)
     {
+        if(FMath::Abs(pair.Key.X-PopulationCell.X)>1||FMath::Abs(pair.Key.Y-PopulationCell.Y)>1)
+        {Error=TEXT("Population cell outside the streaming window");return false;}
         if(pair.Value.Components.Num()!=Rocks.Num()+Plants.Num()) { Error=TEXT("Incomplete population cell");return false; }
         for(int i=0;i<pair.Value.Components.Num();++i)
             if(!IsValid(pair.Value.Components[i])||pair.Value.Components[i]->GetStaticMesh()!=(i<Rocks.Num()?Rocks[i]->GetStaticMesh():Plants[i-Rocks.Num()]->GetStaticMesh()))
