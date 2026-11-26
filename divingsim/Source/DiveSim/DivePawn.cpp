@@ -651,6 +651,9 @@ void ADivePawn::Tick(float DeltaSeconds)
         }
         else FPlatformMisc::RequestExitWithStatus(false,valid&&saved?0:1);
     }
+    // This fixture teleports to the surveyed bed and can change menu state.
+    // Do it before deriving camera medium uniforms from this frame's eye.
+    if(bSmokeTest&&SmokeScenario==TEXT("sediment")) TickSedimentTest(DeltaSeconds);
     Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
     const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
     Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight+breathMotion));
@@ -693,7 +696,6 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(Equipment) Equipment->Update(DeltaSeconds);
     UpdateTorch();
     if(bSmokeTest&&SmokeScenario==TEXT("modes")) TickModeTest();
-    if(bSmokeTest&&SmokeScenario==TEXT("sediment")) TickSedimentTest(DeltaSeconds);
     if(bPerformance) TickPerformance();
     if(bSmokeTest&&SmokeScenario==TEXT("fish")) TickFishInspection(DeltaSeconds);
     if(bSmokeTest&&SmokeScenario==TEXT("rocks")) TickRockInspection(DeltaSeconds);
