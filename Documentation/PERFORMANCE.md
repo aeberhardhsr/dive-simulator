@@ -132,3 +132,16 @@ Die GPU-Zeit liegt im Mittel bei 14,15 ms, der Spielthread bei 5,82 ms. Das gepr
 Der eigenständige Stand `f19bd3f` wurde 60 Sekunden nach 15 Sekunden Aufwärmen im Weesen-Unterwasserszenario gemessen: RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit und ohne weitere Unreal-/Spielinstanz. Die vor dem Start gemeldete GPU-Auslastung betrug 25 Prozent. Aus 4.073 vollständigen inneren Bildintervallen über 59,968 s ergeben sich **67,92 FPS im Mittel / 54,37 FPS im langsamsten Prozent**. P95 beträgt 17,34 ms, die höchste Bildzeit 19,78 ms; 503 Bilder überschreiten 16,67 ms, keines 33,33 ms.
 
 GPU und Spielthread benötigen im Mittel 14,12 bzw. 5,81 ms. Das geprüfte Messbild zeigt den bodennahen Weesen-Bereich bei 5,2 Metern Tiefe. Die mittlere Leistung bleibt numerisch nahe am PlantCanopy-Lauf (67,71 FPS), ohne daraus einen Geschwindigkeitsgewinn oder isolierte Shaderkosten abzuleiten. Dieser Lauf belegt weder durchgehend 60 FPS noch Langzeitstabilität oder alle Szenarien. [Paket-, Bild- und Rohdatennachweis](VIEW_PATH_RESULTS.json).
+
+## WindowsFormationsFinal: zusammenhängende Felsgruppen
+
+Quellstand `9833ef4`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Qualität Hoch, feste 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Beide Läufe beginnen nach 15 Sekunden Aufwärmen und ohne weitere Unreal-/Spielinstanz. Die veränderte Felsanordnung beeinflusst sichtbare Flächen und Schatten; diese Messungen isolieren keine Optimierungskosten gegenüber älteren Paketen.
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 72,91 FPS | 61,79 FPS | 15,32 ms | 17,42 ms | 0 / 4.373 |
+| Murg Schwimmen/Nachladen, 90 s | 100,88 FPS | 81,55 FPS | 10,85 ms | 34,36 ms | 1 / 9.077 |
+
+Der Weesen-Lauf umfasst 59,980 Sekunden vollständige Bildintervalle; drei Bilder überschreiten 16,67 ms. GPU und Spielthread benötigen im Mittel 13,10 bzw. 6,60 ms. Die gemeldete GPU-Auslastung vor dem Start liegt bei 20 Prozent. Die Sichtkontrolle zeigt den bodennahen Bereich bei 5,2 Metern Tiefe mit den neuen Felsgruppen. Durchgehend 60 FPS und Langzeitstabilität sind damit weiterhin nicht belegt.
+
+Der Murg-Lauf umfasst 89,980 Sekunden und 144,86 Meter Bewegung. Vier Bilder überschreiten 16,67 ms, eines 33,33 ms, keines 100 ms. GPU und Spielthread benötigen im Mittel 9,30 bzw. 4,68 ms; die höchste Spielthreadzeit beträgt 33,94 ms. Die GPU-Auslastung vor dem Start liegt ebenfalls bei 20 Prozent. Das Nachladeprotokoll bestätigt die gestaffelten Übergänge mit sieben, acht und neun aktiven Zellen. Das abschließende Bild zeigt freies Wasser bei 24,7 Metern Tiefe; diese Strecke ist keine Messung dauerhaft dichter bodennaher Felsansichten. Der einzelne Ruckler bleibt ein offener Leistungsbefund. [Quellstand, Paket, Bilder und Rohdatennachweise](FORMATIONS_RESULTS.json).

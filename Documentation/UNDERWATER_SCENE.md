@@ -2,6 +2,28 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
+## Zusammenhängende Felsgruppen
+
+Die Platzierung aus Quellstand `1a18dfc` verbindet größere Blöcke zu kurzen Felsrücken. Eine kontinuierliche Verteilung erzeugt dichtere Bereiche und freiere Sedimentflächen. Die Hauptrichtung ändert sich langsam über die Umgebung und folgt an steileren Stellen der örtlichen Höhenlinie. Bis zu vier größere Blöcke je Gruppe überlappen teilweise; kleinere Felsen und Geröll bleiben am Rand lockerer verteilt. Das vergrößert die räumlichen Formen, ohne die vermessene Geländetopologie zu verändern. Es handelt sich um gestaltete Formationen, nicht um vermessene einzelne Felsvorkommen.
+
+Die drei vorhandenen Felsmodelle und ihre Materialien bleiben erhalten. Jeder Block erhält Größe, Höhe und Drehung; die höchste horizontale Skalierung steigt von 2,4 auf 3,2. Das vorhandene Raster von 96-Meter-Zellen, weltfesten Zufallswerten und eindeutiger Zellzugehörigkeit bleibt bestehen. Ein einreihiger Nachbarbereich reicht für den maximalen Versatz von 8,5 Metern je Weltachse aus. Bestehende Einstiegs- und Zugangskorridore bleiben inklusive des vergrößerten Felsradius ausgespart. Pflanzen, Kies und Fischbewegung berücksichtigen dieselben aktualisierten Hindernisdaten.
+
+Die erweiterten Laufzeitprüfungen kontrollieren eindeutige Positionen, Größenbegrenzung, Einstiegsschutz, unveränderte Wiederherstellung beim Nachladen und zusammenliegende größere Blöcke. Der letzte Punkt prüft Abstände konservativer Hüllen, nicht die Qualität sichtbarer Felsanschlüsse. Diese wird zusätzlich anhand identischer Kameras vor und nach der Änderung beurteilt. Sichtbar bleiben derzeit zu glatte Übergänge zum Sediment, wiedererkennbare Einzelformen und eine insgesamt noch nicht ausreichende Material- und Lichtqualität.
+
+Alle neun festen Kamerapositionen an den drei Einstiegen stimmen im Vergleich mit `WindowsViewPath` überein. Die folgenden Bilder zeigen die dritte Lediwracks-Ansicht bei 14 Metern Sichtweite und Tageslicht.
+
+![Vorherige einzelne Felsgruppen](Images/Formations_Before.png)
+
+![Zusammenhängende größere Felsblöcke](Images/Formations_After.png)
+
+Der erste Paketlauf (`WindowsFormations`, `1a18dfc`) besteht zehn Fälle, scheitert aber beim Start der Sedimentprüfung: Das Prüfszenario versetzt den Taucher erst nach der Aktualisierung der Wasserparameter. Die strenge Prüfung erkennt dadurch einen veralteten Augenabstand. Quellstand `9833ef4` legt diese Testversetzung vor die Kameraaktualisierung. Die Parameterprüfung bleibt unverändert. Der korrigierte native Lauf besteht Aufwirbeln, Pause und vollständiges Absetzen; er endet mit sechs erzeugten und null verbleibenden Sedimentwolken. Das erste Paket und sein Fehlerprotokoll bleiben erhalten.
+
+Das korrigierte Paket **`Builds/WindowsFormationsFinal/divingsim.exe`** besteht zwölf Szenenfälle mit 60 Bildern und den normalen Launcher-Start. Es enthält Quellstand `9833ef4f86c9804d8c2ed2d9ef56b45fddbd4c7d`; die Spiel-EXE hat SHA-256 `b0d8104e6329c1c8c41d241224d608aa9be962e116f7776543dde8f8da940306`. Geprüft sind alle drei Habitatansichten und Schwimm-/Uferwege, die Nanite-Ersatzdarstellung, Sediment und Navigation. Die CI-Quellprüfungen auf Windows, macOS und Linux sind ebenfalls [erfolgreich](https://github.com/aeberhardhsr/dive-simulator/actions/runs/45859950114).
+
+Der [Ergebnisbericht](FORMATIONS_RESULTS.json) verbindet Quelldateien, Paketcontainer, zwölf Szenenfälle, identische Vergleichskameras, veröffentlichte Bilder und zwei Leistungsmessungen. Er erhält auch den fehlgeschlagenen ersten Lauf. Bei 1080p/Hoch erreicht der bodennahe 60-Sekunden-Lauf 72,91 FPS im Mittel und 61,79 FPS im langsamsten Prozent, ohne Bild über 33,33 ms. Der 90-Sekunden-Murg-Lauf erreicht 100,88 / 81,55 FPS, enthält aber einen Ruckler mit 34,36 ms. Er führt teilweise durch freies tieferes Wasser und belegt keine Leistung in durchgehend dichten Felsgruppen. [Messbedingungen und Grenzen](PERFORMANCE.md).
+
+Reproduktion: `Tools/TestHabitat.ps1 -PackageDirectory Builds/WindowsFormationsFinal`; anschließend `Tools/ReportHabitat.py` mit `--formations`, `--baseline-run`, `--prior-run`, `--build`, `--output` und den beiden `--performance`-Verzeichnissen aus dem Ergebnisbericht. Die Szenenprüfung endet bei einem Fehler; ein späterer vollständiger Lauf besitzt ein eigenes Verzeichnis. Menü/HUD/FPV folgen weiterhin erst nach Unterwasser- und Überwassergrafik; die [gesicherten UI-Referenzen](UI_UX_TARGET.md) bleiben dafür verbindliche Designrichtung.
+
 ## Blickabhängige Wasserfarbe
 
 Der neue Entwicklungsstand entfernt den zusätzlichen konstanten Grünfilter und die feste kanalweise Entsättigung der Tauchkamera. Die Wasserfarbe kommt aus entfernungsabhängiger Absorption und Streuung; die bestehende Entsättigung bei körperlicher Beeinträchtigung bleibt wirksam. Nahe Materialien behalten damit mehr ihrer eigenen Farbe, statt unabhängig vom Abstand immer gleich eingefärbt zu werden.
