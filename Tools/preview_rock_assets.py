@@ -1,10 +1,12 @@
 """Blender: neutral geometry review; not a game or underwater render."""
 import bpy
+import sys
 from pathlib import Path
 from mathutils import Vector
 
 ROOT=Path(__file__).resolve().parents[1]
-bpy.ops.wm.open_mainfile(filepath=str(ROOT/'blender/RockAssets.blend'),use_scripts=False)
+gravel='--gravel' in sys.argv
+bpy.ops.wm.open_mainfile(filepath=str(ROOT/('blender/GravelAssets.blend' if gravel else 'blender/RockAssets.blend')),use_scripts=False)
 material=bpy.data.materials.new('Neutral geometry review')
 material.use_nodes=True
 material.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=(.22,.24,.25,1)
@@ -29,5 +31,5 @@ scene.camera.rotation_euler=(Vector((0,0,.5))-scene.camera.location).to_track_qu
 scene.camera.data.type='ORTHO';scene.camera.data.ortho_scale=8
 scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=32
 scene.render.resolution_x=1500;scene.render.resolution_y=800;scene.render.resolution_percentage=100
-scene.render.image_settings.file_format='PNG';scene.render.filepath=str(ROOT/'artifacts/RockGeometry.png')
+scene.render.image_settings.file_format='PNG';scene.render.filepath=str(ROOT/('artifacts/GravelGeometry.png' if gravel else 'artifacts/RockGeometry.png'))
 bpy.ops.render.render(write_still=True)

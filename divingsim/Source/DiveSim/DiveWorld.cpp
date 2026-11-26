@@ -47,6 +47,7 @@ ADiveWorld::ADiveWorld()
     {
         auto* component=create(*FString::Printf(TEXT("LakeRock%d"),i+1));
         component->SetCollisionProfileName(TEXT("BlockAll"));Rocks.Add(component);
+        Gravel.Add(create(*FString::Printf(TEXT("Gravel%d"),i+1)));
     }
     for(const auto& profile:Dive::PlantProfiles)
         Plants.Add(create(UTF8_TO_TCHAR(profile.Mesh)));
@@ -146,6 +147,9 @@ void ADiveWorld::Populate()
         Rocks[i]->ClearInstances();
         Rocks[i]->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Rocks/")+name+TEXT(".")+name)));
         Rocks[i]->SetMaterial(0,Mat(TEXT("M_RockSurface")));
+        const FString gravel=FString::Printf(TEXT("SM_Gravel%d"),i+1);
+        Gravel[i]->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/Gravel/")+gravel+TEXT(".")+gravel)));
+        Gravel[i]->SetMaterial(0,Mat(TEXT("M_GravelSurface")));
     }
     for(int32 species=0;species<Plants.Num();++species)
     {
@@ -165,6 +169,9 @@ void ADiveWorld::Populate()
     for(auto& pair:PopulationCells)
         for(const auto& component:pair.Value.Components) component->DestroyComponent();
     PopulationCells.Reset();PopulationCell=FIntPoint(MAX_int32,MAX_int32);LastFishRefill=-1;
+    for(auto& pair:GravelCells)
+        for(const auto& component:pair.Value.Components) component->DestroyComponent();
+    GravelCells.Reset();GravelCell=FIntPoint(MAX_int32,MAX_int32);
     for(int32 species=0;species<Fish.Num();++species)
         for(int i=0;i<Dive::FishProfiles[species].Count;++i)
         {

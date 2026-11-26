@@ -115,6 +115,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             FTransform(fish.Active?FVector(facing[0],facing[1],facing[2]).Rotation():FRotator::ZeroRotator,
                 fish.Active?fish.Position:original,FVector(fish.Active?fish.Scale:0)),false,true,true);
     }
+    FString gravelDetail;valid&=TestGravelStreaming(gravelDetail);
     Detail=FString::Printf(TEXT("retained_cells=%d reloaded_cells=%d unchanged_near_fish=%d distant_spawns=%d active_cells=%d slots=%d"),
         retained,reloaded,nearFish,spawned,PopulationCells.Num(),FishState.Num());
     UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_TEST_END"));

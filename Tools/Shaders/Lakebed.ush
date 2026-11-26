@@ -2,6 +2,20 @@
 // Normal maps are DirectX/BC5: decode RG and reconstruct positive tangent Z.
 struct BedSurface
 {
+    uint PatchHash(int2 p)
+    {
+        uint h=uint(p.x)*0x8da6b343u^uint(p.y)*0xd8163841u;
+        h^=h>>16;h*=0x7feb352du;h^=h>>15;h*=0x846ca68bu;h^=h>>16;return h;
+    }
+    float PatchNoise(float2 p)
+    {
+        int2 i=int2(floor(p));float2 f=frac(p);f=f*f*(3-2*f);
+        float a=(PatchHash(i)&0x00ffffffu)/16777216.0;
+        float b=(PatchHash(i+int2(1,0))&0x00ffffffu)/16777216.0;
+        float c=(PatchHash(i+int2(0,1))&0x00ffffffu)/16777216.0;
+        float d=(PatchHash(i+1)&0x00ffffffu)/16777216.0;
+        return lerp(lerp(a,b,f.x),lerp(c,d,f.x),f.y);
+    }
     float Noise(float2 p)
     {
         float2 i=floor(p), f=frac(p); f=f*f*(3-2*f);
@@ -53,7 +67,7 @@ float3 color=rock;
 SurfaceNormal=rn; Roughness=ra.y; Occlusion=ra.x;
 if(IsRock<.5)
 {
-    float patch=bed.Noise(P.xy/850)+.3*bed.Noise(P.xy/270);
+    float patch=bed.PatchNoise(P.xy/850)+.3*bed.PatchNoise(P.xy/270);
     float depth=max(0,-P.z*.01);
     float rockWeight=1-smoothstep(.58,.88,n.z);
     float gravelWeight=smoothstep(.35,.95,patch)*(1-smoothstep(12,55,depth));

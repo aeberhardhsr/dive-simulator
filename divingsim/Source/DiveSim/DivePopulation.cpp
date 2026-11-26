@@ -150,5 +150,6 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_CELL x=%d y=%d loaded=%d unloaded=%d active=%d rocks=%d milliseconds=%.3f"),
             center.X,center.Y,loaded,unloaded,PopulationCells.Num(),RockState.Num(),(FPlatformTime::Seconds()-started)*1000);
     }
+    StreamGravel(Player,Initial);
     RefillFish(Player,Initial);
 }

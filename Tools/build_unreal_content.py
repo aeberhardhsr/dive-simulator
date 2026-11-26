@@ -264,6 +264,8 @@ if not ONLY_ENVIRONMENT:
     build_fish()
     from build_rock_content import build_rocks
     build_rocks()
+    from build_gravel_content import build_gravel
+    build_gravel()
     map_path=BASE+'/Maps/L_DiveTraining'
     if not u.EditorAssetLibrary.does_asset_exist(map_path):
         world=u.EditorLoadingAndSavingUtils.new_blank_map(False)

@@ -78,6 +78,8 @@ public:
     bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
     TArray<FString> PhotographSpecies(const FVector& Eye,const FVector& Forward) const;
     bool TestPopulationStreaming(FString& Detail);
+    bool ValidateGravel(FString& Error) const;
+    bool TestGravelStreaming(FString& Detail);
     bool ValidateImagery(FString& Error) const;
     bool ValidateLandscape(FString& Error) const;
     bool ValidateBuildings(FString& Error) const;
@@ -140,6 +142,7 @@ private:
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> Buoys;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuoyLines;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Rocks;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Gravel;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Plants;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
     UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Bubbles;
@@ -174,6 +177,8 @@ private:
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
+    UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
+    FIntPoint GravelCell=FIntPoint(MAX_int32,MAX_int32);
     FIntPoint PopulationCell=FIntPoint(MAX_int32,MAX_int32);
     double LastFishRefill=-1;
     bool bPopulationChecked=false;
@@ -209,6 +214,8 @@ private:
     void StreamPopulation(const FVector& Player,bool Initial=false);
     void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
     void CreatePopulationCell(FIntPoint Key);
+    void CreateGravelCell(FIntPoint Key);
+    void StreamGravel(const FVector& Player,bool Immediate=false);
     void RefillFish(const FVector& Player,bool Initial);
     void TickFish(float Dt,const FVector& Player);
     void InitializeParticles();

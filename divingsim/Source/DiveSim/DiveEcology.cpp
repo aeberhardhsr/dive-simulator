@@ -7,6 +7,7 @@
 
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
+    if(!ValidateGravel(Error)) return false;
     if(PopulationCells.Num()!=9) { Error=TEXT("Population window must contain nine cells");return false; }
     for(const auto& pair:PopulationCells)
     {
