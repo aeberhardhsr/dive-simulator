@@ -22,6 +22,7 @@ foreach($entry in 0..2) {
 $cases+=@{name='weesen-before-land';scenario='shore-preview';entry=0;land=$true;off=$true}
 $cases+=@{name='weesen-before-ground';scenario='shore-preview';entry=0;land=$true;ground=$true;off=$true}
 $cases+=@{name='murg-fallback-ground';scenario='shore-preview';entry=1;land=$true;ground=$true;fallback=$true}
+$cases+=@{name='weesen-fallback-ground';scenario='shore-preview';entry=0;land=$true;ground=$true;fallback=$true}
 $completed=@()
 foreach($case in $cases) {
     $folder=Join-Path $result $case.name

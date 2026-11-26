@@ -33,7 +33,7 @@ def main():
     assert sorted(host['package_containers'], key=lambda p:p['file']) == containers
     cases = read(run / 'Cases.json')
     expected = {f'entry-{e}-{view}' for e in range(3) for view in ['land', 'ground', 'shore', 'coast']}
-    expected |= {'weesen-before-land', 'weesen-before-ground', 'murg-fallback-ground'}
+    expected |= {'weesen-before-land', 'weesen-before-ground', 'murg-fallback-ground', 'weesen-fallback-ground'}
     assert len(cases) == len(expected) and {c['name'] for c in cases} == expected
     evidence = []
     for case in cases:
