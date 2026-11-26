@@ -26,6 +26,19 @@ void ADivePawn::InputSmokeTick(float Dt)
     auto* pc=Cast<APlayerController>(GetController());
     auto* hud=pc?Cast<ADiveHUD>(pc->GetHUD()):nullptr;
     if(!pc||!hud) return;
+    if(SmokeScenario==TEXT("discoveries"))
+    {
+        if(ControlsSmokePhase<14&&ControlsSmokeClock>(ControlsSmokePhase+1)*2.5)
+        {
+            const bool ok=hud->DiscoverySmokeTest(ControlsSmokePhase);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_DISCOVERY_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));
+            if(!ok) { UE_LOG(LogTemp,Error,TEXT("DIVE_DISCOVERY_FAIL phase=%d"),ControlsSmokePhase);FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            ++ControlsSmokePhase;
+        }
+        if(ControlsSmokePhase==14&&ControlsSmokeClock>37)
+        { UE_LOG(LogTemp,Display,TEXT("DIVE_DISCOVERY_PASS phases=14 entry=%d"),EntryIndex);UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS discoveries=1"));FPlatformMisc::RequestExitWithStatus(false,0); }
+        return;
+    }
     auto tap=[pc](FKey Key)
     {
         pc->InputKey(FInputKeyEventArgs::CreateSimulated(Key,IE_Pressed,1));

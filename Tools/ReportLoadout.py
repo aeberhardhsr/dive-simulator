@@ -29,7 +29,7 @@ def report(folder):
         data = read(directory / "Dive.json")
         gear = data["loadout"]
         mass, material, bcd, litres, dry, ballast = expected[index]
-        assert data["schema_version"] == 6 and data["status"] == "smoke_pass"
+        assert data["schema_version"] in {6,7} and data["status"] == "smoke_pass"
         assert data["loadout_model"] == "freshwater_mass_balance_v1"
         assert not data["assisted_buoyancy"]
         assert (gear["cylinder_material"], gear["bcd_model"], data["cylinder_litres"],

@@ -50,7 +50,8 @@ FDiveWriteResult WriteRecording(const FDiveRecording& Recording)
     FDiveWriteResult result;
     const double started=FPlatformTime::Seconds();
     auto root=MakeShared<FJsonObject>();
-    root->SetNumberField(TEXT("schema_version"),6);
+    root->SetNumberField(TEXT("schema_version"),7);
+    DiveDiscoveries::EncodePhotos(root,Recording.Photographs);
     root->SetStringField(TEXT("loadout_model"),TEXT("freshwater_mass_balance_v1"));
     auto gear=MakeShared<FJsonObject>();
     const auto& config=Recording.Config;

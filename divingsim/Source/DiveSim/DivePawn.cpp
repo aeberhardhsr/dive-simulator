@@ -190,7 +190,7 @@ void ADivePawn::BeginPlay()
                 }
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
-            else if(SmokeScenario!=TEXT("waypoints")&&SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
+            else if(SmokeScenario!=TEXT("discoveries")&&SmokeScenario!=TEXT("waypoints")&&SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
             double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
@@ -219,6 +219,8 @@ void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(Com
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
 void ADivePawn::ToggleMenu()
 {
+    if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->DiscoveriesOpen()) { hud->CloseDiscoveries();return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->WaypointsOpen()) { hud->CloseWaypoints();return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
@@ -313,7 +315,7 @@ void ADivePawn::StartTutorial()
 
 void ADivePawn::StartDive()
 {
-    if(!Environment || !Environment->bTerrainReady) return;
+    if(PhotoPending()||!Environment || !Environment->bTerrainReady) return;
     if(!bTutorialActive) Tutorial=Dive::Tutorial{};
     PendingConfig.Sanitize();
     Simulation.Reset(PendingConfig);
@@ -341,6 +343,7 @@ void ADivePawn::StartDive()
     if(auto* PC=Cast<APlayerController>(GetController())) PC->SetControlRotation(FRotator(bSmokeTest&&SmokeScenario==TEXT("torch")?-55:-8,entry.Yaw,0));
     // Model::Reset prepares the selected loadout at the surface. Entry depth
     // compresses that same gas; ballast is never silently neutralized at spawn.
+    Photographs.Reset();
     Samples.Reset(); Accumulator=0; TelemetryAccumulator=0;
     Audio->Reset(); Audio->ApplyLevels(AudioLevels);
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
@@ -417,7 +420,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("discoveries")||SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -892,7 +895,7 @@ void ADivePawn::FinishDive(const FString& Reason)
 {
     if(!bDiveActive) return;
     if(auto* pc=Cast<APlayerController>(GetController()))
-        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) { hud->CloseControls(); hud->CloseProfiles(true); hud->CloseEntryMap(); }
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) { hud->CloseDiscoveries(); hud->CloseControls(); hud->CloseProfiles(true); hud->CloseEntryMap(); }
     Samples.Add({Simulation.Data,GetActorLocation()});
     Outcome=Reason; bDiveActive=false; bSummary=true;
     if(!SaveLog(Reason)) Outcome+=TEXT(" / log_save_failed");
@@ -914,18 +917,10 @@ void ADivePawn::FinishDive(const FString& Reason)
 
 void ADivePawn::EndPlay(const EEndPlayReason::Type Reason)
 {
+    FScreenshotRequest::OnScreenshotRequestProcessed().Remove(PhotoProcessedHandle);
+    PendingPhoto.Reset();
     if(bDiveActive) SaveLog(TEXT("interrupted"));
     Super::EndPlay(Reason);
-}
-
-void ADivePawn::Photograph()
-{
-    if(bMenu) return;
-    const FString dir=FPaths::ProjectSavedDir()/TEXT("Photographs");
-    IFileManager::Get().MakeDirectory(*dir,true);
-    const FString path=dir/(FDateTime::Now().ToString(TEXT("%Y%m%d_%H%M%S"))+TEXT(".png"));
-    FScreenshotRequest::RequestScreenshot(path,false,false);
-    Notify(Local(TEXT("Foto gespeichert: Saved/Photographs"),TEXT("Photo saved: Saved/Photographs")));
 }
 
 bool ADivePawn::SaveLog(const FString& Reason)
@@ -937,7 +932,7 @@ bool ADivePawn::SaveLog(const FString& Reason)
     recording.Path=LastLogPath; recording.StartedUTC=DiveStartedUTC; recording.Status=Reason;
     recording.Location=EntryName(); recording.bTest=bSmokeTest; recording.Config=Simulation.Settings;
     recording.State=Simulation.Data; recording.SurveyOrigin=Environment->Terrain.ToSurvey(FVector::ZeroVector);
-    recording.Samples=Samples;
+    recording.Samples=Samples; recording.Photographs=Photographs;
     if(Reason==TEXT("in_progress"))
     {
         RecordingWriter.Submit(MoveTemp(recording));

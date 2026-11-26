@@ -17,6 +17,9 @@ public:
     virtual void NotifyHitBoxClick(FName BoxName) override;
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
     void OpenLogbook(const FString& PreferredPath=FString(),bool IncludeTests=false);
+    void OpenDiscoveries(bool SelectedDive=false);
+    void CloseDiscoveries();
+    bool DiscoveriesOpen() const { return bDiscoveriesPage; }
     void OpenControls();
     void CloseControls() { bControlsPage=false; }
     bool ControlsOpen() const { return bControlsPage; }
@@ -31,6 +34,7 @@ public:
     bool AvatarSmokeTest(int Phase);
     bool NavigationSmokeTest(int Phase);
     bool WaypointSmokeTest(int Phase);
+    bool DiscoverySmokeTest(int Phase);
     void OpenWaypoints();
     void CloseWaypoints(bool Resume=true);
     bool WaypointsOpen() const { return bWaypointPage; }
@@ -91,6 +95,17 @@ private:
     int32 MapDraftEntry=0;
     int32 MapSmokeEntry=0;
     double MapPausedSeconds=0;
+    void Discoveries();
+    void DiscoveryClick(FName Id);
+    void SelectPhotograph();
+    bool bDiscoveriesPage=false,bDiscoveryLoading=false,bDiscoveryLog=false;
+    int32 DiscoverySpecies=-1,DiscoveryPhoto=0,DiscoveryUnreadable=0;
+    TArray<FDiveSpecies> SpeciesCatalog;
+    struct FGalleryPhoto { FDivePhotograph Photo;FString Location;bool Test=false; };
+    TArray<FGalleryPhoto> Gallery;
+    TArray<int32> VisiblePhotos() const;
+    TFuture<FDiveLogIndex> DiscoveryTask;
+    UPROPERTY() TObjectPtr<class UTexture2D> PhotographTexture=nullptr;
     void Logbook();
     void ControlsMenu();
     void TutorialOverlay();

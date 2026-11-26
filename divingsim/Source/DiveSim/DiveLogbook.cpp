@@ -15,7 +15,7 @@ bool Parse(const FString& Json,FDiveLog& Log)
     if(!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),root)||!root)
         return fail(TEXT("Invalid JSON"));
     double version=0;
-    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4&&version!=5&&version!=6))
+    if(!root->TryGetNumberField(TEXT("schema_version"),version)||(version!=1&&version!=2&&version!=3&&version!=4&&version!=5&&version!=6&&version!=7))
         return fail(TEXT("Unsupported log version"));
     Log.bBreathingContext=version>=3;
     Log.bBreathReserveContext=version>=4;
@@ -43,6 +43,7 @@ bool Parse(const FString& Json,FDiveLog& Log)
        !number(root,TEXT("cylinder_litres"),Log.CylinderLitres,1,100)||
        !number(root,TEXT("mode"),mode,0,2)||mode!=FMath::FloorToDouble(mode))
         return fail(TEXT("Invalid log summary"));
+    if(version>=7&&!DiveDiscoveries::DecodePhotos(root,Log.Photographs,Log.Duration)) return fail(TEXT("Invalid photographs"));
     Log.Mode=static_cast<int32>(mode);
     if(Log.bLoadoutContext&&assisted&&Log.Mode!=0) return fail(TEXT("Invalid assisted buoyancy mode"));
     FString started;

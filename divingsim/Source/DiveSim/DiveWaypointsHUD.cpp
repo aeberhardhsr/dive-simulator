@@ -28,6 +28,7 @@ void ADiveHUD::EnsureWaypoints()
 }
 void ADiveHUD::OpenWaypoints()
 {
+    CloseDiscoveries();
     Diver=Cast<ADivePawn>(GetOwningPawn());if(!Diver||!Diver->Environment||bWaypointPage) return;
     bWaypointResume=Diver->bDiveActive&&!Diver->bMenu;Diver->SetMenu(true);EnsureWaypoints();
     bWaypointPage=true;bWaypointPick=bWaypointDelete=false;WaypointMessage.Empty();

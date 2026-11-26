@@ -52,15 +52,15 @@ void ADiveHUD::Field(FName Id,const FString& Label,const FString& Value,float X,
 void ADiveHUD::DrawHUD()
 {
     Super::DrawHUD();
-    Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver || !Canvas) return;
+    Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver || !Canvas || Diver->PhotoPending()) return;
     if(Diver->Equipment&&Diver->Equipment->Avatar)
-        Diver->Equipment->Avatar->SetInspection(Diver->bMenu&&bLoadoutPage&&bAvatarView&&!bEntryMapPage&&!bProfilesPage&&!bControlsPage&&!Diver->bLogbook&&!Diver->bSummary);
+        Diver->Equipment->Avatar->SetInspection(Diver->bMenu&&bLoadoutPage&&bAvatarView&&!bDiscoveriesPage&&!bEntryMapPage&&!bProfilesPage&&!bControlsPage&&!Diver->bLogbook&&!Diver->bSummary);
     Scale=FMath::Min(Canvas->SizeX/1600.f,Canvas->SizeY/900.f);
     OffsetX=(Canvas->SizeX-1600*Scale)/2; OffsetY=(Canvas->SizeY-900*Scale)/2;
     if(Diver->bMenu)
     {
         DrawRect(FLinearColor(0,.012,.014,.62),0,0,Canvas->SizeX,Canvas->SizeY);
-        if(bWaypointPage||bEntryMapPage) Map(true); else if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
+        if(bDiscoveriesPage) Discoveries(); else if(bWaypointPage||bEntryMapPage) Map(true); else if(bProfilesPage) ProfilesMenu(); else if(bControlsPage) ControlsMenu(); else if(Diver->bLogbook) Logbook(); else if(Diver->bSummary) Summary(); else Menu();
     }
     else
     {
@@ -181,7 +181,7 @@ void ADiveHUD::Menu()
     Button(TEXT("audio"),bAudioPage?TEXT("< Audio"):TEXT("Audio >"),530,835,105,40,bAudioPage);
     Button(TEXT("controls"),L(TEXT("F1  Steuerung / Hilfe"),TEXT("F1  Controls / help")),650,835,330,40);
     Button(TEXT("profiles"),L(TEXT("Tauchprofile"),TEXT("Dive profiles")),1010,835,260,40);
-    Text(TEXT("ESC Pause"),1310,846,14,Muted);
+    Button(TEXT("discoveries"),L(TEXT("Arten und Fotos"),TEXT("Species and photos")),1270,829,260,43);
 }
 
 void ADiveHUD::Instruments()
@@ -283,6 +283,8 @@ void ADiveHUD::Summary()
 void ADiveHUD::NotifyHitBoxClick(FName Id)
 {
     Super::NotifyHitBoxClick(Id); if(!Diver||ConfigDialog) return;
+    if(bDiscoveriesPage) { DiscoveryClick(Id);return; }
+    if(Id==TEXT("discoveries")) { OpenDiscoveries();return; }
     if(bWaypointPage) { WaypointClick(Id);return; }
     if(bEntryMapPage) { MapClick(Id); return; }
     if(Id==TEXT("profiles")) { OpenProfiles(); return; }
@@ -305,6 +307,7 @@ void ADiveHUD::NotifyHitBoxClick(FName Id)
     if(Id==TEXT("logbook")) { OpenLogbook(Diver->bSummary?Diver->LastLogPath:FString()); return; }
     if(Diver->bLogbook)
     {
+        if(Id==TEXT("logphotos")&&LogbookReady()) { OpenDiscoveries(true);return; }
         if(Id==TEXT("logback")) Diver->bLogbook=false;
         else if(Id==TEXT("loglanguage")) { Diver->bEnglish=!Diver->bEnglish; Diver->SaveSettings(); }
         else if(Id==TEXT("logprev")) LogPage=FMath::Max(0,LogPage-1);

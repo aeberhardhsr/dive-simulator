@@ -38,6 +38,7 @@ void ADiveHUD::EndPlay(const EEndPlayReason::Type Reason)
 { CloseConfigInput(false); CloseProfileName(false); CloseWaypointName(false); Super::EndPlay(Reason); }
 void ADiveHUD::OpenProfiles()
 {
+    CloseDiscoveries();
     Diver=Cast<ADivePawn>(GetOwningPawn()); if(!Diver) return;
     Diver->SetMenu(true); bControlsPage=false; bProfilesPage=true; ProfileMessage.Empty();
     const bool test=FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));

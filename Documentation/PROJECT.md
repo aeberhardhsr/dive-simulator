@@ -11,6 +11,8 @@ Die vollständigen 236 nummerierten Anforderungen stehen in [REQUIREMENTS.csv](R
 
 Die fachlichen Anforderungen bleiben gültig. Die Unity/HDRP/C#-Angaben der Spezifikation werden durch die ausdrücklich gewählte Unreal-Engine-Basis ersetzt. Lokal vorhanden: Unreal Engine 5.8.4 und Blender 5.3. Windows zuerst; gemeinsamer Quellstand für macOS, dort separater Build und Test auf dem vorhandenen Mac mit Xcode. macOS ist ohne diese Prüfung nicht als unterstützt freizugeben.
 
+Die lokale Arten- und Fotosammlung verbindet inzwischen Aufnahmen, Steckbriefe und Tauchgänge. Datenformat, Erkennungsregeln und Quellen: [DISCOVERIES.md](DISCOVERIES.md). Felchen und generische Pflanzen bleiben ausdrücklich Gruppen; die Fotoerkennung ist eine Spielregel. Die sichtbare Bodenbegrenzung an unvermessenem Gelände bei Walenstadt bleibt offen.
+
 ## Erstes ausführbares Inkrement
 
 Spielbarer Ablauf: Konfiguration → Uferstart → Gehen/Waten → Tauchen und Tarieren → Rückkehr auf das Startpodest → Auswertung. Die bisherigen Offshore-Spielstarts bleiben wählbar. Der ursprüngliche synthetische Testgrund ist durch die reale swissBATHY3D-Bathymetrie ersetzt. Drei örtliche Uferbereiche, lokale Geländekacheln und eine Tiefenkarte sind implementiert. Über Wasser liegen 77 swissALTI3D-Nanite-Kacheln mit 8-m-Quellgeometrie; Berge und Ufer tragen registrierte SWISSIMAGE-Luftbilder des Kacheljahrs 2025. Die begehbaren Zugänge sind modellierte Plattformen/Treppen auf den Höhendaten; originalgetreue Anlagen, räumliche Landschaftsdetails und fotorealistische Qualitätsabnahme bleiben offen.

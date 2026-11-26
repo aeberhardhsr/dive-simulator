@@ -39,6 +39,7 @@ void ADiveHUD::OpenLogbook(const FString& PreferredPath,bool IncludeTests)
 {
     if(!Diver) Diver=Cast<ADivePawn>(GetOwningPawn());
     if(!Diver) return;
+    CloseDiscoveries();
     Diver->bLogbook=true; Diver->SetMenu(true);
     // A new opening always refreshes disk state, including after closing during a
     // previous load. Worker lambdas own their input; abandoned results are harmless.
@@ -118,7 +119,8 @@ void ADiveHUD::Logbook()
     const auto& log=SelectedLog;
     if(!log.Error.IsEmpty())
     { Text(L(TEXT("Dieses Protokoll konnte nicht geladen werden."),TEXT("This log could not be loaded.")),510,208,24,Amber); return; }
-    Text(log.Location.Left(42),510,53,31,White);
+    Text(log.Location.Left(30),510,53,31,White);
+    Button(TEXT("logphotos"),FString::FromInt(log.Photographs.Num())+L(TEXT(" Fotos / Arten"),TEXT(" photos / species")),1230,52,300,42);
     Text(log.Date+TEXT("   /   ")+Outcome(log,Diver->bEnglish),510,100,16,Muted);
     const TCHAR* modes[]={TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};
     Text(FString::Printf(TEXT("%s    /    %.0f L    /    %d %s"),modes[log.Mode],log.CylinderLitres,log.Samples.Num(),*L(TEXT("Messpunkte"),TEXT("samples"))),510,131,16,Muted);

@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "DiveDiscoveries.h"
 #include "Async/Future.h"
 #include "Simulation/DiveModel.h"
 
@@ -17,6 +18,7 @@ struct FDiveRecording
     Dive::Config Config;
     Dive::State State;
     FVector2D SurveyOrigin=FVector2D::ZeroVector;
+    TArray<FDivePhotograph> Photographs;
     TArray<FDiveSample> Samples;
 };
 

@@ -1,0 +1,949 @@
+{
+  "status": "PASS",
+  "executable": "O:\\games\\dive game\\Builds\\WindowsDiscoveries\\divingsim\\Binaries\\Win64\\divingsim-Discoveries.exe",
+  "executable_sha256": "b28e49ee5cb0d8b5149069570dede9938f01ad3d73ddef65a07e6ffa60d14dec",
+  "native_tests": 35,
+  "python_tests": 21,
+  "discovery_image_count": 22,
+  "regression_image_count": 30,
+  "regression_cases": [
+    {
+      "case": {
+        "status": "PASS",
+        "entry": 2,
+        "name": "waypoints",
+        "screenshots": 9
+      },
+      "directory": "O:\\games\\dive game\\artifacts\\discoveries-regression-20261126-044022\\waypoints",
+      "images": [
+        {
+          "file": "DiveUnderwater_2_waypoints.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "30aa6f2958205ef037688c257937d8d816ecef097de239181f039ac49da3e18c"
+        },
+        {
+          "file": "Waypoints_02_Bearing.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "31632ea542779907de30376a20f6d72d9dec8ddabd3bc0c0171a5e960fda7828"
+        },
+        {
+          "file": "Waypoints_02_Controls.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "ce98b4c693cf6cc112b0bd417216c5f4f8d73e073014ec7d0b3bfc3e5a232f8c"
+        },
+        {
+          "file": "Waypoints_02_Current_EN.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "0e3b4fcddc41f6216c73e720e51052cec5d6de758148cc1f2d579e50776e9a29"
+        },
+        {
+          "file": "Waypoints_02_Delete_EN.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "07f6562ff8d631f9574bb2f058748fbd6019d4dec9d8cffa1e00a65501f6d033"
+        },
+        {
+          "file": "Waypoints_02_LiveMap.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "703db801e82ef1f52a100fa608b80b82daf68706e4b2b822505fba52eb1aab4e"
+        },
+        {
+          "file": "Waypoints_02_Map_DE.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "8e4f95c4603e46c17653549722bdfd469eea6e44f5b1198c41cedc47a38d1132"
+        },
+        {
+          "file": "Waypoints_02_Map_EN.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "b584c694a3a11c4d40d85008dab2a1691d0e248cbd2e0ef4fd5d670c1cc5a6b3"
+        },
+        {
+          "file": "Waypoints_02_Name_DE.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "998c9f4e0dee48c2d6dc83882031e9ff46fc08b21e7689ad44fce0f90b8ac880"
+        }
+      ],
+      "log_sha256": "cbb27dd938a86f404d36f080b5def9449502d6dcf492d1f0fdce3a2b02aaf57a"
+    },
+    {
+      "case": {
+        "status": "PASS",
+        "entry": 1,
+        "name": "logbook",
+        "screenshots": 6
+      },
+      "directory": "O:\\games\\dive game\\artifacts\\discoveries-regression-20261126-044022\\logbook",
+      "images": [
+        {
+          "file": "DiveSmoke_1_logbook.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "cc0e2e53e4f59cf26850125bc9f40e8d34d86e04d7eb5a1439419748fd90bfef"
+        },
+        {
+          "file": "DiveUnderwater_1_logbook.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "7de2842bcf3e7880385fec25100f864c83faeb93a8779fd16b8d9be3d557fde8"
+        },
+        {
+          "file": "Logbook_0.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "73e8e6cbf66feb38f94829b704777fa61bd217c8ba970ed892a62edaf93483a8"
+        },
+        {
+          "file": "Logbook_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "a95b5364532921a58fd8726392222f94fed707a90d4833a7ade452100b1ea6b2"
+        },
+        {
+          "file": "Logbook_2.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "94aff995c5bffec54b20439d62487befe5b0f5d2f41bcd798a7b40978a8a0038"
+        },
+        {
+          "file": "Logbook_3.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "514a66a13ae8983b853b8dd445eb78aed35de70870b8cdc6b602cc8d868d161a"
+        }
+      ],
+      "log_sha256": "13001401cff93f79fa5b90bfd3bee79e8175eb3f5c853d48b20404de031470a9"
+    },
+    {
+      "case": {
+        "status": "PASS",
+        "entry": 0,
+        "name": "controls",
+        "screenshots": 4
+      },
+      "directory": "O:\\games\\dive game\\artifacts\\discoveries-regression-20261126-044022\\controls",
+      "images": [
+        {
+          "file": "Controls_DE.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "8fc46242a284ae4976d29ce02655c1147ee34f93b6f1189d95d4821611663481"
+        },
+        {
+          "file": "Controls_EN.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "d8d18dd38b53a730eadf8b68adf4ffb14ac66933283080d0cb421905d8bfa3cf"
+        },
+        {
+          "file": "DiveSmoke_0_controls.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "16daec3db9ac7dbd3bb1964cd38cc382ee8f4130009592a41e4db82f3d0c56b6"
+        },
+        {
+          "file": "DiveUnderwater_0_controls.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "2681c6423cd31eb842ef7a68446194ebac1509eae2b072d8db814755793da732"
+        }
+      ],
+      "log_sha256": "98cb9c95df557c0fca2976ca47dddb163a0ace20bd959d84d8f3a4026a78bc18"
+    },
+    {
+      "case": {
+        "status": "PASS",
+        "entry": 1,
+        "name": "shore",
+        "screenshots": 9
+      },
+      "directory": "O:\\games\\dive game\\artifacts\\discoveries-regression-20261126-044022\\shore",
+      "images": [
+        {
+          "file": "DiveSmoke_1_shore.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "a854d399040625ef03b3da61d1319b90bad7f27baa717b96ab6af8995a68b3d8"
+        },
+        {
+          "file": "DiveUnderwater_1_shore.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "622bd7e141fc334009f851bf38b41f518df59342a1c145033acbd23a56a716a4"
+        },
+        {
+          "file": "ShoreComplete_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "f4a6167c1b85d974bc2024df41b940acb45533b7baca9bcc9f1b9478d1f68295"
+        },
+        {
+          "file": "ShoreDive_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "c4231a2454b688d88158dda77e377f746c48c9b74ee75f0765b0516751b03828"
+        },
+        {
+          "file": "ShoreMenu_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "9e74c8e245bca0bc52b17e3131cf904dca3aa3a33b87e223f80923585955e5f9"
+        },
+        {
+          "file": "ShoreReturn_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "49149446af4ac90cdcb60dcc800924b8187f985b682190fa77db78f980d63ddd"
+        },
+        {
+          "file": "ShoreStart_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "6398a397fef4ca287190da63315771c2525a334be43eda8ba15bcfd02b4f1089"
+        },
+        {
+          "file": "ShoreSurface_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "2de55775cd55eca82efa24e6325688c5816a215463fe059ce85b750260fd54e2"
+        },
+        {
+          "file": "ShoreWater_1.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "65166810700a72ac795b0247ac0fb074bf0548c255ed50898c516aff10ebe706"
+        }
+      ],
+      "log_sha256": "453b77715672ddebe4bb6e816c29a740132989f5584b9e486f061f4b4b166ac0"
+    },
+    {
+      "case": {
+        "status": "PASS",
+        "entry": 0,
+        "name": "dive",
+        "screenshots": 2
+      },
+      "directory": "O:\\games\\dive game\\artifacts\\discoveries-regression-20261126-044022\\dive",
+      "images": [
+        {
+          "file": "DiveSmoke_0_dive.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "ed5c4106ed74e65b83f7d85168a7c87b1657bf6b745a1cebc3911e199b0abcf8"
+        },
+        {
+          "file": "DiveUnderwater_0_dive.png",
+          "size": [
+            1600,
+            900
+          ],
+          "sha256": "2f66eca1e127e159cf176aca07c68d5a2a582a877aae3948a0d95c99625db263"
+        }
+      ],
+      "log_sha256": "99895f738cc91ef61f47cacd13fd6841fa185c28289187c2b81552bfbf85352c"
+    }
+  ],
+  "source_snapshot": [
+    {
+      "path": "divingsim/Source/DiveSim/DiveAccess.cpp",
+      "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAudio.cpp",
+      "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAudio.h",
+      "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAvatar.cpp",
+      "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAvatar.h",
+      "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp",
+      "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+      "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveBodyFrame.h",
+      "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp",
+      "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveBuildings.cpp",
+      "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveBuildings.h",
+      "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+      "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+      "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+      "sha256": "53539f013bf803cd2cb77df4f3b2491380bb8f54cc9a82df4728ab8754ef7223"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+      "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCelestialActor.cpp",
+      "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCelestialActor.h",
+      "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveConfigHUD.cpp",
+      "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveConfigIO.cpp",
+      "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveConfigIO.h",
+      "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveContacts.cpp",
+      "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveContacts.h",
+      "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+      "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveControls.cpp",
+      "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveControls.h",
+      "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveControlsHUD.cpp",
+      "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveControlsTests.cpp",
+      "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp",
+      "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDiscoveries.cpp",
+      "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDiscoveries.h",
+      "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp",
+      "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+      "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp",
+      "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp",
+      "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69",
+      "compiled_sha256": "2e2dcc4b571a914afed53423e721eb73880d8e50a75cb485b58dc9bd5949cfa1",
+      "post_build_normalization": "Removed one trailing blank line; all code bytes unchanged."
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveEcology.cpp",
+      "sha256": "01b0c327001185999cc89e426722874e0b060b97ea53fda54e9b49958027ba0f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp",
+      "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveEquipment.cpp",
+      "sha256": "0930c9a14517e341059bb24b2e11adcda1664ddf566bc9df5367f5f26247169d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveEquipment.h",
+      "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveGameMode.cpp",
+      "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveGameMode.h",
+      "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveHUD.cpp",
+      "sha256": "43307fe03a9d2bf2282e4fe0273387078e0c58861bb1df50ecdde583593e7410"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveHUD.h",
+      "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveImagery.cpp",
+      "sha256": "375a0e1fbcc2ed9c51f73cfd110b01528eaef5c85ffbe0bdf77ae9eabb251883"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+      "sha256": "de9af1fd6343e54de40e16a6467c41e025050a7acb40fe411d25ddf276b3f097"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "sha256": "8ef845c78fa718222d1310955ee92cf4150a6e52f0492fd4352664aacabcc776"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "sha256": "e0358c14034ec98b7ac47e51bfd6da848d30def094b2a6872f80ef90b1c5dc66"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+      "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp",
+      "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp",
+      "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLogbook.cpp",
+      "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLogbook.h",
+      "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp",
+      "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLogbookTests.cpp",
+      "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveMapHUD.cpp",
+      "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveModeSmoke.cpp",
+      "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp",
+      "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveNavigationTests.cpp",
+      "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveParticles.cpp",
+      "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePawn.cpp",
+      "sha256": "da7294c2048787ef35fa47ae0fb4085d0a1b474411297239e5a5b1724bb585a6"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePawn.h",
+      "sha256": "5cd7771d80258f002992709c6db245836b1fdfd3efa2d661db65c12d7d3de7fb"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePawnContacts.cpp",
+      "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePerformance.cpp",
+      "sha256": "4327caf4ce19e8934fb4397696dd8187c53c44efeba7ad3067a8dfb8a9c7fdff"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePhotograph.cpp",
+      "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePlayerController.cpp",
+      "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePlayerController.h",
+      "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePopulation.cpp",
+      "sha256": "7672db068353fba0e10c992269c79524da850dc8f8896621b8682e381dbbcec5"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+      "sha256": "d0b09dc9f1fa7309bb22117bd7d3926bf08e9079d24bfaed94aea859658ac90a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePose.h",
+      "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveProfiles.cpp",
+      "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveProfiles.h",
+      "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp",
+      "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveProfilesTests.cpp",
+      "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveRecording.cpp",
+      "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveRecording.h",
+      "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveSediment.cpp",
+      "sha256": "9f14acab23a978a7696c2d1188d0f957bdfada5ef740279e73ce77ccd14acd19"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp",
+      "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveShoreline.cpp",
+      "sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+      "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveSim.Build.cs",
+      "sha256": "b7e7428ef210c4b10a611469bd91ca80de3035fa85c112e961942bdb5d93a985"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveSim.cpp",
+      "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveSky.cpp",
+      "sha256": "dadde65be9ad3e2ca323292d0a8117e579cae285509c8cda5993ea72adc8507a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveSoak.cpp",
+      "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveTerrain.cpp",
+      "sha256": "5facf7a60561ea4d02b63a1692d86bf8988de54cc77c6f0b09f93d8972af298d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveTerrain.h",
+      "sha256": "f686048d6710319efa9f25dc225ba6935af0d4743c01c0eafee3e626b6ed3bfe"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveTextDialog.h",
+      "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveTorch.cpp",
+      "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWater.cpp",
+      "sha256": "214f1695dd2d0c59bf5f7725a1a780e525f44cd706c85119000754b8c16e566c"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWaypoints.cpp",
+      "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWaypoints.h",
+      "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp",
+      "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp",
+      "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp",
+      "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWorld.cpp",
+      "sha256": "294ed13d5db178287715c21aa769207bdcdf04864af266933cd94d4362417ccb"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWorld.h",
+      "sha256": "4c78a7f63ed7ed123f5f0d24a0ba10694c306f7cb494395d42212f4168894e83"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/AudioModel.h",
+      "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Bubbles.h",
+      "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/ConfigInput.h",
+      "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/DiveModel.h",
+      "sha256": "4840d1c0075e0409fc22785b4e0fa8cb1688d329e9fdc6cae90a4d539937c877"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Ecology.h",
+      "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h",
+      "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h",
+      "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+      "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Loadout.h",
+      "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/ModeRules.h",
+      "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Navigation.h",
+      "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h",
+      "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Sediment.h",
+      "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h",
+      "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h",
+      "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h",
+      "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Torch.h",
+      "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Tutorial.h",
+      "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/VisualMedium.h",
+      "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+      "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/WaterSurface.h",
+      "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68"
+    },
+    {
+      "path": "divingsim/Source/DiveSim/Simulation/Weather.h",
+      "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf"
+    },
+    {
+      "path": "divingsim/Source/divingsim.Target.cs",
+      "sha256": "df66618e5759aeec36462056fef73773d2b9a5d8f384e4765953355471a35eb6"
+    },
+    {
+      "path": "divingsim/Source/divingsimEditor.Target.cs",
+      "sha256": "cca3119d115b2c39690c250545bfc837c9c50a9e994d29205fe1cbacddb86dcf"
+    },
+    {
+      "path": "divingsim/Config/DefaultEditor.ini",
+      "sha256": "103a1a8f7f7cdc4cde6c82c09df0246df012fcf319a480c170a8de7287e0e59c"
+    },
+    {
+      "path": "divingsim/Config/DefaultEditorPerProjectUserSettings.ini",
+      "sha256": "0aaf0d9bd09045215b6d9277e37adbb6ed8f6275540e60e2744f293b032bf077"
+    },
+    {
+      "path": "divingsim/Config/DefaultEngine.ini",
+      "sha256": "374f5efca557ae5106148aaa4d6e321fb9420efa8b3c2377a173cb34ceaa9681"
+    },
+    {
+      "path": "divingsim/Config/DefaultGame.ini",
+      "sha256": "15dac366654b52756a58161aa2f577b581e940a9a524b7a369564d158c85c1b0"
+    },
+    {
+      "path": "divingsim/Config/DefaultInput.ini",
+      "sha256": "5deb78555510100669f2753e737919b3275ba81cb3ac31ced138a42c2bc58fef"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_Compile.ini",
+      "sha256": "ec28ccfa77e0a9a07b82cac7ad584ef83f45f56ffb4b50469270a213ca4c152b"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_Export.ini",
+      "sha256": "f5289b73341108ca0602e636f9c05e748f186bb2518b092a6b5a9d60b0a22757"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_ExportDialogueScript.ini",
+      "sha256": "6b1e5b6e9d4173284a490c884e0e17a43915ac124b7754dc830d92fd47001560"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_Gather.ini",
+      "sha256": "8e355845bfa4277355bb4951035d67da2917d34bbf0c376406205730367afdd2"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_GenerateReports.ini",
+      "sha256": "a51cfc2847aa4967edb106e4e82949e1d130196c83cf22854ff13dae6e6a8409"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_Import.ini",
+      "sha256": "4debbcddf9c9a79d938e95a7fb2104e2ccc8c9b9d905a58c92fe93069df6f3d6"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_ImportDialogue.ini",
+      "sha256": "7b8fe294216195541b61cb3780cc2932e0e6d034164344c2fc3c66d4d8ee9f08"
+    },
+    {
+      "path": "divingsim/Config/Localization/Game_ImportDialogueScript.ini",
+      "sha256": "f4409926f01cf0b42714182779d1da03c88598e3c0dfde3135cba011d9a456f0"
+    },
+    {
+      "path": "divingsim/Content/Diving/Data/Species.json",
+      "sha256": "399d1e34bdecdf8abbd49da0828ce427d3a44315d1470e31a4532ca8265f5d83"
+    }
+  ],
+  "previous_build_preserved_sha256": "641e13802d41d57d6be9054fcc8563abd7127399b9a864a20902da8a8a67db31",
+  "unchanged_materials": [
+    {
+      "name": "M_SolarWater",
+      "sha256": "fd9ae173075c8d7e4ca2a469d6b55e2f3396135cbb0652fae2e2799b88a55d44"
+    },
+    {
+      "name": "M_CausticsProbe",
+      "sha256": "1df0644771b88aaedbb8c5c7e1f3cceeabe89e16abd632a3078ee2c98b9d0e82"
+    },
+    {
+      "name": "M_Water",
+      "sha256": "0443254bb0e892157551446ed83c13b61cdf29c37b6e21e64892446a81b533ba"
+    },
+    {
+      "name": "M_Lakebed",
+      "sha256": "04fa5c18a39c90996b7ed595aa3fbfc56a672843500b89480df2b6fea4dfed62"
+    },
+    {
+      "name": "M_ShorePhoto",
+      "sha256": "9502d6abe1fafdd7e1f63b3e06c2a1128ffb770b17e937b2f71a38939334f59f"
+    },
+    {
+      "name": "M_RockSurface",
+      "sha256": "429fcd045cd30ca5ade21429f277b828ef71c84ed702433628a6f07e79da9a28"
+    }
+  ],
+  "unchanged_shaders": [
+    {
+      "path": "Tools/Shaders/FinSediment.ush",
+      "sha256": "b16ba7622f569e26b391ecb26eb053adf2f75c38e8bce2d557cde0dd0ac31d75"
+    },
+    {
+      "path": "Tools/Shaders/Lakebed.ush",
+      "sha256": "fc884647d4a6144589b6a1e1e7851b9992717fffe0f6e82a44894c9d62299596"
+    },
+    {
+      "path": "Tools/Shaders/SolarCaustics.ush",
+      "sha256": "ca8ed2afab79ce9d6040d8e5d4d7e992c43866e7ab0e657ba3eef1ee7238feec"
+    },
+    {
+      "path": "Tools/Shaders/SuspendedWater.ush",
+      "sha256": "5117d77d55e2885761e6325800760d8fcffa105ab92ffaa8eb3a8828e88a7f85"
+    },
+    {
+      "path": "Tools/Shaders/WaterOptics.ush",
+      "sha256": "31eaf9809a80c970ac982b269bb4d2cc8c1b9dc17dacb62c3a6e1d938de8cb22"
+    }
+  ],
+  "package_archives": [
+    {
+      "path": "O:\\games\\dive game\\Builds\\WindowsDiscoveries\\divingsim\\Content\\Paks\\divingsim-Windows.pak",
+      "sha256": "fe83e4dbaf3ddf1e1a68ecd83c5a3bec0a1b68f841c6210a8c82a2f523ac53ed"
+    },
+    {
+      "path": "O:\\games\\dive game\\Builds\\WindowsDiscoveries\\divingsim\\Content\\Paks\\divingsim-Windows.ucas",
+      "sha256": "f9953867496edeb851f79d0202572f142bf2036f85c9ec9c32827eb686c675fd"
+    },
+    {
+      "path": "O:\\games\\dive game\\Builds\\WindowsDiscoveries\\divingsim\\Content\\Paks\\divingsim-Windows.utoc",
+      "sha256": "93b434aa6b228dc88b989af1a07c9f29348f7661babae6b54d5a62dee50c5e3a"
+    },
+    {
+      "path": "O:\\games\\dive game\\Builds\\WindowsDiscoveries\\divingsim\\Content\\Paks\\global.ucas",
+      "sha256": "e2ce6a410cedfccc1362536f0c0c329f0c955e2252054a7ef4d503a010970e4e"
+    },
+    {
+      "path": "O:\\games\\dive game\\Builds\\WindowsDiscoveries\\divingsim\\Content\\Paks\\global.utoc",
+      "sha256": "0bb9ed54ca5f483747b97500c3ab6c865959dc26e3aefae90bd89eaacb7ae0b6"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "artifacts/discoveries-editor-release.log",
+      "sha256": "9c027d373e814991be05bb10dffd56d2c0ebe654463a2e162411c70bdcf9f2fa"
+    },
+    {
+      "path": "artifacts/discoveries-package.log",
+      "sha256": "d090a67505282c917f96b071f5a0ce19c579a48b7c486239cd2afa5c0bfa4cdf"
+    },
+    {
+      "path": "artifacts/discoveries-native-release.log",
+      "sha256": "219fce1c5c4070011b917ce77890379de5dcd22848920ba46c87482c48575944"
+    },
+    {
+      "path": "artifacts/discoveries-core.log",
+      "sha256": "18d84d691b31f61574376289afc66bf36b8f5f8304f7dad66f5046901d5f6cc8"
+    },
+    {
+      "path": "artifacts/discoveries-python.log",
+      "sha256": "11cce21442b54b8e5f80055fc75c1d758bf636d869be0fd059f448202660fd98"
+    },
+    {
+      "path": "artifacts/discoveries-bootstrap.log",
+      "sha256": "e56d9491d398ea760a951ce67df0a4652f52518f1c6cba5e4786a06cfc0649db"
+    },
+    {
+      "path": "artifacts/discoveries-legacy-loadout-report.log",
+      "sha256": "ca8f2faa937468d19d8585cf0beb43f0984630d06d55ed653b6462017192ec60"
+    },
+    {
+      "path": "artifacts/discoveries-legacy-modes-report.log",
+      "sha256": "07c381c1cdd1023ab55f21a213cba458058ccabcb0681b18e4568a0c63d251ad"
+    }
+  ],
+  "limits": "Windows runtime only; no new performance/soak measurement. Existing fish and plant models, authored recognition gates; no pixel-level identification or photorealism acceptance. Open bathymetry boundary remains visible at Walenstadt."
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "DiveDiscoveries.h"
 #include "Simulation/DiveModel.h"
 
 // Plain data only: disk/JSON work can run without touching UObjects.
@@ -14,6 +15,7 @@ struct FDiveLog
     bool bImpairmentContext=false;
     bool bLoadoutContext=false;
     bool bRecovered=false;
+    TArray<FDivePhotograph> Photographs;
     TArray<Dive::State> Samples;
     uint32 Warnings=0;
     int32 WarningEvents=0;

@@ -90,6 +90,9 @@ public:
     void SaveSettings();
     void LoadSettings();
     void Photograph();
+    bool PhotoPending() const { return PendingPhoto.IsSet(); }
+    TArray<FDivePhotograph> Photographs;
+    bool TestPhotographs() const { return bSmokeTest; }
     bool SaveLog(const FString& Reason);
     FString Local(const TCHAR* German,const TCHAR* English) const { return bEnglish?English:German; }
 private:
@@ -97,6 +100,9 @@ private:
     friend class FDiveBlockedHeadTurn;
 #endif
     FDiveRecordingWriter RecordingWriter;
+    TOptional<FDivePhotograph> PendingPhoto;
+    FDelegateHandle PhotoProcessedHandle;
+    void PhotoProcessed();
     float Accumulator=0, TelemetryAccumulator=0;
     double CameraBaseHeight=0;
     TArray<FDiveContactShape> ContactShapes;

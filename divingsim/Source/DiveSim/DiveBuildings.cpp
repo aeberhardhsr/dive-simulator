@@ -1,5 +1,5 @@
-#include "DiveWorld.h"
 #include "DiveBuildings.h"
+#include "DiveWorld.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "PhysicsEngine/BodySetup.h"

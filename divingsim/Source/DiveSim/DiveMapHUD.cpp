@@ -14,6 +14,7 @@ constexpr float MapX=120,MapY=210,MapW=1360,MapH=340;
 
 void ADiveHUD::OpenEntryMap()
 {
+    CloseDiscoveries();
     Diver=Cast<ADivePawn>(GetOwningPawn());
     if(!Diver||!Diver->Environment||!Diver->Environment->bTerrainReady||Diver->Environment->Terrain.Overview.IsEmpty()) return;
     MapDraftEntry=Diver->EntryIndex;MapDraftShore=Diver->PendingConfig.StartOnShore;
