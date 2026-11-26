@@ -33,6 +33,31 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     if(!bOpticsSmoke||!Diver||Variant<0||Variant>(waterView?9:plantView?5:3)) return false;
     if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView")))
     {
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatClose")))
+        {
+            // Stable close views of actual outcrop feet. The comparator changes
+            // gravel dressing only; rock layout and camera selection are shared.
+            auto ordered=RockState;
+            ordered.Sort([](const FDiveRock& A,const FDiveRock& B)
+            {return A.Position.X==B.Position.X?A.Position.Y<B.Position.Y:A.Position.X<B.Position.X;});
+            const FVector direction=FRotator(0,View*120+30,0).Vector();
+            for(const auto& rock:ordered)
+            {
+                if(rock.Radius<180||FVector::DistSquared2D(rock.Position,Diver->EntryLocation)>FMath::Square(3000.)) continue;
+                const FVector proposed=rock.Position+direction*(rock.Radius+350);
+                const FVector foot=rock.Position+direction*(rock.Radius*.75);
+                float bed,footBed;
+                if(!Terrain.Sample(proposed.X,proposed.Y,bed)||!Terrain.Sample(foot.X,foot.Y,footBed)||bed>-350||bed<-1600) continue;
+                bool blocked=false;
+                for(const auto& other:ordered)
+                    if(FVector::DistSquared2D(proposed,other.Position)<FMath::Square(other.Radius+75)) {blocked=true;break;}
+                if(blocked) continue;
+                Eye=FVector(proposed.X,proposed.Y,bed+130);
+                Rotation=(FVector(foot.X,foot.Y,footBed+15)-Eye).Rotation();
+                StreamPopulation(Eye);StreamGravel(Eye,true);UpdateAtmosphere();return true;
+            }
+            return false;
+        }
         // Camera selection depends only on surveyed terrain, never population.
         // Retain exactly the same viewpoints across distribution revisions.
         // Murg has no shallow flat patch within this radius. A second pass

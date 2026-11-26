@@ -5,6 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+    [switch]$HabitatClose, [switch]$NoRockAprons,
     [switch]$DisableShadows, [switch]$DisableLighting,
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
@@ -52,6 +53,11 @@ if($HabitatView) {
     if($Scenario -ne 'rocks' -or $GravelView -or $PlantView -or $WaterView) { throw 'HabitatView requires rocks without other comparison modes.' }
     $arguments+=' -DiveHabitatView'
 }
+if($HabitatClose) {
+    if(-not $HabitatView) {throw 'HabitatClose requires HabitatView.'}
+    $arguments+=' -DiveHabitatClose'
+}
+if($NoRockAprons) {$arguments+=' -DiveNoRockAprons'}
 if($GravelView) {
     if($Scenario -ne 'rocks') { throw 'GravelView requires the rocks comparison scenario.' }
     $arguments+=' -DiveGravelView'

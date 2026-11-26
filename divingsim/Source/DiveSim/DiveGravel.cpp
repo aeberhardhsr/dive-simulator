@@ -15,11 +15,12 @@ FIntPoint GravelKey(const FVector& P)
 void ADiveWorld::CreateGravelCell(FIntPoint Key)
 {
     auto& cell=GravelCells.Add(Key);
+    const bool aprons=!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockAprons")));
     TArray<FTransform> instances[3];
     TArray<const FDiveRock*> nearby;
     for(const auto& rock:RockState)
     {
-        const double reach=rock.Radius+25;
+        const double reach=rock.Radius>=126?rock.Radius*1.6+60:rock.Radius+25;
         if(rock.Position.X>=Key.X*GravelWidth-reach&&rock.Position.X<=(Key.X+1)*GravelWidth+reach&&
             rock.Position.Y>=Key.Y*GravelWidth-reach&&rock.Position.Y<=(Key.Y+1)*GravelWidth+reach) nearby.Add(&rock);
     }
@@ -35,14 +36,32 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
         float z,n,e;
         if(!Terrain.Sample(x,y,z)||z>-120||z<-4000) continue;
         const double gravel=Dive::BedDistribution::Gravel(x*.01,y*.01,-z*.01);
-        if(chance>gravel*gravel*.9) continue;
+        bool blocked=false;double apron=0;
+        for(const auto* rock:nearby)
+        {
+            const double distanceSquared=FVector::DistSquared2D(rock->Position,FVector(x,y,z));
+            // The movement/steering radius encloses the whole boulder, not its
+            // partly buried contact footprint. Dressing may approach the mesh;
+            // hidden pebbles are harmless, while a full-radius cut leaves halos.
+            if(distanceSquared<FMath::Square(aprons?rock->Radius*.45+size*50:rock->Radius+size*100)) {blocked=true;break;}
+            if(aprons&&rock->Radius>=126&&distanceSquared<FMath::Square(rock->Radius*1.6+60))
+            {
+                const double distance=FMath::Sqrt(distanceSquared);
+                const double band=Dive::BedDistribution::Smooth(rock->Radius*.45,rock->Radius*.85,distance)*
+                    (1-Dive::BedDistribution::Smooth(rock->Radius*1.05,rock->Radius*1.6+60,distance));
+                apron=FMath::Max(apron,band);
+            }
+        }
+        if(blocked) continue;
+        // Broken skirts of rubble tie outcrops to the bed without filling every
+        // sediment patch. The bounded candidates and bed-relative relief stay
+        // unchanged; this is authored dressing, not a measured erosion model.
+        const double broken=.2+.8*Dive::BedDistribution::Noise(x/230,y/230);
+        const double density=FMath::Max(gravel*gravel*.9,apron*broken*.85*(1-Dive::BedDistribution::Smooth(25,40,-z*.01)));
+        if(chance>density) continue;
         if(!Terrain.Sample(x+50,y,e)||!Terrain.Sample(x,y+50,n)) continue;
         const FVector normal=FVector(-(e-z)/50,-(n-z)/50,1).GetSafeNormal();
         if(normal.Z<.72) continue;
-        bool blocked=false;
-        for(const auto* rock:nearby)
-            if(FVector::DistSquared2D(rock->Position,FVector(x,y,z))<FMath::Square(rock->Radius+size*100)) {blocked=true;break;}
-        if(blocked) continue;
         const FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
         // Partly buried, flattened stones keep relief within six centimetres
         // of the surveyed bed, including beneath bottom-dwelling fish.
@@ -130,10 +149,13 @@ bool ADiveWorld::TestGravelStreaming(FString& Detail)
     };
     TMap<FIntPoint,TArray<FTransform>> snapshots;
     TMap<FIntPoint,UInstancedStaticMeshComponent*> identities;
-    int contacts=0;
+    int contacts=0,edgeStones=0;
     for(const auto& pair:GravelCells)
     {
         snapshots.Add(pair.Key,capture(pair.Value));identities.Add(pair.Key,pair.Value.Components[0]);
+        for(const auto& transform:snapshots[pair.Key]) for(const auto& rock:RockState)
+            if(rock.Radius>=126&&FVector::DistSquared2D(transform.GetLocation(),rock.Position)<FMath::Square(rock.Radius))
+            {++edgeStones;break;}
         for(const auto& component:pair.Value.Components) for(int i=0;i<FMath::Min(8,component->GetInstanceCount());++i)
         {
             FTransform value;component->GetInstanceTransform(i,value,true);
@@ -166,7 +188,7 @@ bool ADiveWorld::TestGravelStreaming(FString& Detail)
     int stones=0;for(const auto& pair:snapshots) stones+=pair.Value.Num();
     valid&=stones==0||contacts>0;
     StreamGravel(original);
-    Detail=FString::Printf(TEXT("retained=%d reloaded=%d cells=%d stones=%d contacts=%d staged=7,8,9"),retained,reloaded,GravelCells.Num(),stones,contacts);
+    Detail=FString::Printf(TEXT("retained=%d reloaded=%d cells=%d stones=%d contacts=%d staged=7,8,9 edge_stones=%d"),retained,reloaded,GravelCells.Num(),stones,contacts,edgeStones);
     UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*Detail);
     return valid;
 }
