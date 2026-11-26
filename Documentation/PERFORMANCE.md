@@ -1,5 +1,18 @@
 # Gerenderte Leistungsmessung
 
+## WindowsRockSearch: räumliche Hindernisabfragen
+
+Quellstand `33fe764`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Felsen, Pflanzen, Materialien und gewöhnliche Wasserbeleuchtung behalten den Geröllstand. [Umsetzung und Grenzen](ROCK_SEARCH.md), [Paket und Rohdaten](ROCK_SEARCH_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 72,88 FPS | 58,34 FPS | 15,36 ms | 52,74 ms | 1 / 4371 | 3,43 ms |
+| Murg Schwimmen/Nachladen, 90 s | 100,81 FPS | 79,86 FPS | 10,85 ms | 44,77 ms | 2 / 9071 | 3,09 ms |
+
+Gegenüber den beiden vorherigen Unterwasserläufen mit 11,12 / 11,18 ms sinkt die gemessene mittlere Spielthreadzeit um rund 69 Prozent. Auf der Murg-Strecke liegt sie bei 3,09 statt 6,01 ms. Die GPU benötigt weiterhin im Mittel 13,10 ms unter Wasser und 9,31 ms auf der Strecke; die Gesamtbildrate bleibt deshalb ähnlich. Das Ergebnis spricht für deutlich mehr CPU-Reserve in diesen Szenarien, nicht für eine entsprechende Steigerung der Bildrate oder eine allgemeine Zusage für andere Hardware. Es sind getrennte Läufe; keine Aussage über die vollständige Verteilung aller möglichen Spielszenen.
+
+Die Messbilder wurden geprüft: Weesen zeigt Grund, Felsen und Bewuchs bei 5,2 Metern. Murg endet bei 24,7 Metern in freiem Wasser und belegt keine dauerhaft dichte Nahansicht. Der einzelne Unterwasser-Ausreisser und die zwei Nachlade-Ausreisser bleiben dokumentiert. Ihre Ursachen sind nicht geklärt; die räumliche Suche behebt diese Ruckler nicht nachweislich. Durchgehend 60 FPS, ein aktueller Langzeittest und die gesamte visuelle Referenzabnahme bleiben offen.
+
 ## WindowsRockRubble: räumliche Bruchstücke am Felsfuss
 
 Quellstand `7fb9f34`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Normale Spielbeleuchtung, kein experimentelles Wasservolumen. [Paket und Rohdatennachweise](ROCK_RUBBLE_RESULTS.json).

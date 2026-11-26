@@ -33,7 +33,16 @@ bool ADiveWorld::TestRockSearch(FString& Detail) const
             valid&=TraceFishPath(0,1,p,end)==TraceFishPath(0,1,p,end,true);
         }
     }
-    valid&=queries>0&&candidates<exhaustive/3;
+    if(RockState.IsEmpty())
+    {
+        // A surveyed window can legitimately contain no rocks. Check both a
+        // local query and the complete-index fallback for stale retired IDs.
+        queries=2;
+        valid&=RockSearch.Query(PopulationCell.X*9600.,PopulationCell.Y*9600.,
+            (PopulationCell.X+1)*9600.,(PopulationCell.Y+1)*9600.,260).empty();
+        valid&=RockSearch.Query(0,0,0,0,0,true).empty();
+    }
+    else valid&=queries>0&&candidates<exhaustive/3;
     Detail=FString::Printf(TEXT("queries=%d candidates=%lld exhaustive=%lld rocks=%d exact_force=1 exact_trace=1"),queries,candidates,exhaustive,RockState.Num());
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_SEARCH_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*Detail);
     return valid;

@@ -16,6 +16,8 @@ def main():
     p.add_argument('--prior-run',type=Path);p.add_argument('--prior-driver',type=Path)
     p.add_argument('--rock-search',action='store_true')
     p.add_argument('--baseline-run',type=Path)
+    p.add_argument('--prior-performance',type=Path,nargs=2)
+    p.add_argument('--native-fix-log',type=Path)
     a=p.parse_args();run=a.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
@@ -42,7 +44,8 @@ def main():
             if a.rock_search:
                 search_checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_ROCK_SEARCH_PASS queries=(\d+) candidates=(\d+) exhaustive=(\d+) rocks=(\d+) exact_force=1 exact_trace=1',log)]
                 assert len(search_checks)>=6
-                assert all(q>0 and 0<c<e/3 and e==q*n for q,c,e,n in search_checks)
+                assert any(n>0 for q,c,e,n in search_checks)
+                assert all((q==2 and c==e==0) if n==0 else (q>0 and 0<c<e/3 and e==q*n) for q,c,e,n in search_checks)
         if case['name']=='raster':assert 'r.Nanite = "0"' in log
         images=sorted(folder.glob('*.png'));assert len(images)==case['screenshots']==expected[case['name']]
         if case['name']=='shore':
@@ -91,19 +94,42 @@ def main():
         assert host['packaged'] and a.prior_run and a.prior_driver
         previous=a.prior_run.resolve();driver=a.prior_driver.resolve()
         previous_host=json.loads((previous/'Host.json').read_text(encoding='utf-8-sig'))
-        assert previous_host['sha256']==host['sha256']
-        assert previous_host['package_containers']==host['package_containers']
         previous_cases=json.loads((previous/'Cases.json').read_text(encoding='utf-8-sig'))
-        assert len(previous_cases)==7 and {c['name'] for c in previous_cases}==set(expected)-{'shore'}
         driver_text=driver.read_text(encoding='utf-8-sig')
-        assert set(re.findall(r'^PASS (\S+) ',driver_text,re.M))==set(expected)-{'shore'}
         assert 'ROCK_RUBBLE=' not in driver_text
-        assert 'DIVE_SMOKE_PASS shore=1' in (previous/'shore/Runtime.log').read_text(encoding='utf-8-sig')
-        prior=dict(status='COLLECTOR_FAILED',reason='The original collector expected six shore images; the actual scenario correctly produced nine.',
-            failure_message_capture='The terminating PowerShell error was returned to the shell session, not written to the redirected driver log; that log retains only seven completed cases.',
-            host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
-            shore_runtime=record(previous/'shore/Runtime.log'),shore_images=[record(x) for x in sorted((previous/'shore').glob('*.png'))])
-        assert len(prior['shore_images'])==9
+        if a.rock_search:
+            assert a.prior_performance and a.native_fix_log
+            assert len(previous_cases)==2 and {c['name'] for c in previous_cases}=={'close-before','close-after'}
+            assert set(re.findall(r'^PASS (\S+) ',driver_text,re.M))=={'close-before','close-after'}
+            failure=(previous/'weesen/Runtime.log').read_text(encoding='utf-8-sig')
+            assert 'DIVE_ROCK_SEARCH_FAIL queries=0 candidates=0 exhaustive=0 rocks=0' in failure
+            native=a.native_fix_log.resolve();fixed=native.read_text(encoding='utf-8-sig')
+            assert 'DIVE_SMOKE_PASS' in fixed and not re.search(r'DIVE_\w*FAIL|Fatal error:',fixed)
+            assert 'DIVE_ROCK_SEARCH_PASS queries=2 candidates=0 exhaustive=0 rocks=0' in fixed
+            native_host_path=native.with_name(native.stem+'-host.json')
+            native_host=json.loads(native_host_path.read_text(encoding='utf-8-sig'))
+            assert native_host['log_sha256']==sha(native)
+            for item in native_host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
+            old_performance=[]
+            for folder in a.prior_performance:
+                folder=folder.resolve();summary=json.loads((folder/'Summary.json').read_text(encoding='utf-8-sig'))
+                assert summary['host']['executable_sha256']==previous_host['sha256']
+                assert summary['host']['package_containers']==previous_host['package_containers']
+                old_performance.append(dict(summary=summary,files=[record(folder/n) for n in ['Host.json','Metadata.json','Summary.json','Capture.csv','Frame.png','Runtime.log']]))
+            prior=dict(status='TEST_FIXTURE_FAILED',reason='The far Weesen teleport correctly produced an empty rock window; the first test wrongly required nonempty queries.',
+                host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
+                failure_runtime=record(previous/'weesen/Runtime.log'),native_fix=record(native),native_fix_host=record(native_host_path),performance=old_performance)
+        else:
+            assert previous_host['sha256']==host['sha256']
+            assert previous_host['package_containers']==host['package_containers']
+            assert len(previous_cases)==7 and {c['name'] for c in previous_cases}==set(expected)-{'shore'}
+            assert set(re.findall(r'^PASS (\S+) ',driver_text,re.M))==set(expected)-{'shore'}
+            assert 'DIVE_SMOKE_PASS shore=1' in (previous/'shore/Runtime.log').read_text(encoding='utf-8-sig')
+            prior=dict(status='COLLECTOR_FAILED',reason='The original collector expected six shore images; the actual scenario correctly produced nine.',
+                failure_message_capture='The terminating PowerShell error was returned to the shell session, not written to the redirected driver log; that log retains only seven completed cases.',
+                host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
+                shore_runtime=record(previous/'shore/Runtime.log'),shore_images=[record(x) for x in sorted((previous/'shore').glob('*.png'))])
+            assert len(prior['shore_images'])==9
     baseline=None
     if a.rock_search:
         assert a.baseline_run
