@@ -61,6 +61,7 @@ def build_bed(material_names=None):
         if lib.get_num_material_expressions(material): raise RuntimeError('Cannot clear ' + name)
         material.set_editor_property('two_sided', True)
         material.set_editor_property('used_with_instanced_static_meshes', True)
+        material.set_editor_property('used_with_nanite', True)
         material.set_editor_property('tangent_space_normal', False)
         material.set_editor_property('shading_model', u.MaterialShadingModel.MSM_DEFAULT_LIT)
         material.set_editor_property('blend_mode', u.BlendMode.BLEND_OPAQUE)

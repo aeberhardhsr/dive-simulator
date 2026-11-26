@@ -7,6 +7,10 @@ if not exist artifacts mkdir artifacts
 cl /nologo /std:c++17 /EHsc /W4 /O2 Tests\DiveModelTests.cpp /Fo:artifacts\DiveModelTests.obj /Fe:artifacts\DiveModelTests.exe
 if errorlevel 1 exit /b 1
 artifacts\DiveModelTests.exe
+if errorlevel 1 exit /b 1
+cl /nologo /std:c++17 /EHsc /W4 /O2 Tests\CoastGridTests.cpp /Fo:artifacts\CoastGridTests.obj /Fe:artifacts\CoastGridTests.exe
+if errorlevel 1 exit /b 1
+artifacts\CoastGridTests.exe
 set result=%errorlevel%
 popd
 exit /b %result%

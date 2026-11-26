@@ -79,7 +79,7 @@ def main():
         if index == 0:
             axis.legend(handles=[Patch(color="#e7aaca", label="Unvermessen innerhalb Seeumriss")], loc="lower left", fontsize=8)
         fig.colorbar(picture, ax=axis, shrink=.7, label="Tiefe unter Szenariopegel 419 m [m]; Skala bei 25 m begrenzt")
-    fig.suptitle("Uferdatenprüfung · noch nicht in der Spielversion eingebunden", fontsize=17, weight="bold")
+    fig.suptitle("Uferdatenprüfung · Messwerte und modellierte Ergänzungen", fontsize=17, weight="bold")
     fig.supxlabel("Quellen: © swisstopo · swissBATHY3D / swissALTI3D / swissTLM3D   |   Ergänzte Tiefen sind Modellwerte, keine Vermessung.", fontsize=10)
     output = ROOT/"Documentation/Images/Coast_Model.png"
     fig.savefig(output, dpi=130)

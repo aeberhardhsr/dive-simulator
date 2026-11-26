@@ -1,8 +1,8 @@
 """Generate a separate, provenance-labelled estimate for all Walensee gaps.
 
-Outputs are intermediate data, not loaded by the game. Never edits bathymetry,
-the existing three shore patches, or any source raster. One global solve avoids
-different interpolated values on adjacent tiles; halos are copied afterwards.
+Outputs are staged source data; package_coast.py audits and copies them into
+Unreal. Never edits bathymetry, the existing three shore patches, or any source
+raster. One global solve avoids different interpolated values on adjacent tiles.
 """
 import os
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
@@ -133,9 +133,10 @@ def main():
     if not lake.is_valid or len(lake.interiors) != 3:
         raise ValueError("Invalid lake outline")
     w, s, e, n = lake.bounds
-    # Two outer tile widths keep the 64 m coast band and all halos in bounds.
-    bounds = [math.floor(w/TILE)*TILE-2*TILE, math.floor(s/TILE)*TILE-2*TILE,
-              math.ceil(e/TILE)*TILE+2*TILE, math.ceil(n/TILE)*TILE+2*TILE]
+    # Three outer tile widths include the coast band, expanded cores and halos.
+    # Core edges align with the existing 8 m landscape vertex lattice (4 mod 8).
+    bounds = [math.floor((w-4)/TILE)*TILE+4-3*TILE, math.floor((s-4)/TILE)*TILE+4-3*TILE,
+              math.ceil((e-4)/TILE)*TILE+4+3*TILE, math.ceil((n-4)/TILE)*TILE+4+3*TILE]
     west, south, east, north = bounds
     print("Reading original land", bounds, flush=True)
     values, land_sources = land_grid(bounds, json.loads((RAW/"catalog.json").read_text()))
@@ -153,10 +154,14 @@ def main():
     band = lake.buffer(64).difference(lake.buffer(-64))
     selected = rasterize([(band, 1)], out_shape=values.shape, transform=transform, dtype="uint8").astype(bool)
     selected |= unknown
+    # Every modeled cell stays at least 32 m from the exterior LOD collar.
+    from scipy.ndimage import maximum_filter
+    selected |= maximum_filter(unknown, size=65, mode="constant", cval=0)
     tiles = write_tiles(result, labels, selected, bounds, DEST)
-    manifest = dict(schema=1, status="intermediate data; runtime integration pending", bounds=bounds,
+    manifest = dict(schema=1, status="source cells for coast render and collision generation", bounds=bounds,
                     horizontal_crs="EPSG:2056", vertical_crs="EPSG:5728", water_elevation_m=419,
-                    spacing_m=1, halo_cells=1, tile_core_metres=TILE,
+                    spacing_m=1, halo_cells=1, tile_core_metres=TILE, tile_lattice_offset_m=4,
+                    exterior_collar_m=32, modeled_cell_margin_m=32,
                     encoding="little-endian float32 metres relative to 419 m LN02, north-to-south cell centres",
                     source_outline=reference, land_sources=land_sources, bathymetry_sources=bed_sources,
                     provenance={"1": "Original swissBATHY3D cell; unchanged apart from float32 representation",

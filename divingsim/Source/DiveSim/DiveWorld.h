@@ -102,6 +102,7 @@ public:
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LandscapeMeshes;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CoastMeshes;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuildingMeshes;
     UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> ShoreMeshes;
     UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> ImageryMaterials;
@@ -179,6 +180,7 @@ private:
     void StreamTerrain(const FVector& Position,bool Immediate=false);
     void CreateChunk(FIntPoint Key);
     void CreateLandscape();
+    void CreateCoast();
     void CreateBuildings();
     void CreateShoreline();
     void CreateAccess();

@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Simulation/HeightGrid.h"
+#include "Simulation/CoastGrid.h"
 
 struct FDiveEntry { FString Name,Id; FVector Position; float Yaw=0; };
 
@@ -10,6 +11,12 @@ public:
     bool Load();
     bool LoadLandscape();
     bool LoadShoreline();
+    bool LoadCoast();
+    bool SampleCoast(double X,double Y,float& Z) const;
+    bool SampleVertex(double X,double Y,float& Z) const;
+    FVector SurfaceNormal(double X,double Y) const;
+    bool InCoast(double X,double Y) const;
+    double CoastWeight(double East,double North) const;
     bool LoadImagery();
     bool Sample(double X,double Y,float& Z) const;
     bool SampleShore(double X,double Y,float& Z) const;
@@ -21,6 +28,8 @@ public:
     TArray<FDiveEntry> ShoreEntries;
     const TArray<FDiveEntry>& EntryList(bool Shore) const { return Shore?ShoreEntries:Entries; }
     TArray<Dive::SurfaceGrid> Shores;
+    Dive::CoastGrid Coast;
+    FString CoastSourceHash;
     FString Error;
     int32 LoadedTiles=0;
     // Fixed-size overview, measured depths only. East to right, north up.

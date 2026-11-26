@@ -87,8 +87,8 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Unter der Oberflaeche."),TEXT("Below the surface.")),73,270,28,White);
     Text(L(TEXT("Ruhe. Tiefe. Entdecken."),TEXT("Stillness. Depth. Discovery.")),73,319,20,Muted);
     Text(L(TEXT("SPIELBARER ENTWICKLUNGSSTAND"),TEXT("PLAYABLE DEVELOPMENT BUILD")),73,410,13,Accent);
-    Text(L(TEXT("Vermessener Walensee-Seegrund, Massstab 1:1."),TEXT("Surveyed Walensee lakebed, true scale.")),73,444,17,White);
-    Text(TEXT("swissBATHY3D + swissALTI3D"),73,473,12,Muted);
+    Text(L(TEXT("Walensee 1:1; Uferluecken sind modelliert."),TEXT("Walensee at true scale; shore gaps are modeled.")),73,444,17,White);
+    Text(TEXT("swissBATHY3D + swissALTI3D + swissTLM3D"),73,473,12,Muted);
     Text(TEXT("SWISSIMAGE + swissBUILDINGS3D / © swisstopo"),73,490,12,Muted);
     Text(TEXT("Includes material © (2016-2018) Planet. All rights reserved."),73,508,10,Muted);
     Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,535,18,White);

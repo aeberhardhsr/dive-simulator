@@ -26,6 +26,71 @@ void ADivePawn::InputSmokeTick(float Dt)
     auto* pc=Cast<APlayerController>(GetController());
     auto* hud=pc?Cast<ADiveHUD>(pc->GetHUD()):nullptr;
     if(!pc||!hud) return;
+    if(SmokeScenario==TEXT("coast"))
+    {
+        auto fail=[&](const TCHAR* reason){UE_LOG(LogTemp,Error,TEXT("DIVE_COAST_ROUTE_FAIL phase=%d %s"),ControlsSmokePhase,reason);FPlatformMisc::RequestExitWithStatus(false,1);};
+        auto shot=[&](const TCHAR* name){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/FString::Printf(TEXT("Coast_%d_%s.png"),EntryIndex,name),true,false);};
+        auto next=[&](){++ControlsSmokePhase;ControlsSmokeClock=0;};
+        const auto survey=Environment->Terrain.ToSurvey(GetActorLocation());float ground=0,measured=0;
+        const FVector2D starts[]={{2726078.5,1221674.5},{2734890.5,1219852.5},{2741108.5,1220619.5}};
+        const FVector2D targets[]={{2726050.5,1221674.5},{2734890.5,1219828.5},{2741130.5,1220619.5}};
+        if(EntryIndex<0||EntryIndex>2) { fail(TEXT("Invalid route"));return; }
+        FVector start=Environment->Terrain.ToWorld(starts[EntryIndex].X,starts[EntryIndex].Y);start.Z=-180;
+        const FVector target=Environment->Terrain.ToWorld(targets[EntryIndex].X,targets[EntryIndex].Y);
+        const FVector direction=(target-start).GetSafeNormal();const double yaw=direction.Rotation().Yaw;
+        const double progress=FVector::DotProduct(GetActorLocation()-start,direction)/100;
+        if(ControlsSmokeClock>40) { fail(TEXT("Movement timed out"));return; }
+        if(ControlsSmokePhase==0&&ControlsSmokeClock>2)
+        {
+            if(!Environment->Terrain.Sample(start.X,start.Y,measured)) { fail(TEXT("Start lacks original bathymetry"));return; }
+            SetActorLocation(start);VelocityMetres=FVector::ZeroVector;pc->SetControlRotation(FRotator(-12,yaw,0));
+            next();return;
+        }
+        if(ControlsSmokePhase==1&&ControlsSmokeClock>1)
+        {
+            shot(TEXT("Start"));next();return;
+        }
+        if(ControlsSmokePhase==2&&ControlsSmokeClock>.5)
+        { pc->SetControlRotation(FRotator(0,yaw,0));TestKey(Controls.Key(EDiveAction::Forward),true);TestKey(Controls.Key(EDiveAction::Sprint),true); }
+        if(ControlsSmokePhase==2&&progress>=FVector::Dist2D(start,target)/100)
+        {
+            const FVector p=GetActorLocation();FHitResult hit;FCollisionQueryParams query(SCENE_QUERY_STAT(CoastRoute),true,this);
+            if(Environment->Terrain.Sample(p.X,p.Y,measured)||!Environment->Terrain.SampleGround(p.X,p.Y,ground)||
+                !GetWorld()->LineTraceSingleByChannel(hit,FVector(p.X,p.Y,100),FVector(p.X,p.Y,ground-100),ECC_Visibility,query)||
+                FMath::Abs(hit.ImpactPoint.Z-ground)>2) { fail(TEXT("Modeled bottom or world collision missing"));return; }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_COAST_ROUTE_CROSSED entry=%d east=%.3f north=%.3f depth=%.3f ground=%.3f"),EntryIndex,survey.X,survey.Y,-p.Z/100,ground/100);
+            // Exercise the real sediment source with a controlled fin-position
+            // probe on the modeled bottom; this is separate from the swim input.
+            const int born=Environment->SedimentBorn();
+            for(int i=0;i<20;++i) Environment->DisturbSediment(0,FVector(p.X,p.Y,ground+12),3,.1);
+            Environment->StepSediment(.1);
+            if(Environment->SedimentBorn()<=born||Environment->SedimentLive()==0) { fail(TEXT("Modeled bottom lost sediment source or plume"));return; }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_COAST_SEDIMENT_PASS entry=%d born=%d live=%d"),EntryIndex,Environment->SedimentBorn()-born,Environment->SedimentLive());
+            TestKey(Controls.Key(EDiveAction::Forward),false);TestKey(Controls.Key(EDiveAction::Sprint),false);
+            pc->SetControlRotation(FRotator(-12,yaw,0));next();return;
+        }
+        if(ControlsSmokePhase==3&&ControlsSmokeClock>2)
+        {
+            shot(TEXT("Crossed"));next();return;
+        }
+        if(ControlsSmokePhase==4&&ControlsSmokeClock>.5)
+        { pc->SetControlRotation(FRotator(0,yaw+180,0));TestKey(Controls.Key(EDiveAction::Forward),true);TestKey(Controls.Key(EDiveAction::Sprint),true); }
+        if(ControlsSmokePhase==4&&progress<=3)
+        {
+            if(!Environment->Terrain.Sample(GetActorLocation().X,GetActorLocation().Y,measured)||Simulation.Data.DistanceMetres<25)
+            { fail(TEXT("Return to surveyed bottom failed"));return; }
+            TestKey(Controls.Key(EDiveAction::Forward),false);TestKey(Controls.Key(EDiveAction::Sprint),false);
+            pc->SetControlRotation(FRotator(-12,yaw,0));next();return;
+        }
+        if(ControlsSmokePhase==5&&ControlsSmokeClock>1)
+        { shot(TEXT("Returned"));next();return; }
+        if(ControlsSmokePhase==6&&ControlsSmokeClock>2)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_COAST_ROUTE_PASS entry=%d crossed_unmeasured=1 returned_measured=1 distance_m=%.3f"),EntryIndex,Simulation.Data.DistanceMetres);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS coast=1"));FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("discoveries"))
     {
         if(ControlsSmokePhase<14&&ControlsSmokeClock>(ControlsSmokePhase+1)*2.5)

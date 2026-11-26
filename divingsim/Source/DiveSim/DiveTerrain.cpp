@@ -75,7 +75,7 @@ bool FDiveTerrain::Load()
         Overview[y*MapWidth+x]=Mosaic.Sample(east,north,height)?static_cast<float>(-height):-1.f;
     }
     UE_LOG(LogTemp,Display,TEXT("WALENSEE_DATA_READY tiles=%d entries=%d grid=1m water_reference=419m_LN02"),LoadedTiles,Entries.Num());
-    return LoadLandscape()&&LoadShoreline()&&LoadImagery();
+    return LoadLandscape()&&LoadShoreline()&&LoadCoast()&&LoadImagery();
 }
 
 bool FDiveTerrain::LoadLandscape()
@@ -188,7 +188,7 @@ bool FDiveTerrain::SampleGround(double X,double Y,float& Z) const
     // Interpolate those planes, rather than a bilinear saddle between vertices.
     const double x=FMath::FloorToDouble(X/100)*100,y=FMath::FloorToDouble(Y/100)*100;
     float a=0,b=0,c=0,d=0;
-    auto vertex=[this](double px,double py,float& height){return Sample(px,py,height)||SampleShore(px,py,height);};
+    auto vertex=[this](double px,double py,float& height){return SampleVertex(px,py,height);};
     if(!vertex(x,y,a)||!vertex(x+100,y,b)||!vertex(x,y+100,c)||!vertex(x+100,y+100,d)) return false;
     const double tx=(X-x)/100,ty=(Y-y)/100;
     Z=static_cast<float>(tx+ty<=1?a+(b-a)*tx+(c-a)*ty:d+(c-d)*(1-tx)+(b-d)*(1-ty));

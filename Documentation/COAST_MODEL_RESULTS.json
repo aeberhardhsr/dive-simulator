@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "status": "intermediate data; runtime integration pending",
+  "status": "source cells for coast render and collision generation",
   "bounds": [
-    2725632,
-    1219072,
-    2741760,
-    1222656
+    2725508,
+    1218948,
+    2741892,
+    1222788
   ],
   "horizontal_crs": "EPSG:2056",
   "vertical_crs": "EPSG:5728",
@@ -13,6 +13,9 @@
   "spacing_m": 1,
   "halo_cells": 1,
   "tile_core_metres": 128,
+  "tile_lattice_offset_m": 4,
+  "exterior_collar_m": 32,
+  "modeled_cell_margin_m": 32,
   "encoding": "little-endian float32 metres relative to 419 m LN02, north-to-south cell centres",
   "source_outline": {
     "url": "https://data.geo.admin.ch/ch.swisstopo.swisstlm3d/swisstlm3d_2026-02/swisstlm3d_2026-02_2056_5728.shp.zip",
@@ -89,10 +92,10 @@
   "lake_cells": 24106100,
   "measured_lake_cells": 23334341,
   "measured_cells_outside_outline": 138,
-  "tile_count": 634,
-  "manifest_sha256": "864d5f7540c47ba537772761fa938066524b892235bc9e37b771832c6b572226",
-  "land_source_count": 68,
+  "tile_count": 644,
+  "manifest_sha256": "d71b3823c54af69f023ef03d359889ebb5468a5694456a4552289c229cd85e61",
+  "land_source_count": 85,
   "bathymetry_source_count": 46,
-  "elapsed_seconds": 15.74,
-  "output_bytes": 53573000
+  "elapsed_seconds": 17.71,
+  "output_bytes": 54418000
 }

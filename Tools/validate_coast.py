@@ -45,6 +45,10 @@ def verify():
         p = np.fromfile(provenance, "u1").reshape(size, size)
         require(np.isfinite(z).all() and ((p >= 1) & (p <= 3)).all(), "Invalid height/provenance")
         require(tile["core_west"] == tile["west"]+1 and tile["core_south"] == tile["south"]+1, "Halo origin mismatch")
+        if "tile_lattice_offset_m" in manifest:
+            require((tile["core_west"]-manifest["tile_lattice_offset_m"]) % tile["core_size"] == 0 and
+                    (tile["core_south"]-manifest["tile_lattice_offset_m"]) % tile["core_size"] == 0,
+                    "Coast core is not aligned to the background landscape lattice")
         row, col = north-tile["south"]-size, tile["west"]-west
         require(row >= 0 and col >= 0 and row+size <= len(values) and col+size <= values.shape[1], "Tile outside model")
         region = np.s_[row:row+size, col:col+size]
@@ -85,6 +89,11 @@ def verify():
         require((labels[region][check] == 1).all(), "Measured provenance lost")
     unknown = inside & ~surveyed
     require(not (unknown & ~core_covered).any(), "Unmeasured lake cell missing from output cores")
+    if "modeled_cell_margin_m" in manifest:
+        from scipy.ndimage import minimum_filter
+        margin = manifest["modeled_cell_margin_m"]
+        protected = minimum_filter(core_covered, size=2*margin+1, mode="constant", cval=0)
+        require(protected[unknown].all(), "Modeled cells enter exterior LOD collar")
     require(np.array_equal(labels[covered] == 3, unknown[covered]), "Model values outside correct gap")
     require(np.array_equal(labels[covered] == 1, surveyed[covered]), "False survey labels")
     require((values[unknown] <= 0).all(), "Modeled lake cell above scenario water")

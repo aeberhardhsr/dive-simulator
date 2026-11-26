@@ -40,9 +40,9 @@ Die 14 Bedienphasen prüfen Aufnahme, gleichzeitige Anfrage, Sammlung, Sprachwec
 
 Dieses Inkrement setzt BIOL-014, NAV-008, LOG-008 und LOG-009 für die vorhandenen Modellgruppen um und erweitert NAV-007. Eine vollständige Artenbestimmung, bessere Tier-/Pflanzenmodelle, native macOS-Spielprüfung und die Gesamtabnahme der Spezifikation bleiben offen. Es wird keine neue Langzeit- oder Leistungsmessung aus den kurzen Bedienprüfungen abgeleitet.
 
-## Offener Gelände-Befund
+## Gelände-Befund im damaligen Paket
 
-Die anschließende seeweite Datenaufbereitung ist unter [COAST_MODEL.md](COAST_MODEL.md) dokumentiert. Sie verändert dieses Spielpaket noch nicht.
+Der folgende Befund dokumentiert das unverändert erhaltene Paket `WindowsDiscoveries`. Im neueren Paket `WindowsCoast` ist die ausgeschnittene Bodenfläche durch modellierte Ufergeometrie geschlossen; Umsetzung, neue Aufnahme und geprüfte Grenzüberquerungen stehen in [COAST.md](COAST.md). Die seeweite Datenaufbereitung ist unter [COAST_MODEL.md](COAST_MODEL.md) dokumentiert.
 
 Die Aufnahme am östlichen Einstieg zeigt eine harte offene Bodenbegrenzung. Sie bleibt auch nach dem vollständigen Nachladen der örtlichen Geländekacheln sichtbar. Im 151 × 151 m großen Rasterfenster um diesen Einstieg sind 10.690 der 22.801 Zellen unvermessen; die vorhandene Bodenpipeline lässt solche Zellen aus. Diese Datenlücken und ihre sichtbaren Übergänge sind durch die Fotofunktion nicht behoben. Die Funktionsprüfungen gelten nicht als visuelle Abnahme dieser Landschaft.
 

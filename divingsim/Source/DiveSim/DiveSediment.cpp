@@ -19,6 +19,7 @@ void ADiveWorld::DisturbSediment(int32 Fin,const FVector& Position,double Speed,
     FHitResult hit;FCollisionQueryParams query(SCENE_QUERY_STAT(FinSediment),false,Diver);
     const bool found=GetWorld()->LineTraceSingleByChannel(hit,Position,Position-FVector(0,0,80),ECC_Visibility,query);
     bool soft=found&&(hit.GetComponent()==Ground||ShoreMeshes.Contains(Cast<UProceduralMeshComponent>(hit.GetComponent())));
+    if(found&&!soft) soft=CoastMeshes.Contains(Cast<UStaticMeshComponent>(hit.GetComponent()));
     if(found&&!soft) for(const auto& chunk:Chunks) if(chunk.Value==hit.GetComponent()) { soft=true;break; }
     const double rate=Dive::Sediment::StirRate(found?hit.Distance/100:1,Speed,
         Position.Z<SurfaceZ(Position.X,Position.Y)-10,soft&&hit.ImpactNormal.Z>.7);
@@ -49,7 +50,7 @@ void ADiveWorld::StepSediment(double Step)
         // Small opposing lobes spread the plume; no random frame-rate dependence.
         puff.Position.X+=puff.Side*12*(FMath::Exp(-(age-Step)/3)-FMath::Exp(-age/3));
         float floor=0;
-        if(!Terrain.Sample(puff.Position.X,puff.Position.Y,floor)||!puff.Model.Alive()||
+        if(!Terrain.SampleGround(puff.Position.X,puff.Position.Y,floor)||!puff.Model.Alive()||
             (Diver&&FVector::DistSquared(puff.Position,Diver->GetActorLocation())>FMath::Square(4000.)))
         { Silt.RemoveAtSwap(i);continue; }
         puff.Position.Z=FMath::Max(puff.Origin.Z+puff.Model.Lift()*100,static_cast<double>(floor)+6);

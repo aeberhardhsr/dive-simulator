@@ -53,13 +53,13 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
         digest.Update(bytes.GetData(),bytes.Num()); return true;
     };
     if(!input(TEXT("landscape.f32"))||!input(TEXT("landscape.json"))||
-        !input(TEXT("manifest.json"))||!input(TEXT("shoreline.json"))) return 1;
+        !input(TEXT("manifest.json"))||!input(TEXT("shoreline.json"))||!input(TEXT("Coast/coast.json"))) return 1;
     TArray<FString> bathy;
     IFileManager::Get().FindFiles(bathy,*(folder/TEXT("*.i16")),true,false); bathy.Sort();
     for(const auto& file:bathy) if(!input(file)) return 1;
     uint8 hash[16]; digest.Final(hash);
     const FString sourceHash=BytesToHex(hash,16);
-    constexpr int TileCells=256, Version=2;
+    constexpr int TileCells=256, Version=3;
     int limit=MAX_int32; FParse::Value(*Params,TEXT("Limit="),limit);
     const bool force=FParse::Param(*Params,TEXT("Force"));
     const bool verifyOnly=FParse::Param(*Params,TEXT("VerifyOnly"));
@@ -118,7 +118,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
             auto triangle=[&](int a,int b,int c)
             {
                 const FVector center=origin+FVector((positions[ids[a]]+positions[ids[b]]+positions[ids[c]])/3);
-                if(!(land[a]||land[b]||land[c])||terrain.InShorePatch(center.X,center.Y)) return;
+                if(!(land[a]||land[b]||land[c])||terrain.InShorePatch(center.X,center.Y)||terrain.InCoast(center.X,center.Y)) return;
                 TArray<FVertexInstanceID> instances;
                 for(int index:{a,b,c})
                 {

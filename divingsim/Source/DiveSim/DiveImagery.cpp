@@ -72,12 +72,14 @@ UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FS
 
 bool ADiveWorld::ValidateImagery(FString& Error) const
 {
-    if(ImageryMaterials.Num()!=4) { Error=TEXT("Expected four georeferenced imagery materials"); return false; }
-    for(int i=0;i<4;++i)
+    if(ImageryMaterials.Num()!=5) { Error=TEXT("Expected land, three entry and coast imagery materials"); return false; }
+    for(int i=0;i<5;++i)
     {
         auto* material=ImageryMaterials[i].Get();
         const auto* texture=material?Cast<UTexture2D>(material->K2_GetTextureParameterValue(TEXT("Ortho"))):nullptr;
-        if(!texture||texture->GetSizeX()!=(i==0?4096:2048)||texture->GetSizeY()!=2048||
+        const bool regional=i==0||i==4;
+        const FString expected=regional?Terrain.LandscapeImagery:Terrain.ShoreImagery[i-1];
+        if(!texture||texture->GetPathName()!=expected||texture->GetSizeX()!=(regional?4096:2048)||texture->GetSizeY()!=2048||
             texture->GetNumMips()<10||texture->GetStreamableResourceState().NumResidentLODs!=texture->GetNumMips()||
             !texture->SRGB||!texture->NeverStream||texture->AddressX!=TA_Clamp||texture->AddressY!=TA_Clamp)
         {

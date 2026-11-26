@@ -1,5 +1,5 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
@@ -78,6 +78,17 @@ if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }
 if($log -notmatch 'DIVE_LANDSCAPE_PASS') { throw "Landscape asset test failed. See $logPath." }
+if($log -match 'DIVE_COAST_READY|DIVE_COAST_FAIL') {
+    if($log -notmatch 'DIVE_COAST_COLLISION_PASS' -or $log -match 'DIVE_COAST_\w*FAIL') { throw "Coast collision test failed. See $logPath." }
+}
+if($Scenario -eq 'coast') {
+    if($log -notmatch 'DIVE_COAST_ROUTE_PASS' -or $log -notmatch 'DIVE_COAST_ROUTE_CROSSED') { throw 'Coast traversal was not completed.' }
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    foreach($stage in @('Start','Crossed','Returned')) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "Coast_${Entry}_$stage.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh coast screenshot: $stage" }
+    }
+}
 # Retained older packages predate buildings. New worlds advertise their data;
 # TestBuildings additionally requires this marker for its target package.
 if($log -match 'DIVE_BUILDINGS_READY|DIVE_BUILDINGS_FAIL') {

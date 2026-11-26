@@ -65,7 +65,7 @@ ADiveWorld::ADiveWorld()
 
 float ADiveWorld::GroundZ(double X,double Y) const
 {
-    float z=-30000; Terrain.Sample(X,Y,z); return z;
+    float z=-30000; Terrain.SampleGround(X,Y,z); return z;
 }
 
 void ADiveWorld::SetEntry(int32 Index,bool Shore)
@@ -102,14 +102,10 @@ void ADiveWorld::CreateChunk(FIntPoint Key)
     for(int y=0;y<N;++y) for(int x=0;x<N;++x)
     {
         const double px=origin.X+x*100, py=origin.Y+y*100;
-        float z=0,n=0,s=0,e=0,w=0;
+        float z=0;
         const bool measured=Terrain.Sample(px,py,z); valid.Add(measured);
-        if(!Terrain.Sample(px+100,py,n)) n=z;
-        if(!Terrain.Sample(px-100,py,s)) s=z;
-        if(!Terrain.Sample(px,py+100,e)) e=z;
-        if(!Terrain.Sample(px,py-100,w)) w=z;
         vertices.Add(FVector(x*100,y*100,z)); uv.Add(FVector2D(px/300,py/300));
-        normals.Add(FVector(-(n-s)/200,-(e-w)/200,1).GetSafeNormal());
+        normals.Add(Terrain.SurfaceNormal(px,py));
         tangents.Add(FProcMeshTangent(1,0,0)); colors.Add(FLinearColor::White);
     }
     for(int y=0;y<N-1;++y) for(int x=0;x<N-1;++x)
@@ -182,6 +178,7 @@ void ADiveWorld::BeginPlay()
         CreateLandscape();
         CreateBuildings();
         CreateShoreline();
+        CreateCoast();
         CreateAccess();
         if(!bTerrainReady) return;
         SetEntry(0);
