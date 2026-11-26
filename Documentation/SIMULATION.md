@@ -32,11 +32,45 @@ Air temperature is configurable from −10 to 40 °C (default 20). With immersed
 
 ## Nitrogen approximation
 
-Sixteen nitrogen compartments use exponential uptake/release under constant pressure within each integration step. Public Bühlmann nitrogen half-times and coefficients are used with a fixed gradient factor of 0.8. The computed ceiling is the maximum compartment ambient pressure requirement converted to freshwater depth. No-supply intervals retain the existing tissue approximation; alveolar gas depletion and breath-hold kinetics are not independently modeled. Ambient-air intervals use surface pressure and 79% nitrogen. Displayed NDL is time at the current depth until the surface limit is reached; it does not simulate an ascent, gas switching, repetitive dives, GF-low/high interpolation or a complete stop schedule.
+Sixteen nitrogen compartments use exponential uptake/release under constant pressure within each integration step. Public Bühlmann nitrogen half-times and coefficients are used with a fixed gradient factor of 0.8. The computed ceiling is the maximum compartment ambient pressure requirement converted to freshwater depth. No-supply intervals retain the existing tissue approximation; alveolar gas depletion and breath-hold kinetics are not independently modeled. Ambient-air intervals use surface pressure and 79% nitrogen. Displayed NDL is time at the current depth until the surface limit is reached. The separate ascent forecast described below projects stops; it does not change the NDL definition. Gas switching, repetitive dives and GF-low/high interpolation remain absent.
 
 Reference for the published coefficient family and conventions: [Subsurface's decompression model](https://github.com/subsurface/subsurface/blob/master/core/deco.cpp). No Subsurface implementation code is included. Coefficients are numerical model data; integration and game logic here are independently implemented. The first compartment uses the 4-minute variant (a=1.2599, b=0.5050).
 
-A separate gameplay safety-stop timer counts 180 seconds at 3–6 m after exceeding 10 m. It is not a substitute for the compartment ceiling. Model validation against independent reference profiles is still required before claiming faithful decompression simulation.
+A separate gameplay safety-stop timer counts 180 seconds at 3–6 m after exceeding 10 m. It is not a substitute for the compartment ceiling. The mandatory modeled stop takes display priority over this optional timer.
+
+### Ascent forecast
+
+`Simulation/Decompression.h` projects a copy of the current nitrogen pressures to the surface at 9 m/min, visiting 3 m depth intervals. It uses the same fixed GF=0.80, freshwater pressure conversion and selected oxygen fraction as the live model. It analytically integrates the linear pressure ramp and solves the preceding constant-depth wait for every compartment. The longest required wait is rounded upward to a whole second. The first interval starts at the actual depth; if it cannot be traversed immediately, the first hold can be at that non-grid depth. Subsequent stops are at 3 m intervals. Holds and ascent travel contribute to total time to surface; the optional safety stop does not.
+
+For a compartment with rate `k`, current pressure `P`, inspired pressure `I`, ascent-inspired-pressure rate `r`, travel time `t` and preceding hold `w`, the projected end pressure is `I + r*t - r/k*(1-exp(-k*t)) + (P-I)*exp(-k*(w+t))`. The fixed-GF allowed pressure at the destination is `ambient*(1+GF*(1/b-1))+GF*a`. The implementation solves that inequality rather than stepping a complete future dive at render frequency. Under these fixed-gas, fixed-GF ascent assumptions the margin has no interior minimum below its endpoints; the independent numerical tests also check the entire ascent in quarter-second increments.
+
+The forecast refreshes at most once per simulated second and freezes with the simulation. It never changes the live compartments. A current ceiling violation, invalid inputs, depth beyond the 300 m implementation domain, or a projection exceeding six hours produces an explicit unavailable result, not a zero-duration clearance. Exploration has no forecast. The fourth wrist page shows next stop, estimated hold, estimated ascent time and current ceiling; the HUD shows a required stop above other dive instruments. Waiting discharges the live tissues, so estimates change with actual behavior rather than running as an independent countdown.
+
+This is a **game forecast, not a validated real-world decompression planner**. It assumes continued breathing of the configured gas, does not establish that the cylinder contains enough gas, and does not include gas switches, repetitive-dive history, a GF-low/high curve, thermal/workload effects on tissue kinetics or individual susceptibility. Empty-cylinder and other warnings remain separate. Forecast values are live derived data; existing logs still record ceiling and NDL but do not persist the projected stop schedule. The UI currently offers air; the 32% oxygen numerical test cases exercise the solver and do not imply a selectable Nitrox loadout.
+
+`Tests/DecompressionTests.cpp` independently re-integrates 20 profiles with fourth-order Runge–Kutta at no more than 0.25 s per step, using two surface pressures, two nitrogen fractions and five depth/duration combinations. It verifies every projected hold and ascent against the compartment limits, minimal whole-second waits, total elapsed forecast time, input isolation and invalid/unavailable cases. Additional checks cover the 50 bar gas-reserve estimate, ppO2, stress-dependent gas use, low-gas warnings and the transition through predicted NDL. The existing core tests retain gas/BCD balance, tissue uptake/release, safety-stop timing and ascent warnings. These are mathematical and software checks; independent physiological/clinical validation remains outstanding.
+
+### Gas requirement evidence
+
+This maps implemented game behavior to the original requirements; numerical checks do not constitute physiological acceptance.
+
+| Requirement | Implemented behavior and verification |
+| --- | --- |
+| GAS-001 | Cylinder pressure integrated at 50 Hz; core checks consumption, nonnegative exhaustion and frame partition invariance. |
+| GAS-002 | Ambient pressure scales consumption; core checks the surface/20 m consumption ratio. |
+| GAS-003 | Exertion increases RMV; core compares equal-depth resting and active profiles. |
+| GAS-004 | Stress increases RMV; decompression tests compare equal-depth/activity profiles with different stress. |
+| GAS-005 | Freshwater hydrostatic pressure; core independently checks 10 m pressure. |
+| GAS-006 | Available-source oxygen fraction times ambient pressure; decompression tests check air at 20 m. |
+| GAS-007 | Remaining minutes to the 50 bar reserve at current consumption; analytical surface example and below-reserve zero checked. This is not an ascent gas budget. |
+| GAS-008 | Low-gas warning below 50 bar; both sides of threshold checked. |
+| GAS-009 | NDL from current-depth compartment loading; exposure just before/after predicted limit checked. |
+| GAS-010 | Sixteen exponential nitrogen compartments; uptake/release checked, forecast independently integrated with RK4. |
+| GAS-011 | Excessive ascent warning; core checks a 0.3 m/s ascent. |
+| GAS-012 | Separate 180 s safety-stop timer and modeled required holds; core timer test, 20 forecast profiles and rendered stop/pause/clear/violation sequence. |
+| GAS-013 (SHOULD) | Oxygen fraction exists in the core, but the preparation UI currently offers only air. Selectable mixtures remain open. |
+| GAS-014 (SHOULD) | Fictional cold/high-flow regulator freeflow in Hardcore, with gas-loss and timing tests; see [MODES.md](MODES.md). |
+| GAS-015 (FUTURE) | Underwater gas switching is not implemented. |
 
 ## Modes and persistence
 
@@ -100,15 +134,15 @@ Three illustrative vegetation forms are available: broad-leaved pondweed, whorle
 
 ## First-person equipment and wrist display
 
-`ADiveEquipment` attaches original glove, sleeve, wrist-computer and torch meshes to the first-person camera. C raises/lowers the left forearm with an interpolated pose; R cycles three pages while raised. The display remains available when the screen HUD is hidden with H. The selected wet/dry suit changes sleeve width and colour. The torch's existing spotlight now originates at its visible lens and uses the existing lamp switch/battery state. These are camera-relative static-mesh poses, not a full-body skeletal diver or inverse-kinematics system; arm/world clipping and anatomical refinement remain open.
+`ADiveEquipment` uses the articulated diver's hand transforms for the wrist-computer and torch meshes. C raises/lowers the left forearm with an interpolated pose; R cycles four pages while raised. The display remains available when the screen HUD is hidden with H. The selected wet/dry suit changes sleeve width and colour. The torch's spotlight originates at its visible lens and uses the lamp switch/battery state. Body pose and equipment collision are described in BODY_POSE.md and CONTACTS.md; anatomical refinement remains open.
 
-The computer is a world-space surface in the housing recess, driven by a 768 × 512 canvas render target. It snapshots the existing simulation state at approximately 10 Hz; it has no separate physiology or gas model. All pages retain depth, tank pressure, elapsed time and heading. The dive page adds NDL, ascent rate, maximum depth, water temperature and stop timer; the vital page adds pulse, SpO2, respiration, core temperature, stress and fatigue; the gas page adds ppO2, ambient pressure, estimated gas time to 50 bar, ceiling and lamp charge. Exploration is explicitly shown as unlimited gas. The footer displays the highest-priority active warning. English/German labels follow the game language.
+The computer is a world-space surface in the housing recess, driven by a 768 × 512 canvas render target. It snapshots the existing simulation state at approximately 10 Hz; it has no separate physiology or gas model. All pages retain depth, tank pressure and elapsed time; the first three also show heading. The dive page adds NDL, ascent rate, maximum depth, water temperature and stop timer; the vital page adds pulse, SpO2, respiration, core temperature, stress and fatigue; the gas page adds ppO2, ambient pressure, estimated gas time to 50 bar, ceiling and lamp charge; the fourth page adds the ascent forecast. Exploration is explicitly shown as unlimited gas. The footer displays the highest-priority active warning. English/German labels follow the game language.
 
-Exposure-compensated emission keeps the display readable in dark water. Numeric pixels are rendered after temporal reconstruction to avoid trails from changing digits. Because Unreal's [after-motion-blur translucency pass](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/MaterialTranslucencyPass?application_version=5.4) disables hardware depth testing, the material explicitly compares scene and surface depth with a 1 mm tolerance. Automated wrist scenarios cycle all three pages with the HUD hidden, save main/vital/gas screenshots, export the source display texture and check that the render callback ran, all pages were drawn, the wrist reached its raised pose and the state snapshot is no more than 0.5 s old. These checks do not replace visual review of readability, distortion or rendering artifacts.
+Exposure-compensated emission keeps the display readable in dark water. Numeric pixels are rendered after temporal reconstruction to avoid trails from changing digits. Because Unreal's [after-motion-blur translucency pass](https://dev.epicgames.com/documentation/en-us/unreal-engine/python-api/class/MaterialTranslucencyPass?application_version=5.4) disables hardware depth testing, the material explicitly compares scene and surface depth with a 1 mm tolerance. Automated wrist scenarios cycle all four pages with the HUD hidden, save main/vital/forecast screenshots, export the source display texture and check that the render callback ran, all pages were drawn, the wrist reached its raised pose and the state snapshot is no more than 0.5 s old. These checks do not replace visual review of readability, distortion or rendering artifacts.
 
 ## Core test coverage
 
-`Tools/TestCore.cmd` builds a standalone C++ test executable without Unreal. It checks hydrostatic pressure, depth scaling of gas use, exertion coupling, BCD consumption, expansion/relief, step partition invariance, exploration, tank exhaustion, tissue uptake/release, ceilings, stop timing and input sanitization. A passing result establishes internal consistency, not medical validity.
+`Tools/TestCore.cmd` builds three standalone C++ test executables without Unreal, covering simulation, coast geometry and the independently integrated decompression forecast. They check hydrostatic pressure, depth scaling of gas use, exertion coupling, BCD consumption, expansion/relief, step partition invariance, exploration, tank exhaustion, tissue uptake/release, ceilings, stop timing and input sanitization. A passing result establishes internal consistency, not medical validity.
 
 ## Zustandsgekoppeltes Audio
 

@@ -227,7 +227,15 @@ void ADiveHUD::Instruments()
     Text(FString::Printf(TEXT("SpO2  %.0f%%"),s.SpO2),1415,766,17,White);
     Text(FString::Printf(TEXT("%.0f /min    %.1f C    BCD %.1f L"),s.RespiratoryBPM,s.CoreTemperatureC,s.BCDLitres),1257,817,14,Muted);
     Text(Diver->KeyText(EDiveAction::Lamp)+L(TEXT(" Lampe   "),TEXT(" Torch   "))+Diver->KeyText(EDiveAction::Computer)+L(TEXT(" Handgelenk   "),TEXT(" Wrist   "))+Diver->KeyText(EDiveAction::Map)+L(TEXT(" Karte   "),TEXT(" Map   "))+TEXT("F1 ")+L(TEXT("Steuerung   ESC Pause"),TEXT("Controls   ESC Pause")),50,875,13,Muted);
-    if(s.MaxDepthMetres>10 && s.DepthMetres<10 && s.StopRemainingSeconds>0)
+    if(s.DecoForecastValid&&s.DecoStopMetres>0)
+    {
+        Rect(1050,105,500,65,Dark);
+        Text(L(TEXT("DEKOSTOPP  "),TEXT("DECO STOP  "))+FString::Printf(TEXT("%.1f m   %s"),s.DecoStopMetres,*Time(s.DecoStopSeconds)),1070,116,18,Amber);
+        Text(L(TEXT("Aufstiegsprognose (9 m/min): "),TEXT("Ascent forecast (9 m/min): "))+Time(s.TimeToSurfaceSeconds),1070,143,14,Muted);
+    }
+    else if(!s.DecoForecastValid&&s.CeilingMetres>0)
+    { Rect(1050,110,500,45,Dark); Text(L(TEXT("DEKO-PROGNOSE NICHT VERFUEGBAR"),TEXT("DECO FORECAST UNAVAILABLE")),1070,123,17,Amber); }
+    else if(s.MaxDepthMetres>10 && s.DepthMetres<10 && s.StopRemainingSeconds>0)
     { Rect(1050,110,500,45,Dark); Text(L(TEXT("SICHERHEITSSTOPP  3-6 m   "),TEXT("SAFETY STOP  3-6 m   "))+Time(s.StopRemainingSeconds),1070,123,18,Accent); }
     int row=0;
     auto warning=[&](uint32 Flag,const TCHAR* German,const TCHAR* English)

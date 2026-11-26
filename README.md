@@ -60,7 +60,7 @@ Die Tabelle zeigt die Standardbelegung. Unter **F1 / Steuerung und Hilfe** lasse
 
 Bis zu 32 aktive und 128 Profile insgesamt liegen lokal in `divingsim/Saved/DiveProfiles.json`. Namen müssen eindeutig sein, auch gegenüber dem Archiv. Die Datei wird beim Speichern geprüft und über eine temporäre Datei ersetzt; unlesbare Dateien bleiben unangetastet. **Neu laden** liest Änderungen anderer Spielinstanzen erneut ein. Profile enthalten den Tauchplan; Sprache, Audio und Steuerung bleiben gemeinsame persönliche Einstellungen.
 
-Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten und Gasdaten; Tiefe, Druck, Zeit und Kurs bleiben auf allen Seiten sichtbar. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
+Mit C wird der sichtbare Handgelenkcomputer angehoben. R wechselt zwischen Tauchdaten, Vitalwerten, Gasdaten und Dekompressionsprognose. Tiefe, Druck und Zeit bleiben auf allen vier Seiten sichtbar, der Kurs auf den ersten drei. Die vierte Seite zeigt nächsten Stopp, Wartezeit, Aufstiegsprognose bei 9 m/min und aktuelle Dekompressionsgrenze. Er funktioniert auch bei mit H ausgeblendetem Bildschirm-HUD. Die sichtbare Handlampe verwendet denselben Schalter und Batteriestand wie das Licht im Spiel.
 
 **Wetter und Wasser** öffnet die Umweltkonfiguration: heiter/bedeckt/Regen/Sturm, Windstärke und -richtung, Lufttemperatur (−10 bis 40 °C), Wassertemperatur an Oberfläche und in der Tiefe, Sprungschicht, Sichtweite, Strömung, Startdatum und Tageszeit. Die Wetterwahl setzt zunächst 3/5/8/22 m/s Wind; danach ist der Wert von 0 bis 24 m/s frei einstellbar. Wind erzeugt sichtbare Wellen und Wasserbewegung; Taucher, Bojen und Atemblasen reagieren auf dieselbe Oberfläche. Es handelt sich um offline konfigurierte Spielszenarien.
 
@@ -132,7 +132,7 @@ python Tools/validate_landscape_meshes.py # Kachelgrenzen und portable Quellenre
 ./Tools/SmokeTest.ps1 -Packaged -Scenario shore-preview -Entry 0 # Uferansicht/Kollision; Entry 0, 1 oder 2
 ./Tools/SmokeTest.ps1 -Packaged -Scenario shore -Entry 0 # Gehen, Tauchen, Rueckkehr und Abschluss
 python Tools/validate_audio_mix.py Builds/Windows/divingsim/Saved/AudioQA/DiveMix.wav artifacts/DiveSmoke.log
-./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Drei Handgelenkseiten, HUD aus
+./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist  # Vier Handgelenkseiten, HUD aus
 ./Tools/SmokeTest.ps1 -Packaged -Entry 1 -Scenario wrist-night # Display bei Nacht
 ./Tools/SmokeTest.ps1 -Packaged -PackageDirectory Builds/WindowsConfig -Scenario config -MaxFPS 30 # Direkte Werte, Uhrzeit, Fehler, Persistenz und Sperre
 ./Tools/TestLogbook.ps1              # Unreal-Tests: alte/neue Logs, zwei Stunden Daten, Fehlerfälle

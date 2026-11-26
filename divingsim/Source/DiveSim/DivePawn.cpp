@@ -222,7 +222,7 @@ void ADivePawn::LookPitch(float Value)
 void ADivePawn::ToggleLamp() { if(!bMenu) bLamp=!bLamp; }
 void ADivePawn::ToggleHUD() { if(!bMenu&&!Simulation.Settings.Rules().PermanentHUD) bShowInstruments=!bShowInstruments; }
 void ADivePawn::ToggleComputer() { if(!bMenu) bShowComputer=!bShowComputer; }
-void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(ComputerPage+1)%3; }
+void ADivePawn::NextComputerPage() { if(!bMenu&&bShowComputer) ComputerPage=(ComputerPage+1)%4; }
 void ADivePawn::ToggleMap() { if(!bMenu) bShowMap=!bShowMap; }
 void ADivePawn::ToggleMenu()
 {
@@ -514,14 +514,15 @@ void ADivePawn::Tick(float DeltaSeconds)
         return;
     }
     if(bSmokeTest&&SmokeScenario==TEXT("daycycle")) TickDayCycleTest(DeltaSeconds);
-    if(bDiveActive && !bMenu)
+    if(bSmokeTest&&SmokeScenario==TEXT("decompression")) TickDecompressionTest(DeltaSeconds);
+    if(bDiveActive && !bMenu && !(bSmokeTest&&SmokeScenario==TEXT("decompression")))
     {
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
     }
     UpdateTorch(); // Current battery output before diagnostics; attachment is refreshed again after camera motion.
     const double smokeDuration=SmokeScenario==TEXT("sediment")?70:(SmokeScenario.StartsWith(TEXT("surface"))||SmokeScenario==TEXT("audio"))?38:(SmokeScenario==TEXT("stream")||SmokeScenario==TEXT("daycycle"))?90:SmokeScenario==TEXT("breathing")?30:SmokeScenario==TEXT("reserve-loss")?150:22;
-    if(bSmokeTest && bDiveActive)
+    if(bSmokeTest && bDiveActive && SmokeScenario!=TEXT("decompression"))
     {
         FString audioError;
         if(!Audio->Validate(audioError))
@@ -571,7 +572,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         {
             const double t=Simulation.Data.ElapsedSeconds;
             bShowComputer=t>4; bShowInstruments=false;
-            ComputerPage=t<10?0:t<16?1:2;
+            ComputerPage=t<10?0:t<14?1:t<18?2:3;
             if(t>13&&!bSmokeSecondaryCaptured)
             {
                 bSmokeSecondaryCaptured=true;
@@ -607,13 +608,13 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
             SmokeScenario==TEXT("stream")?displacement>80:true;
         const bool wristReady=!SmokeScenario.StartsWith(TEXT("wrist"))||
-            (Equipment->WristBlend>.95f&&ComputerPage==2&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==7);
+            (Equipment->WristBlend>.95f&&ComputerPage==3&&Equipment->DisplayUpdates>60&&Equipment->DisplayedPages==15);
         const bool audioReady=SmokeScenario!=TEXT("audio")||(Audio->Inhales>4&&Audio->Exhales>4&&Audio->Heartbeats>30&&Audio->InflationSteps>100&&Audio->VentSteps>100);
         FString particleDetail;const bool particlesReady=Environment->ValidateParticles(particleDetail);
         UE_LOG(LogTemp,Display,TEXT("DIVE_PARTICLES_%s final=1 %s"),particlesReady?TEXT("PASS"):TEXT("FAIL"),*particleDetail);

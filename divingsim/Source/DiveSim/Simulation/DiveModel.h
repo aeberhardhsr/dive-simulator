@@ -1,4 +1,5 @@
 #pragma once
+#include "Decompression.h"
 
 // Engine-independent gameplay model. SI units except explicitly named litres/bar.
 // This is not validated diving, physiological or decompression software.
@@ -142,16 +143,18 @@ struct State
     double SurfaceRMV=16, RemainingGasMinutes=0;
     double AscentMetresPerMinute=0, BreathPhase=0, BuoyancyNewtons=0;
     double CeilingMetres=0, NDLMinutes=99, StopRemainingSeconds=180;
+    double DecoStopMetres=0, DecoStopSeconds=0, TimeToSurfaceSeconds=0;
+    bool DecoForecastValid=false;
     double DistanceMetres=0, LampBattery=100;
     std::array<double,16> NitrogenBar{};
     uint32_t Warnings=0;
 };
 
-// Published ZH-L16C nitrogen coefficients; independent exponential integration.
+// ZH-L16 nitrogen coefficient family, using the 4-minute fast compartment.
 // A single fixed GF=0.80 is a gameplay approximation, not a decompression planner.
-inline constexpr std::array<double,16> HalfTimes={4,8,12.5,18.5,27,38.3,54.3,77,109,146,187,239,305,390,498,635};
-inline constexpr std::array<double,16> A={1.2599,1,.8618,.7562,.62,.5043,.441,.4,.375,.35,.3295,.3065,.2835,.261,.248,.2327};
-inline constexpr std::array<double,16> B={.505,.6514,.7222,.7825,.8126,.8434,.8693,.891,.9092,.9222,.9319,.9403,.9477,.9544,.9602,.9653};
+inline constexpr auto& HalfTimes=Deco::HalfTimes;
+inline constexpr auto& A=Deco::A;
+inline constexpr auto& B=Deco::B;
 
 class Model
 {
@@ -162,6 +165,7 @@ public:
     void Reset(Config cfg)
     {
         cfg=cfg.Resolved(); Settings=cfg; Data=State{};
+        NextDecoUpdateSeconds=0;
         Data.CylinderBar=cfg.StartPressureBar;
         Data.AmbientBar=cfg.SurfacePressureBar;
         Data.PPO2=Data.AmbientBar*cfg.OxygenFraction;
@@ -203,6 +207,7 @@ public:
         }
     }
 private:
+    double NextDecoUpdateSeconds=0;
     void UpdateBalance(double lungDelta)
     {
         const auto& c=Settings;auto& s=Data;
@@ -323,6 +328,15 @@ private:
         }
         s.CeilingMetres=unlimited?0:std::max(0.0,(ceilingBar-c.SurfacePressureBar)/BarPerMetre);
         s.NDLMinutes=unlimited?99:Clamp(ndl,0,99);
+        if(s.ElapsedSeconds+1e-8>=NextDecoUpdateSeconds)
+        {
+            const auto plan=rules.Decompression?Deco::Forecast(s.NitrogenBar,s.DepthMetres,c.SurfacePressureBar,1-c.OxygenFraction,BarPerMetre):Deco::Plan{};
+            s.DecoForecastValid=plan.Valid;
+            s.DecoStopMetres=plan.Valid&&plan.Count?plan.Stops[0].Depth:0;
+            s.DecoStopSeconds=plan.Valid&&plan.Count?plan.Stops[0].Seconds:0;
+            s.TimeToSurfaceSeconds=plan.Valid?plan.TotalSeconds:0;
+            NextDecoUpdateSeconds=std::floor(s.ElapsedSeconds+1e-8)+1;
+        }
         if(rules.Physiology)
         {
             const double inertPressure=s.BreathSource==BreathingSource::Air?
