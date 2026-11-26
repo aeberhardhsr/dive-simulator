@@ -94,6 +94,7 @@ public:
     TArray<FDivePhotograph> Photographs;
     bool TestPhotographs() const { return bSmokeTest; }
     bool SaveLog(const FString& Reason);
+    bool ValidateCameraMedium(FString& Error) const;
     FString Local(const TCHAR* German,const TCHAR* English) const { return bEnglish?English:German; }
 private:
 #if WITH_DEV_AUTOMATION_TESTS

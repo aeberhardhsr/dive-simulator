@@ -362,9 +362,9 @@ void ADiveWorld::Tick(float DeltaSeconds)
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LIGHT_FAIL %s"),*celestialError); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         // This actor ticks after the pawn: both the current camera transform
         // and its post-process settings have now been updated for this frame.
-        if(!Diver->Camera->PostProcessSettings.SceneColorTint.Equals(
-            FMath::Lerp(FLinearColor::White,FLinearColor(.48f,.83f,.78f),static_cast<float>(OpticalMedium.Water)),1.e-4f))
-        { UE_LOG(LogTemp,Error,TEXT("DIVE_MEDIUM_FAIL Fog and post-process camera medium disagree")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
+        FString mediumError;
+        if(!Diver->ValidateCameraMedium(mediumError))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_MEDIUM_FAIL %s"),*mediumError); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         const uint8 phase=OpticalMedium.Water<1.e-5?1:OpticalMedium.Water>1-1.e-5?4:2;
         if(!(ObservedOpticalMedia&phase))
         {
@@ -374,6 +374,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
             ObservedOpticalMedia|=phase;
             UE_LOG(LogTemp,Display,TEXT("DIVE_LIGHT_PASS elevation=%.3f sun=%.5f sky=%.3f water_ambient=%.6f"),
                 Lighting.ElevationDegrees,Sun->Intensity,Sky->Intensity,WaterAmbient);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_VIEW_PATH_PASS metric=world_ray exit=local_water_level tint=neutral"));
             UE_LOG(LogTemp,Display,TEXT("DIVE_MEDIUM_PASS phase=%s weight=%.5f density=%.5f sky=%.5f"),
                 phase==1?TEXT("air"):phase==4?TEXT("water"):TEXT("transition"),OpticalMedium.Water,
                 Fog->FogDensity,Fog->SkyAtmosphereAmbientContributionColorScale.R);

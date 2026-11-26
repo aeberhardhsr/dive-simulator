@@ -2,6 +2,18 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
+## Blickabhängige Wasserfarbe
+
+Der neue Entwicklungsstand entfernt den zusätzlichen konstanten Grünfilter und die feste kanalweise Entsättigung der Tauchkamera. Die Wasserfarbe kommt aus entfernungsabhängiger Absorption und Streuung; die bestehende Entsättigung bei körperlicher Beeinträchtigung bleibt wirksam. Nahe Materialien behalten damit mehr ihrer eigenen Farbe, statt unabhängig vom Abstand immer gleich eingefärbt zu werden.
+
+`Tools/Shaders/UnderwaterView.ush` verwendet die räumliche Strecke zwischen Kamera und Tiefenpufferpunkt. Zuvor diente die projizierte Szenentiefe als Streckenmaß, sodass seitliche Blickstrahlen einen zu kurzen Wasserweg erhielten. Unreal rekonstruiert die Position für das Postprocess-Material aus dem Tiefenpuffer; Welt- und Kameraposition werden vor der Umwandlung zum Shader-Eingang mit den LWC-Materialknoten subtrahiert. Bei einem Blick in die Luft endet die berücksichtigte Strecke am örtlichen Wasserstand. Große Sky-Tiefen werden vor der Längenberechnung skaliert, um einen Überlauf zu vermeiden.
+
+Das bleibt eine homogene, gestaltete Mediennäherung. Wellenbrechung kommt weiterhin vom Wasseroberflächenmaterial, die Grenze der Postprocess-Strecke verwendet den Wasserstand am Auge. Ein vollständiger gebrochener Strahlengang, örtlich vermessene optische Koeffizienten und spektral getrennte direkte/indirekte Beleuchtung sind damit nicht erreicht. Das Kameramaterial färbt die Tauchlampe entlang des Sichtwegs; es legt keinen zusätzlichen Sonnenweg auf lokales Lampenlicht. Die bestehenden Werte für Sichtweite, Absorption, Streufarbe, Sonne und Nebel wurden in diesem Schritt nicht neu abgestimmt.
+
+Die Laufzeitprüfung kontrolliert nun die tatsächlichen Sichtweiten-, Augentiefen- und Umgebungslichtparameter sowie das Materialgewicht an der Wasserlinie. Ein separater Vergleichskamerafehler ist ebenfalls korrigiert: Nach einer Kameraversetzung bei eingefrorenem Welttick wird das Medium aktualisiert. Pflanzen-/Fels-Nahansichten hatten teilweise noch die Nebeleinstellung vom Einstieg behalten. Historische Nahansichten sind deshalb keine Beleuchtungsabnahme dieses neuen Standes. Die Habitatansichten hatten bereits eine Aktualisierung pro Bild; diese findet jetzt zusätzlich nach der Positionierung statt.
+
+Die nativen Prüfungen für Ledi-Habitat, Blick zur Oberfläche und den Übergang Wasser/Luft bestehen. Der Paketnachweis für diesen Stand wird getrennt von den folgenden älteren Ergebnisberichten geführt.
+
 ## Größenstufen des Seegrunds
 
 Die drei großen Felsformen ergänzen bereits den bisherigen Grund. Eine weitere Größenstufe ist im Entwicklungsstand integriert: `create_gravel_assets.py` leitet aus denselben dokumentierten CC0-Formen drei geschlossene Steinmeshes mit je 1.200 Dreiecken ab. Die fertigen Formen werden nach der Vereinfachung erneut zentriert und auf einen bekannten Radius normiert. Originale und große Felsen bleiben erhalten. `GravelAssets.blend` und `blender/exports/Gravel/Manifest.json` halten die Ableitung fest.

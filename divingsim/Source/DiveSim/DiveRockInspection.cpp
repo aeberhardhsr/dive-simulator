@@ -21,6 +21,11 @@
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
 // the three new forms use the same position, scale, material and camera.
+void ADiveWorld::RefreshInspectionMedium()
+{
+    if(bOpticsSmoke) UpdateAtmosphere();
+}
+
 bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation)
 {
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
@@ -191,6 +196,10 @@ void ADivePawn::TickRockInspection(float Dt)
     SetActorLocation(eye-FVector(0,0,CameraBaseHeight));ResetContactPose();
     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(rotation);
     Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(habitatView?75:waterView?70:50);
+    // The fixture freezes world ticking. Refresh the medium after moving the
+    // camera, including plant/rock close-ups that previously retained entry fog.
+    // WaterView manages deliberate fog overrides inside SetRockInspection.
+    if(!waterView) Environment->RefreshInspectionMedium();
     if(waterView) Camera->PostProcessSettings.AutoExposureBias=Environment->ExposureBiasAt(eye);
     if(waterView&&((variant&4)||variant>=8)) Camera->PostProcessSettings.WeightedBlendables.Array.Reset();
     if(waterView&&variant>=8)

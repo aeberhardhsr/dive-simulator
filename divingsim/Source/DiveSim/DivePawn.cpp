@@ -663,16 +663,19 @@ void ADivePawn::Tick(float DeltaSeconds)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),Simulation.Settings.VisibilityMetres*100);
         UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->WaterAmbientAt(eye));
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("EyeDepthCm"),depth*100);
         Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
     }
     auto& PP=Camera->PostProcessSettings;
     Camera->PostProcessBlendWeight=1;
     PP.bOverride_ColorSaturation=true;
-    PP.ColorSaturation=FMath::Lerp(FVector4(1,1,1,1),FVector4(.68,.85,.9,1),underwater);
+    // Water colour comes from path-dependent absorption/scattering. A second
+    // constant green tint also coloured zero-length paths and flattened rocks.
+    PP.ColorSaturation=FVector4(1,1,1,1);
     const float impairment=bDiveActive?static_cast<float>(Simulation.Data.VisualImpairment):0.f;
     PP.ColorSaturation.W=1-.8f*impairment;
     PP.bOverride_SceneColorTint=true;
-    PP.SceneColorTint=FMath::Lerp(FLinearColor::White,FLinearColor(.48,.83,.78),underwater);
+    PP.SceneColorTint=FLinearColor::White;
     PP.bOverride_VignetteIntensity=true; PP.VignetteIntensity=.35f+.6f*impairment;
     PP.bOverride_AutoExposureMethod=true; PP.AutoExposureMethod=EAutoExposureMethod::AEM_Manual;
     PP.bOverride_AutoExposureApplyPhysicalCameraExposure=true; PP.AutoExposureApplyPhysicalCameraExposure=true;
@@ -694,6 +697,23 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(bPerformance) TickPerformance();
     if(bSmokeTest&&SmokeScenario==TEXT("fish")) TickFishInspection(DeltaSeconds);
     if(bSmokeTest&&SmokeScenario==TEXT("rocks")) TickRockInspection(DeltaSeconds);
+}
+
+bool ADivePawn::ValidateCameraMedium(FString& Error) const
+{
+    if(!Environment||!Camera||!UnderwaterMaterial)
+    { Error=TEXT("Missing underwater camera material");return false; }
+    const FVector eye=Camera->GetComponentLocation();
+    const double depth=FMath::Max(0.,(Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100);
+    if(!Camera->PostProcessSettings.SceneColorTint.Equals(FLinearColor::White,1.e-5f)||
+        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("EyeDepthCm"))-depth*100)>.01||
+        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("VisibilityCm"))-Simulation.Settings.VisibilityMetres*100)>.01||
+        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("AmbientLight"))-Environment->WaterAmbientAt(eye))>1.e-5)
+    { Error=TEXT("Camera water path uniforms disagree with the actual eye/environment");return false; }
+    for(const auto& blend:Camera->PostProcessSettings.WeightedBlendables.Array)
+        if(blend.Object==UnderwaterMaterial&&FMath::Abs(blend.Weight-Dive::CameraWaterBlend(depth))<1.e-5)
+            return true;
+    Error=TEXT("Underwater camera blend does not match waterline immersion");return false;
 }
 
 void ADivePawn::SimulateStep(float Step)

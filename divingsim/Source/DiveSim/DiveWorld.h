@@ -95,6 +95,7 @@ public:
     Dive::ScenarioClock::Moment CurrentMoment() const;
     double CurrentHour() const;
     void UpdateDaylight();
+    void RefreshInspectionMedium();
     bool ValidateCelestial(FString& Error) const;
     double WaterAmbientAt(const FVector& Eye) const;
     double ExposureBiasAt(const FVector& Eye) const;

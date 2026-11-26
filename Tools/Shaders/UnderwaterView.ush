@@ -1,0 +1,15 @@
+// Scene-linear view-path attenuation, before DOF/bloom/tonemapping.
+// Ray is WorldPosition - CameraPosition, subtracted in LWC material nodes.
+// Clip the path at the local water level when looking out into air. The wave
+// surface still handles refraction; this is a homogeneous-medium approximation.
+// Scale before length to keep sky-depth reconstruction finite (very long rays).
+float rayScale=max(1,max(abs(Ray.x),max(abs(Ray.y),abs(Ray.z))));
+float distanceCm=rayScale*length(Ray/rayScale);
+float wetFraction=Ray.z>0 ? saturate(max(0,EyeDepth)/max(.001,Ray.z)) : 1;
+float waterPath=distanceCm*wetFraction;
+float transmission=exp(-waterPath/max(150,Visibility)*1.45);
+float3 absorption=exp(-waterPath*float3(.00045,.00009,.00012));
+// No constant screen tint: nearby surfaces retain their material colour.
+// Incoming daylight is handled by lighting/fog, not applied to the torch here.
+return Scene.rgb*absorption*transmission
+    + float3(250,1050,900)*saturate(Ambient)*(1-transmission);
