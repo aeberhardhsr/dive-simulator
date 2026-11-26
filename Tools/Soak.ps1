@@ -14,6 +14,9 @@ $hostInfo=[ordered]@{started_utc=[DateTime]::UtcNow.ToString('o');requested_seco
     executable=$executable;executable_sha256=(Get-FileHash -LiteralPath $executable).Hash;
     source_commit=(& git -C $repo rev-parse HEAD);source_dirty=[bool](& git -C $repo status --porcelain);
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)}
+$hostInfo.package_containers=@(Get-ChildItem -LiteralPath (Join-Path $PackageDirectory 'divingsim/Content/Paks') -File | Sort-Object Name | ForEach-Object {
+    @{file=$_.Name;bytes=$_.Length;sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
+})
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $hostInfo.gpu_before=@(& nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu --format=csv)
 }

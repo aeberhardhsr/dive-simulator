@@ -66,6 +66,25 @@ def validate(result, intervals, log):
     if abs(times[-1] - log['duration_seconds']) > .001: raise ValueError('Missing final sample')
 
 
+def verify_package(host):
+    """Bind a long run to the same binary and cooked content at its end."""
+    def digest(path):
+        with path.open('rb') as stream:
+            return hashlib.file_digest(stream, 'sha256').hexdigest()
+    executable = Path(host['executable'])
+    if digest(executable) != host['executable_sha256'].lower():
+        raise ValueError('Executable changed during soak')
+    if 'package_containers' not in host:
+        return 'legacy_executable_only'
+    root = executable.parents[2] / 'Content/Paks'
+    actual = [dict(file=p.name, bytes=p.stat().st_size, sha256=digest(p))
+              for p in sorted(root.iterdir()) if p.is_file()]
+    expected = sorted(host['package_containers'], key=lambda p: p['file'])
+    if not expected or actual != expected:
+        raise ValueError('Cooked package changed during soak')
+    return 'executable_and_cooked_containers'
+
+
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument('directory', type=Path)
     folder = parser.parse_args().directory
@@ -79,7 +98,9 @@ def main():
             raise ValueError('Missing actual-resolution screenshot')
     evidence = {name: hashlib.sha256((folder / name).read_bytes()).hexdigest()
                 for name in ['Result.json', 'Intervals.jsonl', 'DiveLog.json', 'Runtime.log', 'Start.png', 'Final.png']}
-    summary = {'result': result, 'interval_count': len(intervals), 'host': json.loads((folder / 'Host.json').read_text(encoding='utf-8-sig')),
+    host = json.loads((folder / 'Host.json').read_text(encoding='utf-8-sig'))
+    package_integrity = verify_package(host)
+    summary = {'result': result, 'interval_count': len(intervals), 'host': host, 'package_integrity': package_integrity,
                'sha256': evidence, 'two_real_hours': result['total']['wall_seconds'] >= 7200 and result['measured_simulation_seconds'] >= 7200}
     (folder / 'Summary.json').write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8')
     print(f"SOAK_VALIDATED wall={result['total']['wall_seconds']:.2f}s sim={result['measured_simulation_seconds']:.2f}s "

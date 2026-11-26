@@ -1,5 +1,7 @@
 import copy
+import hashlib
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -9,6 +11,28 @@ spec.loader.exec_module(soak)
 
 
 class SoakTests(unittest.TestCase):
+    def test_run_package_must_remain_identical(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder) / 'divingsim'
+            executable = root / 'Binaries/Win64/divingsim.exe'
+            executable.parent.mkdir(parents=True)
+            executable.write_bytes(b'original binary')
+            pak = root / 'Content/Paks/divingsim.utoc'
+            pak.parent.mkdir(parents=True)
+            pak.write_bytes(b'original content')
+            host = dict(executable=str(executable), executable_sha256=hashlib.sha256(executable.read_bytes()).hexdigest(),
+                        package_containers=[dict(file=pak.name, bytes=pak.stat().st_size, sha256=hashlib.sha256(pak.read_bytes()).hexdigest())])
+            self.assertEqual(soak.verify_package(host), 'executable_and_cooked_containers')
+            # Same-sized replacement still invalidates the run.
+            pak.write_bytes(b'modified content')
+            with self.assertRaisesRegex(ValueError, 'Cooked package'): soak.verify_package(host)
+            pak.write_bytes(b'original content')
+            executable.write_bytes(b'modified binary')
+            with self.assertRaisesRegex(ValueError, 'Executable'): soak.verify_package(host)
+            executable.write_bytes(b'original binary')
+            (pak.parent / 'unexpected.pak').write_bytes(b'new asset')
+            with self.assertRaisesRegex(ValueError, 'Cooked package'): soak.verify_package(host)
+
     def fixture(self, seconds=180):
         def metrics(seconds):
             return dict(frames=seconds*100, wall_seconds=seconds, average_fps=100 if seconds else 0,
