@@ -125,6 +125,7 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     const float water=static_cast<float>(OpticalMedium.Water);
     const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB();
     if(!fog||FMath::Abs(fog->FogDensity-OpticalMedium.Density)>1.e-6||
+        FMath::Abs(fog->VolumetricFogExtinctionScale-(NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f))>1.e-5||
         FMath::Abs(fog->FogHeightFalloff-OpticalMedium.HeightFalloff)>1.e-6||
         !fog->FogInscatteringLuminance.Equals(FLinearColor(280,1150,950)*(water*WaterAmbient*FogScatteringGain),.001f)||
         !fog->SkyAtmosphereAmbientContributionColorScale.Equals(FLinearColor(1-water,1-water,1-water),1.e-5f)||

@@ -11,7 +11,7 @@ def build_caustics():
     for node in list(lib.get_material_expressions(material)):lib.delete_material_expression(material,node)
     material.set_editor_property('material_domain',u.MaterialDomain.MD_LIGHT_FUNCTION)
     nodes={'P':lib.create_material_expression(material,u.MaterialExpressionWorldPosition)}
-    for name,default in [('Clock',0),('WindStrength',.25),('Extinction',1.45/14),('CausticStrength',1)]:
+    for name,default in [('Clock',0),('WindStrength',.25),('Extinction',1.45/14),('CausticStrength',1),('VolumeDepth',1),('VolumeWaterWeight',0)]:
         node=lib.create_material_expression(material,u.MaterialExpressionScalarParameter)
         node.set_editor_property('parameter_name',name);node.set_editor_property('default_value',default);nodes[name]=node
     for name in ['Wave0','Wave1','Wave2','Wave3','WavePhase','SunRay']:

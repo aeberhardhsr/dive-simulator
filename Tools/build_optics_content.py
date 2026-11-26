@@ -21,14 +21,14 @@ def build_optics():
     lib.connect_material_expressions(world,'',ray,'A')
     lib.connect_material_expressions(camera,'',ray,'B')
     parameters={}
-    for name,default in [('VisibilityCm',1400),('AmbientLight',0),('EyeDepthCm',0)]:
+    for name,default in [('VisibilityCm',1400),('AmbientLight',0),('EyeDepthCm',0),('NativeScattering',0)]:
         parameter=lib.create_material_expression(post,u.MaterialExpressionScalarParameter)
         parameter.set_editor_property('parameter_name',name)
         parameter.set_editor_property('default_value',default)
         parameters[name]=parameter
     fog=lib.create_material_expression(post,u.MaterialExpressionCustom,0,0)
     inputs=[]
-    for name in ['Scene','Ray','Visibility','Ambient','EyeDepth']:
+    for name in ['Scene','Ray','Visibility','Ambient','EyeDepth','NativeScattering']:
         item=u.CustomInput(); item.set_editor_property('input_name',name); inputs.append(item)
     fog.set_editor_property('inputs',inputs)
     fog.set_editor_property('output_type',u.CustomMaterialOutputType.CMOT_FLOAT3)
@@ -39,6 +39,7 @@ def build_optics():
     lib.connect_material_expressions(parameters['VisibilityCm'],'',fog,'Visibility')
     lib.connect_material_expressions(parameters['AmbientLight'],'',fog,'Ambient')
     lib.connect_material_expressions(parameters['EyeDepthCm'],'',fog,'EyeDepth')
+    lib.connect_material_expressions(parameters['NativeScattering'],'',fog,'NativeScattering')
     lib.connect_material_property(fog,'',u.MaterialProperty.MP_EMISSIVE_COLOR)
     lib.recompile_material(post)
     u.EditorAssetLibrary.set_metadata_tag(post,'DiveViewShaderSHA256',hashlib.sha256(code.encode()).hexdigest())

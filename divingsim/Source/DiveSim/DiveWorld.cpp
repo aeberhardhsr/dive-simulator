@@ -190,6 +190,7 @@ void ADiveWorld::BeginPlay()
     bOpticsSmoke=FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));
     if(bOpticsSmoke)
     {
+        bNativeWaterScattering=FParse::Param(FCommandLine::Get(),TEXT("DiveNativeScattering"));
         FParse::Value(FCommandLine::Get(),TEXT("DiveFogScatterGain="),FogScatteringGain);
         FParse::Value(FCommandLine::Get(),TEXT("DiveViewScatterGain="),ViewScatteringGain);
         FogScatteringGain=FMath::IsFinite(FogScatteringGain)?FMath::Clamp(FogScatteringGain,0.f,1.f):1.f;
@@ -292,6 +293,12 @@ double ADiveWorld::CameraScatteringAmbientAt(const FVector& Eye) const
     return WaterAmbientAt(Eye)*ViewScatteringGain;
 }
 
+bool ADiveWorld::NativeWaterScattering() const
+{
+    static const auto* enabled=IConsoleManager::Get().FindConsoleVariable(TEXT("r.VolumetricFog"));
+    return bNativeWaterScattering&&enabled&&enabled->GetInt()!=0&&Fog&&Fog->bEnableVolumetricFog;
+}
+
 double ADiveWorld::ExposureBiasAt(const FVector& Eye) const
 {
     const double target=Lighting.ExposureBias((SurfaceZ(Eye.X,Eye.Y)-Eye.Z)/100,VisibleDistance);
@@ -315,6 +322,10 @@ void ADiveWorld::UpdateAtmosphere()
     auto* fog=Fog.Get();
     fog->SetFogDensity(OpticalMedium.Density);
     fog->SetFogHeightFalloff(OpticalMedium.HeightFalloff);
+    // UE converts density to inverse centimetres with /1000 and applies .5
+    // in MaterialSetupCS. 0.35*14/visibility therefore needs this scale to
+    // represent the former 1.45/visibility view-path extinction in the volume.
+    fog->SetVolumetricFogExtinctionScale(NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f);
     // Black additive colour leaves aerial fog lighting to Sky Atmosphere.
     // Its contribution fades out below water, where the lake tint takes over.
     fog->SetFogInscatteringColor(FLinearColor(280,1150,950)*(water*WaterAmbient*FogScatteringGain));
@@ -387,7 +398,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
             UE_LOG(LogTemp,Display,TEXT("DIVE_LIGHT_PASS elevation=%.3f sun=%.5f sky=%.3f water_ambient=%.6f"),
                 Lighting.ElevationDegrees,Sun->Intensity,Sky->Intensity,WaterAmbient);
             UE_LOG(LogTemp,Display,TEXT("DIVE_VIEW_PATH_PASS metric=world_ray exit=local_water_level tint=neutral"));
-            UE_LOG(LogTemp,Display,TEXT("DIVE_SCATTER_MODEL fog_gain=%.3f view_gain=%.3f"),FogScatteringGain,ViewScatteringGain);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SCATTER_MODEL fog_gain=%.3f view_gain=%.3f native=%d requested=%d"),FogScatteringGain,ViewScatteringGain,NativeWaterScattering()?1:0,bNativeWaterScattering?1:0);
             UE_LOG(LogTemp,Display,TEXT("DIVE_MEDIUM_PASS phase=%s weight=%.5f density=%.5f sky=%.5f"),
                 phase==1?TEXT("air"):phase==4?TEXT("water"):TEXT("transition"),OpticalMedium.Water,
                 Fog->FogDensity,Fog->SkyAtmosphereAmbientContributionColorScale.R);

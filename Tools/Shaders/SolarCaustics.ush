@@ -2,13 +2,31 @@
 // Limited to an attenuating light function: no extra emissive energy.
 // WATER_OPTICS_INCLUDE
 DiveWaterOptics optical;
+// UE's directional volumetric light function is a 2D projection, not a
+// per-froxel material evaluation. Use a representative submerged depth slice
+// instead of evaluating the water function at that arbitrary shadow plane.
+// The native volume still supplies light-specific scattering and shadows.
+// This does not model 3D caustic convergence or the refracted beam direction.
+if(SunRay.z>=0) return 1;
+int samples=1;
+#if defined(LIGHT_TYPE) && LIGHT_TYPE == 3
+if(VolumeWaterWeight>0) samples=2;
+#endif
+float values[2]={1,1};
+[loop] for(int sampleIndex=0;sampleIndex<samples;++sampleIndex)
+{
 float3 p=P*.01;
+if(sampleIndex==1)
+{
+    float3 volumeIncident=normalize(SunRay.xyz);
+    p-=volumeIncident*((p.z+VolumeDepth)/min(-.1,volumeIncident.z));
+}
 float2 dx=ddx(p.xy),dy=ddy(p.xy);
 float4 waves[4]={Wave0,Wave1,Wave2,Wave3};
 float h;float2 slope;float3 curve;
 optical.Surface(p.xy,Clock,waves,WavePhase,WindStrength,dx,dy,h,slope,curve);
 float wet=smoothstep(0,.15,h-p.z);
-if(wet<=0 || SunRay.z>=0) return 1;
+if(wet<=0) continue;
 float3 incident=normalize(SunRay.xyz);
 float3 ray=optical.Refract(incident,float2(0,0));
 float2 uv=p.xy-ray.xy*((p.z-h)/min(-.1,ray.z));
@@ -43,4 +61,8 @@ float contrast=CausticStrength*exp(-path*(1./18+Extinction))*smoothstep(0,.35,pa
 gain=lerp(1,gain,contrast);
 float transmission=exp(-Extinction*path);
 float fresnel=.02+.98*pow(1-saturate(cosine),5);
-return lerp(1,saturate((1-fresnel)*transmission*gain),wet);
+values[sampleIndex]=lerp(1,saturate((1-fresnel)*transmission*gain),wet);
+}
+// Preserve the original projection exactly when the experimental mode is off;
+// fade from that result, not from white, while crossing the surface.
+return samples==2?lerp(values[0],values[1],saturate(VolumeWaterWeight)):values[0];

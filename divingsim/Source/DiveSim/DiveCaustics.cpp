@@ -23,6 +23,10 @@ void ADiveWorld::UpdateCaustics()
     SolarWater->SetScalarParameterValue(TEXT("WindStrength"),FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.));
     SolarWater->SetScalarParameterValue(TEXT("Extinction"),1.45/VisibleDistance);
     SolarWater->SetScalarParameterValue(TEXT("CausticStrength"),CausticsStrength);
+    const FVector eye=Diver?Diver->GetPawnViewLocation():FVector::ZeroVector;
+    const double depth=(SurfaceZ(eye.X,eye.Y)-eye.Z)/100.;
+    SolarWater->SetScalarParameterValue(TEXT("VolumeDepth"),FMath::Clamp(depth,1.,20.));
+    SolarWater->SetScalarParameterValue(TEXT("VolumeWaterWeight"),NativeWaterScattering()?Dive::CameraWaterBlend(depth):0.);
 }
 
 void ADiveWorld::SetCausticsTestStrength(float Value)
@@ -35,6 +39,11 @@ bool ADiveWorld::ValidateCaustics(FString& Error) const
 {
     if(!SolarWater||!Sun||Sun->LightFunctionMaterial!=SolarWater||SolarWater->GetMaterial()->MaterialDomain!=MD_LightFunction)
     { Error=TEXT("Missing solar underwater light function");return false; }
+    TArray<FMaterialParameterInfo> parameters;TArray<FGuid> ids;
+    SolarWater->GetAllScalarParameterInfo(parameters,ids);
+    for(const FName name:{FName(TEXT("VolumeDepth")),FName(TEXT("VolumeWaterWeight"))})
+        if(!parameters.ContainsByPredicate([&](const FMaterialParameterInfo& info){return info.Name==name;}))
+        { Error=TEXT("Solar volume projection parameters are missing");return false; }
     const FVector ray=Sun->GetForwardVector();
     const auto shaderRay=SolarWater->K2_GetVectorParameterValue(TEXT("SunRay"));
     if(!shaderRay.Equals(FLinearColor(ray.X,ray.Y,ray.Z,0),1.e-5)||

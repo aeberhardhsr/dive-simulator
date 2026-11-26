@@ -161,7 +161,8 @@ void ADivePawn::BeginPlay()
             TArray<FMaterialParameterInfo> parameters; TArray<FGuid> ids;
             material->GetAllScalarParameterInfo(parameters,ids);
             const bool ambient=parameters.ContainsByPredicate([](const FMaterialParameterInfo& info) { return info.Name==TEXT("AmbientLight"); });
-            if(!ambient||material->GetMaterial()->BlendableLocation!=BL_SceneColorBeforeDOF||material->GetMaterial()->bDisablePreExposureScale)
+            const bool native=parameters.ContainsByPredicate([](const FMaterialParameterInfo& info) { return info.Name==TEXT("NativeScattering"); });
+            if(!ambient||!native||material->GetMaterial()->BlendableLocation!=BL_SceneColorBeforeDOF||material->GetMaterial()->bDisablePreExposureScale)
             { UE_LOG(LogTemp,Error,TEXT("DIVE_OPTICS_FAIL Underwater material is stale or has the wrong HDR stage")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
             UE_LOG(LogTemp,Display,TEXT("DIVE_OPTICS_PASS stage=BeforeDOF ambient_parameter=1"));
         }
@@ -666,6 +667,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     {
         UnderwaterMaterial->SetScalarParameterValue(TEXT("VisibilityCm"),Simulation.Settings.VisibilityMetres*100);
         UnderwaterMaterial->SetScalarParameterValue(TEXT("AmbientLight"),Environment->CameraScatteringAmbientAt(eye));
+        UnderwaterMaterial->SetScalarParameterValue(TEXT("NativeScattering"),Environment->NativeWaterScattering()?1.f:0.f);
         UnderwaterMaterial->SetScalarParameterValue(TEXT("EyeDepthCm"),depth*100);
         Camera->AddOrUpdateBlendable(UnderwaterMaterial,underwater);
     }
@@ -708,6 +710,7 @@ bool ADivePawn::ValidateCameraMedium(FString& Error) const
     const FVector eye=Camera->GetComponentLocation();
     const double depth=FMath::Max(0.,(Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100);
     if(!Camera->PostProcessSettings.SceneColorTint.Equals(FLinearColor::White,1.e-5f)||
+        FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("NativeScattering"))-(Environment->NativeWaterScattering()?1.f:0.f))>1.e-5||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("EyeDepthCm"))-depth*100)>.01||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("VisibilityCm"))-Simulation.Settings.VisibilityMetres*100)>.01||
         FMath::Abs(UnderwaterMaterial->K2_GetScalarParameterValue(TEXT("AmbientLight"))-Environment->CameraScatteringAmbientAt(eye))>1.e-5)

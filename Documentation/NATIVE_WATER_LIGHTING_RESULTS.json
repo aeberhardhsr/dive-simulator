@@ -1,0 +1,1323 @@
+{
+  "status": "PASS",
+  "scope": "Experimental native rendering, camera matches and optical regressions; not visual acceptance",
+  "host": {
+    "source_head": "ae670838fb7ad32084121988114c13ed23e478e3",
+    "files": [
+      {
+        "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a",
+        "file": "divingsim/Source/DiveSim/DiveAccess.cpp"
+      },
+      {
+        "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482",
+        "file": "divingsim/Source/DiveSim/DiveAudio.cpp"
+      },
+      {
+        "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4",
+        "file": "divingsim/Source/DiveSim/DiveAudio.h"
+      },
+      {
+        "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6",
+        "file": "divingsim/Source/DiveSim/DiveAvatar.cpp"
+      },
+      {
+        "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159",
+        "file": "divingsim/Source/DiveSim/DiveAvatar.h"
+      },
+      {
+        "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352",
+        "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp"
+      },
+      {
+        "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f",
+        "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp"
+      },
+      {
+        "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834",
+        "file": "divingsim/Source/DiveSim/DiveBodyFrame.h"
+      },
+      {
+        "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a",
+        "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp"
+      },
+      {
+        "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2",
+        "file": "divingsim/Source/DiveSim/DiveBuildings.cpp"
+      },
+      {
+        "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e",
+        "file": "divingsim/Source/DiveSim/DiveBuildings.h"
+      },
+      {
+        "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a",
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f",
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h"
+      },
+      {
+        "sha256": "af07eb11575b676ad8f775141a5a6b89a2fd96ece21fb4108df95a046d8084c1",
+        "file": "divingsim/Source/DiveSim/DiveCaustics.cpp"
+      },
+      {
+        "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f",
+        "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp"
+      },
+      {
+        "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1",
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp"
+      },
+      {
+        "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1",
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.h"
+      },
+      {
+        "sha256": "90fdbdd9655b101d757ac55abdf49cc3e4160893646bec4757e22002945eb49f",
+        "file": "divingsim/Source/DiveSim/DiveCoast.cpp"
+      },
+      {
+        "sha256": "75c97a2a5ab6fbe38bbebe81df4c1284f3af6c64d6586667662bd28a628cf819",
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29",
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h"
+      },
+      {
+        "sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d",
+        "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp"
+      },
+      {
+        "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799",
+        "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp"
+      },
+      {
+        "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d",
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp"
+      },
+      {
+        "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3",
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.h"
+      },
+      {
+        "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f",
+        "file": "divingsim/Source/DiveSim/DiveContacts.cpp"
+      },
+      {
+        "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a",
+        "file": "divingsim/Source/DiveSim/DiveContacts.h"
+      },
+      {
+        "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74",
+        "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp"
+      },
+      {
+        "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068",
+        "file": "divingsim/Source/DiveSim/DiveControls.cpp"
+      },
+      {
+        "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e",
+        "file": "divingsim/Source/DiveSim/DiveControls.h"
+      },
+      {
+        "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9",
+        "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp"
+      },
+      {
+        "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa",
+        "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp"
+      },
+      {
+        "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057",
+        "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp"
+      },
+      {
+        "sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982",
+        "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp"
+      },
+      {
+        "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp"
+      },
+      {
+        "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.h"
+      },
+      {
+        "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp"
+      },
+      {
+        "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp"
+      },
+      {
+        "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp"
+      },
+      {
+        "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp"
+      },
+      {
+        "sha256": "5ed81683d2cb14bd8c96fd582310477ca034ae248f32551ed3b150d31326d000",
+        "file": "divingsim/Source/DiveSim/DiveEcology.cpp"
+      },
+      {
+        "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724",
+        "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp"
+      },
+      {
+        "sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac",
+        "file": "divingsim/Source/DiveSim/DiveEquipment.cpp"
+      },
+      {
+        "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a",
+        "file": "divingsim/Source/DiveSim/DiveEquipment.h"
+      },
+      {
+        "sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd",
+        "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp"
+      },
+      {
+        "sha256": "ec79da991a2d1380accb3c092925ea829d9af32ebf93ce4116f0601bc10bb06c",
+        "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp"
+      },
+      {
+        "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04",
+        "file": "divingsim/Source/DiveSim/DiveGameMode.cpp"
+      },
+      {
+        "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b",
+        "file": "divingsim/Source/DiveSim/DiveGameMode.h"
+      },
+      {
+        "sha256": "6b3654dd9991eecb8991bf6d2e92ee83bca82f2078a3a5d6ab1b50c15cf56b45",
+        "file": "divingsim/Source/DiveSim/DiveGravel.cpp"
+      },
+      {
+        "sha256": "98d497a8c649030b96888329c4b7bafe88d1e27a06f81a92a8e2904f025f94af",
+        "file": "divingsim/Source/DiveSim/DiveHUD.cpp"
+      },
+      {
+        "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17",
+        "file": "divingsim/Source/DiveSim/DiveHUD.h"
+      },
+      {
+        "sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72",
+        "file": "divingsim/Source/DiveSim/DiveImagery.cpp"
+      },
+      {
+        "sha256": "31f7c60239fa146ac1edfa8f7b3438e2172b3a3eb14a0fd64924d98540fde7a0",
+        "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp"
+      },
+      {
+        "sha256": "eb607f0a1d9674846388ba38296696fe1896c82d0b1889a38dfd378593be21d8",
+        "file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+      },
+      {
+        "sha256": "7a85fd583a418e0c7c38c0c6cbdb8fc3ba7ec1085723de0f4fa3147edee941ef",
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12",
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h"
+      },
+      {
+        "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664",
+        "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp"
+      },
+      {
+        "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04",
+        "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp"
+      },
+      {
+        "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2",
+        "file": "divingsim/Source/DiveSim/DiveLogbook.cpp"
+      },
+      {
+        "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b",
+        "file": "divingsim/Source/DiveSim/DiveLogbook.h"
+      },
+      {
+        "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522",
+        "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp"
+      },
+      {
+        "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9",
+        "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp"
+      },
+      {
+        "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee",
+        "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp"
+      },
+      {
+        "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d",
+        "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp"
+      },
+      {
+        "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6",
+        "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp"
+      },
+      {
+        "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb",
+        "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp"
+      },
+      {
+        "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93",
+        "file": "divingsim/Source/DiveSim/DiveParticles.cpp"
+      },
+      {
+        "sha256": "45daef0c0f019a0f623a4158d9082557b0e83eda8185e0286a0cef92ed72c89b",
+        "file": "divingsim/Source/DiveSim/DivePawn.cpp"
+      },
+      {
+        "sha256": "b0d6af6fc530eb4408b353d72385ad50e48f205475c3da9ec10edb37a7d5976a",
+        "file": "divingsim/Source/DiveSim/DivePawn.h"
+      },
+      {
+        "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4",
+        "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp"
+      },
+      {
+        "sha256": "4327caf4ce19e8934fb4397696dd8187c53c44efeba7ad3067a8dfb8a9c7fdff",
+        "file": "divingsim/Source/DiveSim/DivePerformance.cpp"
+      },
+      {
+        "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475",
+        "file": "divingsim/Source/DiveSim/DivePhotograph.cpp"
+      },
+      {
+        "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88",
+        "file": "divingsim/Source/DiveSim/DivePlayerController.cpp"
+      },
+      {
+        "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a",
+        "file": "divingsim/Source/DiveSim/DivePlayerController.h"
+      },
+      {
+        "sha256": "564682c472b14c288d69db81155633a0340cfc24ef66e3a93780c4a4f6b9fa5e",
+        "file": "divingsim/Source/DiveSim/DivePopulation.cpp"
+      },
+      {
+        "sha256": "619cd6f57bbdedc32a7407486f163742a90444cf8f8734a8c0680d532188b74c",
+        "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp"
+      },
+      {
+        "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f",
+        "file": "divingsim/Source/DiveSim/DivePose.h"
+      },
+      {
+        "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8",
+        "file": "divingsim/Source/DiveSim/DiveProfiles.cpp"
+      },
+      {
+        "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447",
+        "file": "divingsim/Source/DiveSim/DiveProfiles.h"
+      },
+      {
+        "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58",
+        "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp"
+      },
+      {
+        "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0",
+        "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp"
+      },
+      {
+        "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b",
+        "file": "divingsim/Source/DiveSim/DiveRecording.cpp"
+      },
+      {
+        "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f",
+        "file": "divingsim/Source/DiveSim/DiveRecording.h"
+      },
+      {
+        "sha256": "2f9a16e4cc966d1d3ff60ea914d1b6e83d44bb4234cf4e365b124dbc87b11662",
+        "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp"
+      },
+      {
+        "sha256": "f3c08475bb83a5d85b79e2c19e37d0f85269a5086d5f2a8e953a365ceaf5edec",
+        "file": "divingsim/Source/DiveSim/DiveSediment.cpp"
+      },
+      {
+        "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d",
+        "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp"
+      },
+      {
+        "sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9",
+        "file": "divingsim/Source/DiveSim/DiveShoreline.cpp"
+      },
+      {
+        "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea",
+        "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp"
+      },
+      {
+        "sha256": "b7e7428ef210c4b10a611469bd91ca80de3035fa85c112e961942bdb5d93a985",
+        "file": "divingsim/Source/DiveSim/DiveSim.Build.cs"
+      },
+      {
+        "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac",
+        "file": "divingsim/Source/DiveSim/DiveSim.cpp"
+      },
+      {
+        "sha256": "3c04d3976724f433eac4e0477561bdd5feeae34d7bb7f65df0dc85262c5b2dac",
+        "file": "divingsim/Source/DiveSim/DiveSky.cpp"
+      },
+      {
+        "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819",
+        "file": "divingsim/Source/DiveSim/DiveSoak.cpp"
+      },
+      {
+        "sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb",
+        "file": "divingsim/Source/DiveSim/DiveTerrain.cpp"
+      },
+      {
+        "sha256": "68def7d5e0a9340e4e9199f1f54af0014d1edd7c1d341065f80871c26ab41b57",
+        "file": "divingsim/Source/DiveSim/DiveTerrain.h"
+      },
+      {
+        "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6",
+        "file": "divingsim/Source/DiveSim/DiveTextDialog.h"
+      },
+      {
+        "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b",
+        "file": "divingsim/Source/DiveSim/DiveTorch.cpp"
+      },
+      {
+        "sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d",
+        "file": "divingsim/Source/DiveSim/DiveVegetation.cpp"
+      },
+      {
+        "sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515",
+        "file": "divingsim/Source/DiveSim/DiveVegetation.h"
+      },
+      {
+        "sha256": "e05b5a8ae9b1472c5f69b157feca3637c8cc1b73d5c3497fd0ed5993ec8a3313",
+        "file": "divingsim/Source/DiveSim/DiveWater.cpp"
+      },
+      {
+        "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b",
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp"
+      },
+      {
+        "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1",
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.h"
+      },
+      {
+        "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp"
+      },
+      {
+        "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp"
+      },
+      {
+        "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp"
+      },
+      {
+        "sha256": "d228e6f524ce4628384e28230571c0eb8de323b15cd71ae9965b92edc1a1cb5c",
+        "file": "divingsim/Source/DiveSim/DiveWorld.cpp"
+      },
+      {
+        "sha256": "a5109e00573b08a7923170a852024e1caee63c0a8ae3bc6bd99b3299d774a298",
+        "file": "divingsim/Source/DiveSim/DiveWorld.h"
+      },
+      {
+        "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14",
+        "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h"
+      },
+      {
+        "sha256": "7c6db5c705c037ddd4b6de5289a9370c2d6c17b7bc8c9edf6dc8be89eeb65898",
+        "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h"
+      },
+      {
+        "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10",
+        "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h"
+      },
+      {
+        "sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271",
+        "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h"
+      },
+      {
+        "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b",
+        "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h"
+      },
+      {
+        "sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db",
+        "file": "divingsim/Source/DiveSim/Simulation/Decompression.h"
+      },
+      {
+        "sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291",
+        "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h"
+      },
+      {
+        "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7",
+        "file": "divingsim/Source/DiveSim/Simulation/Ecology.h"
+      },
+      {
+        "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f",
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
+      },
+      {
+        "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a",
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h"
+      },
+      {
+        "sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669",
+        "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h"
+      },
+      {
+        "sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500",
+        "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h"
+      },
+      {
+        "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93",
+        "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h"
+      },
+      {
+        "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a",
+        "file": "divingsim/Source/DiveSim/Simulation/Loadout.h"
+      },
+      {
+        "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599",
+        "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h"
+      },
+      {
+        "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d",
+        "file": "divingsim/Source/DiveSim/Simulation/Navigation.h"
+      },
+      {
+        "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147",
+        "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h"
+      },
+      {
+        "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633",
+        "file": "divingsim/Source/DiveSim/Simulation/Sediment.h"
+      },
+      {
+        "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe",
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
+      },
+      {
+        "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b",
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h"
+      },
+      {
+        "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700",
+        "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
+      },
+      {
+        "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc",
+        "file": "divingsim/Source/DiveSim/Simulation/Torch.h"
+      },
+      {
+        "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd",
+        "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h"
+      },
+      {
+        "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab",
+        "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h"
+      },
+      {
+        "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725",
+        "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h"
+      },
+      {
+        "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68",
+        "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h"
+      },
+      {
+        "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf",
+        "file": "divingsim/Source/DiveSim/Simulation/Weather.h"
+      },
+      {
+        "sha256": "4c677cd16f53be0169c64673eeca542a7fbe98ad27b8e7fb44bd6e9a609cc35c",
+        "file": "Tools/Shaders/UnderwaterView.ush"
+      },
+      {
+        "sha256": "607db9e40166c1879e1fa39cd23a96ea233b0e72cd80ae65af86566ea8a06a39",
+        "file": "Tools/Shaders/SolarCaustics.ush"
+      },
+      {
+        "sha256": "b18898b17d26356dca0a6cfd830e6fbf2fe64fde52256ca68ad4cf5390ad6888",
+        "file": "Tools/build_optics_content.py"
+      },
+      {
+        "sha256": "74e7000fa2fcda3ec31aba85c7f64b01a7399de8552defc499505063ffa75120",
+        "file": "Tools/build_caustics_content.py"
+      },
+      {
+        "sha256": "a0652e5a982ddc5c4031ec59cac6c6e65736afec9aa64ef107b69d331830538a",
+        "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset"
+      },
+      {
+        "sha256": "1da912c8eb089c1250dde4ac9060c6a5f08697b3f41c88318ccb3e47323df1ee",
+        "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset"
+      },
+      {
+        "sha256": "e295bb9f7385fb970f2e239d063aede65415c9a1654ac8bc2cfc8093d90a4f0c",
+        "file": "Builds/EditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+      }
+    ],
+    "started_utc": "2026-11-26T17:57:59.9409188Z",
+    "native_editor": true,
+    "packaged": false
+  },
+  "host_file": {
+    "file": "artifacts/native-water-lighting-20261126-185759/Host.json",
+    "sha256": "300da2044922aa5eb0732ba1b07c48d5c96bec54624673aea706a6602bc9cf66",
+    "bytes": 22722
+  },
+  "build": {
+    "file": "artifacts/native-scattering-fixture-editor-build.log",
+    "sha256": "99dd4150d3bd21a42376e8a2813e1748f3d615cbcf3b721b6f77d1000c47f7fa",
+    "bytes": 1745
+  },
+  "cases": [
+    {
+      "name": "sun-legacy",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": false,
+      "native": false,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/sun-legacy/Runtime.log",
+        "sha256": "341f8e6fc6cb83586a2f3c9c4a933930d35651111dd7b3a711271df72e98e729",
+        "bytes": 223694
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=12.000000 Y=135.556233 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=60.807285 Y=135.556233 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=0.000000 Y=315.556233 R=0.000000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/sun-legacy/Habitat_0_0.png",
+          "sha256": "6a495d0d9f8ae59fb5d57a53d53ad37e22c18940ae54051a2cbba18cace54108",
+          "bytes": 1343018
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/sun-legacy/Habitat_0_1.png",
+          "sha256": "669d5ca7cc8360d214edcbe8a61410993c9d2f9a0efb70b7ab2ee245c316b835",
+          "bytes": 1179637
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/sun-legacy/Habitat_0_2.png",
+          "sha256": "4fa6b5764434e62f997791bd06853995e8617c33ef5da7670eae8a64076544cd",
+          "bytes": 1697310
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.07:764][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.18:773][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-17.58.18:773][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-17.58.18:773][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-17.58.18:773][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-17.58.18:773][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "sun-native",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": false,
+      "native": true,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/sun-native/Runtime.log",
+        "sha256": "f04857dc4467fd0a13ed2207ae6f861112ce399104b1d7b43e0048fdc7e2af5f",
+        "bytes": 231059
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=12.000000 Y=135.556233 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=60.807285 Y=135.556233 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=0.000000 Y=315.556233 R=0.000000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/sun-native/Habitat_0_0.png",
+          "sha256": "d22c18c9402741044571ebc9919dd692ffd239cf588197d001ec6a157784d247",
+          "bytes": 1418688
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/sun-native/Habitat_0_1.png",
+          "sha256": "65e05cf9be5d14a781525aa2577e4bd45e466b66c55c9fce488e2605ebf0efa9",
+          "bytes": 1382175
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/sun-native/Habitat_0_2.png",
+          "sha256": "bf72d2715c5a53408751b2ced5f2c18fbcc5773827d502b86b410c8e90bb4543",
+          "bytes": 1705863
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.44:195][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.58.54:797][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-17.58.54:797][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-17.58.54:797][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-17.58.54:797][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-17.58.54:797][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "bed-legacy",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": false,
+      "native": false,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/bed-legacy/Runtime.log",
+        "sha256": "679ad4d067b87e3bf73fdd6cdc5cad2ca35aa4a2f6ce004118af8d3b6840b1b0",
+        "bytes": 230997
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=70.000000 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=120.000000 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/bed-legacy/Habitat_0_0.png",
+          "sha256": "a4b2648f93ee35ec00ff297d013cfa4cdf6910572d072e69450ea3963a086898",
+          "bytes": 1914697
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/bed-legacy/Habitat_0_1.png",
+          "sha256": "bf2afc8761498b13576c6ff72bfd3ab1ed24886eb2d4a14d05033d0bcf89a03c",
+          "bytes": 1776345
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/bed-legacy/Habitat_0_2.png",
+          "sha256": "c0474d0a31e281579b22c9daf3141e445cb8c9e4d140ec24126d3c0b1dc3f7ad",
+          "bytes": 1826809
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.20:091][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.30:271][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-17.59.30:271][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-17.59.30:271][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-17.59.30:271][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-17.59.30:271][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "bed-native",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": false,
+      "native": true,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/bed-native/Runtime.log",
+        "sha256": "60b80d8cd150d9dd39ca99400cea788b924f25782e0836fa380cd019dcc32334",
+        "bytes": 231036
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=70.000000 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=120.000000 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/bed-native/Habitat_0_0.png",
+          "sha256": "da32fe03d2f267aabd93e480cb3ff7ec52f304af075a4f662814c3810b1f2b50",
+          "bytes": 1920846
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/bed-native/Habitat_0_1.png",
+          "sha256": "681228b97e1ae1efb9ebcddb116ffac6e3691746b4c47f8afccae2662c8b144c",
+          "bytes": 1786459
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/bed-native/Habitat_0_2.png",
+          "sha256": "48d21a912b9ae75e2c09b43cb8634831bd565975cb1fac1f89f67949f266e815",
+          "bytes": 1851580
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-17.59.56:083][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.06:458][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-18.00.06:458][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-18.00.06:458][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-18.00.06:458][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-18.00.06:458][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "surface-legacy",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": false,
+      "native": false,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/surface-legacy/Runtime.log",
+        "sha256": "71127cec2613bf69a8ce4760e1de979e432f69b3654532e3f4f1d7ab97db8b1f",
+        "bytes": 237337
+      },
+      "poses": [
+        "state=1 view=0 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=1 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=2 eye=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=0.000000 exposure=-4.672135 visibility=14.000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/surface-legacy/Water_1_0.png",
+          "sha256": "4ec9ce08591601d1b23ad2fcdac31636ab5cc22764c7c5c0815e575a625bfcef",
+          "bytes": 1481548
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/surface-legacy/Water_1_1.png",
+          "sha256": "e36586fee324451f42e59d1b899a1b269d8d198373616f996eec636c08a33a47",
+          "bytes": 1256798
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/surface-legacy/Water_1_2.png",
+          "sha256": "218b945a55164eac2406bb08b4e1b1a2410afc235129fb9ec7ec1a267488964c",
+          "bytes": 2039712
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.31:650][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.00.41:143][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-18.00.41:143][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-18.00.41:143][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-18.00.41:143][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-18.00.41:143][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "surface-native",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": false,
+      "native": true,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/surface-native/Runtime.log",
+        "sha256": "5da0a4e6056c8e1fce1902121297d8c35979f2467406bd9a7c71e7e61dfb4ce5",
+        "bytes": 235050
+      },
+      "poses": [
+        "state=1 view=0 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=15.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=1 eye=X=267950.000 Y=8650.000 Z=-150.000 rotation=P=65.000000 Y=180.000000 R=0.000000 exposure=-4.592843 visibility=14.000",
+        "state=1 view=2 eye=X=267950.000 Y=8650.000 Z=150.000 rotation=P=-15.000000 Y=180.000000 R=0.000000 exposure=-4.672135 visibility=14.000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/surface-native/Water_1_0.png",
+          "sha256": "96264e0104c71b9f23f7e497026345e77b06a00c8a48ba20b4f4843e25dff1c0",
+          "bytes": 1499544
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/surface-native/Water_1_1.png",
+          "sha256": "62e7c1810655398cd73889b40fb54832f11296d96ac7c63f43aca15cd1ad2daa",
+          "bytes": 1323327
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/surface-native/Water_1_2.png",
+          "sha256": "ac0fdefd6a1d82908c5cbf9779da68e345187b681ffcd5da69db7fa04db3912d",
+          "bytes": 2033488
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.06:531][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.16:473][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-18.01.16:473][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-18.01.16:473][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-18.01.16:473][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-18.01.16:473][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "dark-native-on",
+      "status": "PASS",
+      "screenshots": 2,
+      "fallback": false,
+      "native": true,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/dark-native-on/Runtime.log",
+        "sha256": "10dcb739b1f0c6b2949aab23b8cd18725508a7410bb2290a523c7923d9275e17",
+        "bytes": 235610
+      },
+      "poses": [],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/dark-native-on/DiveSmoke_0_torch.png",
+          "sha256": "f6a41ec0fc2bfa5a891079e3cf635094e62de4ac1166f2f5347f3a87bcb8f5ef",
+          "bytes": 882187
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/dark-native-on/DiveUnderwater_0_torch.png",
+          "sha256": "e35eeb411e3185f08bed8b148f331f78a39aeb2a7667e83b71a9e56f661ddabe",
+          "bytes": 862376
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.41:133][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.01.50:647][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-18.01.50:647][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-18.01.50:647][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-18.01.50:647][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-18.01.50:647][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "dark-native-off",
+      "status": "PASS",
+      "screenshots": 2,
+      "fallback": false,
+      "native": true,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/dark-native-off/Runtime.log",
+        "sha256": "41bf47bf9298d8e3a2718908c458fd62de57a1c840a0fde8a7c283a3554270e9",
+        "bytes": 233988
+      },
+      "poses": [],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/dark-native-off/DiveSmoke_0_torch.png",
+          "sha256": "a9ad253fa5cedc8fa2f833224503b98e7e7ec5ad7298a2df439ae05e0206ab2f",
+          "bytes": 84405
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/dark-native-off/DiveUnderwater_0_torch.png",
+          "sha256": "93e21abc8ba06a91376b286977b19497b73610b759ae54b58b73e845bfbb0c24",
+          "bytes": 85016
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:678][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:679][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:679][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.21:679][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.02.31:071][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-18.02.31:071][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-18.02.31:071][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-18.02.31:071][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-18.02.31:071][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    },
+    {
+      "name": "fallback",
+      "status": "PASS",
+      "screenshots": 3,
+      "fallback": true,
+      "native": true,
+      "runtime_log": {
+        "file": "artifacts/native-water-lighting-20261126-185759/fallback/Runtime.log",
+        "sha256": "62e096482fd24fc60a019c4026e06e72224186bdec27f79a77fc62320b55ac97",
+        "bytes": 233272
+      },
+      "poses": [
+        "view=0 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=70.000000 R=0.000000",
+        "view=1 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-18.000000 Y=120.000000 R=0.000000",
+        "view=2 eye=X=161700.000 Y=1511483.013 Z=-327.091 rotation=P=-24.642019 Y=170.000000 R=0.000000"
+      ],
+      "images": [
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/fallback/Habitat_0_0.png",
+          "sha256": "236fa6e5d078efc5d7c92d4844fa6ae2f147d9607d357369a7e0d06f63d47fa4",
+          "bytes": 1913688
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/fallback/Habitat_0_1.png",
+          "sha256": "8980b14f63004cfbdc79e614be942cfb60702c818ec601a396adc4b77c2ecf99",
+          "bytes": 1775823
+        },
+        {
+          "file": "artifacts/native-water-lighting-20261126-185759/fallback/Habitat_0_2.png",
+          "sha256": "ae0d02a6eed50d41d207bd38084d5cb9c847c3c28620d6751ee07ebe3d52cc78",
+          "bytes": 1826388
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.02:525][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.26-18.03.12:744][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.26-18.03.12:744][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.26-18.03.12:744][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.26-18.03.12:744][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.26-18.03.12:744][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ]
+    }
+  ],
+  "screenshot_count": 29,
+  "comparisons": [
+    {
+      "group": "sun",
+      "view": 0,
+      "mean_absolute_rgb_difference": 24.875793055555555,
+      "legacy_mean_rgb": [
+        16.735746527777778,
+        55.936471527777776,
+        59.01861805555556
+      ],
+      "native_mean_rgb": [
+        24.392149305555556,
+        100.27178194444444,
+        79.82726458333333
+      ]
+    },
+    {
+      "group": "sun",
+      "view": 1,
+      "mean_absolute_rgb_difference": 35.05048356481481,
+      "legacy_mean_rgb": [
+        27.250785416666666,
+        60.911233333333335,
+        84.49939444444445
+      ],
+      "native_mean_rgb": [
+        52.209069444444445,
+        115.83291111111112,
+        109.76951527777777
+      ]
+    },
+    {
+      "group": "sun",
+      "view": 2,
+      "mean_absolute_rgb_difference": 11.936577546296297,
+      "legacy_mean_rgb": [
+        19.871741666666665,
+        56.312019444444445,
+        45.977996527777776
+      ],
+      "native_mean_rgb": [
+        20.099315277777777,
+        61.59115833333333,
+        42.778243055555556
+      ]
+    },
+    {
+      "group": "bed",
+      "view": 0,
+      "mean_absolute_rgb_difference": 9.01715462962963,
+      "legacy_mean_rgb": [
+        58.476584027777776,
+        78.82770138888888,
+        60.91220902777778
+      ],
+      "native_mean_rgb": [
+        62.354872916666665,
+        94.0829763888889,
+        67.54932152777778
+      ]
+    },
+    {
+      "group": "bed",
+      "view": 1,
+      "mean_absolute_rgb_difference": 12.231015277777777,
+      "legacy_mean_rgb": [
+        52.762275,
+        75.41186666666667,
+        59.08824097222222
+      ],
+      "native_mean_rgb": [
+        57.39112152777778,
+        96.44050138888889,
+        69.18099444444445
+      ]
+    },
+    {
+      "group": "bed",
+      "view": 2,
+      "mean_absolute_rgb_difference": 10.807037037037038,
+      "legacy_mean_rgb": [
+        31.14611111111111,
+        58.928277083333334,
+        45.553411805555555
+      ],
+      "native_mean_rgb": [
+        33.64774722222222,
+        79.32291875,
+        53.28819375
+      ]
+    },
+    {
+      "group": "surface",
+      "view": 0,
+      "mean_absolute_rgb_difference": 17.050175231481482,
+      "legacy_mean_rgb": [
+        20.736565972222223,
+        58.94399652777778,
+        69.2178888888889
+      ],
+      "native_mean_rgb": [
+        27.548306944444445,
+        87.23084861111111,
+        80.09562847222222
+      ]
+    },
+    {
+      "group": "surface",
+      "view": 1,
+      "mean_absolute_rgb_difference": 19.77098009259259,
+      "legacy_mean_rgb": [
+        34.459236805555555,
+        63.15231527777778,
+        91.21979583333334
+      ],
+      "native_mean_rgb": [
+        48.236218055555554,
+        95.34489930555556,
+        104.562075
+      ]
+    },
+    {
+      "group": "surface",
+      "view": 2,
+      "mean_absolute_rgb_difference": 0.6043261574074074,
+      "legacy_mean_rgb": [
+        43.205502083333336,
+        82.49689930555556,
+        94.41832222222222
+      ],
+      "native_mean_rgb": [
+        42.95053055555555,
+        82.34337083333334,
+        94.28842291666666
+      ]
+    }
+  ],
+  "night": {
+    "mask_source": "Tools/validate_lighting_frames.py:scene",
+    "off_p999": 0.0,
+    "off_mean": 0.0,
+    "on_mean": 63.42919660038486,
+    "lit_pixels": 276209,
+    "mean_difference": 63.42919660038486
+  },
+  "default_caustics_regression": {
+    "status": "PASS",
+    "directory": "O:\\games\\dive game\\artifacts\\caustics-day-validation-20261126-190344",
+    "host": {
+      "packaged": false,
+      "head": "ae670838fb7ad32084121988114c13ed23e478e3",
+      "started_utc": "2026-11-26T18:03:44.3282364Z",
+      "executable_sha256": "A423AB94410AA4F4CC34D99A2AF75240C5D0E376A33D903A3E819FECF1177143",
+      "executable": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+      "case": "day",
+      "package_archives": []
+    },
+    "mean_absolute_rgb8_difference": {
+      "enabled_vs_disabled": {
+        "lit": 4.3237815656565655,
+        "shadow": 0.37935185185185183,
+        "sphere": 3.5116993464052286
+      },
+      "moving_pattern": {
+        "lit": 6.124371212121212,
+        "shadow": 0.4386111111111111,
+        "sphere": 3.8101633986928105
+      },
+      "frozen_clock": {
+        "lit": 0.44290656565656567,
+        "shadow": 0.36618518518518517,
+        "sphere": 0.4227124183006536
+      }
+    },
+    "regions_xyxy": {
+      "lit": [
+        250,
+        580,
+        1350,
+        820
+      ],
+      "shadow": [
+        900,
+        410,
+        1200,
+        470
+      ],
+      "sphere": [
+        350,
+        15,
+        520,
+        75
+      ]
+    },
+    "images": [
+      {
+        "file": "Caustics_00.png",
+        "sha256": "254c16f8a476706f138d8c1cdd14c8192911f0ace51792a0874a53ab8fec718f"
+      },
+      {
+        "file": "Caustics_01.png",
+        "sha256": "d5a88ecfb55d5799f1ed97d3f3100ae6c4a2975dd0bcee124fdd73c456d0df7a"
+      },
+      {
+        "file": "Caustics_02.png",
+        "sha256": "9065f10e1b1fcb6572f673d13676c957f3d40998587cb4456e21813d4a2b4fc4"
+      },
+      {
+        "file": "Caustics_03.png",
+        "sha256": "750e3f9750b1a94f5f3d872e192820f6eba0371f330f54aef13b96b17d08caea"
+      }
+    ],
+    "log_sha256": "afbab66d2f2eb3a4ddaba2a65984d61ecb52ce60a5189f8c2eb28935487d04ca"
+  },
+  "published": [
+    {
+      "file": "Documentation/Images/NativeWaterLighting_Standard.png",
+      "sha256": "6a495d0d9f8ae59fb5d57a53d53ad37e22c18940ae54051a2cbba18cace54108",
+      "bytes": 1343018
+    },
+    {
+      "file": "Documentation/Images/NativeWaterLighting_Prototype.png",
+      "sha256": "d22c18c9402741044571ebc9919dd692ffd239cf588197d001ec6a157784d247",
+      "bytes": 1418688
+    }
+  ],
+  "caustics_probe_material": {
+    "file": "divingsim/Content/Diving/Materials/M_CausticsProbe.uasset",
+    "sha256": "b78795401bcaa95d04c02573cd9b9ab699a0ecb1b36134340160d5db7255a29a",
+    "bytes": 5127
+  },
+  "production_enabled": false,
+  "limitations": [
+    "Native editor only; no packaged build, performance or long-term stability result",
+    "The direct-light caustic field uses one representative depth slice, not full 3D refracted transport",
+    "A reduced analytic ambient contribution remains unshadowed",
+    "Water underside, distant water illumination and reference-level appearance remain unresolved"
+  ]
+}

@@ -17,13 +17,18 @@
 #include "Materials/MaterialInterface.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/ExponentialHeightFogComponent.h"
+#include "Components/DirectionalLightComponent.h"
 #include "ProceduralMeshComponent.h"
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
 // the three new forms use the same position, scale, material and camera.
 void ADiveWorld::RefreshInspectionMedium()
 {
-    if(bOpticsSmoke) UpdateAtmosphere();
+    if(bOpticsSmoke)
+    {
+        if(!FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"))) UpdateAtmosphere();
+        UpdateCaustics();
+    }
 }
 
 bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation)
@@ -77,6 +82,11 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
                 float aheadBed=0;
                 if(Terrain.Sample(ahead.X,ahead.Y,aheadBed))
                     Rotation.Pitch=FMath::Clamp(FMath::RadiansToDegrees(FMath::Atan2(aheadBed+60-Eye.Z,800.)),-65.,-18.);
+            }
+            if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatSunView"))&&Sun)
+            {
+                const FRotator towardSun=(-Sun->GetForwardVector()).Rotation();
+                Rotation=FRotator(View==1?FMath::Clamp(towardSun.Pitch,-75.,75.):View==0?12:0,towardSun.Yaw+(View==2?180:0),0);
             }
             StreamPopulation(Eye);StreamGravel(Eye,true);UpdateAtmosphere();
             return true;
@@ -224,7 +234,7 @@ void ADivePawn::TickRockInspection(float Dt)
     // The fixture freezes world ticking. Refresh the medium after moving the
     // camera, including plant/rock close-ups that previously retained entry fog.
     // WaterView manages deliberate fog overrides inside SetRockInspection.
-    if(!waterView) Environment->RefreshInspectionMedium();
+    Environment->RefreshInspectionMedium();
     if(waterView) Camera->PostProcessSettings.AutoExposureBias=Environment->ExposureBiasAt(eye);
     if(waterView&&((variant&4)||variant>=8)) Camera->PostProcessSettings.WeightedBlendables.Array.Reset();
     if(waterView&&variant>=8)

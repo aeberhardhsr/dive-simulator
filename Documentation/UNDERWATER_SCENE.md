@@ -2,7 +2,7 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
-Aktuelle Untersuchung: [Unterwasserbeleuchtung und getrennte Streulichtanteile](SCATTERING_INVESTIGATION.md). Vier native Vergleichsläufe mit zwölf Aufnahmen zeigen, dass insbesondere die Kameraaufhellung Felsschatten abschwächt. Ihr Entfernen allein liefert noch keine überzeugende Wasserbeleuchtung. Die Produktionswerte bleiben unverändert; das aktuelle Spielpaket ist weiterhin `WindowsRockAprons`.
+Aktuelle Entwicklung: [experimentelle räumliche Wasserbeleuchtung](NATIVE_WATER_LIGHTING.md), aufbauend auf der [Trennung der Streulichtanteile](SCATTERING_INVESTIGATION.md). Die Variante verlagert Auslöschung ins native Volumen und ergänzt die Sonnenprojektion, erfüllt das visuelle Ziel aber noch nicht. Sie bleibt auf Diagnoseläufe begrenzt. Die Wasserunterseite ist als nächster grundlegender Renderingpunkt zu bearbeiten; das aktuelle Spielpaket bleibt `WindowsRockAprons`.
 
 ## Geröllsäume am Felsfuß
 
