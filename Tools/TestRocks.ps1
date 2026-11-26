@@ -1,4 +1,4 @@
-param([string]$PackageDirectory='Builds/WindowsRocks')
+param([string]$PackageDirectory='Builds/WindowsRockDetail')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }

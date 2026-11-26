@@ -12,7 +12,7 @@ Die Anforderungen WRLD-006/007 und GFX-001/002 verlangen differenzierte, realist
 
 Alle drei Assets sind vom Anbieter unter [CC0](https://polyhaven.com/license) veröffentlicht. Die Originalkarten liegen unverändert unter `Art/BedMaterials`; URLs, Dateigrößen, Anbieter-MD5 und eigene SHA256 stehen in `BED_MATERIALS.json`. Der Import prüft SHA256, der reproduzierbare Download zusätzlich Größe/MD5. Es werden keine Anbieter-Vorschaurenderings als Spielmaterial übernommen.
 
-Diese Oberflächen sind **keine lokalen Sedimentmessungen des Walensees**. Die Wahl und Mischung sind eine gestalterische Annäherung. Die vermessenen Höhen, geografische Positionen und Kollisionsmeshes werden dadurch nicht verändert. Auch die groben Felsformen bleiben bislang prozedurale Modelle; feinere Texturen ersetzen keine anatomische/geologische oder vollständige fotorealistische Abnahme.
+Diese Oberflächen sind **keine lokalen Sedimentmessungen des Walensees**. Die Wahl und Mischung sind eine gestalterische Annäherung. Die vermessenen Höhen, geografische Positionen und Kollisionsmeshes werden durch diesen Materialaufbau nicht verändert. Die ursprünglichen prozeduralen Felsformen werden im aktuellen Quellstand durch drei detailliertere Formen ersetzt ([Felsgeometrie und Prüfstand](ROCK_GEOMETRY.md)); feinere Texturen und Formen ersetzen keine geologische oder vollständige fotorealistische Abnahme.
 
 ## Darstellung
 
