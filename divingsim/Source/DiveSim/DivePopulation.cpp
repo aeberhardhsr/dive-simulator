@@ -12,6 +12,18 @@ uint32 CellSeed(FIntPoint Key) { return uint32(Key.X)*73856093u^uint32(Key.Y)*19
 
 void ADiveWorld::GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const
 {
+    auto* layout=RockLayouts.Find(Key);
+    if(!layout)
+    {
+        auto& added=RockLayouts.Add(Key);
+        BuildRockLayout(Key,added.Transforms,added.States);
+        layout=&added;
+    }
+    Transforms.Append(layout->Transforms);States.Append(layout->States);
+}
+
+void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const
+{
     // World-space anchors include a one-anchor halo. Ownership is assigned by
     // final rock position, so a cluster crosses streaming boundaries unchanged.
     constexpr int AnchorsPerCell=12;
@@ -165,6 +177,8 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
     {
         const double started=FPlatformTime::Seconds();
         int loaded=0,unloaded=0;
+        for(auto it=RockLayouts.CreateIterator();it;++it)
+            if(FMath::Abs(it.Key().X-center.X)>2||FMath::Abs(it.Key().Y-center.Y)>2) it.RemoveCurrent();
         for(auto it=PopulationCells.CreateIterator();it;++it)
             if(FMath::Abs(it.Key().X-center.X)>1||FMath::Abs(it.Key().Y-center.Y)>1)
             {
@@ -183,8 +197,8 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         int plantCount=0;
         for(const auto& pair:PopulationCells) for(int i=Rocks.Num();i<pair.Value.Components.Num();++i)
             plantCount+=pair.Value.Components[i]->GetInstanceCount();
-        UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_CELL x=%d y=%d loaded=%d unloaded=%d active=%d rocks=%d plants=%d milliseconds=%.3f"),
-            center.X,center.Y,loaded,unloaded,PopulationCells.Num(),RockState.Num(),plantCount,(FPlatformTime::Seconds()-started)*1000);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_CELL x=%d y=%d loaded=%d unloaded=%d active=%d rocks=%d plants=%d milliseconds=%.3f layouts=%d"),
+            center.X,center.Y,loaded,unloaded,PopulationCells.Num(),RockState.Num(),plantCount,(FPlatformTime::Seconds()-started)*1000,RockLayouts.Num());
     }
     StreamGravel(Player,Initial);
     RefillFish(Player,Initial);

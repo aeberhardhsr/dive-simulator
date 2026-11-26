@@ -36,6 +36,11 @@ struct FDiveFish
     bool Active=false;
 };
 struct FDiveRock { FVector Position; float Radius=0; int32 Variant=0; };
+struct FDiveRockLayout
+{
+    TArray<FTransform> Transforms;
+    TArray<FDiveRock> States;
+};
 USTRUCT()
 struct FDivePopulationCell
 {
@@ -176,6 +181,9 @@ private:
     void RenderSediment(float Dt);
     TArray<FDiveFish> FishState;
     TArray<FDiveRock> RockState;
+    // Deterministic geometry only; no UObject ownership. The visible 3x3
+    // population window plus its planting halo needs at most 5x5 layouts.
+    mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
     FIntPoint GravelCell=FIntPoint(MAX_int32,MAX_int32);
@@ -213,6 +221,7 @@ private:
     void Populate();
     void StreamPopulation(const FVector& Player,bool Initial=false);
     void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
+    void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
     void CreatePopulationCell(FIntPoint Key);
     void CreateGravelCell(FIntPoint Key);
     void StreamGravel(const FVector& Player,bool Immediate=false);

@@ -15,6 +15,12 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     {
         TArray<FTransform> transforms;TArray<FDiveRock> states;
         GenerateRocks(pair.Key,transforms,states);
+        TArray<FTransform> freshTransforms;TArray<FDiveRock> freshStates;
+        BuildRockLayout(pair.Key,freshTransforms,freshStates);
+        valid&=transforms.Num()==freshTransforms.Num()&&states.Num()==freshStates.Num();
+        for(int i=0;i<FMath::Min(transforms.Num(),freshTransforms.Num());++i)
+            valid&=transforms[i].Equals(freshTransforms[i],0)&&states[i].Position==freshStates[i].Position&&
+                states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant;
         valid&=transforms.Num()==states.Num()&&states.Num()<=196*18;
         for(int i=0;i<states.Num();++i)
         {
@@ -30,6 +36,14 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
+    auto boundedLayouts=[&]()
+    {
+        if(RockLayouts.Num()>25) return false;
+        for(const auto& pair:RockLayouts)
+            if(FMath::Abs(pair.Key.X-PopulationCell.X)>2||FMath::Abs(pair.Key.Y-PopulationCell.Y)>2) return false;
+        return true;
+    };
+    valid&=boundedLayouts();
     UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_%s unique_rocks=%d rendered_rocks=%d small=%d medium=%d large=%d plants=%d"),
         valid?TEXT("PASS"):TEXT("FAIL"),positions.Num(),renderedRocks,sizes[0],sizes[1],sizes[2],plants);
     // Exercise the actual world pause gate, including the GPU instance values.
@@ -100,6 +114,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     for(const auto& pair:PopulationCells) { snapshots.Add(pair.Key,capture(pair.Value));identities.Add(pair.Key,pair.Value.Components[0]); }
     const auto beforeFish=FishState;
     LastFishRefill=WorldTime;StreamPopulation(after);
+    valid&=boundedLayouts();
     for(const auto& pair:PopulationCells)
         if(const auto* expected=snapshots.Find(pair.Key))
         { ++retained;valid&=identities[pair.Key]==pair.Value.Components[0]&&same(pair.Value,*expected); }
@@ -113,8 +128,10 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
                 a.Steering.Yaw==b.Steering.Yaw&&a.Steering.Pitch==b.Steering.Pitch&&a.Steering.Speed==b.Steering.Speed;
         }
     LastFishRefill=WorldTime;StreamPopulation(after+FVector(38400,0,0));
+    valid&=boundedLayouts();
     for(const auto& pair:snapshots) valid&=!PopulationCells.Contains(pair.Key);
     LastFishRefill=WorldTime;StreamPopulation(before);
+    valid&=boundedLayouts();
     for(const auto& pair:snapshots)
     {
         const auto* cell=PopulationCells.Find(pair.Key);
@@ -123,6 +140,8 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     valid&=PopulationCells.Num()==9&&retained==6&&reloaded==9&&nearFish>0;
     // Restore all gameplay state before the ordinary update/render of this frame.
     LastFishRefill=WorldTime;StreamPopulation(original);
+    valid&=boundedLayouts();
+    UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_LAYOUT_%s layouts=%d max=25 fresh_equal=1"),valid?TEXT("PASS"):TEXT("FAIL"),RockLayouts.Num());
     for(auto& fish:FishState) fish.Active=false;
     LastFishRefill=WorldTime-2;RefillFish(original,false);
     for(const auto& fish:FishState) if(fish.Active)
