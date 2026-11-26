@@ -4,13 +4,23 @@
 
 Der nächste Stand ersetzt beim Tausendblatt die röhrenförmigen Blattfiedern durch schmale, gebogene, zweiseitig schattierte Blattflächen mit einer flachen Mittelrippe. Die Blattquirle stehen zum Triebende dichter; zwei kleinere Quirle schließen die vorher kahlen Spitzen. Pro Blatt entstehen sechs bis zehn unterschiedlich lange Fiederpaare. Die Armleuchteralgen behalten ihre räumlichen Röhren; das Material unterscheidet nun zwischen Stängeln, lichtdurchlässigeren grünen Seitenzweigen und Blattflächen. Nur Blattflächen erhalten die Blattadern. Pflanzendichte, Habitatverteilung und bestehende Bewegung bleiben unverändert.
 
-Die höchste Tausendblatt-Detailstufe steigt von 45.304 auf 50.456 Dreiecke. Ihre weiteren Stufen besitzen 22.706, 8.073 und 2.776 Dreiecke. Laichkraut und Armleuchteralgen behalten ihre bisherigen Dreieckszahlen. Die zwölf nativen Vergleichsaufnahmen bestehen; Nah- und Gesamtansicht zeigen die neue Struktur. Der eigenständige Paketnachweis und die Leistungsmessung werden für diesen Stand gesondert festgehalten. Die bisher unten dokumentierten Paket- und Leistungswerte gelten weiterhin ausschließlich für die dort benannte ältere Version.
+Die höchste Tausendblatt-Detailstufe steigt von 45.304 auf 50.456 Dreiecke. Ihre weiteren Stufen besitzen 22.706, 8.073 und 2.776 Dreiecke. Laichkraut und Armleuchteralgen behalten ihre bisherigen Dreieckszahlen. Die zwölf nativen Vergleichsaufnahmen bestehen; Nah- und Gesamtansicht zeigen die neue Struktur.
+
+Das eigenständige Paket `Builds/WindowsPlantCanopy/divingsim.exe` aus Quellstand `68b9022` besteht fünf Paketfälle mit 23 frischen Bildern: zwölf Modellansichten, je drei Habitatansichten an allen drei Einstiegen sowie zwei Bilder aus der Schwimm-/Nachladeprüfung. Zusätzlich besteht der normale Launcher-Start. Die Habitat- und Nachladefälle prüfen die tatsächlichen Farb- und Koordinatenpuffer aller vier Pflanzen-Detailstufen, Populationsgrenzen und das gestaffelte Nachladen einschließlich Teleport-Nähe. `Tools/TestPlantCanopy.ps1` wiederholt die Prüfung. Die Quellprüfung auf [GitHub](https://github.com/aeberhardhsr/dive-simulator/actions/runs/45848799284) besteht ebenfalls.
+
+Der zugehörige 60-Sekunden-Unterwasserlauf bei 1080p/Hoch auf RTX 3090 / Ryzen 9 9950X3D erreicht 67,71 FPS im Mittel, 54,71 FPS für das langsamste Prozent und höchstens 19,32 ms pro Bild. 514 von 4.061 ausgewerteten Bildern überschreiten 16,67 ms, keines 33,33 ms. Es lief keine weitere Unreal-Instanz. Das ist keine durchgehende 60-FPS-Abnahme und kein Langzeittest. [Paket, Quelldaten, Bilder und Leistungsnachweis](PLANT_CANOPY_RESULTS.json) sind über Prüfsummen verbunden; [Messbedingungen und Grenzen](PERFORMANCE.md) bleiben maßgeblich. Der bekannte fehlende CelestialVault-Sternmaterialverweis erscheint weiterhin im Paketstartprotokoll und ist im Bericht erhalten.
+
+Gleiche Modellkamera, bisheriger nativer Stand und neues fertiges Paket; die gewöhnliche Pflanzenbewegung bleibt aktiv:
+
+![Bisherige röhrenförmige Blattfiedern](Images/PlantCanopy_Before.png)
+
+![Neue schmale Blattflächen und kleinere Triebspitzen](Images/PlantCanopy_After.png)
 
 Beim Erzeugen wurde ein Windows-/Blender-Speicherproblem erkannt: Das Ersetzen der vorhandenen `.blend` über Blenders Umbenennungs-/Backupfolge schlug fehl. Die anschließende FBX-Prüfsummenprüfung verhinderte einen Import mit veraltetem Manifest. Der Generator speichert deshalb zunächst in eine frische temporäre Datei und kopiert das geschlossene Ergebnis an den versionierten Zielpfad; das Manifest wird erst nach erfolgreichem Abschluss geschrieben. Für automatisierte Blender-Aufrufe ist `--python-exit-code 1` zu verwenden.
 
 Die Nutzerreferenz verlangt räumlich glaubwürdigen Bewuchs als Teil einer zusammenhängenden Unterwasserwelt. Die bisherigen breiten Blätter wirkten in echten Spielaufnahmen kantig und gleichmäßig grün. Der neue Entwicklungsstand ersetzt ihre flachen Stängelbänder durch räumliche, gekrümmte Stängel und detailliertere Blätter. Die fein verzweigten Gruppen erhalten weichere Verzweigungen und differenzierte Oberflächen. Die Gesamtqualität der Referenz ist damit noch nicht erreicht.
 
-## Modelle und Material
+## Bisherige Modelle und Materialgrundlage
 
 `Tools/create_aquatic_plants.py` erzeugt drei eigene parametrische Modelle. `blender/AquaticPlants.blend`, die FBX-Dateien und das Manifest unter `blender/exports/Plants/` halten den Stand fest. Die älteren Modelle bleiben für den kontrollierten Vorher-/Nachher-Vergleich erhalten. Die neuen Modelle verwenden getrennte Unreal-Assets unter `/Game/Diving/Plants/`.
 

@@ -1,0 +1,628 @@
+{
+  "status": "PASS",
+  "host": {
+    "started_utc": "2026-11-26T15:25:57.5597099Z",
+    "source_head": "68b9022b5a03ec43725a35cc5deecc76b6e7b36f",
+    "packaged": true,
+    "package_containers": [
+      {
+        "file": "divingsim-Windows.pak",
+        "bytes": 105898051,
+        "sha256": "54e0361b50b5219fc36755ee73b438f9fa3953fc3be3578273adac0cb57fc72b"
+      },
+      {
+        "file": "divingsim-Windows.ucas",
+        "bytes": 1426990848,
+        "sha256": "31dc7299f73450fb0acdb70fd8a55dd8987ae24a8209e4cbd7af62570f455c15"
+      },
+      {
+        "file": "divingsim-Windows.utoc",
+        "bytes": 1176903,
+        "sha256": "5a5feb4d9dd3af7f4d1170c0bb510647bd16900a682b1b8710f30ef47a8474d5"
+      },
+      {
+        "file": "global.ucas",
+        "bytes": 3245776,
+        "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5"
+      },
+      {
+        "file": "global.utoc",
+        "bytes": 794,
+        "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa"
+      }
+    ],
+    "executable": "O:\\games\\dive game\\Builds\\WindowsPlantCanopy\\divingsim\\Binaries\\Win64\\divingsim-PlantCanopy.exe",
+    "sha256": "9D2FDFC335858D3862C523F257F1CD151B85DD4373A06BB7BC916C4B8398B470"
+  },
+  "launcher": {
+    "finished_utc": "2026-11-26T15:30:25.1390788Z",
+    "child": "O:\\games\\dive game\\Builds\\WindowsPlantCanopy\\divingsim\\Binaries\\Win64\\divingsim-PlantCanopy.exe",
+    "log_sha256": "E2896E84E7EAE1C9F4E613AF84659F880A646894F320856BD1E1F37E8030CFF8",
+    "child_id": 9588,
+    "exit_code": 0,
+    "executable_sha256": "9D2FDFC335858D3862C523F257F1CD151B85DD4373A06BB7BC916C4B8398B470",
+    "started_utc": "2026-11-26T15:29:54.7632454Z",
+    "status": "PASS"
+  },
+  "cases": [
+    {
+      "status": "PASS",
+      "stream": false,
+      "screenshots": 12,
+      "entry": 0,
+      "forms": true,
+      "name": "forms",
+      "log": {
+        "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Runtime.log",
+        "sha256": "4acb9376bf112bb3f57a3263a51866f1b6ecb2cfb33b33f14b5abbcbd320a80c",
+        "bytes": 110996
+      },
+      "images": [
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_0_0.png",
+          "sha256": "56679c34a2efc0ba520985dd2fa3255b9e60c9fd1206adf35de6c0a2e77d8657",
+          "bytes": 1785985
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_0_1.png",
+          "sha256": "83cdaad740fdd1a08211b1426e1c9462f4e6464f5f0b2973836a2d009286223d",
+          "bytes": 1609784
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_1_0.png",
+          "sha256": "81cdc6e99c5124043c42a8f427f9ce99a62cacd6e9a835afe4642e2b2dffbb6e",
+          "bytes": 1714108
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_1_1.png",
+          "sha256": "0eba53a4914eb028785e76a9800e3ed115d94052a61426cdf99ae0b02376ed13",
+          "bytes": 1599890
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_2_0.png",
+          "sha256": "52feab7eb04805bf6f543ad0539910a0a66db362f1b2afe3c518fbabfef8d328",
+          "bytes": 1805056
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_2_1.png",
+          "sha256": "e864c5fa9709277e43136d990439565a6cd1285d1de83bf9b7a51417fc660bb7",
+          "bytes": 1486469
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_3_0.png",
+          "sha256": "6d331873849c9e77f6dff1464f48e16700ff0b557198b5316f33e379eb54904b",
+          "bytes": 1723824
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_3_1.png",
+          "sha256": "879907575fd52d72ba21063148424cd17c28c573305797bff534e4103e68c3fc",
+          "bytes": 1483077
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_4_0.png",
+          "sha256": "581d8fa9b3f93110c05b1f2d3b47a8ab0e72ecda94e8dee2437858a4691f1430",
+          "bytes": 1767583
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_4_1.png",
+          "sha256": "37ba580b5a524278df3ed4286b8da79a603da27065c8e83702d53f8e15d3ae6a",
+          "bytes": 1557756
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_5_0.png",
+          "sha256": "dfcf875f23e672f53f98aa7e905cb3caa050eafa025c229c2cf2eb8b106dd532",
+          "bytes": 1903946
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_5_1.png",
+          "sha256": "fd6f85a7f5ec6cae23b80f69cf4dc521db667979afd8f4c9daed5bb0c6c2718c",
+          "bytes": 1579082
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.25.59:614][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "status": "PASS",
+      "stream": false,
+      "screenshots": 3,
+      "entry": 0,
+      "forms": false,
+      "name": "entry0",
+      "log": {
+        "file": "artifacts/plant-canopy-validation-20261126-162555/entry0/Runtime.log",
+        "sha256": "dd4c87e6e64620b7cbd9c754484a5ad4ce9e6732390cf5f53b4cc699958bb014",
+        "bytes": 114928
+      },
+      "images": [
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry0/Habitat_0_0.png",
+          "sha256": "79d42db30ad58f0ea3a8a3845cdd9318c7b8d4750fdba281951ccfd0fc54f321",
+          "bytes": 1684815
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry0/Habitat_0_1.png",
+          "sha256": "36e8a6426efbf9c12815a7978cb29f5cf04323c16cbe2e907fce120e6a242cad",
+          "bytes": 1601334
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry0/Habitat_0_2.png",
+          "sha256": "b072cbdefcd416db457f02dd96ead50d166c6cf155f0c791b3a99cf3b2b90794",
+          "bytes": 1627800
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.27.04:308][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "status": "PASS",
+      "stream": false,
+      "screenshots": 3,
+      "entry": 1,
+      "forms": false,
+      "name": "entry1",
+      "log": {
+        "file": "artifacts/plant-canopy-validation-20261126-162555/entry1/Runtime.log",
+        "sha256": "a704b873447d4cef7c02add16252f60f4692bd5bfda527e70f2a7b4e1f896795",
+        "bytes": 113563
+      },
+      "images": [
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry1/Habitat_0_0.png",
+          "sha256": "65f6a2b4754f79710cf7860f9387404f8bf8d9c8c99550511f0b600b01ec4e1d",
+          "bytes": 1656326
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry1/Habitat_0_1.png",
+          "sha256": "d822e175f12332cdf609303bce8a40edb514085824b8eb59d2f5b03d54548754",
+          "bytes": 1443251
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry1/Habitat_0_2.png",
+          "sha256": "85308f62031903b5916cbe98f4e2c401a11f35c9557e9a54e31b3af8b07c6875",
+          "bytes": 1399694
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.27.28:626][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "status": "PASS",
+      "stream": false,
+      "screenshots": 3,
+      "entry": 2,
+      "forms": false,
+      "name": "entry2",
+      "log": {
+        "file": "artifacts/plant-canopy-validation-20261126-162555/entry2/Runtime.log",
+        "sha256": "120dae8d1c7255599db00f7b1e3da8610432712e28ca7a00c4f20d1b75634a8f",
+        "bytes": 113444
+      },
+      "images": [
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry2/Habitat_0_0.png",
+          "sha256": "618e6d3e9df73dd935824c210935dbdcc4c50fda6ef933941ca2e2f1e510987a",
+          "bytes": 1752148
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry2/Habitat_0_1.png",
+          "sha256": "91912400f9d1f6182f3741ff997e32b4254d2083304838e15409d400c649abe7",
+          "bytes": 1626878
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/entry2/Habitat_0_2.png",
+          "sha256": "a9f82e1e29ec4fbfa5fc07c736651caf983965346d7e9ae830163388a42f1eda",
+          "bytes": 1662731
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.27.52:934][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "status": "PASS",
+      "stream": true,
+      "screenshots": 2,
+      "entry": 0,
+      "forms": false,
+      "name": "stream",
+      "log": {
+        "file": "artifacts/plant-canopy-validation-20261126-162555/stream/Runtime.log",
+        "sha256": "89fc577054456c1234e19c116633ce898e0812f95faadc317e29495f86f51cd9",
+        "bytes": 132465
+      },
+      "images": [
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/stream/DiveSmoke_0_stream.png",
+          "sha256": "ddb77d7956abdcb9ca828cb9ed6e51e3b0a030b8b9f292c61b8d0ac9d4575dfb",
+          "bytes": 419030
+        },
+        {
+          "file": "artifacts/plant-canopy-validation-20261126-162555/stream/DiveUnderwater_0_stream.png",
+          "sha256": "e68f496ddbf43052f264ea0546d3b0b0b331b6a95bc09dd48cfcb9ed826f30ca",
+          "bytes": 1195155
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-15.28.17:259][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "geometry": {
+    "schema": 1,
+    "units": "metres",
+    "authorship": "Original procedural game geometry; botanical groups, not species-identification models",
+    "assets": [
+      {
+        "name": "SM_Pondweed",
+        "triangles": 7224,
+        "vertices": 4466,
+        "height_metres": 1.0568873882293701,
+        "uv_channels": 2,
+        "root_weight": 0,
+        "file": "blender/exports/Plants/SM_Pondweed.fbx",
+        "sha256": "855daf2f9d342400e462be60c7f55fd3e0e630faca54530fce7e5f50bdbf3022"
+      },
+      {
+        "name": "SM_Stonewort",
+        "triangles": 27744,
+        "vertices": 17352,
+        "height_metres": 0.42195284366607666,
+        "uv_channels": 2,
+        "root_weight": 0,
+        "file": "blender/exports/Plants/SM_Stonewort.fbx",
+        "sha256": "0d5199b534351dfe23d1caa4b2bae50a45cb51ab9476e1b0c9c4ac1e6539190b"
+      },
+      {
+        "name": "SM_Milfoil",
+        "triangles": 50456,
+        "vertices": 46410,
+        "height_metres": 0.845684289932251,
+        "uv_channels": 2,
+        "root_weight": 0,
+        "file": "blender/exports/Plants/SM_Milfoil.fbx",
+        "sha256": "d14acaa6b80e7de83be6a481cc1c59fbb9e5b26855a00ad6eb247f9fc7390f34"
+      }
+    ]
+  },
+  "content": [
+    {
+      "name": "SM_Pondweed",
+      "triangles": [
+        7224,
+        3251,
+        1155,
+        398
+      ],
+      "source_uv_channels": 2,
+      "source_sha256": "855daf2f9d342400e462be60c7f55fd3e0e630faca54530fce7e5f50bdbf3022"
+    },
+    {
+      "name": "SM_Stonewort",
+      "triangles": [
+        27744,
+        12484,
+        4438,
+        1526
+      ],
+      "source_uv_channels": 2,
+      "source_sha256": "0d5199b534351dfe23d1caa4b2bae50a45cb51ab9476e1b0c9c4ac1e6539190b"
+    },
+    {
+      "name": "SM_Milfoil",
+      "triangles": [
+        50456,
+        22706,
+        8073,
+        2776
+      ],
+      "source_uv_channels": 2,
+      "source_sha256": "d14acaa6b80e7de83be6a481cc1c59fbb9e5b26855a00ad6eb247f9fc7390f34"
+    }
+  ],
+  "inputs": [
+    {
+      "file": "Tools/create_aquatic_plants.py",
+      "sha256": "cd83f943100a4b3c6e781030b62aad42c266fbbffd37d269c3e3fe25c067b970",
+      "bytes": 9458
+    },
+    {
+      "file": "Tools/build_plant_content.py",
+      "sha256": "7cd069005170aa5b17fdd141a1e39b56b39701c3f17457a61996de46a494c0a4",
+      "bytes": 7084
+    },
+    {
+      "file": "Tools/Shaders/AquaticPlant.ush",
+      "sha256": "4e4ed5c90729ae589e27d8ad68bf04a9554c126243e6e383d575241b7518e820",
+      "bytes": 1520
+    },
+    {
+      "file": "blender/AquaticPlants.blend",
+      "sha256": "dba7ea657edaa51ec79b22d3eb8d9f6bcdb0845238331ffb86c6f0d4b08adbd5",
+      "bytes": 2480278
+    },
+    {
+      "file": "blender/exports/Plants/Manifest.json",
+      "sha256": "5ddd9380e3a0574e381e34c10321b1703306dd05293c200b3cdf61094aa020be",
+      "bytes": 1167
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_AquaticPlant.uasset",
+      "sha256": "500196b8b3d22205f42086d4222d9442b1a6a291e75441138bc6cf247d525127",
+      "bytes": 13006
+    },
+    {
+      "file": "divingsim/Content/Diving/Plants/SM_Milfoil.uasset",
+      "sha256": "4283c7126b380dbe15dc71f5874948a16113998103d907b9c452b1caca099377",
+      "bytes": 1723755
+    },
+    {
+      "file": "divingsim/Content/Diving/Plants/SM_Pondweed.uasset",
+      "sha256": "a011ea337c13b08af90400d453c2b228bddc0117be4f95e6344a0ea9a6682f30",
+      "bytes": 232949
+    },
+    {
+      "file": "divingsim/Content/Diving/Plants/SM_Stonewort.uasset",
+      "sha256": "f51091d56817bf1d03d26dae362f08862e6a5a03583a7d48a6294254fa117ca1",
+      "bytes": 749862
+    },
+    {
+      "file": "blender/exports/Plants/SM_Pondweed.fbx",
+      "sha256": "855daf2f9d342400e462be60c7f55fd3e0e630faca54530fce7e5f50bdbf3022",
+      "bytes": 272348
+    },
+    {
+      "file": "blender/exports/Plants/SM_Stonewort.fbx",
+      "sha256": "0d5199b534351dfe23d1caa4b2bae50a45cb51ab9476e1b0c9c4ac1e6539190b",
+      "bytes": 966140
+    },
+    {
+      "file": "blender/exports/Plants/SM_Milfoil.fbx",
+      "sha256": "d14acaa6b80e7de83be6a481cc1c59fbb9e5b26855a00ad6eb247f9fc7390f34",
+      "bytes": 2384652
+    }
+  ],
+  "build": {
+    "file": "artifacts/plants-package-build.log",
+    "sha256": "ea4c65ad96d894b91425752bd31dd8d9c557eb5b0aad4e2d23d6677124cb8a39",
+    "bytes": 298101
+  },
+  "comparison": {
+    "before": {
+      "file": "artifacts/plants-before/Plant_5_0.png",
+      "sha256": "1d585097bcb9a7c80566f5a9536358f8a56de67915a682a602730a8f26254bec",
+      "bytes": 1822225
+    },
+    "before_log": {
+      "file": "artifacts/plants-before.log",
+      "sha256": "05b0a673a3391d0824526cd7f1b7f95fa691ca639fb1db41d93ea419afd7294d",
+      "bytes": 224207
+    },
+    "after": {
+      "file": "artifacts/plant-canopy-validation-20261126-162555/forms/Plant_5_0.png",
+      "sha256": "dfcf875f23e672f53f98aa7e905cb3caa050eafa025c229c2cf2eb8b106dd532",
+      "bytes": 1903946
+    },
+    "note": "Same plant inspection camera; native previous content versus packaged new content. Ordinary plant animation remains active."
+  },
+  "performance": {
+    "summary": {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsPlantCanopy/divingsim/Saved/Performance/perf-underwater_01CF497F/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 75.05999832227826,
+        "distance_m": 10.386662199185448,
+        "depth_m": 5.223337451251361,
+        "walking": false,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-26T15:30:39.1185794Z",
+        "editor": false,
+        "disable_nanite": false,
+        "background_processes": [],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2596 MiB, 16 %"
+        ],
+        "executable": "O:\\games\\dive game\\Builds\\WindowsPlantCanopy\\divingsim\\Binaries\\Win64\\divingsim-PlantCanopy.exe",
+        "executable_sha256": "9d2fdfc335858d3862c523f257f1cd151b85dd4373a06bb7bc916c4b8398b470",
+        "package_containers": [
+          {
+            "file": "divingsim-Windows.pak",
+            "bytes": 105898051,
+            "sha256": "54e0361b50b5219fc36755ee73b438f9fa3953fc3be3578273adac0cb57fc72b"
+          },
+          {
+            "file": "divingsim-Windows.ucas",
+            "bytes": 1426990848,
+            "sha256": "31dc7299f73450fb0acdb70fd8a55dd8987ae24a8209e4cbd7af62570f455c15"
+          },
+          {
+            "file": "divingsim-Windows.utoc",
+            "bytes": 1176903,
+            "sha256": "5a5feb4d9dd3af7f4d1170c0bb510647bd16900a682b1b8710f30ef47a8474d5"
+          },
+          {
+            "file": "global.ucas",
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5"
+          },
+          {
+            "file": "global.utoc",
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa"
+          }
+        ]
+      },
+      "frames": 4061,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9752046,
+      "average_fps": 67.71131548586663,
+      "one_percent_low_fps": 54.708266832766306,
+      "frame": {
+        "mean_ms": 14.768580300418616,
+        "p50_ms": 14.3894,
+        "p95_ms": 17.2975,
+        "p99_ms": 18.0126,
+        "max_ms": 19.3202
+      },
+      "game_thread": {
+        "mean_ms": 5.82209330214233,
+        "p50_ms": 5.8145,
+        "p95_ms": 6.3802,
+        "p99_ms": 6.7351,
+        "max_ms": 8.5464
+      },
+      "render_thread": {
+        "mean_ms": 14.762658015267176,
+        "p50_ms": 14.3856,
+        "p95_ms": 17.292,
+        "p99_ms": 18.0166,
+        "max_ms": 19.2749
+      },
+      "rhi_thread": {
+        "mean_ms": 2.597295887712386,
+        "p50_ms": 2.5845,
+        "p95_ms": 3.019,
+        "p99_ms": 3.2417,
+        "max_ms": 5.2173
+      },
+      "gpu": {
+        "mean_ms": 14.151651785274563,
+        "p50_ms": 13.7348,
+        "p95_ms": 16.5781,
+        "p99_ms": 17.1664,
+        "max_ms": 18.1586
+      },
+      "frames_over_16_67_ms": 514,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 4484.7656,
+        "end": 4442.8555,
+        "max": 4484.7656
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 5.6705000000000005,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 4.357689411475006
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 1.1992798079290814
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 0.89726882541246
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8644234425018469
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7048636788968234
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.6676703275055406
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.663144939670032
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.577753878355085
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.3989971189362226
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.3702095789214479
+        },
+        {
+          "name": "GPU/RenderVelocities",
+          "mean_ms": 0.33290068948534846
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.33110051711401134
+        }
+      ]
+    },
+    "files": [
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-163039-114/Host.json",
+        "sha256": "e219a619f4797ac76ad9fc070ba62943971b936bf34b279b2cf2e0fca5c43086",
+        "bytes": 1365
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-163039-114/Metadata.json",
+        "sha256": "60667f5d52f093efcfdd9b719156a62a87f07d5b74e593d7086cf18f67124175",
+        "bytes": 998
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-163039-114/Summary.json",
+        "sha256": "3827e1e8fca045aa4e4d432ab72497032c06f26574380891bcb7cc9379912a04",
+        "bytes": 4972
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-163039-114/Runtime.log",
+        "sha256": "f67ff514701a4048d13f3201a80c44d18ef278dccc5e7a76c51a6bd4b2f87a5a",
+        "bytes": 125380
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-163039-114/Capture.csv",
+        "sha256": "ee69f526dac48fbb3453191ba72441ea0dd27ee8fb920434238dd26d0e51e83a",
+        "bytes": 9216761
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-163039-114/Frame.png",
+        "sha256": "758d890652959f836da8c88be353c8d4ec43f5c10cb3bec598cc5812fb41719b",
+        "bytes": 2181243
+      }
+    ]
+  },
+  "limitations": [
+    "Generic authored plant groups, not scans or species-identification models.",
+    "Fixed screenshots do not establish temporal anti-aliasing quality or botanical accuracy.",
+    "Reference visual quality, long endurance and native macOS acceptance remain open."
+  ]
+}

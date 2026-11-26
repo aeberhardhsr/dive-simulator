@@ -120,3 +120,9 @@ Ein 60-Sekunden-Unterwasserlauf bei Weesen aus Laufzeitstand `4f6e4e4`, nach 15 
 Die GPU benötigt im Mittel 14,01 ms, der Spielthread 5,80 ms. Größter erfasster GPU-Pass bleibt `ShadowDepths` mit 4,29 ms. Das Bild wurde geprüft und zeigt den bodennahen Weesen-Bereich bei rund 5,2 Metern Tiefe. Gegenüber der früheren Habitat-Messung desselben Szenarios (68,18 / 54,48 FPS) bleibt die mittlere Leistung ähnlich; der kleine Unterschied ist kein belastbarer Geschwindigkeitsgewinn. Material-, Präzisions- und zwischenzeitliche Nachladeänderungen sind in diesem Gesamtvergleich gemeinsam enthalten.
 
 Durchgehend 60 FPS, Mindesthardware, Langzeitstabilität und sämtliche Blickrichtungen sind weiterhin nicht nachgewiesen. Der frühere Murg-Streamingwert wird nicht als neue Messung dieses Pakets übernommen. EXE, Container, Rohdaten und Prüfbilder: [Benthic-Prüfbericht](BENTHIC_RESULTS.json).
+
+## WindowsPlantCanopy: feinere Blattstruktur
+
+Das Paket aus Quellstand `68b9022` wurde im gleichen Weesen-Unterwasserszenario 60 Sekunden nach 15 Sekunden Aufwärmen gemessen: RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne Bildratenlimit. Es lief keine weitere Unreal-/Spielinstanz; die GPU-Auslastung vor dem Start lag bei 16 Prozent. 4.061 vollständige innere Bildintervalle ergeben 59,975 s, **67,71 FPS im Mittel / 54,71 FPS im langsamsten Prozent**. P95 beträgt 17,30 ms, die höchste Bildzeit 19,32 ms. 514 Bilder überschreiten 16,67 ms, keines 33,33 ms.
+
+Die GPU-Zeit liegt im Mittel bei 14,15 ms, der Spielthread bei 5,82 ms. Das geprüfte Messbild zeigt den Weesen-Boden bei rund 5,2 Metern Tiefe. Die mittlere Bildrate liegt nahe am älteren Benthic-Lauf (68,34 FPS); diese Einzelmessungen mit unterschiedlicher Hintergrundauslastung isolieren die Kosten der Pflanzenänderung nicht. Durchgehend 60 FPS, alle Blickrichtungen und ein neuer Langzeittest bleiben offen. [Paket- und Leistungsnachweis](PLANT_CANOPY_RESULTS.json).
