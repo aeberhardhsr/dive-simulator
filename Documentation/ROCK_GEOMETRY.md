@@ -1,5 +1,7 @@
 # Detailed underwater rock forms
 
+Later surface revision: [matching scanned rock surfaces](ROCK_SURFACES.md) now use the source UVs and matching PBR maps. The geometry and package evidence below describe the earlier geometry-only stage; its shared-material decision is superseded by that revision.
+
 The previous underwater dressing repeated one deformed low-detail sphere. Three distinct source-based forms now replace it. The graphical preview is `Builds/WindowsRockDetail/divingsim.exe`: nine packaged cases and 54 fresh captures pass. Performance and endurance acceptance for this package remain pending. The measured FishSteering baseline is preserved unchanged.
 
 ## Sources and interpretation

@@ -133,6 +133,7 @@ private:
     void CreateTreeCell(FIntPoint Key);
     void StreamVegetation(const FVector& Player,bool Immediate=false);
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
+    UMaterialInterface* RockSurfaceMaterial(int32 Variant) const;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LandscapeMeshes;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CoastMeshes;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuildingMeshes;

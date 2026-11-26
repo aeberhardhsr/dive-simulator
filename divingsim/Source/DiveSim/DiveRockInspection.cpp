@@ -21,7 +21,14 @@
 #include "ProceduralMeshComponent.h"
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
-// the three new forms use the same position, scale, material and camera.
+// the three new forms use the same position, scale and camera.
+UMaterialInterface* ADiveWorld::RockSurfaceMaterial(int32 Variant) const
+{
+    const bool legacy=Variant<0||(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockSurface")));
+    const FString name=legacy?TEXT("M_RockSurface"):FString::Printf(TEXT("M_RockScan%d"),Variant+1);
+    return LoadObject<UMaterialInterface>(nullptr,*(TEXT("/Game/Diving/Materials/")+name+TEXT(".")+name));
+}
+
 void ADiveWorld::RefreshInspectionMedium()
 {
     if(bOpticsSmoke)
@@ -189,6 +196,9 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
     if(!mesh||!mesh->GetBodySetup()||mesh->GetBodySetup()->AggGeom.GetElementCount()<1) return false;
     component->SetStaticMesh(mesh);component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    auto* material=RockSurfaceMaterial(Variant-1);
+    if(!material) return false;
+    component->SetMaterial(0,material);
     const FTransform transform(FRotator(0,35,0),centre,FVector(1,.85,.7));
     if(component->GetInstanceCount()==0) component->AddInstance(transform);
     else component->UpdateInstanceTransform(0,transform,false,true,true);

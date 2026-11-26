@@ -277,6 +277,8 @@ if not ONLY_ENVIRONMENT:
     build_fish()
     from build_rock_content import build_rocks
     build_rocks()
+    from build_rock_surface_content import build_rock_surfaces
+    build_rock_surfaces()
     from build_gravel_content import build_gravel
     build_gravel()
     from build_plant_content import build_plants

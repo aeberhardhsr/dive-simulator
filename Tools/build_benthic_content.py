@@ -7,9 +7,11 @@ import unreal as u
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_bed_content import build_bed
 from build_gravel_content import build_gravel_material
+from build_rock_surface_content import build_rock_surfaces
 
 build_bed()
 build_gravel_material()
+build_rock_surfaces()
 records = []
 for name in ['M_Lakebed', 'M_RockSurface', 'M_GravelSurface', 'M_ShorePhoto']:
     material = u.load_asset('/Game/Diving/Materials/' + name)

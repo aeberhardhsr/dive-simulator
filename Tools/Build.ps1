@@ -22,6 +22,7 @@ param(
     [switch]$OnlyGround,
     [switch]$OnlyFish,
     [switch]$OnlyRocks,
+    [switch]$OnlyRockSurfaces,
     [switch]$OnlyGravel,
     [switch]$OnlyPlants
 )
@@ -52,6 +53,7 @@ if ($Target -eq 'Content') {
     if($OnlyGround) { $script=Join-Path $PSScriptRoot 'build_ground_content.py' }
     if($OnlyFish) { $script=Join-Path $PSScriptRoot 'build_fish_content.py' }
     if($OnlyRocks) { $script=Join-Path $PSScriptRoot 'build_rock_content.py' }
+    if($OnlyRockSurfaces) { $script=Join-Path $PSScriptRoot 'build_rock_surface_content.py' }
     if($OnlyGravel) { $script=Join-Path $PSScriptRoot 'build_gravel_content.py' }
     if($OnlyPlants) { $script=Join-Path $PSScriptRoot 'build_plant_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }

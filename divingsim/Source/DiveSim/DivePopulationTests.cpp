@@ -35,7 +35,11 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
                 valid&=FVector::Dist2D(rock.Position,entry.Position)>=350+rock.Radius;
         }
         for(int i=0;i<pair.Value.Components.Num();++i)
-            if(i<Rocks.Num()) renderedRocks+=pair.Value.Components[i]->GetInstanceCount();
+            if(i<Rocks.Num())
+            {
+                renderedRocks+=pair.Value.Components[i]->GetInstanceCount();
+                valid&=Rocks[i]->GetMaterial(0)!=nullptr&&pair.Value.Components[i]->GetMaterial(0)==Rocks[i]->GetMaterial(0);
+            }
             else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();

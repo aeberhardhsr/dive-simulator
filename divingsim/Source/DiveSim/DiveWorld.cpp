@@ -146,7 +146,15 @@ void ADiveWorld::Populate()
         const FString name=FString::Printf(TEXT("SM_LakeRock%d"),i+1);
         Rocks[i]->ClearInstances();
         Rocks[i]->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Rocks/")+name+TEXT(".")+name)));
-        Rocks[i]->SetMaterial(0,Mat(TEXT("M_RockSurface")));
+        auto* surface=RockSurfaceMaterial(i);
+        if(!surface)
+        {
+            UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_SURFACE_FAIL missing variant=%d"),i+1);
+            if(bOpticsSmoke) FPlatformMisc::RequestExitWithStatus(false,1);
+            return;
+        }
+        Rocks[i]->SetMaterial(0,surface);
+        if(bOpticsSmoke) UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_SURFACE_READY variant=%d material=%s"),i+1,*surface->GetPathName());
         const FString gravel=FString::Printf(TEXT("SM_Gravel%d"),i+1);
         Gravel[i]->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/Gravel/")+gravel+TEXT(".")+gravel)));
         Gravel[i]->SetMaterial(0,Mat(TEXT("M_GravelSurface")));

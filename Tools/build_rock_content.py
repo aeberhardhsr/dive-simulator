@@ -99,5 +99,8 @@ def audit_rocks():
 
 
 if __name__=='__main__':
-    if '-DiveRockAuditOnly' not in u.SystemLibrary.get_command_line(): build_rocks()
+    if '-DiveRockAuditOnly' not in u.SystemLibrary.get_command_line():
+        build_rocks()
+        from build_rock_surface_content import build_rock_surfaces
+        build_rock_surfaces()
     audit_rocks()
