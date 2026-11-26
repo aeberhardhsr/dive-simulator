@@ -35,7 +35,7 @@ struct FDiveFish
     int32 Species=0, Instance=0;
     bool Active=false;
 };
-struct FDiveRock { FVector Position; float Radius=0; int32 Variant=0; };
+struct FDiveRock { FVector Position; float Radius=0; int32 Variant=0; bool Rubble=false; };
 struct FDiveRockLayout
 {
     TArray<FTransform> Transforms;

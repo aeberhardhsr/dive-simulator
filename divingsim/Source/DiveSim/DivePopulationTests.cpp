@@ -1,6 +1,7 @@
 #include "DiveWorld.h"
 #include "DivePawn.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "PhysicsEngine/BodyInstance.h"
 
 bool ADiveWorld::TestPopulationStreaming(FString& Detail)
 {
@@ -10,7 +11,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     bool valid=true;int retained=0,reloaded=0,nearFish=0,spawned=0;
     // Cluster halos must produce exactly one owner, matching the rendered
     // instances and collision state, including across cell boundaries.
-    TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0,connectedLargePairs=0;
+    TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0,connectedLargePairs=0,rubble=0,rubbleContacts=0;
     for(const auto& pair:PopulationCells)
     {
         TArray<FTransform> transforms;TArray<FDiveRock> states;
@@ -20,14 +21,32 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         valid&=transforms.Num()==freshTransforms.Num()&&states.Num()==freshStates.Num();
         for(int i=0;i<FMath::Min(transforms.Num(),freshTransforms.Num());++i)
             valid&=transforms[i].Equals(freshTransforms[i],0)&&states[i].Position==freshStates[i].Position&&
-                states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant;
-        valid&=transforms.Num()==states.Num()&&states.Num()<=196*22;
+                states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant&&states[i].Rubble==freshStates[i].Rubble;
+        valid&=transforms.Num()==states.Num()&&states.Num()<=196*46;
+        int instances[3]={};int contactSamples=0;
         for(int i=0;i<states.Num();++i)
         {
             const auto& rock=states[i];
+            const int instance=instances[rock.Variant]++;
             valid&=FMath::FloorToInt(rock.Position.X/9600)==pair.Key.X&&FMath::FloorToInt(rock.Position.Y/9600)==pair.Key.Y;
             valid&=!positions.Contains(rock.Position)&&rock.Radius>=16&&rock.Radius<=337;
             positions.Add(rock.Position);++sizes[rock.Radius<65?0:rock.Radius<126?1:2];
+            if(rock.Rubble)
+            {
+                ++rubble;
+                float bed=0;
+                valid&=rock.Radius>=21&&rock.Radius<=68.251&&Terrain.Sample(rock.Position.X,rock.Position.Y,bed);
+                valid&=FMath::Abs(rock.Position.Z-bed-transforms[i].GetScale3D().X*5)<.01;
+                valid&=transforms[i].GetScale3D().Z>=.1099&&transforms[i].GetScale3D().Z<=.5851;
+                if(contactSamples++<12)
+                {
+                    const auto* component=pair.Value.Components[rock.Variant].Get();
+                    auto* body=component?component->GetBodyInstance(NAME_None,false,instance):nullptr;
+                    valid&=body!=nullptr;
+                    FHitResult hit;
+                    if(body&&body->LineTrace(hit,rock.Position+FVector(0,0,200),rock.Position-FVector(0,0,200),false,false)) ++rubbleContacts;
+                }
+            }
             if(rock.Radius>=150) for(int j=0;j<i;++j)
                 if(states[j].Radius>=150&&FVector::Dist2D(rock.Position,states[j].Position)<.65*(rock.Radius+states[j].Radius))
                     ++connectedLargePairs;
@@ -43,6 +62,10 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
+    const bool rubbleDisabled=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"));
+    valid&=rubbleDisabled?rubble==0:rubble>0;
+    valid&=rubbleDisabled||rubbleContacts>0;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_RUBBLE_%s fragments=%d disabled=%d contacts=%d"),valid?TEXT("PASS"):TEXT("FAIL"),rubble,rubbleDisabled,rubbleContacts);
     valid&=connectedLargePairs>8;
     UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATION_%s connected_large_pairs=%d"),connectedLargePairs>8?TEXT("PASS"):TEXT("FAIL"),connectedLargePairs);
     auto boundedLayouts=[&]()

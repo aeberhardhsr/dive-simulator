@@ -61,7 +61,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             const float aspect=random.FRandRange(.72f,1.f),height=core?random.FRandRange(.5f,.85f):random.FRandRange(.55f,.8f);
             const int32 variant=random.RandRange(0,Rocks.Num()-1);
             float z,n,e;
-            if(!Terrain.Sample(x,y,z)||z>-250||z<-6000||!Terrain.Sample(x+100,y,e)||!Terrain.Sample(x,y+100,n)) continue;
+            if(!Terrain.Sample(x,y,z)||z>-250||z<-6000) continue;
             const FVector position(x,y,z+size*(core?18:10));bool blocked=false;
             // Preserve entry and access routes for every size class.
             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
@@ -77,12 +77,62 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             for(int j=0;j<accepted.Num();++j)
                 if(FVector::DistSquared2D(position,accepted[j])<FMath::Square((core?.28:.7)*(size*105+radii[j]))) blocked=true;
             if(blocked) continue;
+            // Rejected 2D candidates need no slope samples. Acceptance and the
+            // random sequence remain identical, including the ownership halo.
+            if(!Terrain.Sample(x+100,y,e)||!Terrain.Sample(x,y+100,n)) continue;
             accepted.Add(position);radii.Add(size*105);
             if(CellAt(position)!=Key) continue;
             const FVector normal=FVector(-(e-z)/100,-(n-z)/100,1).GetSafeNormal();
             const FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
             Transforms.Add(FTransform(rotation,position,FVector(size,size*aspect,size*height)));
             States.Add({position,size*105,variant});
+        }
+        if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"))) continue;
+        // A separate random stream preserves every existing block. Intermediate
+        // fragments collect around exposed feet, bridging the block/pebble gap.
+        // Their full transforms enter the ordinary collision and fish state.
+        TArray<int32> parents;
+        for(int j=0;j<radii.Num();++j) if(radii[j]>=126) parents.Add(j);
+        if(parents.IsEmpty()) continue;
+        FRandomStream debris(Dive::BedDistribution::Hash(ax,ay)^0xb3496e21u);
+        for(int i=0;i<24;++i)
+        {
+            const int parent=parents[i%parents.Num()];
+            const float size=.20f+.45f*FMath::Square(debris.FRand());
+            const double angle=debris.FRand()*2*PI;
+            const double reach=radii[parent]*debris.FRandRange(.60f,1.25f)+size*35;
+            const double x=accepted[parent].X+FMath::Cos(angle)*reach;
+            const double y=accepted[parent].Y+FMath::Sin(angle)*reach;
+            const float yaw=debris.FRand()*2*PI,aspect=debris.FRandRange(.65f,1.f),height=debris.FRandRange(.55f,.9f);
+            const int variant=debris.RandRange(0,Rocks.Num()-1);
+            // Keep the original one-anchor halo valid, including rotated groups.
+            if(FMath::Abs(x-anchor.X)>600||FMath::Abs(y-anchor.Y)>600) continue;
+            float z,n,e;
+            if(!Terrain.Sample(x,y,z)||z>-250||z<-4000) continue;
+            const FVector position(x,y,z+size*5);bool blocked=false;
+            for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
+                if(FVector::Dist2D(position,entry.Position)<350+size*105) blocked=true;
+            for(const auto& access:Accesses)
+            {
+                const FVector delta=position-access.Origin;
+                const double alongRoute=FVector::DotProduct(delta,access.Forward);
+                const double acrossRoute=FMath::Abs(delta.X*access.Forward.Y-delta.Y*access.Forward.X);
+                if(alongRoute>-500-size*105&&alongRoute<access.Length+500+size*105&&acrossRoute<600+size*105) blocked=true;
+            }
+            for(int j=0;j<accepted.Num();++j)
+            {
+                const double separation=radii[j]>=126 ? radii[j]*.42+size*40 : .55*(radii[j]+size*105);
+                if(FVector::DistSquared2D(position,accepted[j])<FMath::Square(separation)) blocked=true;
+            }
+            if(blocked) continue;
+            if(!Terrain.Sample(x+50,y,e)||!Terrain.Sample(x,y+50,n)) continue;
+            const FVector normal=FVector(-(e-z)/50,-(n-z)/50,1).GetSafeNormal();
+            if(normal.Z<.72) continue;
+            accepted.Add(position);radii.Add(size*105);
+            if(CellAt(position)!=Key) continue;
+            const FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
+            Transforms.Add(FTransform(rotation,position,FVector(size,size*aspect,size*height)));
+            States.Add({position,size*105,variant,true});
         }
     }
 }
