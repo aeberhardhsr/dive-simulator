@@ -1,0 +1,43 @@
+// Shared analytic surface slopes for water normals and solar caustics.
+// xy is world metres; waves use the same SI coefficients as WaterSurface.h.
+struct DiveWaterOptics
+{
+    void Surface(float2 xy,float t,float4 waves[4],float4 phases,float windStrength,
+        float2 footprintX,float2 footprintY,out float h,out float2 slope,out float3 curvature)
+    {
+        h=0;slope=0;curvature=0;
+        [unroll] for(int i=0;i<4;++i)
+        {
+            float p=dot(waves[i].xy,xy)-waves[i].z*t+phases[i];
+            float s=waves[i].w*sin(p),c=waves[i].w*cos(p);
+            h+=s;slope+=waves[i].xy*c;
+            curvature-=s*float3(waves[i].x*waves[i].x,waves[i].x*waves[i].y,waves[i].y*waves[i].y);
+        }
+        float4 layers[3]={float4(2.4,.9563,.2924,.025),float4(5.3,.3256,.9455,.013),float4(11.8,.7986,-.6018,.007)};
+        float2 wind=waves[0].xy/max(length(waves[0].xy),.0001);
+        [unroll] for(int j=0;j<3;++j)
+        {
+            float4 layer=layers[j];
+            float2 moving=xy*layer.x-wind*t*(.7+j*.31);
+            float2 q=float2(layer.y*moving.x-layer.z*moving.y,layer.z*moving.x+layer.y*moving.y);
+            float2 cell=floor(q),f=frac(q);
+            float4 seed=float4(dot(cell,float2(127.1,311.7)),dot(cell+float2(1,0),float2(127.1,311.7)),
+                dot(cell+float2(0,1),float2(127.1,311.7)),dot(cell+float2(1,1),float2(127.1,311.7)));
+            float4 v=frac(sin(seed)*43758.5453);
+            float2 b=f*f*f*(f*(f*6-15)+10),d=30*f*f*(f*(f-2)+1),dd=60*f*(2*f*f-3*f+1);
+            float2 g=d*float2(lerp(v.y-v.x,v.w-v.z,b.y),lerp(v.z-v.x,v.w-v.y,b.x));
+            float cross=v.w-v.z-v.y+v.x;
+            float xx=dd.x*lerp(v.y-v.x,v.w-v.z,b.y),yy=dd.y*lerp(v.z-v.x,v.w-v.y,b.x),xz=d.x*d.y*cross;
+            float filter=exp(-2*layer.x*layer.x*(dot(footprintX,footprintX)+dot(footprintY,footprintY)));
+            float a=-layer.w*windStrength*filter,c=layer.y,s=layer.z;
+            // Original optical ripples are normal detail, not displacement.
+            slope+=a*float2(c*g.x+s*g.y,-s*g.x+c*g.y);
+            curvature+=a*layer.x*float3(c*c*xx+2*c*s*xz+s*s*yy,
+                c*s*(yy-xx)+(c*c-s*s)*xz,s*s*xx-2*c*s*xz+c*c*yy);
+        }
+    }
+    float3 Refract(float3 incident,float2 slope)
+    {
+        return refract(incident,normalize(float3(-slope,1)),1./1.333);
+    }
+};

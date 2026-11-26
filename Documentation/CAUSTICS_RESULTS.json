@@ -1,0 +1,460 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "status": "PASS",
+      "directory": "O:\\games\\dive game\\artifacts\\caustics-day-validation-20261126-032013",
+      "host": {
+        "head": "73921739f33ccd05bb4f19c36c910bb18bd2b841",
+        "package_archives": [
+          {
+            "sha256": "28D9D8E76E4A79634D10B6593941F2563827D3B9831E71DC1EBFF15EBC54F1A0",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.pak"
+          },
+          {
+            "sha256": "F9953867496EDEB851F79D0202572F142BF2036F85C9EC9C32827EB686C675FD",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.ucas"
+          },
+          {
+            "sha256": "93B434AA6B228DC88B989AF1A07C9F29348F7661BABAE6B54D5A62DEE50C5E3A",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.utoc"
+          },
+          {
+            "sha256": "E2CE6A410CEDFCCC1362536F0C0C329F0C955E2252054A7EF4D503A010970E4E",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.ucas"
+          },
+          {
+            "sha256": "0BB9ED54CA5F483747B97500C3AB6C865959DC26E3AEFAE90BD89EAACB7AE0B6",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.utoc"
+          }
+        ],
+        "packaged": true,
+        "started_utc": "2026-11-26T02:20:13.3042315Z",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Binaries\\Win64\\divingsim-Caustics.exe",
+        "case": "day",
+        "executable_sha256": "BCC03A9DDD5ED2B6644A57ACCF4809F7B8F35F6AFA2EE18E76C83D973600EF23"
+      },
+      "mean_absolute_rgb8_difference": {
+        "enabled_vs_disabled": {
+          "lit": 4.136008838383838,
+          "shadow": 0.30453703703703705,
+          "sphere": 3.4106209150326796
+        },
+        "moving_pattern": {
+          "lit": 5.901968434343434,
+          "shadow": 0.39064814814814813,
+          "sphere": 3.7234640522875817
+        },
+        "frozen_clock": {
+          "lit": 0.35351767676767676,
+          "shadow": 0.31392592592592594,
+          "sphere": 0.3388888888888889
+        }
+      },
+      "regions_xyxy": {
+        "lit": [
+          250,
+          580,
+          1350,
+          820
+        ],
+        "shadow": [
+          900,
+          410,
+          1200,
+          470
+        ],
+        "sphere": [
+          350,
+          15,
+          520,
+          75
+        ]
+      },
+      "images": [
+        {
+          "file": "Caustics_00.png",
+          "sha256": "4647814164c99ba191e6799031276a84327464b9d23b34c487911cd2a415987d"
+        },
+        {
+          "file": "Caustics_01.png",
+          "sha256": "035ab75d8082570dd55328195f015fa4db8cdc01cab50db7e787e6effb48407a"
+        },
+        {
+          "file": "Caustics_02.png",
+          "sha256": "d7f8d221a6b3c7c2b680b16ff00ead88e188beb8d012811c7abf5c12ea8ae25d"
+        },
+        {
+          "file": "Caustics_03.png",
+          "sha256": "11e87cb90fef62013fda8f5753aca9d26d16157e28ee9457d93c9a29b580c242"
+        }
+      ],
+      "log_sha256": "6b5ee3e0a1720512c428308fe50159ebe0777d6143b989a4505d0bfd607f6869"
+    },
+    {
+      "status": "PASS",
+      "directory": "O:\\games\\dive game\\artifacts\\caustics-calm-validation-20261126-032055",
+      "host": {
+        "head": "73921739f33ccd05bb4f19c36c910bb18bd2b841",
+        "package_archives": [
+          {
+            "sha256": "28D9D8E76E4A79634D10B6593941F2563827D3B9831E71DC1EBFF15EBC54F1A0",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.pak"
+          },
+          {
+            "sha256": "F9953867496EDEB851F79D0202572F142BF2036F85C9EC9C32827EB686C675FD",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.ucas"
+          },
+          {
+            "sha256": "93B434AA6B228DC88B989AF1A07C9F29348F7661BABAE6B54D5A62DEE50C5E3A",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.utoc"
+          },
+          {
+            "sha256": "E2CE6A410CEDFCCC1362536F0C0C329F0C955E2252054A7EF4D503A010970E4E",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.ucas"
+          },
+          {
+            "sha256": "0BB9ED54CA5F483747B97500C3AB6C865959DC26E3AEFAE90BD89EAACB7AE0B6",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.utoc"
+          }
+        ],
+        "packaged": true,
+        "started_utc": "2026-11-26T02:20:55.6550770Z",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Binaries\\Win64\\divingsim-Caustics.exe",
+        "case": "calm",
+        "executable_sha256": "BCC03A9DDD5ED2B6644A57ACCF4809F7B8F35F6AFA2EE18E76C83D973600EF23"
+      },
+      "mean_absolute_rgb8_difference": {
+        "enabled_vs_disabled": {
+          "lit": 0.3249570707070707,
+          "shadow": 0.30253703703703705,
+          "sphere": 0.33872549019607845
+        },
+        "moving_pattern": {
+          "lit": 0.3260479797979798,
+          "shadow": 0.31048148148148147,
+          "sphere": 0.3366013071895425
+        },
+        "frozen_clock": {
+          "lit": 0.3251186868686869,
+          "shadow": 0.30553703703703705,
+          "sphere": 0.33205882352941174
+        }
+      },
+      "regions_xyxy": {
+        "lit": [
+          250,
+          580,
+          1350,
+          820
+        ],
+        "shadow": [
+          900,
+          410,
+          1200,
+          470
+        ],
+        "sphere": [
+          350,
+          15,
+          520,
+          75
+        ]
+      },
+      "images": [
+        {
+          "file": "Caustics_00.png",
+          "sha256": "c943c0752f3b09e88cb054bbc93b6d804ddea71a84cedb78f94935a28ffc6693"
+        },
+        {
+          "file": "Caustics_01.png",
+          "sha256": "d68b5a41b3e63d6aa23a5f36ec3e38dc699bddfd87078160eb97104b81f6bbd6"
+        },
+        {
+          "file": "Caustics_02.png",
+          "sha256": "1c63523f88a8746c70d32f398679a39953103ffe901dafe12198189e54093b43"
+        },
+        {
+          "file": "Caustics_03.png",
+          "sha256": "609c8febb6279b3a174ae98e53322a313498314e5b700312d47a90558c8aa7ef"
+        }
+      ],
+      "log_sha256": "ee85ef908634069d0b586401f8d0306f2dd39c23520d5e1b12b3f090052dcef5"
+    },
+    {
+      "status": "PASS",
+      "directory": "O:\\games\\dive game\\artifacts\\caustics-night-validation-20261126-032136",
+      "host": {
+        "head": "73921739f33ccd05bb4f19c36c910bb18bd2b841",
+        "package_archives": [
+          {
+            "sha256": "28D9D8E76E4A79634D10B6593941F2563827D3B9831E71DC1EBFF15EBC54F1A0",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.pak"
+          },
+          {
+            "sha256": "F9953867496EDEB851F79D0202572F142BF2036F85C9EC9C32827EB686C675FD",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.ucas"
+          },
+          {
+            "sha256": "93B434AA6B228DC88B989AF1A07C9F29348F7661BABAE6B54D5A62DEE50C5E3A",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.utoc"
+          },
+          {
+            "sha256": "E2CE6A410CEDFCCC1362536F0C0C329F0C955E2252054A7EF4D503A010970E4E",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.ucas"
+          },
+          {
+            "sha256": "0BB9ED54CA5F483747B97500C3AB6C865959DC26E3AEFAE90BD89EAACB7AE0B6",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.utoc"
+          }
+        ],
+        "packaged": true,
+        "started_utc": "2026-11-26T02:21:36.7388807Z",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Binaries\\Win64\\divingsim-Caustics.exe",
+        "case": "night",
+        "executable_sha256": "BCC03A9DDD5ED2B6644A57ACCF4809F7B8F35F6AFA2EE18E76C83D973600EF23"
+      },
+      "mean_absolute_rgb8_difference": {
+        "enabled_vs_disabled": {
+          "lit": 0.0,
+          "shadow": 0.0,
+          "sphere": 0.0
+        },
+        "moving_pattern": {
+          "lit": 0.0,
+          "shadow": 0.0,
+          "sphere": 0.0
+        },
+        "frozen_clock": {
+          "lit": 0.0,
+          "shadow": 0.0,
+          "sphere": 0.0
+        }
+      },
+      "regions_xyxy": {
+        "lit": [
+          250,
+          580,
+          1350,
+          820
+        ],
+        "shadow": [
+          900,
+          410,
+          1200,
+          470
+        ],
+        "sphere": [
+          350,
+          15,
+          520,
+          75
+        ]
+      },
+      "images": [
+        {
+          "file": "Caustics_00.png",
+          "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+        },
+        {
+          "file": "Caustics_01.png",
+          "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+        },
+        {
+          "file": "Caustics_02.png",
+          "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+        },
+        {
+          "file": "Caustics_03.png",
+          "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+        }
+      ],
+      "log_sha256": "97bd906bb25845fadd8ef6be6538c578a978a432bcf8af4d59265cc103592364"
+    },
+    {
+      "status": "PASS",
+      "directory": "O:\\games\\dive game\\artifacts\\caustics-air-validation-20261126-032217",
+      "host": {
+        "head": "73921739f33ccd05bb4f19c36c910bb18bd2b841",
+        "package_archives": [
+          {
+            "sha256": "28D9D8E76E4A79634D10B6593941F2563827D3B9831E71DC1EBFF15EBC54F1A0",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.pak"
+          },
+          {
+            "sha256": "F9953867496EDEB851F79D0202572F142BF2036F85C9EC9C32827EB686C675FD",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.ucas"
+          },
+          {
+            "sha256": "93B434AA6B228DC88B989AF1A07C9F29348F7661BABAE6B54D5A62DEE50C5E3A",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.utoc"
+          },
+          {
+            "sha256": "E2CE6A410CEDFCCC1362536F0C0C329F0C955E2252054A7EF4D503A010970E4E",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.ucas"
+          },
+          {
+            "sha256": "0BB9ED54CA5F483747B97500C3AB6C865959DC26E3AEFAE90BD89EAACB7AE0B6",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.utoc"
+          }
+        ],
+        "packaged": true,
+        "started_utc": "2026-11-26T02:22:17.6745688Z",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Binaries\\Win64\\divingsim-Caustics.exe",
+        "case": "air",
+        "executable_sha256": "BCC03A9DDD5ED2B6644A57ACCF4809F7B8F35F6AFA2EE18E76C83D973600EF23"
+      },
+      "mean_absolute_rgb8_difference": {
+        "enabled_vs_disabled": {
+          "lit": 0.32852146464646464,
+          "shadow": 0.47759259259259257,
+          "sphere": 0.35261437908496734
+        },
+        "moving_pattern": {
+          "lit": 0.331375,
+          "shadow": 0.4906111111111111,
+          "sphere": 0.35709150326797384
+        },
+        "frozen_clock": {
+          "lit": 0.3306830808080808,
+          "shadow": 0.4816666666666667,
+          "sphere": 0.35284313725490196
+        }
+      },
+      "regions_xyxy": {
+        "lit": [
+          250,
+          580,
+          1350,
+          820
+        ],
+        "shadow": [
+          900,
+          410,
+          1200,
+          470
+        ],
+        "sphere": [
+          350,
+          15,
+          520,
+          75
+        ]
+      },
+      "images": [
+        {
+          "file": "Caustics_00.png",
+          "sha256": "81a98984843673e4df712ac56e2ae8215b368ec34d22036a99768ba2a60c524d"
+        },
+        {
+          "file": "Caustics_01.png",
+          "sha256": "cbe4cfc6eca06dabb25f9eb5401213aa64bac937a39ffc63765f1528eb4f3983"
+        },
+        {
+          "file": "Caustics_02.png",
+          "sha256": "0e1b9d7fff13dc06e147b9360759512f707bad1e3fdc5f89cd2890be767bff4f"
+        },
+        {
+          "file": "Caustics_03.png",
+          "sha256": "a7cc5111d37295e6d539d09b133d016d330c76258ab1ce82339ac4798dd9428a"
+        }
+      ],
+      "log_sha256": "9ab1834bda22825e21fe24b73f0c0766cde30382f554db3be5f8edc708716fe8"
+    },
+    {
+      "status": "PASS",
+      "directory": "O:\\games\\dive game\\artifacts\\caustics-deep-validation-20261126-032258",
+      "host": {
+        "head": "73921739f33ccd05bb4f19c36c910bb18bd2b841",
+        "package_archives": [
+          {
+            "sha256": "28D9D8E76E4A79634D10B6593941F2563827D3B9831E71DC1EBFF15EBC54F1A0",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.pak"
+          },
+          {
+            "sha256": "F9953867496EDEB851F79D0202572F142BF2036F85C9EC9C32827EB686C675FD",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.ucas"
+          },
+          {
+            "sha256": "93B434AA6B228DC88B989AF1A07C9F29348F7661BABAE6B54D5A62DEE50C5E3A",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\divingsim-Windows.utoc"
+          },
+          {
+            "sha256": "E2CE6A410CEDFCCC1362536F0C0C329F0C955E2252054A7EF4D503A010970E4E",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.ucas"
+          },
+          {
+            "sha256": "0BB9ED54CA5F483747B97500C3AB6C865959DC26E3AEFAE90BD89EAACB7AE0B6",
+            "path": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Content\\Paks\\global.utoc"
+          }
+        ],
+        "packaged": true,
+        "started_utc": "2026-11-26T02:22:58.6390944Z",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsCaustics\\divingsim\\Binaries\\Win64\\divingsim-Caustics.exe",
+        "case": "deep",
+        "executable_sha256": "BCC03A9DDD5ED2B6644A57ACCF4809F7B8F35F6AFA2EE18E76C83D973600EF23"
+      },
+      "mean_absolute_rgb8_difference": {
+        "enabled_vs_disabled": {
+          "lit": 1.4607310606060606,
+          "shadow": 0.2507962962962963,
+          "sphere": 1.3076143790849672
+        },
+        "moving_pattern": {
+          "lit": 2.0930580808080808,
+          "shadow": 0.26185185185185184,
+          "sphere": 3.155686274509804
+        },
+        "frozen_clock": {
+          "lit": 0.3119381313131313,
+          "shadow": 0.25094444444444447,
+          "sphere": 0.31006535947712416
+        }
+      },
+      "regions_xyxy": {
+        "lit": [
+          250,
+          580,
+          1350,
+          820
+        ],
+        "shadow": [
+          900,
+          410,
+          1200,
+          470
+        ],
+        "sphere": [
+          350,
+          15,
+          520,
+          75
+        ]
+      },
+      "images": [
+        {
+          "file": "Caustics_00.png",
+          "sha256": "2cc2ed13321aae9f790496e0dd697e8a2638bd44e5ead4228887e8c78cd88bfd"
+        },
+        {
+          "file": "Caustics_01.png",
+          "sha256": "799cee911a7d792ac424fce2fc8535efe770fb0eb6bfe2a99addd8dde792d4ba"
+        },
+        {
+          "file": "Caustics_02.png",
+          "sha256": "28228465f70ad525792b71b0136b25afc0336a41e285eac0b43686eef2dbb464"
+        },
+        {
+          "file": "Caustics_03.png",
+          "sha256": "8e204705f6c88ef46b32c703f682b21c6239e5372b546835f2fc7a6712ff11fa"
+        }
+      ],
+      "log_sha256": "b7d90287a5ce5acd2ab58d3ee34dd7ae3deba5b675b8be24a9ec2fe20e8d1e4c"
+    }
+  ],
+  "limits": [
+    "Controlled synthetic receivers test light modulation and shadow exclusion; they do not establish photorealism.",
+    "RGB8 differences include temporal rendering noise and are not radiometric measurements.",
+    "The single-ray approximation is bounded and does not solve multiray focusing or refracted shadows."
+  ]
+}

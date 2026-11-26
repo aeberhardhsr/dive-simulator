@@ -137,6 +137,9 @@ private:
     double DayCyclePauseWall=0,DayCyclePauseSeconds=0,DayCyclePauseHour=0;
     void TickDayCycleTest(float DeltaSeconds);
     void TickSedimentTest(float Dt);
+    void TickCausticsTest(float Dt);
+    double CausticsTestClock=0;
+    int32 CausticsTestPhase=-1,CausticsTestCaptured=-1;
     int32 SiltSmokePhase=0,SiltBornAtStop=0;
     double SiltPauseWall=0,SiltPauseSeconds=0;
     FString SiltPauseDetail;

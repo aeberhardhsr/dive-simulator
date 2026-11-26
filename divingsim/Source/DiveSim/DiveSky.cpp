@@ -72,6 +72,14 @@ void ADiveWorld::CreateSky()
     Celestial->GlobalPostProcessVolume->bEnabled=false;
     Sun->SetLightColor(FLinearColor::White);
     Sun->SetVolumetricScatteringIntensity(2);
+    auto* solarMaterial=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_SolarWater.M_SolarWater"));
+    if(solarMaterial)
+    {
+        SolarWater=UMaterialInstanceDynamic::Create(solarMaterial,this);
+        Sun->SetLightFunctionMaterial(SolarWater);
+        Sun->SetLightFunctionFadeDistance(2000000);
+        Sun->SetLightFunctionDisabledBrightness(1);
+    }
     Sky->SetLightColor(FLinearColor::White);
     Sky->SetRealTimeCaptureEnabled(true);
     if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveCelestialReferences"))) ValidateCelestialReferences();
@@ -148,6 +156,9 @@ void ADiveWorld::UpdateDaylight()
     const double moonElevation=FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(-moon->GetForwardVector().Z,-1.,1.)));
     Lighting=Dive::EnvironmentLight::AtElevation(elevation,WeatherSettings.Weather,moonElevation,moon->Intensity);
     LastSkyUTC=clock.UTCSeconds;
+    // Physics also advances the celestial clock between world actor ticks.
+    // Publish the matching ray/time immediately, before gameplay validation.
+    UpdateCaustics();
 }
 
 bool ADiveWorld::ValidateCelestial(FString& Error) const

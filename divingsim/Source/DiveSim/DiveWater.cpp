@@ -110,6 +110,7 @@ void ADiveWorld::UpdateWater(const FVector& Player)
 
 bool ADiveWorld::ValidateWater(FString& Error) const
 {
+    if(!ValidateCaustics(Error)) return false;
     const auto* fog=Fog.Get();
     const float water=static_cast<float>(OpticalMedium.Water);
     const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),water).ToFColorSRGB();

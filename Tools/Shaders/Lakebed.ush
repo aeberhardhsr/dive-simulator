@@ -73,7 +73,6 @@ float wet=1-smoothstep(-35,35,P.z);
 color*=lerp(1,.68,wet)*lerp(.9,1.08,bed.Noise(P.xy/1600));
 Roughness=clamp(Roughness-.12*wet,.55,.98);
 Occlusion=lerp(1,Occlusion,.45);
-float caustic=pow(1-abs(sin(P.x*.037+sin(P.y*.03+T*.35))*sin(P.y*.033+sin(P.x*.02-T*.4))),24);
-float3 result=color*(1+.12*caustic*saturate(1+P.z/1400)*wet);
+float3 result=color;
 // BED_FINAL_OUTPUT
 return result;

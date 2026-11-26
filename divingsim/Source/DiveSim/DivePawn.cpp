@@ -636,6 +636,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     Lamp->SetVisibility(bLamp && Simulation.Data.LampBattery>0);
     const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
     Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight+breathMotion));
+    if(bSmokeTest&&SmokeScenario==TEXT("caustics")) TickCausticsTest(DeltaSeconds);
     Environment->UpdateDaylight();
     const FVector eye=Camera->GetComponentLocation();
     const float depth=FMath::Max(0.f,static_cast<float>((Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100));
@@ -664,6 +665,8 @@ void ADivePawn::Tick(float DeltaSeconds)
     const float targetExposure=Environment->ExposureBiasAt(eye);
     PP.AutoExposureBias=bDiveActive?FMath::FInterpTo(PP.AutoExposureBias,targetExposure,DeltaSeconds,
         targetExposure<PP.AutoExposureBias?2.f:.5f):targetExposure;
+    // Diagnostic receiver comparisons use one exposure at every depth/time.
+    if(bSmokeTest&&SmokeScenario==TEXT("caustics")) PP.AutoExposureBias=-4.6f;
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);

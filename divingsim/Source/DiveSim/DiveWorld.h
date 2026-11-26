@@ -83,6 +83,9 @@ public:
     double PressureDepth(const FVector& Position,double Seconds) const;
     FVector WaveVelocity(const FVector& Position,double Seconds) const;
     bool ValidateWater(FString& Error) const;
+    bool ValidateCaustics(FString& Error) const;
+    void SetCausticsTestStrength(float Value);
+    void ConfigureCausticsProbe(const Dive::Config& Settings,float Height);
     bool ValidateStorm(FString& Error) const;
     bool ValidateShoreline(FString& Error) const;
     bool ValidateParticles(FString& Detail) const;
@@ -130,6 +133,10 @@ private:
     int32 BubblesBorn=0,BubblesSurfaced=0;
     int32 ParticleCellMoves=0;
     UPROPERTY() TObjectPtr<class UDirectionalLightComponent> Sun;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> SolarWater;
+    float CausticsStrength=1;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CausticsProbe;
+    void UpdateCaustics();
     UPROPERTY() TObjectPtr<class UExponentialHeightFogComponent> Fog;
     TArray<FDiveBubble> BubbleState;
     TArray<FDiveSilt> Silt;

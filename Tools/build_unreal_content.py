@@ -127,8 +127,7 @@ if not ONLY_ENVIRONMENT:
     float strata = sin(P.z*.021 + sin(P.x*.004)*2 + sin(P.y*.008));
     float patches = sin(P.x*.008)*sin(P.y*.011)*sin(P.z*.013);
     float3 base = C.rgb*(.72+grain*.18+strata*.025+patches*.13);
-    float caustic = pow(1-abs(sin(P.x*.037+sin(P.y*.03+T*.35))*sin(P.y*.033+sin(P.x*.02-T*.4))),24);
-    return base + float3(.025,.04,.028)*caustic*saturate(1+P.z/1400);
+    return base;
     '''
     import sys
     sys.path.insert(0,str(ROOT/'Tools'))
@@ -159,35 +158,11 @@ float2 fadeSlope=-6*f*(1-f)/16*delta/max(.001,d);
 '''
 material('M_Water',(.012,.035,.028),.13,water=True,
          custom_wpo=wave_code+'return float3(0,0,h*100*fade);',
-         custom_normal=wave_code+'''
-// Three advected, rotated noise gradients replace the globally repeating
-// pattern of the previous four sine ripples.
-// Quintic interpolation gives a continuous slope at cell boundaries.
-float2 micro=0;
-float4 layers[3]={float4(.024,.9563,.2924,.025),
-    float4(.053,.3256,.9455,.013),float4(.118,.7986,-.6018,.007)};
-float2 wind=Wave0.xy/max(length(Wave0.xy),.0001);
-for(int j=0;j<3;++j) {
-    float4 layer=layers[j];
-    float2 moving=P.xy*layer.x-wind*T*(.7+j*.31);
-    float2 q=float2(layer.y*moving.x-layer.z*moving.y,
-        layer.z*moving.x+layer.y*moving.y);
-    float2 cell=floor(q), f=frac(q);
-    float4 seed=float4(dot(cell,float2(127.1,311.7)),
-        dot(cell+float2(1,0),float2(127.1,311.7)),
-        dot(cell+float2(0,1),float2(127.1,311.7)),
-        dot(cell+float2(1,1),float2(127.1,311.7)));
-    float4 values=frac(sin(seed)*43758.5453);
-    float2 blend=f*f*f*(f*(f*6-15)+10);
-    float2 derivative=30*f*f*(f*(f-2)+1);
-    float2 gradient=derivative*float2(lerp(values.y-values.x,values.w-values.z,blend.y),
-        lerp(values.z-values.x,values.w-values.y,blend.x));
-    float2 dx=ddx(q),dy=ddy(q);
-    float filter=exp(-2*(dot(dx,dx)+dot(dy,dy)));
-    micro+=layer.w*filter*float2(layer.y*gradient.x+layer.z*gradient.y,
-        -layer.z*gradient.x+layer.y*gradient.y);
-}
-return normalize(float3(-slope*fade-h*fadeSlope+micro*WindStrength,1));''')
+         custom_normal=(ROOT/'Tools/Shaders/WaterOptics.ush').read_text()+wave_code+'''
+DiveWaterOptics optical;
+float height;float2 allSlope;float3 curvature;
+optical.Surface(xy,T,waves,WavePhase,WindStrength,ddx(xy),ddy(xy),height,allSlope,curvature);
+return normalize(float3(-slope*fade-h*fadeSlope-(allSlope-slope),1));''')
 if not ONLY_WATER:
     cloud_path=BASE+'/Materials/MI_Cloud'
     if not u.EditorAssetLibrary.does_asset_exist(cloud_path):
@@ -234,6 +209,8 @@ if not ONLY_ENVIRONMENT:
     sys.path.insert(0,str(ROOT/'Tools'))
     from build_optics_content import build_optics
     build_optics()
+    from build_caustics_content import build_caustics
+    build_caustics()
 
     tasks=[]
     for source in ASSETS.glob('*.fbx'):

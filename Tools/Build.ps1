@@ -9,6 +9,7 @@ param(
     [switch]$OnlyShore,
     [switch]$OnlyImagery,
     [switch]$OnlyOptics,
+    [switch]$OnlyCaustics,
     [switch]$OnlyTorch,
     [switch]$OnlyParticles,
     [switch]$OnlySediment,
@@ -41,6 +42,7 @@ if ($Target -eq 'Content') {
     if($OnlyImagery) { $script=Join-Path $PSScriptRoot 'build_imagery_content.py' }
     if($OnlyBuildings) { $script=Join-Path $PSScriptRoot 'build_buildings_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
+    if($OnlyCaustics) { $script=Join-Path $PSScriptRoot 'build_caustics_content.py' }
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
     if($OnlyParticles) { $script=Join-Path $PSScriptRoot 'build_particle_content.py' }
     if($OnlySediment) { $script=Join-Path $PSScriptRoot 'build_sediment_content.py' }

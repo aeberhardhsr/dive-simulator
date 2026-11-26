@@ -288,6 +288,7 @@ void ADiveWorld::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
     if(!bTerrainReady) return;
     UpdateDaylight();
+    UpdateCaustics();
     if(Diver && Diver->bDiveActive && Diver->bMenu) { UpdateAtmosphere(); UpdateParticleField(Diver->GetActorLocation()); return; }
     const float dt=FMath::Min(DeltaSeconds,.1f); WorldTime+=dt;
     const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
