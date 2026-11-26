@@ -7,6 +7,7 @@ param(
     [ValidateRange(10,7200)][int]$Seconds=60,
     [ValidateRange(0,2)][int]$Entry=0,
     [switch]$Editor,
+    [switch]$DisableNanite,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -19,24 +20,33 @@ $resultDir=Join-Path $repo "artifacts/$runName"
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $logPath=Join-Path $resultDir 'Runtime.log'
 $context=[ordered]@{
-    started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor
+    started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $context.gpu_before=@(& nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu --format=csv)
 }
-$context | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $resultDir 'Host.json') -Encoding utf8
 $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
+if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
     $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f (Join-Path $repo 'divingsim/divingsim.uproject'))+$arguments
 }
+$context.executable=$executable
+$context.executable_sha256=(Get-FileHash -LiteralPath $executable -Algorithm SHA256).Hash.ToLowerInvariant()
+if(-not $Editor) {
+    $context.package_containers=@(Get-ChildItem -LiteralPath (Join-Path $PackageDirectory 'divingsim/Content/Paks') -File | Sort-Object Name | ForEach-Object {
+        @{file=$_.Name;bytes=$_.Length;sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
+    })
+}
+$context | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $resultDir 'Host.json') -Encoding utf8
 $started=[DateTime]::UtcNow
 $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
 if(-not $process.WaitForExit(($Seconds+120)*1000)) { throw "Benchmark exceeded its time limit; inspect process $($process.Id) and $logPath. It was not restarted or terminated." }
 $log=Get-Content -LiteralPath $logPath -Raw
+if($DisableNanite -and $log -notmatch 'r.Nanite = "0"') { throw 'Nanite fallback override was not applied.' }
 if($process.ExitCode -ne 0 -or $log -match 'DIVE_\w+_FAIL|WALENSEE_DATA_FAILED|Failed to compile Material|Default Material will be used') { throw "Benchmark capture failed: $logPath" }
 foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS','DIVE_LIGHT_PASS','DIVE_PERF_CAPTURE_BEGIN')) {
     if($log -notmatch $marker) { throw "Missing $marker in $logPath" }

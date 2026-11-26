@@ -15,9 +15,20 @@
 
 void ADivePawn::TestKey(FKey Key,bool Down)
 {
-    if(Down==TestHeldKeys.Contains(Key)) return;
-    if(auto* pc=Cast<APlayerController>(GetController()))
-        pc->InputKey(FInputKeyEventArgs::CreateSimulated(Key,Down?IE_Pressed:IE_Released,Down?1:0));
+    auto* pc=Cast<APlayerController>(GetController());
+    if(!pc) return;
+    if(Down==TestHeldKeys.Contains(Key))
+    {
+        const int action=Controls.Find(Key);
+        const bool continuous=action>=0&&action<=static_cast<int>(EDiveAction::Deflate);
+        // Toggle actions are consumed by our controller before PlayerInput and
+        // intentionally have no held-key state. Never repeat their press edge.
+        if(!Down||!continuous||pc->IsInputKeyDown(Key)) return;
+        // A desktop focus change can flush engine key state while the smoke
+        // driver's intended hold remains active. Restore that synthetic hold.
+        UE_LOG(LogTemp,Display,TEXT("DIVE_TEST_KEY_RESTORED key=%s"),*Key.ToString());
+    }
+    pc->InputKey(FInputKeyEventArgs::CreateSimulated(Key,Down?IE_Pressed:IE_Released,Down?1:0));
     if(Down) TestHeldKeys.Add(Key); else TestHeldKeys.Remove(Key);
 }
 void ADivePawn::InputSmokeTick(float Dt)
@@ -28,7 +39,7 @@ void ADivePawn::InputSmokeTick(float Dt)
     if(!pc||!hud) return;
     if(SmokeScenario==TEXT("coast"))
     {
-        auto fail=[&](const TCHAR* reason){UE_LOG(LogTemp,Error,TEXT("DIVE_COAST_ROUTE_FAIL phase=%d %s"),ControlsSmokePhase,reason);FPlatformMisc::RequestExitWithStatus(false,1);};
+        auto fail=[&](const TCHAR* reason){UE_LOG(LogTemp,Error,TEXT("DIVE_COAST_ROUTE_FAIL phase=%d %s position=%s forward_down=%d intended_hold=%d"),ControlsSmokePhase,reason,*GetActorLocation().ToString(),pc->IsInputKeyDown(Controls.Key(EDiveAction::Forward)),TestHeldKeys.Contains(Controls.Key(EDiveAction::Forward)));FPlatformMisc::RequestExitWithStatus(false,1);};
         auto shot=[&](const TCHAR* name){FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/FString::Printf(TEXT("Coast_%d_%s.png"),EntryIndex,name),true,false);};
         auto next=[&](){++ControlsSmokePhase;ControlsSmokeClock=0;};
         const auto survey=Environment->Terrain.ToSurvey(GetActorLocation());float ground=0,measured=0;
@@ -49,6 +60,11 @@ void ADivePawn::InputSmokeTick(float Dt)
         if(ControlsSmokePhase==1&&ControlsSmokeClock>1)
         {
             shot(TEXT("Start"));next();return;
+        }
+        if(ControlsSmokePhase==2&&ControlsSmokeClock>2&&TestLessonStage<1)
+        {
+            pc->FlushPressedKeys();TestLessonStage=1;
+            UE_LOG(LogTemp,Display,TEXT("DIVE_TEST_KEYS_FLUSHED coast=1"));
         }
         if(ControlsSmokePhase==2&&ControlsSmokeClock>.5)
         { pc->SetControlRotation(FRotator(0,yaw,0));TestKey(Controls.Key(EDiveAction::Forward),true);TestKey(Controls.Key(EDiveAction::Sprint),true); }
@@ -86,6 +102,7 @@ void ADivePawn::InputSmokeTick(float Dt)
         { shot(TEXT("Returned"));next();return; }
         if(ControlsSmokePhase==6&&ControlsSmokeClock>2)
         {
+            if(TestLessonStage!=1) { fail(TEXT("Input reset probe was not exercised"));return; }
             UE_LOG(LogTemp,Display,TEXT("DIVE_COAST_ROUTE_PASS entry=%d crossed_unmeasured=1 returned_measured=1 distance_m=%.3f"),EntryIndex,Simulation.Data.DistanceMetres);
             UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS coast=1"));FPlatformMisc::RequestExitWithStatus(false,0);
         }

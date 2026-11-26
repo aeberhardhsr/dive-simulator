@@ -11,7 +11,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(2,40)][double]$Visibility=14,
     [ValidateRange(0,100)][double]$Battery=100,
     [ValidateRange(0,30)][double]$ParticleScale=1,
-    [switch]$PopulationChecks, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
+    [switch]$PopulationChecks, [switch]$VegetationChecks, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [string]$RuntimeLog='',
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
@@ -39,6 +39,7 @@ if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }
 if($LampOff) { $arguments+=' -DiveLampOff' }
+if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
 if($ShoreLookBack) {
     if($Scenario -ne 'shore-preview') { throw 'ShoreLookBack applies to shore-preview only.' }
     $arguments+=' -DiveShoreLookBack'

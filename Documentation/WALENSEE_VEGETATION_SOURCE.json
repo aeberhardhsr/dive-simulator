@@ -1,0 +1,105 @@
+{
+  "url": "https://data.geo.admin.ch/ch.swisstopo.swisstlm3d/swisstlm3d_2026-02/swisstlm3d_2026-02_2056_5728.shp.zip",
+  "archive_size": 3591345815,
+  "etag": "\"3618b4a91dc66d9113f2c13b03fc7016-69\"",
+  "files": [
+    {
+      "file": "swissTLM3D_TLM_BODENBEDECKUNG_OST.CPG",
+      "size": 5,
+      "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+      "crc32": 243350608
+    },
+    {
+      "file": "swissTLM3D_TLM_BODENBEDECKUNG_OST.prj",
+      "size": 600,
+      "sha256": "f160fd6f149ff8288abd2a59f56556d034e87a0fda3dbf463761faf4210c30f5",
+      "crc32": 2682706134
+    },
+    {
+      "file": "swissTLM3D_TLM_BODENBEDECKUNG_OST.shx",
+      "size": 3826300,
+      "sha256": "09a4e35cdca6ccaad3ec4a8341107462c062d6a2ec17556ef8e2e96c0fc946dc",
+      "crc32": 4028614286
+    },
+    {
+      "file": "swissTLM3D_TLM_BODENBEDECKUNG_OST.dbf",
+      "size": 104742675,
+      "sha256": "ab80eda4fb3eb86eb7dedecf2c6cc8befded2bbdb33fa5344a03576eced38c93",
+      "crc32": 679176465
+    },
+    {
+      "file": "swissTLM3D_TLM_BODENBEDECKUNG_OST.shp",
+      "size": 1501877768,
+      "sha256": "e7f326df02211aa92400abc7a6259f12890b2a13b78fd2d94cfecb34b04ced77",
+      "crc32": 3088951478
+    },
+    {
+      "file": "swissTLM3D_TLM_EINZELBAUM_OST.CPG",
+      "size": 5,
+      "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+      "crc32": 243350608
+    },
+    {
+      "file": "swissTLM3D_TLM_EINZELBAUM_OST.prj",
+      "size": 600,
+      "sha256": "f160fd6f149ff8288abd2a59f56556d034e87a0fda3dbf463761faf4210c30f5",
+      "crc32": 2682706134
+    },
+    {
+      "file": "swissTLM3D_TLM_EINZELBAUM_OST.shx",
+      "size": 43213212,
+      "sha256": "bb74ded2e86bd5ec4f6b765adc528e0192f0320d0c31a2e05a11ce67d3b94981",
+      "crc32": 459076286
+    },
+    {
+      "file": "swissTLM3D_TLM_EINZELBAUM_OST.dbf",
+      "size": 1182959391,
+      "sha256": "d7a202ac8fb5274c0f672377c27f5ec1c79df865b85e481c897fbc0198088ecd",
+      "crc32": 731966906
+    },
+    {
+      "file": "swissTLM3D_TLM_EINZELBAUM_OST.shp",
+      "size": 237672216,
+      "sha256": "264c527cf4535ac50ed2e89d2a2d4b21d2b7a0c71e18a9512912e0437d2e5741",
+      "crc32": 287174483
+    }
+  ],
+  "outputs": [
+    {
+      "file": "Geodata/VegetationSource/forest.geojson",
+      "count": 4013,
+      "bytes": 14973294,
+      "sha256": "c3f4bf66cc23c4e8d9d4ec4837996315468f791a8c91a4402e901d713236aaaa"
+    },
+    {
+      "file": "Geodata/VegetationSource/tree_tops.geojson",
+      "count": 96144,
+      "bytes": 20862910,
+      "sha256": "c4e1f65aedaea82246ccb778e774ab4016011506a6ed4d8e74e4bbf2ccdaca6c"
+    }
+  ],
+  "bounds": [
+    2723000,
+    1215000,
+    2745000,
+    1228000
+  ],
+  "classes": {
+    "6": "Gebueschwald",
+    "12": "Wald",
+    "13": "Wald offen",
+    "14": "Gehoelzflaeche"
+  },
+  "feature_revision_years": [
+    2019,
+    2020,
+    2022,
+    2025
+  ],
+  "horizontal_crs": "EPSG:2056",
+  "vertical_crs": "EPSG:5728",
+  "attribution": "© swisstopo",
+  "tree_z": "Surveyed crown or top elevation LN02; not terrain elevation or tree height.",
+  "catalogue": "https://www.swisstopo.admin.ch/dam/de/sd-web/A3kQ2dAgenqG/2026-02%20swissTLM3D%202.4%20OK-DE.pdf",
+  "licence": "https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste"
+}

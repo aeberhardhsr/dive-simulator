@@ -16,7 +16,8 @@ param(
     [switch]$OnlyAvatar,
     [switch]$OnlyBed,
     [switch]$OnlyWater,
-    [switch]$OnlyBuildings
+    [switch]$OnlyBuildings,
+    [switch]$OnlyVegetation
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -41,6 +42,7 @@ if ($Target -eq 'Content') {
     if($OnlyShore) { $script=Join-Path $PSScriptRoot 'build_shore_content.py' }
     if($OnlyImagery) { $script=Join-Path $PSScriptRoot 'build_imagery_content.py' }
     if($OnlyBuildings) { $script=Join-Path $PSScriptRoot 'build_buildings_content.py' }
+    if($OnlyVegetation) { $script=Join-Path $PSScriptRoot 'build_vegetation_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
     if($OnlyCaustics) { $script=Join-Path $PSScriptRoot 'build_caustics_content.py' }
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
@@ -82,4 +84,5 @@ if($Target -eq 'Package') {
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/TEMPERATURE_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'TEMPERATURE_NOTICE.txt')
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/BUILDINGS_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'BUILDINGS_NOTICE.txt')
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/COAST_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'COAST_NOTICE.txt')
+    Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/VEGETATION_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'VEGETATION_NOTICE.txt')
 }

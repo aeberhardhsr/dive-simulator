@@ -17,6 +17,16 @@
 *.f32 filter=lfs diff=lfs merge=lfs -text
 *.u8 filter=lfs diff=lfs merge=lfs -text
 *.bmesh filter=lfs diff=lfs merge=lfs -text
+*.trees filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.glb filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.bin filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.exr filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+Geodata/VegetationSource/*.geojson filter=lfs diff=lfs merge=lfs -text
+Documentation/WALENSEE_VEGETATION_SOURCE.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_BEECH_SOURCE.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_ASSETS.json -text whitespace=cr-at-eol
+blender/exports/Vegetation/Manifest.json -text whitespace=cr-at-eol
 # Keep the pinned catalogue byte checksum identical on every checkout platform.
 divingsim/Content/Diving/Geodata/buildings_sources.json text eol=crlf
 divingsim/Content/Diving/Geodata/buildings.json text eol=lf

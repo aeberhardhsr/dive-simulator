@@ -76,7 +76,7 @@ void ADiveWorld::SetEntry(int32 Index,bool Shore)
     PopulationOrigin=entry.Position;
     PopulationForward=FRotator(0,entry.Yaw,0).Vector();
     for(auto& pair:Chunks) pair.Value->DestroyComponent();
-    Chunks.Reset(); StreamTerrain(entry.Position,true); Populate();
+    Chunks.Reset(); StreamTerrain(entry.Position,true); Populate(); StreamVegetation(entry.Position,true);
 }
 
 void ADiveWorld::StreamTerrain(const FVector& Position,bool Immediate)
@@ -180,6 +180,7 @@ void ADiveWorld::BeginPlay()
         CreateShoreline();
         CreateCoast();
         CreateAccess();
+        CreateVegetation();
         if(!bTerrainReady) return;
         SetEntry(0);
         for(int i=0;i<Terrain.Entries.Num();++i)
@@ -294,6 +295,15 @@ void ADiveWorld::Tick(float DeltaSeconds)
     {
         StreamTerrain(player);
         StreamPopulation(player);
+        StreamVegetation(player);
+        if(bOpticsSmoke&&!bVegetationChecked&&WorldTime>2)
+        {
+            bVegetationChecked=true;FString detail;
+            if(FParse::Param(FCommandLine::Get(),TEXT("DiveVegetationChecks"))&&!TestVegetationStreaming(detail))
+            { UE_LOG(LogTemp,Error,TEXT("DIVE_VEGETATION_STREAM_FAIL %s"),*detail);FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            if(!ValidateVegetation(detail))
+            { UE_LOG(LogTemp,Error,TEXT("DIVE_VEGETATION_FAIL %s"),*detail);FPlatformMisc::RequestExitWithStatus(false,1);return; }
+        }
         if(bOpticsSmoke&&!bPopulationChecked&&WorldTime>2&&FParse::Param(FCommandLine::Get(),TEXT("DivePopulationChecks")))
         {
             bPopulationChecked=true;FString detail;

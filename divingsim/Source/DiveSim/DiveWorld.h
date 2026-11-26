@@ -2,6 +2,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DiveTerrain.h"
+#include "DiveVegetation.h"
 #include "Simulation/DiveModel.h"
 #include "Simulation/WaterSurface.h"
 #include "Simulation/VisualMedium.h"
@@ -73,6 +74,8 @@ public:
     bool ValidateImagery(FString& Error) const;
     bool ValidateLandscape(FString& Error) const;
     bool ValidateBuildings(FString& Error) const;
+    bool ValidateVegetation(FString& Error) const;
+    bool TestVegetationStreaming(FString& Detail);
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);
     Dive::ScenarioClock::Moment CurrentMoment() const;
@@ -100,6 +103,16 @@ public:
     void HideSedimentForTest(bool Hidden);
     UPROPERTY() TObjectPtr<ADivePawn> Diver;
 private:
+    TMap<FIntPoint,TArray<FDiveTree>> TreeSources;
+    UPROPERTY() TMap<FIntPoint,FDiveTreeCell> TreeCells;
+    UPROPERTY() TArray<TObjectPtr<class UStaticMesh>> TreeModels;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> TreeMaterials;
+    TMap<UMaterialInterface*,UMaterialInstanceDynamic*> TreeMaterialLookup;
+    FIntPoint TreeCenter=FIntPoint(MAX_int32,MAX_int32);
+    bool bVegetationChecked=false;
+    void CreateVegetation();
+    void CreateTreeCell(FIntPoint Key);
+    void StreamVegetation(const FVector& Player,bool Immediate=false);
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LandscapeMeshes;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CoastMeshes;

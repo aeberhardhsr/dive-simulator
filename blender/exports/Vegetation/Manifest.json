@@ -1,0 +1,909 @@
+{
+  "schema": 1,
+  "units": "metres in Blender; FBX converts to Unreal centimetres",
+  "assets": [
+    {
+      "name": "SM_LeafTree",
+      "source": "tree_small_02",
+      "lod": 0,
+      "file": "blender/exports/Vegetation/SM_LeafTree_LOD0.fbx",
+      "triangles": 2062487,
+      "vertices": 1755568,
+      "height_m": 4.556740760803223,
+      "bounds_m": [
+        [
+          -1.3118762969970703,
+          -2.916489601135254,
+          0.0
+        ],
+        [
+          1.6048237085342407,
+          1.3759874105453491,
+          4.556740760803223
+        ]
+      ],
+      "source_base_m": [
+        0.0028828750364482403,
+        0.006639334838837385,
+        -0.02410384640097618
+      ],
+      "materials": [
+        "tree_small_02_branches",
+        "tree_small_02_leaves",
+        "tree_small_02_trunk"
+      ],
+      "sha256": "7118590c009160b761eeae81a68fef0c61f6eadaedbfe61b3b6cce68612d1eff"
+    },
+    {
+      "name": "SM_LeafTree",
+      "source": "tree_small_02",
+      "lod": 1,
+      "file": "blender/exports/Vegetation/SM_LeafTree_LOD1.fbx",
+      "triangles": 495533,
+      "vertices": 626249,
+      "height_m": 4.563946723937988,
+      "bounds_m": [
+        [
+          -1.3136069774627686,
+          -2.9162847995758057,
+          -9.038485586643219e-05
+        ],
+        [
+          1.6078280210494995,
+          1.3763837814331055,
+          4.563946723937988
+        ]
+      ],
+      "source_base_m": [
+        0.0028828750364482403,
+        0.006639334838837385,
+        -0.02410384640097618
+      ],
+      "materials": [
+        "tree_small_02_branches",
+        "tree_small_02_leaves",
+        "tree_small_02_trunk"
+      ],
+      "sha256": "aa93486cb9b0bf2335a6353c42880bac6314ebf7487971730dbf44c56aa821a2"
+    },
+    {
+      "name": "SM_FirA",
+      "source": "fir_tree_01",
+      "lod": 0,
+      "file": "blender/exports/Vegetation/SM_FirA_LOD0.fbx",
+      "triangles": 177444,
+      "vertices": 138058,
+      "height_m": 18.954601287841797,
+      "bounds_m": [
+        [
+          -3.287666082382202,
+          -2.6892130374908447,
+          0.0
+        ],
+        [
+          3.2955992221832275,
+          3.777834415435791,
+          18.954601287841797
+        ]
+      ],
+      "source_base_m": [
+        0.04610692337155342,
+        -0.21871168911457062,
+        -0.08020533621311188
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_a",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "097ee00df06647936cdc3a3c30479aa17cfe580286b0fdc73602e91ccfa6d426"
+    },
+    {
+      "name": "SM_FirA",
+      "source": "fir_tree_01",
+      "lod": 1,
+      "file": "blender/exports/Vegetation/SM_FirA_LOD1.fbx",
+      "triangles": 70661,
+      "vertices": 73227,
+      "height_m": 18.957042694091797,
+      "bounds_m": [
+        [
+          -3.287666082382202,
+          -2.6887428760528564,
+          -4.731118679046631e-06
+        ],
+        [
+          3.2954280376434326,
+          3.7786593437194824,
+          18.957042694091797
+        ]
+      ],
+      "source_base_m": [
+        0.04610692337155342,
+        -0.21871168911457062,
+        -0.08020533621311188
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_a",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "1d278f4df01194035751e90e526e5e61fb1a54283225c622bdbeaffe1a156222"
+    },
+    {
+      "name": "SM_FirB",
+      "source": "fir_tree_01",
+      "lod": 0,
+      "file": "blender/exports/Vegetation/SM_FirB_LOD0.fbx",
+      "triangles": 128464,
+      "vertices": 90714,
+      "height_m": 14.077526092529297,
+      "bounds_m": [
+        [
+          -2.726461410522461,
+          -2.7417144775390625,
+          0.0
+        ],
+        [
+          2.9054856300354004,
+          3.3427813053131104,
+          14.077526092529297
+        ]
+      ],
+      "source_base_m": [
+        6.1372809410095215,
+        -0.1847318857908249,
+        -0.08676454424858093
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_b",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "b8943f705559909143e772901b689a1ee4143a107e557eeebc4fbccbef7ff9a8"
+    },
+    {
+      "name": "SM_FirB",
+      "source": "fir_tree_01",
+      "lod": 1,
+      "file": "blender/exports/Vegetation/SM_FirB_LOD1.fbx",
+      "triangles": 54927,
+      "vertices": 48164,
+      "height_m": 14.077526092529297,
+      "bounds_m": [
+        [
+          -2.726461410522461,
+          -2.7417144775390625,
+          0.0
+        ],
+        [
+          2.9054856300354004,
+          3.3427813053131104,
+          14.077526092529297
+        ]
+      ],
+      "source_base_m": [
+        6.1372809410095215,
+        -0.1847318857908249,
+        -0.08676454424858093
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_b",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "31e7cbcd97fd2f93d9705d0e47a0ef0c74246f2238a7b3ccf8a70e53f78f5fcf"
+    },
+    {
+      "name": "SM_FirC",
+      "source": "fir_tree_01",
+      "lod": 0,
+      "file": "blender/exports/Vegetation/SM_FirC_LOD0.fbx",
+      "triangles": 68879,
+      "vertices": 43277,
+      "height_m": 14.545815467834473,
+      "bounds_m": [
+        [
+          -2.675313949584961,
+          -2.723142147064209,
+          0.0
+        ],
+        [
+          3.6737260818481445,
+          3.282275438308716,
+          14.545815467834473
+        ]
+      ],
+      "source_base_m": [
+        11.913715362548828,
+        -0.25886407494544983,
+        -0.09382282942533493
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches",
+        "fir_tree_01_trunk_c"
+      ],
+      "sha256": "56a862c146bff2e832d3b899d220e437b0faebe45ff0d0c8958d79e732566f5d"
+    },
+    {
+      "name": "SM_FirC",
+      "source": "fir_tree_01",
+      "lod": 1,
+      "file": "blender/exports/Vegetation/SM_FirC_LOD1.fbx",
+      "triangles": 31512,
+      "vertices": 22574,
+      "height_m": 14.552308082580566,
+      "bounds_m": [
+        [
+          -2.675313949584961,
+          -2.723142147064209,
+          0.0
+        ],
+        [
+          3.6745901107788086,
+          3.282275438308716,
+          14.552308082580566
+        ]
+      ],
+      "source_base_m": [
+        11.913715362548828,
+        -0.25886407494544983,
+        -0.09382282942533493
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches",
+        "fir_tree_01_trunk_c"
+      ],
+      "sha256": "00c7576c6a7ec4aba3dd2d758c8d6dd3f624197099b6d2ae993a5d8181efe131"
+    },
+    {
+      "name": "SM_Beech",
+      "source": "european_beech",
+      "lod": 0,
+      "file": "blender/exports/Vegetation/SM_Beech_LOD0.fbx",
+      "triangles": 38648,
+      "vertices": 44979,
+      "height_m": 25.006607055664062,
+      "bounds_m": [
+        [
+          -7.955929279327393,
+          -9.450453758239746,
+          0.0
+        ],
+        [
+          8.700529098510742,
+          8.857625007629395,
+          25.006607055664062
+        ]
+      ],
+      "source_base_m": [
+        0.0908636823296547,
+        -0.04845143109560013,
+        -0.20000076293945312
+      ],
+      "materials": [
+        "beech_bark",
+        "beech_twig",
+        "beech_leaves"
+      ],
+      "sha256": "30a8c6013d10f5f433d40aba793e9032adea6d7d96e741b974dbd994ce4fedf8"
+    },
+    {
+      "name": "SM_Beech",
+      "source": "european_beech",
+      "lod": 1,
+      "file": "blender/exports/Vegetation/SM_Beech_LOD1.fbx",
+      "triangles": 17674,
+      "vertices": 22202,
+      "height_m": 24.467899322509766,
+      "bounds_m": [
+        [
+          -7.651332855224609,
+          -9.399675369262695,
+          0.0
+        ],
+        [
+          8.491827964782715,
+          8.901639938354492,
+          24.467899322509766
+        ]
+      ],
+      "source_base_m": [
+        0.0908636823296547,
+        -0.04845143109560013,
+        -0.20000076293945312
+      ],
+      "materials": [
+        "beech_bark_lod1",
+        "beech_twig_lod1",
+        "beech_leaves_lod1"
+      ],
+      "sha256": "25902fadbf67954acc1237ae6e64fc67d779c2e40f80e07f8748a002360a3944"
+    },
+    {
+      "name": "SM_Beech",
+      "source": "european_beech",
+      "lod": 2,
+      "file": "blender/exports/Vegetation/SM_Beech_LOD2.fbx",
+      "triangles": 5708,
+      "vertices": 6837,
+      "height_m": 24.8290958404541,
+      "bounds_m": [
+        [
+          -6.543586254119873,
+          -8.157890319824219,
+          0.0
+        ],
+        [
+          7.734717845916748,
+          7.307981491088867,
+          24.8290958404541
+        ]
+      ],
+      "source_base_m": [
+        0.0908636823296547,
+        -0.04845143109560013,
+        -0.20000076293945312
+      ],
+      "materials": [
+        "beech_bark_lod2",
+        "beech_leaves_lod2"
+      ],
+      "sha256": "a15c40f3ba482f0f6d82b8d41e0a07937734ef4f7420adcc293d641f19af9c80"
+    },
+    {
+      "name": "SM_LeafTree",
+      "source": "tree_small_02",
+      "lod": 2,
+      "file": "blender/exports/Vegetation/SM_LeafTree_LOD2.fbx",
+      "triangles": 19981,
+      "vertices": 202434,
+      "height_m": 4.5834503173828125,
+      "bounds_m": [
+        [
+          -1.3156179189682007,
+          -2.920962333679199,
+          -0.0016628446755930781
+        ],
+        [
+          1.6120543479919434,
+          1.3809725046157837,
+          4.5834503173828125
+        ]
+      ],
+      "source_base_m": [
+        0.0028828750364482403,
+        0.006639334838837385,
+        -0.02410384640097618
+      ],
+      "materials": [
+        "tree_small_02_branches",
+        "tree_small_02_leaves",
+        "tree_small_02_trunk"
+      ],
+      "sha256": "3decbaf7fcd5547f8728cdbb6207f98a3d179cf1b5ca6f9ebc1847947de0296c",
+      "authored_reduction_target_triangles": 20000
+    },
+    {
+      "name": "SM_LeafTree",
+      "source": "tree_small_02",
+      "lod": 3,
+      "file": "blender/exports/Vegetation/SM_LeafTree_LOD3.fbx",
+      "triangles": 13618,
+      "vertices": 196457,
+      "height_m": 4.5834503173828125,
+      "bounds_m": [
+        [
+          -1.3156179189682007,
+          -2.920962333679199,
+          0.2383527010679245
+        ],
+        [
+          1.6120543479919434,
+          1.3809725046157837,
+          4.5834503173828125
+        ]
+      ],
+      "source_base_m": [
+        0.0028828750364482403,
+        0.006639334838837385,
+        -0.02410384640097618
+      ],
+      "materials": [
+        "tree_small_02_branches",
+        "tree_small_02_leaves",
+        "tree_small_02_trunk"
+      ],
+      "sha256": "17e80bc79c85359f05351cf015e8fbaea10310b6986908f2d72e8eea76848489",
+      "authored_reduction_target_triangles": 4000
+    },
+    {
+      "name": "SM_FirA",
+      "source": "fir_tree_01",
+      "lod": 2,
+      "file": "blender/exports/Vegetation/SM_FirA_LOD2.fbx",
+      "triangles": 12000,
+      "vertices": 30086,
+      "height_m": 19.04075050354004,
+      "bounds_m": [
+        [
+          -3.2727653980255127,
+          -2.688735008239746,
+          -0.002676136326044798
+        ],
+        [
+          3.2852487564086914,
+          3.767642021179199,
+          19.04075050354004
+        ]
+      ],
+      "source_base_m": [
+        0.04610692337155342,
+        -0.21871168911457062,
+        -0.08020533621311188
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_a",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "39eed6b574dc58c24c2b7dce921a17bd5a9d7b63385ac87d737ea1d93db04cb5",
+      "authored_reduction_target_triangles": 12000
+    },
+    {
+      "name": "SM_FirA",
+      "source": "fir_tree_01",
+      "lod": 3,
+      "file": "blender/exports/Vegetation/SM_FirA_LOD3.fbx",
+      "triangles": 10357,
+      "vertices": 28463,
+      "height_m": 18.95288848876953,
+      "bounds_m": [
+        [
+          -3.2727653980255127,
+          -2.688735008239746,
+          0.20853789150714874
+        ],
+        [
+          3.2852487564086914,
+          3.767642021179199,
+          18.95288848876953
+        ]
+      ],
+      "source_base_m": [
+        0.04610692337155342,
+        -0.21871168911457062,
+        -0.08020533621311188
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_a",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "6f77956a35aeb60e78bcbef73016fc09e3aa76ff692b5bb168d3bf4ba97fc5ba",
+      "authored_reduction_target_triangles": 3000
+    },
+    {
+      "name": "SM_FirB",
+      "source": "fir_tree_01",
+      "lod": 2,
+      "file": "blender/exports/Vegetation/SM_FirB_LOD2.fbx",
+      "triangles": 12000,
+      "vertices": 21693,
+      "height_m": 14.092721939086914,
+      "bounds_m": [
+        [
+          -2.719302177429199,
+          -2.7599751949310303,
+          -0.0009842754807323217
+        ],
+        [
+          2.9069104194641113,
+          3.3530046939849854,
+          14.092721939086914
+        ]
+      ],
+      "source_base_m": [
+        6.1372809410095215,
+        -0.1847318857908249,
+        -0.08676454424858093
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_b",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "8b943b89cd666beee9fcbe6f362b20c5dad7ba07f1b1de8f64a39fdab0676fd5",
+      "authored_reduction_target_triangles": 12000
+    },
+    {
+      "name": "SM_FirB",
+      "source": "fir_tree_01",
+      "lod": 3,
+      "file": "blender/exports/Vegetation/SM_FirB_LOD3.fbx",
+      "triangles": 4847,
+      "vertices": 15282,
+      "height_m": 14.092721939086914,
+      "bounds_m": [
+        [
+          -2.719302177429199,
+          -2.7599751949310303,
+          0.025681372731924057
+        ],
+        [
+          2.9069104194641113,
+          3.3530046939849854,
+          14.092721939086914
+        ]
+      ],
+      "source_base_m": [
+        6.1372809410095215,
+        -0.1847318857908249,
+        -0.08676454424858093
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_trunk_b",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches"
+      ],
+      "sha256": "1dac12e658a6b025463c33bbb36b3c4cb159c31e73ebb3b9ea6dd1222eda61ea",
+      "authored_reduction_target_triangles": 3000
+    },
+    {
+      "name": "SM_FirC",
+      "source": "fir_tree_01",
+      "lod": 2,
+      "file": "blender/exports/Vegetation/SM_FirC_LOD2.fbx",
+      "triangles": 11999,
+      "vertices": 12676,
+      "height_m": 14.552308082580566,
+      "bounds_m": [
+        [
+          -2.675313949584961,
+          -2.723142147064209,
+          -0.00020458568178582937
+        ],
+        [
+          3.6745901107788086,
+          3.282275438308716,
+          14.552308082580566
+        ]
+      ],
+      "source_base_m": [
+        11.913715362548828,
+        -0.25886407494544983,
+        -0.09382282942533493
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches",
+        "fir_tree_01_trunk_c"
+      ],
+      "sha256": "fc7e56145e53d9b9bda155f8e3ba6d8845a5e1c4e945f3847e2ea468689618c8",
+      "authored_reduction_target_triangles": 12000
+    },
+    {
+      "name": "SM_FirC",
+      "source": "fir_tree_01",
+      "lod": 3,
+      "file": "blender/exports/Vegetation/SM_FirC_LOD3.fbx",
+      "triangles": 4301,
+      "vertices": 6532,
+      "height_m": 14.574806213378906,
+      "bounds_m": [
+        [
+          -2.6705102920532227,
+          -2.711089849472046,
+          0.8251658082008362
+        ],
+        [
+          3.6551151275634766,
+          3.3032548427581787,
+          14.574806213378906
+        ]
+      ],
+      "source_base_m": [
+        11.913715362548828,
+        -0.25886407494544983,
+        -0.09382282942533493
+      ],
+      "materials": [
+        "fir_tree_01_bark",
+        "fir_tree_01_twig",
+        "fir_tree_01_dead_branches",
+        "fir_tree_01_trunk_c"
+      ],
+      "sha256": "8d219b15f31cb1d9db0daf17d505b8ca113ce04b2e43ef4b802533693fb34396",
+      "authored_reduction_target_triangles": 3000
+    }
+  ],
+  "materials": {
+    "tree_small_02_branches": {
+      "name": "tree_small_02_branches",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/tree_small_02/textures/tree_small_02_branch_diff_2k.png",
+        "normal": "Art/Vegetation/tree_small_02/textures/tree_small_02_branch_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/tree_small_02/textures/tree_small_02_branch_rough_2k.png"
+      }
+    },
+    "tree_small_02_leaves": {
+      "name": "tree_small_02_leaves",
+      "foliage": true,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/tree_small_02/textures/tree_small_02_leaves_diff_2k.png",
+        "normal": "Art/Vegetation/tree_small_02/textures/tree_small_02_leaves_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/tree_small_02/textures/tree_small_02_leaves_rough_2k.png",
+        "alpha": "Art/Vegetation/tree_small_02/textures/tree_small_02_leaves_alpha_2k.png"
+      }
+    },
+    "tree_small_02_trunk": {
+      "name": "tree_small_02_trunk",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/tree_small_02/textures/tree_small_02_diff_2k.jpg",
+        "normal": "Art/Vegetation/tree_small_02/textures/tree_small_02_nor_gl_2k.exr",
+        "roughness": "Art/Vegetation/tree_small_02/textures/tree_small_02_rough_2k.exr"
+      }
+    },
+    "fir_tree_01_bark": {
+      "name": "fir_tree_01_bark",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_bark_diff_2k.png",
+        "normal": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_bark_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_bark_rough_2k.png"
+      }
+    },
+    "fir_tree_01_trunk_a": {
+      "name": "fir_tree_01_trunk_a",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_a_diff_2k.png",
+        "normal": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_a_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_a_rough_2k.png"
+      }
+    },
+    "fir_tree_01_twig": {
+      "name": "fir_tree_01_twig",
+      "foliage": true,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_twig_diff_2k.png",
+        "normal": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_twig_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_twig_rough_2k.png",
+        "alpha": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_twig_alpha_2k.png"
+      }
+    },
+    "fir_tree_01_dead_branches": {
+      "name": "fir_tree_01_dead_branches",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_bark_diff_2k.png",
+        "normal": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_bark_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_bark_rough_2k.png"
+      }
+    },
+    "fir_tree_01_trunk_b": {
+      "name": "fir_tree_01_trunk_b",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_b_diff_2k.png",
+        "normal": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_b_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_b_rough_2k.png"
+      }
+    },
+    "fir_tree_01_trunk_c": {
+      "name": "fir_tree_01_trunk_c",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_c_diff_2k.png",
+        "normal": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_c_nor_gl_2k.png",
+        "roughness": "Art/Vegetation/fir_tree_01/textures/fir_tree_01_trunk_c_rough_2k.png"
+      }
+    },
+    "beech_bark": {
+      "name": "beech_bark",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod0_texture1.png",
+        "normal": "Art/Vegetation/european_beech/lod0_texture0.png"
+      },
+      "alpha_from_color": false
+    },
+    "beech_twig": {
+      "name": "beech_twig",
+      "foliage": false,
+      "color": [
+        0.62,
+        0.55,
+        0.5,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod0_texture1.png",
+        "normal": "Art/Vegetation/european_beech/lod0_texture0.png"
+      },
+      "alpha_from_color": false
+    },
+    "beech_leaves": {
+      "name": "beech_leaves",
+      "foliage": true,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod0_texture3.png",
+        "normal": "Art/Vegetation/european_beech/lod0_texture2.png"
+      },
+      "alpha_from_color": true
+    },
+    "beech_bark_lod1": {
+      "name": "beech_bark_lod1",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod1_texture1.png",
+        "normal": "Art/Vegetation/european_beech/lod1_texture0.png"
+      },
+      "alpha_from_color": false
+    },
+    "beech_twig_lod1": {
+      "name": "beech_twig_lod1",
+      "foliage": false,
+      "color": [
+        0.62,
+        0.55,
+        0.5,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod1_texture1.png",
+        "normal": "Art/Vegetation/european_beech/lod1_texture0.png"
+      },
+      "alpha_from_color": false
+    },
+    "beech_leaves_lod1": {
+      "name": "beech_leaves_lod1",
+      "foliage": true,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod1_texture3.png",
+        "normal": "Art/Vegetation/european_beech/lod1_texture2.png"
+      },
+      "alpha_from_color": true
+    },
+    "beech_bark_lod2": {
+      "name": "beech_bark_lod2",
+      "foliage": false,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod2_texture1.png",
+        "normal": "Art/Vegetation/european_beech/lod2_texture0.png"
+      },
+      "alpha_from_color": false
+    },
+    "beech_leaves_lod2": {
+      "name": "beech_leaves_lod2",
+      "foliage": true,
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "roughness": 0.75,
+      "maps": {
+        "color": "Art/Vegetation/european_beech/lod2_texture3.png",
+        "normal": "Art/Vegetation/european_beech/lod2_texture2.png"
+      },
+      "alpha_from_color": true
+    }
+  }
+}
