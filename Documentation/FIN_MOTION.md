@@ -26,6 +26,20 @@ The portable motion test covers paused and invalid inputs, cruise cadence, indep
 
 The deformation is a limited hinge/wave approximation. It does not reconstruct measured ray-by-ray bending or solve fluid forces. Gill ventilation, mouth opening, detailed fin-surface normal deformation, natural acceleration maneuvers, species-specific stroke validation and full photorealistic acceptance remain open.
 
+These two unedited packaged frames hold the body wave and camera fixed while changing the paired-fin phase. They demonstrate deformation, not a natural swimming trajectory:
+
+![Perch paired fins, first controlled pose](Images/Fin_Perch_A.png)
+
+![Perch paired fins, second controlled pose](Images/Fin_Perch_B.png)
+
+## Packaged result
+
+Verified on 26 November 2026 in `Builds/WindowsFinMotion/divingsim.exe`: all eight cases passed with 106 fresh images. The isolated paired-fin comparisons passed for five species × four LODs: at least 4,319 pixels changed above a luminance threshold of eight in the fin region, while at most two did in the fixed head region. These regions are specific to the controlled fixture; the test is not an anatomical classifier. Visual inspection confirmed the independent fin poses and correctly oriented movement on pitched/yawed fish. The normal population, actual pause gate, cell-boundary retention, photo visibility and decompression regression cases passed.
+
+[FIN_MOTION_RESULTS.json](FIN_MOTION_RESULTS.json) binds the child executable (`1b65bb30903a6c5635f1c269c0a6630b0e383b17d07d8844edae3d769e0c713e`), cooked containers, source/config snapshot, material/mesh assets, shader, core-test log and image evidence. The root launcher started this child and completed a dive. The previous WindowsFish executable **and all its cooked containers** match their recorded hashes. Raw case evidence is in `artifacts/fin-validation-20261126-101133`.
+
+The 60-second 1920×1080 quality-2 underwater capture measured 75.08 FPS average, 60.94 FPS low-1%, 15.28 ms p95 and 17.52 ms maximum, with zero frames above 33.3 ms. This RTX 3090 development-host capture kept the existing editor open; it is not minimum-hardware or whole-lake performance acceptance. Raw performance evidence is in `artifacts/perf-underwater-1080p-q2-20261126-102027-356`. [FIN_MOTION_CI.json](FIN_MOTION_CI.json) records four portable C++ test programs and Python checks passing on Windows, macOS and Linux for source commit `e006f8d`; this is not a native Unreal macOS package test.
+
 ## Reproduction
 
 Generate and audit the fish with the Blender tools documented in [SIMULATION.md](SIMULATION.md#fish-geometry-and-surface-detail). The texture atlases are unchanged.
@@ -39,4 +53,5 @@ Generate and audit the fish with the Blender tools documented in [SIMULATION.md]
 ./Tools/TestFinMotion.ps1
 ./Tools/TestFinLauncher.ps1
 ./Tools/Benchmark.ps1 -PackageDirectory Builds/WindowsFinMotion -Scenario underwater -Resolution 1080p -Quality 2 -Seconds 60
+./Tools/.geodata-env/Scripts/python.exe Tools/ReportFinMotion.py artifacts/fin-validation-20261126-101133 --performance artifacts/perf-underwater-1080p-q2-20261126-102027-356
 ```

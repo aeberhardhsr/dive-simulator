@@ -82,11 +82,13 @@ def main():
     assert len(assets)==26
     baseline=ROOT/'Builds/WindowsFish/divingsim/Binaries/Win64/divingsim-Fish.exe'
     assert sha(baseline)=='682ffe2b7dfa3218d7574eb6088a529594f2fe104c3bb4f358a3567b5961bd1c'
+    previous=read(ROOT/'Documentation/FISH_RESULTS.json')['executable']['package_containers']
+    for item in previous:assert sha(ROOT/'Builds/WindowsFish/divingsim/Content/Paks'/item['file'])==item['sha256']
     report=dict(status='PASS',executable=host,cases=evidence,isolated_fin_image_changes=fin_changes,sources=sources,assets=assets,mesh_audit=mesh,content_build=content,
         root_launcher=launcher,performance=summary,performance_files={n:sha(perf/n) for n in ['Capture.csv','Metadata.json','Host.json','Runtime.log','Frame.png','Summary.json']},
         import_log_sha256=sha(importlog),editor_color_audit_sha256=sha(editorlog),package_log_sha256=sha(package),core_log_sha256=sha(core),shader_sha256=sha(ROOT/'Tools/fish_motion_shader.hlsl'),
-        preserved_fish_executable_sha256=sha(baseline),
-        limits='Authored meshes/textures, not scans or expert anatomical/photorealistic acceptance. Whitefish remains a group. Close-up fixture forces four LODs at a fixed location; natural AI is checked separately. One development-host performance capture, not minimum-hardware/macOS/endurance certification.')
+        preserved_fish_executable_sha256=sha(baseline),preserved_fish_containers=previous,
+        limits='Authored fin hinge/wave response, not measured species kinematics or hydrodynamic validation. Isolated image comparison covers paired fins; body/median fins move together in the normal fixture. Meshes/textures are not scans or expert anatomical/photorealistic acceptance. Whitefish remains a group. Close-up fixtures force four LODs at fixed locations; natural AI is checked separately. One development-host performance capture, not minimum-hardware/macOS/endurance certification.')
     (ROOT/'Documentation/FIN_MOTION_RESULTS.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print('FIN_REPORT_PASS cases=8 images='+str(sum(x['screenshots'] for x in cases)))
 if __name__=='__main__':main()
