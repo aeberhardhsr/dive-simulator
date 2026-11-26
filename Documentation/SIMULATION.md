@@ -50,6 +50,35 @@ This is a **game forecast, not a validated real-world decompression planner**. I
 
 `Tests/DecompressionTests.cpp` independently re-integrates 20 profiles with fourth-order Runge–Kutta at no more than 0.25 s per step, using two surface pressures, two nitrogen fractions and five depth/duration combinations. It verifies every projected hold and ascent against the compartment limits, minimal whole-second waits, total elapsed forecast time, input isolation and invalid/unavailable cases. Additional checks cover the 50 bar gas-reserve estimate, ppO2, stress-dependent gas use, low-gas warnings and the transition through predicted NDL. The existing core tests retain gas/BCD balance, tissue uptake/release, safety-stop timing and ascent warnings. These are mathematical and software checks; independent physiological/clinical validation remains outstanding.
 
+### Reproducing the forecast checks
+
+The Windows package `Builds/WindowsDecompression/divingsim.exe` was verified on 26 November 2026. [DECOMPRESSION_RESULTS.json](DECOMPRESSION_RESULTS.json) binds its child executable (`1b22cce0d5f40877556c0d2a820250516119e9243d724e0eb6f709a31e67b5f1`), cooked containers, source/config snapshot and evidence hashes. All seven packaged cases passed with 44 fresh images; all 35 native Unreal tests passed, as did the portable core/coast/decompression suite with 20 independently integrated forecast profiles. The root launcher started the expected named executable and completed a dive smoke test. The previous WindowsGround executable hash remains unchanged.
+
+A 60-second underwater capture at 1920×1080, quality 2 and 100% render scale measured 73.63 average FPS, 60.15 FPS for the slowest one percent, a 17.54 ms maximum frame and zero frames over 33.3 ms. The host used an RTX 3090 and Ryzen 9 9950X3D; the user's Unreal Editor remained open. This is one development-host regression measurement, not minimum-hardware, endurance or native macOS certification.
+
+The portable CMake/CTest suite contains the core, coast-grid and decompression executables. `Tools/TestCore.cmd` runs the same three locally with the installed Windows toolchain. [CI evidence](DECOMPRESSION_CI.json) identifies the source commit checked on Windows, Linux and macOS; these are not native macOS Unreal tests.
+
+```powershell
+./Tools/Build.ps1 -Target Editor -EditorSandbox
+./Tools/TestDecompressionNative.ps1 -EditorSandbox
+./Tools/Build.ps1 -Target Package -EditorSandbox -BuildSlot Decompression -PackageDirectory Builds/WindowsDecompression
+./Tools/TestDecompression.ps1
+./Tools/TestDecompressionLauncher.ps1
+./Tools/Benchmark.ps1 -PackageDirectory Builds/WindowsDecompression -Scenario underwater -Resolution 1080p -Quality 2 -Seconds 60
+```
+
+Generate the bound report with `Tools/.geodata-env/Scripts/python.exe Tools/ReportDecompression.py <validation-directory> --performance <benchmark-directory>`. The checked run directories were `artifacts/decompression-validation-20261126-085632` and `artifacts/perf-underwater-1080p-q2-20261126-090225-521`.
+
+`TestDecompression.ps1` exercises the accelerated exposure/stop fixture, ordinary wrist use by day and night, controls, the Murg shore route, Exploration and Hardcore. The accelerated fixture checks both languages, four-page input cycling, pause, reduced remaining stop time after waiting, eventual clearance and unavailable forecasts following a ceiling violation. It is not a twenty-minute player-controlled dive. Each case saves fresh screenshots and runtime logs; the report tool binds these to package hashes and the sandbox source snapshot.
+
+Packaged 1600×900 view after an accelerated 20-minute exposure at 30 m; the computer and HUD show the same forecast:
+
+![Fourth wrist page in the packaged game](Images/DecompressionWrist.png)
+
+German 768×512 display texture at the projected 3 m stop. The displayed 4:36 ascent estimate includes the 4:16 hold and 20 seconds of ascent travel:
+
+![German stop forecast display](Images/DecompressionDisplay.png)
+
 ### Gas requirement evidence
 
 This maps implemented game behavior to the original requirements; numerical checks do not constitute physiological acceptance.

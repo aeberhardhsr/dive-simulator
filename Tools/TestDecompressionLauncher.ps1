@@ -21,4 +21,3 @@ $text=Get-Content -LiteralPath $log -Raw
 if($game.ExitCode -ne 0 -or $text -notmatch 'DIVE_SMOKE_PASS' -or $text -match 'DIVE_\w+_FAIL') { throw ('Root launcher gameplay failed: exit='+$game.ExitCode) }
 @{status='PASS';child=$child;child_id=$found.ProcessId;exit_code=$game.ExitCode;started_utc=$started.ToString('o');finished_utc=[DateTime]::UtcNow.ToString('o');log_sha256=(Get-FileHash -LiteralPath $log).Hash;executable_sha256=(Get-FileHash -LiteralPath $child).Hash} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $repo 'artifacts/decompression-bootstrap.json') -Encoding utf8
 Get-Content -LiteralPath (Join-Path $repo 'artifacts/decompression-bootstrap.json')
-
