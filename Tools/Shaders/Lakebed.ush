@@ -84,7 +84,28 @@ if(IsRock<.5)
     Occlusion=lerp(lerp(sa.x,ga.x,gravelWeight),ra.x,rockWeight);
 }
 float wet=1-smoothstep(-35,35,P.z);
-color*=lerp(1,.68,wet)*lerp(.9,1.08,bed.Noise(P.xy/1600));
+// One continuous benthic coating field across terrain, boulders and small stones.
+// Authored colour/roughness variation, not surveyed biological coverage. The
+// coarse patches break repetition; the centimetre-scale flecks preserve the
+// scanned relief. Depth and orientation limit exposed, upward-facing growth.
+float depth=max(0,-P.z*.01);
+float exposure=smoothstep(-.15,.75,n.z);
+float livingDepth=1-smoothstep(14,38,depth);
+float patch=bed.PatchNoise(P.xy/175+float2(P.z/310,-P.z/430));
+float fleck=bed.PatchNoise(P.xy/9+float2(P.z/13,P.z/17));
+float crevice=saturate(1-Occlusion);
+float film=wet*livingDepth*exposure*smoothstep(.32,.72,patch+.16*(fleck-.5));
+// Muted olive/brown periphyton; avoid painting a uniform green tint over sand.
+float3 coating=lerp(float3(.26,.23,.105),float3(.19,.27,.085),fleck);
+float luminance=dot(color,float3(.2126,.7152,.0722));
+float3 coated=coating*(.25+1.65*luminance);
+float coverage=film*lerp(.42,.78,saturate(IsRock));
+color=lerp(color,coated,coverage);
+// Fine deposits settle chiefly on upper rock faces and in existing crevices.
+float deposit=wet*exposure*saturate(IsRock)*smoothstep(.42,.75,1-patch)*(.12+.3*crevice);
+color=lerp(color,float3(.32,.285,.21)*(.4+luminance),deposit);
+Roughness=lerp(Roughness,.93,saturate(coverage+deposit));
+color*=lerp(1,.76,wet)*lerp(.86,1.12,bed.PatchNoise(P.xy/1600));
 Roughness=clamp(Roughness-.12*wet,.55,.98);
 Occlusion=lerp(1,Occlusion,.45);
 float3 result=color;

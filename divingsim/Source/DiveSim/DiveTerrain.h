@@ -8,6 +8,9 @@ struct FDiveEntry { FString Name,Id; FVector Position; float Yaw=0; };
 class FDiveTerrain
 {
 public:
+    // Nanite rounds positions to 2^-6 cm. Keep shared boundaries much finer
+    // than a pixel beside the unquantized procedural bathymetry/shore meshes.
+    static constexpr int NanitePositionPrecision=6;
     bool Load();
     bool LoadLandscape();
     bool LoadShoreline();

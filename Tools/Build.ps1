@@ -15,6 +15,7 @@ param(
     [switch]$OnlySediment,
     [switch]$OnlyAvatar,
     [switch]$OnlyBed,
+    [switch]$OnlyBenthic,
     [switch]$OnlyWater,
     [switch]$OnlyBuildings,
     [switch]$OnlyVegetation,
@@ -60,6 +61,7 @@ if ($Target -eq 'Content') {
     if($OnlySediment) { $script=Join-Path $PSScriptRoot 'build_sediment_content.py' }
     if($OnlyAvatar) { $script=Join-Path $PSScriptRoot 'build_avatar_content.py' }
     if($OnlyBed) { $script=Join-Path $PSScriptRoot 'build_bed_content.py' }
+    if($OnlyBenthic) { $script=Join-Path $PSScriptRoot 'build_benthic_content.py' }
     $contentOptions=@()
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     if($OnlyWater) { $contentOptions+='-DiveWaterOnly' }

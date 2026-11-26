@@ -13,7 +13,7 @@ DATA = ROOT / "divingsim/Content/Diving/Geodata"
 
 def input_digest(json_line_ending=None):
     digest = hashlib.md5()  # Build freshness only; source authenticity uses SHA256.
-    names = ["landscape.f32", "landscape.json", "manifest.json", "shoreline.json"]
+    names = ["landscape.f32", "landscape.json", "manifest.json", "shoreline.json", "Coast/coast.json"]
     names += sorted(path.name for path in DATA.glob("*.i16"))
     for name in names:
         path = DATA / name
@@ -33,7 +33,7 @@ def main():
     grid = json.loads((DATA / "landscape.json").read_text(encoding="utf-8"))
     origin = json.loads((DATA / "manifest.json").read_text(encoding="utf-8"))
     meshes = json.loads((DATA / "landscape_meshes.json").read_text(encoding="utf-8"))
-    assert meshes["schema"] == 1 and meshes["baker_version"] == 1
+    assert meshes["schema"] == 1 and meshes["baker_version"] == 4
     assert meshes["spacing_m"] == grid["spacing_m"] == 8
     assert meshes["tile_cells"] == 256
     hashes = {input_digest(), input_digest("\n"), input_digest("\r\n")}

@@ -59,7 +59,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
     for(const auto& file:bathy) if(!input(file)) return 1;
     uint8 hash[16]; digest.Final(hash);
     const FString sourceHash=BytesToHex(hash,16);
-    constexpr int TileCells=256, Version=3;
+    constexpr int TileCells=256, Version=4;
     int limit=MAX_int32; FParse::Value(*Params,TEXT("Limit="),limit);
     const bool force=FParse::Param(*Params,TEXT("Force"));
     const bool verifyOnly=FParse::Param(*Params,TEXT("VerifyOnly"));
@@ -143,7 +143,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
             settings.DistanceFieldResolutionScale=.25f;
             settings.MaxLumenMeshCards=12;
             FMeshNaniteSettings nanite;
-            nanite.bEnabled=true; nanite.PositionPrecision=0; // 1 cm, identical border lattice.
+            nanite.bEnabled=true; nanite.PositionPrecision=FDiveTerrain::NanitePositionPrecision;
             nanite.GenerateFallback=ENaniteGenerateFallback::Enabled;
             nanite.FallbackTarget=ENaniteFallbackTarget::RelativeError; nanite.FallbackRelativeError=.25f;
             mesh->SetNaniteSettings(nanite);

@@ -31,6 +31,7 @@ void ADiveWorld::CreateCoast()
         const FString name=FString::Printf(TEXT("SM_Coast_%d_%d"),key.first,key.second);
         if(path!=TEXT("/Game/Diving/Coast/")+name+TEXT(".")+name) { fail();return; }
         auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
+        if(mesh&&mesh->GetNaniteSettings().PositionPrecision!=FDiveTerrain::NanitePositionPrecision) { fail();return; }
         if(!mesh||mesh->GetNumTriangles(0)!=count||!mesh->GetBodySetup()||mesh->GetBodySetup()->CollisionTraceFlag!=CTF_UseComplexAsSimple) { fail();return; }
         auto* component=NewObject<UStaticMeshComponent>(this,*name);
         component->SetupAttachment(RootComponent);component->SetMobility(EComponentMobility::Static);

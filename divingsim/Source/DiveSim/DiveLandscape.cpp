@@ -48,6 +48,8 @@ void ADiveWorld::CreateLandscape()
         { fail(TEXT("Landschaftskachel falsch registriert.")); return; }
         visited.Add(key);
         auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
+        if(mesh&&mesh->GetNaniteSettings().PositionPrecision!=FDiveTerrain::NanitePositionPrecision)
+        { fail(TEXT("Landschaftskachel mit veralteter Nanite-Präzision.")); return; }
         if(!mesh||mesh->GetNumTriangles(0)<=0) { fail(TEXT("Landschaftsasset oder Fallback-Geometrie fehlt.")); return; }
         naniteAssets+=mesh->HasValidNaniteData()?1:0;
         auto* component=NewObject<UStaticMeshComponent>(this,*name);

@@ -33,7 +33,7 @@ int32 UDiveCoastBakeCommandlet::Main(const FString& Params)
     TStrongObjectPtr<UMaterialInterface> material(LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/Diving/Materials/M_ShorePhoto.M_ShorePhoto")));
     if(!material) return 1;
     TArray<TSharedPtr<FJsonValue>> entries;int64 total=0;int assets=0;
-    constexpr int N=129,Version=1;
+    constexpr int N=129,Version=2;
     for(const auto& pair:terrain.Coast.Tiles)
     {
         if(entries.Num()>=limit) { UE_LOG(LogTemp,Display,TEXT("DIVE_COAST_BAKE_PARTIAL"));return 0; }
@@ -100,7 +100,7 @@ int32 UDiveCoastBakeCommandlet::Main(const FString& Params)
                 auto& settings=mesh->GetSourceModel(0).BuildSettings;
                 settings.bRecomputeNormals=false;settings.bRecomputeTangents=false;settings.bUseFullPrecisionUVs=true;
                 settings.bGenerateLightmapUVs=false;settings.bRemoveDegenerates=true;settings.DistanceFieldResolutionScale=.25f;settings.MaxLumenMeshCards=12;
-                FMeshNaniteSettings nanite;nanite.bEnabled=true;nanite.PositionPrecision=0;
+                FMeshNaniteSettings nanite;nanite.bEnabled=true;nanite.PositionPrecision=FDiveTerrain::NanitePositionPrecision;
                 nanite.GenerateFallback=ENaniteGenerateFallback::Enabled;
                 nanite.FallbackTarget=ENaniteFallbackTarget::PercentTriangles;nanite.FallbackPercentTriangles=1;
                 mesh->SetNaniteSettings(nanite);mesh->CreateBodySetup();

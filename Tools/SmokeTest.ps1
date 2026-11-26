@@ -5,6 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+    [switch]$DisableShadows, [switch]$DisableLighting,
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
@@ -18,6 +19,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($DisableLighting -and $Packaged) { throw 'Unlit diagnostic requires the native editor runtime.' }
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
@@ -39,6 +41,8 @@ if($Scenario -eq 'modes') { $arguments+=' -DiveModeCase='+$ModeCase }
 if($Scenario -in @('loadout','avatar')) { $arguments+=' -DiveLoadoutCase='+$LoadoutCase }
 $consoleCommands=@()
 if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
+if($DisableShadows) { $consoleCommands+='ShowFlag.DynamicShadows 0' }
+if($DisableLighting) { $consoleCommands+='viewmode unlit'; $consoleCommands+='ShowFlag.PostProcessing 0' }
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }
 if($LampOff) { $arguments+=' -DiveLampOff' }

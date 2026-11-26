@@ -14,8 +14,7 @@ def props(obj, **values):
     return obj
 
 
-def build_gravel():
-    manifest = json.loads((ROOT/'blender/exports/Gravel/Manifest.json').read_text())
+def build_gravel_material():
     material_path = '/Game/Diving/Materials/M_GravelSurface'
     material = u.load_asset(material_path)
     if not material:
@@ -42,6 +41,12 @@ def build_gravel():
     u.MaterialEditingLibrary.recompile_material(material)
     if not u.EditorAssetLibrary.save_loaded_asset(material):
         raise RuntimeError('Gravel material save failed')
+    return material
+
+
+def build_gravel():
+    manifest = json.loads((ROOT/'blender/exports/Gravel/Manifest.json').read_text())
+    material = build_gravel_material()
     editor = u.get_editor_subsystem(u.StaticMeshEditorSubsystem) or u.new_object(u.StaticMeshEditorSubsystem)
     tools = u.AssetToolsHelpers.get_asset_tools()
     flag = 'Interchange.FeatureFlags.Import.FBX'
