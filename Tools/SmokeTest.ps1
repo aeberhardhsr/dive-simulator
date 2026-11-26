@@ -4,7 +4,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
-    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView,
+    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
@@ -44,6 +44,10 @@ if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join 
 if($LampOff) { $arguments+=' -DiveLampOff' }
 if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
 if($GroundOff) { $arguments+=' -DiveGroundOff' }
+if($HabitatView) {
+    if($Scenario -ne 'rocks' -or $GravelView -or $PlantView -or $WaterView) { throw 'HabitatView requires rocks without other comparison modes.' }
+    $arguments+=' -DiveHabitatView'
+}
 if($GravelView) {
     if($Scenario -ne 'rocks') { throw 'GravelView requires the rocks comparison scenario.' }
     $arguments+=' -DiveGravelView'
@@ -95,6 +99,14 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($HabitatView) {
+    if($log -notmatch 'DIVE_HABITAT_INSPECTION_PASS views=3') { throw 'Habitat comparison did not finish.' }
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    foreach($view in 0..2) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "Habitat_0_${view}.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh habitat comparison: $view" }
+    }
+}
 if($WaterView) {
     if($log -notmatch "DIVE_WATER_INSPECTION_PASS final_state=$WaterEnd views=3 diagnostic=1") { throw 'Water comparison did not finish.' }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }

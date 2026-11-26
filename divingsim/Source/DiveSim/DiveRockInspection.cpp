@@ -26,6 +26,23 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
     const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
     if(!bOpticsSmoke||!Diver||Variant<0||Variant>(waterView?9:plantView?5:3)) return false;
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView")))
+    {
+        // Camera selection depends only on surveyed terrain, never population.
+        // Retain exactly the same viewpoints across distribution revisions.
+        for(int radius=20;radius<=80;radius+=5) for(int angle=0;angle<360;angle+=30)
+        {
+            const FVector p=Diver->EntryLocation+FRotator(0,angle,0).Vector()*radius*100;
+            float bed=0,north=0,east=0;
+            if(!Terrain.Sample(p.X,p.Y,bed)||!Terrain.Sample(p.X+200,p.Y,north)||!Terrain.Sample(p.X,p.Y+200,east)||
+                bed>-550||bed<-1100||FMath::Abs(north-bed)>50||FMath::Abs(east-bed)>50) continue;
+            Eye=FVector(p.X,p.Y,bed+300);
+            Rotation=FRotator(-18,angle+(View-1)*50,0);
+            StreamPopulation(Eye);StreamGravel(Eye,true);UpdateAtmosphere();
+            return true;
+        }
+        return false;
+    }
     if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView")))
     {
         if(!WaterMaterial||Variant>9||View>2) return false;
@@ -134,7 +151,8 @@ void ADivePawn::TickRockInspection(float Dt)
     const bool gravelView=FParse::Param(FCommandLine::Get(),TEXT("DiveGravelView"));
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
     const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
-    const int views=waterView?3:2;
+    const bool habitatView=FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView"));
+    const int views=(waterView||habitatView)?3:2;
     int end=9;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterEnd="),end);
     end=FMath::Clamp(end,0,9);
     ControlsSmokeClock+=Dt;
@@ -147,9 +165,10 @@ void ADivePawn::TickRockInspection(float Dt)
         int start=0;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterStart="),start);
         ControlsSmokePhase=1+FMath::Clamp(start,0,9)*views;ControlsSmokeClock=0;TestLessonStage=0;
     }
-    if(ControlsSmokePhase>(waterView?(end+1)*views:plantView?12:gravelView?4:8))
+    if(ControlsSmokePhase>(habitatView?3:waterView?(end+1)*views:plantView?12:gravelView?4:8))
     {
-        if(waterView) {UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INSPECTION_PASS final_state=%d views=3 diagnostic=1"),end);}
+        if(habitatView) {UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_INSPECTION_PASS views=3"));}
+        else if(waterView) {UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INSPECTION_PASS final_state=%d views=3 diagnostic=1"),end);}
         else if(plantView) {UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12"));}
         else if(gravelView) {UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_INSPECTION_PASS states=2 views=2 captures=4"));}
         else {UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_INSPECTION_PASS forms=4 views=2 captures=8"));}
@@ -161,7 +180,7 @@ void ADivePawn::TickRockInspection(float Dt)
     {UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_INSPECTION_FAIL phase=%d"),ControlsSmokePhase);FPlatformMisc::RequestExitWithStatus(false,1);return;}
     SetActorLocation(eye-FVector(0,0,CameraBaseHeight));ResetContactPose();
     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(rotation);
-    Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(waterView?70:50);
+    Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(habitatView?75:waterView?70:50);
     if(waterView) Camera->PostProcessSettings.AutoExposureBias=Environment->ExposureBiasAt(eye);
     if(waterView&&((variant&4)||variant>=8)) Camera->PostProcessSettings.WeightedBlendables.Array.Reset();
     if(waterView&&variant>=8)
@@ -175,9 +194,10 @@ void ADivePawn::TickRockInspection(float Dt)
     if(ControlsSmokeClock>3&&!TestLessonStage)
     {
         TestLessonStage=1;
-        const FString name=FString::Printf(TEXT("%s_%d_%d.png"),waterView?TEXT("Water"):plantView?TEXT("Plant"):gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
+        const FString name=FString::Printf(TEXT("%s_%d_%d.png"),habitatView?TEXT("Habitat"):waterView?TEXT("Water"):plantView?TEXT("Plant"):gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/name,true,false);
         UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_CAPTURE variant=%d view=%d file=%s"),variant,view,*name);
+        if(habitatView) UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_VIEW view=%d eye=%s rotation=%s"),view,*eye.ToString(),*rotation.ToString());
         if(waterView) UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_VIEW state=%d view=%d eye=%s rotation=%s exposure=%.6f visibility=%.3f"),
             variant,view,*eye.ToString(),*rotation.ToString(),Camera->PostProcessSettings.AutoExposureBias,Simulation.Settings.VisibilityMetres);
         if(waterView)

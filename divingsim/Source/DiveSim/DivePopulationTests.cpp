@@ -8,6 +8,30 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     const FVector original=Diver?Diver->GetActorLocation():PopulationOrigin;
     const auto savedFish=FishState;const auto savedRandom=Random;const double savedRefill=LastFishRefill;
     bool valid=true;int retained=0,reloaded=0,nearFish=0,spawned=0;
+    // Cluster halos must produce exactly one owner, matching the rendered
+    // instances and collision state, including across cell boundaries.
+    TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0;
+    for(const auto& pair:PopulationCells)
+    {
+        TArray<FTransform> transforms;TArray<FDiveRock> states;
+        GenerateRocks(pair.Key,transforms,states);
+        valid&=transforms.Num()==states.Num()&&states.Num()<=196*18;
+        for(int i=0;i<states.Num();++i)
+        {
+            const auto& rock=states[i];
+            valid&=FMath::FloorToInt(rock.Position.X/9600)==pair.Key.X&&FMath::FloorToInt(rock.Position.Y/9600)==pair.Key.Y;
+            valid&=!positions.Contains(rock.Position)&&rock.Radius>=16&&rock.Radius<=253;
+            positions.Add(rock.Position);++sizes[rock.Radius<65?0:rock.Radius<126?1:2];
+            for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
+                valid&=FVector::Dist2D(rock.Position,entry.Position)>=350+rock.Radius;
+        }
+        for(int i=0;i<pair.Value.Components.Num();++i)
+            if(i<Rocks.Num()) renderedRocks+=pair.Value.Components[i]->GetInstanceCount();
+            else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
+    }
+    valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
+    UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_%s unique_rocks=%d rendered_rocks=%d small=%d medium=%d large=%d plants=%d"),
+        valid?TEXT("PASS"):TEXT("FAIL"),positions.Num(),renderedRocks,sizes[0],sizes[1],sizes[2],plants);
     // Exercise the actual world pause gate, including the GPU instance values.
     if(Diver&&Diver->bDiveActive)
     {
