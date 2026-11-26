@@ -8,7 +8,7 @@ Rocks and plants now belong to fixed 96 × 96 metre cells in world coordinates. 
 
 Each cell uses its own seeded random stream. Rock placement depends on the cell, surveyed terrain and fixed entry/access clearances, not the camera or traversal order. Plant placement also checks neighbouring cells' rock footprints so an edge does not introduce a plant/rock overlap. Returning to a cell restores identical transforms for the same dive configuration. These are authored procedural details on the surveyed terrain, not measured individual rocks or plant locations.
 
-There are 128 rock candidates and 648 plant candidates per cell, filtered by the existing depth, slope, light and patch constraints. Actual counts depend on the bathymetry. Nine cells and their components are retained; unloaded cell components are destroyed rather than accumulated as visited locations. Collision is kept on the rock instances.
+The original population revision used 128 rock candidates and 648 plant candidates per cell. The later [clustered habitat revision](UNDERWATER_SCENE.md) uses rock groups and 4,096 plant candidates, filtered by depth, slope, light and patch constraints. Actual counts depend on the bathymetry. The target window contains nine cells; unloaded cell components are destroyed rather than accumulated as visited locations. Collision is kept on the rock instances.
 
 ## Bounded fish population
 
@@ -59,3 +59,15 @@ Rock transforms and collision states are now cached by world cell. The cache con
 The extended population fixture compares cached transforms, positions, radii and mesh variants against a fresh calculation exactly. It also checks the 25-cell bound after boundary crossings, remote unloading and return. The existing retained-component, restored-transform, fish-state, steering and gravel checks still run. `Tools/TestPopulationCache.ps1` combines these checks with three fixed rendered views at each entry and a separate root-launcher dive.
 
 The original `WindowsHabitat` package and its measured Murg route are retained as the performance baseline. Native fixture timings are not substituted for normal gameplay measurements; the fixture intentionally unloads and reloads distant regions in one frame.
+
+## Staged creation of distant cells
+
+An ordinary boundary crossing now creates one incoming population cell per frame, producing seven, eight, then nine populated cells. Missing cells are sorted by horizontal distance to their bounds. Existing nearby components keep their identity and transforms. Fish avoidance immediately receives the complete target window in canonical order, including geometry awaiting component creation.
+
+Initial placement and any move leaving missing geometry within the 80-metre fish radius load the complete window immediately. This includes an adjacent-cell teleport landing near its far edge; cell-index distance alone would not detect that case. The runtime validator permits incomplete windows only outside that radius. The fixture checks the 7/8/9 sequence, immediate adjacent and remote teleport loading, identical restored geometry, retained nearby fish and the 25-layout cache bound. `Tools/TestPopulationCache.ps1 -RequireStaged` requires these additional markers from the packaged executable.
+
+The verified package is `Builds/WindowsPopulationStaged/divingsim.exe`, runtime revision `fae73b210e876cc280ef5bbc3e3f5ddd022e2fa4`. Its game executable SHA-256 is `3b63e3c73cb08c18ba14778af3c3da819e0bb9de18e1593af4efddcbc323e60c`. All three entry fixtures (nine fresh images) and the ordinary root launcher pass. The fixed Weesen and Lediwracks views were inspected; the known ground lines, thin plants and overall visual shortcomings remain. Source CI also passed on [GitHub](https://github.com/aeberhardhsr/dive-simulator/actions/runs/45837865656).
+
+On the same isolated 90-second Murg route at 1080p High / 100% scale, the original habitat package recorded a 68.83-ms maximum frame; layout caching reduced it to 41.25 ms, and staged creation to 37.12 ms. The final run averaged 100.93 FPS with 80.21 FPS one-percent-low and one frame above 33.33 ms. In-capture population creation steps took 2.73–11.46 ms, compared with 14.79–20.80 ms for complete rows in the cache-only package. Remaining total-frame work still produces a hitch; this is not a hitch-free acceptance or a visual-quality improvement. Initial full-window creation remains synchronous.
+
+The [cache-only report](POPULATION_CACHE_RESULTS.json) preserves the first comparison. The [staged report](POPULATION_STAGED_RESULTS.json) binds the final source revision, package, launcher, fixture images and raw frame data. Both comparisons preserve all interior measured frames; the route ends in deep open water and does not represent the worst visible vegetation density or long-term stability.

@@ -98,3 +98,17 @@ Der Murg-Lauf legt im Messfenster 144,86 Meter zurück und endet im offenen Wass
 In der Weesen-Aufnahme liegt die mittlere GPU-Zeit bei 14,05 ms, der Spielthread bei 5,87 ms. `ShadowDepths` ist mit 4,35 ms der größte aufgezeichnete GPU-Pass. Im Murg-Lauf dauern reguläre Aufbauten neuer Populationszellen laut Protokoll 34–51 ms; der Spielthread erreicht maximal 68,71 ms. Die Messungen liefern damit Ansatzpunkte für Schatten- und Nachladeoptimierung, ohne deren genaue Ursachen bereits durch einen isolierten Abschaltvergleich zu beweisen.
 
 EXE-/Paketidentität, vollständige Einstellungen, CSV-Dateien, Bilder und Prüfsummen stehen im [Habitat-Prüfbericht](HABITAT_RESULTS.json). Die kurzen Läufe ersetzen weder einen Langzeittest dieses Pakets noch eine Mindesthardware- oder visuelle Qualitätsabnahme.
+
+## Nachladen der Habitat-Objekte: Cache und verteilte Erstellung
+
+Zwei weitere Pakete erhalten dieselbe Felsgeometrie und Pflanzendichte. `WindowsPopulationCache` berechnet identische Felslayouts nur einmal je benötigter Zelle; `WindowsPopulationStaged` verteilt die Erstellung entfernter Komponenten auf mehrere Bilder. Nahe Geometrie und Hindernisdaten bleiben vollständig. Alle drei Messungen verwenden dieselbe 90-Sekunden-Murg-Strecke (144,86 m), RTX 3090 / Ryzen 9 9950X3D, 1080p, Qualität 2, 100 Prozent Renderauflösung, 15 Sekunden Aufwärmzeit, keine weitere Unreal-Instanz und keine Bildratenbegrenzung.
+
+| Paket | Mittel | 1%-Low | P95 Bildzeit | Höchste Bildzeit | Bilder >33,33 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| WindowsHabitat | 100,53 FPS | 77,34 FPS | 10,84 ms | 68,83 ms | 2 / 9.046 |
+| WindowsPopulationCache | 100,77 FPS | 80,80 FPS | 10,82 ms | 41,25 ms | 2 / 9.067 |
+| WindowsPopulationStaged | 100,93 FPS | 80,21 FPS | 10,79 ms | 37,12 ms | 1 / 9.082 |
+
+Die letzten beiden Übergänge verteilen sich jetzt jeweils auf drei Bilder. Die protokollierte Populationsarbeit dauert einzeln 2,73–11,46 ms; zuvor waren es 14,79–20,80 ms je vollständiger Reihe im Cache-Paket. Der Spielthread erreicht weiterhin 36,72 ms, die vollständige Bildzeit 37,12 ms. Das langsame Einzelbild bleibt erhalten und verhindert eine Freigabe als ruckelfrei. Die mittlere Bildrate ändert sich kaum; die kleinen Unterschiede der Perzentile sind keine garantierten Verbesserungen über mehrere Läufe.
+
+Die drei Paketprüfungen mit neun Bildern und der Root-Launcher bestehen. Das Messbild wurde geprüft und zeigt wie zuvor offenes Wasser bei 24,7 m Tiefe. Die Ergebnisse ersetzen keine Messung dichter sichtbarer Bodenvegetation, keinen Langzeittest und keine visuelle Abnahme. Belege: [Cache-Vergleich](POPULATION_CACHE_RESULTS.json), [verteilte Erstellung](POPULATION_STAGED_RESULTS.json), [Implementierung und Prüfungen](POPULATION_STREAMING.md).
