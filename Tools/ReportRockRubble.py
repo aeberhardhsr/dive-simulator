@@ -12,13 +12,15 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('run',type=Path);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--performance',type=Path,nargs='*',default=[])
+    p.add_argument('--repeat-underwater',type=Path)
+    p.add_argument('--prior-run',type=Path);p.add_argument('--prior-driver',type=Path)
     a=p.parse_args();run=a.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
     if host['packaged']:package_check(host)
     assert not (host['packaged'] and host['preview'])
     expected={'close-before':3,'close-after':3}
-    if not host['preview']:expected.update(weesen=3,murg=3,**{'ledi-wide':3,'raster':3,'stream':2,'shore':6})
+    if not host['preview']:expected.update(weesen=3,murg=3,**{'ledi-wide':3,'raster':3,'stream':2,'shore':9})
     cases=json.loads((run/'Cases.json').read_text(encoding='utf-8-sig'))
     assert len(cases)==len(expected) and {c['name'] for c in cases}==set(expected)
     evidence=[];logs={}
@@ -36,6 +38,9 @@ def main():
                 assert marker in log,marker
         if case['name']=='raster':assert 'r.Nanite = "0"' in log
         images=sorted(folder.glob('*.png'));assert len(images)==case['screenshots']==expected[case['name']]
+        if case['name']=='shore':
+            assert {x.name for x in images}=={'DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png',
+                'ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png'}
         for image in images:pixels(image)
         evidence.append(dict(**case,rubble_checks=checks,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],
             engine_error_lines=[s for s in log.splitlines() if ': Error:' in s]))
@@ -55,7 +60,11 @@ def main():
         for case,name in [('close-before','RockRubble_Before.png'),('close-after','RockRubble_After.png')]:
             image=ROOT/'Documentation/Images'/name
             assert sha(image)==sha(run/case/'Habitat_0_0.png');published.append(record(image))
-        for folder in a.performance:
+        perf_folders=[(folder,'primary') for folder in a.performance]
+        if a.repeat_underwater:
+            assert len(a.performance)==2
+            perf_folders.append((a.repeat_underwater,'repeat-underwater'))
+        for folder,role in perf_folders:
             folder=folder.resolve();summary=json.loads((folder/'Summary.json').read_text(encoding='utf-8-sig'))
             h=summary['host'];m=summary['metadata']
             assert not h['editor'] and not h['background_processes']
@@ -63,10 +72,31 @@ def main():
             assert sorted(h['package_containers'],key=lambda x:x['file'])==sorted(host['package_containers'],key=lambda x:x['file'])
             assert m['width']==1920 and m['height']==1080 and m['quality']==2
             assert m['r.ScreenPercentage']==100 and m['r.VSync']==0 and m['t.MaxFPS']==0
-            performance.append(dict(summary=summary,files=[record(folder/n) for n in ['Host.json','Metadata.json','Summary.json','Capture.csv','Frame.png','Runtime.log']]))
-        if a.performance:assert len(performance)==2 and {x['summary']['metadata']['scenario'] for x in performance}=={'perf-underwater','perf-stream'}
-    else:assert not a.performance
-    result=dict(status='PASS',scope='Authored rock-foot fragments; not full environment acceptance',host=host,
+            if role=='repeat-underwater':assert m['scenario']=='perf-underwater'
+            performance.append(dict(role=role,summary=summary,files=[record(folder/n) for n in ['Host.json','Metadata.json','Summary.json','Capture.csv','Frame.png','Runtime.log']]))
+        if a.performance:
+            primary=[x for x in performance if x['role']=='primary']
+            assert len(primary)==2 and {x['summary']['metadata']['scenario'] for x in primary}=={'perf-underwater','perf-stream'}
+    else:assert not a.performance and not a.repeat_underwater
+    prior=None
+    if a.prior_run or a.prior_driver:
+        assert host['packaged'] and a.prior_run and a.prior_driver
+        previous=a.prior_run.resolve();driver=a.prior_driver.resolve()
+        previous_host=json.loads((previous/'Host.json').read_text(encoding='utf-8-sig'))
+        assert previous_host['sha256']==host['sha256']
+        assert previous_host['package_containers']==host['package_containers']
+        previous_cases=json.loads((previous/'Cases.json').read_text(encoding='utf-8-sig'))
+        assert len(previous_cases)==7 and {c['name'] for c in previous_cases}==set(expected)-{'shore'}
+        driver_text=driver.read_text(encoding='utf-8-sig')
+        assert set(re.findall(r'^PASS (\S+) ',driver_text,re.M))==set(expected)-{'shore'}
+        assert 'ROCK_RUBBLE=' not in driver_text
+        assert 'DIVE_SMOKE_PASS shore=1' in (previous/'shore/Runtime.log').read_text(encoding='utf-8-sig')
+        prior=dict(status='COLLECTOR_FAILED',reason='The original collector expected six shore images; the actual scenario correctly produced nine.',
+            failure_message_capture='The terminating PowerShell error was returned to the shell session, not written to the redirected driver log; that log retains only seven completed cases.',
+            host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
+            shore_runtime=record(previous/'shore/Runtime.log'),shore_images=[record(x) for x in sorted((previous/'shore').glob('*.png'))])
+        assert len(prior['shore_images'])==9
+    result=dict(status='PASS',scope='Authored rock-foot fragments; not full environment acceptance',host=host,prior_attempt=prior,
         cases=evidence,screenshot_count=sum(expected.values()),comparisons=comparisons,launcher=launcher,published=published,performance=performance,
         limitations=['Fragments are authored dressing, not surveyed Walensee geology',
                     'Collision probes sample individual fragment bodies; not every contact direction',

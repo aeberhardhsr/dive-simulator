@@ -43,7 +43,11 @@ foreach($case in $cases) {
     if($log -match 'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:') {throw "Rendering failed: $($case.name)"}
     if(-not $case.shore -and $log -notmatch 'DIVE_RUBBLE_PASS') {throw "Missing rubble validation: $($case.name)"}
     $images=@(Get-ChildItem (Join-Path $runtime 'Saved/Screenshots') -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
-    $expected=if($case.shore){6}elseif($case.stream){2}else{3}
+    $expected=if($case.shore){9}elseif($case.stream){2}else{3}
+    if($case.shore) {
+        $names=@('DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png','ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png')
+        if(Compare-Object ($images.Name | Sort-Object) ($names | Sort-Object)) {throw 'Unexpected shore capture names.'}
+    }
     if($images.Count -ne $expected) {throw "Missing captures $($case.name): $($images.Count)/$expected"}
     $images | Copy-Item -Destination $folder
     $completed+=@{name=$case.name;disabled=[bool]$case.disabled;status='PASS';screenshots=$expected}

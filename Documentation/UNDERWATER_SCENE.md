@@ -6,6 +6,8 @@ Aktuelle Materialarbeit: [passende Scandetails für jede Felsform](ROCK_SURFACES
 
 Die anschliessende [Korrektur der Quellfarb-Kodierung](BENTHIC_COLOR.md) entfernt die zu helle Interpretation der 16-Bit-Scans. Sand und Felsen erscheinen weniger ausgebleicht. Bodenvariation, Pflanzen und Lichtverteilung bleiben offen.
 
+[Räumliche Bruchstücke am Felsfuss](ROCK_RUBBLE.md) ergänzen jetzt eine mittlere Grössenstufe zwischen grossen Blöcken und Kleinkies. Sie verwenden die vorhandenen Scanoberflächen, besitzen Kollision und werden von Pflanzenverteilung sowie Fischbewegung berücksichtigt. Die Vergleichsbilder zeigen mehr räumliche Übergänge; die vermessenen Geländehöhen bleiben erhalten. Die zusätzliche CPU-Arbeit und einzelne Ruckler sind in den [Paketmessungen](PERFORMANCE.md) dokumentiert. Die gesamte Referenzqualität bleibt offen.
+
 Aktuelle Entwicklung: [räumlich begrenztes Wassermedium](BOUNDED_WATER.md) zusammen mit der [getrennten Wasserunterseite](WATER_INTERFACE.md). Himmel und Sonne sind wieder durch die Oberfläche sichtbar. Das integrierte Streulicht wird nicht mehr nachträglich über die gesamte Hintergrundentfernung abgedunkelt; dadurch verschwindet der beobachtete schwarze Fernstreifen. Vollständige spektrale Lichtwege, Brechung, Reflexionsdetails und die Gesamtabstimmung bleiben offen. Die Varianten sind weiterhin auf Diagnoseläufe begrenzt. Die aktuelle Spielvorschau ist im README verlinkt; die experimentellen Wasserpfade sind weiterhin kein normaler Spielstandard.
 
 ## Geröllsäume am Felsfuß

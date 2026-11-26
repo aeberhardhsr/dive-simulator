@@ -1,6 +1,20 @@
 # Gerenderte Leistungsmessung
 
-Für die nachfolgende [Quellfarb-Korrektur](BENTHIC_COLOR.md) in `WindowsBenthicColor` wurde keine neue Bildraten- oder Langzeitmessung durchgeführt. Die untenstehenden Werte bleiben an ihre jeweiligen älteren Pakete gebunden.
+## WindowsRockRubble: räumliche Bruchstücke am Felsfuss
+
+Quellstand `7fb9f34`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Normale Spielbeleuchtung, kein experimentelles Wasservolumen. [Paket und Rohdatennachweise](ROCK_RUBBLE_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 73,00 FPS | 58,37 FPS | 15,24 ms | 59,21 ms | 1 / 4378 |
+| Weesen, Wiederholung 60 s | 73,07 FPS | 61,55 FPS | 15,29 ms | 18,04 ms | 0 / 4382 |
+| Murg Schwimmen/Nachladen, 90 s | 100,64 FPS | 77,79 FPS | 10,88 ms | 43,64 ms | 2 / 9056 |
+
+Der erste Unterwasserlauf bleibt vollständig erhalten. Wegen seines einzelnen Ausreissers wurde genau ein zusätzlicher Unterwasserlauf durchgeführt; er ersetzt den ersten nicht. Der Ausreisser liegt im CSV-Datenindex 1515 (vor dem Entfernen der Randzeilen): Renderthread 62,17 ms, davor eine Game-Thread-Wartezeit von 46,39 ms. Das protokollierte GC-Ereignis liegt erst bei Datenindex 3382 und fällt nicht mit dem Ausreisser zusammen. Die Ursache ist damit **nicht geklärt**. Die Wiederholung ohne vergleichbaren Ausreisser beweist keine dauerhafte Behebung. Der Paketbericht bindet beide Läufe an dieselbe EXE und dieselben Container.
+
+Die Unterwasser-Messbilder zeigen den Seegrund mit den zusätzlichen Fragmenten bei 5,2 Metern Tiefe. Die Murg-Strecke endet in freiem Wasser bei 24,7 Metern; deren Mittelwert steht nicht für dauerhaft dichte Felsnahansichten. Die mittlere Game-Thread-Zeit der Unterwasserläufe beträgt 11,12 / 11,18 ms und liegt über den 6,53 ms des älteren `WindowsRockSurfaces`-Laufs. Die ähnliche mittlere Bildrate bedeutet deshalb keine unveränderte CPU-Reserve. Einzelne Ruckler, weitere Optimierung bei wachsender Detaildichte und ein aktueller Langzeittest bleiben offen.
+
+Für den Zwischenstand [WindowsBenthicColor](BENTHIC_COLOR.md) wurde keine eigene Bildraten- oder Langzeitmessung durchgeführt. Die folgenden älteren Werte bleiben an ihre jeweiligen Pakete gebunden.
 
 ## WindowsRockSurfaces: passende Scandetails
 
