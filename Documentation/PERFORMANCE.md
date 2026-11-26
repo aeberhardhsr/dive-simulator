@@ -1,5 +1,7 @@
 # Gerenderte Leistungsmessung
 
+Für die nachfolgende [Quellfarb-Korrektur](BENTHIC_COLOR.md) in `WindowsBenthicColor` wurde keine neue Bildraten- oder Langzeitmessung durchgeführt. Die untenstehenden Werte bleiben an ihre jeweiligen älteren Pakete gebunden.
+
 ## WindowsRockSurfaces: passende Scandetails
 
 Quellstand `f0e8fb3`, RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Jeweils 15 Sekunden Aufwärmen; die protokollierten Listen weiterer Unreal-/Spielinstanzen sind leer. Die normale Spielbeleuchtung ist aktiv; die Messung aktiviert das experimentelle Wasservolumen nicht.

@@ -1,5 +1,7 @@
 # Felsoberflächen mit passenden Scandetails
 
+Nachfolgende Korrektur: Die [explizite Quellfarb-Kodierung](BENTHIC_COLOR.md) behebt die zu helle Interpretation der 16-Bit-Farbkarten. Die hier aufgeführten Messungen und Bilder gehören weiterhin zum unten genannten Paket `WindowsRockSurfaces`.
+
 Die drei vorhandenen Felsformen verwenden nun jeweils die zugehörigen Farb-, Normalen- und AO/Rauheitskarten. Die bisherige gemeinsame, weltprojizierte Steintextur passte nicht zu ihren Rissen und Vertiefungen und erschien bereits ohne Beleuchtung auffällig weiss. Die UV-Koordinaten der importierten Modelle sind erhalten; alle drei besitzen UV0. Die Normalenkarten werden über Unreals normalen Texture-Sample-Knoten als Tangent-Space-Normalen verarbeitet.
 
 Das spielbare Paket liegt unter **`Builds/WindowsRockSurfaces/divingsim.exe`**, gebaut aus `f0e8fb34e7573b0ac3fab9fe2fe6557ad0353fbf`. Neun native Fälle mit 45 Aufnahmen und acht Paketfälle mit 37 Aufnahmen bestehen, ebenso der tatsächliche Root-Launcher-Start. [Native Ergebnisse](ROCK_SURFACES_NATIVE_RESULTS.json), [Paket, Launcher und Leistungsmessungen](ROCK_SURFACES_RESULTS.json). Der Paketbuild meldet `BUILD SUCCESSFUL` in `artifacts/rock-surfaces-package-build.log`.

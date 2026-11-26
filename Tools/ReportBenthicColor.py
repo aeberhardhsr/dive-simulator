@@ -18,6 +18,9 @@ def main():
     p.add_argument('--audit-after', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
+    a.baseline = a.baseline.resolve()
+    a.audit_before = a.audit_before.resolve()
+    a.audit_after = a.audit_after.resolve()
     run = a.run.resolve()
     host = json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:
@@ -64,6 +67,7 @@ def main():
         evidence.append(dict(**case, runtime=record(folder/'Runtime.log'), images=[record(x) for x in images],
             engine_error_lines=[s for s in log.splitlines() if ': Error:' in s]))
     logs = [(folder/'Runtime.log').read_text(encoding='utf-8-sig') for folder in [a.baseline, run/'ledi-close']]
+    assert 'DIVE_SMOKE_PASS' in logs[0] and not re.search(r'DIVE_\w*FAIL|Fatal error:', logs[0])
     poses = [re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)', text) for text in logs]
     assert len(poses[0]) == 3 and poses[0] == poses[1]
     comparisons = []
@@ -73,8 +77,22 @@ def main():
         delta = float(np.abs(pixels(b)-pixels(c)).mean())
         assert delta > .1
         comparisons.append(dict(before=record(b), after=record(c), mean_absolute_rgb_difference=delta))
+    launcher = None
+    published = []
+    if host['packaged']:
+        launcher = json.loads((run/'Launcher.json').read_text(encoding='utf-8-sig'))
+        assert launcher['status'] == 'PASS' and launcher['exit_code'] == 0
+        assert launcher['executable_sha256'].lower() == host['sha256'].lower()
+        assert launcher['log_sha256'].lower() == sha(run/'Launcher.log')
+    else:
+        for source, name in [(a.baseline/'Habitat_0_1.png', 'BenthicColor_Before.png'),
+                             (run/'ledi-close'/'Habitat_0_1.png', 'BenthicColor_After.png')]:
+            target = ROOT/'Documentation/Images'/name
+            assert sha(source) == sha(target)
+            published.append(record(target))
     result = dict(status='PASS', scope='Explicit sRGB source decoding for benthic maps; not overall visual acceptance',
         host=host, cases=evidence, screenshot_count=sum(expected.values()), comparisons=comparisons,
+        launcher=launcher, published=published,
         source_profiles=sources, audit_before=dict(file=record(a.audit_before), result=before),
         audit_after=dict(file=record(a.audit_after), result=after),
         limitations=['Visual evaluation still finds sparse planting and smooth sediment transitions',
