@@ -18,6 +18,8 @@ def main():
     p.add_argument('--baseline-run',type=Path)
     p.add_argument('--prior-performance',type=Path,nargs=2)
     p.add_argument('--native-fix-log',type=Path)
+    p.add_argument('--rounding-failure-run',type=Path)
+    p.add_argument('--rounding-diagnostic-log',type=Path)
     a=p.parse_args();run=a.run.resolve()
     host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
     for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
@@ -34,6 +36,7 @@ def main():
         assert not re.search(r'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:',log)
         checks=[]
         search_checks=[]
+        search_diagnostics=[]
         if case['name']!='shore':
             checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_RUBBLE_PASS fragments=(\d+) disabled=(\d+) contacts=(\d+)',log)]
             assert checks
@@ -42,17 +45,21 @@ def main():
             for marker in ['DIVE_POPULATION_PASS','DIVE_ROCK_LAYOUT_PASS','DIVE_STEERING_WORLD_PASS','DIVE_GRAVEL_PASS']:
                 assert marker in log,marker
             if a.rock_search:
-                search_checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_ROCK_SEARCH_PASS queries=(\d+) candidates=(\d+) exhaustive=(\d+) rocks=(\d+) exact_force=1 exact_trace=1',log)]
+                search_checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_ROCK_SEARCH_PASS queries=(\d+) candidates=(\d+) exhaustive=(\d+) rocks=(\d+) force_tolerance=1e-12 exact_trace=1',log)]
                 assert len(search_checks)>=6
                 assert any(n>0 for q,c,e,n in search_checks)
                 assert all((q==2 and c==e==0) if n==0 else (q>0 and 0<c<e/3 and e==q*n) for q,c,e,n in search_checks)
+                diagnostics=re.findall(r'DIVE_ROCK_SEARCH_DIAGNOSTIC missing=(\d+) force_mismatch=(\d+) force_delta=([^ ]+) trace_mismatch=(\d+) trace_delta=([^\r\n]+)',log)
+                assert len(diagnostics)==len(search_checks)
+                assert all(int(m)==0 and float(d)<=1e-12 and int(t)==0 and float(td)==0 for m,f,d,t,td in diagnostics)
+                search_diagnostics=[dict(missing=int(m),force_bit_differences=int(f),maximum_force_delta=float(d),trace_differences=int(t),maximum_trace_delta=float(td)) for m,f,d,t,td in diagnostics]
         if case['name']=='raster':assert 'r.Nanite = "0"' in log
         images=sorted(folder.glob('*.png'));assert len(images)==case['screenshots']==expected[case['name']]
         if case['name']=='shore':
             assert {x.name for x in images}=={'DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png',
                 'ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png'}
         for image in images:pixels(image)
-        evidence.append(dict(**case,rubble_checks=checks,search_checks=search_checks,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],
+        evidence.append(dict(**case,rubble_checks=checks,search_checks=search_checks,search_diagnostics=search_diagnostics,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],
             engine_error_lines=[s for s in log.splitlines() if ': Error:' in s]))
     poses=[re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',logs[name]) for name in ['close-before','close-after']]
     assert len(poses[0])==3 and poses[0]==poses[1]
@@ -109,7 +116,10 @@ def main():
             native_host_path=native.with_name(native.stem+'-host.json')
             native_host=json.loads(native_host_path.read_text(encoding='utf-8-sig'))
             assert native_host['log_sha256']==sha(native)
-            for item in native_host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
+            # Historical fixture-fix binary; later diagnostic edits are tracked
+            # separately. The actual indexing implementation must still match.
+            indexed_file='divingsim/Source/DiveSim/Simulation/RockIndex.h'
+            assert next(x['sha256'] for x in native_host['files'] if x['file']==indexed_file)==sha(ROOT/indexed_file)
             old_performance=[]
             for folder in a.prior_performance:
                 folder=folder.resolve();summary=json.loads((folder/'Summary.json').read_text(encoding='utf-8-sig'))
@@ -143,7 +153,17 @@ def main():
         baseline=dict(host=record(old/'Host.json'),runtime=record(old/'close-after/Runtime.log'),same_cameras=True,same_rock_assets=True,
             images=[record(old/'close-after'/f'Habitat_0_{i}.png') for i in range(3)])
     else:assert not a.baseline_run
-    result=dict(status='PASS',scope='Conservative rock queries; not full environment acceptance' if a.rock_search else 'Authored rock-foot fragments; not full environment acceptance',host=host,prior_attempt=prior,baseline=baseline,
+    rounding=None
+    if a.rounding_failure_run or a.rounding_diagnostic_log:
+        assert a.rock_search and a.rounding_failure_run and a.rounding_diagnostic_log
+        failed=a.rounding_failure_run.resolve();diagnostic=a.rounding_diagnostic_log.resolve()
+        assert 'DIVE_ROCK_SEARCH_FAIL' in (failed/'close-before/Runtime.log').read_text(encoding='utf-8-sig')
+        rows=re.findall(r'DIVE_ROCK_SEARCH_DIAGNOSTIC missing=(\d+) force_mismatch=(\d+) force_delta=([^ ]+) trace_mismatch=(\d+) trace_delta=([^\r\n]+)',diagnostic.read_text(encoding='utf-8-sig'))
+        assert rows and all(int(m)==0 and int(f)>0 and 0<float(d)<1e-12 and int(t)==0 and float(td)==0 for m,f,d,t,td in rows)
+        rounding=dict(status='EXACT_FORCE_COMPARISON_FAILED',maximum_force_delta=max(float(x[2]) for x in rows),
+            host=record(failed/'Host.json'),runtime=record(failed/'close-before/Runtime.log'),diagnostic=record(diagnostic),
+            explanation='The game build rounds equivalent force accumulation loops by a few double ULPs; final tests retain exact candidate coverage and path fractions, with 1e-12 force tolerance.')
+    result=dict(status='PASS',scope='Conservative rock queries; not full environment acceptance' if a.rock_search else 'Authored rock-foot fragments; not full environment acceptance',host=host,prior_attempt=prior,rounding_attempt=rounding,baseline=baseline,
         cases=evidence,screenshot_count=sum(expected.values()),comparisons=comparisons,launcher=launcher,published=published,performance=performance,
         limitations=['Fragments are authored dressing, not surveyed Walensee geology',
                     'Collision probes sample individual fragment bodies; not every contact direction',

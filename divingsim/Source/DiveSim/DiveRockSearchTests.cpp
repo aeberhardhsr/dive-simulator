@@ -4,6 +4,7 @@ bool ADiveWorld::TestRockSearch(FString& Detail) const
 {
     bool valid=RockSearch.Size()==size_t(RockState.Num());
     int queries=0;int64 candidates=0,exhaustive=0;
+    int missing=0,forceMismatch=0,traceMismatch=0;double forceDelta=0,traceDelta=0;
     // Sample the entire target window, including the distant not-yet-rendered
     // cells of staged streaming. Independent brute-force reference stays here.
     for(int i=0;i<RockState.Num();i+=FMath::Max(1,RockState.Num()/64))
@@ -25,12 +26,19 @@ bool ADiveWorld::TestRockSearch(FString& Detail) const
             {
                 const auto& rock=RockState[j];full+=contribution(rock);
                 if(FVector::DistSquared2D(p,rock.Position)<=FMath::Square(rock.Radius+body+180))
-                    valid&=std::binary_search(found.begin(),found.end(),j);
+                {
+                    const bool contained=std::binary_search(found.begin(),found.end(),j);
+                    missing+=!contained;valid&=contained;
+                }
             }
             for(const int j:found) {valid&=RockState.IsValidIndex(j);if(RockState.IsValidIndex(j)) fast+=contribution(RockState[j]);}
-            valid&=full==fast&&std::adjacent_find(found.begin(),found.end())==found.end();
+            // Optimized game code may round the two accumulation loops a few
+            // double ULPs differently. Do not confuse that with a missing rock.
+            valid&=(full-fast).Size()<=1.e-12&&std::adjacent_find(found.begin(),found.end())==found.end();
+            forceMismatch+=full!=fast;forceDelta=FMath::Max(forceDelta,(full-fast).Size());
             const FVector end=p+FVector(1100,-900,170);
-            valid&=TraceFishPath(0,1,p,end)==TraceFishPath(0,1,p,end,true);
+            const double indexed=TraceFishPath(0,1,p,end),reference=TraceFishPath(0,1,p,end,true);
+            traceMismatch+=indexed!=reference;traceDelta=FMath::Max(traceDelta,FMath::Abs(indexed-reference));valid&=indexed==reference;
         }
     }
     if(RockState.IsEmpty())
@@ -43,7 +51,8 @@ bool ADiveWorld::TestRockSearch(FString& Detail) const
         valid&=RockSearch.Query(0,0,0,0,0,true).empty();
     }
     else valid&=queries>0&&candidates<exhaustive/3;
-    Detail=FString::Printf(TEXT("queries=%d candidates=%lld exhaustive=%lld rocks=%d exact_force=1 exact_trace=1"),queries,candidates,exhaustive,RockState.Num());
+    Detail=FString::Printf(TEXT("queries=%d candidates=%lld exhaustive=%lld rocks=%d force_tolerance=1e-12 exact_trace=1"),queries,candidates,exhaustive,RockState.Num());
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_SEARCH_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*Detail);
+    UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_SEARCH_DIAGNOSTIC missing=%d force_mismatch=%d force_delta=%.17g trace_mismatch=%d trace_delta=%.17g"),missing,forceMismatch,forceDelta,traceMismatch,traceDelta);
     return valid;
 }
