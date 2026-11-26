@@ -38,7 +38,7 @@ Das umliegende Gelände stammt aus [swissALTI3D](https://www.swisstopo.admin.ch/
 
 Die Meshes verwenden Nanite mit ungekürzter Quellgeometrie und 1 cm Positionsquantisierung. Nanite übernimmt die sichtabhängige Detailauswahl und das Streaming seiner Geometrieseiten; die Kachelkomponenten selbst werden beim Start geladen. Für Rendering ohne Nanite wird ein vereinfachtes Fallback-Mesh mitgebaut. Das ist keine Aussage zur macOS-Spielkompatibilität oder zur noch offenen Performance-Abnahme. Technischer Hintergrund: [Epic Nanite-Dokumentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/nanite-virtualized-geometry-in-unreal-engine).
 
-Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Die Hintergrundkacheln haben keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Die Oberfläche verwendet die unten beschriebenen SWISSIMAGE-Luftbilder. Räumliche Gebäude und Vegetation fehlen noch. Das 8-m-Raster glättet weiterhin Gelände unterhalb dieser Auflösung; Orthobilder enthalten bereits Schatten und liefern keine vertikale Fassaden- oder Felsstruktur.
+Land innerhalb der vermessenen Seefläche und der örtlichen Uferbereiche wird ausgespart. Die Hintergrundkacheln haben keine Spielerkollision; begehbar sind die Bathymetrie und die drei örtlichen Uferergänzungen. Die Oberfläche verwendet die unten beschriebenen SWISSIMAGE-Luftbilder. Vermessene Gebäude sind separat ergänzt; räumliche Vegetation fehlt noch. Das 8-m-Raster glättet weiterhin Gelände unterhalb dieser Auflösung; Orthobilder enthalten bereits Schatten und liefern keine vertikale Fassaden- oder Felsstruktur.
 
 `Content/Diving/Geodata/landscape_meshes.json` enthält die Kachelgrenzen, Weltpositionen und Geometriezahlen. Ein MD5 über die tatsächlichen Höhen-/Maskendateien und ihre Manifeste dient ausschließlich der Erkennung veralteter Build-Ergebnisse; JSON-Zeilenenden werden für Windows/macOS auf LF vereinheitlicht. Die offiziellen Quelldaten werden separat mit SHA256 geprüft. Der Editor-Prüflauf vergleicht sämtliche gespeicherten Quellvertices mit dem Höhenraster und sämtliche Vertex-Instanz-UVs mit der geografischen Registrierung. Er prüft außerdem Normalen, dazu senkrechte Tangenten und vorhandene Nanite-Daten. Packaging führt diese Prüfung automatisch aus und bricht bei fehlenden oder veralteten Assets ab.
 
@@ -75,7 +75,7 @@ Die Lücke wird als diskrete harmonische Fläche mit festgehaltenen vermessenen 
 
 Unreal erzeugt drei getrennte Ufermeshes mit Kollision. Ihr 1-m-Vertexraster und ihre Dreiecksdiagonalen schließen an die gestreamte Bathymetrie an; vollständig vermessene Seebodendreiecke bleiben im bisherigen Streaming. Die Bodenabfrage interpoliert die tatsächlichen Dreiecksflächen. Das ferne Landmesh wird im Inneren der Uferbereiche ausgespart. Die äußere Überlappungszone ist noch keine fertige Landschafts-LOD-Lösung.
 
-Die Uferoberfläche verwendet nahe dem Wasser eigenes prozedurales Kies-/Bodenmaterial mit gefilterter Körnung und einem vereinfachten feuchten Bereich. Zwischen 0 und 1,2 m über dem Szenariopegel geht es in die unten beschriebenen SWISSIMAGE-Luftbilder über. Die Kiesgestaltung ist illustrativ; fotografierte Wege und Bodenbedeckung sind in den Bildern enthalten. Räumliche Gebäude, Wegeausbau und Vegetation fehlen.
+Die Uferoberfläche verwendet nahe dem Wasser eigenes prozedurales Kies-/Bodenmaterial mit gefilterter Körnung und einem vereinfachten feuchten Bereich. Zwischen 0 und 1,2 m über dem Szenariopegel geht es in die unten beschriebenen SWISSIMAGE-Luftbilder über. Die Kiesgestaltung ist illustrativ; fotografierte Wege und Bodenbedeckung sind in den Bildern enthalten. Vermessene Gebäude sind separat ergänzt; originalgetreuer Wegeausbau und räumliche Vegetation fehlen.
 
 ## Modellierte spielbare Zugänge
 
@@ -113,7 +113,7 @@ Die nativen RGB-Pixel werden ohne Verwendung der COG-Vorschaustufen gelesen, in 
 
 Die vier Texturen behalten ihre vollständige Mipmap-Kette im Speicher, weil prozedurale Meshes keine zuverlässige importierte UV-Dichte für Unreals Texture-Streamer liefern. Im geprüften Windows-Build melden sie zusammen 14.090.240 Bytes (13,44 MiB) Texturspeicher. Das ersetzt keinen vollständigen Performance-Benchmark.
 
-Die Bilder enthalten bereits aufgenommenes Licht und Schatten. Fotografierte Bäume und Gebäude sind zunächst flach auf das Geländemesh projiziert; sie erhalten dadurch keine eigene Geometrie, Kollision oder wechselnden Schatten. Insbesondere steile Hänge, Übergänge, nahe Vegetation und Gebäude benötigen weitere Modellierung. Die Luftbilder sind deshalb ein Schritt zur realen Ortsdarstellung, keine abgeschlossene fotorealistische Landschaft.
+Die Bilder enthalten bereits aufgenommenes Licht und Schatten. Fotografierte Bäume bleiben flach auf das Geländemesh projiziert. Gebäude besitzen inzwischen eigene vermessene Außenflächen, Kollision und wechselnde Schatten; Herkunft und Grenzen stehen in [BUILDINGS.md](BUILDINGS.md). Steile Hänge, Übergänge, nahe Vegetation und Gebäudefassaden benötigen weitere Modellierung. Die Luftbilder sind deshalb ein Schritt zur realen Ortsdarstellung, keine abgeschlossene fotorealistische Landschaft.
 
 Reproduktion und unabhängige Prüfung:
 

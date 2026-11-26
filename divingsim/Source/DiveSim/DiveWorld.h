@@ -70,6 +70,7 @@ public:
     bool TestPopulationStreaming(FString& Detail);
     bool ValidateImagery(FString& Error) const;
     bool ValidateLandscape(FString& Error) const;
+    bool ValidateBuildings(FString& Error) const;
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);
     Dive::ScenarioClock::Moment CurrentMoment() const;
@@ -96,6 +97,7 @@ public:
 private:
     UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LandscapeMeshes;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuildingMeshes;
     UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> ShoreMeshes;
     UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> ImageryMaterials;
     UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> AccessRamps;
@@ -168,6 +170,7 @@ private:
     void StreamTerrain(const FVector& Position,bool Immediate=false);
     void CreateChunk(FIntPoint Key);
     void CreateLandscape();
+    void CreateBuildings();
     void CreateShoreline();
     void CreateAccess();
     UMaterialInstanceDynamic* ImageryMaterial(const TCHAR* Base,const FString& TexturePath);

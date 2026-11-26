@@ -16,6 +16,10 @@
 *.i16 filter=lfs diff=lfs merge=lfs -text
 *.f32 filter=lfs diff=lfs merge=lfs -text
 *.u8 filter=lfs diff=lfs merge=lfs -text
+*.bmesh filter=lfs diff=lfs merge=lfs -text
+# Keep the pinned catalogue byte checksum identical on every checkout platform.
+divingsim/Content/Diving/Geodata/buildings_sources.json text eol=crlf
+divingsim/Content/Diving/Geodata/buildings.json text eol=lf
 # Small report previews are stored directly with the report.
 Documentation/Images/Environment_Winter.png -filter -diff -merge -text
 Documentation/Images/Environment_Summer.png -filter -diff -merge -text
@@ -27,3 +31,4 @@ Documentation/Images/Sediment_Visible.png -filter -diff -merge -text
 Documentation/Images/Sediment_Hidden.png -filter -diff -merge -text
 Documentation/Images/Navigation_Entry.png -filter -diff -merge -text
 Documentation/Images/Navigation_DiveMap.png -filter -diff -merge -text
+Documentation/Images/Buildings_Murg.png -filter -diff -merge -text

@@ -88,10 +88,11 @@ void ADiveHUD::Menu()
     Text(L(TEXT("Ruhe. Tiefe. Entdecken."),TEXT("Stillness. Depth. Discovery.")),73,319,20,Muted);
     Text(L(TEXT("SPIELBARER ENTWICKLUNGSSTAND"),TEXT("PLAYABLE DEVELOPMENT BUILD")),73,410,13,Accent);
     Text(L(TEXT("Vermessener Walensee-Seegrund, Massstab 1:1."),TEXT("Surveyed Walensee lakebed, true scale.")),73,444,17,White);
-    Text(TEXT("swissBATHY3D + swissALTI3D + SWISSIMAGE / © swisstopo"),73,473,13,Muted);
-    Text(TEXT("Includes material © (2016-2018) Planet. All rights reserved."),73,499,11,Muted);
-    Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,525,18,White);
-    Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,554,18,White);
+    Text(TEXT("swissBATHY3D + swissALTI3D"),73,473,12,Muted);
+    Text(TEXT("SWISSIMAGE + swissBUILDINGS3D / © swisstopo"),73,490,12,Muted);
+    Text(TEXT("Includes material © (2016-2018) Planet. All rights reserved."),73,508,10,Muted);
+    Text(L(TEXT("Pressluft, Tarierung und Vitalwerte"),TEXT("Breathing gas, buoyancy and vitals")),73,535,18,White);
+    Text(L(TEXT("reagieren auf deinen Tauchgang."),TEXT("respond to the way you dive.")),73,560,18,White);
     Button(TEXT("environment"),bEnvironmentPage?L(TEXT("<   Ausruestung und Tauchplan"),TEXT("<   Equipment and dive plan")):L(TEXT("Wetter und Wasser   >"),TEXT("Weather and water   >")),73,590,437,42);
     Button(TEXT("loadout"),bLoadoutPage?L(TEXT("<   Zurueck zum Tauchplan"),TEXT("<   Back to dive plan")):L(TEXT("Ausruestung: Gewicht und Auftrieb   >"),TEXT("Equipment: weight and buoyancy   >")),73,640,437,32);
     Text(L(TEXT("Spielsimulation. Keine reale Tauchplanung."),TEXT("Game simulation. Not real dive planning.")),73,794,13,Muted);

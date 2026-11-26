@@ -1,4 +1,5 @@
 #include "DivePawn.h"
+#include "DiveBuildings.h"
 #include "DiveBodyFrame.h"
 #include "DiveWorld.h"
 #include "DiveEquipment.h"
@@ -169,7 +170,24 @@ void ADivePawn::BeginPlay()
             {
                 const auto& shore=Environment->Terrain.ShoreEntries[EntryIndex];
                 SetActorLocation(Environment->ShoreStart(EntryIndex)+FVector(0,0,80)); bShowInstruments=false; SetMenu(false);
-                if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-12,shore.Yaw,0));
+                const bool lookBack=FParse::Param(FCommandLine::Get(),TEXT("DiveShoreLookBack"));
+                if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(lookBack?0:-12,shore.Yaw+(lookBack?180:0),0));
+                if(FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView")))
+                {
+                    TArray<FDiveBuildingTile> tiles;int32 count=0;FString error;
+                    if(!DiveBuildings::Read(tiles,count,error)) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+                    FVector target;double nearest=TNumericLimits<double>::Max();
+                    for(const auto& tile:tiles)
+                    {
+                        const FVector roof=tile.Origin+tile.Probe;
+                        const double distance=FVector::DistSquaredXY(roof,Environment->ShoreStart(EntryIndex));
+                        if(distance<nearest) { nearest=distance;target=roof; }
+                    }
+                    const FVector eye=target+FVector(-9000,-9000,6000);
+                    SetActorLocation(eye);
+                    if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation((target-eye).Rotation());
+                    UE_LOG(LogTemp,Display,TEXT("DIVE_BUILDINGS_INSPECTION camera=%s roof=%s"),*eye.ToString(),*target.ToString());
+                }
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
             else if(SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
@@ -372,7 +390,9 @@ void ADivePawn::Tick(float DeltaSeconds)
         ControlsSmokeClock+=DeltaSeconds;
         if(ControlsSmokeClock>3&&!bSmokeCaptured)
         {
-            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Shore_%d.png"),EntryIndex),true,false);
+            const FString suffix=FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView"))?TEXT("_Buildings"):
+                FParse::Param(FCommandLine::Get(),TEXT("DiveShoreLookBack"))?TEXT("_Land"):TEXT("");
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Shore_%d%s.png"),EntryIndex,*suffix),true,false);
             bSmokeCaptured=true;
         }
         if(ControlsSmokeClock>5)

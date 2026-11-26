@@ -107,6 +107,7 @@ bool ADiveWorld::ValidateImagery(FString& Error) const
         return true;
     };
     if(!ValidateLandscape(Error)) return false;
+    if(!ValidateBuildings(Error)) return false;
     for(int i=0;i<3;++i) if(!registered(ShoreMeshes[i],Terrain.Shores[i]))
     { Error=TEXT("Shore UV registration mismatch"); return false; }
     Error.Empty(); return true;

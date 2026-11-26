@@ -1,6 +1,6 @@
 param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
-    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Package')][string]$Target = 'Editor',
+    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
     [switch]$EditorSandbox,
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
@@ -14,7 +14,8 @@ param(
     [switch]$OnlySediment,
     [switch]$OnlyAvatar,
     [switch]$OnlyBed,
-    [switch]$OnlyWater
+    [switch]$OnlyWater,
+    [switch]$OnlyBuildings
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -38,6 +39,7 @@ if ($Target -eq 'Content') {
     if($OnlyAudio) { $script=Join-Path $PSScriptRoot 'build_audio_content.py' }
     if($OnlyShore) { $script=Join-Path $PSScriptRoot 'build_shore_content.py' }
     if($OnlyImagery) { $script=Join-Path $PSScriptRoot 'build_imagery_content.py' }
+    if($OnlyBuildings) { $script=Join-Path $PSScriptRoot 'build_buildings_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
     if($OnlyParticles) { $script=Join-Path $PSScriptRoot 'build_particle_content.py' }
@@ -48,11 +50,17 @@ if ($Target -eq 'Content') {
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     if($OnlyWater) { $contentOptions+='-DiveWaterOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions
+} elseif ($Target -in @('Buildings','BuildingsCheck')) {
+    $buildingOptions=@()
+    if($Target -eq 'BuildingsCheck') { $buildingOptions+='-VerifyOnly' }
+    & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveBuildingsBake' @buildingOptions -unattended -nullrhi -nosplash '-log=BuildingsBuild.log'
 } elseif ($Target -in @('Landscape','LandscapeCheck')) {
     $landOptions=@()
     if($Target -eq 'LandscapeCheck') { $landOptions+='-VerifyOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions
 } elseif ($Target -eq 'Package') {
+    & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveBuildingsBake' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=BuildingsCheck.log'
+    if ($LASTEXITCODE -ne 0) { throw 'Building assets are missing or stale; run -Target Editor, Content -OnlyBuildings and -Target Buildings.' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=LandscapeCheck.log'
     if ($LASTEXITCODE -ne 0) { throw 'Landscape assets are missing or stale; run -Target Editor and -Target Landscape.' }
     & "$EngineRoot/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun "-project=$project" -noP4 -nocompileeditor -platform=Win64 -clientconfig=Development -build -cook '-map=/Game/Diving/Maps/L_DiveTraining' -stage -pak -archive "-archivedirectory=$PackageDirectory" "-ubtargs=$ubtOptions" -unattended
@@ -64,4 +72,5 @@ if ($LASTEXITCODE -ne 0) { throw "Unreal $Target failed with exit code $LASTEXIT
 if($Target -eq 'Package') {
     # Keep scenario-data attribution readable without extracting the game pak.
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/TEMPERATURE_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'TEMPERATURE_NOTICE.txt')
+    Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/BUILDINGS_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'BUILDINGS_NOTICE.txt')
 }

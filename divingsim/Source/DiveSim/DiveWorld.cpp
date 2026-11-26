@@ -180,6 +180,7 @@ void ADiveWorld::BeginPlay()
     if(bTerrainReady)
     {
         CreateLandscape();
+        CreateBuildings();
         CreateShoreline();
         CreateAccess();
         if(!bTerrainReady) return;
