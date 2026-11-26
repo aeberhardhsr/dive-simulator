@@ -1,0 +1,492 @@
+{
+  "status": "PASS",
+  "scope": "Packaged runtime checks; visual target remains open",
+  "host": {
+    "started_utc": "2026-11-26T13:01:58.2717509Z",
+    "package_containers": [
+      {
+        "file": "divingsim-Windows.pak",
+        "sha256": "94bc4402cbecdcf4a234f64751249a533968ce99c20ca6e1a6789a2679994b5a",
+        "bytes": 105896003
+      },
+      {
+        "file": "divingsim-Windows.ucas",
+        "sha256": "f9d110312a8b4b065b9d08745fcdfb1cfa3c3d4ddd0a2b9e46520e5eb224c0b2",
+        "bytes": 1194280704
+      },
+      {
+        "file": "divingsim-Windows.utoc",
+        "sha256": "ecc0e3e3dc9360987ccbf01b7f40bc9a7fc3c8fb1465afe270121301145dd563",
+        "bytes": 1071039
+      },
+      {
+        "file": "global.ucas",
+        "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+        "bytes": 3245776
+      },
+      {
+        "file": "global.utoc",
+        "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+        "bytes": 794
+      }
+    ],
+    "source_head": "13abf1e01a3a0862a784e45996bb34b8ae3d515f",
+    "sha256": "A3198ABC4C5965BC503A509C05606CF63FC9284CA749AF0A704057868B3DB1DA",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsWaterOptics\\divingsim\\Binaries\\Win64\\divingsim-WaterOptics.exe",
+    "packaged": true
+  },
+  "launcher": {
+    "finished_utc": "2026-11-26T13:07:43.5558282Z",
+    "child_id": 26360,
+    "log_sha256": "73E2FDE71792157E838F690D03AD0FF547671E08E56DED800C1F2F637F243CED",
+    "exit_code": 0,
+    "executable_sha256": "A3198ABC4C5965BC503A509C05606CF63FC9284CA749AF0A704057868B3DB1DA",
+    "started_utc": "2026-11-26T13:07:14.2289913Z",
+    "child": "O:\\games\\dive game\\Builds\\WindowsWaterOptics\\divingsim\\Binaries\\Win64\\divingsim-WaterOptics.exe",
+    "status": "PASS"
+  },
+  "cases": [
+    {
+      "name": "look-day",
+      "entry": 0,
+      "screenshots": 6,
+      "hour": 13,
+      "status": "PASS",
+      "scenario": "rocks",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/look-day/Runtime.log",
+        "sha256": "645964e456f3120113e0589776af216260cc4fc1c491637182c9c2086f0d1125",
+        "bytes": 113652
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-day/Water_0_0.png",
+          "sha256": "b33ca537ec64bce5059d544bf26f762868dfeb5cac4c8ed5ce5d95b821c46185",
+          "bytes": 1054552
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-day/Water_0_1.png",
+          "sha256": "d6b0ae65f043e816cb9d7b53ca692bb2c7306e7539d6e9747004053aeb680908",
+          "bytes": 921813
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-day/Water_0_2.png",
+          "sha256": "b15844f339bd95f638d889b3b6b42b9fc11191e7d0b0ccb4f5fb53d4b9747f5f",
+          "bytes": 1949152
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-day/Water_1_0.png",
+          "sha256": "c372f402e4ff6a6da67c4b6f5ab7c267897782277c113ca853a504fef57a3390",
+          "bytes": 1256449
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-day/Water_1_1.png",
+          "sha256": "95a2b4f6075196a327a7c09d2515b83f0e5a29afecf8ea0ba6e8691313cfcf66",
+          "bytes": 1140022
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-day/Water_1_2.png",
+          "sha256": "6a5ba21b2e8bd8e5afbe55fb3367ae6ab9c6e58b68a8cdce8ada9c5f49fe66c1",
+          "bytes": 1949701
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.02.00:744][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "look-night",
+      "entry": 0,
+      "screenshots": 6,
+      "hour": 0,
+      "status": "PASS",
+      "scenario": "rocks",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/look-night/Runtime.log",
+        "sha256": "18e92afa2c7fcb01492cb90b992a2c9bbf932040e41f647b2f3816bd52553a96",
+        "bytes": 112942
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-night/Water_0_0.png",
+          "sha256": "bd40070ac61d01d88641b52ff85d1f8a9277cc61d399757f6e40a8c74692193a",
+          "bytes": 31163
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-night/Water_0_1.png",
+          "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1",
+          "bytes": 27184
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-night/Water_0_2.png",
+          "sha256": "dc0bcb3e4d2ef41495ac5ee89f2aa677bd2387978432de9b61aadf2ec854a5aa",
+          "bytes": 964046
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-night/Water_1_0.png",
+          "sha256": "b9562bd366d83a8dd50234a7d638c5b6219e54cc7f6c005b476e54c955cda7e6",
+          "bytes": 587372
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-night/Water_1_1.png",
+          "sha256": "6f40b84136b20672b5b8ab33af4264185c056448c71f922e8f221779c81d1020",
+          "bytes": 976700
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/look-night/Water_1_2.png",
+          "sha256": "6e23d711d2119a567627d3f87676a3638ef024b0b9840962b019f794f931e9a3",
+          "bytes": 962584
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.02.41:527][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "surface0",
+      "entry": 0,
+      "screenshots": 3,
+      "hour": 13,
+      "status": "PASS",
+      "scenario": "surface",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/surface0/Runtime.log",
+        "sha256": "b48b9a214d68c81a685ad35ddcdaedc603b332a5454c9149129ba03880f31078",
+        "bytes": 116731
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface0/DiveSmoke_0_surface.png",
+          "sha256": "6698717dfd5cb65e3e4dd34017da2c0132c65046700bb2ab08c5b5379e0e3f5c",
+          "bytes": 1707351
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface0/DiveUnderwater_0_surface.png",
+          "sha256": "63517c54f66eb357eb0e3ceab38162a4ef8a033ce272643901a17ad6fa51c788",
+          "bytes": 1378981
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface0/SurfaceAir_0_surface.png",
+          "sha256": "54eb04f202a90af29984ba3ea7dbf7fe7c53c5870af3e6e89a5d46c5eff629c2",
+          "bytes": 1735053
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.03.17:791][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "surface1",
+      "entry": 1,
+      "screenshots": 3,
+      "hour": 13,
+      "status": "PASS",
+      "scenario": "surface",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/surface1/Runtime.log",
+        "sha256": "9e6aa1dfc3c3933ecaf53bf10093625c3c972e825bfdfc810fe11f682e7e2ba2",
+        "bytes": 117483
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface1/DiveSmoke_1_surface.png",
+          "sha256": "2ae26bd105ffc990132dec1cc723eee0f78d6d2c9c91b998802a0125af9d2171",
+          "bytes": 1856439
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface1/DiveUnderwater_1_surface.png",
+          "sha256": "e6c431677625a4202046a83b1b091bf9a0c8fb172dc56d97c5f903c57571b8fa",
+          "bytes": 1123697
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface1/SurfaceAir_1_surface.png",
+          "sha256": "3f9e01c999efddfc1a9075d5c4bc862a6fcba9b7833eaac9fb31efd75ae4f348",
+          "bytes": 1243325
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.04.03:089][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "surface2",
+      "entry": 2,
+      "screenshots": 3,
+      "hour": 13,
+      "status": "PASS",
+      "scenario": "surface",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/surface2/Runtime.log",
+        "sha256": "348599a478e16436e2f0ea9209032bf9db36e023df6fcd0e9953c461f352f6ba",
+        "bytes": 118039
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface2/DiveSmoke_2_surface.png",
+          "sha256": "a10b633ae11e413c9103fcae290ea2a15ac90ed51baf9cb779cf4c9cf7f4b3e8",
+          "bytes": 1741219
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface2/DiveUnderwater_2_surface.png",
+          "sha256": "7ce621116aa64cc8c02cb4a1bda071b9c3581f0acab63d43ab227d7cd8a8720a",
+          "bytes": 1201021
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/surface2/SurfaceAir_2_surface.png",
+          "sha256": "e1cb93869ab2e17a75aa8c4a9ce3b95d5826a53b5b50841743208177dc0905cf",
+          "bytes": 1775063
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.04.48:378][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "storm",
+      "entry": 0,
+      "screenshots": 3,
+      "hour": 13,
+      "status": "PASS",
+      "scenario": "surface-storm",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/storm/Runtime.log",
+        "sha256": "9e76494c15fa41a0330854679833a90d0906024f38dd331567cf832183e89119",
+        "bytes": 117270
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/storm/DiveSmoke_0_surface-storm.png",
+          "sha256": "d7f902da8d6d45c1411daa552c6a63a9962140a7475c4662490ae4b2394dd903",
+          "bytes": 1342306
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/storm/DiveUnderwater_0_surface-storm.png",
+          "sha256": "c6bb03f38d47f06b1adfab515c963f90762e485c458a09adeb6c0150e00d55c2",
+          "bytes": 997516
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/storm/SurfaceAir_0_surface-storm.png",
+          "sha256": "2b0743f9f3183cdf3a4ebf4dd7e4c13291e0edb07947f2bb4b8cc57667fe24ee",
+          "bytes": 1053819
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.05.33:710][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "murky-torch",
+      "entry": 1,
+      "screenshots": 2,
+      "hour": 0,
+      "status": "PASS",
+      "scenario": "torch",
+      "log": {
+        "file": "artifacts/water-optics-validation-20261126-140157/murky-torch/Runtime.log",
+        "sha256": "58c9486e426323e7e19f6c17d2e9c17c0b5eebcaaa99be356a6c141e757c3130",
+        "bytes": 110475
+      },
+      "images": [
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/murky-torch/DiveSmoke_1_torch.png",
+          "sha256": "ff9816a810707b9c9cff7afd12a6806e4622a9acef7394a780596d446bf8b00d",
+          "bytes": 171377
+        },
+        {
+          "file": "artifacts/water-optics-validation-20261126-140157/murky-torch/DiveUnderwater_1_torch.png",
+          "sha256": "fc768cf851b103557a34f9019f57157b79d8ee04e3eb65bd5fa37300904e462e",
+          "bytes": 172975
+        }
+      ],
+      "marker_clearance": [
+        [
+          "0",
+          "200.000",
+          "-599.440"
+        ],
+        [
+          "1",
+          "200.000",
+          "-606.198"
+        ],
+        [
+          "2",
+          "200.000",
+          "-595.036"
+        ]
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-13.06.18:993][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "screenshots": 26,
+  "source_files": [
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+      "sha256": "54f14c37c9a776c344aa85cb9f9464a6a4655837b01bf5a638a66a34064488a2",
+      "bytes": 19930
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWater.cpp",
+      "sha256": "89fdc1825b1c855105684871a19ecd2c172ab7fdec11f2d036f7ed656aababa6",
+      "bytes": 9696
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+      "sha256": "2b12cb6c4babf5b55d069b523b63e9125d354a9cdcfb5a162c5cbb14d01b1675",
+      "bytes": 11773
+    }
+  ],
+  "package_build": {
+    "file": "artifacts/water-optics-package-sandbox-build.log",
+    "sha256": "04d9e80661ccf1e83db9319694fadae514eba4b949503d21c5b2fa5db3d8dd15",
+    "bytes": 289838
+  },
+  "upward_capture_mean_rgb_0_255": {
+    "day_state0": [
+      2.3697145833333333,
+      23.200188194444443,
+      14.281665277777778
+    ],
+    "day_state1": [
+      30.26910138888889,
+      55.65474305555556,
+      77.39059791666666
+    ],
+    "night_state0": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "night_state1": [
+      1.959673611111111,
+      3.7340027777777776,
+      3.792576388888889
+    ]
+  },
+  "above_water_mean_absolute_rgb_difference_0_255": {
+    "day": [
+      0.23790555555555556,
+      0.2726972222222222,
+      0.3612652777777778
+    ],
+    "night": [
+      0.1375826388888889,
+      0.15131319444444444,
+      0.12143541666666667
+    ]
+  },
+  "comparison_states": {
+    "0": "Forced previous surface volume on both sides",
+    "1": "No water volume behind the surface when fully submerged; camera attenuation remains active"
+  },
+  "limitations": [
+    "This corrects erroneous behind-surface absorption; it is not a complete underwater refraction/Snell-window renderer.",
+    "The first diagnostic camera was inside the entry rope. Those earlier flat images cannot identify a water-shader defect.",
+    "No new endurance or isolated frame-rate claim is made for this package.",
+    "Terrain, underwater composition, materials and UI still fall short of the supplied quality references."
+  ]
+}
