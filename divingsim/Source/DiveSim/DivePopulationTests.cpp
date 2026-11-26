@@ -10,7 +10,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     bool valid=true;int retained=0,reloaded=0,nearFish=0,spawned=0;
     // Cluster halos must produce exactly one owner, matching the rendered
     // instances and collision state, including across cell boundaries.
-    TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0;
+    TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0,connectedLargePairs=0;
     for(const auto& pair:PopulationCells)
     {
         TArray<FTransform> transforms;TArray<FDiveRock> states;
@@ -21,13 +21,16 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         for(int i=0;i<FMath::Min(transforms.Num(),freshTransforms.Num());++i)
             valid&=transforms[i].Equals(freshTransforms[i],0)&&states[i].Position==freshStates[i].Position&&
                 states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant;
-        valid&=transforms.Num()==states.Num()&&states.Num()<=196*18;
+        valid&=transforms.Num()==states.Num()&&states.Num()<=196*22;
         for(int i=0;i<states.Num();++i)
         {
             const auto& rock=states[i];
             valid&=FMath::FloorToInt(rock.Position.X/9600)==pair.Key.X&&FMath::FloorToInt(rock.Position.Y/9600)==pair.Key.Y;
-            valid&=!positions.Contains(rock.Position)&&rock.Radius>=16&&rock.Radius<=253;
+            valid&=!positions.Contains(rock.Position)&&rock.Radius>=16&&rock.Radius<=337;
             positions.Add(rock.Position);++sizes[rock.Radius<65?0:rock.Radius<126?1:2];
+            if(rock.Radius>=150) for(int j=0;j<i;++j)
+                if(states[j].Radius>=150&&FVector::Dist2D(rock.Position,states[j].Position)<.65*(rock.Radius+states[j].Radius))
+                    ++connectedLargePairs;
             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
                 valid&=FVector::Dist2D(rock.Position,entry.Position)>=350+rock.Radius;
         }
@@ -36,6 +39,8 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
+    valid&=connectedLargePairs>8;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATION_%s connected_large_pairs=%d"),connectedLargePairs>8?TEXT("PASS"):TEXT("FAIL"),connectedLargePairs);
     auto boundedLayouts=[&]()
     {
         if(RockLayouts.Num()>25) return false;

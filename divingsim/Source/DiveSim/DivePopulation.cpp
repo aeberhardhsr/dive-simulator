@@ -32,23 +32,37 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
     for(int ax=Key.X*AnchorsPerCell-1;ax<=(Key.X+1)*AnchorsPerCell;++ax)
     {
         FRandomStream random(Dive::BedDistribution::Hash(ax,ay)^0x93e71bc5u);
-        if(random.FRand()>.78f) continue;
         const FVector anchor((ax+.5)*AnchorWidth+random.FRandRange(-250.f,250.f),
             (ay+.5)*AnchorWidth+random.FRandRange(-250.f,250.f),0);
-        const double bearing=random.FRand()*2*PI;
+        // Broad, continuous exposure patches leave sediment between outcrops.
+        // These are authored formations, not surveyed individual bedrock ledges.
+        const double exposure=Dive::BedDistribution::Noise(anchor.X/2600,anchor.Y/2600);
+        if(random.FRand()>.4+.5*Dive::BedDistribution::Smooth(.15,.85,exposure)) continue;
+        const bool outcrop=random.FRand()<.25+.6*exposure;
+        double bearing=PI*Dive::BedDistribution::Noise(anchor.X/6000+7,anchor.Y/6000-13)+random.FRandRange(-.2f,.2f);
+        float az,axz,ayz;
+        if(Terrain.Sample(anchor.X,anchor.Y,az)&&Terrain.Sample(anchor.X+100,anchor.Y,axz)&&Terrain.Sample(anchor.X,anchor.Y+100,ayz)&&
+            FMath::Square(axz-az)+FMath::Square(ayz-az)>900)
+            bearing=FMath::Atan2(ayz-az,axz-az)+PI*.5+random.FRandRange(-.2f,.2f);
         TArray<FVector> accepted;TArray<double> radii;
-        for(int i=0;i<18;++i)
+        for(int i=0;i<22;++i)
         {
-            const double angle=random.FRand()*2*PI,reach=i?100+FMath::Sqrt(random.FRand())*420:0;
-            const double along=FMath::Cos(angle)*reach,across=FMath::Sin(angle)*reach*.65;
+            const bool core=outcrop&&i<4;
+            const double angle=random.FRand()*2*PI,reach=i?150+FMath::Sqrt(random.FRand())*450:0;
+            // A short shared axis and varied exposed heights connect the core.
+            // Edge rubble remains separated enough to preserve readable gaps.
+            const double offsets[4]={0,190,-190,365};
+            const double along=core?offsets[i]+random.FRandRange(-25.f,25.f):FMath::Cos(angle)*reach;
+            const double across=core?random.FRandRange(-65.f,65.f):FMath::Sin(angle)*reach*.65;
             const double x=anchor.X+along*FMath::Cos(bearing)-across*FMath::Sin(bearing);
             const double y=anchor.Y+along*FMath::Sin(bearing)+across*FMath::Cos(bearing);
-            const float size=i==0?random.FRandRange(1.2f,2.4f):i<5?random.FRandRange(.5f,1.2f):random.FRandRange(.16f,.62f);
-            const float yaw=random.FRand()*2*PI,aspect=random.FRandRange(.72f,1.f),height=random.FRandRange(.55f,.8f);
+            const float size=core?random.FRandRange(1.8f,3.2f):i==0?random.FRandRange(1.2f,2.4f):i<(outcrop?9:5)?random.FRandRange(.5f,1.2f):random.FRandRange(.16f,.62f);
+            const float yaw=core?bearing+random.FRandRange(-.35f,.35f):random.FRand()*2*PI;
+            const float aspect=random.FRandRange(.72f,1.f),height=core?random.FRandRange(.5f,.85f):random.FRandRange(.55f,.8f);
             const int32 variant=random.RandRange(0,Rocks.Num()-1);
             float z,n,e;
             if(!Terrain.Sample(x,y,z)||z>-250||z<-6000||!Terrain.Sample(x+100,y,e)||!Terrain.Sample(x,y+100,n)) continue;
-            const FVector position(x,y,z+size*10);bool blocked=false;
+            const FVector position(x,y,z+size*(core?18:10));bool blocked=false;
             // Preserve entry and access routes for every size class.
             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
                 if(FVector::Dist2D(position,entry.Position)<350+size*105) blocked=true;
@@ -59,9 +73,9 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
                 const double acrossRoute=FMath::Abs(delta.X*access.Forward.Y-delta.Y*access.Forward.X);
                 if(alongRoute>-500-size*105&&alongRoute<access.Length+500+size*105&&acrossRoute<600+size*105) blocked=true;
             }
-            // A little overlap allows interlocking rubble without stacked piles.
+            // Core blocks interlock; loose debris keeps the wider separation.
             for(int j=0;j<accepted.Num();++j)
-                if(FVector::DistSquared2D(position,accepted[j])<FMath::Square(.7*(size*105+radii[j]))) blocked=true;
+                if(FVector::DistSquared2D(position,accepted[j])<FMath::Square((core?.28:.7)*(size*105+radii[j]))) blocked=true;
             if(blocked) continue;
             accepted.Add(position);radii.Add(size*105);
             if(CellAt(position)!=Key) continue;
