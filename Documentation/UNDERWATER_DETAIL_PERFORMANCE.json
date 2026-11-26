@@ -1,0 +1,206 @@
+{
+  "metadata": {
+    "scenario": "perf-underwater",
+    "csv": "O:/games/dive game/Builds/WindowsUnderwaterDetail/divingsim/Saved/Performance/perf-underwater_0141D36C/Capture.csv",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+    "engine": "5.8.4-58902052+++UE5+Release-5.8",
+    "width": 1920,
+    "height": 1080,
+    "quality": 2,
+    "warmup_seconds": 15,
+    "requested_capture_seconds": 60,
+    "simulation_seconds": 74.99999832361937,
+    "distance_m": 10.38124440262519,
+    "depth_m": 5.225500237356309,
+    "walking": false,
+    "sediment_born": 0,
+    "sediment_live": 0,
+    "r.ScreenPercentage": 100,
+    "r.SecondaryScreenPercentage.GameViewport": 100,
+    "r.DynamicRes.OperationMode": 0,
+    "r.VSync": 0,
+    "t.MaxFPS": 0,
+    "sg.ViewDistanceQuality": 2,
+    "sg.AntiAliasingQuality": 2,
+    "sg.ShadowQuality": 2,
+    "sg.GlobalIlluminationQuality": 2,
+    "sg.ReflectionQuality": 2,
+    "sg.PostProcessQuality": 2,
+    "sg.TextureQuality": 2,
+    "sg.EffectsQuality": 2,
+    "sg.FoliageQuality": 2
+  },
+  "host": {
+    "started_utc": "2026-11-26T12:15:57.4232559Z",
+    "editor": false,
+    "disable_nanite": false,
+    "background_processes": [],
+    "gpu_before": [
+      "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+      "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2308 MiB, 19 %"
+    ],
+    "executable": "O:\\games\\dive game\\Builds\\WindowsUnderwaterDetail\\divingsim\\Binaries\\Win64\\divingsim-UnderwaterDetail.exe",
+    "executable_sha256": "066c08364c26fb1ddb8c421a2eb56a5280cf6fadea0c468e175a54328923f381",
+    "package_containers": [
+      {
+        "sha256": "94bc4402cbecdcf4a234f64751249a533968ce99c20ca6e1a6789a2679994b5a",
+        "file": "divingsim-Windows.pak",
+        "bytes": 105896003
+      },
+      {
+        "sha256": "f9d110312a8b4b065b9d08745fcdfb1cfa3c3d4ddd0a2b9e46520e5eb224c0b2",
+        "file": "divingsim-Windows.ucas",
+        "bytes": 1194280704
+      },
+      {
+        "sha256": "ecc0e3e3dc9360987ccbf01b7f40bc9a7fc3c8fb1465afe270121301145dd563",
+        "file": "divingsim-Windows.utoc",
+        "bytes": 1071039
+      },
+      {
+        "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+        "file": "global.ucas",
+        "bytes": 3245776
+      },
+      {
+        "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+        "file": "global.utoc",
+        "bytes": 794
+      }
+    ]
+  },
+  "frames": 4691,
+  "discarded_boundary_frames": 2,
+  "measured_seconds": 59.9753085,
+  "average_fps": 78.21552097560283,
+  "one_percent_low_fps": 67.2171609130207,
+  "frame": {
+    "mean_ms": 12.785186207631636,
+    "p50_ms": 12.7636,
+    "p95_ms": 14.0638,
+    "p99_ms": 14.5809,
+    "max_ms": 16.7722
+  },
+  "game_thread": {
+    "mean_ms": 2.6636768066510337,
+    "p50_ms": 2.6597,
+    "p95_ms": 3.0715,
+    "p99_ms": 3.3468,
+    "max_ms": 4.9226
+  },
+  "render_thread": {
+    "mean_ms": 12.778475015988063,
+    "p50_ms": 12.7603,
+    "p95_ms": 14.0522,
+    "p99_ms": 14.5616,
+    "max_ms": 16.7834
+  },
+  "rhi_thread": {
+    "mean_ms": 2.6030818375612874,
+    "p50_ms": 2.5826,
+    "p95_ms": 3.0851,
+    "p99_ms": 3.3604,
+    "max_ms": 5.5227
+  },
+  "gpu": {
+    "mean_ms": 12.186297484544873,
+    "p50_ms": 12.1478,
+    "p95_ms": 13.2635,
+    "p99_ms": 13.6278,
+    "max_ms": 14.0772
+  },
+  "frames_over_16_67_ms": 1,
+  "frames_over_33_33_ms": 0,
+  "frames_over_100_ms": 0,
+  "all_frames_within_30fps_budget": true,
+  "memory_mb": {
+    "start": 4432.8125,
+    "end": 4408.8711,
+    "max": 4445.6406
+  },
+  "terrain_chunks": {
+    "min": 9.0,
+    "max": 9.0,
+    "frames_below_nine": 0
+  },
+  "distance_m": 5.672700000000001,
+  "top_gpu_passes_ms_not_additive": [
+    {
+      "name": "GPU/ShadowDepths",
+      "mean_ms": 3.061916755489235
+    },
+    {
+      "name": "GPU/NaniteVisBuffer",
+      "mean_ms": 1.1660946493285014
+    },
+    {
+      "name": "GPU/VolumetricCloudShadow",
+      "mean_ms": 1.011877147729695
+    },
+    {
+      "name": "GPU/Unaccounted",
+      "mean_ms": 0.8474847580473247
+    },
+    {
+      "name": "GPU/TemporalSuperResolution",
+      "mean_ms": 0.7047907056064805
+    },
+    {
+      "name": "GPU/ShadowProjection",
+      "mean_ms": 0.5603050735450863
+    },
+    {
+      "name": "GPU/LumenReflections",
+      "mean_ms": 0.5230306118098487
+    },
+    {
+      "name": "GPU/Basepass",
+      "mean_ms": 0.47370786612662547
+    },
+    {
+      "name": "GPU/Lights",
+      "mean_ms": 0.3948799829460669
+    },
+    {
+      "name": "GPU/NaniteBasePass",
+      "mean_ms": 0.29783916009379663
+    },
+    {
+      "name": "GPU/LumenSceneUpdate",
+      "mean_ms": 0.2861590492432317
+    },
+    {
+      "name": "GPU/Postprocessing",
+      "mean_ms": 0.2812988275421019
+    }
+  ],
+  "evidence": [
+    {
+      "file": "artifacts/perf-underwater-1080p-q2-20261126-131557-418/Capture.csv",
+      "bytes": 10634604,
+      "sha256": "70f6f735d6dc0fb8a75249eb0b726a1139df367d0aeee68d5096ff19167352be"
+    },
+    {
+      "file": "artifacts/perf-underwater-1080p-q2-20261126-131557-418/Metadata.json",
+      "bytes": 1003,
+      "sha256": "aa313515e0fd816b964bbb41e90e7919338b70529d0386607fde04024fd0dc6a"
+    },
+    {
+      "file": "artifacts/perf-underwater-1080p-q2-20261126-131557-418/Host.json",
+      "bytes": 1375,
+      "sha256": "b0f03ae6c89f668385740c7875bcf28fb0e8de35399fd5e5ca988db649d504fd"
+    },
+    {
+      "file": "artifacts/perf-underwater-1080p-q2-20261126-131557-418/Runtime.log",
+      "bytes": 124732,
+      "sha256": "ecf0357caa964bea5c88056e560dad40848ac36b5117203c590b56b4347ca70d"
+    },
+    {
+      "file": "artifacts/perf-underwater-1080p-q2-20261126-131557-418/Frame.png",
+      "bytes": 2181148,
+      "sha256": "53a6f73db2149acddcfbd9f2077ea5e68b1992118883feee9bd267ae1bc719e8"
+    }
+  ],
+  "scope": "One 60-second underwater scenario; no whole-game, long-duration or cross-hardware performance claim"
+}

@@ -1,0 +1,1875 @@
+{
+  "schema": 1,
+  "status": "PACKAGED_INTEGRATION_PASS",
+  "host": {
+    "executable": "O:\\games\\dive game\\Builds\\WindowsUnderwaterDetail\\divingsim\\Binaries\\Win64\\divingsim-UnderwaterDetail.exe",
+    "packaged": true,
+    "package_containers": [
+      {
+        "file": "divingsim-Windows.pak",
+        "sha256": "94bc4402cbecdcf4a234f64751249a533968ce99c20ca6e1a6789a2679994b5a",
+        "bytes": 105896003
+      },
+      {
+        "file": "divingsim-Windows.ucas",
+        "sha256": "f9d110312a8b4b065b9d08745fcdfb1cfa3c3d4ddd0a2b9e46520e5eb224c0b2",
+        "bytes": 1194280704
+      },
+      {
+        "file": "divingsim-Windows.utoc",
+        "sha256": "ecc0e3e3dc9360987ccbf01b7f40bc9a7fc3c8fb1465afe270121301145dd563",
+        "bytes": 1071039
+      },
+      {
+        "file": "global.ucas",
+        "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+        "bytes": 3245776
+      },
+      {
+        "file": "global.utoc",
+        "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+        "bytes": 794
+      }
+    ],
+    "sha256": "066C08364C26FB1DDB8C421A2EB56A5280CF6FADEA0C468E175A54328923F381",
+    "background_processes": [
+      {
+        "Id": 25516,
+        "ProcessName": "divingsim-FishSteering",
+        "StartTime": "2026-11-26T11:05:18.6666794+01:00"
+      }
+    ],
+    "started_utc": "2026-11-26T12:02:56.8341655Z",
+    "source_head": "262e1e455ea8a379658b414368238df574e97c80"
+  },
+  "cases": [
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "forms",
+      "scenario": "rocks",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 8,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/forms/Runtime.log",
+        "bytes": 110075,
+        "sha256": "85d0df026e47a4c951a1e96cacb83b5a5b7df4ce87413e8b7e8ca8102a2a7ddd"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_0_0.png",
+          "bytes": 1910691,
+          "sha256": "6fe0ca46a1b7ceee8d30364da86709243b23f49334c5c24774b9522e3e02018d"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_0_1.png",
+          "bytes": 1838904,
+          "sha256": "bd531c3cc3c04a924b48d454d5fa14b97d5cdcabde970d50fafe3ec4d1316c0b"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_1_0.png",
+          "bytes": 1975092,
+          "sha256": "ba44a9943ebf8200ecddb3ae00e6223f7f5fb7836dd135e7c4c9e40363b8aa64"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_1_1.png",
+          "bytes": 1930422,
+          "sha256": "c8c5d1cdbfe91fab5ccf6e0b1044a2fadebcde2de7acd1ab7a3cf57b72d8aece"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_2_0.png",
+          "bytes": 1930354,
+          "sha256": "cb663b737934b331ce9297088e8618cecdb2daf0a8a21d61956932bad65a9076"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_2_1.png",
+          "bytes": 1885130,
+          "sha256": "5700ef8be96670da5a31780a2b40710bb19d7ad5e3aee4b2c8d557c127e015ae"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_3_0.png",
+          "bytes": 1929826,
+          "sha256": "7b772a84ba2b28026d676bcfdf71c0d6b528ec48a50c4c8918c3111bcc3485d6"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms/Rock_3_1.png",
+          "bytes": 1894666,
+          "sha256": "e755b3da86a6cfff168265dafc16261902a0b510f8d84e1d6fb2254c1baa7bf4"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.02.59:627][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "forms-raster",
+      "scenario": "rocks",
+      "raster": true,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 8,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Runtime.log",
+        "bytes": 109844,
+        "sha256": "0461e59b62403b2d3ff3b9c95a14c7a98bee5fdaa37a95d41dc4456c55d34281"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_0_0.png",
+          "bytes": 1907864,
+          "sha256": "2ef1f6ec1872e487c3c4ade127e0f7db3cfacf9a28628382bb88467043209fbe"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_0_1.png",
+          "bytes": 1839195,
+          "sha256": "bbfc5c8b2976367342fec7d70244e7489a63beed881e2f89648536c2b9df23bf"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_1_0.png",
+          "bytes": 1975933,
+          "sha256": "b662d16535254107244809c9826311b757d91aec9bbe053c94e6c7e0db8a9fe6"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_1_1.png",
+          "bytes": 1932787,
+          "sha256": "191f4e5f16210ae434aa5abacaa1d5364586f8fba8083dae2fe978116e84b60c"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_2_0.png",
+          "bytes": 1931657,
+          "sha256": "356671e9d1ccc6520143ba9aeac529f79303d97a87d1e21765c9b0a93d91d892"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_2_1.png",
+          "bytes": 1884448,
+          "sha256": "efce4bbe713b9b5662f3c0c5f2ab64e43288f0742cefb2eec7dd02b0261d55df"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_3_0.png",
+          "bytes": 1934992,
+          "sha256": "f667abab95c98bf342a3d2d36b2da9458e7532e4666b355631371a4fa10eed51"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/forms-raster/Rock_3_1.png",
+          "bytes": 1892934,
+          "sha256": "c542c93a12ff86044cda7d826f729dbf5ec3a682d6b05de2da08183631ab8291"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.03.49:694][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "stream0",
+      "scenario": "stream",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/stream0/Runtime.log",
+        "bytes": 129203,
+        "sha256": "ab97d11efefc3d889a56510a876c43b45b00490d14d8d211d448b2a3a3ddf820"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/stream0/DiveSmoke_0_stream.png",
+          "bytes": 406724,
+          "sha256": "5650ded995e48e3db3b18827d74cc0e79b993071fe3ccadf9eae7d4de993c6af"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/stream0/DiveUnderwater_0_stream.png",
+          "bytes": 1068940,
+          "sha256": "efdc943fa284cf58c65fc3b57c6ffa02ea5ca7e48189212180f10401878c4b71"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.04.34:532][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 1,
+      "plants": false,
+      "name": "stream1",
+      "scenario": "stream",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/stream1/Runtime.log",
+        "bytes": 129508,
+        "sha256": "04f9cab9664792f43e3ed8d02d852a1d18a32122afc728016dca28c43a8b20e2"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/stream1/DiveSmoke_1_stream.png",
+          "bytes": 364735,
+          "sha256": "bc8bf8491ead2a03153dd767c138236fc30f4b85a6ab9e1195fa82428ff8fd91"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/stream1/DiveUnderwater_1_stream.png",
+          "bytes": 1033441,
+          "sha256": "136f6bd8495783ccdb8dd41f4a958f5be2956d4d7cfd76016ae997a937c624b8"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.06.13:010][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 2,
+      "plants": false,
+      "name": "stream2",
+      "scenario": "stream",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/stream2/Runtime.log",
+        "bytes": 129250,
+        "sha256": "767a9ef70974185c462eb6ed30b8e8f72f37805953af1f2f2d8416ff4edac52a"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/stream2/DiveSmoke_2_stream.png",
+          "bytes": 372834,
+          "sha256": "bc73d58ebbd4e7e6c767b9b06c1066c5a585c9c4ddb3b555d9f5489fc5f25f90"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/stream2/DiveUnderwater_2_stream.png",
+          "bytes": 1025129,
+          "sha256": "d43b5221ac90ceedfce644313c591e3bd75299643b1f34dc6f6b76f95bf2562d"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.07.50:403][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "shore0",
+      "scenario": "shore",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 9,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/shore0/Runtime.log",
+        "bytes": 117472,
+        "sha256": "9baa317082092b5e1dd05550ab3d8288a6fcf7eb0e1bcc36cacb196308b2c544"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/DiveSmoke_0_shore.png",
+          "bytes": 1093534,
+          "sha256": "180d88d4ca96d5bf9792718800b1ab796b0114acf7ac3ca698056a02b9711919"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/DiveUnderwater_0_shore.png",
+          "bytes": 1542917,
+          "sha256": "4e769ba8a2f095c8b5f71d26762748a7667dd33d48cb0b2dcff9d6b74d604b80"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreComplete_0.png",
+          "bytes": 1417633,
+          "sha256": "b080a6fa6465f6cdc1772c20c9f496882ff25eb5b85490396b88ef7be5b64e0b"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreDive_0.png",
+          "bytes": 1731013,
+          "sha256": "44e62c5721f7f31ffdc37849b9f3592a4ad78b68aed37bfb614615f308f9f428"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreMenu_0.png",
+          "bytes": 1727620,
+          "sha256": "371186dac07e3c10e99f204b24d37e60710d553638f266984b96d2134cc20d6a"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreReturn_0.png",
+          "bytes": 2241733,
+          "sha256": "f203cab2ecc532092199f353bc343ccd217e3268336c672f5cc6e5fce355fc6a"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreStart_0.png",
+          "bytes": 1825192,
+          "sha256": "6039c9e538110fb86f235dc78980d04f7e6cc19e12309064d17d3d78ed36473a"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreSurface_0.png",
+          "bytes": 2003975,
+          "sha256": "560a911d0b6836027592ba85d03bfbeb45148c3f2255d93c053d9eba3f072101"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore0/ShoreWater_0.png",
+          "bytes": 889461,
+          "sha256": "bb044d2523b5f0f4e3096fd1a8f6dd410fe47bd7b6ae236e4d6592dc7ecce7bc"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.09.28:947][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 1,
+      "plants": false,
+      "name": "shore1",
+      "scenario": "shore",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 9,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/shore1/Runtime.log",
+        "bytes": 116853,
+        "sha256": "d78b6b2eb503908f4e2dd4d109ddd044854675ab795bfa5adb33ca5651e6f230"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/DiveSmoke_1_shore.png",
+          "bytes": 1140249,
+          "sha256": "574a34128094f6beb75a3860218b9ed76e47cb41ace3eec1305079763c15a025"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/DiveUnderwater_1_shore.png",
+          "bytes": 1917746,
+          "sha256": "a59b70a715b855389ad4157284fef7b65d15cfb72fdf194a8cf5036aa4fb03f9"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreComplete_1.png",
+          "bytes": 1203184,
+          "sha256": "0dd220f0eac19d105db6c8d850e6eb90e47244de78854415c9ac503df34128cd"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreDive_1.png",
+          "bytes": 1152224,
+          "sha256": "65f57cdf36c50ea178d563b154181a90e09e4823abb51b4f066e9a0ab028f647"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreMenu_1.png",
+          "bytes": 1523309,
+          "sha256": "1d5f236afeee66427f81a02c45e5aa3d19f0fee325cef9f8e7b3831d0defd584"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreReturn_1.png",
+          "bytes": 1995240,
+          "sha256": "1a7bb6dd1bff78f1c619b43484f18e702aebe840db5261d37c9740989b74704c"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreStart_1.png",
+          "bytes": 2204588,
+          "sha256": "ffc6daeb2bdc0c35e837f419d411e017ac7867548f04678bc01ec25dc63c6954"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreSurface_1.png",
+          "bytes": 1866327,
+          "sha256": "4d022bb0de31ba80fe7d244e6d58111830707b7f4eafb6c63d8bf7cd5a8a55db"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore1/ShoreWater_1.png",
+          "bytes": 851340,
+          "sha256": "23810f9a3b691118bd6f127b6890a1e9316d58ba7233a2d91316bf7548731f85"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.10.28:379][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 2,
+      "plants": false,
+      "name": "shore2",
+      "scenario": "shore",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 9,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/shore2/Runtime.log",
+        "bytes": 118032,
+        "sha256": "97c49dc314cee427c048572b3b6f5dad039e32de669f8061fe9f1e19ff2cb698"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/DiveSmoke_2_shore.png",
+          "bytes": 1106325,
+          "sha256": "2d20fcec081f1174f2c598512f39da673ab010f38753cd2552609d0308da94eb"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/DiveUnderwater_2_shore.png",
+          "bytes": 2062357,
+          "sha256": "3f722b4837e30df70a351cdf150b5279cf3e3c2cc4ca258142e59a7f3d6a91de"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreComplete_2.png",
+          "bytes": 1340305,
+          "sha256": "4d2014ac146b48a20066550d321f6cac1f15d16e3cee0aa2162edcb01b602619"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreDive_2.png",
+          "bytes": 1124878,
+          "sha256": "0fe9603f74a98342c69e96411e2c9ede48a2e7d5774edfb4591b3956af347dc2"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreMenu_2.png",
+          "bytes": 1658647,
+          "sha256": "98aa86e9a56a6d241934b73dc5df806c2eca31d213789ab9dec8784cd63736a0"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreReturn_2.png",
+          "bytes": 2145468,
+          "sha256": "b1a06f0a56d4cff94e1cdd1aa99ea12a414c5c0684e2d35382c9318aedbaa0b4"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreStart_2.png",
+          "bytes": 2316019,
+          "sha256": "44958767af6188c2ac76a860651c204f251005c710418f705f719f1acaf263f1"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreSurface_2.png",
+          "bytes": 1652042,
+          "sha256": "f74ab6b071ed6701dba855403f357b34b5a524869d4d9f3a7c010607f391b3c5"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/shore2/ShoreWater_2.png",
+          "bytes": 880096,
+          "sha256": "5fa5e7d6e68c1b4071ef2109c79d108762acab4a848af82daa71c96436f1865d"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.11.28:758][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "discoveries",
+      "scenario": "discoveries",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 5,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/discoveries/Runtime.log",
+        "bytes": 110233,
+        "sha256": "dab56b342f4d1a59840da2ad96f931ad1124c77d01736e645a2545038ea00531"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/discoveries/Discoveries_0_Gallery_DE.png",
+          "bytes": 592635,
+          "sha256": "0fe7061bd2294fdcabd7d8a287e3f05d4f0c9740ae8fccfdd58070bc9cc6f7d4"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/discoveries/Discoveries_0_Logbook.png",
+          "bytes": 313584,
+          "sha256": "c8adca422a4eff0330b39c3b17c6d9ac9ff55506d93af188bf6b8dea710f07d6"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/discoveries/Discoveries_0_Plant_EN.png",
+          "bytes": 719119,
+          "sha256": "fcebfe951ef56690473f999026b20a659dc64406799b87c6ff044f69c086b7ea"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/discoveries/Discoveries_0_Species_DE.png",
+          "bytes": 588148,
+          "sha256": "1a4aa9f95e349696955a5c926ee8b7c0bc6065904a262f3514775c3e5dcc68f4"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/discoveries/Discoveries_0_Species_EN.png",
+          "bytes": 596055,
+          "sha256": "9f775159369f731cd1446a9936d78f5b9d4d930f9efe2314336e62e34f8dbaa2"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.12.34:122][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": true,
+      "name": "plants",
+      "scenario": "rocks",
+      "raster": false,
+      "gravel": false,
+      "status": "PASS",
+      "screenshots": 12,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/plants/Runtime.log",
+        "bytes": 109768,
+        "sha256": "7c6de83450eaa6796a3eabe323f66f16cfb75729081186f9b0f485c15d8f80f8"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_0_0.png",
+          "bytes": 1784188,
+          "sha256": "91f7e5d423eee30543e7d4570b3cde157b9385c39f3f3d5815b69909e7780b3f"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_0_1.png",
+          "bytes": 1614268,
+          "sha256": "573f544ca7b42313ca1df8a0abf64fc2d1bb67d77e14a86c56362e25dad4ceb7"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_1_0.png",
+          "bytes": 1709315,
+          "sha256": "dfacc44e76b3dba0423f4dd8e31fbcf8c90e8f9901f3cac99eb361ea32fa5a7b"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_1_1.png",
+          "bytes": 1604058,
+          "sha256": "c9ca6a47ce491bc40873c3956514a18bdba0087243e126ee568f0f56fa573eaf"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_2_0.png",
+          "bytes": 1803578,
+          "sha256": "a2f265aa756a1fed0ba87cf483362b3d47ea179aad3d9006503b617aa6fbb3b1"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_2_1.png",
+          "bytes": 1502675,
+          "sha256": "dc44f3d917a8a9de048c76b048f307703f751a801533ebc0334d4c6398751238"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_3_0.png",
+          "bytes": 1729944,
+          "sha256": "73aeddfe8e997a1e7cc669317c97efe781de6943a625b10136ef4baaa28ba8da"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_3_1.png",
+          "bytes": 1496121,
+          "sha256": "1e9ab65b89f6660ab4b72ad2f0f38cb8b7a42af3c6e022619bd0acd5b68b3d9e"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_4_0.png",
+          "bytes": 1768659,
+          "sha256": "a2c39076a894caf1fb5cab9d6a7ab8b05b87412ed91482fb9e8e5c25addbf7ab"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_4_1.png",
+          "bytes": 1572230,
+          "sha256": "e78b6f47a476b9f0b6fdc26a1a6e719c07affb2e1e0f1de2b9bb4786079e4094"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_5_0.png",
+          "bytes": 1805380,
+          "sha256": "0fce17fdbd4f8ea41b8df6d381047640934e2c80549e348a41bd2393a23f7164"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/plants/Plant_5_1.png",
+          "bytes": 1572043,
+          "sha256": "cb8a120e4cf3d49bbb622685bf6cc555a9614eca6a6a7aed46bb3063faa29332"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.13.18:504][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "gravel",
+      "scenario": "rocks",
+      "raster": false,
+      "gravel": true,
+      "status": "PASS",
+      "screenshots": 4,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/gravel/Runtime.log",
+        "bytes": 108483,
+        "sha256": "3105a0de4e5ad013d3b1050292200a99ba61e2ccb83c67cd2fa02e9bf0ecf1e3"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel/Gravel_0_0.png",
+          "bytes": 2328428,
+          "sha256": "f7369ef0815bf24c293b57f8c6e5a7eec32f98412f33085b87ea29ab2e987d49"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel/Gravel_0_1.png",
+          "bytes": 2037890,
+          "sha256": "d5d5685a93e3f512d6a571dc2497803512153104c2408f1865a21b1af42649dd"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel/Gravel_1_0.png",
+          "bytes": 2330078,
+          "sha256": "77a753ebeb67de632182c75cc79cd079fec767380c32ade85dd9827a26e4e55f"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel/Gravel_1_1.png",
+          "bytes": 2045403,
+          "sha256": "5d23bf284e744c893059411e564b93274391cceea3ae202a47613a5531b0bae9"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.14.17:853][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 0,
+      "plants": false,
+      "name": "gravel-raster",
+      "scenario": "rocks",
+      "raster": true,
+      "gravel": true,
+      "status": "PASS",
+      "screenshots": 4,
+      "log": {
+        "file": "artifacts/underwater-validation-20261126-130254/gravel-raster/Runtime.log",
+        "bytes": 109367,
+        "sha256": "6a6c5f896c36312e1088be6f7dfb0e36dc43dbec1c2017bef45852b8d9e1de85"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel-raster/Gravel_0_0.png",
+          "bytes": 2327302,
+          "sha256": "31ab2c50d129456d0db3ab99a4fa9bfc8002579c01b1c5ffcb08bb5ad6e29aad"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel-raster/Gravel_0_1.png",
+          "bytes": 2041237,
+          "sha256": "8aef89f7736b400a57ea02229f43234b2511610226af6d4c9bebeee0be844065"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel-raster/Gravel_1_0.png",
+          "bytes": 2332308,
+          "sha256": "29d41a4e4092bacc50afc9de9b278c96beaca527d460eae0d04b9182e30dfc4b"
+        },
+        {
+          "file": "artifacts/underwater-validation-20261126-130254/gravel-raster/Gravel_1_1.png",
+          "bytes": 2050795,
+          "sha256": "2bafb9c532467fb02e4bd15b8137b43e6de8ad7813e07d8e3ff02b704920c46a"
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-12.14.45:224][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "kind": "Plants",
+      "geometry": {
+        "schema": 1,
+        "units": "metres",
+        "authorship": "Original procedural game geometry; botanical groups, not species-identification models",
+        "assets": [
+          {
+            "name": "SM_Pondweed",
+            "triangles": 7224,
+            "vertices": 4466,
+            "height_metres": 1.0568873882293701,
+            "uv_channels": 2,
+            "root_weight": 0,
+            "file": "blender/exports/Plants/SM_Pondweed.fbx",
+            "sha256": "6035d8dfe809bfee8e34e26559a91eab202b8716e272fc2a19d1a2f49e538666"
+          },
+          {
+            "name": "SM_Stonewort",
+            "triangles": 27744,
+            "vertices": 17352,
+            "height_metres": 0.42195284366607666,
+            "uv_channels": 2,
+            "root_weight": 0,
+            "file": "blender/exports/Plants/SM_Stonewort.fbx",
+            "sha256": "6f963c066d99927ac3793ded4fef76e6c9e48a4116430062fd4537a87ac69e59"
+          },
+          {
+            "name": "SM_Milfoil",
+            "triangles": 45304,
+            "vertices": 28490,
+            "height_metres": 0.8112775087356567,
+            "uv_channels": 2,
+            "root_weight": 0,
+            "file": "blender/exports/Plants/SM_Milfoil.fbx",
+            "sha256": "e8c57df2e3c86ca12762e7aa315a5147f3057595955f5e9bbb36c4ee0984afb9"
+          }
+        ]
+      },
+      "imported": [
+        {
+          "name": "SM_Pondweed",
+          "triangles": [
+            7224,
+            3251,
+            1155,
+            398
+          ],
+          "source_uv_channels": 2,
+          "source_sha256": "6035d8dfe809bfee8e34e26559a91eab202b8716e272fc2a19d1a2f49e538666"
+        },
+        {
+          "name": "SM_Stonewort",
+          "triangles": [
+            27744,
+            12484,
+            4438,
+            1526
+          ],
+          "source_uv_channels": 2,
+          "source_sha256": "6f963c066d99927ac3793ded4fef76e6c9e48a4116430062fd4537a87ac69e59"
+        },
+        {
+          "name": "SM_Milfoil",
+          "triangles": [
+            45304,
+            20386,
+            7248,
+            2492
+          ],
+          "source_uv_channels": 2,
+          "source_sha256": "e8c57df2e3c86ca12762e7aa315a5147f3057595955f5e9bbb36c4ee0984afb9"
+        }
+      ]
+    },
+    {
+      "kind": "Gravel",
+      "geometry": {
+        "schema": 1,
+        "units": "metres",
+        "radius_metres": 1,
+        "source_blend_sha256": "889c2f59fcf6932ae18bee1143e60948e065e83e5f5aac037ed07908cbbd2381",
+        "intended_use": "Rescaled small stones in authored underwater gravel patches; not measured sediment geometry",
+        "assets": [
+          {
+            "name": "SM_Gravel1",
+            "source": "boulder_01",
+            "original_source_sha256": "13d651c28c309476cd89bbf8fbc722327b8a8597a467a70fc1f7c46454a38a04",
+            "triangles": 1200,
+            "nonmanifold_edges": 0,
+            "maximum_radius": 0.9999999952124199,
+            "file": "blender/exports/Gravel/SM_Gravel1.fbx",
+            "sha256": "bf727272e650bd26d1db397180022a1233fd368575386866c7225ea0f656ed29"
+          },
+          {
+            "name": "SM_Gravel2",
+            "source": "namaqualand_boulder_05",
+            "original_source_sha256": "6daad711caaa07907bdb97377589cd9c7c47058f6c0fd9540d6257653b42ebe9",
+            "triangles": 1200,
+            "nonmanifold_edges": 0,
+            "maximum_radius": 0.999999995881808,
+            "file": "blender/exports/Gravel/SM_Gravel2.fbx",
+            "sha256": "ac93f2629550714be8c685369d8b08518e0043eb1535f56cc299fe9d7a0d815a"
+          },
+          {
+            "name": "SM_Gravel3",
+            "source": "namaqualand_boulder_06",
+            "original_source_sha256": "c197a94b0000c0bc6b6a50bbc8ec9cbbc7aa1411bb7e451d9eaaab9ce1f3890a",
+            "triangles": 1200,
+            "nonmanifold_edges": 0,
+            "maximum_radius": 1.0000000166473908,
+            "file": "blender/exports/Gravel/SM_Gravel3.fbx",
+            "sha256": "c804ba8a7725f4a1c0bc9a638758ba9cd0239729be8e31c4423ac285e60cb43f"
+          }
+        ]
+      },
+      "imported": [
+        {
+          "name": "SM_Gravel1",
+          "source_sha256": "bf727272e650bd26d1db397180022a1233fd368575386866c7225ea0f656ed29",
+          "triangles": [
+            1200,
+            420,
+            120,
+            64
+          ],
+          "collision_hulls": 1,
+          "nanite": true,
+          "screen_sizes": [
+            1.0,
+            0.07999999821186066,
+            0.02500000037252903,
+            0.00800000037997961
+          ]
+        },
+        {
+          "name": "SM_Gravel2",
+          "source_sha256": "ac93f2629550714be8c685369d8b08518e0043eb1535f56cc299fe9d7a0d815a",
+          "triangles": [
+            1200,
+            420,
+            120,
+            64
+          ],
+          "collision_hulls": 1,
+          "nanite": true,
+          "screen_sizes": [
+            1.0,
+            0.07999999821186066,
+            0.02500000037252903,
+            0.00800000037997961
+          ]
+        },
+        {
+          "name": "SM_Gravel3",
+          "source_sha256": "c804ba8a7725f4a1c0bc9a638758ba9cd0239729be8e31c4423ac285e60cb43f",
+          "triangles": [
+            1200,
+            420,
+            120,
+            64
+          ],
+          "collision_hulls": 1,
+          "nanite": true,
+          "screen_sizes": [
+            1.0,
+            0.07999999821186066,
+            0.02500000037252903,
+            0.00800000037997961
+          ]
+        }
+      ]
+    }
+  ],
+  "source_files": [
+    {
+      "file": "divingsim/Source/DiveSim/DiveAccess.cpp",
+      "bytes": 6125,
+      "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveAudio.cpp",
+      "bytes": 4599,
+      "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveAudio.h",
+      "bytes": 1090,
+      "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveAvatar.cpp",
+      "bytes": 20933,
+      "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveAvatar.h",
+      "bytes": 2658,
+      "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp",
+      "bytes": 5022,
+      "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+      "bytes": 6156,
+      "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveBodyFrame.h",
+      "bytes": 3119,
+      "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp",
+      "bytes": 6770,
+      "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveBuildings.cpp",
+      "bytes": 3576,
+      "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveBuildings.h",
+      "bytes": 4199,
+      "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+      "bytes": 8085,
+      "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+      "bytes": 304,
+      "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+      "bytes": 4735,
+      "sha256": "53539f013bf803cd2cb77df4f3b2491380bb8f54cc9a82df4728ab8754ef7223"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+      "bytes": 2697,
+      "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp",
+      "bytes": 608,
+      "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCelestialActor.h",
+      "bytes": 490,
+      "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCoast.cpp",
+      "bytes": 4022,
+      "sha256": "827cc0f004b5449181ad887de1c366049ecb87d90ebd3ed51ce259cf13db92e8"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+      "bytes": 10062,
+      "sha256": "af08eac3ac52f8bb6e3cd5f7194f2cd3b7c072544d501962bd695d45c3f58b28"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h",
+      "bytes": 292,
+      "sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp",
+      "bytes": 6261,
+      "sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp",
+      "bytes": 14718,
+      "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp",
+      "bytes": 6867,
+      "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveConfigIO.h",
+      "bytes": 414,
+      "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveContacts.cpp",
+      "bytes": 8513,
+      "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveContacts.h",
+      "bytes": 2034,
+      "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+      "bytes": 21502,
+      "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveControls.cpp",
+      "bytes": 4829,
+      "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveControls.h",
+      "bytes": 1055,
+      "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp",
+      "bytes": 7268,
+      "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp",
+      "bytes": 3376,
+      "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp",
+      "bytes": 2844,
+      "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp",
+      "bytes": 6856,
+      "sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp",
+      "bytes": 5190,
+      "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDiscoveries.h",
+      "bytes": 1057,
+      "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp",
+      "bytes": 9474,
+      "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+      "bytes": 5246,
+      "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp",
+      "bytes": 5891,
+      "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp",
+      "bytes": 6812,
+      "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveEcology.cpp",
+      "bytes": 9738,
+      "sha256": "03ec089bf1283867fab1e9593d23aa98bfc700d0260c6caeef7aa2653f79342f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp",
+      "bytes": 5823,
+      "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveEquipment.cpp",
+      "bytes": 13372,
+      "sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveEquipment.h",
+      "bytes": 1674,
+      "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp",
+      "bytes": 6956,
+      "sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp",
+      "bytes": 1536,
+      "sha256": "ec79da991a2d1380accb3c092925ea829d9af32ebf93ce4116f0601bc10bb06c"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveGameMode.cpp",
+      "bytes": 288,
+      "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveGameMode.h",
+      "bytes": 234,
+      "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveGravel.cpp",
+      "bytes": 9034,
+      "sha256": "e055ec030be00e3cc88757b74b52da0ee0140859c354ca1d931f23cc19666a4f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveHUD.cpp",
+      "bytes": 31854,
+      "sha256": "98d497a8c649030b96888329c4b7bafe88d1e27a06f81a92a8e2904f025f94af"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveHUD.h",
+      "bytes": 5802,
+      "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveImagery.cpp",
+      "bytes": 9245,
+      "sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+      "bytes": 35105,
+      "sha256": "31f7c60239fa146ac1edfa8f7b3438e2172b3a3eb14a0fd64924d98540fde7a0"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "bytes": 5383,
+      "sha256": "8ef845c78fa718222d1310955ee92cf4150a6e52f0492fd4352664aacabcc776"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "bytes": 13330,
+      "sha256": "9ff6b4892c515d063ec8cd6c6f6dda76d652207e05b727b54b4e110664952275"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+      "bytes": 394,
+      "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp",
+      "bytes": 5452,
+      "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp",
+      "bytes": 2343,
+      "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLogbook.cpp",
+      "bytes": 13119,
+      "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLogbook.h",
+      "bytes": 1181,
+      "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp",
+      "bytes": 15375,
+      "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp",
+      "bytes": 22800,
+      "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp",
+      "bytes": 10669,
+      "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp",
+      "bytes": 5717,
+      "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp",
+      "bytes": 4950,
+      "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp",
+      "bytes": 1396,
+      "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveParticles.cpp",
+      "bytes": 11885,
+      "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePawn.cpp",
+      "bytes": 61695,
+      "sha256": "e4bcb02ed2388907f52f83bc2ecf5560c79db6563576b6b13624511fe2f6a3da"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePawn.h",
+      "bytes": 7698,
+      "sha256": "67676f3310d5d06f7af755f6914bf0f84311fbc8bb93e931feccd932bfd20fbc"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp",
+      "bytes": 7285,
+      "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePerformance.cpp",
+      "bytes": 7701,
+      "sha256": "4327caf4ce19e8934fb4397696dd8187c53c44efeba7ad3067a8dfb8a9c7fdff"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePhotograph.cpp",
+      "bytes": 2740,
+      "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePlayerController.cpp",
+      "bytes": 1156,
+      "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePlayerController.h",
+      "bytes": 307,
+      "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePopulation.cpp",
+      "bytes": 8373,
+      "sha256": "ec6e79d97e577affcfdc6854d2e2f4c56dbe2e9403a6c1612fdd746a0889c166"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+      "bytes": 7445,
+      "sha256": "c0e9b32097f7962fbdca2a6fb174491bede6540e8b8cd0aa4882a4976cf6151e"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePose.h",
+      "bytes": 4622,
+      "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveProfiles.cpp",
+      "bytes": 8930,
+      "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveProfiles.h",
+      "bytes": 1447,
+      "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp",
+      "bytes": 19056,
+      "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp",
+      "bytes": 14411,
+      "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveRecording.cpp",
+      "bytes": 12426,
+      "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveRecording.h",
+      "bytes": 1339,
+      "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+      "bytes": 7103,
+      "sha256": "a9e9f4c2a71fffafdaef3de285cd4b0f5355fc216da75f310a6408074bd91b8e"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveSediment.cpp",
+      "bytes": 7191,
+      "sha256": "f3c08475bb83a5d85b79e2c19e37d0f85269a5086d5f2a8e953a365ceaf5edec"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp",
+      "bytes": 3763,
+      "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveShoreline.cpp",
+      "bytes": 7547,
+      "sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+      "bytes": 4592,
+      "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveSim.Build.cs",
+      "bytes": 886,
+      "sha256": "b7e7428ef210c4b10a611469bd91ca80de3035fa85c112e961942bdb5d93a985"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveSim.cpp",
+      "bytes": 112,
+      "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveSky.cpp",
+      "bytes": 13370,
+      "sha256": "dadde65be9ad3e2ca323292d0a8117e579cae285509c8cda5993ea72adc8507a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveSoak.cpp",
+      "bytes": 12149,
+      "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveTerrain.cpp",
+      "bytes": 11575,
+      "sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveTerrain.h",
+      "bytes": 1809,
+      "sha256": "59a55f61dcc2becfdef355fbee22f678a94f798d82cb5b2bc0f612dfe54407b9"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveTextDialog.h",
+      "bytes": 4120,
+      "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveTorch.cpp",
+      "bytes": 1554,
+      "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveVegetation.cpp",
+      "bytes": 13629,
+      "sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveVegetation.h",
+      "bytes": 621,
+      "sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWater.cpp",
+      "bytes": 9080,
+      "sha256": "214f1695dd2d0c59bf5f7725a1a780e525f44cd706c85119000754b8c16e566c"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp",
+      "bytes": 6723,
+      "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWaypoints.h",
+      "bytes": 1034,
+      "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp",
+      "bytes": 13837,
+      "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp",
+      "bytes": 7592,
+      "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp",
+      "bytes": 5515,
+      "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+      "bytes": 18621,
+      "sha256": "206a59ce0d9f8864fe5ee3169eebdc566f08d112c678b9373889f3226d2dc4f9"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.h",
+      "bytes": 10343,
+      "sha256": "21ce122513cd2a9b98dd51b464e2d772b6e639969a59016d9c770a11d36d43bb"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h",
+      "bytes": 2677,
+      "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h",
+      "bytes": 1533,
+      "sha256": "7c6db5c705c037ddd4b6de5289a9370c2d6c17b7bc8c9edf6dc8be89eeb65898"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h",
+      "bytes": 775,
+      "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h",
+      "bytes": 2534,
+      "sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h",
+      "bytes": 3914,
+      "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Decompression.h",
+      "bytes": 3590,
+      "sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h",
+      "bytes": 20386,
+      "sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Ecology.h",
+      "bytes": 2014,
+      "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h",
+      "bytes": 2989,
+      "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h",
+      "bytes": 2547,
+      "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h",
+      "bytes": 994,
+      "sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h",
+      "bytes": 4219,
+      "sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+      "bytes": 3839,
+      "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Loadout.h",
+      "bytes": 4004,
+      "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h",
+      "bytes": 524,
+      "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Navigation.h",
+      "bytes": 764,
+      "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h",
+      "bytes": 4598,
+      "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Sediment.h",
+      "bytes": 1127,
+      "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h",
+      "bytes": 1067,
+      "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h",
+      "bytes": 1916,
+      "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h",
+      "bytes": 1249,
+      "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Torch.h",
+      "bytes": 1176,
+      "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h",
+      "bytes": 2047,
+      "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h",
+      "bytes": 1017,
+      "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+      "bytes": 885,
+      "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h",
+      "bytes": 3453,
+      "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68"
+    },
+    {
+      "file": "divingsim/Source/DiveSim/Simulation/Weather.h",
+      "bytes": 756,
+      "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf"
+    },
+    {
+      "file": "divingsim/Source/divingsim.Target.cs",
+      "bytes": 1031,
+      "sha256": "df66618e5759aeec36462056fef73773d2b9a5d8f384e4765953355471a35eb6"
+    },
+    {
+      "file": "divingsim/Source/divingsimEditor.Target.cs",
+      "bytes": 389,
+      "sha256": "cca3119d115b2c39690c250545bfc837c9c50a9e994d29205fe1cbacddb86dcf"
+    },
+    {
+      "file": "divingsim/Config/DefaultEditor.ini",
+      "bytes": 77752,
+      "sha256": "103a1a8f7f7cdc4cde6c82c09df0246df012fcf319a480c170a8de7287e0e59c"
+    },
+    {
+      "file": "divingsim/Config/DefaultEditorPerProjectUserSettings.ini",
+      "bytes": 234,
+      "sha256": "0aaf0d9bd09045215b6d9277e37adbb6ed8f6275540e60e2744f293b032bf077"
+    },
+    {
+      "file": "divingsim/Config/DefaultEngine.ini",
+      "bytes": 4821,
+      "sha256": "374f5efca557ae5106148aaa4d6e321fb9420efa8b3c2377a173cb34ceaa9681"
+    },
+    {
+      "file": "divingsim/Config/DefaultGame.ini",
+      "bytes": 913,
+      "sha256": "15dac366654b52756a58161aa2f577b581e940a9a524b7a369564d158c85c1b0"
+    },
+    {
+      "file": "divingsim/Config/DefaultInput.ini",
+      "bytes": 13878,
+      "sha256": "5deb78555510100669f2753e737919b3275ba81cb3ac31ced138a42c2bc58fef"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_Compile.ini",
+      "bytes": 851,
+      "sha256": "ec28ccfa77e0a9a07b82cac7ad584ef83f45f56ffb4b50469270a213ca4c152b"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_Export.ini",
+      "bytes": 948,
+      "sha256": "f5289b73341108ca0602e636f9c05e748f186bb2518b092a6b5a9d60b0a22757"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_ExportDialogueScript.ini",
+      "bytes": 736,
+      "sha256": "6b1e5b6e9d4173284a490c884e0e17a43915ac124b7754dc830d92fd47001560"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_Gather.ini",
+      "bytes": 1407,
+      "sha256": "8e355845bfa4277355bb4951035d67da2917d34bbf0c376406205730367afdd2"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_GenerateReports.ini",
+      "bytes": 744,
+      "sha256": "a51cfc2847aa4967edb106e4e82949e1d130196c83cf22854ff13dae6e6a8409"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_Import.ini",
+      "bytes": 870,
+      "sha256": "4debbcddf9c9a79d938e95a7fb2104e2ccc8c9b9d905a58c92fe93069df6f3d6"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_ImportDialogue.ini",
+      "bytes": 744,
+      "sha256": "7b8fe294216195541b61cb3780cc2932e0e6d034164344c2fc3c66d4d8ee9f08"
+    },
+    {
+      "file": "divingsim/Config/Localization/Game_ImportDialogueScript.ini",
+      "bytes": 736,
+      "sha256": "f4409926f01cf0b42714182779d1da03c88598e3c0dfde3135cba011d9a456f0"
+    }
+  ],
+  "assets": [
+    {
+      "file": "divingsim/Content/Diving/Plants/SM_Milfoil.uasset",
+      "bytes": 1285277,
+      "sha256": "4886c936762149e26a755d5fa73e2ca48dc538ef62d3dfe0de21482acbe237e5"
+    },
+    {
+      "file": "divingsim/Content/Diving/Plants/SM_Pondweed.uasset",
+      "bytes": 232949,
+      "sha256": "933574178101ad8608a6a6b57b6fbb613f283b0bafce95443c613bbaa6471520"
+    },
+    {
+      "file": "divingsim/Content/Diving/Plants/SM_Stonewort.uasset",
+      "bytes": 749667,
+      "sha256": "13cee979cbdd7f89b8565378649a9a3993a6182cfe0cca9c8d07364d80ff8603"
+    },
+    {
+      "file": "divingsim/Content/Diving/Gravel/SM_Gravel1.uasset",
+      "bytes": 72200,
+      "sha256": "4223f01cf7661c7dd65848fe50f12aabdff6e4dc0de456e7859965fac7872675"
+    },
+    {
+      "file": "divingsim/Content/Diving/Gravel/SM_Gravel2.uasset",
+      "bytes": 66597,
+      "sha256": "66c53b87c37baa5f013066daff4f6439862e3bef22c6e15fa2deda6f61dcee04"
+    },
+    {
+      "file": "divingsim/Content/Diving/Gravel/SM_Gravel3.uasset",
+      "bytes": 67232,
+      "sha256": "638b6fd633f801fb27241f8490093fc4c7656a1ec4dac57d6e177430074b3cae"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_AquaticPlant.uasset",
+      "bytes": 12810,
+      "sha256": "367dbd5c3dc7b649c231adbcda8d640e745b34cc366b93482b401dd584ee3f53"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_GravelSurface.uasset",
+      "bytes": 19342,
+      "sha256": "40d6ee738372a3613c9b5b2233a920390d3334c09d2629b8fbd1a634854e2781"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_Lakebed.uasset",
+      "bytes": 19263,
+      "sha256": "8bd4bea894b1515fc5088eae9cf320827d925d0d069457900a41466117ffe668"
+    }
+  ],
+  "build": {
+    "file": "artifacts/underwater-package.log",
+    "bytes": 302660,
+    "sha256": "6147ebbbb669fad2813cbcfa808a773b948f7e395d29262a9ff97ca19429c0f3"
+  },
+  "bootstrap": {
+    "started_utc": "2026-11-26T12:15:11.5931933Z",
+    "child_id": 33692,
+    "log_sha256": "620298C4442CE7D96C028C34DE6A9CFFEF8E4052D1B9346033872DC552CF3DA3",
+    "status": "PASS",
+    "executable_sha256": "066C08364C26FB1DDB8C421A2EB56A5280CF6FADEA0C468E175A54328923F381",
+    "child": "O:\\games\\dive game\\Builds\\WindowsUnderwaterDetail\\divingsim\\Binaries\\Win64\\divingsim-UnderwaterDetail.exe",
+    "exit_code": 0,
+    "finished_utc": "2026-11-26T12:15:42.0598434Z"
+  },
+  "ci": {
+    "source_commit": "262e1e455ea8a379658b414368238df574e97c80",
+    "run": 45815213845,
+    "jobs": [
+      {
+        "id": 139893078252,
+        "name": "simulation (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 45815213845,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run cmake -S Tests -B artifacts/tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run cmake --build artifacts/tests --config Release",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run ctest --test-dir artifacts/tests -C Release --output-on-failure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Run python -m pip install -r Tools/requirements-buildings.txt -r Tools/requirements-coast-model.txt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run python -m unittest discover -s Tests -p \"test_*.py\"",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          }
+        ]
+      },
+      {
+        "id": 139893078766,
+        "name": "simulation (ubuntu-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 45815213845,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run cmake -S Tests -B artifacts/tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run cmake --build artifacts/tests --config Release",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run ctest --test-dir artifacts/tests -C Release --output-on-failure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Run python -m pip install -r Tools/requirements-buildings.txt -r Tools/requirements-coast-model.txt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run python -m unittest discover -s Tests -p \"test_*.py\"",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          }
+        ]
+      },
+      {
+        "id": 139893078992,
+        "name": "simulation (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 45815213845,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Run cmake -S Tests -B artifacts/tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Run cmake --build artifacts/tests --config Release",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Run ctest --test-dir artifacts/tests -C Release --output-on-failure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Run python -m pip install -r Tools/requirements-buildings.txt -r Tools/requirements-coast-model.txt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7
+          },
+          {
+            "name": "Run python -m unittest discover -s Tests -p \"test_*.py\"",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17
+          }
+        ]
+      }
+    ]
+  },
+  "performance": {
+    "file": "Documentation/UNDERWATER_DETAIL_PERFORMANCE.json",
+    "bytes": 6152,
+    "sha256": "1f9fde6edd668783a4b421c50db879d722a57a89afe7ebaa63365614facfd3e0"
+  },
+  "limitations": [
+    "Visual reference not yet achieved",
+    "No endurance test of this new package; performance scope recorded separately",
+    "Botanical groups and authored distribution, not species-identification or local survey models"
+  ]
+}

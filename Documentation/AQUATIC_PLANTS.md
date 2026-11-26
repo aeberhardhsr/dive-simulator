@@ -20,6 +20,20 @@ Die bestehenden Gruppenbezeichnungen bleiben unverändert: [Potamogeton](https:/
 
 `Tools/SmokeTest.ps1 -EditorSandbox -Scenario rocks -PlantView` vergleicht alle drei Gruppen mit ihren Vorgängern aus zwei festen Blickwinkeln: zwölf echte Spielaufnahmen. Der nahe Blick zeigt Detailausschnitte, der weitere Blick die ganze Gruppe. Die gewöhnliche Umgebung und die aktuelle Beleuchtung bleiben aktiv; die Pflanzen bewegen sich auch während dieser Bildfolge. Ein zusätzliches `-GravelView` zeigt ihre Einbindung in eine natürlich bestückte Stelle.
 
-Die erste Integration bestand den nativen Streaming- und Entdeckungsablauf. Die verfeinerten Formen bestanden anschließend den Vergleich aller drei Gruppen und die Einbindung in die Kies-Szene: zwölf Modellaufnahmen und vier Szenenaufnahmen unter `artifacts/aquatic-plant-refined/`. Dabei sind die breiten Blätter deutlich weicher gegliedert; die zuerst zu dünnen Verzweigungen bleiben nach der Überarbeitung besser sichtbar. Eine neue Paketprüfung einschließlich aller drei Einstiege, der Arten-/Fotosammlung und eines Leistungsvergleichs steht noch aus. Diese Entwicklungsversion ist noch nicht als neues Spielpaket freigegeben.
+Die erste Integration bestand den nativen Streaming- und Entdeckungsablauf. Die verfeinerten Formen bestanden anschließend den Vergleich aller drei Gruppen und die Einbindung in die Kies-Szene: zwölf Modellaufnahmen und vier Szenenaufnahmen unter `artifacts/aquatic-plant-refined/`. Dabei sind die breiten Blätter deutlich weicher gegliedert; die zuerst zu dünnen Verzweigungen bleiben nach der Überarbeitung besser sichtbar.
+
+Das eigenständige Paket `Builds/WindowsUnderwaterDetail/divingsim.exe` enthält jetzt Felsen, Kies und alle drei neuen Pflanzengruppen. Zwölf Paketprüfungen mit 74 frischen Bildern bestehen: Modellvergleiche, Kies mit/ohne Nanite, Streaming und Uferübergänge an allen drei Einstiegen sowie die Arten-/Fotosammlung. Der normale Start über die Haupt-EXE wurde gesondert geprüft. [UNDERWATER_DETAIL_RESULTS.json](UNDERWATER_DETAIL_RESULTS.json) bindet diese Nachweise an EXE, Inhaltscontainer, Quellstand `262e1e4`, Modelle und importierte Materialien. Die portablen Prüfungen desselben Quellstands bestehen auf Windows, macOS und Linux; dies ist kein nativer Unreal-Mac-Build.
+
+Die Paketstarts melden weiterhin das bereits vorher fehlende CelestialVault-Sternmaterial `MI_StarsStar_EnergyConservative`. Diese Meldung ist in den Ergebnisdaten erhalten. Die erfolgreichen Spielprüfungen bedeuten nicht, dass sämtliche Engine-Startmeldungen behoben sind.
+
+Eine anschließende 60-Sekunden-Messung desselben Pakets lief ohne weitere Unreal-/Spielinstanz: RTX 3090, Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 % Renderauflösung, ohne VSync oder Bildratenlimit. Nach 15 Sekunden Aufwärmen wurden 4.691 vollständige Bildintervalle ausgewertet (59,975 s; zwei Aufzeichnungsrandbilder ausgenommen). Ergebnis: 78,22 FPS im Mittel, 67,22 FPS für das langsamste Prozent, P95 14,06 ms, Maximum 16,77 ms und kein Intervall über 33,33 ms. [UNDERWATER_DETAIL_PERFORMANCE.json](UNDERWATER_DETAIL_PERFORMANCE.json) enthält Messwerte, Hardware, Paketidentität und Rohdatenprüfsummen. Das gilt für diese Unterwasserszene, nicht für alle Orte, Einstellungen oder Hardware; ein direkter Leistungsgewinn gegenüber früheren Messungen mit anderen Hintergrundlasten wird nicht behauptet. Der zweistündige ältere Murg-Lauf deckt dieses neue Paket nicht ab.
+
+Direkter Vergleich aus dem fertigen Paket, gleicher Standort und Kamerawinkel; die gewöhnliche Pflanzenbewegung bleibt aktiv:
+
+![Bisherige kantige Blätter](Images/AquaticPlant_Previous.png)
+
+![Neue gebogene Blätter und räumliche Stängel](Images/AquaticPlant_Current.png)
+
+![Neue Pflanzen und Kies im fertigen Spielpaket](Images/Underwater_Detail_Package.png)
 
 Offen bleiben insbesondere stärker zusammenhängender Bewuchs, Übergänge zu Belägen auf Felsen und Sediment, die gemeinsame Lichtwirkung sowie die abschließende anatomische und visuelle Abnahme. Das Projektziel umfasst weiterhin die vollständige Unterwasserwelt, danach die Landschaft über Wasser und anschließend die dokumentierte Menü-/HUD-Überarbeitung.

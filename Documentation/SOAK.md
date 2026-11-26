@@ -1,5 +1,19 @@
 # Langzeitprüfung des gerenderten Spiels
 
+## Ergänzung vom 26. November 2026: Murg
+
+Ein weiterer Lauf des unveränderten Pakets `WindowsFishSteering` bestand 7.200,29 Sekunden echte Messzeit und 7.200,14 Sekunden Simulationszeit. Er erfasste 7.996,70 m Bewegung, 35 Kurswechsel, sieben besuchte Kachelzentren, einen Oberflächenzyklus und 240 erfolgreiche automatische Sicherungen ohne fehlgeschlagene oder ausstehende Sicherung. Die endgültige Datei enthält 7.217 geprüfte Messpunkte. EXE und sämtliche gekochten Inhaltscontainer stimmen vor und nach dem Lauf überein.
+
+Der [maschinell überprüfte Bericht](SOAK_MURG_2H_RESULTS.json) enthält Paketidentität, alle 240 Messfenster einschließlich Schlussintervall, Aufnahmeprüfsummen und das Entwicklungsprotokoll. Rohdaten: `artifacts/soak-7200s-entry1-20261126-110517`. Das Paket entspricht anhand seiner EXE- und Inhaltsprüfsummen dem in [FISH_STEERING_RESULTS.json](FISH_STEERING_RESULTS.json) dokumentierten Stand. `Host.source_commit` bezeichnet den beim Start ausgecheckten Prüfskriptstand; es ist keine Behauptung über den kompilierten Spielcode.
+
+Unter gleichzeitiger Blender-/Unreal-Entwicklung, Paketprüfungen und zeitweise einem vom Nutzer gestarteten Spiel wurden 68,40 FPS im Mittel erreicht. 90 von 240 Fenstern lagen unter 60 FPS, das langsamste bei 30,94 FPS. P95/P99 der Bildintervalle liegen bei höchstens 26,50/31,00 ms; das längste Intervall betrug 334,64 ms. Alle 1.327 Intervalle über 33,33 ms und 18 über 100 ms bleiben enthalten. Dies belegt den bestandenen Stabilitätsablauf unter dieser Last, keine durchgängigen 60 FPS und keinen isolierten Leistungsvergleich.
+
+![Murg: vollständige zweistündige Messung](Images/Soak_Murg_2H.png)
+
+Start, Ende sowie Aufnahmen nach 60 und 110 Minuten wurden angesehen. Sie zeigen den alten, sehr dunklen Freiwasserblick und das bestehende HUD; sie sind keine visuelle Abnahme der neuen Unterwasserwelt. Das abgetastete physische Working Set sinkt von 4.330 auf 847 MiB unter gleichzeitiger Entwicklung. Daraus lässt sich keine Speicherleckfreiheit ableiten. Der Lauf umfasst ausdrücklich noch nicht die späteren Felsen-, Kies- und Pflanzenänderungen im Paket `WindowsUnderwaterDetail`. Die historischen Ergebnisse des 25. November bleiben unten unverändert erhalten.
+
+## Verfahren und historischer Lauf
+
 PERF-010 verlangt mindestens zwei Stunden Spielstabilität. Synthetische Zwei-Stunden-Protokolle und beschleunigte Kernprüfungen erfüllen diesen Laufzeitnachweis nicht.
 
 `Tools/Soak.ps1` startet genau eine eigene Windows-Spielinstanz. Der Standard ist 7.200 gemessene Sekunden nach 15 Sekunden Aufwärmen, native 1920×1080, Qualitätsstufe 2, ohne dynamische Auflösung, VSync oder FPS-Limit. Die Testvorgaben werden nicht als persönliche Einstellungen gespeichert. Der Modus ist Exploration; Gasversorgung und Tarierung folgen dessen normalen Regeln. Die Physiologie wird nicht als klinisch validiert behandelt.

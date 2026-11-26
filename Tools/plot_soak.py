@@ -30,7 +30,7 @@ def main():
     fig, axes = plt.subplots(4, 1, sharex=True, figsize=(13, 9), layout='constrained')
     fig.suptitle(f'{duration:.0f} Minuten gerendertes Spiel: Stabilität und beobachtete Last', fontsize=17)
     axes[0].set_title(f"{result['location']} / {result['mode']} · {result['width']} × {result['height']} · Qualität {result['quality']} · {result['gpu']}\n"
-                      f"Build {host['source_commit'][:7]} · Rahmenbedingungen siehe Host- und Aktivitätsprotokoll · kein isolierter FPS-Benchmark", fontsize=10)
+                      f"Paket-SHA {host['executable_sha256'][:12]} · Rahmenbedingungen siehe Aktivitätsprotokoll · kein isolierter FPS-Benchmark", fontsize=10)
     series = [([row['interval']['average_fps'] for row in rows], 'FPS je Berichtsintervall', '#126c8c'),
               ([row['interval']['maximum_ms'] for row in rows], 'Längstes Bildintervall (ms)', '#ad5925'),
               ([row['memory_mb'] for row in rows], 'Prozessspeicher (MiB)\nabgetastetes Working Set', '#634e91'),
@@ -58,15 +58,17 @@ def main():
             event = json.loads(line)
             name = event.get('event', '')
             moment = (datetime.fromisoformat(event['utc']) - start).total_seconds() / 60
-            if name.endswith('_started'):
-                pending[name[:-8]] = moment
-            elif name.endswith('_finished') and name[:-9] in pending:
-                begin = pending.pop(name[:-9])
-                axes[0].axvspan(max(0, begin), min(duration, moment), ymin=.96, ymax=1, color='#c87927', alpha=.7)
+            for suffix in ('_started', '_begin'):
+                if name.endswith(suffix):
+                    pending[name[:-len(suffix)]] = moment
+            for suffix in ('_finished', '_end'):
+                if name.endswith(suffix) and name[:-len(suffix)] in pending:
+                    begin = pending.pop(name[:-len(suffix)])
+                    axes[0].axvspan(max(0, begin), min(duration, moment), ymin=.96, ymax=1, color='#c87927', alpha=.7)
     axes[-1].set_xlim(0, duration)
     axes[-1].set_xlabel('Gemessene Laufzeit (Minuten)')
     background_label = ' Blau hinterlegt: zusätzliches Benutzerspiel.' if args.background_start_utc else ''
-    fig.supxlabel('Orange oben: protokollierte Entwicklungsaktivitäten.' + background_label + '\n'
+    fig.supxlabel('Orange: Aktivitätspaare mit Start und Ende; weitere gleichzeitige Last siehe Protokoll.' + background_label + '\n'
                   'Speicherwerte sind Stichproben unter Betriebssystem-Speicherdruck; kein Nachweis von Speicherleckfreiheit.', fontsize=9)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.output, dpi=140)

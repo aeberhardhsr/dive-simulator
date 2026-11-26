@@ -34,7 +34,9 @@ Entwicklungsansicht mit neuen Steinen – weiterhin deutlich unter der Gesamtqua
 
 ![Gleiche Kamera, Kiesgeometrie eingeblendet](Images/Gravel_Visible.png)
 
-Die visuelle Gesamtabnahme ist weiter offen: zu einfache Pflanzenformen und -oberflächen, fehlende mittlere Geröllstrukturen sowie die gemeinsame Wirkung von Licht, Bewuchs und Wasser. Die endgültige Abnahme in Bewegung und ein neues eigenständiges Spielpaket stehen aus. Rechenzeiten aus parallel laufender Entwicklung, Langzeittest und zeitweise geöffneter Nutzervorschau sind keine isolierte Bildratenmessung.
+Die Pflanzenformen und -oberflächen wurden inzwischen weiterentwickelt. Das neue eigenständige Paket `WindowsUnderwaterDetail` enthält Felsen, Kies und die drei neuen Pflanzengruppen. Zwölf Paketprüfungen mit 74 Aufnahmen sowie der normale Spielstart bestehen; Details und Paketidentität stehen in [UNDERWATER_DETAIL_RESULTS.json](UNDERWATER_DETAIL_RESULTS.json). Echte Vorher-/Nachher-Aufnahmen sind unter [Unterwasserbewuchs](AQUATIC_PLANTS.md) dokumentiert.
+
+Die visuelle Gesamtabnahme ist weiter offen: fehlende mittlere Geröllstrukturen, zu vereinzelt wirkender Bewuchs und insbesondere die gemeinsame Wirkung von Licht und Wasser. Die Referenzqualität ist deutlich noch nicht erreicht. Der [zweistündige Murg-Lauf](SOAK.md) betrifft das ältere unveränderte Paket `WindowsFishSteering`; er wird nicht als Dauerlaufnachweis für die neuen Modelle ausgegeben. Rechenzeiten aus parallel laufender Entwicklung sind keine isolierte Bildratenmessung.
 
 ## Licht und Wasseroberfläche
 
