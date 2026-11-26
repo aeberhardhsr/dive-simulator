@@ -155,8 +155,8 @@ void ADiveWorld::Populate()
     {
         auto* component=Plants[species].Get(); component->ClearInstances();
         const FString name=UTF8_TO_TCHAR(Dive::PlantProfiles[species].Mesh);
-        component->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Meshes/")+name+TEXT(".")+name)));
-        component->SetMaterial(0,Mat(TEXT("M_Plant")));
+        component->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Plants/")+name+TEXT(".")+name)));
+        component->SetMaterial(0,Mat(TEXT("M_AquaticPlant")));
     }
     for(int32 species=0;species<Fish.Num();++species)
     {

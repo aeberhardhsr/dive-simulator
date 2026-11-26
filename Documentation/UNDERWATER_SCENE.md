@@ -38,6 +38,8 @@ Die visuelle Gesamtabnahme ist weiter offen: zu einfache Pflanzenformen und -obe
 
 ## Licht und Wasseroberfläche
 
+Die weitergehende Arbeit an Pflanzenformen und ihren Oberflächen ist in [Unterwasserbewuchs](AQUATIC_PLANTS.md) dokumentiert. Die bisherigen groben Blätter und die neue Integration bleiben in kontrollierten Spielansichten vergleichbar.
+
 Die normale Aufnahme `artifacts/rock-validation-20261126-113456/stream0/DiveUnderwater_0_stream.png` zeigt eine sehr dunkle Wasseroberfläche bei geringer Tiefe. Das ist zunächst ein visueller Befund; Schattenlage, Belichtung, Volumen und Oberfläche sind getrennt zu untersuchen.
 
 Ein konkreter technischer Ansatzpunkt ist der installierte UE-5.8-Renderpfad: `Engine/Shaders/Private/BasePassPixelShader.usf` setzt bei Single Layer Water `CameraIsUnderWater = false` (Zeile 1698); `SingleLayerWaterComposite.usf` tut dies ebenfalls (Zeile 68). `SingleLayerWaterShading.ush` berechnet mit diesem Zustand die optische Weglänge hinter der Oberfläche statt zwischen Unterwasserkamera und Oberfläche. Unser bisheriges zweiseitiges Single-Layer-Water-Material verwendet auch für die Unteransicht diesen Pfad. Eine korrekte Unteransicht ist damit nicht allein durch die vorhandenen Materialparameter belegt.

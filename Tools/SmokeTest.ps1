@@ -4,7 +4,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
-    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView,
+    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
     [ValidateSet('1600x900','1920x1080','2560x1440','3840x2160','1280x1024')][string]$Viewport='1600x900',
@@ -45,6 +45,10 @@ if($GroundOff) { $arguments+=' -DiveGroundOff' }
 if($GravelView) {
     if($Scenario -ne 'rocks') { throw 'GravelView requires the rocks comparison scenario.' }
     $arguments+=' -DiveGravelView'
+}
+if($PlantView) {
+    if($Scenario -ne 'rocks' -or $GravelView) { throw 'PlantView requires the rocks scenario without GravelView.' }
+    $arguments+=' -DivePlantView'
 }
 if($GroundView) {
     if($Scenario -ne 'shore-preview') { throw 'GroundView applies to shore-preview only.' }

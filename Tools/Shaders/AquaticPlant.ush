@@ -1,0 +1,23 @@
+// Original analytic plant surface; UV0 follows each blade/branch, UV1 contains
+// blade membership and deterministic per-part variation. No world-space sliding.
+float2 uv=float2(UV.x,1-UV.y);
+float blade=saturate(Detail.x),age=saturate(Detail.y);
+float broad=.5+.5*sin(uv.x*14+sin(uv.y*11+age*6)*1.4)*sin(uv.y*19+age*9);
+float fine=.5+.5*sin(uv.x*147+age*17)*sin(uv.y*211+age*23);
+fine=lerp(.5,fine,saturate(1-max(fwidth(uv.x),fwidth(uv.y))*120));
+float midWidth=max(fwidth(uv.x),.004);
+float midrib=1-smoothstep(.012,.012+midWidth,abs(uv.x-.5));
+float veinCoord=uv.x*8+.13*sin(uv.y*3.14159);
+float veins=1-smoothstep(.025,.025+max(fwidth(veinCoord),.035),abs(frac(veinCoord)-.5));
+float margin=smoothstep(.32,.5,abs(uv.x-.5));
+float mottling=smoothstep(.45,.88,broad)*(.08+.2*age);
+float3 color=C.rgb*lerp(.85,.62,blade)*lerp(.84,1.13,broad);
+color=lerp(color,color*float3(.92,.78,.57),mottling+margin*.12*blade);
+color*=1+blade*(midrib*.15+veins*.055)+fine*.025;
+Roughness=clamp(.58+mottling*.22+margin*.07,.54,.9);
+float groove=sin(uv.x*50.2655+.13*sin(uv.y*3.14159));
+float detailFade=saturate(1-max(fwidth(uv.x),fwidth(uv.y))*24);
+SurfaceNormal=normalize(float3(blade*groove*.065*detailFade,blade*cos(uv.y*28+age)*.018*detailFade,1));
+Transmission=color*lerp(.12,.65,blade);
+Density=lerp(.96,.68,blade);
+return color;

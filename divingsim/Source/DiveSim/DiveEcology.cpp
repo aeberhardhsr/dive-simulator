@@ -41,6 +41,14 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
         const auto mesh=Plants[species]->GetStaticMesh();
         if(!mesh||mesh->GetName()!=UTF8_TO_TCHAR(Dive::PlantProfiles[species].Mesh))
         { Error=TEXT("Missing vegetation mesh"); return false; }
+        const auto material=Plants[species]->GetMaterial(0);
+        if(mesh->GetNumLODs()!=4||!material||material->GetName()!=TEXT("M_AquaticPlant"))
+        {Error=TEXT("Missing aquatic plant surface or LODs");return false;}
+        const auto* render=mesh->GetRenderData();
+        if(!render) {Error=TEXT("Missing aquatic plant render data");return false;}
+        for(const auto& lod:render->LODResources)
+            if(lod.VertexBuffers.ColorVertexBuffer.GetNumVertices()==0||lod.VertexBuffers.StaticMeshVertexBuffer.GetNumTexCoords()<2)
+            {Error=TEXT("Missing plant root weights or leaf surface coordinates");return false;}
     }
     for(const auto& fish:FishState)
     {

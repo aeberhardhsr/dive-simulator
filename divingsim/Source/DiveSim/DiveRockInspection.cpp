@@ -12,12 +12,15 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Simulation/BedDistribution.h"
+#include "Simulation/Ecology.h"
+#include "Materials/MaterialInterface.h"
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
 // the three new forms use the same position, scale, material and camera.
 bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation)
 {
-    if(!bOpticsSmoke||!Diver||Variant<0||Variant>3) return false;
+    const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
+    if(!bOpticsSmoke||!Diver||Variant<0||Variant>(plantView?5:3)) return false;
     const bool gravelView=FParse::Param(FCommandLine::Get(),TEXT("DiveGravelView"));
     FVector centre=Diver->EntryLocation;bool found=false;
     for(int radius=5;radius<100&&!found;radius+=5)
@@ -53,6 +56,25 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     for(const auto& pair:GravelCells)
         for(const auto& component:pair.Value.Components) component->SetVisibility(false);
     for(const auto& component:Fish) component->SetVisibility(false);
+    if(plantView)
+    {
+        for(const auto& plant:Plants) plant->ClearInstances();
+        const int species=Variant/2;const bool revised=Variant%2!=0;
+        const FString name=UTF8_TO_TCHAR(Dive::PlantProfiles[species].Mesh);
+        const FString folder=revised?TEXT("Plants"):TEXT("Meshes");
+        auto* mesh=LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/")+folder+TEXT("/")+name+TEXT(".")+name));
+        if(!mesh) return false;
+        auto* plant=Plants[species].Get();plant->SetStaticMesh(mesh);
+        const FString materialName=revised?TEXT("M_AquaticPlant"):TEXT("M_Plant");
+        auto* material=LoadObject<UMaterialInterface>(nullptr,*(TEXT("/Game/Diving/Materials/")+materialName+TEXT(".")+materialName));
+        if(!material) return false;
+        plant->SetMaterial(0,material);
+        const FVector root=centre-FVector(0,0,13);
+        plant->AddInstance(FTransform(FRotator(0,35,0),root));
+        const double h=Dive::PlantProfiles[species].MaxHeight*100;
+        Eye=root+(View?FVector(190,-320,h*.8):FVector(0,-150,h*.55));
+        Rotation=(root+FVector(0,0,h*.45)-Eye).Rotation();return true;
+    }
     auto* component=Rocks[0].Get();
     const FString path=Variant?FString::Printf(TEXT("/Game/Diving/Rocks/SM_LakeRock%d.SM_LakeRock%d"),Variant,Variant):TEXT("/Game/Diving/Meshes/SM_Rock.SM_Rock");
     auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
@@ -69,6 +91,7 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
 void ADivePawn::TickRockInspection(float Dt)
 {
     const bool gravelView=FParse::Param(FCommandLine::Get(),TEXT("DiveGravelView"));
+    const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
     ControlsSmokeClock+=Dt;
     if(ControlsSmokePhase==0)
     {
@@ -78,9 +101,10 @@ void ADivePawn::TickRockInspection(float Dt)
         if(auto* pc=Cast<APlayerController>(GetController())) if(pc->GetHUD()) pc->GetHUD()->bShowHUD=false;
         ControlsSmokePhase=1;ControlsSmokeClock=0;TestLessonStage=0;
     }
-    if(ControlsSmokePhase>(gravelView?4:8))
+    if(ControlsSmokePhase>(plantView?12:gravelView?4:8))
     {
-        if(gravelView) {UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_INSPECTION_PASS states=2 views=2 captures=4"));}
+        if(plantView) {UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12"));}
+        else if(gravelView) {UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_INSPECTION_PASS states=2 views=2 captures=4"));}
         else {UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_INSPECTION_PASS forms=4 views=2 captures=8"));}
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS rocks=1"));FPlatformMisc::RequestExitWithStatus(false,0);return;
     }
@@ -94,7 +118,7 @@ void ADivePawn::TickRockInspection(float Dt)
     if(ControlsSmokeClock>3&&!TestLessonStage)
     {
         TestLessonStage=1;
-        const FString name=FString::Printf(TEXT("%s_%d_%d.png"),gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
+        const FString name=FString::Printf(TEXT("%s_%d_%d.png"),plantView?TEXT("Plant"):gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/name,true,false);
         UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_CAPTURE variant=%d view=%d file=%s"),variant,view,*name);
     }
