@@ -178,6 +178,16 @@ Rebuild the authored artwork with `Tools/prepare_fish_textures.py` in the NumPy/
 
 The close-up fixture uses the normal instanced meshes, per-instance deformation inputs and materials, but places each fish at a fixed location and forces each of four LODs. Two animation phases are captured for every species/LOD combination, with alternating side/oblique views. Reduced LODs are deliberately shown close up for inspection; this is not their normal game viewing distance. Natural placement, movement, terrain/rock avoidance and streaming are checked separately at the three entries and on the streaming route. The photo and decompression cases provide regression coverage. The fixture's placement and camera bypass ordinary player movement and are not evidence of natural fish behavior.
 
+The WindowsFish package was verified on 26 November 2026: seven packaged cases passed with 66 fresh images, including all 40 species/LOD/animation frames. The normal root launcher also completed a dive. [FISH_RESULTS.json](FISH_RESULTS.json) binds executable `682ffe2b7dfa3218d7574eb6088a529594f2fe104c3bb4f358a3567b5961bd1c`, cooked containers, source/config files, 26 fish assets and the test evidence. The source maps, mesh audit and editor vertex-color check passed; the final import log contains no FBX warnings or material compilation errors. The prior WindowsDecompression executable remains unchanged.
+
+The 60-second 1920×1080 quality-2 underwater capture on this RTX 3090 development host measured 75.51 FPS average, 61.91 FPS low-1%, 15.14 ms p95 and 17.14 ms maximum, with no frames above 33.3 ms. The existing editor remained open; its process is recorded in the host context. This is one route on one host, not minimum-hardware, macOS or endurance acceptance. [FISH_CI.json](FISH_CI.json) records successful portable C++ and Python checks on Windows, macOS and Linux for source commit `925b27a`; it does not certify a native Unreal macOS build.
+
+The packaged images confirm species-specific surfaces and tail deformation, but simplified mouth/gill seams, fin shapes, skin highlights and low-detail eye contours remain visible in close-up inspection. This increment does not close BIOL-001/003/004 or the overall photorealistic quality acceptance. Raw evidence is in `artifacts/fish-validation-20261126-094320` and `artifacts/perf-underwater-1080p-q2-20261126-095020-873`. Reproduce the bound report with:
+
+```powershell
+./Tools/.geodata-env/Scripts/python.exe Tools/ReportFish.py artifacts/fish-validation-20261126-094320 --performance artifacts/perf-underwater-1080p-q2-20261126-095020-873
+```
+
 ![Current fish geometry and atlases in neutral Blender lighting; visual sizes normalized for comparison, not relative species scale](Images/FishAssets.png)
 
 ![Perch in the packaged close-up fixture, highest detail](Images/Fish_Perch.png)
