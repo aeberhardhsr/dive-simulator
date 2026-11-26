@@ -69,6 +69,8 @@ Die beiden vom Nutzer am 26. November 2026 gelieferten Beispielbilder sind als g
 
 Der weitere Unterwasser-Ausbau und seine noch offenen Sichtprüfungen sind in [Unterwasserwelt](UNDERWATER_SCENE.md) dokumentiert. Die neue Kiesintegration ist zunächst ein nativer Entwicklungsstand; die separat angebotene Grafikvorschau wird dadurch nicht rückwirkend verändert.
 
+Zusätzlicher Nutzerauftrag vom 26. November 2026: **Nach Unterwasser- und Überwasser-Grafik folgt die Überarbeitung von Menüführung, HUD und FPV.** Fünf Nutzerentwürfe und prüfbare Kriterien stehen in [UI-/UX-Designziel](UI_UX_TARGET.md). Der Nutzer bemängelt das aktuelle Layout als chaotisch, die Texte als unpassend, die Umlaute als unsauber und die Menüführung als verwirrend. Die Entwürfe bestimmen die Designrichtung ohne 1:1-Vorgabe; zunächst werden sie dokumentiert, die UI-Implementierung folgt erst an dritter Stelle.
+
 Aktuelle Nutzerpriorität vom 26. November 2026: Zuerst Grafik und Unterwasserwelt optimieren. Anschließend das Rendering außerhalb des Wassers – insbesondere Berge, Wiesen und Geländetopologie – auf ein vergleichbares Realitätsniveau bringen. Die visuelle Abnahme umfasst dafür Formen und Silhouetten, Nah-/Ferndetails, Oberflächen, Vegetation, Beleuchtung sowie zusammenhängende Land-Wasser-Übergänge. Die reale Walensee-Geografie und Maßstäblichkeit bleiben maßgeblich; detailliertere Texturen allein erfüllen diese Vorgabe nicht.
 
 1. Toolchain, reproduzierbarer Build, Simulationskern und spielbarer Tauchablauf.

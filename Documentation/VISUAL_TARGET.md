@@ -25,3 +25,7 @@ Wasserreflexionen, kleine Wellen und der sichtbare Grund in flachem Wasser solle
 Verglichen werden echte Spielaufnahmen und Bewegung im ausgelieferten Unreal-Paket: Unterwasser-Nahansicht, durchschwommene Fels-/Bewuchszone, tieferer und trüberer Bereich, Uferwechsel, begehbarer Nahbereich und Bergpanorama. Vergleichbare Kamera, Auflösung, Sichtweite und Beleuchtung werden dokumentiert. Bewegungen prüfen zusätzlich Detailwechsel, Nachladen, Flimmern, Materialstreckung und Übergänge an der Wasserlinie.
 
 Technische Testmarker, Polygonzahlen oder einzelne attraktive Standbilder ersetzen diese visuelle Gesamtabnahme nicht. Die bestehenden Anforderungen an spielbare Bildraten und Stabilität gelten weiterhin. Ein bestandener Renderingtest bedeutet daher noch nicht, dass das Qualitätsziel dieser Referenzen erreicht ist.
+
+## Anschließende Menü-/HUD-Überarbeitung
+
+Nach der Optimierung der Unterwasser- und Überwasser-Grafik folgt die vom Nutzer separat vorgegebene Neugestaltung von Menüführung, HUD und FPV. Die fünf zusätzlichen Entwürfe, die bemängelten Layout-/Text-/Umlautprobleme und die späteren Abnahmekriterien stehen im [UI-/UX-Designziel](UI_UX_TARGET.md). Dieser nachgelagerte Schritt ersetzt keine der oben beschriebenen Grafikarbeiten.
