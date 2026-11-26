@@ -1,5 +1,6 @@
 #include "../divingsim/Source/DiveSim/Simulation/DiveModel.h"
 #include "../divingsim/Source/DiveSim/Simulation/HeightGrid.h"
+#include "../divingsim/Source/DiveSim/Simulation/ShoreTransition.h"
 #include "../divingsim/Source/DiveSim/Simulation/Ecology.h"
 #include "../divingsim/Source/DiveSim/Simulation/WaterSurface.h"
 #include "../divingsim/Source/DiveSim/Simulation/AudioModel.h"
@@ -25,6 +26,33 @@ void run(Dive::Model& m,double seconds,double depth,double effort=0,double bcd=0
 { for(int i=0;i<static_cast<int>(seconds*50);++i) m.Step(.02,depth,effort,bcd,0,0,false); }
 int main()
 {
+    {
+        Dive::SurfaceGrid coarse;coarse.West=0;coarse.North=256;coarse.Spacing=8;coarse.Columns=coarse.Rows=32;
+        coarse.Heights.resize(32*32);
+        for(int r=0;r<32;++r) for(int c=0;c<32;++c) coarse.Heights[r*32+c]=static_cast<float>(r+c+(r%2)*(c%2)*3);
+        Dive::SurfaceGrid fine;fine.West=64;fine.North=192;fine.Spacing=1;fine.Columns=fine.Rows=128;fine.Heights.assign(128*128,75);
+        const auto original=fine.Heights;const Dive::ShoreTransition seam(fine,coarse);
+        check(seam.West==60&&seam.East==196&&seam.South==60&&seam.North==196,"Shore expands to exact coarse vertex lattice");
+        for(int i=0;i<=136;++i) for(int edge=0;edge<4;++edge)
+        {
+            const double x=edge<2?60+i:edge==2?60:196,y=edge<2?(edge==0?60:196):60+i;
+            double expected=0,actual=0;
+            check(coarse.SampleTriangle(x,y,expected)&&seam.Sample(fine,coarse,x,y,actual),"Every seam boundary point samples");
+            close(actual,expected,0,"Fine boundary matches coarse triangle exactly");
+        }
+        double h=0;
+        check(seam.Sample(fine,coarse,128,128,h),"Shore interior samples");close(h,75,0,"Interior survey unchanged");
+        check(!seam.Sample(fine,coarse,59,128,h),"No phantom shore outside rendered boundary");
+        for(int i=1;i<32;++i)
+        {
+            double a=0;coarse.SampleTriangle(60+i,128,a);seam.Sample(fine,coarse,60+i,128,h);
+            check(h>=std::min(a,75.)&&h<=std::max(a,75.),"Transition cannot overshoot either surface");
+        }
+        check(fine.Heights==original,"LOD sampling never modifies survey raster");
+        Dive::SurfaceGrid saddle;saddle.West=0;saddle.North=2;saddle.Spacing=1;saddle.Columns=saddle.Rows=2;saddle.Heights={0,0,0,10};
+        check(saddle.SampleTriangle(.75,1.25,h),"Triangle saddle samples");close(h,0,0,"Triangle sampling follows actual diagonal, not bilinear saddle");
+        check(saddle.SampleTriangle(1.5,.5,h),"Last raster corner samples");close(h,10,0,"Last corner retains source height");
+    }
     {
         using namespace Dive::Navigation;
         close(Bearing(1,0),0,1e-12,"Map north agrees with world X");

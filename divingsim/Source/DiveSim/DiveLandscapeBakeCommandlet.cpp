@@ -59,7 +59,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
     for(const auto& file:bathy) if(!input(file)) return 1;
     uint8 hash[16]; digest.Final(hash);
     const FString sourceHash=BytesToHex(hash,16);
-    constexpr int TileCells=256, Version=1;
+    constexpr int TileCells=256, Version=2;
     int limit=MAX_int32; FParse::Value(*Params,TEXT("Limit="),limit);
     const bool force=FParse::Param(*Params,TEXT("Force"));
     const bool verifyOnly=FParse::Param(*Params,TEXT("VerifyOnly"));
@@ -118,7 +118,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
             auto triangle=[&](int a,int b,int c)
             {
                 const FVector center=origin+FVector((positions[ids[a]]+positions[ids[b]]+positions[ids[c]])/3);
-                if(!(land[a]||land[b]||land[c])||terrain.InShorePatch(center.X,center.Y,8)) return;
+                if(!(land[a]||land[b]||land[c])||terrain.InShorePatch(center.X,center.Y)) return;
                 TArray<FVertexInstanceID> instances;
                 for(int index:{a,b,c})
                 {

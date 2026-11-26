@@ -19,6 +19,8 @@ Die Landschaft enthält zusätzlich 16.249 vermessene Gebäude aus swissBUILDING
 
 Simulation in engineunabhängigem C++, Unreal-Pawn und Kamera als Adapter; Blueprint-einstellbare Parameter, reproduzierbare Blender- und Editor-Pipelines. Einheiten: Kern SI (Meter, Sekunden, Liter, bar), Unreal Zentimeter und Z nach oben. Mittlerer Wasserspiegel Z=0; lokale Wellen bewegen die Oberfläche.
 
+Die örtlichen Ufermeshes verwenden jetzt einen gemeinsamen Rand mit der Hintergrundlandschaft. Ein begrenzter Übergangsbereich ersetzt die frühere geometrische Überlappung; Quellen, inneres Gelände und Bathymetrie bleiben erhalten. Harte Schatten auf groben Steilflächen und fernere Wasserlinienübergänge bleiben offen. Umsetzung und Grenzen: [SHORE_TRANSITION.md](SHORE_TRANSITION.md).
+
 Unterwassergrund, ergänzte Uferbereiche und Felsobjekte verwenden inzwischen unterschiedliche gescannte Sand-/Kies-/Felsmaterialien mit weltbezogener Projektion, Normalen und Rauheit. Die räumliche Verteilung ist gestalterisch, keine lokale Sedimentmessung. Herkunft, Vergleichsbilder und Modellgrenzen: [BED_SURFACES.md](BED_SURFACES.md). Diese Verbesserung erfüllt noch nicht die gesamte visuelle Referenzabnahme.
 
 Schwebeteilchen verwenden ein unveränderliches Instanzfeld mit analytischer Bewegung im GPU-Vertexshader. Atemblasen entstehen zeitlich versetzt an den Reglerauslässen, steigen mit Strömung/Wellenbewegung und expandieren druckabhängig mit volumenbewahrender Formänderung. Transparente Spiegelung und Bildschirmraum-Brechung sind implementiert; vollständige Blasenoptik bleibt offen. Details und Rendernachweise: [PARTICLES.md](PARTICLES.md).

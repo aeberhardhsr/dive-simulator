@@ -73,12 +73,14 @@ float land=smoothstep(0,120,P.z);
 SurfaceNormal=normalize(lerp(SurfaceNormal,n,land));
 Roughness=lerp(Roughness,.92,land);
 Occlusion=lerp(Occlusion,1,land);
-result=lerp(result,Photo,land);
+float2 farUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
+float3 shorePhoto=lerp(Texture2DSample(FarPhoto,FarPhotoSampler,farUV).rgb,Photo,saturate(PatchBlend));
+result=lerp(result,shorePhoto,land);
 ''')
         custom.set_editor_property('code', shader)
         custom.set_editor_property('output_type', u.CustomMaterialOutputType.CMOT_FLOAT3)
         names = ['P', 'N', 'T', 'IsRock'] + list(textures)
-        if name == 'M_ShorePhoto': names.append('Photo')
+        if name == 'M_ShorePhoto': names.extend(['Photo', 'FarPhoto', 'PatchBlend'])
         inputs = []
         for input_name in names:
             item = u.CustomInput(); item.set_editor_property('input_name', input_name); inputs.append(item)
@@ -107,6 +109,11 @@ result=lerp(result,Photo,land);
             photo.set_editor_property('parameter_name', 'Ortho')
             photo.set_editor_property('texture', u.load_asset(BASE + '/Textures/T_Ortho_weesen_strandbad'))
             if not lib.connect_material_expressions(photo, 'RGB', custom, 'Photo'): raise RuntimeError('Photo')
+            far = lib.create_material_expression(material, u.MaterialExpressionTextureObject)
+            far.set_editor_property('texture', u.load_asset(BASE + '/Textures/T_Ortho_landscape'))
+            if not lib.connect_material_expressions(far, '', custom, 'FarPhoto'): raise RuntimeError('FarPhoto')
+            blend = lib.create_material_expression(material, u.MaterialExpressionVertexColor)
+            if not lib.connect_material_expressions(blend, 'A', custom, 'PatchBlend'): raise RuntimeError('PatchBlend')
         for pin, prop in [('', u.MaterialProperty.MP_BASE_COLOR), ('SurfaceNormal', u.MaterialProperty.MP_NORMAL),
                           ('Roughness', u.MaterialProperty.MP_ROUGHNESS), ('Occlusion', u.MaterialProperty.MP_AMBIENT_OCCLUSION)]:
             if not lib.connect_material_property(custom, pin, prop): raise RuntimeError('Cannot connect ' + pin)

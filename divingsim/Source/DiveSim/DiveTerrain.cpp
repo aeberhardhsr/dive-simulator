@@ -1,4 +1,5 @@
 #include "DiveTerrain.h"
+#include "Simulation/ShoreTransition.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "Dom/JsonObject.h"
@@ -164,8 +165,13 @@ bool FDiveTerrain::SampleShore(double X,double Y,float& Z) const
 {
     for(const auto& grid:Shores)
     {
+        const double east=OriginEast+Y/100,north=OriginNorth+X/100;
+        const Dive::ShoreTransition transition(grid,Landscape);
+        if(!transition.Contains(east,north)) continue;
+        // The surveyed lakebed always wins, including in the outer LOD collar.
+        if(Sample(X,Y,Z)) return true;
         double height=0;
-        if(grid.Sample(OriginEast+Y/100,OriginNorth+X/100,height)) { Z=static_cast<float>(height*100); return true; }
+        if(transition.Sample(grid,Landscape,east,north,height)) { Z=static_cast<float>(height*100); return true; }
     }
     return false;
 }
@@ -173,8 +179,7 @@ bool FDiveTerrain::InShorePatch(double X,double Y,double MarginMetres) const
 {
     const double east=OriginEast+Y/100,north=OriginNorth+X/100;
     for(const auto& grid:Shores)
-        if(east>=grid.West+1+MarginMetres&&east<=grid.West+grid.Columns-1-MarginMetres&&
-           north>=grid.North-grid.Rows+1+MarginMetres&&north<=grid.North-1-MarginMetres) return true;
+        if(Dive::ShoreTransition(grid,Landscape).Contains(east,north,MarginMetres)) return true;
     return false;
 }
 bool FDiveTerrain::SampleGround(double X,double Y,float& Z) const

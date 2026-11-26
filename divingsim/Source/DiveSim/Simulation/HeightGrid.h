@@ -11,6 +11,21 @@ struct SurfaceGrid
     int Columns=0, Rows=0;
     double West=0, North=0, Spacing=8;
     std::vector<float> Heights;
+    // Same a-c-b / b-c-d diagonal as the rendered background terrain.
+    bool SampleTriangle(double east,double north,double& metres) const
+    {
+        if(!std::isfinite(east)||!std::isfinite(north)||Spacing<=0||Columns<2||Rows<2) return false;
+        const double x=(east-West)/Spacing-.5,y=(North-north)/Spacing-.5;
+        if(x<0||y<0||x>Columns-1||y>Rows-1) return false;
+        const int col=static_cast<int>(std::fmin(std::floor(x),Columns-2)),row=static_cast<int>(std::fmin(std::floor(y),Rows-2));
+        const size_t i=static_cast<size_t>(row)*Columns+col;
+        if(i+Columns+1>=Heights.size()) return false;
+        const double a=Heights[i],b=Heights[i+1],c=Heights[i+Columns],d=Heights[i+Columns+1];
+        if(!std::isfinite(a)||!std::isfinite(b)||!std::isfinite(c)||!std::isfinite(d)||a==-9999||b==-9999||c==-9999||d==-9999) return false;
+        const double tx=x-col,ty=y-row;
+        metres=tx+ty<=1?a+(b-a)*tx+(c-a)*ty:d+(c-d)*(1-tx)+(b-d)*(1-ty);
+        return true;
+    }
     bool Sample(double east,double north,double& metres) const
     {
         if(!std::isfinite(east)||!std::isfinite(north)||Spacing<=0||Columns<2||Rows<2) return false;
