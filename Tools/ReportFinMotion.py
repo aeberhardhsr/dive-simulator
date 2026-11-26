@@ -26,10 +26,10 @@ def main():
         for marker in ['DIVE_IMAGERY_PASS','DIVE_GROUND_PASS','DIVE_MEDIUM_PASS','DIVE_LIGHT_PASS']:assert marker in log
         if case['name'] in ('fish','fins'):
             assert 'DIVE_FISH_INSPECTION_PASS species=5 views=20 captures=40 lods=4' in log
-            prefix='Fin' if case['name']=='fins' else 'Fish'
+            image_prefix='Fin' if case['name']=='fins' else 'Fish'
             for species in ['Perch','Roach','Pike','Whitefish','Burbot']:
                 for view in range(4):
-                    images=[Image.open(folder/f'{prefix}_{species}_{view}_{frame}.png').convert('RGB') for frame in [1,2]]
+                    images=[Image.open(folder/f'{image_prefix}_{species}_{view}_{frame}.png').convert('RGB') for frame in [1,2]]
                     # A fixed camera/background must produce different frames
                     # as the ordinary per-instance deformation cycle advances.
                     difference=ImageStat.Stat(ImageChops.difference(*images)).mean

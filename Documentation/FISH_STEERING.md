@@ -24,6 +24,16 @@ The native population fixture uses copies of each available species' state again
 
 This does not certify natural maneuvering across every species, fish-body contact, predator/prey behavior or the complete BIOL requirements. The existing fin/body close-ups remain controlled pose fixtures, not evidence of these natural routes.
 
+## Packaged result
+
+On 26 November 2026, `Builds/WindowsFishSteering/divingsim.exe` passed all five packaged cases with 13 fresh images: Weesen, Murg, Mols, population streaming and photo discovery. The native and packaged world challenges each covered five species × 60 steps; the measured maximum turn was 0.075000 rad against a 0.075001-rad tolerance. The actual pause gate and nearby-fish retention checks passed. Captures were visually inspected for ordinary rendering and photo collection; still images do not prove continuous turning behavior.
+
+The root launcher started the expected child (`77160de878c1c3a74ff55664e955000133d60a9c12833a695a8722ba2bf4370b`) and completed a dive. Raw case evidence is in `artifacts/steering-validation-20261126-104636`. [FISH_STEERING_CI.json](FISH_STEERING_CI.json) records five portable C++ test programs and Python checks passing on Windows, macOS and Linux for source commit `1f5db8e`; this is not native Unreal macOS verification.
+
+[FISH_STEERING_RESULTS.json](FISH_STEERING_RESULTS.json) binds the executable, cooked containers, source/config files, native test log, captures and performance evidence. All 26 fish asset hashes match the previous fin-motion report. The WindowsFinMotion executable and all its cooked containers remain unchanged.
+
+The 60-second 1920×1080 quality-2 underwater capture on the RTX 3090 measured 72.25 FPS average, 59.21 FPS low-1%, 15.86 ms p95 and 18.16 ms maximum, with zero frames above 33.3 ms. Evidence: `artifacts/perf-underwater-1080p-q2-20261126-105241-873`. The user's separate game instance had ended. The Unreal start window remained as a background process: normal close did not end it, and Windows denied process termination. This development-host sample is not minimum-hardware, whole-lake or endurance acceptance, nor a controlled before/after performance experiment.
+
 ## Reproduction
 
 No asset regeneration is required; the previous fin meshes, atlases and shader are reused.
@@ -36,4 +46,5 @@ No asset regeneration is required; the previous fin meshes, atlases and shader a
 ./Tools/TestFinMotion.ps1 -PackageDirectory Builds/WindowsFishSteering -SteeringChecks
 ./Tools/TestFinLauncher.ps1 -PackageDirectory Builds/WindowsFishSteering -ArtifactPrefix steering
 ./Tools/Benchmark.ps1 -PackageDirectory Builds/WindowsFishSteering -Scenario underwater -Resolution 1080p -Quality 2 -Seconds 60
+./Tools/.geodata-env/Scripts/python.exe Tools/ReportFinMotion.py artifacts/steering-validation-20261126-104636 --performance artifacts/perf-underwater-1080p-q2-20261126-105241-873 --steering
 ```

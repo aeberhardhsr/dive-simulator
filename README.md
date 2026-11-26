@@ -6,7 +6,9 @@ Ein spielbarer Unreal-Prototyp für einen realitätsnahen Tauchsimulator. Der ve
 
 ## Starten
 
-Der aktuelle Stand liegt unter **`Builds/WindowsFinMotion/divingsim.exe`**. Brust- und Bauchflossen bewegen sich jetzt eigenständig an ihren festen Ansatzpunkten; Rücken- und Afterflossen erhalten kleinere Ausschläge. Schwimmtempo und Kurven beeinflussen die Animation. Die Menüpause hält auch die Animationswerte an, und nahe Fische behalten ihre Bewegungsphasen beim Nachladen der Umgebung. Bilder, Umsetzung und Prüfgrenzen: [Flossenbewegung](Documentation/FIN_MOTION.md). Artspezifische Bewegungsvalidierung, Kiemen-/Maulbewegung und die fotorealistische Qualitätsabnahme bleiben offen.
+Der aktuelle Stand liegt unter **`Builds/WindowsFishSteering/divingsim.exe`**. Fische wenden jetzt in begrenzten Kurven, prüfen Hindernisse voraus und bremsen bei blockierten Wegen. Die frühere schlagartige Umkehr entfällt; Richtung und Tempo bleiben auch beim Pausieren und Nachladen erhalten. Umsetzung, Paketprüfungen und Grenzen: [Fischbewegung](Documentation/FISH_STEERING.md). Die Bewegungsparameter sind gestaltet; artspezifische Validierung und vollständige Körperkontakte bleiben offen.
+
+Der vorherige Stand unter **`Builds/WindowsFinMotion/divingsim.exe`** bleibt erhalten. Seine eigenständige Brust-/Bauchflossenbewegung und kleineren Rücken-/Afterflossenausschläge sind im aktuellen Paket enthalten. Tempo und Kurven beeinflussen die Animation. Bilder und Prüfgrenzen: [Flossenbewegung](Documentation/FIN_MOTION.md). Kiemen-/Maulbewegung und die fotorealistische Qualitätsabnahme bleiben offen.
 
 Der vorherige Stand unter **`Builds/WindowsFish/divingsim.exe`** bleibt erhalten. Seine überarbeiteten Modelle für Barsch, Rotauge, Hecht, Felchengruppe und Trüsche mit Augen, Schuppen-/Hautdetails und vier Detailstufen sind im aktuellen Paket enthalten. Bilder und Erstellung: [Fischmodelle](Documentation/SIMULATION.md#fish-geometry-and-surface-detail).
 
