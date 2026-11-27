@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$PackageDirectory,[Parameter(Mandatory=$true)][string]$OutputDirectory)
+param([Parameter(Mandatory=$true)][string]$PackageDirectory,[Parameter(Mandatory=$true)][string]$OutputDirectory,[switch]$WaterPreview)
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $PackageDirectory=[IO.Path]::GetFullPath($PackageDirectory)
@@ -9,6 +9,7 @@ New-Item -ItemType Directory -Force $OutputDirectory | Out-Null
 $log=Join-Path $OutputDirectory 'Launcher.log'
 $started=[DateTime]::UtcNow
 $arguments='-DiveSmokeTest -DiveScenario=dive -DiveEntry=1 -DiveAutomaticEnvironment -DiveDate=2026-08-15 -saveddirsuffix=launchercheck -windowed -ResX=1600 -ResY=900 -nosplash -unattended -ExecCmds="t.MaxFPS 30" -abslog="'+$log+'"'
+if($WaterPreview) {$arguments+=' -DiveWaterPreview'}
 $launcher=Start-Process (Join-Path $PackageDirectory 'divingsim.exe') -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $found=$null
 for($i=0;$i -lt 30 -and -not $found;++$i) {
@@ -21,6 +22,7 @@ $null=$game.Handle
 if(-not $game.WaitForExit(120000)) {throw 'Launcher test exceeded its time limit.'}
 $text=Get-Content -LiteralPath $log -Raw
 if($game.ExitCode -ne 0 -or $text -notmatch 'DIVE_SMOKE_PASS' -or $text -match 'DIVE_\w*FAIL|Fatal error:') {throw 'Root launcher gameplay failed.'}
+if($WaterPreview -and $text -notmatch 'DIVE_WATER_PREVIEW_READY') {throw 'Root launcher did not activate the water preview.'}
 @{status='PASS';child=$child;child_id=$found.ProcessId;exit_code=$game.ExitCode;started_utc=$started.ToString('o');finished_utc=[DateTime]::UtcNow.ToString('o');
     log_sha256=(Get-FileHash -LiteralPath $log).Hash;executable_sha256=(Get-FileHash -LiteralPath $child).Hash} |
     ConvertTo-Json | Set-Content (Join-Path $OutputDirectory 'Launcher.json') -Encoding utf8

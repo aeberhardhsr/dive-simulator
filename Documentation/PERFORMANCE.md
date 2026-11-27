@@ -1,5 +1,19 @@
 # Gerenderte Leistungsmessung
 
+## WindowsWaterPreview: begrenztes Wasservolumen und Hardware-Reflexionen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Messstart aktiv. Das Wasserprofil hält Front-Layer-Reflexionen und Hardware-Hit-Lighting zusätzlich zur normalen Qualitätsstufe Hoch aktiv. Die tatsächlich gemessenen Einstellungen und identischen EXE-/Container-Prüfsummen stehen im [Paketbericht](WATER_PREVIEW_RESULTS.json); [Start und Bilder](WATER_PREVIEW.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 69,26 FPS | 60,12 FPS | 15,87 ms | 17,36 ms | 0 / 4154 | 4,49 ms |
+| Weesen Oberfläche, 60 s | 66,74 FPS | 58,62 FPS | 16,31 ms | 17,95 ms | 0 / 4002 | 4,34 ms |
+| Murg Schwimmen/Nachladen, 90 s | 97,06 FPS | 77,09 FPS | 11,21 ms | 45,69 ms | 2 / 8733 | 4,26 ms |
+
+Die GPU-Zeiten betragen im Mittel 13,79 / 14,33 / 9,67 ms. Gegenüber WindowsPlantGrowth sinkt der Unterwasser-Mittelwert von 72,97 auf 69,26 FPS; die Nachladestrecke von 100,50 auf 97,06 FPS. Diese einzelnen Messungen vergleichen unterschiedliche Wasserpfade und erlauben keine isolierte Kostenzuordnung zu jeder Änderung. Die automatisierten Läufe enthalten ausserdem laufende Wasserprüfungen, einschließlich des Vergleichs beider Meshseiten; ihre CPU-Kosten gehören zum erfassten Testlauf.
+
+14 Unterwasser-, 66 Oberflächen- und fünf Streckenframes überschreiten 16,67 ms. Durchgehend 60 FPS sind daher nicht nachgewiesen. Die Strecke endet wieder bei 24,7 Metern in freiem Wasser und beweist keine dauerhaft dichte Nahansicht. Im Oberflächenbild bleibt eine gerade Helligkeitskante im nahen Wasser sichtbar. Die Technikprüfung ist keine visuelle Abnahme und ersetzt weder einen aktuellen Langzeittest noch Messungen auf der übrigen Zielhardware.
+
 ## WindowsPlantGrowth: gebogene Triebe und dichtere Blattbereiche
 
 Asset-/Quellstand `6759dc0`, unveränderter C++-Spielcode, neue Pflanzen in neu erzeugten Inhaltscontainern. RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, 100 Prozent Renderauflösung, ohne VSync/Bildratenlimit. Je 15 Sekunden Aufwärmen; keine weitere Unreal-/Spielinstanz in den Startprotokollen. Beide Läufe sind an die EXE **und** Container der neun bestandenen Paketfälle gebunden. [Paketnachweis](PLANT_GROWTH_PACKAGE_RESULTS.json), [Formen und Quellen](PLANT_GROWTH.md).

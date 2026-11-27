@@ -2,7 +2,7 @@
 
 Nachfolgender Stand: Das [räumlich begrenzte Wassermedium](BOUNDED_WATER.md) behebt die hier dokumentierte graue Durchsicht im kombinierten Testmodus. Die nachstehenden Befunde und Bilder beschreiben den ursprünglichen Grenzflächen-Prototyp.
 
-Die anschliessende [Arbeit an den Spiegelungen](WATER_REFLECTIONS.md) reduziert die Materialrauheit, ergänzt eine Kontrolle mit Beleuchtung am Raytracing-Treffer und entfernt falsche Selbsttreffer auf der flachen Wasser-Hilfsgeometrie. Die Integration in den normalen Spielbetrieb bleibt offen.
+Die anschliessende [Arbeit an den Spiegelungen](WATER_REFLECTIONS.md) reduziert die Materialrauheit, ergänzt eine Kontrolle mit Beleuchtung am Raytracing-Treffer und entfernt falsche Selbsttreffer auf der flachen Wasser-Hilfsgeometrie. Der kombinierte Pfad ist inzwischen über einen separaten Starter als [Spielvorschau](WATER_PREVIEW.md) verfügbar; die folgenden Befunde beschreiben die frühere native Untersuchung.
 
 Der experimentelle Modus `-DiveWaterInterface` trennt die Ober- und Unterseite der Wasserfläche. Er ist ausschließlich zusammen mit `-DiveSmokeTest` aktiv. Das normale Spiel verwendet weiterhin `M_Water`; der damals geprüfte Spielstand war `Builds/WindowsRockAprons/divingsim.exe`. Neuere Spielpakete stehen im [README](../README.md). Die Referenzqualität ist noch nicht erreicht.
 

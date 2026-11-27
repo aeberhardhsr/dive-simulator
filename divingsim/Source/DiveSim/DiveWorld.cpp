@@ -17,6 +17,8 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/VolumetricCloudComponent.h"
 #include "Camera/CameraComponent.h"
+#include "RenderUtils.h"
+#include "RHI.h"
 
 namespace
 {
@@ -196,6 +198,7 @@ void ADiveWorld::BeginPlay()
 {
     Super::BeginPlay();
     bOpticsSmoke=FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));
+    bWaterPreview=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview"));
     if(bOpticsSmoke)
     {
         bNativeWaterScattering=FParse::Param(FCommandLine::Get(),TEXT("DiveNativeScattering"));
@@ -208,6 +211,20 @@ void ADiveWorld::BeginPlay()
         FParse::Value(FCommandLine::Get(),TEXT("DiveViewScatterGain="),ViewScatteringGain);
         FogScatteringGain=FMath::IsFinite(FogScatteringGain)?FMath::Clamp(FogScatteringGain,0.f,1.f):1.f;
         ViewScatteringGain=FMath::IsFinite(ViewScatteringGain)?FMath::Clamp(ViewScatteringGain,0.f,1.f):1.f;
+    }
+    if(bWaterPreview)
+    {
+        bWaterInterface=true;bBoundedWater=true;bNativeWaterScattering=true;
+        const bool hardware=IsRayTracingEnabled()&&GRHISupportsRayTracingShaders;
+        auto set=[](const TCHAR* name,int32 value)
+        { if(auto* variable=IConsoleManager::Get().FindConsoleVariable(name)) variable->Set(value,ECVF_SetByCode); };
+        // Session-only preview profile. Scalability changes must not silently
+        // drop the reflection path; player preferences are not rewritten.
+        set(TEXT("r.Lumen.HardwareRayTracing"),hardware?1:0);
+        set(TEXT("r.Lumen.HardwareRayTracing.LightingMode"),2);
+        set(TEXT("r.Lumen.HardwareRayTracing.HitLighting.Allowed"),1);
+        set(TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),1);
+        UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_PREVIEW_READY smoke=%d hardware=%d bounded=1 interface=1 lighting_mode=2"),bOpticsSmoke?1:0,hardware?1:0);
     }
     bTerrainReady=Terrain.Load();
     if(bTerrainReady)

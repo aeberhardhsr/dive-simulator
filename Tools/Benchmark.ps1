@@ -8,6 +8,7 @@ param(
     [ValidateRange(0,2)][int]$Entry=0,
     [switch]$Editor,
     [switch]$DisableNanite,
+    [switch]$WaterPreview,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -20,7 +21,7 @@ $resultDir=Join-Path $repo "artifacts/$runName"
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $logPath=Join-Path $resultDir 'Runtime.log'
 $context=[ordered]@{
-    started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite
+    started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite; water_preview=[bool]$WaterPreview
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
@@ -29,6 +30,7 @@ if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
 $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
 if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
+if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
@@ -59,6 +61,8 @@ foreach($name in @('Capture.csv','Metadata.json','Frame.png')) {
     Copy-Item -LiteralPath $source.FullName -Destination (Join-Path $resultDir $name)
 }
 $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw | ConvertFrom-Json
+if($WaterPreview -and (-not $metadata.water_preview -or -not $metadata.water_interface -or -not $metadata.bounded_water -or -not $metadata.native_scattering -or
+    $metadata.'r.Lumen.TranslucencyReflections.FrontLayer.Allow' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.HitLighting.Allowed' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.LightingMode' -ne 2)) {throw 'Water preview benchmark profile was not preserved.'}
 if($metadata.width -ne $size[0] -or $metadata.height -ne $size[1]) { throw 'Actual viewport dimensions differ from the requested output resolution.' }
 if([Math]::Abs($metadata.'r.ScreenPercentage'-$RenderScale) -gt .01 -or $metadata.'r.SecondaryScreenPercentage.GameViewport' -ne 100 -or $metadata.'r.DynamicRes.OperationMode' -ne 0) { throw 'Actual render scale differs from the requested fixed scale.' }
 if($metadata.'r.VSync' -ne 0 -or $metadata.'t.MaxFPS' -ne 0) { throw 'Benchmark was unintentionally frame-limited.' }

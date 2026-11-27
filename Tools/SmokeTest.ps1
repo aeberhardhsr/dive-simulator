@@ -8,7 +8,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
-    [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater,
+    [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
@@ -80,6 +80,8 @@ if($LegacyRockSurface) {$arguments+=' -DiveLegacyRockSurface'}
 if($NativeScattering) {$arguments+=' -DiveNativeScattering'}
 if($WaterInterface) {$arguments+=' -DiveWaterInterface'}
 if($BoundedWater) {$arguments+=' -DiveBoundedWater'}
+if($WaterPreview) {$arguments+=' -DiveWaterPreview'}
+if($DisableRayTracing) {$arguments+=' -noraytracing'}
 if($PSBoundParameters.ContainsKey('WaterVolumeGain')) {$arguments+=' -DiveWaterVolumeGain='+$WaterVolumeGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($HabitatSunView) {
     if(-not $HabitatView -or $HabitatClose) {throw 'HabitatSunView requires HabitatView without HabitatClose.'}
@@ -144,6 +146,7 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}
 if($HabitatView) {
     if($log -notmatch 'DIVE_HABITAT_INSPECTION_PASS views=3') { throw 'Habitat comparison did not finish.' }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }

@@ -104,6 +104,7 @@ public:
     bool NativeWaterScattering() const;
     bool WaterInterfaceEnabled() const {return bWaterInterface;}
     bool BoundedWaterEnabled() const {return bBoundedWater;}
+    bool WaterPreviewEnabled() const {return bWaterPreview;}
     double ExposureBiasAt(const FVector& Eye) const;
     double SurfaceZ(double X,double Y,double Seconds=-1) const;
     double PressureDepth(const FVector& Position,double Seconds) const;
@@ -219,6 +220,7 @@ private:
     bool bNativeWaterScattering=false;
     bool bWaterInterface=false;
     bool bBoundedWater=false;
+    bool bWaterPreview=false;
     float WaterVolumeGain=1;
     bool bOpticsSmoke=false;
     uint8 ObservedOpticalMedia=0;

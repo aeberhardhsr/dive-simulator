@@ -1,5 +1,7 @@
 # Klarere Spiegelungen an der Wasserunterseite
 
+Nachfolgender Stand: Der kombinierte Pfad ist inzwischen als [spielbare Wasservorschau](WATER_PREVIEW.md) gepackt und vermessen. Die nachstehenden Versuche und Einschränkungen dokumentieren seine native Entwicklung; deren Messwerte werden nicht auf das Paket übertragen.
+
 Der experimentelle Wasserpfad zeigt jetzt deutlich schärfere Spiegelungen von Felsen und Seegrund. Zwei Änderungen wirken zusammen: Die Materialrauheit sinkt von 0,08 auf 0,02, und eine gezielte Hardware-Raytracing-Diagnose berechnet die Beleuchtung an den getroffenen Oberflächen. Die Wellen und ihre Normalen bleiben erhalten. Der Wert 0,02 ist eine gestalterische Abstimmung, keine Messung des Walensees.
 
 Der Modus bleibt ein Grafikprototyp. Das normale Spielpaket und seine Leistungswerte ändern sich durch diese native Prüfung nicht. Die gesamte [Qualitätsreferenz](VISUAL_TARGET.md), vollständige Wasserbrechung und die Dämpfung entlang reflektierter Wasserwege bleiben offen.

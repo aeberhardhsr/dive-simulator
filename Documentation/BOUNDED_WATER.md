@@ -1,5 +1,7 @@
 # Räumlich begrenztes Wassermedium
 
+Nachfolgender Stand: Das kombinierte Wassermedium ist über `-DiveWaterPreview` inzwischen auch im normalen Spielmenü verfügbar. [Paket, Start und Messungen](WATER_PREVIEW.md). Die einzelnen Diagnoseschalter und die folgende Versuchsreihe bleiben davon getrennt.
+
 Der Modus `-DiveBoundedWater` begrenzt die native Volumenstreuung auf den Bereich unter der bewegten Wasseroberfläche. Zusammen mit `-DiveWaterInterface` macht er Himmel und Sonne im Sichtfenster nach oben wieder sichtbar. Er ergänzt die [getrennte Wasserunterseite](WATER_INTERFACE.md). Beide Schalter sind weiterhin auf Smoke-Test-Läufe beschränkt; die jeweils aktuelle Spielvorschau steht im [README](../README.md).
 
 ## Lichtweg und Darstellung

@@ -103,11 +103,17 @@ void ADivePawn::TickPerformance()
         root->SetNumberField(TEXT("distance_m"),Simulation.Data.DistanceMetres);
         root->SetNumberField(TEXT("depth_m"),Simulation.Data.DepthMetres);
         root->SetBoolField(TEXT("walking"),bWalking);
+        root->SetBoolField(TEXT("water_preview"),Environment->WaterPreviewEnabled());
+        root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
+        root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
+        root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());
         root->SetNumberField(TEXT("sediment_born"),Environment->SedimentBorn());
         root->SetNumberField(TEXT("sediment_live"),Environment->SedimentLive());
         for(const TCHAR* name:{TEXT("r.ScreenPercentage"),TEXT("r.SecondaryScreenPercentage.GameViewport"),TEXT("r.DynamicRes.OperationMode"),TEXT("r.VSync"),TEXT("t.MaxFPS"),
             TEXT("sg.ViewDistanceQuality"),TEXT("sg.AntiAliasingQuality"),TEXT("sg.ShadowQuality"),TEXT("sg.GlobalIlluminationQuality"),
-            TEXT("sg.ReflectionQuality"),TEXT("sg.PostProcessQuality"),TEXT("sg.TextureQuality"),TEXT("sg.EffectsQuality"),TEXT("sg.FoliageQuality")})
+            TEXT("sg.ReflectionQuality"),TEXT("sg.PostProcessQuality"),TEXT("sg.TextureQuality"),TEXT("sg.EffectsQuality"),TEXT("sg.FoliageQuality"),
+            TEXT("r.Lumen.HardwareRayTracing"),TEXT("r.Lumen.HardwareRayTracing.LightingMode"),TEXT("r.Lumen.HardwareRayTracing.HitLighting.Allowed"),
+            TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),TEXT("r.Lumen.Reflections.ScreenTraces"),TEXT("r.VolumetricFog")})
             if(auto* variable=IConsoleManager::Get().FindConsoleVariable(name)) root->SetNumberField(name,variable->GetFloat());
         FString json;
         const bool valid=FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&json))&&

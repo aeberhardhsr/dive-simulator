@@ -96,6 +96,7 @@ if ($Target -eq 'Content') {
 }
 if ($LASTEXITCODE -ne 0) { throw "Unreal $Target failed with exit code $LASTEXITCODE" }
 if($Target -eq 'Package') {
+    Copy-Item -LiteralPath (Join-Path $repo 'Tools/WaterPreviewLauncher.cmd') -Destination (Join-Path $PackageDirectory 'Start-WaterPreview.cmd')
     # Keep scenario-data attribution readable without extracting the game pak.
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/TEMPERATURE_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'TEMPERATURE_NOTICE.txt')
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/BUILDINGS_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'BUILDINGS_NOTICE.txt')
