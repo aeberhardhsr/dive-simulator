@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "restored_files": [
+    {
+      "sha256": "34C9832BF41D360DBE4A78DC1001F7190084E3FCFB5DEA329A23D16A63EF1026",
+      "file": "divingsim/Source/DiveSim/DiveWorld.cpp"
+    },
+    {
+      "sha256": "B9AFCE6CD5AFAE00FE45CC2667912F657D7B36F34D70058FC1B276A7107E2E09",
+      "file": "divingsim/Source/DiveSim/DiveWorld.h"
+    },
+    {
+      "sha256": "61664C2799B066C5FFDFA945A54688DE13EC4DE184977D09729CF2FE423D639B",
+      "file": "divingsim/Source/DiveSim/DiveWater.cpp"
+    },
+    {
+      "sha256": "CDAA25B66B35A7F6D5A48EB0FE3B01BBFBCA5BE773ED4554CF91B5B4BDDC2683",
+      "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp"
+    },
+    {
+      "sha256": "0A0184F8AD01CEAAD461150DC96081A79877154C3A3D56335D7E592F37FEFA9B",
+      "file": "Tools/build_water_volume_content.py"
+    },
+    {
+      "sha256": "9FA42CFACA92CC5A146BF1BD8A2F089B974A3FF6F06EB3CBD9563CC21DA6596D",
+      "file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "sha256": "F89DF9E863D9E329B4AC417EC35A89536F532CFDB486C363DC0BC9A263CAC936",
+      "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset"
+    }
+  ],
+  "build": {
+    "file": "artifacts/water-scatter-restoration-build.log",
+    "sha256": "6fcacf2c837e6c4357a584e265850749563b655acd9ae294a6e284aed2b15777"
+  },
+  "runtime_log": {
+    "file": "artifacts/water-scatter-restoration/Runtime.log",
+    "sha256": "90fb54a1a381e0f98fcd145d4a4caed5135530a69cdbf9e23ea3238da41f54fa"
+  },
+  "runtime_module": {
+    "file": "Builds/EditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+    "sha256": "7d8fc5993d51fe73ece83e7e6b7479be82ee49e32f4260caeecef98f50b645b9"
+  },
+  "cameras": [
+    "view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=10.000000 R=0.000000",
+    "view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=60.000000 R=0.000000",
+    "view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=110.000000 R=0.000000"
+  ],
+  "images": [
+    {
+      "file": "artifacts/water-scatter-restoration/Habitat_0_0.png",
+      "sha256": "f603a25c111aa26236dc0512374c2ab4b30d3b8a97d416b93f0d6e8ec66ee4f6",
+      "mean_absolute_rgb_difference_from_native_baseline_255": 0.37294375
+    },
+    {
+      "file": "artifacts/water-scatter-restoration/Habitat_0_1.png",
+      "sha256": "8ba873e078c64f406142d8b06888dc4557e4cba8d96d481f8cec19566c6b44de",
+      "mean_absolute_rgb_difference_from_native_baseline_255": 0.3218724537037037
+    },
+    {
+      "file": "artifacts/water-scatter-restoration/Habitat_0_2.png",
+      "sha256": "17f40f9bd943f9625599aaf6eb52553ead127fe3b56661727fca7f571e4567f3",
+      "mean_absolute_rgb_difference_from_native_baseline_255": 0.2924201388888889
+    }
+  ],
+  "archived_patch_applies": true,
+  "active_source_or_asset_diff": false,
+  "engine_error_lines": [
+    "[2026.11.27-05.57.48:108][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:108][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:108][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.48:109][  0]LogAutomationTest: Error: Condition failed",
+    "[2026.11.27-05.57.59:885][  0]LogPython: Error: Traceback (most recent call last):",
+    "[2026.11.27-05.57.59:885][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+    "[2026.11.27-05.57.59:885][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+    "[2026.11.27-05.57.59:885][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+    "[2026.11.27-05.57.59:885][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+  ],
+  "scope": "Original source/assets restored byte-for-byte; successful editor rebuild and one three-view native control. No new game package."
+}
