@@ -38,7 +38,7 @@ void ADiveHUD::Instruments()
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     const auto& s=Diver->Simulation.Data;
     const bool minimal=Diver->HUDStyle==2,compact=Diver->HUDStyle==1;
-    const float yaw=FMath::Fmod(GetOwningPlayerController()->GetControlRotation().Yaw+360,360);
+    const float yaw=FMath::Fmod(Diver->GetViewRotation().Yaw+360,360);
     const TCHAR* de[]={TEXT("N"),TEXT("NO"),TEXT("O"),TEXT("SO"),TEXT("S"),TEXT("SW"),TEXT("W"),TEXT("NW")};
     const TCHAR* en[]={TEXT("N"),TEXT("NE"),TEXT("E"),TEXT("SE"),TEXT("S"),TEXT("SW"),TEXT("W"),TEXT("NW")};
     const int heading=FMath::RoundToInt(yaw/45)%8;

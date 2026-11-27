@@ -57,7 +57,16 @@ Erforderliche nächste Prüfungen nach Ende des Engine-Builds:
 3. Bilder tatsächlich ansehen; insbesondere Warnung/Tutorial/Karte, vollständige Einheiten, Sonderzeichen, Credits und den Textdialog prüfen. Der automatische Test erkennt keine allgemeine grafische Überlappung und ersetzt diese Prüfung nicht.
 4. Bestehende Konfigurations-, Ausrüstungs-, Karten-, Logbuch-, Profil-, Entdeckungs-, Steuerungs- und Tutorialtests wiederholen; echte Mausbedienung sowie lange Nutzernamen prüfen. Danach FPV-Kopf-/Körperverdeckung mit vorhandenen Avatar-Tests und Bewegung reproduzieren und korrigieren.
 
-Bisher geprüft: PowerShell-Syntax des erweiterten Teststarters und `git diff --check`. C++-Kompilierung, native UI-Aufnahmen und FPV-Korrektur stehen aus. Das zuletzt spielbare Paket wurde nicht ersetzt.
+Bisher geprüft: PowerShell-Syntax des erweiterten Teststarters und `git diff --check`. Die GitHub-Prüfungen für den UI-Vorbereitungsstand `a557cd8` sind erfolgreich (Push `46013717545`, PR `46013728731`); sie prüfen die portable Suite, nicht die Unreal-Oberfläche. C++-Kompilierung, native UI-Aufnahmen und FPV-Abnahme stehen aus. Das zuletzt spielbare Paket wurde nicht ersetzt.
+
+### FPV-Korrektur vorbereitet, native Reproduktion ausstehend
+
+Das tatsächlich betrachtete Fehlerbild liegt unter `artifacts/perf-underwater-1080p-q2-20261127-094553-953/Frame.png`. Im zugehörigen `Runtime.log` springt die Blickanforderung bei einer blockierten Körperdrehung wiederholt zwischen den Halsgrenzen. Zwei im Quellcode nachvollziehbare Probleme wurden eingegrenzt:
+
+- Die Kamera verwendet `APawn::GetViewRotation()` und bisher damit direkt die Controller-Rotation. Neue Eingaben können auf einem Renderframe eintreffen, bevor der nächste feste 20-ms-Kollisionsschritt die Kopfhaltung freigibt. Dann stimmen Kamerablick und gerenderter Körper nicht überein. Das Projekt überschreibt nun `GetViewRotation()` während des Tauchgangs mit `PhysicalPose.Gaze`; auch Kamerakomponente und HUD-Kompass verwenden diese akzeptierte Richtung. Der erweiterte Test `DiveSim.Contacts.BlockedBodyAllowsHeadTurn` prüft ausdrücklich einen solchen Zwischenframe und die Pause.
+- Der Leistungstest schrieb pro Frame eine absolute Umlauf-Richtung, obwohl die Behandlung blockierter Drehungen weitere Eingaben als Differenz zur zuletzt akzeptierten Richtung aufnimmt. Er speiste dadurch dieselbe blockierte Anforderung mehrfach ein. Der Umlauftest gibt nun inkrementelle Drehung mit 6 Grad pro simulierter Sekunde ein; seine Anfangsneigung wird einmalig gesetzt. Streaming- und Soak-Steuerung bleiben separat. Neue Performance-Metadaten enthalten Kamera-, Controller- und physische Blickrichtung, Augenposition und blockierte Haltungsschritte.
+
+Diese Änderungen sind noch **nicht nativ kompiliert oder im Spiel geprüft**. Sie beweisen noch nicht, dass jede Ursache der sichtbaren Verdeckung beseitigt ist. Nach dem Build sind der Kontakttest, Avatar-Blicktests, eine Walenstadt-Wiederholung und schnelle reale Mausdrehungen erforderlich. Frühere Bildratenmessungen mit anderer Blickführung dürfen nicht als Vergleich derselben sichtbaren Szene verwendet werden.
 
 ## Originalreferenzen
 

@@ -401,7 +401,13 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(bPerformance&&SmokeScenario==TEXT("perf-soak")) SteerSoak(DeltaSeconds);
     if(bPerformance&&SmokeScenario!=TEXT("perf-stream")&&SmokeScenario!=TEXT("perf-soak"))
         if(auto* pc=Cast<APlayerController>(GetController()))
-            pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")||SmokeScenario==TEXT("perf-sediment")?-12:-5,PerformanceYaw+6*Simulation.Data.ElapsedSeconds,0));
+        {
+            // Incremental input keeps a blocked request from being added anew
+            // as an absolute orbit target on every rendered frame.
+            FRotator requested=pc->GetControlRotation();
+            requested.Yaw+=6*FMath::Min(DeltaSeconds,.25f);
+            pc->SetControlRotation(requested);
+        }
     if(bSmokeTest&&!bSmokeImageryChecked&&GetWorld()->GetTimeSeconds()>2)
     {
         FString error; const bool valid=Environment&&Environment->ValidateImagery(error);
@@ -666,6 +672,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     const double breathMotion=bCameraMotion&&!bMenu?std::sin(Simulation.Data.BreathPhase*2*Dive::Pi)*.8:0;
     Camera->SetRelativeLocation(FVector(0,0,CameraBaseHeight+breathMotion));
     if(bSmokeTest&&SmokeScenario==TEXT("caustics")) TickCausticsTest(DeltaSeconds);
+    Camera->SetWorldRotation(GetViewRotation());
     Environment->UpdateDaylight();
     const FVector eye=Camera->GetComponentLocation();
     const float depth=FMath::Max(0.f,static_cast<float>((Environment->SurfaceZ(eye.X,eye.Y)-eye.Z)/100));
@@ -924,6 +931,12 @@ void ADivePawn::Interact()
 FString ADivePawn::EntryName() const
 { return Environment?Environment->Terrain.EntryList(PendingConfig.StartOnShore)[EntryIndex].Name:FString(); }
 FVector ADivePawn::GetPawnViewLocation() const { return Camera->GetComponentLocation(); }
+FRotator ADivePawn::GetViewRotation() const
+{
+    // A render frame may fall between fixed collision steps. Pending input is
+    // not an accepted head pose and must not expose the inside of the body.
+    return bDiveActive?PhysicalPose.Gaze:Super::GetViewRotation();
+}
 bool ADivePawn::CanFinishDive() const
 {
     if(!bDiveActive||Simulation.Data.DepthMetres>.8) return false;

@@ -32,6 +32,7 @@ public:
     virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     virtual FVector GetPawnViewLocation() const override;
+    virtual FRotator GetViewRotation() const override;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly) TObjectPtr<UCapsuleComponent> Body;
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly) TObjectPtr<UCameraComponent> Camera;

@@ -11,6 +11,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "GameFramework/PlayerController.h"
+#include "Camera/CameraComponent.h"
+#include "Camera/CameraTypes.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDiveStoppedKick,"DiveSim.Contacts.StoppedKick",EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
 bool FDiveStoppedKick::RunTest(const FString&)
@@ -82,6 +84,19 @@ bool FDiveBlockedHeadTurn::RunTest(const FString&)
     TestFalse(TEXT("Head-only pose keeps all equipment clear"),DiveContacts::Overlap(fixture.World,pawn->ContactShapes,pawn));
     pawn->AdvanceContactPose(.02f,0);
     TestTrue(TEXT("Neck limit stays fixed while the requested turn is pending"),FMath::IsNearlyEqual(pawn->PhysicalPose.HeadYaw,65.f,.001f)&&pawn->bBlockedGaze);
+    const FRotator acceptedView=pawn->PhysicalPose.Gaze;
+    // Render new input before another 20 ms collision step. Previously the
+    // camera could turn through the body while its physical head stayed put.
+    controller->SetControlRotation(FRotator(-12,302,0));
+    TestTrue(TEXT("Pending input cannot turn the rendered eye away from its head"),pawn->GetViewRotation().Equals(acceptedView,.001));
+    FMinimalViewInfo rendered;
+    pawn->Camera->GetCameraView(.005f,rendered);
+    TestTrue(TEXT("Camera component uses the accepted pose between physics steps"),rendered.Rotation.Equals(acceptedView,.001));
+    pawn->bMenu=true;
+    pawn->Camera->GetCameraView(.005f,rendered);
+    TestTrue(TEXT("Pause retains the accepted camera pose"),rendered.Rotation.Equals(acceptedView,.001));
+    pawn->bMenu=false;
+    controller->SetControlRotation(acceptedView); // Keep the original pending 90-degree turn.
     obstruction->SetActorEnableCollision(false);
     pawn->AdvanceContactPose(.02f,0);
     TestTrue(TEXT("Clearing the obstacle releases the preserved full turn"),pawn->PhysicalPose.Gaze.Equals(FRotator(0,90,0),.001)&&FMath::Abs(pawn->PhysicalPose.HeadYaw)<.001&&!pawn->bBlockedGaze);

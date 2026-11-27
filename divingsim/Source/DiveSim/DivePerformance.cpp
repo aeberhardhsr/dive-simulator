@@ -48,6 +48,9 @@ void ADivePawn::SetupPerformance()
     IFileManager::Get().MakeDirectory(*PerformanceDirectory,true);
     PerformanceStarted=FPlatformTime::Seconds();
     if(auto* pc=Cast<APlayerController>(GetController())) PerformanceYaw=pc->GetControlRotation().Yaw;
+    if(SmokeScenario!=TEXT("perf-stream")&&SmokeScenario!=TEXT("perf-soak"))
+        if(auto* pc=Cast<APlayerController>(GetController()))
+            pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")||SmokeScenario==TEXT("perf-sediment")?-12:-5,PerformanceYaw,0));
     if(SmokeScenario==TEXT("perf-soak")) SetupSoak();
     if(SmokeScenario==TEXT("perf-sediment"))
     {
@@ -103,6 +106,26 @@ void ADivePawn::TickPerformance()
         root->SetNumberField(TEXT("distance_m"),Simulation.Data.DistanceMetres);
         root->SetNumberField(TEXT("depth_m"),Simulation.Data.DepthMetres);
         root->SetBoolField(TEXT("walking"),bWalking);
+        // Bind later FPV/performance captures to the actual accepted pose, not
+        // only to scenario names: blocked turns can change what is on screen.
+        auto rotation=[&](const TCHAR* name,const FRotator& value)
+        {
+            auto object=MakeShared<FJsonObject>();
+            object->SetNumberField(TEXT("pitch"),value.Pitch);
+            object->SetNumberField(TEXT("yaw"),value.Yaw);
+            object->SetNumberField(TEXT("roll"),value.Roll);
+            root->SetObjectField(name,object);
+        };
+        rotation(TEXT("camera_rotation_degrees"),Camera->GetComponentRotation());
+        rotation(TEXT("physical_gaze_degrees"),PhysicalPose.Gaze);
+        rotation(TEXT("control_rotation_degrees"),GetControlRotation());
+        auto eye=MakeShared<FJsonObject>();const FVector position=Camera->GetComponentLocation();
+        eye->SetNumberField(TEXT("x"),position.X);eye->SetNumberField(TEXT("y"),position.Y);eye->SetNumberField(TEXT("z"),position.Z);
+        root->SetObjectField(TEXT("eye_world_cm"),eye);
+        root->SetNumberField(TEXT("head_yaw_degrees"),PhysicalPose.HeadYaw);
+        root->SetNumberField(TEXT("body_yaw_degrees"),PhysicalPose.BodyYaw());
+        root->SetNumberField(TEXT("blocked_pose_steps"),BlockedPoseSteps);
+        root->SetStringField(TEXT("orbit_input"),TEXT("incremental_6_degrees_per_simulation_second"));
         root->SetBoolField(TEXT("water_preview"),Environment->WaterPreviewEnabled());
         root->SetBoolField(TEXT("gravel_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement")));
         root->SetBoolField(TEXT("population_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement")));
