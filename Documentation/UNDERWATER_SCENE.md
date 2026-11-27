@@ -1,5 +1,7 @@
 # Unterwasserwelt: Arbeit am visuellen Ziel
 
+**Aktueller Status, 28. November 2026:** Die Unterwasserwelt ist vom Nutzer gestalterisch abgenommen. Die laufende Schattenoptimierung ist abgeschlossen; der [Plan für genau fünf weitere Abschlussiterationen](UNDERWATER_FINISH_PLAN.md) legt die restlichen Arbeiten und den anschliessenden Wechsel zur Überwasserwelt fest. Die folgenden Berichte dokumentieren frühere Entwicklungsstände. Ihre damaligen Aussagen zur noch offenen Referenzabnahme sind historisch und erweitern den aktuellen Auftrag nicht.
+
 **Korrektur zur Ortszuordnung:** Die Unterwasser-Vergleiche mit direktem Start und Index 2 liegen bei Walenstadt/Ost. Frühere Bezeichnungen als „Ledi“ bzw. „Lediwracks“ und historische `ledi`-Fallnamen dürfen nicht mit dem separaten Uferzugang Mols/Lediwracks gleichgesetzt werden. [Zuordnung der Testorte und Prüfumfang](TEST_ENTRY_LOCATIONS.md).
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.

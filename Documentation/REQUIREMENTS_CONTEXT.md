@@ -1,5 +1,7 @@
 # Abnahmebasis aus der Requirements Specification v0.1
 
+**Nutzerentscheidung vom 28. November 2026:** Die Unterwasserwelt ist gestalterisch abgenommen. Nach der abgeschlossenen laufenden Optimierung folgen [genau fünf begrenzte Abschlussiterationen](UNDERWATER_FINISH_PLAN.md), danach die Überwasserwelt. Die ursprüngliche Anforderungstabelle bleibt als Quelle erhalten. Diese Teilabnahme ist keine pauschale Erfüllung aller Rendering-, Hardware-, Plattform- oder Gesamtspielanforderungen.
+
 Quelle: [Requirements-Spezifikation Tauchspiel](https://chatgpt.com/c/6b0615d3-17c8-83eb-891b-8af1042b27eb), erneut vollständig über die Tabellen der angemeldeten Browseransicht am 25. November 2026 gelesen. `REQUIREMENTS.csv` übernimmt alle 236 nummerierten Einträge einschließlich Optionen, Einheiten, Zielwerten und ursprünglichen Prioritäten. Trennzeichen ist `|`, Zeichensatz UTF-8. Die 236 Datenzeilen ohne abschließenden Zeilenumbruch ergeben 12.040 Zeichen und FNV-1a32 `ff6027b6`; dieser Wert wurde gegen die aus dem Browser gelesenen Zeilen verglichen.
 
 Enthalten sind 150 MUST-, 38 SHOULD-, fünf COULD- und sieben FUTURE-Einträge. Die 36 nichtfunktionalen Einträge PERF/GFX/MAINT besitzen im Original keine separate Priorität; das leere Feld bedeutet keine Freigabe zum Weglassen. Diese Liste ist eine Anforderungsquelle, keine Erledigtliste. Die übergeordneten Vorgaben und Abnahmekriterien gelten zusätzlich. Der Unreal-Auftrag ersetzt die Unity/HDRP-spezifische technische Umsetzung, nicht die fachlichen Anforderungen.

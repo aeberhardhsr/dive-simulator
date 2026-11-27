@@ -1,5 +1,7 @@
 # Visuelles Qualitätsziel
 
+**Aktualisierung vom 28. November 2026:** Der Nutzer hat die Unterwasserwelt gestalterisch abgenommen. Es folgen genau [fünf begrenzte Abschlussiterationen](UNDERWATER_FINISH_PLAN.md), danach wird die Überwasserwelt zum Entwicklungsschwerpunkt. Diese Entscheidung ersetzt frühere Aussagen, die Unterwasser-Referenzabnahme sei noch offen. Die Bilder bleiben Orientierung; eine identische Umsetzung ist weiterhin nicht verlangt.
+
 Die am 26. November 2026 vom Nutzer bereitgestellten Bilder definieren die gewünschte Detail- und Realitätsstufe für das fertige Spielerlebnis. Sie sind gestalterische Referenzen, keine bereits erreichten Spielaufnahmen, geografischen Messungen oder Vorgaben für eine identische Szene. Originale liegen unverändert unter `References/`. Daraus werden keine Texturen oder Hintergrundkulissen für das Spiel übernommen.
 
 ## Unter Wasser – zuerst
@@ -10,7 +12,7 @@ Das Ziel ist eine zusammenhängende, räumlich glaubwürdige Umgebung: große Fe
 
 Licht von der Wasseroberfläche, Abschattung, lokale Lichtmuster und allmählicher Kontrastverlust mit der Entfernung müssen gemeinsam Tiefe erzeugen. Farbe, Trübung und Lichtstrahlen bleiben abhängig von Sichtweite, Tiefe, Wetter und Sonnenstand. Der helle türkisgrüne Referenzzustand ist kein konstanter Filter für alle Tauchgänge. Materialdetails müssen bei normalem Spielabstand sichtbar sein; Nahansichten dürfen keine vorzeitig groben Detailstufen zeigen.
 
-Der aktuelle Stand liegt deutlich unter dieser Gesamtreferenz. Drei detailliertere lose Felsformen und zwei zusätzliche Gruppenkerne sind Bausteine. Besonders offen bleiben die Verzahnung der unterschiedlichen Größenstufen, organischer Bewuchs, natürliche Materialübergänge sowie die gemeinsame visuelle Wirkung von Gelände, Wasser und Beleuchtung. Der [Asset- und Lückenabgleich](VISUAL_ASSET_REVIEW.md) konkretisiert die nächsten Arbeiten anhand vorhandener Spielaufnahmen und Quelldaten.
+Der frühere [Asset- und Lückenabgleich](VISUAL_ASSET_REVIEW.md) dokumentiert den damaligen Entwicklungsbedarf. Die danach entstandene Unterwasserwelt ist inzwischen vom Nutzer abgenommen. Weitere gestalterische Verfeinerungen werden als spätere Möglichkeiten geführt; sie begründen keine zusätzliche Unterwasser-Optimierungsrunde ausserhalb des Abschlussplans.
 
 ## Über Wasser – anschließend auf vergleichbarem Niveau
 
