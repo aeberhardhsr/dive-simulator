@@ -2,6 +2,8 @@
 
 Ein nativer Rendererversuch ergänzt die bisherige skalare Abschwächung des Sonnenlichts unter Wasser um unterschiedliche Absorption für Rot, Grün und Blau. Die Änderung wirkt auf das direkte gerichtete Licht vor der Oberflächenbeleuchtung. Sie ist standardmässig ausgeschaltet und noch nicht in ein Spielpaket übernommen. Die zuletzt geprüfte spielbare Vorschau bleibt `Builds/WindowsPlantColor/Start-WaterPreview.cmd`.
 
+Ein anschliessender [Volumenversuch](SOLAR_VOLUME_STUDY.md) erweitert dieselbe Berechnung auf Streupunkte im Wasser und untersucht die Kombination mit dem Kameraweg. Die unten dokumentierte Reihe bleibt der gesonderte Nachweis des Oberflächenanteils.
+
 ## Wirkung und verbleibende Bildprobleme
 
 Die Felsen und der Seegrund verlieren einen Teil ihres graubraunen Eindrucks. Die grossen freien Bodenflächen, die flache Lichtwirkung und die wenig räumliche Anordnung sind damit weiterhin nicht auf dem Niveau der [Nutzerreferenzen](VISUAL_TARGET.md). Dieser Versuch ist ein begrenzter technischer Schritt, keine visuelle Abnahme.

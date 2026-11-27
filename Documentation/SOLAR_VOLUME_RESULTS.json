@@ -1,0 +1,1952 @@
+{
+  "status": "NATIVE_VOLUME_SOURCE_PASS_EXPERIMENTAL",
+  "packaged": false,
+  "default_enabled": false,
+  "visual_target_complete": false,
+  "host": {
+    "files": [
+      {
+        "sha256": "efdfe3bad75e9da84582d33b07f5fbbcd416fa1e3a63abe13cc2186c81cbb7a7",
+        "file": "Builds/EditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveRendering.dll"
+      },
+      {
+        "sha256": "2eaf2cadecaf399d16d4b903c4fa0e00679495ed1170aa56e7052bad2ef2bbf6",
+        "file": "Builds/EditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+      },
+      {
+        "sha256": "103a1a8f7f7cdc4cde6c82c09df0246df012fcf319a480c170a8de7287e0e59c",
+        "file": "divingsim/Config/DefaultEditor.ini"
+      },
+      {
+        "sha256": "0aaf0d9bd09045215b6d9277e37adbb6ed8f6275540e60e2744f293b032bf077",
+        "file": "divingsim/Config/DefaultEditorPerProjectUserSettings.ini"
+      },
+      {
+        "sha256": "c68ab50cf9ef0b292575beb33146a0b1477a5a6fece1c3060500da6cdd0ab46e",
+        "file": "divingsim/Config/DefaultEngine.ini"
+      },
+      {
+        "sha256": "15dac366654b52756a58161aa2f577b581e940a9a524b7a369564d158c85c1b0",
+        "file": "divingsim/Config/DefaultGame.ini"
+      },
+      {
+        "sha256": "5deb78555510100669f2753e737919b3275ba81cb3ac31ced138a42c2bc58fef",
+        "file": "divingsim/Config/DefaultInput.ini"
+      },
+      {
+        "sha256": "ec28ccfa77e0a9a07b82cac7ad584ef83f45f56ffb4b50469270a213ca4c152b",
+        "file": "divingsim/Config/Localization/Game_Compile.ini"
+      },
+      {
+        "sha256": "f5289b73341108ca0602e636f9c05e748f186bb2518b092a6b5a9d60b0a22757",
+        "file": "divingsim/Config/Localization/Game_Export.ini"
+      },
+      {
+        "sha256": "6b1e5b6e9d4173284a490c884e0e17a43915ac124b7754dc830d92fd47001560",
+        "file": "divingsim/Config/Localization/Game_ExportDialogueScript.ini"
+      },
+      {
+        "sha256": "8e355845bfa4277355bb4951035d67da2917d34bbf0c376406205730367afdd2",
+        "file": "divingsim/Config/Localization/Game_Gather.ini"
+      },
+      {
+        "sha256": "a51cfc2847aa4967edb106e4e82949e1d130196c83cf22854ff13dae6e6a8409",
+        "file": "divingsim/Config/Localization/Game_GenerateReports.ini"
+      },
+      {
+        "sha256": "4debbcddf9c9a79d938e95a7fb2104e2ccc8c9b9d905a58c92fe93069df6f3d6",
+        "file": "divingsim/Config/Localization/Game_Import.ini"
+      },
+      {
+        "sha256": "7b8fe294216195541b61cb3780cc2932e0e6d034164344c2fc3c66d4d8ee9f08",
+        "file": "divingsim/Config/Localization/Game_ImportDialogue.ini"
+      },
+      {
+        "sha256": "f4409926f01cf0b42714182779d1da03c88598e3c0dfde3135cba011d9a456f0",
+        "file": "divingsim/Config/Localization/Game_ImportDialogueScript.ini"
+      },
+      {
+        "sha256": "b78795401bcaa95d04c02573cd9b9ab699a0ecb1b36134340160d5db7255a29a",
+        "file": "divingsim/Content/Diving/Materials/M_CausticsProbe.uasset"
+      },
+      {
+        "sha256": "1da912c8eb089c1250dde4ac9060c6a5f08697b3f41c88318ccb3e47323df1ee",
+        "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset"
+      },
+      {
+        "sha256": "5e36f150607f6d788c3d16c91ffb85eeff87225da8ff976e1562991cfe8bd575",
+        "file": "divingsim/Content/Diving/Materials/M_SuspendedWater.uasset"
+      },
+      {
+        "sha256": "49cfaa9df9883d18453536f640deb277c9d9bd77e76656a13655f1da2ae8e7c6",
+        "file": "divingsim/Content/Diving/Materials/M_TorchWater.uasset"
+      },
+      {
+        "sha256": "6e65cd5a85876f24604eb589c021f8789d3ee0edff0173606f1a3cbbd18bc14e",
+        "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset"
+      },
+      {
+        "sha256": "764a534b0df3b56357bb150498b9ae7c11fb74966ce1f9e2f51565e737112e6e",
+        "file": "divingsim/Content/Diving/Materials/M_Water.uasset"
+      },
+      {
+        "sha256": "a1ff42d0c89191b7fcf65b609c314ab0a62737839027c05996ef4bfe42917b83",
+        "file": "divingsim/Content/Diving/Materials/M_WaterTop.uasset"
+      },
+      {
+        "sha256": "4d8becd4fe60b2c93595a3ea0e539327c6b1f9099377a2ecad84e9f6fd51eb0e",
+        "file": "divingsim/Content/Diving/Materials/M_WaterUnder.uasset"
+      },
+      {
+        "sha256": "f89df9e863d9e329b4ac417ec35a89536f532cfdb486c363dc0bc9a263cac936",
+        "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset"
+      },
+      {
+        "sha256": "b5c90ba22ec39f5f8ee51195057a80cdf02fd2440c9fded72f33f4017effabf4",
+        "file": "divingsim/divingsim.uproject"
+      },
+      {
+        "sha256": "351a299e85b8679a54e94bb8b29fe53e64fe5ba5877de8218e6f9161673a2e47",
+        "file": "divingsim/Shaders/SolarMedium.ush"
+      },
+      {
+        "sha256": "7db5deddb4a64266c101bd3b2f796c3be27c6a3c430edbe32ba653a36cbda5ac",
+        "file": "divingsim/Shaders/SolarTransport.ush"
+      },
+      {
+        "sha256": "babd2625d6c241cf1080c1a3f95be27b4c405b42617e83f5f9ce346b106f54b8",
+        "file": "divingsim/Shaders/SpectralWater.usf"
+      },
+      {
+        "sha256": "b21ca156577c83ff780748886dd04c60d77014d3fd23609f0c5c8a01c120ee3b",
+        "file": "divingsim/Source/DiveRendering/DiveRendering.Build.cs"
+      },
+      {
+        "sha256": "7aef9a9ffed99327fc15a445365c497bcc9abcee0b4c5eee829df0374b92cfa9",
+        "file": "divingsim/Source/DiveRendering/DiveRendering.cpp"
+      },
+      {
+        "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a",
+        "file": "divingsim/Source/DiveSim/DiveAccess.cpp"
+      },
+      {
+        "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482",
+        "file": "divingsim/Source/DiveSim/DiveAudio.cpp"
+      },
+      {
+        "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4",
+        "file": "divingsim/Source/DiveSim/DiveAudio.h"
+      },
+      {
+        "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6",
+        "file": "divingsim/Source/DiveSim/DiveAvatar.cpp"
+      },
+      {
+        "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159",
+        "file": "divingsim/Source/DiveSim/DiveAvatar.h"
+      },
+      {
+        "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352",
+        "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp"
+      },
+      {
+        "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f",
+        "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp"
+      },
+      {
+        "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834",
+        "file": "divingsim/Source/DiveSim/DiveBodyFrame.h"
+      },
+      {
+        "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a",
+        "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp"
+      },
+      {
+        "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2",
+        "file": "divingsim/Source/DiveSim/DiveBuildings.cpp"
+      },
+      {
+        "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e",
+        "file": "divingsim/Source/DiveSim/DiveBuildings.h"
+      },
+      {
+        "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a",
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f",
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h"
+      },
+      {
+        "sha256": "6bc2c4cb8b709aee40ea1c527acb42d90a27b67e4eca5a45e607a971e99007fe",
+        "file": "divingsim/Source/DiveSim/DiveCaustics.cpp"
+      },
+      {
+        "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f",
+        "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp"
+      },
+      {
+        "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1",
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp"
+      },
+      {
+        "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1",
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.h"
+      },
+      {
+        "sha256": "90fdbdd9655b101d757ac55abdf49cc3e4160893646bec4757e22002945eb49f",
+        "file": "divingsim/Source/DiveSim/DiveCoast.cpp"
+      },
+      {
+        "sha256": "75c97a2a5ab6fbe38bbebe81df4c1284f3af6c64d6586667662bd28a628cf819",
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29",
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h"
+      },
+      {
+        "sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d",
+        "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp"
+      },
+      {
+        "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799",
+        "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp"
+      },
+      {
+        "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d",
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp"
+      },
+      {
+        "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3",
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.h"
+      },
+      {
+        "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f",
+        "file": "divingsim/Source/DiveSim/DiveContacts.cpp"
+      },
+      {
+        "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a",
+        "file": "divingsim/Source/DiveSim/DiveContacts.h"
+      },
+      {
+        "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74",
+        "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp"
+      },
+      {
+        "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068",
+        "file": "divingsim/Source/DiveSim/DiveControls.cpp"
+      },
+      {
+        "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e",
+        "file": "divingsim/Source/DiveSim/DiveControls.h"
+      },
+      {
+        "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9",
+        "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp"
+      },
+      {
+        "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa",
+        "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp"
+      },
+      {
+        "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057",
+        "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp"
+      },
+      {
+        "sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982",
+        "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp"
+      },
+      {
+        "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp"
+      },
+      {
+        "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.h"
+      },
+      {
+        "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp"
+      },
+      {
+        "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp"
+      },
+      {
+        "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp"
+      },
+      {
+        "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp"
+      },
+      {
+        "sha256": "bf3f8f2abba4bf4ae14ceaeb2c60b856b9471220894a5fc452074993e3bbe48b",
+        "file": "divingsim/Source/DiveSim/DiveEcology.cpp"
+      },
+      {
+        "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724",
+        "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp"
+      },
+      {
+        "sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac",
+        "file": "divingsim/Source/DiveSim/DiveEquipment.cpp"
+      },
+      {
+        "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a",
+        "file": "divingsim/Source/DiveSim/DiveEquipment.h"
+      },
+      {
+        "sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd",
+        "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp"
+      },
+      {
+        "sha256": "6d60bd17cf6f025f4d1a0f02d42f66798de2a720b2a6a35b9d827c11f6579f68",
+        "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp"
+      },
+      {
+        "sha256": "3c06d8e1d1b42431acec594482277f8e583c4ae418e0e33618b82dc8b9109bb9",
+        "file": "divingsim/Source/DiveSim/DiveFootDeposits.cpp"
+      },
+      {
+        "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04",
+        "file": "divingsim/Source/DiveSim/DiveGameMode.cpp"
+      },
+      {
+        "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b",
+        "file": "divingsim/Source/DiveSim/DiveGameMode.h"
+      },
+      {
+        "sha256": "7ee6e8b2d2e9d2236179143a9624acb584849c673bc366e54860bb5acce62b68",
+        "file": "divingsim/Source/DiveSim/DiveGravel.cpp"
+      },
+      {
+        "sha256": "98d497a8c649030b96888329c4b7bafe88d1e27a06f81a92a8e2904f025f94af",
+        "file": "divingsim/Source/DiveSim/DiveHUD.cpp"
+      },
+      {
+        "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17",
+        "file": "divingsim/Source/DiveSim/DiveHUD.h"
+      },
+      {
+        "sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72",
+        "file": "divingsim/Source/DiveSim/DiveImagery.cpp"
+      },
+      {
+        "sha256": "31f7c60239fa146ac1edfa8f7b3438e2172b3a3eb14a0fd64924d98540fde7a0",
+        "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp"
+      },
+      {
+        "sha256": "eb607f0a1d9674846388ba38296696fe1896c82d0b1889a38dfd378593be21d8",
+        "file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+      },
+      {
+        "sha256": "7a85fd583a418e0c7c38c0c6cbdb8fc3ba7ec1085723de0f4fa3147edee941ef",
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12",
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h"
+      },
+      {
+        "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664",
+        "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp"
+      },
+      {
+        "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04",
+        "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp"
+      },
+      {
+        "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2",
+        "file": "divingsim/Source/DiveSim/DiveLogbook.cpp"
+      },
+      {
+        "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b",
+        "file": "divingsim/Source/DiveSim/DiveLogbook.h"
+      },
+      {
+        "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522",
+        "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp"
+      },
+      {
+        "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9",
+        "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp"
+      },
+      {
+        "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee",
+        "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp"
+      },
+      {
+        "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d",
+        "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp"
+      },
+      {
+        "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6",
+        "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp"
+      },
+      {
+        "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb",
+        "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp"
+      },
+      {
+        "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93",
+        "file": "divingsim/Source/DiveSim/DiveParticles.cpp"
+      },
+      {
+        "sha256": "e20ba29308f1d754e44517c9cdaf5868dbc7d1be14895476d7b87fab53d80ae0",
+        "file": "divingsim/Source/DiveSim/DivePawn.cpp"
+      },
+      {
+        "sha256": "b0d6af6fc530eb4408b353d72385ad50e48f205475c3da9ec10edb37a7d5976a",
+        "file": "divingsim/Source/DiveSim/DivePawn.h"
+      },
+      {
+        "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4",
+        "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp"
+      },
+      {
+        "sha256": "771b6f0c559694bc5482e89c2e3b6885536afd6b4c2f6f1d025077aefb1edd2f",
+        "file": "divingsim/Source/DiveSim/DivePerformance.cpp"
+      },
+      {
+        "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475",
+        "file": "divingsim/Source/DiveSim/DivePhotograph.cpp"
+      },
+      {
+        "sha256": "337c368e05d9d53d703a228a1f7bc5cf14410a3c3d861e1b54cb3772a0ae8304",
+        "file": "divingsim/Source/DiveSim/DivePlantBedsTests.cpp"
+      },
+      {
+        "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88",
+        "file": "divingsim/Source/DiveSim/DivePlayerController.cpp"
+      },
+      {
+        "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a",
+        "file": "divingsim/Source/DiveSim/DivePlayerController.h"
+      },
+      {
+        "sha256": "4a546b808cec8df4f1185382a72da9fe5e69ffac9c2349dc092315671c165953",
+        "file": "divingsim/Source/DiveSim/DivePopulation.cpp"
+      },
+      {
+        "sha256": "31ca9558fe32b499a5ce11c561a3bb8c1f36fc25f5bef26362cadc3b10c7c3e7",
+        "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp"
+      },
+      {
+        "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f",
+        "file": "divingsim/Source/DiveSim/DivePose.h"
+      },
+      {
+        "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8",
+        "file": "divingsim/Source/DiveSim/DiveProfiles.cpp"
+      },
+      {
+        "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447",
+        "file": "divingsim/Source/DiveSim/DiveProfiles.h"
+      },
+      {
+        "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58",
+        "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp"
+      },
+      {
+        "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0",
+        "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp"
+      },
+      {
+        "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b",
+        "file": "divingsim/Source/DiveSim/DiveRecording.cpp"
+      },
+      {
+        "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f",
+        "file": "divingsim/Source/DiveSim/DiveRecording.h"
+      },
+      {
+        "sha256": "aceda63e19b5c9f860e515853d21e1f62f842b2ff7f678ec51cd6ce6ee9ea142",
+        "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp"
+      },
+      {
+        "sha256": "0395297ff23d7ceaf8b69ee9c0f824862b1ea21c76590876ad8d648a3fe8fe14",
+        "file": "divingsim/Source/DiveSim/DiveRockSearchTests.cpp"
+      },
+      {
+        "sha256": "f3c08475bb83a5d85b79e2c19e37d0f85269a5086d5f2a8e953a365ceaf5edec",
+        "file": "divingsim/Source/DiveSim/DiveSediment.cpp"
+      },
+      {
+        "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d",
+        "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp"
+      },
+      {
+        "sha256": "c13bdc1b625b2bbb51689549d9e27542ed1bfbbc152e71fd06fee3cc8533eda0",
+        "file": "divingsim/Source/DiveSim/DiveShoreline.cpp"
+      },
+      {
+        "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea",
+        "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp"
+      },
+      {
+        "sha256": "67733768979fa23e231ac9ff645bebfb73f2d19036e7fd29936426978d53ef7b",
+        "file": "divingsim/Source/DiveSim/DiveSim.Build.cs"
+      },
+      {
+        "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac",
+        "file": "divingsim/Source/DiveSim/DiveSim.cpp"
+      },
+      {
+        "sha256": "b01b6b36c16e9e04c2a71911e5997bc052956cbf1ceb242d6c997af8bd1ee519",
+        "file": "divingsim/Source/DiveSim/DiveSky.cpp"
+      },
+      {
+        "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819",
+        "file": "divingsim/Source/DiveSim/DiveSoak.cpp"
+      },
+      {
+        "sha256": "2daf3890524ad5933d193ca7aea6d7a8d98563192aaf7ce2bd81e2c0f292e27e",
+        "file": "divingsim/Source/DiveSim/DiveTerrain.cpp"
+      },
+      {
+        "sha256": "03440ae9b86f53481cbef2201441884256b70bd7fbf2c09ba944fc24ec223fa4",
+        "file": "divingsim/Source/DiveSim/DiveTerrain.h"
+      },
+      {
+        "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6",
+        "file": "divingsim/Source/DiveSim/DiveTextDialog.h"
+      },
+      {
+        "sha256": "c5135287c9e73fdb2ebe02cd95cfd66457be04941cd953f797e04211f4b9e0d7",
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.cpp"
+      },
+      {
+        "sha256": "f9ac559cdd3b88525004915a9ecd528f76b6336fcce4c4d2f0c4f43176cb1d31",
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.h"
+      },
+      {
+        "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b",
+        "file": "divingsim/Source/DiveSim/DiveTorch.cpp"
+      },
+      {
+        "sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d",
+        "file": "divingsim/Source/DiveSim/DiveVegetation.cpp"
+      },
+      {
+        "sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515",
+        "file": "divingsim/Source/DiveSim/DiveVegetation.h"
+      },
+      {
+        "sha256": "61664c2799b066c5ffdfa945a54688de13ec4de184977d09729cf2fe423d639b",
+        "file": "divingsim/Source/DiveSim/DiveWater.cpp"
+      },
+      {
+        "sha256": "cdaa25b66b35a7f6d5a48eb0fe3b01bbfbca5be773ed4554cf91b5b4bddc2683",
+        "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp"
+      },
+      {
+        "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b",
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp"
+      },
+      {
+        "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1",
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.h"
+      },
+      {
+        "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp"
+      },
+      {
+        "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp"
+      },
+      {
+        "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp"
+      },
+      {
+        "sha256": "3499d72c97d64f06c8e0f1aba4641a42cd497b681be538afe4878ec08ddeeef0",
+        "file": "divingsim/Source/DiveSim/DiveWorld.cpp"
+      },
+      {
+        "sha256": "99aaf2e815027ef18affeb7af7118df91cd4500d8ab60853ef363c43222b8ffb",
+        "file": "divingsim/Source/DiveSim/DiveWorld.h"
+      },
+      {
+        "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14",
+        "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h"
+      },
+      {
+        "sha256": "7c6db5c705c037ddd4b6de5289a9370c2d6c17b7bc8c9edf6dc8be89eeb65898",
+        "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h"
+      },
+      {
+        "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10",
+        "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h"
+      },
+      {
+        "sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271",
+        "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h"
+      },
+      {
+        "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b",
+        "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h"
+      },
+      {
+        "sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db",
+        "file": "divingsim/Source/DiveSim/Simulation/Decompression.h"
+      },
+      {
+        "sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291",
+        "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h"
+      },
+      {
+        "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7",
+        "file": "divingsim/Source/DiveSim/Simulation/Ecology.h"
+      },
+      {
+        "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f",
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
+      },
+      {
+        "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a",
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h"
+      },
+      {
+        "sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669",
+        "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h"
+      },
+      {
+        "sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500",
+        "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h"
+      },
+      {
+        "sha256": "416fd5f23b6c9218c0c72d8913ebcb6bbf0535ab5d11fee6661f0cf4184401a2",
+        "file": "divingsim/Source/DiveSim/Simulation/FootDeposit.h"
+      },
+      {
+        "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93",
+        "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h"
+      },
+      {
+        "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a",
+        "file": "divingsim/Source/DiveSim/Simulation/Loadout.h"
+      },
+      {
+        "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599",
+        "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h"
+      },
+      {
+        "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d",
+        "file": "divingsim/Source/DiveSim/Simulation/Navigation.h"
+      },
+      {
+        "sha256": "6eac3be8b7d8f3ba7b35fe2f7f77d1a66929df60a2ffcae9c98a3b2b4f51b805",
+        "file": "divingsim/Source/DiveSim/Simulation/RockIndex.h"
+      },
+      {
+        "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147",
+        "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h"
+      },
+      {
+        "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633",
+        "file": "divingsim/Source/DiveSim/Simulation/Sediment.h"
+      },
+      {
+        "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe",
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
+      },
+      {
+        "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b",
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h"
+      },
+      {
+        "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700",
+        "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
+      },
+      {
+        "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc",
+        "file": "divingsim/Source/DiveSim/Simulation/Torch.h"
+      },
+      {
+        "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd",
+        "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h"
+      },
+      {
+        "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab",
+        "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h"
+      },
+      {
+        "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725",
+        "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h"
+      },
+      {
+        "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68",
+        "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h"
+      },
+      {
+        "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf",
+        "file": "divingsim/Source/DiveSim/Simulation/Weather.h"
+      },
+      {
+        "sha256": "e5d30c7178d4fbf003cf087677e816dc74b1a9e1e4595f1e05477faf9a007bba",
+        "file": "divingsim/Source/divingsim.Target.cs"
+      },
+      {
+        "sha256": "a7a3c75aa6e1509aff12332658050a22916dfc68511b5877619f4587c6521a9e",
+        "file": "divingsim/Source/divingsimEditor.Target.cs"
+      },
+      {
+        "sha256": "e94182370ca4805dd7b85670f08dcfd48cbfa648a93bddc5229af8c5d8118b03",
+        "file": "Tools/PrepareSolarShaderStudy.py"
+      },
+      {
+        "sha256": "4511c5ab467a784f9d3080fb7d968685b0142206fcb9eab0e5472e7c67f8b509",
+        "file": "Tools/SmokeTest.ps1"
+      },
+      {
+        "sha256": "7fba3b43f78cf495e7a295aeab680ec06c0ff6480464ad0785a6da2af22333e1",
+        "file": "Tools/TestCaustics.ps1"
+      },
+      {
+        "sha256": "112e1dd325ec49295bafa4efa5e13e728d16ef1ef3593e416ee1b9add387d42a",
+        "file": "Tools/TestSolarVolume.ps1"
+      }
+    ],
+    "native_editor": true,
+    "source_head": "1c5561446fa753c38a658f306a1d1253df16b1ee"
+  },
+  "shader_manifests": [
+    {
+      "engine_file": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Shaders\\Private\\DeferredLightPixelShaders.usf",
+      "original_sha256": "2be1df4a8ddbd6d33005e58c7cc924dcb777f3dcc4fcce14f9b9c6292706eb57",
+      "patched_sha256": "79abbb639d3dd69e3dca8010eb827680b671e08420fc665fc29370f55a5613af",
+      "mapping": "/Engine/Private",
+      "destination": "O:\\games\\dive game\\Builds\\EditorSandbox\\divingsim\\Intermediate\\DiveSolarStudy\\Private",
+      "shader_include_sha256": "7db5deddb4a64266c101bd3b2f796c3be27c6a3c430edbe32ba653a36cbda5ac",
+      "common_include_sha256": "351a299e85b8679a54e94bb8b29fe53e64fe5ba5877de8218e6f9161673a2e47",
+      "volume_enabled": false,
+      "scope": "Directional direct surfaces; mean water plane; no GI update or lake footprint."
+    },
+    {
+      "engine_file": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Shaders\\Private\\DeferredLightPixelShaders.usf",
+      "original_sha256": "2be1df4a8ddbd6d33005e58c7cc924dcb777f3dcc4fcce14f9b9c6292706eb57",
+      "patched_sha256": "79abbb639d3dd69e3dca8010eb827680b671e08420fc665fc29370f55a5613af",
+      "mapping": "/Engine/Private",
+      "destination": "O:\\games\\dive game\\Builds\\EditorSandbox\\divingsim\\Intermediate\\DiveSolarVolumeStudy\\Private",
+      "shader_include_sha256": "7db5deddb4a64266c101bd3b2f796c3be27c6a3c430edbe32ba653a36cbda5ac",
+      "common_include_sha256": "351a299e85b8679a54e94bb8b29fe53e64fe5ba5877de8218e6f9161673a2e47",
+      "volume_enabled": true,
+      "scope": "Directional direct surfaces and per-sample fog source; mean water plane; no GI update or lake footprint.",
+      "volume": {
+        "engine_file": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Shaders\\Private\\VolumetricFog.usf",
+        "original_sha256": "e81073e5f622d73a08af916789df0fabd992cfa9fb9407df585c449dedf2dda9",
+        "patched_sha256": "4031fd519113de172ee9c1edcdc1617fa88f6b8bca08882b21604c44cb2ee3a8"
+      }
+    }
+  ],
+  "cases": {
+    "low-direct": {
+      "options": {
+        "name": "low-direct",
+        "spectral": false,
+        "count": 3,
+        "status": "PASS",
+        "volume": false,
+        "sun": false,
+        "kind": "habitat"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/low-direct/Runtime.log",
+        "sha256": "9c1d231fd7477520fb495288094d9c272c4b2eeb76051d7d1faee72970ad96d2",
+        "bytes": 352911
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-direct/Habitat_0_0.png",
+          "sha256": "d59f5b8fcc1e7aacb931acc2af0784d41394c58f80c6eed7ebdfc06e053e3dcc",
+          "bytes": 2143706
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-direct/Habitat_0_1.png",
+          "sha256": "1494eb9ab5e6334541c50f76194b429d529dc61a5422d61b3c01bd63e8ce8dd8",
+          "bytes": 2171123
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-direct/Habitat_0_2.png",
+          "sha256": "edb199a5847354ffc524065ccb27f164effe2fd0ac51b6d8fe5cdfd67e662dc4",
+          "bytes": 2143278
+        }
+      ],
+      "poses": [
+        "DIVE_HABITAT_VIEW view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=10.000000 R=0.000000",
+        "DIVE_HABITAT_VIEW view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=60.000000 R=0.000000",
+        "DIVE_HABITAT_VIEW view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=110.000000 R=0.000000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.11.44:431][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.45:019][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.11.55:680][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.11.55:680][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.11.55:680][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.11.55:680][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.11.55:680][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "low-volume": {
+      "options": {
+        "name": "low-volume",
+        "spectral": false,
+        "count": 3,
+        "status": "PASS",
+        "volume": true,
+        "sun": false,
+        "kind": "habitat"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/low-volume/Runtime.log",
+        "sha256": "b1984eae422586d8fbd1b2a80765a82b9045be1e2e8d2f80d473bb88da68e0c4",
+        "bytes": 353768
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-volume/Habitat_0_0.png",
+          "sha256": "d1ff640997a01b7a1ddf1ccece6414ca87dad9e84b9abab5e1166033ab5f3891",
+          "bytes": 2160645
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-volume/Habitat_0_1.png",
+          "sha256": "79bce8021f4eccd657795b54a615ea8b4fe226e4af0ecd0fbd40dbfbc93cd659",
+          "bytes": 2183035
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-volume/Habitat_0_2.png",
+          "sha256": "958458c07188d523a3a5502a6494668e1f3b3cc6b8d6e871f2c21d4b587b8803",
+          "bytes": 2152151
+        }
+      ],
+      "poses": [
+        "DIVE_HABITAT_VIEW view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=10.000000 R=0.000000",
+        "DIVE_HABITAT_VIEW view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=60.000000 R=0.000000",
+        "DIVE_HABITAT_VIEW view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=110.000000 R=0.000000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.12.37:950][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.38:505][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.12.48:951][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.12.48:951][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.12.48:951][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.12.48:951][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.12.48:951][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "low-combined": {
+      "options": {
+        "name": "low-combined",
+        "spectral": true,
+        "count": 3,
+        "status": "PASS",
+        "volume": true,
+        "sun": false,
+        "kind": "habitat"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/low-combined/Runtime.log",
+        "sha256": "5f75c79837b407ee93bb061dba8bec6a3b99ac5c30375676ea163ad01768fe9c",
+        "bytes": 342088
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-combined/Habitat_0_0.png",
+          "sha256": "150332a3a77195632e1de3689b10688c71a6dc6a30a36c8a29a39d85005d9f12",
+          "bytes": 2035357
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-combined/Habitat_0_1.png",
+          "sha256": "e4cf814442b5bf6e8a1ad3fed49e4d29558553be8d80e7c6469cb5e4c9a46ca3",
+          "bytes": 2052929
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/low-combined/Habitat_0_2.png",
+          "sha256": "2594cd5308a3e2c921d6d2fc0f4db1cef52c05b21fa12c95bf03dfc9cf76715e",
+          "bytes": 2064941
+        }
+      ],
+      "poses": [
+        "DIVE_HABITAT_VIEW view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=10.000000 R=0.000000",
+        "DIVE_HABITAT_VIEW view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=60.000000 R=0.000000",
+        "DIVE_HABITAT_VIEW view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=110.000000 R=0.000000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.13.15:416][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.16:004][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.25:831][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.13.25:831][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.13.25:831][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.13.25:831][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.13.25:831][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "sun-direct": {
+      "options": {
+        "name": "sun-direct",
+        "spectral": false,
+        "count": 3,
+        "status": "PASS",
+        "volume": false,
+        "sun": true,
+        "kind": "habitat"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/sun-direct/Runtime.log",
+        "sha256": "f70decae3827b880770660e6bda3725454cae0bd3c8af7dc581afff3d93f355f",
+        "bytes": 341997
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-direct/Habitat_0_0.png",
+          "sha256": "926f5c197d5c9130064abca707bef20913c13fae7af8ff183abbeb5811338134",
+          "bytes": 1793248
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-direct/Habitat_0_1.png",
+          "sha256": "bd7ff8ce07a8b6d87589a19c6091d89592fe06528c92821685c429ed132aeb8b",
+          "bytes": 1339048
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-direct/Habitat_0_2.png",
+          "sha256": "f9620e8e5435c8f68fc00f98b60e4f07552561066d74f1290323ae7183f13469",
+          "bytes": 1917267
+        }
+      ],
+      "poses": [
+        "DIVE_HABITAT_VIEW view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=12.000000 Y=135.556233 R=0.000000",
+        "DIVE_HABITAT_VIEW view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=60.807285 Y=135.556233 R=0.000000",
+        "DIVE_HABITAT_VIEW view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=0.000000 Y=315.556233 R=0.000000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.13.51:673][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.13.52:224][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.01:909][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.14.01:909][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.14.01:909][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.14.01:909][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.14.01:909][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "sun-volume": {
+      "options": {
+        "name": "sun-volume",
+        "spectral": false,
+        "count": 3,
+        "status": "PASS",
+        "volume": true,
+        "sun": true,
+        "kind": "habitat"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/sun-volume/Runtime.log",
+        "sha256": "25404db4a2fc57adbb60714d0f6db70da84bdbca0cd7b8a8f13ef2a28d3dcc3c",
+        "bytes": 341874
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-volume/Habitat_0_0.png",
+          "sha256": "aea22edb014e8a29a060f569e21c9ab195a29fa61aa1dca716a9289f980359d7",
+          "bytes": 1824075
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-volume/Habitat_0_1.png",
+          "sha256": "0c30c9449c24863dc4640e4b133416423900b0059972a229d67fc1fd91fd6bcd",
+          "bytes": 1351329
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-volume/Habitat_0_2.png",
+          "sha256": "8d7407f299f5d4cda0d48fab52a7e416896fede0906f2f62d30a43fd039113f0",
+          "bytes": 1930003
+        }
+      ],
+      "poses": [
+        "DIVE_HABITAT_VIEW view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=12.000000 Y=135.556233 R=0.000000",
+        "DIVE_HABITAT_VIEW view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=60.807285 Y=135.556233 R=0.000000",
+        "DIVE_HABITAT_VIEW view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=0.000000 Y=315.556233 R=0.000000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.14.27:742][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.14.28:320][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:320][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:320][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:320][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:320][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.28:321][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.14.38:241][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.14.38:241][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.14.38:241][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.14.38:241][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.14.38:241][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "sun-combined": {
+      "options": {
+        "name": "sun-combined",
+        "spectral": true,
+        "count": 3,
+        "status": "PASS",
+        "volume": true,
+        "sun": true,
+        "kind": "habitat"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/sun-combined/Runtime.log",
+        "sha256": "83aad351bf3b9c5ce2fb1dfb88557bd14fafd4edd04d99c50ee42638b832ef05",
+        "bytes": 341975
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-combined/Habitat_0_0.png",
+          "sha256": "ec54d12fed807dd26797f48b4d3838934c490140f9e18bfad0a2c40414ae8b82",
+          "bytes": 1627464
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-combined/Habitat_0_1.png",
+          "sha256": "ecd734b2a38e6dd5a02c765cd2235c0c8d44704992be4bc7ebcfec7a57b791da",
+          "bytes": 1350211
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/sun-combined/Habitat_0_2.png",
+          "sha256": "cf2b4c4c18dd70f8917bb588a49caea16d3687a39e31043aabac49c8192ca33e",
+          "bytes": 1715726
+        }
+      ],
+      "poses": [
+        "DIVE_HABITAT_VIEW view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=12.000000 Y=135.556233 R=0.000000",
+        "DIVE_HABITAT_VIEW view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=60.807285 Y=135.556233 R=0.000000",
+        "DIVE_HABITAT_VIEW view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=0.000000 Y=315.556233 R=0.000000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.15.04:659][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.15.05:213][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:213][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:213][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:213][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:213][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.05:214][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.14:969][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.15.14:969][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.15.14:969][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.15.14:969][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.15.14:969][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "torch-direct": {
+      "options": {
+        "name": "torch-direct",
+        "kind": "torch",
+        "spectral": false,
+        "volume": false,
+        "count": 2,
+        "status": "PASS"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/torch-direct/Runtime.log",
+        "sha256": "1b642416bcfbc70e1c3989ac6501ac1970d6ba4bb0b2d3f452216255f89cdf8f",
+        "bytes": 420269
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/torch-direct/DiveSmoke_0_torch.png",
+          "sha256": "97145b59c06c4bc76d00e272ec37b7ba5736aa45cfec44a5dd1c98cce5ddf610",
+          "bytes": 683513
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/torch-direct/DiveUnderwater_0_torch.png",
+          "sha256": "2da322006fecdbc450c8c28c8d5f8d90ac78b3255c0a92fa222ea75b262b5c4e",
+          "bytes": 689237
+        }
+      ],
+      "poses": [],
+      "diagnostics": [
+        "[2026.11.27-11.15.40:887][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.41:437][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.15.51:197][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.15.51:197][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.15.51:197][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.15.51:197][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.15.51:197][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "air-direct": {
+      "options": {
+        "name": "air-direct",
+        "kind": "air",
+        "spectral": false,
+        "volume": false,
+        "count": 4,
+        "status": "PASS"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/air-direct/Runtime.log",
+        "sha256": "cce5e85cfdd7279f79d072f92b130da3ebb932d6d889f24950486b8f8fa2ab86",
+        "bytes": 255099
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-direct/Caustics_00.png",
+          "sha256": "0da6fdf783b906f5d06b6becf822e0873e412bbef43a1fd180518f96e5cf2523",
+          "bytes": 1396111
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-direct/Caustics_01.png",
+          "sha256": "e79f70ad3a1786a6ca3b7b25deb832b9e7cfa1309c419a03a17906ad2f02b389",
+          "bytes": 1392715
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-direct/Caustics_02.png",
+          "sha256": "f0cf07390f2f8cac3375a140a3a2599743d354fba86e4f9272d7d6fbaee2dd89",
+          "bytes": 1401457
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-direct/Caustics_03.png",
+          "sha256": "d8ac023fa3782300dd05c0ccebc161e3006d7b2b40b317d3e4440751d3765a26",
+          "bytes": 1392973
+        }
+      ],
+      "poses": [
+        "DIVE_CAUSTICS_CAPTURE phase=0 wind=6 night=0 air=1 deep=0 strength=1 clock=20.000 camera=X=267220.000 Y=8650.000 Z=635.000",
+        "DIVE_CAUSTICS_CAPTURE phase=1 wind=6 night=0 air=1 deep=0 strength=0 clock=20.000 camera=X=267220.000 Y=8650.000 Z=635.000",
+        "DIVE_CAUSTICS_CAPTURE phase=2 wind=6 night=0 air=1 deep=0 strength=1 clock=22.000 camera=X=267220.000 Y=8650.000 Z=635.000",
+        "DIVE_CAUSTICS_CAPTURE phase=3 wind=6 night=0 air=1 deep=0 strength=1 clock=22.000 camera=X=267220.000 Y=8650.000 Z=635.000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.16.21:237][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.16.21:793][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:793][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:793][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.21:794][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.16.31:601][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.16.31:601][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.16.31:601][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.16.31:601][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.16.31:601][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "torch-volume": {
+      "options": {
+        "name": "torch-volume",
+        "kind": "torch",
+        "spectral": false,
+        "volume": true,
+        "count": 2,
+        "status": "PASS"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/torch-volume/Runtime.log",
+        "sha256": "6541fb19e72968d0ddd17c7e4883f22be0e0953ed0e1c6d4538df6ff29179175",
+        "bytes": 420361
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/torch-volume/DiveSmoke_0_torch.png",
+          "sha256": "a1d7dca8571d150637d81d70a3eba0d74cf1dc3d231e60e0449ad89328c644c5",
+          "bytes": 682933
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/torch-volume/DiveUnderwater_0_torch.png",
+          "sha256": "98c6361faa418a7b528e58a518b763d93b0fa90a3d6dc57e5bee99199a980447",
+          "bytes": 689254
+        }
+      ],
+      "poses": [],
+      "diagnostics": [
+        "[2026.11.27-11.17.14:252][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.17.14:254][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:809][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:810][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:810][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:810][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:810][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.14:810][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.24:649][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.17.24:649][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.17.24:649][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.17.24:649][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.17.24:649][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    },
+    "air-volume": {
+      "options": {
+        "name": "air-volume",
+        "kind": "air",
+        "spectral": false,
+        "volume": true,
+        "count": 4,
+        "status": "PASS"
+      },
+      "log": {
+        "file": "artifacts/solar-volume-study-20261127/air-volume/Runtime.log",
+        "sha256": "f301ce9b6a585f2eb1f337b02facfa9c1771720cbb279c969d8e422e7be65aa1",
+        "bytes": 243461
+      },
+      "images": [
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-volume/Caustics_00.png",
+          "sha256": "bb0734010806b7cc6eafe31a0ff73859dce96c31554af983ac808ccc917ed804",
+          "bytes": 1396816
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-volume/Caustics_01.png",
+          "sha256": "c3e99240df9778f55eb7f4c20ab0b41eb24d0a6b6baeadfb7222e188427ececc",
+          "bytes": 1392312
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-volume/Caustics_02.png",
+          "sha256": "0ca6cc1dcecd56ac8dc432fbd4563d598371c593105e8620f594ec37e9d7b79b",
+          "bytes": 1400354
+        },
+        {
+          "file": "artifacts/solar-volume-study-20261127/air-volume/Caustics_03.png",
+          "sha256": "ea1eaca075b5efad36cd55699364baa9cec5eb3ad0cb50573589503151fdfcab",
+          "bytes": 1393454
+        }
+      ],
+      "poses": [
+        "DIVE_CAUSTICS_CAPTURE phase=0 wind=6 night=0 air=1 deep=0 strength=1 clock=20.000 camera=X=267220.000 Y=8650.000 Z=635.000",
+        "DIVE_CAUSTICS_CAPTURE phase=1 wind=6 night=0 air=1 deep=0 strength=0 clock=20.000 camera=X=267220.000 Y=8650.000 Z=635.000",
+        "DIVE_CAUSTICS_CAPTURE phase=2 wind=6 night=0 air=1 deep=0 strength=1 clock=22.000 camera=X=267220.000 Y=8650.000 Z=635.000",
+        "DIVE_CAUSTICS_CAPTURE phase=3 wind=6 night=0 air=1 deep=0 strength=1 clock=22.000 camera=X=267220.000 Y=8650.000 Z=635.000"
+      ],
+      "diagnostics": [
+        "[2026.11.27-11.17.54:508][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-11.17.55:092][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:092][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:092][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:092][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:092][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.17.55:093][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+        "[2026.11.27-11.18.05:104][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-11.18.05:104][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-11.18.05:104][  0]LogPython: Error:   File \"C:/Program Files/Epic Games/UE_5.8/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-11.18.05:104][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+        "[2026.11.27-11.18.05:104][  0]LogPython: Error: Traceback (most recent call last):"
+      ]
+    }
+  },
+  "screenshots": 30,
+  "report_tools": [
+    {
+      "file": "Tools/ReportSolarVolume.py",
+      "sha256": "229f1e15e6039fbb1d5a300446954c1f5b92cf86aaa30b566cc3367e1c33c97d",
+      "bytes": 5715
+    },
+    {
+      "file": "Tools/ReportSolarShaderStudy.py",
+      "sha256": "49a4541df7899fb3accadb375e835a05d38b1d07906c7348bbd12fa7c727d8bd",
+      "bytes": 6337
+    }
+  ],
+  "upper_water_roi": [
+    450,
+    50,
+    1150,
+    200
+  ],
+  "habitat_comparisons": {
+    "low-volume": [
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 1.2390256944444444,
+          "before_rgb": [
+            36.206048611111115,
+            65.43123333333334,
+            55.86935972222222
+          ],
+          "after_rgb": [
+            33.921531944444446,
+            65.02943125,
+            55.2162
+          ],
+          "delta_rgb": [
+            -2.2845166666666668,
+            -0.40180208333333334,
+            -0.6531597222222222
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 2.8060666666666667,
+          "before_rgb": [
+            14.749133333333333,
+            64.06051428571429,
+            55.5739619047619
+          ],
+          "after_rgb": [
+            8.577066666666667,
+            63.28220952380953,
+            54.152971428571426
+          ],
+          "delta_rgb": [
+            -6.172066666666667,
+            -0.7783047619047619,
+            -1.4209904761904761
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 1.6575550925925926,
+          "before_rgb": [
+            37.53240763888889,
+            68.29165277777778,
+            55.586111805555554
+          ],
+          "after_rgb": [
+            34.114734722222224,
+            67.77881180555555,
+            54.76037986111111
+          ],
+          "delta_rgb": [
+            -3.4176729166666666,
+            -0.5128409722222222,
+            -0.8257319444444444
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 4.075536507936508,
+          "before_rgb": [
+            22.166542857142858,
+            71.2913238095238,
+            57.09545714285714
+          ],
+          "after_rgb": [
+            12.741352380952382,
+            70.24288571428572,
+            55.35121904761905
+          ],
+          "delta_rgb": [
+            -9.425190476190476,
+            -1.0484380952380952,
+            -1.7442380952380951
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 2.0114011574074073,
+          "before_rgb": [
+            47.82964375,
+            79.91307361111112,
+            64.74198263888889
+          ],
+          "after_rgb": [
+            43.54297291666666,
+            79.38526041666667,
+            63.79838263888889
+          ],
+          "delta_rgb": [
+            -4.286670833333333,
+            -0.5278131944444444,
+            -0.9436
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 6.260968253968254,
+          "before_rgb": [
+            34.26880952380952,
+            91.2274380952381,
+            71.7549619047619
+          ],
+          "after_rgb": [
+            19.88327619047619,
+            89.69359047619048,
+            68.90968571428571
+          ],
+          "delta_rgb": [
+            -14.385533333333333,
+            -1.5338476190476191,
+            -2.8452761904761905
+          ]
+        }
+      }
+    ],
+    "low-combined": [
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 8.85114537037037,
+          "before_rgb": [
+            36.206048611111115,
+            65.43123333333334,
+            55.86935972222222
+          ],
+          "after_rgb": [
+            19.3382875,
+            62.65349722222222,
+            48.98475138888889
+          ],
+          "delta_rgb": [
+            -16.86776111111111,
+            -2.777736111111111,
+            -6.884608333333333
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 10.922387301587301,
+          "before_rgb": [
+            14.749133333333333,
+            64.06051428571429,
+            55.5739619047619
+          ],
+          "after_rgb": [
+            0.0,
+            58.57369523809524,
+            43.04275238095238
+          ],
+          "delta_rgb": [
+            -14.749133333333333,
+            -5.486819047619048,
+            -12.531209523809524
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 8.264334722222221,
+          "before_rgb": [
+            37.53240763888889,
+            68.29165277777778,
+            55.586111805555554
+          ],
+          "after_rgb": [
+            21.5528,
+            65.64297986111112,
+            49.45514930555556
+          ],
+          "delta_rgb": [
+            -15.979607638888888,
+            -2.6486729166666665,
+            -6.1309625
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 12.850053968253969,
+          "before_rgb": [
+            22.166542857142858,
+            71.2913238095238,
+            57.09545714285714
+          ],
+          "after_rgb": [
+            0.0142,
+            65.94946666666667,
+            46.0514380952381
+          ],
+          "delta_rgb": [
+            -22.15234285714286,
+            -5.341857142857143,
+            -11.044019047619047
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 7.581548611111111,
+          "before_rgb": [
+            47.82964375,
+            79.91307361111112,
+            64.74198263888889
+          ],
+          "after_rgb": [
+            33.47082916666667,
+            77.36232083333333,
+            58.94640138888889
+          ],
+          "delta_rgb": [
+            -14.358814583333332,
+            -2.550752777777778,
+            -5.79558125
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 17.444107936507937,
+          "before_rgb": [
+            34.26880952380952,
+            91.2274380952381,
+            71.7549619047619
+          ],
+          "after_rgb": [
+            3.7410761904761904,
+            84.24948571428571,
+            56.92982857142857
+          ],
+          "delta_rgb": [
+            -30.527733333333334,
+            -6.977952380952381,
+            -14.825133333333333
+          ]
+        }
+      }
+    ],
+    "sun-volume": [
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 4.134290972222222,
+          "before_rgb": [
+            45.44770069444444,
+            92.13295208333334,
+            71.7965
+          ],
+          "after_rgb": [
+            36.48504861111111,
+            91.00258194444444,
+            69.56100486111112
+          ],
+          "delta_rgb": [
+            -8.962652083333333,
+            -1.130370138888889,
+            -2.235495138888889
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 4.0373269841269845,
+          "before_rgb": [
+            67.14127619047619,
+            116.93331428571429,
+            86.81605714285715
+          ],
+          "after_rgb": [
+            59.01528571428572,
+            115.65256190476191,
+            84.11510476190476
+          ],
+          "delta_rgb": [
+            -8.125990476190475,
+            -1.2807523809523809,
+            -2.7009523809523808
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 2.808335185185185,
+          "before_rgb": [
+            73.51417083333334,
+            123.91280694444444,
+            121.32688680555556
+          ],
+          "after_rgb": [
+            67.54798472222222,
+            122.92588680555555,
+            119.92320416666666
+          ],
+          "delta_rgb": [
+            -5.966186111111111,
+            -0.9869201388888889,
+            -1.4036826388888888
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 2.7691079365079365,
+          "before_rgb": [
+            77.59611428571428,
+            132.0812761904762,
+            136.77713333333332
+          ],
+          "after_rgb": [
+            71.47874285714286,
+            131.0781142857143,
+            135.64220952380953
+          ],
+          "delta_rgb": [
+            -6.1173714285714285,
+            -1.0031619047619047,
+            -1.1349238095238094
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 1.2587891203703703,
+          "before_rgb": [
+            31.093281944444445,
+            64.27512083333333,
+            55.813740277777775
+          ],
+          "after_rgb": [
+            28.602918055555556,
+            63.847993055555555,
+            55.16861875
+          ],
+          "delta_rgb": [
+            -2.490363888888889,
+            -0.4271277777777778,
+            -0.6451215277777778
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 1.2557809523809524,
+          "before_rgb": [
+            36.27845714285714,
+            70.72307619047619,
+            61.64887619047619
+          ],
+          "after_rgb": [
+            33.907219047619044,
+            70.25064761904761,
+            60.935028571428575
+          ],
+          "delta_rgb": [
+            -2.371238095238095,
+            -0.4724285714285714,
+            -0.7138476190476191
+          ]
+        }
+      }
+    ],
+    "sun-combined": [
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 16.00769699074074,
+          "before_rgb": [
+            45.44770069444444,
+            92.13295208333334,
+            71.7965
+          ],
+          "after_rgb": [
+            12.5147875,
+            87.52107638888889,
+            61.32766319444445
+          ],
+          "delta_rgb": [
+            -32.932913194444446,
+            -4.611875694444445,
+            -10.468836805555556
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 19.978504761904762,
+          "before_rgb": [
+            67.14127619047619,
+            116.93331428571429,
+            86.81605714285715
+          ],
+          "after_rgb": [
+            21.554771428571428,
+            112.70434285714286,
+            76.6960380952381
+          ],
+          "delta_rgb": [
+            -45.58650476190476,
+            -4.228971428571429,
+            -10.120019047619047
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 15.200040046296296,
+          "before_rgb": [
+            73.51417083333334,
+            123.91280694444444,
+            121.32688680555556
+          ],
+          "after_rgb": [
+            40.87380069444445,
+            120.76901319444444,
+            111.5109625
+          ],
+          "delta_rgb": [
+            -32.64037013888889,
+            -3.14379375,
+            -9.815924305555555
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 13.752238095238095,
+          "before_rgb": [
+            77.59611428571428,
+            132.0812761904762,
+            136.77713333333332
+          ],
+          "after_rgb": [
+            48.565714285714286,
+            129.2290476190476,
+            127.40304761904761
+          ],
+          "delta_rgb": [
+            -29.0304,
+            -2.8522285714285713,
+            -9.374085714285714
+          ]
+        }
+      },
+      {
+        "full_frame": {
+          "mean_absolute_rgb": 11.602515046296297,
+          "before_rgb": [
+            31.093281944444445,
+            64.27512083333333,
+            55.813740277777775
+          ],
+          "after_rgb": [
+            8.789804166666666,
+            60.6808,
+            46.92062986111111
+          ],
+          "delta_rgb": [
+            -22.30347777777778,
+            -3.594320833333333,
+            -8.893110416666667
+          ]
+        },
+        "upper_water_roi": {
+          "mean_absolute_rgb": 17.20587619047619,
+          "before_rgb": [
+            36.27845714285714,
+            70.72307619047619,
+            61.64887619047619
+          ],
+          "after_rgb": [
+            0.07731428571428571,
+            66.25454285714285,
+            50.701057142857145
+          ],
+          "delta_rgb": [
+            -36.201142857142855,
+            -4.468533333333333,
+            -10.947819047619047
+          ]
+        }
+      }
+    ]
+  },
+  "air_receiver_rois": {
+    "lit": [
+      250,
+      580,
+      1350,
+      820
+    ],
+    "shadow": [
+      900,
+      410,
+      1200,
+      470
+    ]
+  },
+  "air_comparison": {
+    "lit": {
+      "mean_absolute_rgb": 0.15890277777777778,
+      "before_rgb": [
+        182.51307575757576,
+        183.04666287878788,
+        182.75797727272726
+      ],
+      "after_rgb": [
+        182.51030681818182,
+        183.04757196969697,
+        182.76201515151516
+      ],
+      "delta_rgb": [
+        -0.002768939393939394,
+        0.0009090909090909091,
+        0.004037878787878788
+      ]
+    },
+    "shadow": {
+      "mean_absolute_rgb": 0.2817777777777778,
+      "before_rgb": [
+        68.319,
+        94.30005555555556,
+        124.55811111111112
+      ],
+      "after_rgb": [
+        68.32455555555556,
+        94.29988888888889,
+        124.54016666666666
+      ],
+      "delta_rgb": [
+        0.005555555555555556,
+        -0.00016666666666666666,
+        -0.017944444444444443
+      ]
+    }
+  },
+  "torch_comparison": {
+    "DiveSmoke_0_torch.png": {
+      "mean_absolute_rgb": 0.026133101851851852,
+      "before_rgb": [
+        17.59763263888889,
+        22.746209722222222,
+        19.826643055555557
+      ],
+      "after_rgb": [
+        17.597019444444445,
+        22.74496875,
+        19.825964583333334
+      ],
+      "delta_rgb": [
+        -0.0006131944444444444,
+        -0.0012409722222222223,
+        -0.0006784722222222222
+      ]
+    },
+    "DiveUnderwater_0_torch.png": {
+      "mean_absolute_rgb": 0.06898472222222223,
+      "before_rgb": [
+        17.164429166666668,
+        22.26245486111111,
+        19.3894375
+      ],
+      "after_rgb": [
+        17.166115277777777,
+        22.26304861111111,
+        19.392135416666665
+      ],
+      "delta_rgb": [
+        0.001686111111111111,
+        0.00059375,
+        0.0026979166666666666
+      ]
+    }
+  },
+  "scale": "Tone-mapped LDR RGB 0..255; not radiometric",
+  "limits": [
+    "Shared extra RGB absorption only; scalar volume light-function projection still uses a representative eye-depth slice.",
+    "No refracted volumetric beam direction or three-dimensional caustic focusing.",
+    "Mean plane Z=0, no horizontal lake mask or wave-resolved absorption boundary.",
+    "Indirect lighting and subsequent reflected/refracted paths remain uncorrected.",
+    "Combined camera path keeps its existing immersion and 16-interval approximations.",
+    "Only native Windows D3D12; no new package or performance claims."
+  ]
+}

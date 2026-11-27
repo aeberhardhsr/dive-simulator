@@ -116,11 +116,13 @@ public:
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveSolarShaderStudy"))&&
            FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
         {
-            const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),TEXT("DiveSolarStudy/Private"));
+            const bool volume=FParse::Param(FCommandLine::Get(),TEXT("DiveSolarVolumeStudy"));
+            const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),volume?TEXT("DiveSolarVolumeStudy/Private"):TEXT("DiveSolarStudy/Private"));
             if(!IFileManager::Get().FileExists(*(prepared/TEXT("DeferredLightPixelShaders.usf"))))
                 UE_LOG(LogTemp,Fatal,TEXT("Solar shader study requires Tools/PrepareSolarShaderStudy.py for this project."));
             AddShaderSourceDirectoryMapping(TEXT("/Engine/Private"),prepared);
             UE_LOG(LogTemp,Display,TEXT("DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane=1"));
+            if(volume) UE_LOG(LogTemp,Display,TEXT("DIVE_SOLAR_VOLUME_STUDY_READY receiver=per-froxel local_lights=unchanged"));
         }
         if(GEngine) InitializeView();
         else EngineReady=FCoreDelegates::GetOnPostEngineInit().AddRaw(this,&FDiveRenderingModule::InitializeView);

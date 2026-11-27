@@ -8,6 +8,8 @@ Ein [zuschaltbarer Versuch zur RGB-Absorption im Wasser](Documentation/SPECTRAL_
 
 Ein weiterer [nativer Lichtversuch](Documentation/SOLAR_LIGHT_STUDY.md) ergänzt den Farbverlust auf dem Weg vom Sonnenlicht zur beleuchteten Oberfläche. Er bleibt von der spielbaren Vorschau getrennt; Volumenlicht, indirektes Licht und Wellenübergang sind noch nicht gemeinsam gelöst. Ein Versuch mit [kleinen Sedimentrücken](Documentation/SEDIMENT_BEDFORM_INVESTIGATION.md) wurde wegen zu geringer sichtbarer Verbesserung zurückgenommen.
 
+Die anschliessende [Volumenreihe](Documentation/SOLAR_VOLUME_STUDY.md) berechnet den zusätzlichen Farbverlust auch am Streupunkt im Wasser. Zehn native Läufe mit 30 Aufnahmen vergleichen Oberflächenlicht, Volumenlicht und Kameraweg sowie Überwasser- und Lampenkontrollen. Die Wirkung ist nachgewiesen; räumliche Lichtbündel, Wasserbegrenzung und Referenzqualität bleiben offen. Die Erweiterung ist noch nicht im normalen Spielpaket aktiviert.
+
 ## Starten
 
 Die neueste **Grafikvorschau** startet über **`Builds/WindowsPlantColor/Start-WaterPreview.cmd`**. Eine nachgewiesene Fehlinterpretation der importierten Pflanzenfarben ist korrigiert: Die Blätter verwenden wieder die in Blender definierten linearen Reflexionsfarben und wirken weniger ausgebleicht. Geometrie, Dichte und Bewegungsgewichte bleiben erhalten. Sieben Paketfälle mit 34 Aufnahmen und der automatische Haupt-EXE-Start bestehen. [Vergleich und Grenzen](Documentation/PLANT_COLOR.md), [Farbaudit](Documentation/PLANT_COLOR_AUDIT.json), [Paketnachweis](Documentation/PLANT_COLOR_RESULTS.json). Die gemeinsame Unterwasserlichtwirkung und die Referenzqualität bleiben offen; anschliessend folgen Überwasserlandschaft und [Menü/HUD/FPV](Documentation/UI_UX_TARGET.md).

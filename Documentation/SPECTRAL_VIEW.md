@@ -85,6 +85,8 @@ Der Pass erfordert gemeinsam `-DiveSmokeTest -DiveWaterPreview -DiveSpectralView
 
 ## Offene Grenzen
 
+Die anschliessende [native Volumenreihe](SOLAR_VOLUME_STUDY.md) untersucht diesen Kamera-Pass gemeinsam mit zusätzlicher Absorption des direkten Oberflächen- und Volumenlichts. Sie ersetzt die hier dokumentierten Paketmessungen nicht und löst die folgenden Grenzen nur teilweise.
+
 - Nur der erste Kameraweg wird korrigiert. Die Beleuchtung vom Licht zum Streupunkt sowie weitere Wege nach Spiegelung/Brechung sind noch nicht gemeinsam als RGB-Transport gelöst.
 - Die 16 Intervalle sind eine Näherung des vorhandenen Volumengitters; es gibt keine vollständige spektrale Mehrfachstreuung oder belastbare Walensee-Kalibrierung.
 - Die Aktivierung am Auge blendet zwischen 5 und 50 cm unter dem mittleren Wasserstand ein. Sie verwendet noch nicht die lokale Wellenhöhe; vor einer Standardaktivierung ist der Übergang bei Sturm gezielt zu korrigieren und zu prüfen.
