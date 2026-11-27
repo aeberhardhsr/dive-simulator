@@ -36,7 +36,7 @@ bool ADiveWorld::TestPlantBeds(FString& Detail) const
                 valid&=actual.GetLocation().Equals(p,.25)&&actual.GetScale3D().Equals(scale,1.e-5)&&actual.GetRotation().Equals(wanted.GetRotation(),1.e-5);
                 if(!legacy)
                 {
-                    valid&=scale.X>=.6499&&scale.X<=1.1001&&scale.Y==scale.X&&scale.Z>=.226&&scale.Z<=1.1001;
+                    valid&=scale.X>=.6499&&scale.X<=1.1001&&scale.Y==scale.X&&scale.Z>=(species==1?.1799:.226)&&scale.Z<=1.1001;
                     valid&=-bed/100>=Dive::PlantProfiles[species].MaxHeight*scale.Z+.3;
                     for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore)) valid&=FVector::DistSquared2D(p,entry.Position)>=350.*350.;
                 }
@@ -45,7 +45,7 @@ bool ADiveWorld::TestPlantBeds(FString& Detail) const
                     valid&=FVector::DistSquared2D(p,rock.Position)>=FMath::Square(rock.Radius+(legacy?0:10));
             }
         }
-        valid&=cellCount<=(legacy?4096:26*26*6);
+        valid&=cellCount<=(legacy?4096:26*26*18);
     }
     Detail=FString::Printf(TEXT("legacy=%d plants=%d short=%d tall=%d unique_roots=%d"),legacy,count,shortPlants,tallPlants,roots.Num());
     UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_BEDS_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*Detail);

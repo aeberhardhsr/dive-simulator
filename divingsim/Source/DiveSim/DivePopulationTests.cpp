@@ -83,7 +83,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
                 renderedRocks+=pair.Value.Components[i]->GetInstanceCount();
                 valid&=Rocks[i]->GetMaterial(0)!=nullptr&&pair.Value.Components[i]->GetMaterial(0)==Rocks[i]->GetMaterial(0);
             }
-            else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=4096;}
+            else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=26*26*18;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
     FString plantDetail;valid&=TestPlantBeds(plantDetail);

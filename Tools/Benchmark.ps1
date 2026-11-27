@@ -12,7 +12,7 @@ param(
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
     [switch]$LegacyRockPose,
-    [switch]$LegacyTalus,
+    [switch]$LegacyTalus, [switch]$NoPlantUnderstory,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -29,6 +29,7 @@ $context=[ordered]@{
     population_immediate_retirement=[bool]$ImmediatePopulationRetirement
     legacy_rock_pose=[bool]$LegacyRockPose
     legacy_talus=[bool]$LegacyTalus
+    no_plant_understory=[bool]$NoPlantUnderstory
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
@@ -42,6 +43,7 @@ if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
 if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
 if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
+if($NoPlantUnderstory) { $arguments+=' -DiveNoPlantUnderstory' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'

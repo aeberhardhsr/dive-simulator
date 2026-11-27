@@ -200,6 +200,7 @@ void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,
         // Complete 4 m plot halo, evaluated before ownership filtering. Root
         // spacing and species stay stable when a group crosses a cell border.
         constexpr int Plots=24;
+        const bool groundcover=!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoPlantUnderstory")));
         Dive::RockIndex footprints;
         for(const auto& rock:nearby) footprints.Add(rock.Position.X,rock.Position.Y,rock.Radius);
         for(int ay=Key.Y*Plots-1;ay<=(Key.Y+1)*Plots;++ay)
@@ -235,14 +236,21 @@ void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,
                 return 0;
             };
             const int group=pick();TArray<FVector> accepted;
-            for(int i=0;i<6;++i)
+            // Keep the existing upper canopy and its random sequence. A lower
+            // stonewort layer fills portions of the same plots, with bare
+            // margins, instead of scattering more tall shoots everywhere.
+            for(int i=0;i<(groundcover?18:6);++i)
             {
-                const int species=i==5?pick():group;
+                const bool low=i>=6;
+                const int species=low?1:i==5?pick():group;
                 const double reach=i?FMath::Sqrt(random.FRand())*170:0;
                 const double angle=random.FRand()*2*PI;
                 const FVector p=anchor+FVector(FMath::Cos(angle)*reach,FMath::Sin(angle)*reach,0);
-                const float width=random.FRandRange(.65f,1.1f),height=random.FRandRange(.6f,1.1f)*(1-.42*reach/170)*(.65+.35*cover);
+                const float width=random.FRandRange(.65f,1.1f);
+                const float height=low?random.FRandRange(.24f,.5f)*(.75+.25*cover):
+                    random.FRandRange(.6f,1.1f)*(1-.42*reach/170)*(.65+.35*cover);
                 const float yaw=random.FRandRange(0.f,360.f);
+                if(low&&random.FRand()>.15+.8*cover) continue;
                 float z,north,east;
                 if(!Terrain.Sample(p.X,p.Y,z)||!Terrain.Sample(p.X+100,p.Y,north)||!Terrain.Sample(p.X,p.Y+100,east)) continue;
                 const auto& profile=Dive::PlantProfiles[species];

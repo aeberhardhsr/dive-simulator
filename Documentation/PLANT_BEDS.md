@@ -1,5 +1,7 @@
 # Pflanzengruppen im Flachwasser
 
+Weiterentwicklung: [niedriger Bewuchs zwischen den höheren Trieben](PLANT_UNDERSTORY.md). Die folgenden Zahlen dokumentieren den vorherigen Gruppenstand. **Ortskorrektur:** Die unten als „Lediwracks“ bezeichneten direkten Unterwasserprüfungen mit Index 2 liegen bei Walenstadt/Ost; sie prüfen nicht den separaten Uferzugang Mols/Lediwracks. [Zuordnung](TEST_ENTRY_LOCATIONS.md).
+
 Die bisher einzeln verteilten Wasserpflanzen wachsen jetzt in kleinen, unregelmässigen Gruppen. Innerhalb einer Gruppe überwiegt eine geeignete Art. Randpflanzen bleiben niedriger; dazwischen bleiben offene Sedimentflächen. Das ist eine gestalterische Verteilung, keine vermessene Vegetationskarte des Walensees. Pflanzenmodelle, Materialien und Geländehöhen bleiben unverändert.
 
 ## Platzierung

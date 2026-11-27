@@ -1,5 +1,7 @@
 # Gebogene Triebe und dichtere Blattbereiche
 
+Die hier beschriebenen Modelle werden weiterhin verwendet. Ihre Verteilung erhält als nächsten Schritt [eine niedrige Bewuchsschicht](PLANT_UNDERSTORY.md). **Ortskorrektur:** Der unten als „Lediwracks“ bezeichnete direkte Unterwasserfall mit Index 2 liegt bei Walenstadt/Ost. Der separate Uferzugang Mols/Lediwracks ist damit nicht geprüft. [Zuordnung](TEST_ENTRY_LOCATIONS.md).
+
 Die bisherigen Pflanzen wirkten in den geprüften Nahansichten wie dünne Drahtbäume: weitgehend gerade Stängel, regelmässige Astetagen und lange kahle Spitzen. Die drei allgemeinen Pflanzengruppen erhalten jetzt gebogene Triebe, ungleiche Abstände zwischen Blattansätzen und mehr Blattfläche im oberen Bereich. Stängel und grünes Gewebe bekommen getrennte, zurückhaltendere Farbtöne. Die bestehende Gruppenplatzierung bleibt erhalten.
 
 Laichkraut trägt zwölf statt acht Blattansätze je Trieb; kleinere obere Blätter reichen bis an die Spitze. Armleuchteralgen verwenden unterschiedlich viele Seitenstrahlen und kurze Verzweigungen an mehreren Stellen statt gleicher gabelförmiger Enden. Tausendblatt behält vier fein gefiederte Blätter je Quirl, mit grösseren Fiederflächen und unregelmässiger Neigung. Die Blattquirle und gegenständigen Abschnitte sind als grobe Formreferenz beim [Naturhistorischen Museum Wien](https://flora.nhm-wien.ac.at/Seiten-Arten/Myriophyllum-spicatum.htm) beschrieben. Daraus wird keine genaue Artenrekonstruktion oder nachgewiesene lokale Verteilung abgeleitet; sämtliche Geometrie ist eigenständig erzeugt.
