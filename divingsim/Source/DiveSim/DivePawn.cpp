@@ -916,7 +916,7 @@ void ADivePawn::SimulateStep(float Step)
 }
 
 void ADivePawn::Notify(const FString& Message)
-{ Notice=Message; NoticeUntil=GetWorld()->GetTimeSeconds()+8; }
+{ Notice=Message; bNoticeEnglish=bEnglish; NoticeUntil=GetWorld()->GetTimeSeconds()+8; }
 
 void ADivePawn::Interact()
 {

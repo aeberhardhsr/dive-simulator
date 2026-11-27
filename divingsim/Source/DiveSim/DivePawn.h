@@ -68,6 +68,7 @@ public:
     FString Outcome, LastLogPath, Notice;
     FString DiveStartedUTC;
     double NoticeUntil=0;
+    bool bNoticeEnglish=false;
     double NextAutomaticHint=0,FreeflowBubbleClock=0;
     float GraphicsQuality=2;
     int32 HUDStyle=0; // Standard, compact, minimal; mode visibility rules still apply.

@@ -1,5 +1,5 @@
 {
-  "status": "source_editor_and_current_project_builds_passed_native_ui_test_running",
+  "status": "source_editor_current_project_and_native_ui_checks_passed_wave_runtime_pending",
   "source_tag": "5.8.4-release",
   "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
   "dependencies": {
@@ -162,7 +162,7 @@
     ],
     "current_project_followup_log": "artifacts/source-engine-20261127/project-ui-build.log",
     "current_project_followup_status": "passed_after_fixing_menu_local_variable_shadowing",
-    "runtime_validation": "ui_test_started_not_yet_validated",
+    "runtime_validation": "native_ui_28_steps_14_captures_passed_at_1600x900",
     "current_project_followup_initial_log": {
       "path": "artifacts/source-engine-20261127/project-ui-build.log",
       "sha256": "6f470103544348494bd6a23adb4eae516b96b61a93859c8b330473ced5c52f31",
@@ -175,9 +175,15 @@
     },
     "current_project_binary": {
       "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
-      "sha256": "aae96df31d497c6ce76ce4319fb2f341da6f0dd9f69b36b32b1f8e3d347026c0",
+      "sha256": "5dc90a857ea3a3f38e2ab4e116b202d74415045f11e3923ab82f3be4bc6242b7",
       "bytes": 2681344
     },
-    "source_files_compared_equal": 149
-  }
+    "source_files_compared_equal": 149,
+    "latest_project_build_log": {
+      "path": "artifacts/source-engine-20261127/project-ui-final-build.log",
+      "sha256": "a35d83b48c807167030ebeb21479d5afdd6d06283be4709f259971687a625928",
+      "bytes": 2054
+    }
+  },
+  "native_ui_results": "Documentation/UI_NATIVE_RESULTS.json"
 }

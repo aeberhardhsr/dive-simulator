@@ -158,7 +158,7 @@ void ADiveHUD::DrawHUD()
         HUDRightBottom=22;
         if(Diver->bShowInstruments||Diver->Simulation.Settings.Rules().PermanentHUD) Instruments();
         if(Diver->bTutorialActive) TutorialOverlay();
-        if(GetWorld()->GetTimeSeconds()<Diver->NoticeUntil)
+        if(Diver->bNoticeEnglish==Diver->bEnglish&&GetWorld()->GetTimeSeconds()<Diver->NoticeUntil)
         {
             Rect(450,690,700,64,Dark); TextBlock(Diver->Notice,468,702,664,16,White,2);
         }
