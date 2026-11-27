@@ -188,6 +188,23 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         if(cell&&same(*cell,pair.Value)) ++reloaded;else valid=false;
     }
     valid&=PopulationCells.Num()==9&&retained==6&&reloaded==9&&nearFish>0;
+    bool retirementValid=RetiredPopulation.IsEmpty(); // The return teleport flushes obsolete bodies.
+    const bool instant=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement"));
+    int maximumPending=0;
+    for(int i=0;i<20;++i)
+    {
+        LastFishRefill=WorldTime;StreamPopulation(i%2?before:after);
+        maximumPending=FMath::Max(maximumPending,RetiredPopulation.Num());
+        retirementValid&=boundedLayouts()&&RetiredPopulation.Num()<=9*(Rocks.Num()+Plants.Num());
+        for(const auto& component:RetiredPopulation) retirementValid&=!component->IsVisible();
+    }
+    for(int i=0;i<9*(Rocks.Num()+Plants.Num())+3;++i)
+    {LastFishRefill=WorldTime;StreamPopulation(before);}
+    retirementValid&=RetiredPopulation.IsEmpty()&&PopulationCells.Num()==9&&(instant?maximumPending==0:maximumPending>0);
+    for(const auto& pair:snapshots)
+    {const auto* cell=PopulationCells.Find(pair.Key);retirementValid&=cell&&same(*cell,pair.Value);}
+    valid&=retirementValid;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_RETIREMENT_%s maximum_pending=%d drained=%d immediate=%d layouts_equal=%d"),retirementValid?TEXT("PASS"):TEXT("FAIL"),maximumPending,RetiredPopulation.IsEmpty(),instant,retirementValid);
     // Restore all gameplay state before the ordinary update/render of this frame.
     LastFishRefill=WorldTime;StreamPopulation(original);
     for(int i=0;i<8&&PopulationCells.Num()!=9;++i) StreamPopulation(original);

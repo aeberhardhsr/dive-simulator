@@ -2,6 +2,9 @@
 #include "Simulation/Ecology.h"
 #include "Simulation/BedDistribution.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "ProfilingDebugging/CsvProfiler.h"
+
+CSV_DEFINE_CATEGORY(DivePopulation,true);
 
 namespace
 {
@@ -139,6 +142,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
 
 void ADiveWorld::CreatePopulationCell(FIntPoint Key)
 {
+    CSV_SCOPED_TIMING_STAT(DivePopulation,BuildCell);
     auto& cell=PopulationCells.Add(Key);
     TArray<TArray<FTransform>> instances;instances.SetNum(Rocks.Num()+Plants.Num());
     auto create=[this,&cell](UInstancedStaticMeshComponent* source,bool collision)
@@ -167,8 +171,8 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
     BuildPlantLayout(Key,nearby,instances);
     for(int i=0;i<cell.Components.Num();++i)
     {
-        cell.Components[i]->AddInstances(instances[i],false,false,false);
-        cell.Components[i]->RegisterComponent();
+        {CSV_SCOPED_TIMING_STAT(DivePopulation,AddInstances);cell.Components[i]->AddInstances(instances[i],false,false,false);}
+        {CSV_SCOPED_TIMING_STAT(DivePopulation,Register);cell.Components[i]->RegisterComponent();}
     }
 }
 
@@ -311,10 +315,22 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
 
 void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
 {
+    const bool instantRetire=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement"));
+    auto retire=[this](bool immediate)
+    {
+        CSV_SCOPED_TIMING_STAT(DivePopulation,Retire);
+        const double started=FPlatformTime::Seconds();
+        const int limit=9*(Rocks.Num()+Plants.Num());
+        const int count=FMath::Min(RetiredPopulation.Num(),immediate?RetiredPopulation.Num():FMath::Max(2,RetiredPopulation.Num()-limit));
+        for(int i=0;i<count;++i) RetiredPopulation[i]->DestroyComponent();
+        RetiredPopulation.RemoveAt(0,count,EAllowShrinking::No);
+        if(count&&bOpticsSmoke) UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_RETIRE removed=%d pending=%d immediate=%d milliseconds=%.3f"),count,RetiredPopulation.Num(),immediate,(FPlatformTime::Seconds()-started)*1000);
+    };
     const FIntPoint center=CellAt(Player);
     const bool shifted=center!=PopulationCell;
     if(shifted||PopulationCells.Num()!=9)
     {
+        CSV_SCOPED_TIMING_STAT(DivePopulation,Stream);
         const double started=FPlatformTime::Seconds();
         int loaded=0,unloaded=0;
         for(auto it=RockLayouts.CreateIterator();it;++it)
@@ -322,7 +338,10 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         for(auto it=PopulationCells.CreateIterator();it;++it)
             if(FMath::Abs(it.Key().X-center.X)>1||FMath::Abs(it.Key().Y-center.Y)>1)
             {
-                for(const auto& component:it.Value().Components) component->DestroyComponent();
+                // Preserve the existing visibility boundary, while deferring
+                // physics removal outside the 80 m active-fish neighbourhood.
+                for(const auto& component:it.Value().Components)
+                {component->SetVisibility(false);RetiredPopulation.Add(component);}
                 it.RemoveCurrent();++unloaded;
             }
         TArray<FIntPoint> missing;
@@ -343,6 +362,9 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
                 immediate|=distance(key)<=RetireDistance*RetireDistance;
             }
         missing.Sort([&](FIntPoint A,FIntPoint B){return distance(A)<distance(B);});
+        // Nearby missing geometry (including adjacent-cell teleports) still
+        // loads immediately, and its obsolete bodies are flushed in that case.
+        retire(immediate||instantRetire);
         for(const auto& key:missing)
         {CreatePopulationCell(key);++loaded;if(!immediate) break;}
         if(shifted)
@@ -364,6 +386,7 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_CELL x=%d y=%d loaded=%d unloaded=%d active=%d rocks=%d plants=%d milliseconds=%.3f layouts=%d"),
             center.X,center.Y,loaded,unloaded,PopulationCells.Num(),RockState.Num(),plantCount,(FPlatformTime::Seconds()-started)*1000,RockLayouts.Num());
     }
+    else retire(Initial||instantRetire);
     StreamGravel(Player,Initial);
     RefillFish(Player,Initial);
 }

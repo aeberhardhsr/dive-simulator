@@ -201,6 +201,7 @@ private:
     // population window plus its planting halo needs at most 5x5 layouts.
     mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredPopulation;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredGravel;
     FIntPoint GravelCell=FIntPoint(MAX_int32,MAX_int32);

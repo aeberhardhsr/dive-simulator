@@ -9,6 +9,11 @@
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
     if(!ValidateGravel(Error)) return false;
+    if(RetiredPopulation.Num()>9*(Rocks.Num()+Plants.Num()))
+    {Error=TEXT("Unbounded population retirement");return false;}
+    for(const auto& component:RetiredPopulation)
+        if(!component||component->IsVisible()||!component->IsRegistered())
+        {Error=TEXT("Invalid pending population retirement");return false;}
     if(PopulationCells.IsEmpty()||PopulationCells.Num()>9) { Error=TEXT("Invalid population window size");return false; }
     const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
     for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)

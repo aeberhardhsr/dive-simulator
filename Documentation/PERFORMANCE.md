@@ -1,5 +1,19 @@
 # Gerenderte Leistungsmessung
 
+## WindowsPopulationRetire: Fels- und Pflanzenkomponenten verteilt abbauen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Beim Start lief keine weitere Unreal-/Spielinstanz. Alle drei Läufe verwenden dieselbe EXE und dieselben Inhaltscontainer wie die neun bestandenen Paketfälle. Die Kontrolle schaltet mit `-DiveImmediatePopulationRetirement` ausschließlich den großen Komponentenabbau um; der verteilte Kiesabbau bleibt in beiden Varianten aktiv. [Prüfbericht](POPULATION_RETIREMENT_RESULTS.json), [Lebensdauer, Bilder und Kontrollvergleich](POPULATION_RETIREMENT.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 68,64 FPS | 59,42 FPS | 15,97 ms | 19,95 ms | 0 / 4117 | 4,47 ms |
+| Murg Nachladen, verteilter Abbau, 90 s | 97,17 FPS | 75,58 FPS | 11,22 ms | 25,74 ms | 0 / 8743 | 4,15 ms |
+| Murg Kontrolle, sofortiger Abbau, 90 s | 97,10 FPS | 70,48 FPS | 11,18 ms | 45,47 ms | 3 / 8737 | 4,33 ms |
+
+Die mittlere GPU-Zeit beträgt im normalen Unterwasser-/Nachladelauf 13,92 / 9,66 ms. Im direkten Vergleich sinkt die höchste direkte Fels-/Pflanzenabbauzeit von 8,70 auf 2,63 ms und die höchste Physikwartezeit von 22,20 auf 12,12 ms. Die teuerste Population-Abbauphase gehört im verteilten Lauf zu einem Frame von 15,15 ms; die größte verbleibende Spitze von 25,74 ms fällt mit Kiesarbeit zusammen. Die mittlere Bildrate bleibt annähernd gleich. Aufbau und Registrierung neuer Felsbereiche kosten weiterhin bis zu 11,22 bzw. 8,76 ms.
+
+19 Unterwasserframes und elf Frames der normalen Nachladestrecke überschreiten 16,67 ms. Durchgehend 60 FPS sind daher nicht nachgewiesen. Die variabel getakteten Einzelläufe sind keine statistische Messreihe; insbesondere werden die Unterschiede bei Kiesereignissen nicht allein der neuen Abbaupolitik zugeschrieben. Die Unterwasseraufnahme zeigt Grund und Felsen bei 5,3 Metern, die Strecke endet bei 24,6 Metern in freiem Wasser. Laufende Wasser-/Meshprüfungen sind weiterhin Teil des gemessenen CPU-Aufwands. Ein aktueller Langzeittest, die manuelle Menü-zu-Tauchgang-Prüfung und die gesamte visuelle Referenzabnahme bleiben offen.
+
 ## WindowsGravelRetire: alte Kies-Kollisionskörper verteilt abbauen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Alle drei Läufe verwenden die EXE und Inhaltscontainer der neun bestandenen Paketfälle. Die Kontrolle stellt mit `-DiveImmediateGravelRetirement` den sofortigen Abbau in derselben EXE wieder her. [Prüfbericht](GRAVEL_RETIREMENT_RESULTS.json), [Lebensdauer, Bilder und Kontrollvergleich](GRAVEL_RETIREMENT.md).
