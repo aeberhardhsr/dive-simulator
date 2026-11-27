@@ -1,0 +1,33 @@
+#ifndef DIVE_REFLECTION_WATER_MASK
+#define DIVE_REFLECTION_WATER_MASK
+#include "/Engine/Private/Lumen/DiveReflectionWaterOptics.ush"
+#include "/DiveRendering/LakeFootprint.ush"
+
+float DiveReflectionSurface(float2 p)
+{
+    DiveWaterOptics optics;
+    float h;float2 slope;float3 curvature;
+    float4 waves[4]={Scene.DiveWater.Wave0,Scene.DiveWater.Wave1,Scene.DiveWater.Wave2,Scene.DiveWater.Wave3};
+    optics.Surface(p,Scene.DiveWater.Medium.x,waves,Scene.DiveWater.Phases,
+        Scene.DiveWater.Medium.y,float2(0,0),float2(0,0),h,slope,curvature);
+    return h;
+}
+
+float DiveReflectionWet(float3 p)
+{
+    if(Scene.DiveWater.FootprintEnabled<.5) return 0;
+    FDiveLakeFootprint lake;
+    float shore=lake.Wet(lake.Distance(Scene.DiveWater.Footprint,Scene.DiveWater.FootprintSampler,p.xy,Scene.DiveWater.FootprintMap));
+    return shore*smoothstep(-.1,.1,DiveReflectionSurface(p.xy)-p.z);
+}
+
+bool DiveIsWaterReflection(float3 origin,float2 screenUV,float sceneDepth)
+{
+    if(ReflectionPass!=2 || Scene.DiveWater.Enabled<.5) return false;
+    if(CalcSceneCustomStencil(uint2(screenUV*View.BufferSizeAndInvSize.xy))!=42) return false;
+    if(abs(CalcSceneCustomDepth(screenUV)-sceneDepth)>max(2.,.01*sceneDepth)) return false;
+    float3 p=DFFastSubtractDemote(origin,PrimaryView.PreViewTranslation)*.01;
+    float3 eye=DFFastSubtractDemote(View.TranslatedWorldCameraOrigin,PrimaryView.PreViewTranslation)*.01;
+    return eye.z<DiveReflectionSurface(eye.xy)-.005 && abs(p.z-DiveReflectionSurface(p.xy))<=.5 && DiveReflectionWet(p-float3(0,0,.2))>0;
+}
+#endif

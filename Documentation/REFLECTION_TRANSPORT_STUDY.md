@@ -2,6 +2,8 @@
 
 Der getrennte Render-Versuch integriert Wasser entlang des reflektierten Strahls. Im festen Weesen-Blick verschwindet dadurch die zuvor [nachgewiesene falsche Himmelsfarbe](WATER_REFLECTION_DIAGNOSIS.md). Das Verfahren ist **noch nicht im spielbaren Paket aktiviert**. Bildschirmtreffer, indirekte Beleuchtung und mehrfache Grenzflächenwechsel benötigen weitere Arbeit, bevor dieser Pfad als vollständige Wasseroptik gelten kann.
 
+Die anschliessende [Studie zur einheitlichen Auswahl der Reflexionsstrahlen](REFLECTION_UNIFIED_STUDY.md) behandelt die hier noch ausgelassenen Bildschirmtreffer. Die folgenden Ergebnisse dokumentieren weiterhin den ursprünglichen gemischten Versuch.
+
 ## Vergleich
 
 Kontrolle mit denselben Wellen, Seegrenzen und Raytracing-Einstellungen:

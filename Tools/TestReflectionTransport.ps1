@@ -1,5 +1,5 @@
 param([ValidateRange(180,1800)][int]$TimeoutSeconds=1200,
- [ValidateSet('waterline','response')][string]$Suite='waterline')
+ [ValidateSet('waterline','response','consistency')][string]$Suite='waterline',[switch]$Unified)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $engine=Join-Path $repo 'Builds/UE584'
@@ -10,7 +10,8 @@ foreach($file in $files) {
  $copy=Join-Path $runtime $file.FullName.Substring((Join-Path $repo 'divingsim').Length+1)
  if((Get-FileHash -LiteralPath $file.FullName).Hash -ne (Get-FileHash -LiteralPath $copy).Hash) {throw "Stale source sandbox: $copy"}
 }
-& (Join-Path $repo 'Tools/.geodata-env/Scripts/python.exe') (Join-Path $repo 'Tools/PrepareReflectionTransport.py') --engine $engine --project $runtime
+$prepareOptions=@();if($Unified) {$prepareOptions+='--unified'}
+& (Join-Path $repo 'Tools/.geodata-env/Scripts/python.exe') (Join-Path $repo 'Tools/PrepareReflectionTransport.py') --engine $engine --project $runtime @prepareOptions
 if($LASTEXITCODE -ne 0) {throw 'Shader preparation failed.'}
 $root=Join-Path $repo ('artifacts/reflection-transport-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Force $root | Out-Null
@@ -22,6 +23,7 @@ foreach($name in @('Tools/SmokeTest.ps1','Tools/TestReflectionTransport.ps1','To
 $records=@($files | Sort-Object FullName | ForEach-Object {@{file=$_.FullName.Substring($repo.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}})
 @{source_head=(& git -C $repo rev-parse HEAD);files=$records;started_utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
 $cases=if($Suite -eq 'waterline') {@(@{name='baseline';control=$true},@{name='transport-no-screens';screens=$true},@{name='transport-hybrid'})}
+elseif($Suite -eq 'consistency') {@(@{name='near-hybrid';near=$true},@{name='near-no-screens';near=$true;screens=$true})}
 else {@(@{name='baseline-no-screens';control=$true;screens=$true},
  @{name='clear';visibility=28;screens=$true},@{name='turbid';visibility=4;screens=$true},
  @{name='near-baseline';control=$true;near=$true},@{name='near-transport';near=$true},
@@ -34,6 +36,7 @@ foreach($case in $cases) {
   WaterView=$true;WaterStart=0;WaterEnd=0;WaterlinePose=@(329185.873,172781.736,180,0);WaterPreview=$true;
   Hour=12;Date='2026-06-21';MaxFPS=30;TimeoutSeconds=$TimeoutSeconds;NoReflectionScreenTraces=[bool]$case.screens;
   ReflectionTransportStudy=$true;ReflectionTransportControl=[bool]$case.control;LakeFootprint=$true;RuntimeLog=(Join-Path $folder 'Runtime.log')}
+ $opts.ReflectionUnified=[bool]$Unified
  if($case.near) {$opts.Remove('WaterlinePose')}
  if($case.visibility) {$opts.Visibility=$case.visibility}
  if($case.night) {$opts.Hour=1.5}

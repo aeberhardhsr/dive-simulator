@@ -1,5 +1,6 @@
 #include "Modules/ModuleManager.h"
 #include "Misc/Paths.h"
+#include "Misc/FileHelper.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Misc/CoreDelegates.h"
@@ -119,14 +120,25 @@ public:
         AddShaderSourceDirectoryMapping(TEXT("/DiveRendering"),FPaths::Combine(FPaths::ProjectDir(),TEXT("Shaders")));
         if(DiveReflectionTransportEnabled())
         {
+            const bool unified=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionUnified"));
+            if(unified)
+            {
+                const auto* version=IConsoleManager::Get().FindConsoleVariable(TEXT("r.DiveWater.ReflectionBindingVersion"));
+                if(!version||version->GetInt()!=1)
+                    UE_LOG(LogTemp,Fatal,TEXT("Unified water reflection requires the separate source-engine custom-depth binding patch."));
+            }
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveSolarShaderStudy"))||FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionRayStudy")))
                 UE_LOG(LogTemp,Fatal,TEXT("Reflection transport must run separately from other shader experiments."));
             const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),TEXT("DiveReflectionTransportStudy/Lumen"));
             if(!IFileManager::Get().FileExists(*(prepared/TEXT("LumenReflectionHardwareRayTracing.usf"))))
                 UE_LOG(LogTemp,Fatal,TEXT("Reflection transport requires Tools/PrepareReflectionTransport.py."));
+            FString routing;
+            if(!FFileHelper::LoadFileToString(routing,*(FPaths::GetPath(prepared)/TEXT("RoutingMode.txt")))||routing!=(unified?TEXT("unified"):TEXT("hybrid")))
+                UE_LOG(LogTemp,Fatal,TEXT("Prepared reflection shader routing mode does not match the requested mode."));
             const bool control=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl"));
             if(!control) AddShaderSourceDirectoryMapping(TEXT("/Engine/Private/Lumen"),prepared);
             UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_TRANSPORT_READY enabled=%d samples=16 light_source=scene scope=raygen_water_frontlayer"),control?0:1);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_ROUTING_READY unified=%d"),unified?1:0);
         }
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionRayStudy"))&&
            FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))

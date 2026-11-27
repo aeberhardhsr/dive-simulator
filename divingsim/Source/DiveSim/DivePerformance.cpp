@@ -1,5 +1,6 @@
 #include "DivePawn.h"
 #include "DiveWorld.h"
+#include "DiveWaterScene.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
@@ -104,7 +105,12 @@ void ADivePawn::SetupPerformance()
     if(auto* pc=Cast<APlayerController>(GetController())) PerformanceYaw=pc->GetControlRotation().Yaw;
     if(SmokeScenario!=TEXT("perf-stream")&&SmokeScenario!=TEXT("perf-soak"))
         if(auto* pc=Cast<APlayerController>(GetController()))
-            pc->SetControlRotation(FRotator(SmokeScenario==TEXT("perf-underwater")||SmokeScenario==TEXT("perf-sediment")?-12:-5,PerformanceYaw,0));
+        {
+            double pitch=SmokeScenario==TEXT("perf-underwater")||SmokeScenario==TEXT("perf-sediment")?-12:-5;
+            FParse::Value(FCommandLine::Get(),TEXT("DivePerfPitch="),pitch);
+            if(!FMath::IsFinite(pitch)) pitch=-12;
+            pc->SetControlRotation(FRotator(FMath::Clamp(pitch,-70.,70.),PerformanceYaw,0));
+        }
     if(SmokeScenario==TEXT("perf-soak")) SetupSoak();
     if(SmokeScenario==TEXT("perf-sediment"))
     {
@@ -194,13 +200,16 @@ void ADivePawn::TickPerformance()
         root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());
+        root->SetBoolField(TEXT("reflection_transport"),DiveReflectionTransportEnabled());
+        root->SetBoolField(TEXT("reflection_control"),FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl")));
+        root->SetBoolField(TEXT("reflection_unified"),FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionUnified")));
         root->SetNumberField(TEXT("sediment_born"),Environment->SedimentBorn());
         root->SetNumberField(TEXT("sediment_live"),Environment->SedimentLive());
         for(const TCHAR* name:{TEXT("r.ScreenPercentage"),TEXT("r.SecondaryScreenPercentage.GameViewport"),TEXT("r.DynamicRes.OperationMode"),TEXT("r.VSync"),TEXT("t.MaxFPS"),
             TEXT("sg.ViewDistanceQuality"),TEXT("sg.AntiAliasingQuality"),TEXT("sg.ShadowQuality"),TEXT("sg.GlobalIlluminationQuality"),
             TEXT("sg.ReflectionQuality"),TEXT("sg.PostProcessQuality"),TEXT("sg.TextureQuality"),TEXT("sg.EffectsQuality"),TEXT("sg.FoliageQuality"),
             TEXT("r.Lumen.HardwareRayTracing"),TEXT("r.Lumen.HardwareRayTracing.LightingMode"),TEXT("r.Lumen.HardwareRayTracing.HitLighting.Allowed"),
-            TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),TEXT("r.Lumen.Reflections.ScreenTraces"),TEXT("r.VolumetricFog"),
+            TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),TEXT("r.Lumen.Reflections.ScreenTraces"),TEXT("r.Lumen.HardwareRayTracing.Inline"),TEXT("r.CustomDepth"),TEXT("r.VolumetricFog"),
             TEXT("r.VolumetricFog.DepthDistributionScale"),TEXT("r.VolumetricFog.GridSizeZ"),TEXT("r.VolumetricFog.GridPixelSize")})
             if(auto* variable=IConsoleManager::Get().FindConsoleVariable(name)) root->SetNumberField(name,variable->GetFloat());
         FString json;

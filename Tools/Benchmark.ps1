@@ -11,6 +11,8 @@ param(
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [switch]$DisableNanite,
     [switch]$WaterPreview,
+    [switch]$ReflectionTransportStudy, [switch]$ReflectionTransportControl, [switch]$ReflectionUnified,
+    [ValidateRange(-70,70)][double]$LookPitch,
     [switch]$FPVProbe,
     [switch]$SpectralView,
     [ValidateRange(0,2)][double]$AbsorptionGain=1,
@@ -24,6 +26,9 @@ $ErrorActionPreference='Stop'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
+if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
+if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
+if($PSBoundParameters.ContainsKey('LookPitch') -and $Scenario -ne 'underwater') {throw 'LookPitch currently applies to the underwater benchmark.'}
 if($FPVProbe -and (-not $Editor -or $Scenario -ne 'underwater')) {throw 'FPVProbe requires an editor underwater benchmark.'}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
@@ -49,6 +54,10 @@ $context=[ordered]@{
     editor_sandbox=[bool]$EditorSandbox
     sandbox_name=$SandboxName
     fpv_probe=[bool]$FPVProbe
+    reflection_transport=[bool]$ReflectionTransportStudy
+    reflection_control=[bool]$ReflectionTransportControl
+    reflection_unified=[bool]$ReflectionUnified
+    requested_pitch=$(if($PSBoundParameters.ContainsKey('LookPitch')) {$LookPitch} else {$null})
     source_head=(& git -C $repo rev-parse HEAD)
     source_dirty=[bool](& git -C $repo status --porcelain)
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
@@ -70,7 +79,16 @@ if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
 }
 $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
-if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
+$consoleCommands=@()
+if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
+if($ReflectionTransportStudy) {
+ $arguments+=' -DiveReflectionTransportStudy -DiveLakeFootprint'
+ $consoleCommands+='r.Lumen.HardwareRayTracing.Inline 0'
+ if($ReflectionTransportControl) {$arguments+=' -DiveReflectionTransportControl'}
+ if($ReflectionUnified) {$arguments+=' -DiveReflectionUnified'}
+}
+if($consoleCommands.Count) {$arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"'}
+if($PSBoundParameters.ContainsKey('LookPitch')) {$arguments+=' -DivePerfPitch='+$LookPitch.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
 if($FPVProbe) {$arguments+=' -DiveFPVProbe'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
@@ -93,9 +111,15 @@ if($Editor) {
     $project=Join-Path $repo "$projectRoot/divingsim.uproject"
     $context.game_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveSim.dll")).Hash.ToLowerInvariant()
     $context.renderer_module_sha256=(Get-FileHash -LiteralPath (Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor-Renderer.dll')).Hash.ToLowerInvariant()
-    if($SpectralView) {
+    if($SpectralView -or $ReflectionTransportStudy) {
         $context.render_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveRendering.dll")).Hash.ToLowerInvariant()
         $context.spectral_shader_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Shaders/SpectralWater.usf")).Hash.ToLowerInvariant()
+    }
+    if($ReflectionTransportStudy) {
+        $context.reflection_shaders=@('ReflectionWater.ush','ReflectionWaterMask.ush','LakeFootprint.ush') | ForEach-Object {
+            @{name=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Shaders/$_")).Hash.ToLowerInvariant()}
+        }
+        Copy-Item -LiteralPath (Join-Path $repo "$projectRoot/Intermediate/DiveReflectionTransportStudy/Manifest.json") -Destination (Join-Path $resultDir 'ShaderManifest.json')
     }
     $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f $project)+$arguments
 }
@@ -130,6 +154,7 @@ foreach($name in $captureFiles) {
     Copy-Item -LiteralPath $source.FullName -Destination (Join-Path $resultDir $name)
 }
 $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw | ConvertFrom-Json
+if($ReflectionTransportStudy -and (-not $metadata.reflection_transport -or $metadata.reflection_control -ne [bool]$ReflectionTransportControl -or $metadata.reflection_unified -ne [bool]$ReflectionUnified -or $metadata.'r.Lumen.HardwareRayTracing.Inline' -ne 0 -or $metadata.'r.CustomDepth' -ne 3 -or $log -notmatch 'DIVE_WATER_SCENE_READY' -or $log -notmatch 'DIVE_LAKE_FOOTPRINT_READY' -or $log -notmatch ('DIVE_REFLECTION_TRANSPORT_READY enabled='+[int](-not $ReflectionTransportControl)) -or $log -notmatch ('DIVE_REFLECTION_ROUTING_READY unified='+[int][bool]$ReflectionUnified))) {throw 'Reflection benchmark mode was not preserved.'}
 if($WaterPreview -and (-not $metadata.water_preview -or -not $metadata.water_interface -or -not $metadata.bounded_water -or -not $metadata.native_scattering -or
     $metadata.'r.Lumen.TranslucencyReflections.FrontLayer.Allow' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.HitLighting.Allowed' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.LightingMode' -ne 2)) {throw 'Water preview benchmark profile was not preserved.'}
 if($metadata.foot_deposits -ne $context.foot_deposits) {throw 'Actual foot deposits differ from requested state.'}

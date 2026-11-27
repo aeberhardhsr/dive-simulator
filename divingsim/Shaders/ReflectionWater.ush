@@ -1,28 +1,9 @@
 #ifndef DIVE_REFLECTION_WATER
 #define DIVE_REFLECTION_WATER
+#include "/DiveRendering/ReflectionWaterMask.ush"
 #if !COMPUTESHADER
-#include "/Engine/Private/Lumen/DiveReflectionWaterOptics.ush"
-#include "/DiveRendering/LakeFootprint.ush"
 
 // All lengths below are metres except translated renderer positions and rays.
-float DiveReflectionSurface(float2 p)
-{
-    DiveWaterOptics optics;
-    float h; float2 slope; float3 curvature;
-    float4 waves[4]={Scene.DiveWater.Wave0,Scene.DiveWater.Wave1,Scene.DiveWater.Wave2,Scene.DiveWater.Wave3};
-    optics.Surface(p,Scene.DiveWater.Medium.x,waves,Scene.DiveWater.Phases,
-        Scene.DiveWater.Medium.y,float2(0,0),float2(0,0),h,slope,curvature);
-    return h;
-}
-
-float DiveReflectionWet(float3 p)
-{
-    if(Scene.DiveWater.FootprintEnabled<.5) return 0; // Never treat the entire world as water.
-    FDiveLakeFootprint lake;
-    float shore=lake.Wet(lake.Distance(Scene.DiveWater.Footprint,Scene.DiveWater.FootprintSampler,p.xy,Scene.DiveWater.FootprintMap));
-    return shore*smoothstep(-.1,.1,DiveReflectionSurface(p.xy)-p.z);
-}
-
 float DiveReflectionPhase(float cosine)
 {
     const float g=.55;
@@ -87,14 +68,8 @@ float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 pos
 float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,float3 radiance,
     float3 origin,float3 direction,float2 screenUV,float sceneDepth,float hitDistanceCm)
 {
-    if(ReflectionPass!=2 || Scene.DiveWater.Enabled<.5) return radiance;
-    if(CalcSceneCustomStencil(uint2(screenUV*View.BufferSizeAndInvSize.xy))!=42) return radiance;
-    if(abs(CalcSceneCustomDepth(screenUV)-sceneDepth)>max(2.,.01*sceneDepth)) return radiance;
+    if(!DiveIsWaterReflection(origin,screenUV,sceneDepth)) return radiance;
     float3 p=DFFastSubtractDemote(origin,PrimaryView.PreViewTranslation)*.01;
-    float3 eye=DFFastSubtractDemote(View.TranslatedWorldCameraOrigin,PrimaryView.PreViewTranslation)*.01;
-    // Stencil and matching front-layer depth identify water. Reject air views
-    // and any stale geometric intersection outside the current wave surface.
-    if(eye.z>=DiveReflectionSurface(eye.xy)-.005 || abs(p.z-DiveReflectionSurface(p.xy))>.5 || DiveReflectionWet(p-float3(0,0,.2))<=0) return radiance;
     float sigma=max(.001,Scene.DiveWater.Medium.z);
     float lengthMetres=min(max(0,hitDistanceCm*.01),min(200.,10./sigma));
     float transmittance=1;float3 scattering=0;
