@@ -21,6 +21,7 @@ def main():
     p.add_argument('--control-benchmark', type=Path)
     p.add_argument('--build-log', type=Path, default=ROOT/'artifacts/plant-understory-package-build.log')
     p.add_argument('--publish-prefix', default='PlantUnderstory')
+    p.add_argument('--plant-models', action='store_true')
     a = p.parse_args()
     run = a.run.resolve()
     host = read(run/'Host.json')
@@ -139,10 +140,51 @@ def main():
         assert control['result']['metadata']['requested_capture_seconds'] == normal['result']['metadata']['requested_capture_seconds']
     else:
         assert not a.benchmark and not a.control_benchmark
+    models = None
+    if a.plant_models:
+        manifest_path = ROOT/'blender/exports/Plants/Manifest.json'
+        manifest = read(manifest_path)
+        imported = read(ROOT/'artifacts/PlantContentBuild.json')
+        assert manifest['revision'] == 'bounded-branch-tessellation'
+        assert len(manifest['assets']) == len(imported) == 3
+        for item in manifest['assets']:
+            assert sha(ROOT/item['file']) == item['sha256']
+            built = next(x for x in imported if x['name'] == item['name'])
+            assert built['source_sha256'] == item['sha256'] and built['triangles'][0] == item['triangles']
+            assert built['source_uv_channels'] == 2 and all(x > y > 0 for x, y in zip(built['triangles'], built['triangles'][1:]))
+        assert next(x for x in imported if x['name'] == 'SM_Stonewort')['triangles'][0] == 29262
+        backup = ROOT/'artifacts/plant-efficient-source-before'
+        before_inputs = read(backup/'Inputs.json')
+        for item in before_inputs:
+            assert sha(backup/item['file']) == item['sha256']
+        form_runs = []
+        for phase in ['before', 'after']:
+            folder = ROOT/f'artifacts/plant-efficient-{phase}'
+            log_path = folder.with_suffix('.log')
+            log = log_path.read_text(encoding='utf-8-sig')
+            assert 'DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12' in log
+            assert 'DIVE_SMOKE_PASS' in log and not re.search(r'DIVE_\w*FAIL|Failed to compile Material|Fatal error:', log)
+            images = sorted(folder.glob('Plant_*.png'))
+            assert len(images) == 12
+            for path in images:
+                pixels(path)
+            form_runs.append(dict(phase=phase, log=record(log_path), images=[record(x) for x in images]))
+        source_files = [manifest_path, ROOT/'Tools/create_aquatic_plants.py', ROOT/'Tools/build_plant_content.py',
+                        ROOT/'blender/AquaticPlants.blend', ROOT/'artifacts/PlantContentBuild.json',
+                        ROOT/'artifacts/plant-efficient-blender.log', ROOT/'artifacts/plant-efficient-content.log']
+        source_files += [ROOT/item['file'] for item in manifest['assets']]
+        model_images = []
+        for phase in ['before', 'after']:
+            path = ROOT/f'Documentation/Images/PlantBranches_{phase.title()}.png'
+            assert sha(path) == sha(ROOT/f'artifacts/plant-efficient-{phase}/Plant_3_0.png')
+            model_images.append(record(path))
+        models = dict(manifest=manifest, imported=imported, source_files=[record(x) for x in source_files],
+                      before_inputs=before_inputs, before_files=[record(backup/x['file']) for x in before_inputs], forms=form_runs, published=model_images)
     result = dict(status='PASS', scope='Low plant layer: visual comparison, habitat and streaming checks; not complete reference acceptance',
                   host=host, cases=evidence, comparisons=comparisons, comparison_poses=poses[0],
                   comparison_plant_counts=[before, after], unchanged_rock_states=rock_states[0],
                   culling_comparisons=culling_comparisons,
+                  models=models,
                   benchmark_control='Unlimited plants' if host.get('culling_compare') else 'Without low plant layer',
                   entry_sources=[record(ROOT/'divingsim/Content/Diving/Geodata'/n) for n in ['manifest.json', 'shoreline.json']],
                   launcher=launcher, build=build, benchmarks=benchmarks, control=control, published=published,

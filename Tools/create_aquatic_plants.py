@@ -14,7 +14,7 @@ OUT=ROOT/'blender/exports/Plants'
 OUT.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
-report=dict(schema=1,revision='curved-shoots',units='metres',authorship='Original procedural game geometry; botanical groups, not species-identification models',assets=[])
+report=dict(schema=1,revision='bounded-branch-tessellation',units='metres',authorship='Original procedural game geometry; botanical groups, not species-identification models',assets=[])
 
 class Plant:
     def __init__(self,name,height,seed):
@@ -157,8 +157,12 @@ for name,height,count,seed in [('Pondweed',1.15,7,4721),('Stonewort',.45,9,4722)
                     tip_scale=max(.2,min(1,(1-t)/.08))
                     reach*=tip_scale
                     arch=r.uniform(.006,.025)
-                    path=[p+direction*reach*u+Vector((0,0,arch*u*u)) for u in (0,.25,.5,.75,1)]
-                    plant.tube(path,.0013 if name=='Milfoil' else .0018,tint,5,tissue=.55)
+                    # Millimetre-wide stonewort rays keep their roots, tips and
+                    # arch, with three smooth-shaded sides and two segments.
+                    # Fine branchlets and the larger main shoots stay intact.
+                    steps=(0,.5,1) if name=='Stonewort' else (0,.25,.5,.75,1)
+                    path=[p+direction*reach*u+Vector((0,0,arch*u*u)) for u in steps]
+                    plant.tube(path,.0013 if name=='Milfoil' else .0018,tint,3 if name=='Stonewort' else 5,tissue=.55)
                     if name=='Milfoil':
                         pairs=6 if t>.88 else 10
                         for k in range(1,pairs+1):

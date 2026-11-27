@@ -40,7 +40,7 @@ def build_plants():
     spec=node(u.MaterialExpressionConstant,r=.25);output(spec,'',u.MaterialProperty.MP_SPECULAR)
     motion=node(u.MaterialExpressionCustom,output_type=u.CustomMaterialOutputType.CMOT_FLOAT3,
         inputs=[props(u.CustomInput(),input_name=n) for n in ['P','T','W','UV','Detail']],
-        code='float anchor=W*W; float flutter=sin(T*2.2+Detail.y*9)*(1-UV.y)*Detail.x*.22; return float3(sin(T*1.1+P.x*.009)*9*anchor,sin(T*.8+P.y*.008)*6*anchor,flutter*anchor);')
+        code='float heightScale=length(DFToFloat3x3(GetInstanceToWorldDF(Parameters))[2]); float anchor=W*W*heightScale; float flutter=sin(T*2.2+Detail.y*9)*(1-UV.y)*Detail.x*.22; return float3(sin(T*1.1+P.x*.009)*9*anchor,sin(T*.8+P.y*.008)*6*anchor,flutter*anchor);')
     wire(node(u.MaterialExpressionWorldPosition),'',motion,'P');wire(node(u.MaterialExpressionTime),'',motion,'T')
     wire(vertex,'A',motion,'W');wire(uv,'',motion,'UV');wire(detail,'',motion,'Detail')
     output(motion,'',u.MaterialProperty.MP_WORLD_POSITION_OFFSET)

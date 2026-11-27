@@ -1,5 +1,20 @@
 # Gerenderte Leistungsmessung
 
+## WindowsPlantCover: niedriger Bewuchs mit optimierter Darstellung
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080, 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen und keine weitere Unreal-/Spielinstanz. Alle vier Läufe verwenden dieselbe EXE und dieselben Inhalte wie die zwölf bestandenen Paketfälle. Die Kontrolle schaltet nur die entfernte Darstellungsgrenze ab; die zusätzlichen niedrigen Pflanzen, reduzierten Algenzweige und angepasste Bewegung bleiben aktiv. [Bildvergleich, Entwicklung und Grenzen](PLANT_UNDERSTORY.md), [Prüfbericht](PLANT_COVER_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Frames >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen/West, normal, 60 s | 68,48 FPS | 59,85 FPS | 15,86 ms | 22,56 ms | 0 / 4107 | 5,33 ms |
+| Weesen/West, unbegrenzte Pflanzen, 60 s | 66,90 FPS | 56,45 FPS | 16,61 ms | 18,35 ms | 0 / 4012 | 5,24 ms |
+| Walenstadt/Ost, normal, 60 s | 73,85 FPS | 58,18 FPS | 15,50 ms | 18,28 ms | 0 / 4429 | 6,39 ms |
+| Murg/Süd, Nachladestrecke, 90 s | 96,45 FPS | 71,33 FPS | 11,30 ms | 30,18 ms | 0 / 8679 | 4,59 ms |
+
+Die mittlere GPU-Zeit beträgt 13,96 / 14,30 / 12,90 / 9,72 ms in Tabellenreihenfolge. Zwölf normale Weesen-Frames, 185 Kontrollframes, 54 in Walenstadt und 14 auf der Strecke überschreiten 16,67 ms. Der normale Weesen-Lauf enthält einen höheren Einzel-Ausreisser als die Kontrolle; er wird nicht ausgeblendet. Einzelläufe ohne frameidentische Abläufe beweisen keine allgemeine Beschleunigung oder durchgehend 60 FPS.
+
+Der erste dichtere Pflanzenentwurf erreichte nur 64,33 FPS bei Weesen. Die optimierte Fassung holt diesen Rückgang weitgehend auf; gegenüber der damaligen Kontrolle ohne niedrige Schicht (69,93 FPS) verbleibt zusätzlicher Aufwand. Diese älteren Werte stammen aus einem anderen Paket. Die aktuelle Weesen-Aufnahme zeigt sichtbaren Grund bei 5,3 m, Walenstadt bei 4,4 m; die rund 145 m lange Strecke endet bei 24,6 m in freiem Wasser. Ein aktueller Langzeittest, Mindesthardware, vollständige manuelle Bedienprüfung und die visuelle Gesamtfreigabe bleiben offen.
+
 ## WindowsTalus: dichteres Geröll an bestehenden Felsfüssen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Alle vier Messungen verwenden dieselbe EXE und dieselben Inhalte wie die neun bestandenen Paketfälle. `-DiveLegacyTalus` schaltet in der Weesen-Kontrolle nur die zusätzlichen Bruchstücke ab. [Bilder und Grenzen](TALUS.md), [Prüfbericht](TALUS_RESULTS.json).

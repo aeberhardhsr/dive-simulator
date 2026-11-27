@@ -1,5 +1,7 @@
 # Unterwasserbewuchs: Formen und Oberflächen
 
+Neuester Stand: [niedrige Bewuchsschicht, sparsamere Algenzweige und höhenabhängige Bewegung](PLANT_UNDERSTORY.md). Er baut auf den unten beschriebenen Formen auf und ist im geprüften Paket `WindowsPlantCover` enthalten.
+
 Aktuelle Weiterentwicklung: [gebogene Triebe und dichtere Blattbereiche](PLANT_GROWTH.md). Sie ersetzt die unten beschriebenen detaillierten Formen durch ungleichmässigere Wuchshöhen, näher zusammengerückte obere Blattansätze und getrennte Stängel-/Gewebefarben. Die [Pflanzengruppen](PLANT_BEDS.md) bestimmen weiterhin ihre Platzierung. Die folgenden Abschnitte dokumentieren die vorherigen Entwicklungsstände.
 
 ## Vorheriger Stand: feine Blattstruktur
