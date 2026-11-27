@@ -10,6 +10,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
+    [switch]$SpectralView, [switch]$SpectralDepthDebug, [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
@@ -27,6 +28,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
+if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
 if($PSBoundParameters.ContainsKey('WaterVolumeGain') -and -not $BoundedWater) {throw 'WaterVolumeGain requires BoundedWater.'}
 if($DisableLighting -and $Packaged) { throw 'Unlit diagnostic requires the native editor runtime.' }
 if($WaterReflection -ne 'default' -and -not $WaterInterface) { throw 'WaterReflection requires WaterInterface.' }
@@ -40,6 +43,8 @@ New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $size=$Viewport.Split('x')
 $arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -unattended -abslog="{0}"' -f $logPath,$size[0],$size[1]
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
+if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
+if($SpectralDepthDebug) {$arguments+=' -DiveSpectralDepthDebug'}
 if($DiscoveryVerify) {
     if($Scenario -ne 'discoveries' -or $DiscoveryVerify.Contains('"')) { throw 'DiscoveryVerify requires the discoveries scenario and an unquoted path.' }
     $arguments+=' -DiveDiscoveryVerify="'+[IO.Path]::GetFullPath($DiscoveryVerify)+'"'

@@ -9,6 +9,7 @@ public class divingsimTarget : TargetRules
         DefaultBuildSettings = BuildSettingsVersion.Latest;
         IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
         ExtraModuleNames.Add("DiveSim");
+        ExtraModuleNames.Add("DiveRendering");
         // Keep a user-opened development executable intact while linking another build.
         if (Target.Arguments != null && Target.Arguments.TryGetValue("-DiveBuildSlot=", out string Slot))
         {

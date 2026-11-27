@@ -10,7 +10,7 @@ function Get-DiveEditorSandbox {
         if((Test-Path -LiteralPath $path) -and ((Get-Item -LiteralPath $path).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw "Sandbox parent must be a real directory: $path" }
     }
     New-Item -ItemType Directory -Path $sandbox -Force | Out-Null
-    foreach($name in @('Source','Config')) {
+    foreach($name in @('Source','Config','Shaders')) {
         $source=Join-Path $original $name
         $destination=Join-Path $sandbox $name
         if(Test-Path -LiteralPath $destination) {

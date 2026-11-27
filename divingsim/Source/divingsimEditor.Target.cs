@@ -9,5 +9,6 @@ public class divingsimEditorTarget : TargetRules
         DefaultBuildSettings = BuildSettingsVersion.Latest;
         IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
         ExtraModuleNames.Add("DiveSim");
+        ExtraModuleNames.Add("DiveRendering");
     }
 }

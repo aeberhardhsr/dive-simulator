@@ -10,6 +10,8 @@ param(
     [switch]$EditorSandbox,
     [switch]$DisableNanite,
     [switch]$WaterPreview,
+    [switch]$SpectralView,
+    [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
     [switch]$LegacyRockPose,
@@ -17,6 +19,7 @@ param(
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
@@ -37,6 +40,8 @@ $context=[ordered]@{
     foot_deposits=(-not [bool]$NoFootDeposits)
     gravel_staged_build=(-not [bool]$ImmediateGravelBuild)
     population_staged_build=(-not [bool]$ImmediatePopulationBuild)
+    spectral_view=[bool]$SpectralView
+    absorption_gain=$AbsorptionGain
     editor_sandbox=[bool]$EditorSandbox
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
@@ -59,6 +64,7 @@ $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
 if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
 if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
+if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
 if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
@@ -77,6 +83,10 @@ if($Editor) {
     $projectRoot=if($EditorSandbox) {'Builds/EditorSandbox/divingsim'} else {'divingsim'}
     $project=Join-Path $repo "$projectRoot/divingsim.uproject"
     $context.game_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveSim.dll")).Hash.ToLowerInvariant()
+    if($SpectralView) {
+        $context.render_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveRendering.dll")).Hash.ToLowerInvariant()
+        $context.spectral_shader_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Shaders/SpectralWater.usf")).Hash.ToLowerInvariant()
+    }
     $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f $project)+$arguments
 }
 $context.executable=$executable
@@ -98,6 +108,7 @@ foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS
 }
 if($log -notmatch 'DIVE_PERF_CAPTURE_READY directory=([^\r\n]+)') { throw 'No completed capture was reported.' }
 $captureDir=$Matches[1].Trim()
+if($SpectralView -and $log -notmatch ('DIVE_SPECTRAL_VIEW_READY gain='+$AbsorptionGain.ToString('F3',[Globalization.CultureInfo]::InvariantCulture)+' samples=16 fog_resource=1 stage=BeforeDOF')) {throw 'Missing spectral rendering pass.'}
 foreach($name in @('Capture.csv','Metadata.json','Frame.png')) {
     $source=Get-Item -LiteralPath (Join-Path $captureDir $name)
     if($source.LastWriteTimeUtc -lt $started -or $source.Length -lt 100) { throw "Missing fresh benchmark artifact: $name" }

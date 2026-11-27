@@ -15,6 +15,10 @@ def build_underwater_interface(wave_code):
     m.set_editor_property('tangent_space_normal',False)
     m.set_editor_property('translucency_lighting_mode',u.TranslucencyLightingMode.TLM_SURFACE_PER_PIXEL_LIGHTING)
     m.set_editor_property('translucency_pass',u.MaterialTranslucencyPass.MTP_BEFORE_DOF)
+    # Optional spectral-view experiment needs the actual displaced boundary,
+    # including low-opacity transmission inside Snell's window.
+    m.set_editor_property('allow_translucent_custom_depth_writes',True)
+    m.set_editor_property('opacity_mask_clip_value',0.)
     # An infinite plane cannot use a bulk screen-space offset without exposing
     # unavailable pixels at the viewport edges. Distort only the wave normals.
     # Fresnel below still uses the physical water-to-air index ratio.

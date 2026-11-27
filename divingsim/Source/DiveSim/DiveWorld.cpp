@@ -293,6 +293,11 @@ void ADiveWorld::BeginPlay()
         // Primary water shading stays rasterized; trace secondary scene hits
         // without this inconsistent water proxy (single-interface approximation).
         Water->SetVisibleInRayTracing(false);
+        if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView")))
+        {
+            Water->SetRenderCustomDepth(true);
+            Water->SetCustomDepthStencilValue(42);
+        }
     }
     Water->SetCastShadow(false);
     CreateSky();
