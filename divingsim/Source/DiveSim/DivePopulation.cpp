@@ -25,8 +25,9 @@ void ADiveWorld::GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArr
     Transforms.Append(layout->Transforms);States.Append(layout->States);
 }
 
-void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly) const
+void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly,int FirstRow,int RowCount) const
 {
+    const int firstState=States.Num();
     const bool legacyPose=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose"));
     const bool legacyTalus=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyTalus"));
     const bool legacyFormations=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyFormations"));
@@ -34,9 +35,10 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
     // final rock position, so a cluster crosses streaming boundaries unchanged.
     constexpr int AnchorsPerCell=12;
     constexpr double AnchorWidth=CellWidth/AnchorsPerCell;
-    for(int ay=Key.Y*AnchorsPerCell-1;ay<=(Key.Y+1)*AnchorsPerCell;++ay)
+    for(int row=FirstRow;row<FMath::Min(FirstRow+RowCount,AnchorsPerCell+2);++row)
     for(int ax=Key.X*AnchorsPerCell-1;ax<=(Key.X+1)*AnchorsPerCell;++ax)
     {
+        const int ay=Key.Y*AnchorsPerCell-1+row;
         FRandomStream random(Dive::BedDistribution::Hash(ax,ay)^0x93e71bc5u);
         const FVector anchor((ax+.5)*AnchorWidth+random.FRandRange(-250.f,250.f),
             (ay+.5)*AnchorWidth+random.FRandRange(-250.f,250.f),0);
@@ -164,7 +166,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
     }
     // Keep the existing core poses. Lift loose stones onto the same
     // deposited surface used by collision, plants and benthic fish.
-    if(!MeasuredOnly&&Terrain.DepositHeight) for(int i=0;i<States.Num();++i) if(States[i].Variant<3)
+    if(!MeasuredOnly&&Terrain.DepositHeight) for(int i=firstState;i<States.Num();++i) if(States[i].Variant<3)
     {
         float measured=0,surface=0;const auto& p=States[i].Position;
         if(Terrain.SampleMeasured(p.X,p.Y,measured)&&Terrain.Sample(p.X,p.Y,surface))
@@ -192,30 +194,69 @@ int32 ADiveWorld::PlantCullDistance() const
 
 void ADiveWorld::BeginPopulationCell(FIntPoint Key)
 {
-    CSV_SCOPED_TIMING_STAT(DivePopulation,PrepareCell);
     check(!bPopulationBuilding&&PendingPopulation.Components.IsEmpty());
     PendingPopulationKey=Key;bPopulationBuilding=true;
-    auto& instances=PendingPopulationTransforms;instances.SetNum(Rocks.Num()+Plants.Num());
-    TArray<FTransform> transforms;TArray<FDiveRock> states;
-    GenerateRocks(Key,transforms,states);
-    for(int32 i=0;i<transforms.Num();++i) instances[states[i].Variant].Add(transforms[i]);
-    // Include neighbouring rock footprints when planting across a cell edge.
-    // Only footprints close enough to this cell are kept for the inner loop.
-    TArray<FDiveRock> nearby;
-    for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
+    PendingPopulationTransforms.SetNum(Rocks.Num()+Plants.Num());
+    PopulationPrepareNeighbour=-1;PopulationPrepareRockRow=0;PopulationPreparePlantRow=0;
+    PendingPopulationLayout={};PendingPopulationNearby.Reset();
+}
+
+bool ADiveWorld::PreparePopulationCell(bool Complete)
+{
+    CSV_SCOPED_TIMING_STAT(DivePopulation,PrepareCell);
+    const double deadline=FPlatformTime::Seconds()+.002;
+    const auto Key=PendingPopulationKey;
+    // Each row has independent anchor random streams. Finish a whole row,
+    // retaining the original ordering and halo ownership, then yield. Never
+    // publish an incomplete rock cache entry to terrain or fish queries.
+    while(PopulationPrepareNeighbour<9)
     {
-        transforms.Reset();states.Reset();GenerateRocks(Key+FIntPoint(x,y),transforms,states);
-        for(const auto& rock:states)
-            if(rock.Position.X>=Key.X*CellWidth-rock.Radius-600&&rock.Position.X<=(Key.X+1)*CellWidth+rock.Radius+600&&
-               rock.Position.Y>=Key.Y*CellWidth-rock.Radius-600&&rock.Position.Y<=(Key.Y+1)*CellWidth+rock.Radius+600) nearby.Add(rock);
+        const auto neighbour=PopulationPrepareNeighbour<0?Key:Key+FIntPoint(PopulationPrepareNeighbour%3-1,PopulationPrepareNeighbour/3-1);
+        auto* layout=RockLayouts.Find(neighbour);
+        if(!layout)
+        {
+            {CSV_SCOPED_TIMING_STAT(DivePopulation,PrepareRockRow);
+            BuildRockLayout(neighbour,PendingPopulationLayout.Transforms,PendingPopulationLayout.States,false,PopulationPrepareRockRow++,1);}
+            ++PopulationBatchRows;
+            if(PopulationPrepareRockRow==14)
+            {
+                layout=&RockLayouts.Add(neighbour,MoveTemp(PendingPopulationLayout));
+                PendingPopulationLayout={};PopulationPrepareRockRow=0;
+            }
+        }
+        if(layout)
+        {
+            if(PopulationPrepareNeighbour<0)
+                for(int i=0;i<layout->Transforms.Num();++i) PendingPopulationTransforms[layout->States[i].Variant].Add(layout->Transforms[i]);
+            else for(const auto& rock:layout->States)
+                if(rock.Position.X>=Key.X*CellWidth-rock.Radius-600&&rock.Position.X<=(Key.X+1)*CellWidth+rock.Radius+600&&
+                   rock.Position.Y>=Key.Y*CellWidth-rock.Radius-600&&rock.Position.Y<=(Key.Y+1)*CellWidth+rock.Radius+600) PendingPopulationNearby.Add(rock);
+            PendingPopulationLayout={};PopulationPrepareRockRow=0;
+            ++PopulationPrepareNeighbour;
+        }
+        if(!Complete&&(FPlatformTime::Seconds()>=deadline||PopulationBatchRows>=32)) return false;
     }
-    BuildPlantLayout(Key,nearby,instances);
+    while(PopulationPreparePlantRow<26)
+    {
+        CSV_SCOPED_TIMING_STAT(DivePopulation,PreparePlantRow);
+        // The old diagnostic placement uses one cell-wide random stream.
+        const bool legacy=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyPlantPlacement"));
+        BuildPlantLayout(Key,PendingPopulationNearby,PendingPopulationTransforms,PopulationPreparePlantRow,legacy?26:1);
+        PopulationPreparePlantRow+=legacy?26:1;++PopulationBatchRows;
+        if(!Complete&&(FPlatformTime::Seconds()>=deadline||PopulationBatchRows>=32)) return false;
+    }
+    return true;
 }
 
 bool ADiveWorld::AdvancePopulationCell(bool Complete)
 {
     CSV_SCOPED_TIMING_STAT(DivePopulation,BuildCell);
     check(bPopulationBuilding);
+    if(PopulationPreparePlantRow<26)
+    {
+        const bool prepared=PreparePopulationCell(Complete);
+        if(!prepared||!Complete) return false;
+    }
     for(int i=PendingPopulation.Components.Num();i<Rocks.Num()+Plants.Num();++i)
     {
         const bool collision=i<Rocks.Num();
@@ -234,16 +275,17 @@ bool ADiveWorld::AdvancePopulationCell(bool Complete)
     if(PendingPopulation.Components.Num()!=Rocks.Num()+Plants.Num()) return false;
     for(const auto& component:PendingPopulation.Components) component->SetVisibility(true);
     PopulationCells.Add(PendingPopulationKey,MoveTemp(PendingPopulation));PendingPopulation.Components.Reset();
-    PendingPopulationTransforms.Reset();bPopulationBuilding=false;return true;
+    PendingPopulationTransforms.Reset();PendingPopulationNearby.Reset();bPopulationBuilding=false;return true;
 }
 
 void ADiveWorld::CancelPopulationCell()
 {
     for(const auto& component:PendingPopulation.Components) RetiredPopulation.Add(component);
     PendingPopulation.Components.Reset();PendingPopulationTransforms.Reset();bPopulationBuilding=false;
+    PendingPopulationLayout={};PendingPopulationNearby.Reset();
 }
 
-void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,TArray<TArray<FTransform>>& instances) const
+void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,TArray<TArray<FTransform>>& instances,int FirstRow,int RowCount) const
 {
     if(!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyPlantPlacement"))))
     {
@@ -253,9 +295,10 @@ void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,
         const bool groundcover=!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoPlantUnderstory")));
         Dive::RockIndex footprints;
         for(const auto& rock:nearby) footprints.Add(rock.Position.X,rock.Position.Y,rock.Radius);
-        for(int ay=Key.Y*Plots-1;ay<=(Key.Y+1)*Plots;++ay)
+        for(int row=FirstRow;row<FMath::Min(FirstRow+RowCount,Plots+2);++row)
         for(int ax=Key.X*Plots-1;ax<=(Key.X+1)*Plots;++ax)
         {
+            const int ay=Key.Y*Plots-1+row;
             FRandomStream random(Dive::BedDistribution::Hash(ax,ay)^0x4b93e71du);
             const FVector anchor((ax+.5)*400+random.FRandRange(-110.f,110.f),
                 (ay+.5)*400+random.FRandRange(-110.f,110.f),0);
@@ -391,6 +434,7 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
 void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
 {
     PopulationBatchComponents=0;
+    PopulationBatchRows=0;
     const bool instantRetire=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement"));
     auto retire=[this](bool immediate)
     {
@@ -459,6 +503,7 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         }
         else if(AdvancePopulationCell(legacyBuild)) ++loaded;
         CSV_CUSTOM_STAT(DivePopulation,BuildComponents,PopulationBatchComponents,ECsvCustomStatOp::Set);
+        CSV_CUSTOM_STAT(DivePopulation,PrepareRows,PopulationBatchRows,ECsvCustomStatOp::Set);
         if(shifted)
         {
             RockState.Reset();

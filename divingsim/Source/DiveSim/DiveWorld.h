@@ -230,6 +230,10 @@ private:
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredPopulation;
     UPROPERTY() FDivePopulationCell PendingPopulation;
     TArray<TArray<FTransform>> PendingPopulationTransforms;
+    FDiveRockLayout PendingPopulationLayout;
+    TArray<FDiveRock> PendingPopulationNearby;
+    int PopulationPrepareNeighbour=-1,PopulationPrepareRockRow=0,PopulationPreparePlantRow=0;
+    int PopulationBatchRows=0;
     FIntPoint PendingPopulationKey;
     bool bPopulationBuilding=false;
     int PopulationBatchComponents=0;
@@ -283,12 +287,13 @@ private:
     void Populate();
     void StreamPopulation(const FVector& Player,bool Initial=false);
     void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
-    void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly=false) const;
+    void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly=false,int FirstRow=0,int RowCount=14) const;
     void BeginPopulationCell(FIntPoint Key);
+    bool PreparePopulationCell(bool Complete);
     bool AdvancePopulationCell(bool Complete);
     void CancelPopulationCell();
     int32 PlantCullDistance() const;
-    void BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& Nearby,TArray<TArray<FTransform>>& Instances) const;
+    void BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& Nearby,TArray<TArray<FTransform>>& Instances,int FirstRow=0,int RowCount=26) const;
     bool TestPlantBeds(FString& Detail) const;
     void BeginGravelCell(FIntPoint Key);
     bool AdvanceGravelCell(bool Complete);

@@ -35,6 +35,12 @@ foreach($case in $cases) {
  if($opts.PopulationChecks -and -not $opts.ImmediateGravelBuild -and $log -notmatch 'DIVE_FOOT_DEPOSIT_PASS') {throw 'Missing deposited-surface contact check.'}
  if($log -notmatch 'DIVE_FOOT_DEPOSITS_READY enabled=1 maximum_cm=70') {throw 'Wrong deposited surface state.'}
  if($opts.PopulationChecks -and $log -notmatch 'DIVE_GRAVEL_STAGING_PASS') {throw 'Missing staged gravel checks.'}
+ if($opts.PopulationChecks) {
+  foreach($marker in @('DIVE_POPULATION_STAGED_PASS','DIVE_POPULATION_PREPARE_EQUAL_PASS','DIVE_POPULATION_BUILD_CANCEL_PASS','DIVE_POPULATION_REGISTER_CANCEL_PASS')) {
+   if($opts.ImmediatePopulationBuild -and $marker -match 'CANCEL') {continue}
+   if($log -notmatch $marker) {throw "Missing population preparation check: $marker"}
+  }
+ }
  $images=@(Get-ChildItem (Join-Path $runtime 'Saved/Screenshots') -Filter '*.png' | Where-Object {$_.LastWriteTimeUtc -ge $started})
  $expected=if($case.scenario -eq 'shore'){9}elseif($case.scenario -eq 'stream'){2}elseif($case.scenario -eq 'sediment'){7}else{3}
  if($images.Count -ne $expected) {throw "Missing captures: $($case.name)"}

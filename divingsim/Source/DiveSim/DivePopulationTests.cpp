@@ -206,23 +206,40 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     const double boundary=FMath::RoundToDouble(anchor.X/9600)*9600;
     const FVector before(boundary-1,anchor.Y,anchor.Z),after(boundary+1,anchor.Y,anchor.Z);
     LastFishRefill=WorldTime;StreamPopulation(before);
-    for(int i=0;i<40&&PopulationCells.Num()!=9;++i) StreamPopulation(before);
+    for(int i=0;i<600&&PopulationCells.Num()!=9;++i) StreamPopulation(before);
     TMap<FIntPoint,TArray<TArray<FTransform>>> snapshots;
     TMap<FIntPoint,UInstancedStaticMeshComponent*> identities;
     for(const auto& pair:PopulationCells) { snapshots.Add(pair.Key,capture(pair.Value));identities.Add(pair.Key,pair.Value.Components[0]); }
     const auto beforeFish=FishState;
     const bool legacyBuild=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationBuild"));
-    int stages=0;bool sawSeven=false,sawEight=false;
+    int stages=0;bool sawSeven=false,sawEight=false,sawPreparation=false;
     do
     {
         LastFishRefill=WorldTime;StreamPopulation(after);++stages;
         valid&=boundedLayouts()&&(legacyBuild||PopulationBatchComponents<=1);
+        valid&=legacyBuild||(PopulationBatchRows<=32&&!(PopulationBatchRows&&PopulationBatchComponents));
+        sawPreparation|=PopulationBatchRows>0;
         sawSeven|=PopulationCells.Num()==7;sawEight|=PopulationCells.Num()==8;
         for(const auto& component:PendingPopulation.Components) valid&=!component->IsVisible()&&component->IsRegistered();
-    } while(PopulationCells.Num()!=9&&stages<40);
-    const bool staged=sawSeven&&sawEight&&PopulationCells.Num()==9&&stages==(legacyBuild?3:3*(1+Rocks.Num()+Plants.Num()));
+    } while(PopulationCells.Num()!=9&&stages<600);
+    const bool staged=sawSeven&&sawEight&&PopulationCells.Num()==9&&
+        (legacyBuild?stages==3:sawPreparation&&stages>3*(1+Rocks.Num()+Plants.Num()));
     valid&=staged;
     UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_STAGED_%s cells=7,8,9 steps=%d legacy=%d"),staged?TEXT("PASS"):TEXT("FAIL"),stages,legacyBuild?1:0);
+    bool preparedEqual=true;
+    for(const auto& pair:RockLayouts)
+    {
+        FDiveRockLayout fresh;BuildRockLayout(pair.Key,fresh.Transforms,fresh.States);
+        preparedEqual&=fresh.Transforms.Num()==pair.Value.Transforms.Num()&&fresh.States.Num()==pair.Value.States.Num();
+        for(int i=0;i<FMath::Min(fresh.States.Num(),pair.Value.States.Num());++i)
+        {
+            const auto& a=fresh.States[i];const auto& b=pair.Value.States[i];
+            preparedEqual&=fresh.Transforms[i].Equals(pair.Value.Transforms[i],0)&&a.Position==b.Position&&
+                a.Radius==b.Radius&&a.Variant==b.Variant&&a.Rubble==b.Rubble;
+        }
+    }
+    FString stagedPlants;preparedEqual&=TestPlantBeds(stagedPlants);valid&=preparedEqual;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_PREPARE_EQUAL_%s layouts=%d rock_tolerance=0 plant_position_cm=0.25 plant_scale_rotation=0.00001"),preparedEqual?TEXT("PASS"):TEXT("FAIL"),RockLayouts.Num());
     for(const auto& pair:PopulationCells)
         if(const auto* expected=snapshots.Find(pair.Key))
         { ++retained;valid&=identities[pair.Key]==pair.Value.Components[0]&&same(pair.Value,*expected); }
@@ -261,7 +278,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         retirementValid&=boundedLayouts()&&RetiredPopulation.Num()<=9*(Rocks.Num()+Plants.Num());
         for(const auto& component:RetiredPopulation) retirementValid&=!component->IsVisible();
     }
-    for(int i=0;i<9*(Rocks.Num()+Plants.Num())+3;++i)
+    for(int i=0;i<600&&(PopulationCells.Num()!=9||!RetiredPopulation.IsEmpty());++i)
     {LastFishRefill=WorldTime;StreamPopulation(before);}
     retirementValid&=RetiredPopulation.IsEmpty()&&PopulationCells.Num()==9&&(instant?maximumPending==0:maximumPending>0);
     for(const auto& pair:snapshots)
@@ -271,16 +288,27 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     if(!legacyBuild)
     {
         LastFishRefill=WorldTime;StreamPopulation(after);StreamPopulation(after);
-        valid&=bPopulationBuilding&&PendingPopulation.Components.Num()==1;
+        const bool preparing=bPopulationBuilding&&PendingPopulation.Components.IsEmpty()&&PopulationBatchRows>0;
+        valid&=preparing;
         LastFishRefill=WorldTime;StreamPopulation(before,true);
-        valid&=!bPopulationBuilding&&PendingPopulation.Components.IsEmpty()&&RetiredPopulation.IsEmpty()&&boundedLayouts();
+        valid&=!bPopulationBuilding&&PendingPopulation.Components.IsEmpty()&&PendingPopulationLayout.States.IsEmpty()&&
+            PendingPopulationNearby.IsEmpty()&&RetiredPopulation.IsEmpty()&&boundedLayouts();
         for(const auto& pair:snapshots)
         {const auto* cell=PopulationCells.Find(pair.Key);valid&=cell&&same(*cell,pair.Value);}
         UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_BUILD_CANCEL_%s restored=1"),valid?TEXT("PASS"):TEXT("FAIL"));
+        // Also cancel after physics registration, not just during preparation.
+        StreamPopulation(after);
+        for(int i=0;i<200&&PendingPopulation.Components.IsEmpty();++i) StreamPopulation(after);
+        valid&=bPopulationBuilding&&PendingPopulation.Components.Num()==1;
+        StreamPopulation(before,true);
+        valid&=!bPopulationBuilding&&RetiredPopulation.IsEmpty()&&boundedLayouts();
+        for(const auto& pair:snapshots)
+        {const auto* cell=PopulationCells.Find(pair.Key);valid&=cell&&same(*cell,pair.Value);}
+        UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_REGISTER_CANCEL_%s restored=1"),valid?TEXT("PASS"):TEXT("FAIL"));
     }
     // Restore all gameplay state before the ordinary update/render of this frame.
     LastFishRefill=WorldTime;StreamPopulation(original);
-    for(int i=0;i<40&&PopulationCells.Num()!=9;++i) StreamPopulation(original);
+    for(int i=0;i<600&&PopulationCells.Num()!=9;++i) StreamPopulation(original);
     valid&=boundedLayouts();
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_LAYOUT_%s layouts=%d max=25 fresh_equal=1"),valid?TEXT("PASS"):TEXT("FAIL"),RockLayouts.Num());
     valid&=TestPlantBeds(plantDetail);

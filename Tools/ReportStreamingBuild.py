@@ -52,7 +52,13 @@ def main():
             staged=re.findall(r'DIVE_GRAVEL_STAGING_PASS steps=(\d+) legacy=(\d+) restored=1',log)
             assert staged and all(int(steps)==(3 if name=='before' else 33) and int(legacy)==int(name=='before') for steps,legacy in staged)
             population=re.findall(r'DIVE_POPULATION_STAGED_PASS cells=7,8,9 steps=(\d+) legacy=(\d+)',log)
-            assert population and all(int(steps)==(3 if name=='before' else 27) and int(legacy)==int(name=='before') for steps,legacy in population)
+            prepared='DIVE_POPULATION_PREPARE_EQUAL_PASS' in log
+            assert population
+            for steps,legacy in population:
+                assert int(legacy)==int(name=='before')
+                if name=='before':assert int(steps)==3
+                elif prepared:assert 27<int(steps)<600
+                else:assert int(steps)==27
             if name!='before':assert 'DIVE_POPULATION_BUILD_CANCEL_PASS restored=1' in log
             for check in checks:
                 fields=dict(re.findall(r'(\w+)=([\d.]+)',check))
@@ -109,7 +115,7 @@ def main():
     report=dict(status='PASS',scope='Bounded gravel and population preparation with retained transforms and contacts; complete timing evidence, not full visual acceptance',host=host,asset_baseline=record(ROOT/'Documentation/ROCK_FORMATIONS_RESULTS.json'),checked_assets=assets,cases=evidence,equal_comparison_cameras=cameras[0],equal_populations=populations[0],published=published,build=build,launcher=launcher,benchmarks=benchmarks,control_benchmark=control,limitations=['Deposits are authored up to 70 cm, not surveyed or physically simulated transport','Only shore entry 0 checked; other shore sites and night remain unverified','Underlying metre-grid resolution remains; full reference quality is not achieved','Short single-run performance captures; no minimum-hardware or endurance claim','Frame-time improvement must be assessed from complete captures without dropping spikes'])
     report['limitations'].extend(['Aggregate host CPU snapshots are not continuous measurements or attribution of individual spikes',
         'Near missing cells and teleports intentionally bypass ordinary per-frame construction budgets',
-        'Population transform preparation remains a single synchronous phase'])
+        'Population preparation yields between rows with a soft time budget' if 'DIVE_POPULATION_PREPARE_EQUAL_PASS' in logs['after'] else 'Population transform preparation remains a single synchronous phase'])
     a.output.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(f'STREAMING_BUILD_PASS cases={len(cases)} captures={sum(expected.values())}')
 

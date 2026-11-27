@@ -1,5 +1,9 @@
 # Gerenderte Leistungsmessung
 
+## WindowsPrepare: Fels- und Pflanzenvorbereitung aufteilen
+
+Walenstadt, 1080p/Hoch, 100 Prozent Renderauflösung mit Wasserprofil, jeweils 60 Sekunden nach 15 Sekunden Aufwärmen. Zwei Läufe je Paket; die fünf Inhaltscontainer sind identisch. `WindowsCurrent`: 79,61/79,12 FPS, längster Frame 205,64/205,90 ms. `WindowsPrepare`: 79,82/80,08 FPS, längster Frame 56,69/55,19 ms. Die Vorbereitung sinkt von 148,02/148,98 auf 7,82/8,10 ms. Es bleiben jeweils neun Frames über 33,33 ms in den neuen Läufen. [Vollständiger Vergleich, Verfahren und Grenzen](POPULATION_PREPARATION.md), [gebundene Rohdaten und Paketprüfungen](POPULATION_PREPARATION_RESULTS.json).
+
 ## WindowsPlantColor: korrekte Pflanzenfarbauswertung
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung mit Wasserprofil, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Gemessen wurde das fertig gepackte Spiel aus demselben EXE-/Inhaltsstand wie die sieben bestandenen Paketfälle. Keine weitere Unreal-/Spielinstanz lief gleichzeitig. Die RGB-Kameraweg-Studie war ausgeschaltet.

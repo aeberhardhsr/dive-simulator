@@ -1,5 +1,7 @@
 # Unterwasserobjekte über mehrere Frames aufbauen
 
+Weiterentwicklung: Auch die bisher zusammenhängende Fels-/Pflanzenvorbereitung wird inzwischen auf mehrere Frames verteilt. Der [neue Paketvergleich](POPULATION_PREPARATION.md) dokumentiert diese Änderung. Die nachfolgenden Werte und festen Aufrufzahlen gehören zum älteren Paket `WindowsStreamBuild`.
+
 Die entfernten Kies-, Fels- und Pflanzenzellen werden schrittweise vorbereitet und registriert. Formen, Dichte, Materialien, Zufallsfolge und endgültige Transformationen bleiben erhalten. Diese Änderung verringert die auf einen einzelnen Frame konzentrierte Aufbauarbeit; sie ist keine neue gestalterische Qualitätsstufe.
 
 **Geprüfte Vorschau: `Builds/WindowsStreamBuild/Start-WaterPreview.cmd`.** Sieben Paketfälle mit 30 Aufnahmen und der automatische Haupt-EXE-Start bestehen. Der [Prüfbericht](STREAMING_BUILD_RESULTS.json) bindet Quellen, EXE, Inhaltscontainer, Kontaktprüfungen, Aufnahmen und sechs vollständige Messungen zusammen. Die frühere Vorschau `WindowsFootDeposits` bleibt erhalten.
