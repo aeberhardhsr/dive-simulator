@@ -172,13 +172,13 @@ void ADiveHUD::ProfilesMenu()
     const bool autoTrim=c.AssistedBuoyancy();
     Text(suit+TEXT("   /   ")+(autoTrim?L(TEXT("Automatische Tarierung"),TEXT("Automatic buoyancy")):L(TEXT("Manuelle Tarierung"),TEXT("Manual buoyancy"))),585,365,19,White);
     const FString hour=UTF8_TO_TCHAR(Dive::FormatConfigInput(*Dive::FindConfigInput("hour"),c.Hour).c_str());
-    Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f deg"),*(FString(UTF8_TO_TCHAR(c.Date.Text().c_str()))+TEXT("  ")+hour),*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
+    Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f°"),*(FString(UTF8_TO_TCHAR(c.Date.Text().c_str()))+TEXT("  ")+hour),*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
     Text(FString::Printf(TEXT("%s %.1f m%s   /   %s %.2f m/s%s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,c.AutoVisibility?TEXT(" (Auto)"):TEXT(""),Diver->bEnglish?TEXT("Current"):TEXT("Strömung"),c.CurrentMetresPerSecond,c.CurrentSource==Dive::CurrentSetting::Automatic?TEXT(" (Auto)"):TEXT("")),585,445,19,White);
     if(c.AutoTemperature) Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s"),c.SurfaceTemperatureC,c.BottomTemperatureC,*L(TEXT("Auto: saisonales Tiefenprofil"),TEXT("Auto: seasonal depth profile"))),585,485,19,White);
     else Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s %.1f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
     Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphäre"),c.SurfacePressureBar),585,525,20,White);
     const auto& torch=Dive::Torch::At(c.TorchModel);
-    Text(FString::Printf(TEXT("%s: %s / %.0f lm / %.0f deg / %.0f min / %s / %s"),Diver->bEnglish?TEXT("Torch"):TEXT("Lampe"),UTF8_TO_TCHAR(torch.Name),torch.Lumens,2*torch.OuterDegrees,torch.RuntimeMinutes,
+    Text(FString::Printf(TEXT("%s: %s / %.0f lm / %.0f° / %.0f min / %s / %s"),Diver->bEnglish?TEXT("Torch"):TEXT("Lampe"),UTF8_TO_TCHAR(torch.Name),torch.Lumens,2*torch.OuterDegrees,torch.RuntimeMinutes,
         c.CylinderMaterial==1?TEXT("Aluminium"):*L(TEXT("Stahl"),TEXT("Steel")),UTF8_TO_TCHAR(Dive::BCDEquipment::At(c.BCDModel).Item.Name)),585,563,17,White);
     if(selected&&DiveConfigIO::Equal(plan,entry,Diver->PendingConfig,Diver->EntryIndex)) Text(L(TEXT("Entspricht dem aktuellen Tauchplan."),TEXT("Matches the current dive plan.")),585,602,16,Accent);
     if(Diver->bDiveActive) Text(L(TEXT("Laden ist erst nach Ende des laufenden Tauchgangs möglich."),TEXT("Loading is available after the current dive ends.")),560,645,16,Amber);

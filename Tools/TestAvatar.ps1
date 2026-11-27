@@ -1,4 +1,4 @@
-param([string]$PackageDirectory='Builds/WindowsAvatar',[switch]$EditorSandbox,
+param([string]$PackageDirectory='Builds/WindowsAvatar',[switch]$EditorSandbox,[switch]$WaterPreview,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8',
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidateRange(30,7200)][int]$TimeoutSeconds=180)
@@ -11,7 +11,7 @@ $result=Join-Path $repo ('artifacts/avatar-validation-'+(Get-Date -Format 'yyyyM
 New-Item -ItemType Directory -Path $result -Force | Out-Null
 $exe=if($EditorSandbox) { Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe' } else { Resolve-DivePackageExecutable $PackageDirectory }
 @{started_utc=[DateTime]::UtcNow.ToString('o');executable=$exe;executable_sha256=(Get-FileHash -LiteralPath $exe).Hash;
-    editor_sandbox=[bool]$EditorSandbox;sandbox_name=$SandboxName;source_head=(& git -C $repo rev-parse HEAD);source_dirty=[bool](& git -C $repo status --porcelain)} |
+    editor_sandbox=[bool]$EditorSandbox;water_preview=[bool]$WaterPreview;sandbox_name=$SandboxName;source_head=(& git -C $repo rev-parse HEAD);source_dirty=[bool](& git -C $repo status --porcelain)} |
     ConvertTo-Json | Set-Content -LiteralPath (Join-Path $result 'Host.json') -Encoding utf8
 $completed=@()
 foreach($case in 0..5) {
@@ -19,6 +19,7 @@ foreach($case in 0..5) {
     New-Item -ItemType Directory -Path $folder -Force | Out-Null
     $started=[DateTime]::UtcNow
     $options=@{Scenario='avatar';LoadoutCase=$case;MaxFPS=30;TimeoutSeconds=$TimeoutSeconds;RuntimeLog=(Join-Path $folder 'Runtime.log')}
+    if($WaterPreview) {$options.WaterPreview=$true}
     if($EditorSandbox) { $options.EditorSandbox=$true;$options.SandboxName=$SandboxName;$options.EngineRoot=$EngineRoot } else { $options.Packaged=$true;$options.PackageDirectory=$PackageDirectory }
     & (Join-Path $PSScriptRoot 'SmokeTest.ps1') @options *> (Join-Path $folder 'Summary.log')
     $saved=if($EditorSandbox) { Join-Path $repo "Builds/$SandboxName/divingsim/Saved/Screenshots" } else { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' }

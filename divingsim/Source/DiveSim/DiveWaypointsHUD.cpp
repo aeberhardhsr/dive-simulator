@@ -151,7 +151,7 @@ void ADiveHUD::DrawWaypoints()
         if(const auto* p=Waypoints.Find(Waypoints.Target))
         {
             const auto here=terrain.ToSurvey(Diver->GetActorLocation());const double north=p->North-here.Y,east=p->East-here.X;
-            Text(FString::Printf(TEXT("%s: %s / %.0f m / %03d deg / %.1f m %s"),*Diver->Local(TEXT("Ziel"),TEXT("Target")),*p->Name,FMath::Sqrt(north*north+east*east),
+            Text(FString::Printf(TEXT("%s: %s / %.0f m / %03d° / %.1f m %s"),*Diver->Local(TEXT("Ziel"),TEXT("Target")),*p->Name,FMath::Sqrt(north*north+east*east),
                 Dive::Navigation::DisplayHeading(Dive::Navigation::Bearing(north,east)),p->Depth,*Diver->Local(TEXT("Tiefe"),TEXT("depth"))),120,735,16,Accent);
         }
 }
@@ -163,7 +163,7 @@ void ADiveHUD::WaypointInstrument()
     const double relative=FMath::DegreesToRadians(bearing-Diver->GetControlRotation().Yaw);
     Rect(640,127,320,77,Dark);
     Text(ShortLabel(p->Name,16),655,137,16,Accent);
-    Text(FString::Printf(TEXT("%.0f m / %03d deg / %.1f m"),distance,Dive::Navigation::DisplayHeading(bearing),p->Depth),655,165,15,White);
+    Text(FString::Printf(TEXT("%.0f m / %03d° / %.1f m"),distance,Dive::Navigation::DisplayHeading(bearing),p->Depth),655,165,15,White);
     if(distance>=1)
     {
         const FVector2D center(932,154),d(FMath::Sin(relative),-FMath::Cos(relative)),s(-d.Y,d.X);

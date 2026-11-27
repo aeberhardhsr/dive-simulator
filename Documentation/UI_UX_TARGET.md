@@ -4,7 +4,7 @@
 
 Der Nutzer hat am 26. November 2026 fünf eigene Designentwürfe bereitgestellt. Gewünscht ist eine Anpassung an deren Gestaltungsidee, keine 1:1-Umsetzung. Seine Bewertung des aktuellen Layouts ist ausdrücklich festgehalten: zu chaotisch, unpassende Texte, unsaubere Umlaute und verwirrende Menüführung.
 
-**Status: Menü/HUD umgesetzt und bei 1600 × 900 nativ geprüft; weitere Auflösungen, Mausbedienung und bewegte FPV-Abnahme stehen aus.** Der Nutzer hat die Reihenfolge am 27. November ausdrücklich angepasst: Menü/HUD/FPV darf während des laufenden Unreal-Erstbuilds vorgezogen und parallel vorbereitet werden. Die ursprünglich vereinbarte Reihenfolge war:
+**Status: Menü/HUD und FPV-Korrekturen sind im [spielbaren Windows-Paket](PLAYABLE_CURRENT.md); drei Auflösungen und automatisierte Abläufe sind geprüft. Reale Mausbedienung und vollständige Designabnahme bleiben offen.** Der Nutzer hat die Reihenfolge am 27. November ausdrücklich angepasst: Menü/HUD/FPV darf während des laufenden Unreal-Erstbuilds vorgezogen und parallel vorbereitet werden. Die ursprünglich vereinbarte Reihenfolge war:
 
 1. Spielgrafik und Umgebung unter Wasser optimieren.
 2. Spielgrafik über Wasser – insbesondere Berge, Wiesen, Wald, Gelände und Ufer – auf vergleichbares Realitätsniveau bringen.
@@ -104,6 +104,10 @@ Reproduktion der gezielten Diagnose:
 ```
 
 Die Sichtbarkeitsumschaltung läuft ausschliesslich nach dem Messintervall im ausdrücklich angeforderten Editor-Probe-Modus. Der normale Spielablauf blendet den Anzug nicht aus. Der Bericht klassifiziert zweisichtig getestete CPU-Dreiecke von LOD0; tatsächliche Render-LOD, andere verdeckende Objekte und temporale Effekte begrenzen seine Aussage. Drei portable Tests prüfen bekannte Strahltreffer, Near-Plane/negative Tiefe und Auflösungsumrechnung.
+
+## Spielpaket nach Abschluss des Engine-Builds
+
+Der [aktuelle Paketbericht](PLAYABLE_CURRENT.md) ergänzt die oben dokumentierten historischen Editorstände: drei Bildschirmformate, sechs Ausrüstungsvarianten, eine gezielte Wiederholung nach den Winkeltextkorrekturen sowie fünf Funktionsabläufe und vier Leistungsmessungen. Die Quellen und Bilder sind an die jeweils tatsächlich geprüfte EXE gebunden. Die normale Haupt-EXE startet; die reale Mausprüfung blieb an einer darüberliegenden Windows-Auswahloberfläche hängen. Die noch offenen Temperaturkürzel in Archivansichten, langen Nutzernamen, weiteren Skalierungen und Bewegungssituationen sind ausdrücklich keine bestandene Designabnahme. Ein wiederholbarer Nachladeruckler ist als nächster Leistungsschritt eingegrenzt.
 
 ## Originalreferenzen
 

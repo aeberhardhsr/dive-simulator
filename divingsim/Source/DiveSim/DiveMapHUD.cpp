@@ -180,7 +180,7 @@ void ADiveHUD::Map(bool SelectionPage)
         const FVector delta=(Diver->EntryLocation-Diver->GetActorLocation())/100;
         const double distance=FVector2D(delta.X,delta.Y).Size();
         if(!bWaypointPage) Text(distance<1?L(TEXT("Am Startpunkt"),TEXT("At the start point")):
-            FString::Printf(TEXT("%s: %.0f m / %03d deg"),*L(TEXT("Zum Start, Luftlinie"),TEXT("To start, straight line")),distance,
+            FString::Printf(TEXT("%s: %.0f m / %03d°"),*L(TEXT("Zum Start, Luftlinie"),TEXT("To start, straight line")),distance,
                 Dive::Navigation::DisplayHeading(Dive::Navigation::Bearing(delta.X,delta.Y))),120,181,17,White);
         Text(inMap(here)?L(TEXT("Grünes Dreieck: du und Blickrichtung   /   Raute: dein Start"),TEXT("Green triangle: you and heading   /   Diamond: your start")):
             L(TEXT("Deine Position liegt ausserhalb dieses Kartenausschnitts."),TEXT("Your position lies outside this map extent.")),120,712,17,Accent);

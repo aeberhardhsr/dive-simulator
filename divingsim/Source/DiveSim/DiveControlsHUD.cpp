@@ -36,7 +36,7 @@ void ADiveHUD::ControlsMenu()
     Button(TEXT("invert_y"),Diver->Controls.InvertY?L(TEXT("Invertiert"),TEXT("Inverted")):L(TEXT("Normal"),TEXT("Normal")),420,698,300,42);
     Text(L(TEXT("SICHTFELD"),TEXT("FIELD OF VIEW")),790,672,14,Muted);
     Button(TEXT("fov_minus"),TEXT("-"),790,698,55,42);
-    Text(FString::Printf(TEXT("%.0f deg"),Diver->Controls.FieldOfView),880,708,22,White);
+    Text(FString::Printf(TEXT("%.0f°"),Diver->Controls.FieldOfView),880,708,22,White);
     Button(TEXT("fov_plus"),TEXT("+"),1010,698,55,42);
     Button(TEXT("tutorial_overlay"),bTutorialCollapsed?L(TEXT("Tutorial: ausgeblendet"),TEXT("Tutorial: hidden")):L(TEXT("Tutorial: sichtbar"),TEXT("Tutorial: visible")),1120,698,340,42);
     Text(L(TEXT("Maus: umsehen. ESC: Auswahl abbrechen / zurück. F1: diese Hilfe."),TEXT("Mouse: look around. ESC: cancel binding / back. F1: this help.")),120,765,17,Muted);
