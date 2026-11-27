@@ -21,6 +21,8 @@ bool ADiveWorld::TestPlantBeds(FString& Detail) const
             const auto& generated=expected[species+Rocks.Num()];
             valid&=component&&component->GetInstanceCount()==generated.Num();
             if(!component) continue;
+            int32 fade=0,cull=0;component->GetCullDistances(fade,cull);
+            valid&=fade==0&&cull==PlantCullDistance();
             for(int i=0;i<generated.Num();++i)
             {
                 ++count;++cellCount;
@@ -47,7 +49,7 @@ bool ADiveWorld::TestPlantBeds(FString& Detail) const
         }
         valid&=cellCount<=(legacy?4096:26*26*18);
     }
-    Detail=FString::Printf(TEXT("legacy=%d plants=%d short=%d tall=%d unique_roots=%d"),legacy,count,shortPlants,tallPlants,roots.Num());
+    Detail=FString::Printf(TEXT("legacy=%d plants=%d short=%d tall=%d unique_roots=%d cull_cm=%d"),legacy,count,shortPlants,tallPlants,roots.Num(),PlantCullDistance());
     UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_BEDS_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*Detail);
     return valid;
 }

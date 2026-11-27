@@ -7,15 +7,17 @@ param(
     [ValidateRange(10,7200)][int]$Seconds=60,
     [ValidateRange(0,2)][int]$Entry=0,
     [switch]$Editor,
+    [switch]$EditorSandbox,
     [switch]$DisableNanite,
     [switch]$WaterPreview,
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
     [switch]$LegacyRockPose,
-    [switch]$LegacyTalus, [switch]$NoPlantUnderstory,
+    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+if($EditorSandbox) {$Editor=$true}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
@@ -30,6 +32,8 @@ $context=[ordered]@{
     legacy_rock_pose=[bool]$LegacyRockPose
     legacy_talus=[bool]$LegacyTalus
     no_plant_understory=[bool]$NoPlantUnderstory
+    unlimited_plants=[bool]$UnlimitedPlants
+    editor_sandbox=[bool]$EditorSandbox
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
@@ -44,10 +48,14 @@ if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetir
 if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
 if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
 if($NoPlantUnderstory) { $arguments+=' -DiveNoPlantUnderstory' }
+if($UnlimitedPlants) { $arguments+=' -DiveUnlimitedPlants' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
-    $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f (Join-Path $repo 'divingsim/divingsim.uproject'))+$arguments
+    $projectRoot=if($EditorSandbox) {'Builds/EditorSandbox/divingsim'} else {'divingsim'}
+    $project=Join-Path $repo "$projectRoot/divingsim.uproject"
+    $context.game_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveSim.dll")).Hash.ToLowerInvariant()
+    $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f $project)+$arguments
 }
 $context.executable=$executable
 $context.executable_sha256=(Get-FileHash -LiteralPath $executable -Algorithm SHA256).Hash.ToLowerInvariant()

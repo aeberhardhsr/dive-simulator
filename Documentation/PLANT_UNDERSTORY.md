@@ -14,7 +14,7 @@ Die Laufzeitprüfungen kontrollieren Bodenkontakt, Lebensraum, Einstiegs- und Fe
 
 Der [native Bericht](PLANT_UNDERSTORY_NATIVE_RESULTS.json) hält Quellen, Assets und Bilder über Prüfsummen zusammen. Die allgemeinen Editor-Startfehler des ToolsetRegistry-Python-Moduls und die `LogAutomationTest`-Meldungen treten bereits im unveränderten Vergleichszustand auf und bleiben im Bericht erhalten; die erfolgreiche Spielprüfung wird nicht als fehlerfreier Editorstart ausgegeben.
 
-## Spielbares Paket
+## Erster Paketentwurf und Leistung
 
 Der erste Entwurf in `WindowsPlantUnderstory` besteht neun Paketfälle mit 36 Aufnahmen und den automatischen Haupt-EXE-Start. Die Weesen-Messung zeigt jedoch zu viel zusätzlichen Grafikaufwand: 64,33 statt 69,93 FPS im Mittel, 52,12 statt 60,69 FPS im 1%-Low. Die mittlere GPU-Zeit steigt von 13,67 auf 14,90 ms; die Spielthread-Zeit bleibt mit 5,15 gegenüber 5,18 ms nahezu gleich. Schatten, Basisflächen und Bewegungsdaten tragen zum zusätzlichen Aufwand bei. Diese Einzelläufe verwenden dieselbe EXE, dieselben Inhalte und 1080p/Hoch mit Wasserprofil, 100 Prozent Renderauflösung, ohne VSync/Limit und ohne weitere Unreal-/Spielinstanz.
 
@@ -27,6 +27,14 @@ Originalaufnahmen aus dem neuen Paket, dieselbe Weesener Kamera:
 ![Bisherige Pflanzengruppen](Images/PlantUnderstory_Before.png)
 
 ![Zusätzlicher niedriger Bewuchs](Images/PlantUnderstory_After.png)
+
+## Sichtabhängige Darstellungsgrenze
+
+Die Optimierung begrenzt die Darstellung aller Unterwasserpflanzen auf das Fünffache der eingestellten Sichtweite, mindestens jedoch 40 Meter. Bei 14 Metern Sichtweite ergibt das 70 Meter, bei 40 Metern Sichtweite 200 Meter. Es handelt sich um eine entfernte Abschaltgrenze, nicht um eine neu hinzugefügte Material-Ausblendung. Die Pflanzen bleiben im geladenen ökologischen Zustand erhalten; die Grenze verändert weder Platzierung noch Artenwahl. Bereits vorhandene Komponenten erhalten bei einer geänderten Umgebungskonfiguration die neue Grenze, nachgeladene Komponenten verwenden sie beim Erzeugen.
+
+`-DiveUnlimitedPlants` stellt nur für Diagnose-/Messläufe die unbegrenzte Darstellung wieder her. Fünf native Fälle mit 15 Aufnahmen bestehen; zusätzliche feste Bildpaare bei 14 und 40 Metern Sichtweite vergleichen beide Zustände mit gleicher Population und Kamera. In den geprüften Bildern fehlt kein erkennbarer naher Bewuchs; die mittleren RGB-Abweichungen von 0,29–0,51 auf der 0–255-Skala enthalten auch laufende Pflanzenbewegung und zeitliche Bildrekonstruktion. [Nativer Bericht](PLANT_UNDERSTORY_CULLING_NATIVE_RESULTS.json).
+
+Zwei kurze native 15-Sekunden-Vorvergleiche nach jeweils 15 Sekunden Aufwärmen erreichen 66,98 FPS ohne Grenze und 67,32 FPS mit Grenze (`artifacts/perf-underwater-1080p-q2-20261127-055435-814` und `artifacts/perf-underwater-1080p-q2-20261127-055527-405`). Dieser geringe Unterschied ist kein belastbarer Leistungsgewinn und keine Paketabnahme. Der nahe Bewuchs muss weiter optimiert werden; die Grenze allein löst seinen zusätzlichen Aufwand nicht. `Tools/Benchmark.ps1 -EditorSandbox` bindet solche nativen Vorprüfungen jetzt an die tatsächlich verwendete Spiel-DLL und hält sie von Paketmessungen getrennt.
 
 ## Offenes Qualitätsziel
 

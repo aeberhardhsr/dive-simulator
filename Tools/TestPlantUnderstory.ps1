@@ -1,4 +1,4 @@
-param([switch]$Packaged,[switch]$Preview,[string]$PackageDirectory='Builds/WindowsPlantUnderstory')
+param([switch]$Packaged,[switch]$Preview,[switch]$CullingCompare,[string]$PackageDirectory='Builds/WindowsPlantCover')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 if($Packaged -and $Preview) {throw 'A packaged validation requires all cases.'}
@@ -6,7 +6,7 @@ if(Get-Process | Where-Object {$_.ProcessName -like 'UnrealEditor*' -or $_.Proce
 $root=Join-Path $repo ('artifacts/plant-understory-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Force $root | Out-Null
 $runtime=Join-Path $repo 'Builds/EditorSandbox/divingsim'
-$hostRecord=@{packaged=[bool]$Packaged;preview=[bool]$Preview;source_head=(& git -C $repo rev-parse HEAD);started_utc=[DateTime]::UtcNow.ToString('o')}
+$hostRecord=@{packaged=[bool]$Packaged;preview=[bool]$Preview;culling_compare=[bool]$CullingCompare;source_head=(& git -C $repo rev-parse HEAD);started_utc=[DateTime]::UtcNow.ToString('o')}
 if($Packaged) {
     if(-not [IO.Path]::IsPathRooted($PackageDirectory)) {$PackageDirectory=Join-Path $repo $PackageDirectory}
     . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
@@ -30,11 +30,14 @@ $hostRecord.files=@($files | Sort-Object FullName -Unique | ForEach-Object {
 })
 $hostRecord | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
 $cases=@(@{name='close-before';entry=0;low=$true;disabled=$true},@{name='close-after';entry=0;low=$true})
+if($CullingCompare) {$cases+=@(@{name='unculled';entry=0;low=$true;unlimited=$true},@{name='clear-water';entry=0;low=$true;visibility=40},@{name='clear-water-unculled';entry=0;low=$true;visibility=40;unlimited=$true})}
 if(-not $Preview) {$cases+=@(@{name='weesen';entry=0},@{name='murg';entry=1},@{name='walenstadt';entry=2},@{name='raster';entry=0;low=$true;raster=$true},@{name='stream';stream=$true},@{name='shore';shore=$true},@{name='sediment';sediment=$true})}
 $completed=@()
 foreach($case in $cases) {
     $folder=Join-Path $root $case.name;New-Item -ItemType Directory -Force $folder | Out-Null
     $opts=@{Scenario='rocks';Hour=12;Date='2026-06-21';MaxFPS=30;RuntimeLog=(Join-Path $folder 'Runtime.log');NoPlantUnderstory=[bool]$case.disabled;WaterPreview=$true}
+    $opts.UnlimitedPlants=[bool]$case.unlimited
+    if($case.visibility) {$opts.Visibility=$case.visibility}
     if($Packaged) {$opts.Packaged=$true;$opts.PackageDirectory=$PackageDirectory} else {$opts.EditorSandbox=$true}
     if($case.sediment) {$opts.Scenario='sediment';$opts.Entry=0}
     elseif($case.shore) {$opts.Scenario='shore';$opts.Entry=0}

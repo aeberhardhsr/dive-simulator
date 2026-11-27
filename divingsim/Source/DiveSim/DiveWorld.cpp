@@ -299,6 +299,10 @@ void ADiveWorld::Configure(const Dive::Config& Config)
     WeatherSettings=Config.Resolved();
     BubbleState.Reset();RenderedBubbleIndices.Reset();Bubbles->ClearInstances();BubblesBorn=BubblesSurfaced=0;bParticleUniformsReady=false;
     VisibleDistance=WeatherSettings.VisibilityMetres; Flow=WeatherSettings.CurrentMetresPerSecond; DayHour=WeatherSettings.Hour;
+    // Configuration can change while population cells already exist.
+    for(auto& pair:PopulationCells)
+        for(int32 i=Rocks.Num();i<pair.Value.Components.Num();++i)
+            pair.Value.Components[i]->SetCullDistances(0,PlantCullDistance());
     Waves.Configure(WeatherSettings.WindMetresPerSecond,WeatherSettings.WindDirectionDegrees);
     for(auto* waterMaterial:{WaterMaterial.Get(),WaterUnderMaterial.Get()}) if(waterMaterial)
     {

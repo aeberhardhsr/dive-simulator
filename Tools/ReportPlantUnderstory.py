@@ -20,6 +20,7 @@ def main():
     p.add_argument('--benchmark', type=Path, action='append', default=[])
     p.add_argument('--control-benchmark', type=Path)
     p.add_argument('--build-log', type=Path, default=ROOT/'artifacts/plant-understory-package-build.log')
+    p.add_argument('--publish-prefix', default='PlantUnderstory')
     a = p.parse_args()
     run = a.run.resolve()
     host = read(run/'Host.json')
@@ -30,6 +31,8 @@ def main():
     expected = {'close-before': 3, 'close-after': 3}
     if not host['preview']:
         expected.update(weesen=3, murg=3, walenstadt=3, raster=3, stream=2, shore=9, sediment=7)
+    if host.get('culling_compare'):
+        expected.update(unculled=3, **{'clear-water': 3, 'clear-water-unculled': 3})
     cases = read(run/'Cases.json')
     assert len(cases) == len(expected) and {c['name'] for c in cases} == set(expected)
     entries = read(ROOT/'divingsim/Content/Diving/Geodata/manifest.json')['entries']
@@ -81,6 +84,17 @@ def main():
         delta = float(np.abs(pixels(b)-pixels(c)).mean())
         comparisons.append(dict(before=record(b), after=record(c), mean_absolute_rgb_difference=delta))
     assert max(c['mean_absolute_rgb_difference'] for c in comparisons) > .1
+    culling_comparisons = []
+    if host.get('culling_compare'):
+        for limited, unlimited, distance in [('close-after', 'unculled', 7000), ('clear-water', 'clear-water-unculled', 20000)]:
+            assert counts[limited] == counts[unlimited]
+            assert re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)', logs[limited]) == re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)', logs[unlimited])
+            assert set(re.findall(r'cull_cm=(\d+)', logs[limited])) == {str(distance)}
+            assert set(re.findall(r'cull_cm=(\d+)', logs[unlimited])) == {'0'}
+            for i in range(3):
+                b, c = [run/n/f'Habitat_0_{i}.png' for n in [unlimited, limited]]
+                culling_comparisons.append(dict(unlimited=record(b), limited=record(c),
+                    mean_absolute_rgb_difference=float(np.abs(pixels(b)-pixels(c)).mean())))
     launcher, build, control = None, None, None
     benchmarks, published = [], []
     if host['packaged']:
@@ -92,7 +106,7 @@ def main():
         assert launcher['executable_sha256'].lower() == host['sha256'].lower()
         assert launcher['log_sha256'].lower() == sha(run/'launcher/Launcher.log')
         for case, label in [('close-before', 'Before'), ('close-after', 'After')]:
-            path = ROOT/f'Documentation/Images/PlantUnderstory_{label}.png'
+            path = ROOT/f'Documentation/Images/{a.publish_prefix}_{label}.png'
             assert sha(path) == sha(run/case/'Habitat_0_0.png')
             published.append(record(path))
 
@@ -103,7 +117,11 @@ def main():
             assert not h['editor'] and not h['background_processes'] and h['water_preview']
             assert h['executable_sha256'] == host['sha256'].lower()
             assert h['package_containers'] == host['package_containers']
-            assert h['no_plant_understory'] == m['no_plant_understory'] == disabled
+            if host.get('culling_compare'):
+                assert h['no_plant_understory'] == m['no_plant_understory'] == False
+                assert h['unlimited_plants'] == m['unlimited_plants'] == disabled
+            else:
+                assert h['no_plant_understory'] == m['no_plant_understory'] == disabled
             for key, value in {'width': 1920, 'height': 1080, 'quality': 2, 'r.ScreenPercentage': 100,
                                'r.VSync': 0, 't.MaxFPS': 0, 'r.Lumen.HardwareRayTracing': 1}.items():
                 assert m[key] == value, key
@@ -124,6 +142,8 @@ def main():
     result = dict(status='PASS', scope='Low plant layer: visual comparison, habitat and streaming checks; not complete reference acceptance',
                   host=host, cases=evidence, comparisons=comparisons, comparison_poses=poses[0],
                   comparison_plant_counts=[before, after], unchanged_rock_states=rock_states[0],
+                  culling_comparisons=culling_comparisons,
+                  benchmark_control='Unlimited plants' if host.get('culling_compare') else 'Without low plant layer',
                   entry_sources=[record(ROOT/'divingsim/Content/Diving/Geodata'/n) for n in ['manifest.json', 'shoreline.json']],
                   launcher=launcher, build=build, benchmarks=benchmarks, control=control, published=published,
                   limitations=['Authored growth distribution, not measured Walensee vegetation',

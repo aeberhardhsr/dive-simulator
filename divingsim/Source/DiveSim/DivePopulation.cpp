@@ -157,6 +157,14 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
     }
 }
 
+int32 ADiveWorld::PlantCullDistance() const
+{
+    // Keep a generous margin beyond optical visibility, including shallow
+    // plants seen from the surface. The loaded ecological state stays intact.
+    if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveUnlimitedPlants"))) return 0;
+    return FMath::CeilToInt(FMath::Max(4000.f,VisibleDistance*500.f));
+}
+
 void ADiveWorld::CreatePopulationCell(FIntPoint Key)
 {
     CSV_SCOPED_TIMING_STAT(DivePopulation,BuildCell);
@@ -168,6 +176,7 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
         component->SetupAttachment(RootComponent);component->SetStaticMesh(source->GetStaticMesh());
         component->SetMaterial(0,source->GetMaterial(0));
         component->SetCollisionProfileName(collision?TEXT("BlockAll"):TEXT("NoCollision"));
+        if(!collision) component->SetCullDistances(0,PlantCullDistance());
         cell.Components.Add(component);return component;
     };
     for(const auto& source:Rocks) create(source,true);
