@@ -1,5 +1,7 @@
 # Zellvorbereitung ohne langen Einzelblock
 
+Nachfolger: **`Builds/WindowsExposure/Start-WaterPreview.cmd`** mit korrigierter Startbelichtung. [Vergleich und Paketprüfung](EXPOSURE_START.md). Die folgenden Leistungsmessungen dokumentieren weiterhin `WindowsPrepare`.
+
 **Spielbare Vorschau: `Builds/WindowsPrepare/Start-WaterPreview.cmd`.** Sie enthält Menü, HUD und FPV aus `WindowsCurrent` sowie die aufgeteilte Fels-/Pflanzenvorbereitung. Das bisherige Paket bleibt als Vergleich erhalten. Gebaut mit der installierten Unreal Engine 5.8.4; die experimentellen Verfahren der Quellcode-Engine sind weiterhin nicht eingeschaltet.
 
 Der reproduzierbare Walenstadt-Nachladeruckler sinkt in zwei Paketmessungen von rund 206 auf 55–57 ms. Die Vorbereitung selbst sinkt von 148–149 auf 7,82–8,10 ms pro Frame. Das ist eine Verbesserung der Spielbarkeit, keine neue Grafikstufe und noch keine durchgehend ruckelfreie Darstellung.

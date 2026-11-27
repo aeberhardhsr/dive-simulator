@@ -16,7 +16,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$LakeFootprint, [switch]$LakeSurfaceOff,
     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
-    [switch]$DisableShadows, [switch]$DisableLighting,
+    [switch]$DisableShadows, [switch]$DisableLighting, [switch]$LegacyExposureStart, [switch]$ExposureProbe,
     [ValidateSet('none','direct','sky','indirect')][string]$LightIsolation='none',
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
@@ -87,6 +87,8 @@ if($DisableLighting) { $consoleCommands+='viewmode unlit'; $consoleCommands+='Sh
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }
 if($LampOff) { $arguments+=' -DiveLampOff' }
+if($LegacyExposureStart) { $arguments+=' -DiveLegacyExposureStart' }
+if($ExposureProbe) { $arguments+=' -DiveExposureProbe' }
 if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
 if($PlantColorProbe) { $arguments+=' -DivePlantColorProbe' }
 if($GroundOff) { $arguments+=' -DiveGroundOff' }

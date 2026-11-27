@@ -362,6 +362,7 @@ void ADivePawn::StartDive()
     Samples.Reset(); Accumulator=0; TelemetryAccumulator=0;
     Audio->Reset(); Audio->ApplyLevels(AudioLevels);
     bDiveActive=true; bSummary=false; bLamp=true; bShowMap=false; bShowComputer=false; ComputerPage=0;
+    bCameraExposureInitialized=false;
     bRegulatorInMouth=!PendingConfig.StartOnShore;
     ResetContactPose();
     if(!bContactPoseReady)
@@ -709,10 +710,23 @@ void ADivePawn::Tick(float DeltaSeconds)
     PP.bOverride_DepthOfFieldFstop=true; PP.DepthOfFieldFstop=4;
     PP.bOverride_AutoExposureBias=true;
     const float targetExposure=Environment->ExposureBiasAt(eye);
-    PP.AutoExposureBias=bDiveActive?FMath::FInterpTo(PP.AutoExposureBias,targetExposure,DeltaSeconds,
+    const bool firstExposure=!bCameraExposureInitialized;
+    const bool legacyExposure=bSmokeTest&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyExposureStart"));
+    const float previousExposure=PP.AutoExposureBias;
+    // A newly selected scene has no eye-adaptation history. Initialize from
+    // its actual lighting; only continuous gameplay adapts from the last frame.
+    PP.AutoExposureBias=bDiveActive&&(!firstExposure||legacyExposure)?FMath::FInterpTo(PP.AutoExposureBias,targetExposure,DeltaSeconds,
         targetExposure<PP.AutoExposureBias?2.f:.5f):targetExposure;
+    bCameraExposureInitialized=true;
     // Diagnostic receiver comparisons use one exposure at every depth/time.
     if(bSmokeTest&&SmokeScenario==TEXT("caustics")) PP.AutoExposureBias=-4.6f;
+    if(bSmokeTest&&firstExposure)
+    {
+        UE_LOG(LogTemp,Display,TEXT("DIVE_EXPOSURE_START legacy=%d active=%d previous=%.6f target=%.6f actual=%.6f depth=%.6f eye=%s gaze=%s lamp=%d"),
+            legacyExposure,bDiveActive,previousExposure,targetExposure,PP.AutoExposureBias,depth,*eye.ToString(),*Camera->GetComponentRotation().ToString(),bLamp);
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveExposureProbe")))
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/ExposureStart.png"),true,false);
+    }
     PP.bOverride_MotionBlurAmount=true; PP.MotionBlurAmount=0;
     PP.bOverride_DepthOfFieldFocalDistance=true; PP.DepthOfFieldFocalDistance=0;
     if(Equipment) Equipment->Update(DeltaSeconds);

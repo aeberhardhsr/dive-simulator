@@ -109,6 +109,7 @@ private:
     void PhotoProcessed();
     float Accumulator=0, TelemetryAccumulator=0;
     double CameraBaseHeight=0;
+    bool bCameraExposureInitialized=false;
     TArray<FDiveContactShape> ContactShapes;
     bool bContactPoseReady=false,bStandingUp=false;
     bool bBlockedGaze=false;
