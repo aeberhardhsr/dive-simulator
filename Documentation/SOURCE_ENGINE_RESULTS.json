@@ -1,5 +1,5 @@
 {
-  "status": "renderer_dll_linked_full_editor_build_in_progress_not_runtime_validated",
+  "status": "source_editor_and_current_project_builds_passed_native_ui_test_running",
   "source_tag": "5.8.4-release",
   "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
   "dependencies": {
@@ -132,5 +132,52 @@
     "remaining_actions_at_resume": 2029,
     "project_sources_still_require_sync_and_build": true,
     "limitations": "The original segment was deliberately interrupted after 2014 actions to increase parallelism. This checkpoint proves linking, not shader binding, runtime stability or visual quality."
+  },
+  "source_editor_build": {
+    "status": "passed",
+    "exit_code": 0,
+    "resumed_actions": 2029,
+    "resumed_execution_seconds": 3625.46,
+    "log": {
+      "path": "artifacts/source-engine-20261127/editor-build-parallel4.log",
+      "sha256": "0a4e172c2a2118f4c0a9c7c45e794f14eb6a054c93abddc760077d80658c26bf",
+      "bytes": 160241
+    },
+    "binaries": [
+      {
+        "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor.exe",
+        "sha256": "f9e8a64d606410d3fb649d19584f87c4c9378594bc9df620d565451a8a81fb56",
+        "bytes": 502784
+      },
+      {
+        "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Cmd.exe",
+        "sha256": "7264f1e8eb9c109b64e78110b0f8d66f3ec64a466b51663851ce9e215dd5d38b",
+        "bytes": 502784
+      },
+      {
+        "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+        "sha256": "8fa1503831f0876e7176c3ef68a0bac1526885103b0ab893a93d5aae19e8253b",
+        "bytes": 36422144
+      }
+    ],
+    "current_project_followup_log": "artifacts/source-engine-20261127/project-ui-build.log",
+    "current_project_followup_status": "passed_after_fixing_menu_local_variable_shadowing",
+    "runtime_validation": "ui_test_started_not_yet_validated",
+    "current_project_followup_initial_log": {
+      "path": "artifacts/source-engine-20261127/project-ui-build.log",
+      "sha256": "6f470103544348494bd6a23adb4eae516b96b61a93859c8b330473ced5c52f31",
+      "bytes": 53769
+    },
+    "current_project_followup_fixed_log": {
+      "path": "artifacts/source-engine-20261127/project-ui-build-fixed.log",
+      "sha256": "bf1740b8afd3245aca823004933fc48b25136171b895f46e4a949361e06d2042",
+      "bytes": 12394
+    },
+    "current_project_binary": {
+      "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "sha256": "aae96df31d497c6ce76ce4319fb2f341da6f0dd9f69b36b32b1f8e3d347026c0",
+      "bytes": 2681344
+    },
+    "source_files_compared_equal": 149
   }
 }

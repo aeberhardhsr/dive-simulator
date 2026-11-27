@@ -53,32 +53,32 @@ void ADiveHUD::Menu()
     }
     else if(bEnvironmentPage)
     {
-        const float w=210,gap=20,ew=210;
+        const float ew=210;
         Text(L(TEXT("01 · ATMOSPHÄRE & DATUM"),TEXT("01 · ATMOSPHERE & DATE")),x,194,13,Accent);
         const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain")),L(TEXT("Sturm"),TEXT("Storm"))};
         Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,220,ew);
-        Field(TEXT("wind"),L(TEXT("WINDSTÄRKE"),TEXT("WIND SPEED")),ConfigValue(TEXT("wind")),x+w+gap,220,ew);
-        Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),ConfigValue(TEXT("winddir")),x+2*(w+gap),220,ew);
+        Field(TEXT("wind"),L(TEXT("WINDSTÄRKE"),TEXT("WIND SPEED")),ConfigValue(TEXT("wind")),x+ew+gap,220,ew);
+        Field(TEXT("winddir"),L(TEXT("WIND WEHT NACH"),TEXT("WIND BLOWS TOWARD")),ConfigValue(TEXT("winddir")),x+2*(ew+gap),220,ew);
         Field(TEXT("air_temp"),L(TEXT("LUFTTEMPERATUR"),TEXT("AIR TEMPERATURE")),ConfigValue(TEXT("air_temp")),x,310,ew);
-        Field(TEXT("date"),L(TEXT("SZENARIODATUM"),TEXT("SCENARIO DATE")),ConfigValue(TEXT("date")),x+w+gap,310,ew);
-        Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x+2*(w+gap),310,ew);
+        Field(TEXT("date"),L(TEXT("SZENARIODATUM"),TEXT("SCENARIO DATE")),ConfigValue(TEXT("date")),x+ew+gap,310,ew);
+        Field(TEXT("hour"),L(TEXT("TAGESZEIT"),TEXT("TIME OF DAY")),ConfigValue(TEXT("hour")),x+2*(ew+gap),310,ew);
         Text(L(TEXT("02 · WASSERSCHICHTUNG & SICHT"),TEXT("02 · WATER LAYERS & VISIBILITY")),x,410,13,Accent);
         auto water=[&](FName id,const FString& label,const FString& value,float fx,float fy)
         {
-            if(!c.AutoTemperature) {Field(id,label,value,fx,fy,w);return;}
-            Rect(fx,fy,w,78,FLinearColor(.025,.065,.063,.92));
-            Text(label,fx+14,fy+10,13,Muted);TextBlock(value,fx+14,fy+32,w-28,18,White,2);
+            if(!c.AutoTemperature) {Field(id,label,value,fx,fy,ew);return;}
+            Rect(fx,fy,ew,78,FLinearColor(.025,.065,.063,.92));
+            Text(label,fx+14,fy+10,13,Muted);TextBlock(value,fx+14,fy+32,ew-28,18,White,2);
         };
         water(TEXT("surface_temp"),L(TEXT("OBERFLÄCHE"),TEXT("SURFACE")),ConfigValue(TEXT("surface_temp")),x,438);
-        water(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),ConfigValue(TEXT("bottom_temp")),x+w+gap,438);
-        water(TEXT("thermocline"),L(TEXT("SPRUNGSCHICHT"),TEXT("THERMOCLINE")),c.AutoTemperature?L(TEXT("Saisonprofil"),TEXT("Seasonal profile")):ConfigValue(TEXT("thermocline")),x+2*(w+gap),438);
+        water(TEXT("bottom_temp"),L(TEXT("TIEFENWASSER"),TEXT("DEEP WATER")),ConfigValue(TEXT("bottom_temp")),x+ew+gap,438);
+        water(TEXT("thermocline"),L(TEXT("SPRUNGSCHICHT"),TEXT("THERMOCLINE")),c.AutoTemperature?L(TEXT("Saisonprofil"),TEXT("Seasonal profile")):ConfigValue(TEXT("thermocline")),x+2*(ew+gap),438);
         water(TEXT("thermal_width"),c.AutoTemperature?L(TEXT("PROFILBEREICH"),TEXT("PROFILE DEPTH")):L(TEXT("SCHICHTÜBERGANG"),TEXT("TRANSITION SCALE")),c.AutoTemperature?TEXT("0–144 m"):ConfigValue(TEXT("thermal_width")),x,528);
-        Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+w+gap,528,w);
-        Field(TEXT("current"),L(TEXT("STRÖMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(w+gap),528,w);
+        Field(TEXT("visibility"),L(TEXT("SICHTWEITE"),TEXT("VISIBILITY")),ConfigValue(TEXT("visibility")),x+ew+gap,528,ew);
+        Field(TEXT("current"),L(TEXT("STRÖMUNG"),TEXT("CURRENT")),ConfigValue(TEXT("current")),x+2*(ew+gap),528,ew);
         const FString currentModes[]={L(TEXT("Manuell"),TEXT("Custom")),TEXT("Auto"),L(TEXT("Keine"),TEXT("None")),L(TEXT("Leicht"),TEXT("Light")),L(TEXT("Stark"),TEXT("Strong"))};
-        Button(TEXT("auto_water"),L(TEXT("Wasser: "),TEXT("Water: "))+(c.AutoTemperature?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x,634,w,38,false,!Diver->bDiveActive);
-        Button(TEXT("auto_visibility"),L(TEXT("Sicht: "),TEXT("Visibility: "))+(c.AutoVisibility?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x+w+gap,634,w,38,false,!Diver->bDiveActive);
-        Button(TEXT("current_source"),L(TEXT("Strömung: "),TEXT("Current: "))+currentModes[static_cast<int>(c.CurrentSource)],x+2*(w+gap),634,w,38,false,!Diver->bDiveActive);
+        Button(TEXT("auto_water"),L(TEXT("Wasser: "),TEXT("Water: "))+(c.AutoTemperature?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x,634,ew,38,false,!Diver->bDiveActive);
+        Button(TEXT("auto_visibility"),L(TEXT("Sicht: "),TEXT("Visibility: "))+(c.AutoVisibility?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x+ew+gap,634,ew,38,false,!Diver->bDiveActive);
+        Button(TEXT("current_source"),L(TEXT("Strömung: "),TEXT("Current: "))+currentModes[static_cast<int>(c.CurrentSource)],x+2*(ew+gap),634,ew,38,false,!Diver->bDiveActive);
         // Draw the same temperature function used by the dive simulation.
         // Manual end-point parameters need not equal the logistic curve at 0 m.
         const Dive::Model profile(Diver->bDiveActive?Diver->Simulation.Settings:c);

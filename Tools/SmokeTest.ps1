@@ -20,6 +20,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
+    [ValidateRange(30,7200)][int]$TimeoutSeconds=180,
     [ValidateSet('1600x900','1920x1080','2560x1440','3840x2160','1280x1024')][string]$Viewport='1600x900',
     [ValidateRange(0,2)][int]$Torch=0,
     [ValidateRange(2,40)][double]$Visibility=14,
@@ -175,7 +176,7 @@ if($Packaged) {
 }
 $startedAt=[DateTime]::UtcNow
 $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
-if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes; inspect the running process and DiveSmoke.log.' }
+if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Smoke test exceeded $TimeoutSeconds seconds; process $($process.Id) was left running. Inspect it and $logPath before starting another test." }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}
