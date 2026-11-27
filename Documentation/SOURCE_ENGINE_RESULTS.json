@@ -1,5 +1,5 @@
 {
-  "status": "source_editor_current_project_and_native_ui_checks_passed_wave_runtime_pending",
+  "status": "source_editor_ui_wave_receiver_comparisons_and_35_native_tests_passed",
   "source_tag": "5.8.4-release",
   "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
   "dependencies": {
@@ -185,5 +185,35 @@
       "bytes": 2054
     }
   },
-  "native_ui_results": "Documentation/UI_NATIVE_RESULTS.json"
+  "native_ui_results": "Documentation/UI_NATIVE_RESULTS.json",
+  "wave_day_runtime_validation": {
+    "status": "PASS",
+    "results": "Documentation/WAVE_TRANSPORT_RESULTS.json",
+    "log": {
+      "path": "artifacts/caustics-day-validation-20261127-172402/Runtime.log",
+      "sha256": "e59999fa26c5275b7ad7cd4149e04036025f9f56641c19db6e52a040d13ab1d6",
+      "bytes": 239229
+    },
+    "images_reviewed": 4
+  },
+  "wave_paired_runtime_validation": {
+    "results": "Documentation/WAVE_TRANSPORT_RESULTS.json",
+    "report": {
+      "path": "artifacts/wave-transport-source-20261127/Report.json",
+      "sha256": "f63c56573a58ceb0cece2fa6d3a89b382724bc3e515a1fcd4dc480b21f633ac3"
+    },
+    "cases": 10,
+    "images": 40,
+    "visual_target_complete": false,
+    "default_enabled": false
+  },
+  "native_suite": {
+    "results": "Documentation/SOURCE_NATIVE_TEST_RESULTS.json",
+    "succeeded": 35,
+    "failed": 0,
+    "report": {
+      "path": "artifacts/source-engine-20261127/native-suite-local-player-final/Report/index.json",
+      "sha256": "671f0a0822dc361372812898dacbb7e5f7f380b7ab0bec1f79c9975b54f76b9c"
+    }
+  }
 }

@@ -3,6 +3,8 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
+#include "Engine/LocalPlayer.h"
 #include "Components/BoxComponent.h"
 #include "DivePawn.h"
 #include "DiveAvatar.h"
@@ -64,6 +66,11 @@ bool FDiveBlockedHeadTurn::RunTest(const FString&)
 {
     FContactWorld fixture;auto* pawn=fixture.Diver();
     auto* controller=fixture.World->SpawnActor<APlayerController>();controller->Possess(pawn);
+    // This isolated world has no viewport/game instance to create its player.
+    // CameraComponent follows pawn view rotation only for a local controller.
+    auto* localPlayer=NewObject<ULocalPlayer>(GEngine);
+    controller->Player=localPlayer;localPlayer->PlayerController=controller;
+    if(!TestTrue(TEXT("Camera fixture represents a local player"),controller->IsLocalPlayerController())) return false;
     pawn->bWalking=false;pawn->Simulation.Data.DepthMetres=5;pawn->ResetContactPose();
     const auto initial=pawn->PhysicalPose;
     auto build=[&](FDivePoseState& pose,TArray<FDiveContactShape>& shapes)

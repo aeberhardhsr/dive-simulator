@@ -1,6 +1,6 @@
 # Gemeinsame Wellen für Oberflächen- und Volumenlicht
 
-**Status: vorbereiteter Versuch, nicht visuell validiert und nicht für die spielbare Vorschau aktiviert.** Der erste native Lauf am 27. November 2026 ist an einer fehlenden Renderer-Parameterbindung gescheitert. Es gibt aus diesem Versuch keine gültigen Spielaufnahmen und keinen Leistungsnachweis. Die vorherigen [Volumenlicht-Ergebnisse](SOLAR_VOLUME_STUDY.md) gelten nur für die dort geprüfte Variante.
+**Status: erster Tageslauf und zehn paarweise Vergleichsläufe mit separat gebautem Renderer bestanden; 40 Vergleichsbilder gesichtet. Gesamtfreigabe steht noch aus. Nicht für die spielbare Vorschau aktiviert.** Der ursprüngliche Lauf am 27. November 2026 scheiterte an einer fehlenden Renderer-Parameterbindung. Nach dem vollständigen Engine-Build endete der neue Lauf unter `artifacts/caustics-day-validation-20261127-172402` erfolgreich mit vier frischen Aufnahmen und ohne Shader-Bindungsfehler. Alle vier Bilder wurden betrachtet: Lichtmuster erscheinen auf Boden, Kugel und senkrechter Fläche und verschwinden in der Aufnahme mit Stärke null. Sie ändern sich zwischen den beiden simulierten Zeitpunkten. Das beweist noch keine physikalisch richtige Gesamtbeleuchtung, Leistung oder Qualität der Spielwelt. Die vorherigen [Volumenlicht-Ergebnisse](SOLAR_VOLUME_STUDY.md) gelten nur für die dort geprüfte Variante.
 
 ## Ziel und vorbereiteter Umfang
 
@@ -28,7 +28,7 @@ Der Versuch verlangt nun beim Modulstart die kompilierte Renderer-Fähigkeit `r.
 - dessen Zuweisung in beiden Helfern für Deferred-Licht und im Volumen-Lichtdurchlauf;
 - eine kompilierte Fähigkeitskennung, einen lesbaren Diff und ein Prüfsummenmanifest.
 
-Installierte Engine-Dateien werden nicht verändert. Die vollständigen modifizierten Epic-Dateien werden nicht in dieses Projekt-Repository übernommen. Die beiden geänderten C++-Dateien sind inzwischen erfolgreich kompiliert; Renderer-DLL und vollständiger Editor-Build stehen am dokumentierten Zwischenstand noch aus. Der [Objektdatei-Nachweis](SOURCE_ENGINE_RESULTS.json) ersetzt keine Shader- oder Bildprüfung. Ein anderer Engine-Quellstand wird vor der Ausgabe zurückgewiesen und muss separat geprüft werden.
+Installierte Engine-Dateien werden nicht verändert. Die vollständigen modifizierten Epic-Dateien werden nicht in dieses Projekt-Repository übernommen. Beide geänderten C++-Dateien, die Renderer-DLL, der vollständige Editor und die aktuellen Projektmodule sind inzwischen erfolgreich gebaut; der [Build-Nachweis](SOURCE_ENGINE_RESULTS.json) bindet die Ergebnisse. Ein anderer Engine-Quellstand wird vor der Ausgabe zurückgewiesen und muss separat geprüft werden.
 
 Die [gebundenen Prüfergebnisse](WAVE_TRANSPORT_RESULTS.json) dokumentieren den erfolgreichen Projekt-Editor-Build, den normalen Tageslauf mit vier Aufnahmen und den erwarteten sofortigen Abbruch des Wellenversuchs auf der unveränderten Engine. Die Patch-Erzeugung ist deterministisch; `git apply --check` gegen die Originale besteht. Ein veränderter Quellstand und eine Ausgabe innerhalb des Engine-Verzeichnisses werden vor dem Schreiben abgewiesen. Diese Prüfungen ersetzen ausdrücklich keinen Build des geänderten Renderers. Die vorhandenen AutomationTest-/ToolsetRegistry-Startdiagnosen sind im normalen Lauf weiterhin enthalten.
 
@@ -37,19 +37,19 @@ Die [gebundenen Prüfergebnisse](WAVE_TRANSPORT_RESULTS.json) dokumentieren den 
 # Nur vorbereiten/prüfen: die Ausgabe nicht in die installierte Engine kopieren.
 ```
 
-Für den nächsten nativen Lauf ist eine separate, aus autorisiert bezogenem vollständigem Quellcode gebaute Engine nötig. Der Nutzer hat die Kontoverknüpfung inzwischen abgeschlossen. Am 27. November funktioniert der lokale Git-Zugriff: Tag `5.8.4-release`, aufgelöster Commit `f45729c0b6f097038e72b52d366a62baeca3275b`, liegt im ignorierten Ordner `Builds/UE584`. Beide betroffenen Renderer-Dateien stimmen vor der Änderung bytegenau mit den geprüften installierten Originalen überein. Der Patch ist ausschliesslich in dieser Kopie angewendet; der vollständige Engine-Build steht noch aus. Projekt-Binaries für diese Engine liegen getrennt in `Builds/SourceEditorSandbox/divingsim`; die Build-/Testwerkzeuge unterstützen dafür `-SandboxName SourceEditorSandbox` zusammen mit `-EditorSandbox`. Epics [Anleitung zum Quellcodezugriff](https://dev.epicgames.com/documentation/unreal-engine/downloading-source-code-in-unreal-engine) bleibt die Referenz für eine erneute Einrichtung.
+Die native Prüfung verwendet die separat gebaute Engine aus dem vom Nutzer autorisierten Quellcodezugriff: Tag `5.8.4-release`, aufgelöster Commit `f45729c0b6f097038e72b52d366a62baeca3275b`, im ignorierten Ordner `Builds/UE584`. Beide betroffenen Renderer-Dateien stimmten vor der Änderung bytegenau mit den geprüften installierten Originalen überein. Der Patch ist ausschliesslich in dieser Kopie angewendet. Projekt-Binaries für diese Engine liegen getrennt in `Builds/SourceEditorSandbox/divingsim`; die Build-/Testwerkzeuge unterstützen dafür `-SandboxName SourceEditorSandbox` zusammen mit `-EditorSandbox`. Epics [Anleitung zum Quellcodezugriff](https://dev.epicgames.com/documentation/unreal-engine/downloading-source-code-in-unreal-engine) bleibt die Referenz für eine erneute Einrichtung.
 
 ## Noch erforderliche Prüfung
 
 Einrichtung, Versionsbindung und aktueller Build-Stand der separaten Engine stehen in [SOURCE_ENGINE.md](SOURCE_ENGINE.md).
 
-1. Den vorbereiteten Patch im passenden separaten Engine-Quellbaum prüfen, Renderer/Editor bauen und Projektmodule gegen diese Engine neu kompilieren.
-2. Zunächst einen einzelnen Tageslauf mit gültiger Szenenbindung und ohne neue Shader-/Parameterfehler abschliessen. Registrierungs- und Upload-Marker allein reichen nicht.
-3. Identische Kameraposen mit ruhigem und bewegtem Wasser vergleichen; mehrere Zeitpunkte auf räumliche Bewegung, Flackern und überhelle Fokussierung prüfen.
-4. Nacht/Tauchlampe, Überwasserflächen, tiefe Bereiche und Land-Wasser-Grenzen prüfen; die noch fehlende horizontale Seemaske bleibt ein Ausschlussgrund für die Standardaktivierung.
+1. Erledigt: Patch im passenden separaten Engine-Quellbaum geprüft, Renderer/Editor gebaut und aktuelle Projektmodule neu kompiliert.
+2. Erledigt: einzelner Tageslauf mit gültiger Szenenbindung, vier geprüften Bildern und ohne neue Shader-/Parameterfehler. Registrierungs- und Upload-Marker allein wurden nicht als Nachweis verwendet.
+3. Erledigt für die feststehenden Prüfkörper: identische Kameraposen mit ruhigem und bewegtem Wasser, zwei Zeitpunkte und eingefrorene Wiederholung. Bewegte Habitatansichten und längere Zeitreihen bleiben offen.
+4. Nacht ohne Lampe, Überwasserflächen und tiefe Prüfkörper sind geprüft. Tauchlampen und Land-Wasser-Grenzen bleiben offen; die noch fehlende horizontale Seemaske bleibt ein Ausschlussgrund für die Standardaktivierung.
 5. Erst nach Bildprüfung, Pakettest und Leistungsmessung über eine Übernahme entscheiden.
 
-### Vorbereiteter paarweiser Receiver-Vergleich
+### Abgeschlossener paarweiser Receiver-Vergleich
 
 `Tools/TestWaveTransport.ps1` bereitet nach bestandenem einzelnen Tageslauf zehn sequenzielle Aufnahmenläufe vor: je Projektions- und Wellenvariante für `day`, `calm`, `deep`, `air` und `night`. Beide Varianten verwenden dieselbe separate Engine, dieselben Projektmodule und dieselbe Kamerafixierung. Vier Phasen pro Lauf ergeben insgesamt 40 Bilder: Stärke ein/aus zum gleichen Zeitpunkt, ein weiterer Zeitpunkt und dessen Wiederholung als Kontrolle für zeitliches Renderrauschen.
 
@@ -62,10 +62,24 @@ Vor dem Start werden laufende Unreal-Builds, Editor-/Spielprozesse und Shader-Wo
 ./Tools/TestWaveTransport.ps1
 ```
 
-Aktueller Nachweis für das neue Vergleichswerkzeug: PowerShell-Syntaxprüfung und tatsächliche Abweisung beim laufenden Engine-Build bestanden. Die beiden Shader-Verzeichnisse sind vorbereitet. Die zehn nativen Vergleichsläufe wurden noch nicht ausgeführt.
+Die Vergleichsreihe unter `artifacts/wave-transport-source-20261127` endete am 27. November erfolgreich: zehn Läufe, 40 frische Bilder mit 1600 × 900 Pixeln. Der vollständige Integritätsbericht wurde vor nachfolgenden Änderungen am Kameratest erzeugt und geprüft. Er bindet den damaligen Quellstand `a34822f381659d1e12cb03afb1f66db3f0e89715`, die tatsächlichen DLLs, Shader und Bilder. Spätere Projekt-Nachbauten ändern diesen historischen Nachweis nicht; eine erneute Prüfung gegen inzwischen geänderte Eingabedateien wäre kein identischer Prüfstand.
+
+Alle 40 Bilder wurden in zehn beschrifteten Kontaktbögen gesichtet; ausgewählte Tages-, Tiefen- und Überwasserbilder zusätzlich in Originalauflösung. Der automatisch erzeugte Bericht behält `NOT_REVIEWED`; die getrennte Sichtungsnotiz in [WAVE_TRANSPORT_RESULTS.json](WAVE_TRANSPORT_RESULTS.json) beschreibt den begrenzten Prüfumfang. Die bekannte AutomationTest-Startdiagnose und die ToolsetRegistry-/PythonTestRunner-Diagnose bleiben in den Protokollen erhalten. Es traten keine neuen Shader-Bindungs- oder Kompilierfehler auf.
+
+Mittlere absolute RGB8-Differenz im beleuchteten Bodenbereich, jeweils Wellenvariante:
+
+| Fall | Stärke ein/aus | Uhr 20/22 s | Eingefrorene Wiederholung |
+| --- | ---: | ---: | ---: |
+| Tag | 4,140 | 5,903 | 0,388 |
+| Ruhiges Wasser | 0,360 | 0,363 | 0,362 |
+| Tiefe | 1,157 | 1,623 | 0,460 |
+| Über Wasser | 0,330 | 0,331 | 0,332 |
+| Nacht ohne Lampe | 0,000 | 0,000 | 0,000 |
+
+Im Tagesfall bewegen sich die Muster auf Boden, Kugel und senkrechter Fläche; in der Tiefe sind sie schwächer. Ruhiges Wasser und Überwasserflächen ändern sich ungefähr auf dem Niveau der eingefrorenen Wiederholung. Die Nachtbilder zeigen kein künstliches Aufleuchten, sind aber weitgehend schwarz und belegen weder Lampenqualität noch Nachtsichtbarkeit. Die dunklen unregelmässigen Flächen des Tiefenfalls sind in beiden Varianten vorhandene Schatten der Weltobjekte über dem abgesenkten Prüfkörper. Die Projektions-/Wellenunterschiede betreffen auch Farbabsorption und Helligkeit; die regelmässige Musterstruktur bleibt sichtbar. Diese LDR-Pixelwerte sind keine radiometrische Kalibrierung. Lange Flackerprüfungen, gebrochene Schatten, die eigentliche Habitatqualität und die Zielgrafik aus den Nutzervorlagen sind damit nicht abgenommen.
 
 `Tools/ReportWaveTransport.py --study <Vergleichsordner>` prüft nach diesen Läufen die vollständigen zehn Fälle, Eingabe-/Engine-Prüfsummen, Variantenmarker, Bildgrössen und identischen Kameraposen. Es erfasst Farbunterschiede für Stärke ein/aus, veränderte Zeit und eingefrorene Wiederholung sowie zwischen beiden Beleuchtungsvarianten. Die Mittelwerte werden mit 64-Bit-Summierung berechnet; reine 32-Bit-Summierung verfälschte im Test mit konstanten Pixelwerten einen Kanal um über drei RGB8-Stufen. Alle Warnungen und Fehlerzeilen bleiben im Bericht sichtbar. Das Ergebnis heisst bewusst `CAPTURE_INTEGRITY_CHECKED` mit `visual_status=NOT_REVIEWED`, nicht Grafikabnahme. Lokale Voraussetzungen für die Bildauswertung sind NumPy und Pillow.
 
-Fünf portable Werkzeugtests prüfen ungültige Phasen, Uhrzeit, Wind, Stärke, Kamerabewegung, falsche Varianten, Fehler trotz Erfolgsmarker und vorzeichenrichtige Pixelmittelwerte. Diese bestehen; sie verwenden synthetische Kontrollwerte und sind kein Ersatz für die noch ausstehenden nativen Wellenaufnahmen.
+Fünf portable Werkzeugtests prüfen ungültige Phasen, Uhrzeit, Wind, Stärke, Kamerabewegung, falsche Varianten, Fehler trotz Erfolgsmarker und vorzeichenrichtige Pixelmittelwerte. Diese bestehen; sie verwenden synthetische Kontrollwerte und ergänzen die jetzt vorliegenden nativen Wellenaufnahmen.
 
-Die normale Vorschau bleibt `Builds/WindowsPlantColor/Start-WaterPreview.cmd`. Die vereinbarte Reihenfolge bleibt Unterwasserwelt, Überwasserlandschaft, danach [Menü/HUD/FPV](UI_UX_TARGET.md).
+Die normale Vorschau bleibt `Builds/WindowsPlantColor/Start-WaterPreview.cmd`. Unterwasserwelt und Überwasserlandschaft bleiben die Grafikprioritäten. Die [Menü-/HUD-Arbeit](UI_UX_TARGET.md) wurde auf ausdrücklichen Nutzerwunsch während des Engine-Builds vorgezogen; das ersetzt die offenen Grafik- und FPV-Prüfungen nicht.
