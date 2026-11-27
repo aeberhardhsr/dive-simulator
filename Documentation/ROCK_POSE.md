@@ -1,5 +1,7 @@
 # Unterschiedliche Höhen und Ausrichtungen der Felsblöcke
 
+**Korrektur zur Ortszuordnung:** Die Unterwasser-Vergleiche mit direktem Start und Index 2 liegen bei Walenstadt/Ost. Frühere Bezeichnungen als „Ledi“ bzw. „Lediwracks“ und historische `ledi`-Fallnamen dürfen nicht mit dem separaten Uferzugang Mols/Lediwracks gleichgesetzt werden. [Zuordnung der Testorte und Prüfumfang](TEST_ENTRY_LOCATIONS.md).
+
 Die gescannten Felsformen wurden bisher bei der Platzierung stark vertikal zusammengedrückt und nahezu einheitlich am Gelände ausgerichtet. Die neue Darstellung lässt die ursprünglichen Bruchflächen stärker hervortreten: Kernblöcke sind weniger abgeflacht, grössere und kleinere Hauptsteine besitzen unterschiedliche Neigungen. Die zusätzlich erzeugten Bruchstücke am Felsfuss behalten ihre bisherige Form.
 
 Das verändert tatsächliche Geometrie, Konturen, Schatten und Kontaktflächen. Der zuvor untersuchte [Material-Parallax](BED_RELIEF_INVESTIGATION.md) bleibt verworfen. Die neue Ausrichtung ist eine gestalterische Annäherung, keine Rekonstruktion lokaler Walensee-Geologie oder physikalische Ablagerungssimulation.

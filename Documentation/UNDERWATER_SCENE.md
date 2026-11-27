@@ -1,6 +1,10 @@
 # Unterwasserwelt: Arbeit am visuellen Ziel
 
+**Korrektur zur Ortszuordnung:** Die Unterwasser-Vergleiche mit direktem Start und Index 2 liegen bei Walenstadt/Ost. Frühere Bezeichnungen als „Ledi“ bzw. „Lediwracks“ und historische `ledi`-Fallnamen dürfen nicht mit dem separaten Uferzugang Mols/Lediwracks gleichgesetzt werden. [Zuordnung der Testorte und Prüfumfang](TEST_ENTRY_LOCATIONS.md).
+
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
+
+Die [dichteren Bruchstücke an bestehenden Felsfüssen](TALUS.md) ergänzen räumliche Übergänge zwischen Hauptblöcken und Kies. Hauptfels-Transformationen und vermessener Grund bleiben unverändert; Pflanzen und Fischwege berücksichtigen die zusätzlichen Hindernisse. Neun Paketfälle mit 36 Aufnahmen und der automatische Launcher bestehen. Die Weesen-Unterwassermessung erreicht 69,91 FPS bei 1080p/Hoch mit Wasserprofil, gegenüber 70,00 FPS in der Kontrolle derselben EXE. Die mittlere Spielthread-Zeit steigt dabei um rund 0,67 ms. Natürlicherer Bewuchs, freie Sedimentflächen und abgestimmte Beleuchtung bleiben weitere Arbeitsschwerpunkte.
 
 Eine [zusätzliche geometrische Sedimentschicht](SEDIMENT_RELIEF_INVESTIGATION.md) wurde bei Weesen erprobt und nicht übernommen: Trotz bestandener Kontaktprüfungen bleiben die flächigen Bodenwellen gestalterisch zu wenig gezielt; zugleich verschiebt die neue Höhenabfrage die Felsen. Die weitere Arbeit soll Ablagerungen an bestehende Felsfüsse anbinden und deren Formen erhalten. Die Spielvorschau bleibt beim geprüften Felsausrichtungsstand.
 

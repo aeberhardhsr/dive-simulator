@@ -28,6 +28,7 @@ void ADiveWorld::GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArr
 void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const
 {
     const bool legacyPose=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose"));
+    const bool legacyTalus=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyTalus"));
     // World-space anchors include a one-anchor halo. Ownership is assigned by
     // final rock position, so a cluster crosses streaming boundaries unchanged.
     constexpr int AnchorsPerCell=12;
@@ -110,12 +111,16 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
         for(int j=0;j<radii.Num();++j) if(radii[j]>=126) parents.Add(j);
         if(parents.IsEmpty()) continue;
         FRandomStream debris(Dive::BedDistribution::Hash(ax,ay)^0xb3496e21u);
-        for(int i=0;i<24;++i)
+        for(int i=0;i<(legacyTalus?24:72);++i)
         {
             const int parent=parents[i%parents.Num()];
             const float size=.20f+.45f*FMath::Square(debris.FRand());
             const double angle=debris.FRand()*2*PI;
-            const double reach=radii[parent]*debris.FRandRange(.60f,1.25f)+size*35;
+            // The first 24 candidates remain unchanged. Further fragments
+            // collect closer to existing feet instead of spreading across the
+            // open sediment. They use the same collision/steering machinery.
+            const bool talus=i>=24;
+            const double reach=radii[parent]*debris.FRandRange(talus?.45f:.60f,talus?1.05f:1.25f)+size*35;
             const double x=accepted[parent].X+FMath::Cos(angle)*reach;
             const double y=accepted[parent].Y+FMath::Sin(angle)*reach;
             const float yaw=debris.FRand()*2*PI,aspect=debris.FRandRange(.65f,1.f),height=debris.FRandRange(.55f,.9f);
@@ -136,7 +141,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             }
             for(int j=0;j<accepted.Num();++j)
             {
-                const double separation=radii[j]>=126 ? radii[j]*.42+size*40 : .55*(radii[j]+size*105);
+                const double separation=radii[j]>=126 ? radii[j]*.42+size*40 : (talus?.42:.55)*(radii[j]+size*105);
                 if(FVector::DistSquared2D(position,accepted[j])<FMath::Square(separation)) blocked=true;
             }
             if(blocked) continue;

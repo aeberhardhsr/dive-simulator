@@ -14,6 +14,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     // instances and collision state, including across cell boundaries.
     TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0,connectedLargePairs=0,rubble=0,rubbleContacts=0;
     int poseProbes=0,poseContacts=0,poseEmbedded=0;
+    int rubbleProbes=0;TMap<FVector,FTransform> mainTransforms;
     for(const auto& pair:PopulationCells)
     {
         TArray<FTransform> transforms;TArray<FDiveRock> states;
@@ -24,12 +25,13 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
         for(int i=0;i<FMath::Min(transforms.Num(),freshTransforms.Num());++i)
             valid&=transforms[i].Equals(freshTransforms[i],0)&&states[i].Position==freshStates[i].Position&&
                 states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant&&states[i].Rubble==freshStates[i].Rubble;
-        valid&=transforms.Num()==states.Num()&&states.Num()<=196*46;
+        valid&=transforms.Num()==states.Num()&&states.Num()<=196*94;
         int instances[3]={};int contactSamples=0,poseSamples=0;
         for(int i=0;i<states.Num();++i)
         {
             const auto& rock=states[i];
             const auto scale=transforms[i].GetScale3D();
+            if(!rock.Rubble) mainTransforms.Add(rock.Position,transforms[i]);
             // The source meshes fit a unit sphere. Rotation and nonuniform
             // scale must remain within the unchanged movement/entry envelope.
             valid&=!transforms[i].ContainsNaN()&&transforms[i].GetRotation().IsNormalized()&&
@@ -59,8 +61,9 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
                 valid&=rock.Radius>=21&&rock.Radius<=68.251&&Terrain.Sample(rock.Position.X,rock.Position.Y,bed);
                 valid&=FMath::Abs(rock.Position.Z-bed-transforms[i].GetScale3D().X*5)<.01;
                 valid&=transforms[i].GetScale3D().Z>=.1099&&transforms[i].GetScale3D().Z<=.5851;
-                if(contactSamples++<12)
+                if(contactSamples++<12||i%23==0)
                 {
+                    ++rubbleProbes;
                     const auto* component=pair.Value.Components[rock.Variant].Get();
                     auto* body=component?component->GetBodyInstance(NAME_None,false,instance):nullptr;
                     valid&=body!=nullptr;
@@ -86,7 +89,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     FString plantDetail;valid&=TestPlantBeds(plantDetail);
     const bool rubbleDisabled=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"));
     valid&=rubbleDisabled?rubble==0:rubble>0;
-    valid&=rubbleDisabled||rubbleContacts>0;
+    valid&=rubbleDisabled||(rubbleProbes>0&&rubbleContacts==rubbleProbes);
     UE_LOG(LogTemp,Display,TEXT("DIVE_RUBBLE_%s fragments=%d disabled=%d contacts=%d"),valid?TEXT("PASS"):TEXT("FAIL"),rubble,rubbleDisabled,rubbleContacts);
     valid&=connectedLargePairs>8;
     UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATION_%s connected_large_pairs=%d"),connectedLargePairs>8?TEXT("PASS"):TEXT("FAIL"),connectedLargePairs);
@@ -104,6 +107,17 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     }
     stateDigest.Final();uint8 digest[20];stateDigest.GetHash(digest);
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_POSE_STATE sha1=%s"),*BytesToHex(digest,20));
+    FSHA1 mainDigest;
+    for(const auto& rock:orderedStates) if(!rock.Rubble)
+    {
+        const auto& transform=mainTransforms[rock.Position];
+        const auto q=transform.GetRotation();const auto s=transform.GetScale3D();
+        const double values[]={rock.Position.X,rock.Position.Y,rock.Position.Z,rock.Radius,double(rock.Variant),q.X,q.Y,q.Z,q.W,s.X,s.Y,s.Z};
+        mainDigest.Update(reinterpret_cast<const uint8*>(values),sizeof(values));
+    }
+    mainDigest.Final();mainDigest.GetHash(digest);
+    UE_LOG(LogTemp,Display,TEXT("DIVE_TALUS_MAIN_STATE rocks=%d sha1=%s"),mainTransforms.Num(),*BytesToHex(digest,20));
+    UE_LOG(LogTemp,Display,TEXT("DIVE_TALUS_CONTACTS_%s probes=%d contacts=%d"),rubbleProbes==rubbleContacts?TEXT("PASS"):TEXT("FAIL"),rubbleProbes,rubbleContacts);
     auto boundedLayouts=[&]()
     {
         FString searchDetail;if(!TestRockSearch(searchDetail)) return false;

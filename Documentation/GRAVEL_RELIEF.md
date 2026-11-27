@@ -1,5 +1,7 @@
 # Dichteres Kiesrelief im Nahbereich
 
+**Korrektur zur Ortszuordnung:** Die Unterwasser-Vergleiche mit direktem Start und Index 2 liegen bei Walenstadt/Ost. Frühere Bezeichnungen als „Ledi“ bzw. „Lediwracks“ und historische `ledi`-Fallnamen dürfen nicht mit dem separaten Uferzugang Mols/Lediwracks gleichgesetzt werden. [Zuordnung der Testorte und Prüfumfang](TEST_ENTRY_LOCATIONS.md).
+
 Kleine räumliche Steine füllen die vorhandenen Kiesflächen und unregelmäßigen Felsfußbereiche dichter aus. Die zuvor überwiegend flach wirkende Bodentextur erhält dort zusätzliche Silhouetten, Eigenverschattung und Kontaktflächen. Die größeren Formationen und Pflanzen behalten ihre Verteilung. Das ist ein weiterer Schritt zum [visuellen Ziel](VISUAL_TARGET.md), keine vollständige Referenzabnahme.
 
 Die spielbare Grafikvorschau startet mit `Builds/WindowsGravelRelief/Start-WaterPreview.cmd`. Sie enthält auch die vorherige Korrektur der oberflächennahen Nebelkante. Der komplette Paketordner wird benötigt. Der normale Weg vom Menü zum Tauchgang wurde in diesem Paket nicht manuell durchgespielt; der automatische Haupt-EXE-Start ist geprüft.

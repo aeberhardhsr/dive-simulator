@@ -1,5 +1,7 @@
 # Bruchstücke zwischen Felsblöcken und Kleinkies
 
+**Korrektur zur Ortszuordnung:** Die Unterwasser-Vergleiche mit direktem Start und Index 2 liegen bei Walenstadt/Ost. Frühere Bezeichnungen als „Ledi“ bzw. „Lediwracks“ und historische `ledi`-Fallnamen dürfen nicht mit dem separaten Uferzugang Mols/Lediwracks gleichgesetzt werden. [Zuordnung der Testorte und Prüfumfang](TEST_ENTRY_LOCATIONS.md).
+
 Die neue Verteilung ergänzt teilweise eingesunkene, räumliche Felsbruchstücke an den vorhandenen Felsfüssen. Damit gibt es zwischen den grossen Blöcken und dem auf sechs Zentimeter begrenzten Kleinkies eine zusätzliche Grössenstufe. Die bestehenden grossen Formationen behalten Position, Form und Material. Die Bruchstücke verwenden dieselben drei gescannten Felsmeshes samt passenden UV-Materialien und der [korrigierten Quellfarb-Kodierung](BENTHIC_COLOR.md).
 
 ## Gestaltung und Grenzen

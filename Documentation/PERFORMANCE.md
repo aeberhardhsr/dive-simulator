@@ -1,5 +1,20 @@
 # Gerenderte Leistungsmessung
 
+## WindowsTalus: dichteres Geröll an bestehenden Felsfüssen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Alle vier Messungen verwenden dieselbe EXE und dieselben Inhalte wie die neun bestandenen Paketfälle. `-DiveLegacyTalus` schaltet in der Weesen-Kontrolle nur die zusätzlichen Bruchstücke ab. [Bilder und Grenzen](TALUS.md), [Prüfbericht](TALUS_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Frames >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen/West, zusätzliche Bruchstücke, 60 s | 69,91 FPS | 60,39 FPS | 15,69 ms | 18,08 ms | 0 / 4193 | 5,08 ms |
+| Weesen/West, bisherige Verteilung, 60 s | 70,00 FPS | 57,93 FPS | 15,61 ms | 53,67 ms | 1 / 4198 | 4,41 ms |
+| Walenstadt/Ost, zusätzliche Bruchstücke, 60 s | 76,66 FPS | 58,55 FPS | 14,79 ms | 18,26 ms | 0 / 4597 | 6,09 ms |
+| Murg/Süd, Nachladestrecke, 90 s | 97,33 FPS | 73,27 FPS | 11,17 ms | 29,74 ms | 0 / 8758 | 4,57 ms |
+
+Bei Weesen bleibt die GPU-Zeit mit 13,67 gegenüber 13,64 ms nahezu gleich; die Spielthread-Zeit steigt um rund 0,67 ms. Walenstadt/Ost erreicht 12,41 ms mittlere GPU-Zeit, die Murg-Strecke 9,63 ms. Diese Einzelläufe belegen keine allgemeine Beschleunigung. Der einzelne lange Kontrollframe bleibt enthalten; seine Ursache wurde nicht nachgewiesen. Zehn neue Weesen-Frames, 38 bei Walenstadt/Ost und 14 auf der Nachladestrecke überschreiten 16,67 ms. Durchgehend 60 FPS sind damit nicht belegt.
+
+Die Aufnahmen zeigen Felsen und Grund bei 5,3 m (Weesen) bzw. 4,3 m (Walenstadt). Die Strecke endet bei 24,4 m in freiem Wasser. Der zuvor als „Ledi“ angekündigte zusätzliche Lauf verwendet tatsächlich den direkten Wasserstart bei Walenstadt/Ost; die [Zuordnung der sechs Startorte](TEST_ENTRY_LOCATIONS.md) ist anhand der Geodaten und Startlogik korrigiert. Die Messungen sind keine Prüfung aller drei Uferzugänge. Ein aktueller Langzeittest, die manuelle Menüführung und die vollständige visuelle Referenzabnahme bleiben offen.
+
 ## WindowsRockPose: weniger abgeflachte, unterschiedlich geneigte Felsblöcke
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Beim Start lief keine weitere Unreal-/Spielinstanz. Alle drei Messungen verwenden dieselbe EXE und dieselben Inhaltscontainer wie die neun bestandenen Paketfälle. `-DiveLegacyRockPose` stellt in der Unterwasserkontrolle die bisherige Ausrichtung wieder her; die optimierte Kies-/Populationsverwaltung bleibt aktiv. [Bilder und Grenzen](ROCK_POSE.md), [Prüfbericht](ROCK_POSE_RESULTS.json).

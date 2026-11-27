@@ -6,6 +6,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
+    [switch]$LegacyTalus,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
@@ -67,6 +68,7 @@ if($LampOff) { $arguments+=' -DiveLampOff' }
 if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
 if($GroundOff) { $arguments+=' -DiveGroundOff' }
 if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
+if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
 if($HabitatView) {
     if($Scenario -ne 'rocks' -or $GravelView -or $PlantView -or $WaterView) { throw 'HabitatView requires rocks without other comparison modes.' }
     $arguments+=' -DiveHabitatView'
