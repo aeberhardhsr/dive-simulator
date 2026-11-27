@@ -12,7 +12,7 @@ param(
     [switch]$DisableNanite,
     [switch]$WaterPreview,
     [switch]$ReflectionTransportStudy, [switch]$ReflectionTransportControl, [switch]$ReflectionUnified,
-    [ValidateSet('full','routing','unshadowed','cached')][string]$ReflectionProfile='full',
+    [ValidateSet('full','routing','unshadowed','cached','vsm','vsm-fallback')][string]$ReflectionProfile='full',
     [ValidateRange(-70,70)][double]$LookPitch,
     [switch]$FPVProbe,
     [switch]$SpectralView,
@@ -120,7 +120,7 @@ if($Editor) {
         $context.spectral_shader_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Shaders/SpectralWater.usf")).Hash.ToLowerInvariant()
     }
     if($ReflectionTransportStudy) {
-        $context.reflection_shaders=@('ReflectionWater.ush','ReflectionWaterMask.ush','LakeFootprint.ush') | ForEach-Object {
+        $context.reflection_shaders=@('ReflectionWater.ush','ReflectionWaterMask.ush','ReflectionWaterShadow.ush','LakeFootprint.ush') | ForEach-Object {
             @{name=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Shaders/$_")).Hash.ToLowerInvariant()}
         }
         Copy-Item -LiteralPath (Join-Path $repo "$projectRoot/Intermediate/DiveReflectionTransportStudy/Manifest.json") -Destination (Join-Path $resultDir 'ShaderManifest.json')

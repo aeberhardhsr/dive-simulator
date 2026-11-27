@@ -138,10 +138,17 @@ public:
             const bool control=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl"));
             FString requestedProfile=TEXT("full"),preparedProfile;
             FParse::Value(FCommandLine::Get(),TEXT("DiveReflectionProfile="),requestedProfile);
-            if((requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("routing")&&requestedProfile!=TEXT("unshadowed")&&requestedProfile!=TEXT("cached"))||
+            const bool mappedShadow=requestedProfile==TEXT("vsm")||requestedProfile==TEXT("vsm-fallback")||requestedProfile==TEXT("vsm-coverage");
+            if((requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("routing")&&requestedProfile!=TEXT("unshadowed")&&requestedProfile!=TEXT("cached")&&!mappedShadow)||
                 !FFileHelper::LoadFileToString(preparedProfile,*(FPaths::GetPath(prepared)/TEXT("ProfileMode.txt")))||preparedProfile!=requestedProfile||
-                (control&&requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("cached")))
+                (control&&requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("cached")&&!mappedShadow))
                 UE_LOG(LogTemp,Fatal,TEXT("Prepared reflection diagnostic profile does not match the request."));
+            if(mappedShadow)
+            {
+                const auto* version=IConsoleManager::Get().FindConsoleVariable(TEXT("r.DiveWater.ReflectionShadowBindingVersion"));
+                if(!version||version->GetInt()!=1)
+                    UE_LOG(LogTemp,Fatal,TEXT("Mapped water reflection shadows require the separate source-engine VSM binding patch."));
+            }
             if(!control) AddShaderSourceDirectoryMapping(TEXT("/Engine/Private/Lumen"),prepared);
             UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_TRANSPORT_READY enabled=%d samples=16 light_source=scene scope=raygen_water_frontlayer"),control?0:1);
             UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_ROUTING_READY unified=%d"),unified?1:0);

@@ -1,6 +1,6 @@
 param([ValidateRange(180,1800)][int]$TimeoutSeconds=1200,
  [ValidateSet('waterline','response','consistency')][string]$Suite='waterline',[switch]$Unified,
- [ValidateSet('full','cached')][string]$Profile='full')
+ [ValidateSet('full','cached','vsm','vsm-fallback','vsm-coverage')][string]$Profile='full')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $engine=Join-Path $repo 'Builds/UE584'
@@ -20,6 +20,7 @@ Copy-Item -LiteralPath (Join-Path $runtime 'Intermediate/DiveReflectionTransport
 $files+=@(Get-ChildItem (Join-Path $runtime 'Intermediate/DiveReflectionTransportStudy') -File -Recurse)
 foreach($name in @('Tools/SmokeTest.ps1','Tools/TestReflectionTransport.ps1','Tools/PrepareReflectionTransport.py',
  'Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll',
+ 'Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll',
  'Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveRendering.dll')) {$files+=Get-Item (Join-Path $repo $name)}
 $records=@($files | Sort-Object FullName | ForEach-Object {@{file=$_.FullName.Substring($repo.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}})
 @{source_head=(& git -C $repo rev-parse HEAD);files=$records;started_utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8

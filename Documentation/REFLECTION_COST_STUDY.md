@@ -29,6 +29,8 @@ Nach den Messungen wurde `full` wiederhergestellt. Zwei native Fälle mit sechs 
 
 ## Nächster Ansatz
 
+**Nachtrag 28. November 2026:** Der hier beschriebene nächste Versuch ist inzwischen implementiert und geprüft. Die [abgeschlossene Schattenkarten-Optimierung](REFLECTION_SHADOW_STUDY.md) erreicht in ihrem frischen Vergleich 62,29 statt 55,19 FPS. Die folgenden Absätze beschreiben den damaligen Ausgangspunkt.
+
 Die Engine nutzt für ihre normale Volumenbeleuchtung bereits `SampleVirtualShadowMapTranslatedWorld`. Die Rückgabe enthält eine Gültigkeitsangabe. Ein nächster Versuch soll vorhandene Szenenschatten für die passende Lichtquelle nutzen und bei fehlenden Daten auf die bisherigen Schattenstrahlen zurückfallen. Dafür müssen die aktuellen VSM-Ressourcen ausdrücklich an den Reflexionspass gebunden werden; die bislang vorhandene Forward-Light-Bindung allein genügt nicht. Es gibt hierzu noch keinen implementierten oder gemessenen Leistungsgewinn.
 
 Zu prüfen sind dann insbesondere die richtige Sonnen-/Mondzuordnung, fehlende Kartenseiten, feine Uferschatten, weit entfernte Bergabschattung, bewegte Lampen und Übergänge beim Wechsel zwischen Schattenkarte und Raytracing. Die übrigen offenen Grenzen der Wasseroptik aus der vorherigen Studie bestehen weiter.

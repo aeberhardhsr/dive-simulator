@@ -1,0 +1,42 @@
+#if DIVE_REFLECTION_PROFILE >= 4
+#include "/Engine/Private/VirtualShadowMaps/VirtualShadowMapProjectionCommon.ush"
+
+int DiveReflectionShadowLight()
+{
+    int map=ForwardLightStruct.DirectionalLightVSM;
+    if(!ForwardLightStruct.HasDirectionalLight || map<0 || VirtualShadowMap.NumFullShadowMaps==0 ||
+        VirtualShadowMap.MaxPhysicalPages==0 || uint(map)>=VirtualShadowMap.NumShadowMapSlots ||
+        VirtualShadowMap.bExcludeNonNaniteFromCoarsePages!=0) return -1;
+    // RT lights do not carry a scene light id. Require exactly one directional
+    // match; ambiguous or unavailable resources retain the ray-traced path.
+    float3 forwardDirection=normalize(ForwardLightStruct.DirectionalLightDirection);
+    int selected=-1;uint matches=0;
+    for(uint i=0;i<RaytracingLightGridData.SceneInfiniteLightCount;++i)
+    {
+        uint kind;
+        FDeferredLightData light=GetRayTracingDeferredLightData(i,false,kind);
+        if(kind==LIGHT_TYPE_DIRECTIONAL && dot(normalize(light.Direction),forwardDirection)>.999999)
+        {selected=int(i);++matches;}
+    }
+    return matches==1 ? selected : -1;
+}
+
+float DiveReflectionMappedShadow(RaytracingAccelerationStructure SceneTLAS,float3 position,
+    float3 toLight,uint lightIndex,int selectedLight,out float usedMap)
+{
+    usedMap=0;
+#if DIVE_REFLECTION_PROFILE != 5
+    if(selectedLight>=0 && lightIndex==uint(selectedLight))
+    {
+        FVirtualShadowMapSampleResult shadowSample=SampleVirtualShadowMapDirectional(
+            ForwardLightStruct.DirectionalLightVSM,position,.1);
+        if(shadowSample.bValid && isfinite(shadowSample.ShadowFactor))
+        {
+            usedMap=1;
+            return saturate(shadowSample.ShadowFactor);
+        }
+    }
+#endif
+    return DiveReflectionShadow(SceneTLAS,position,toLight,10000);
+}
+#endif

@@ -19,7 +19,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$ReflectionTransportStudy,
     [switch]$ReflectionTransportControl,
     [switch]$ReflectionUnified,
-    [ValidateSet('full','cached')][string]$ReflectionProfile='full',
+    [ValidateSet('full','cached','vsm','vsm-fallback','vsm-coverage')][string]$ReflectionProfile='full',
     [switch]$WaterInspectionLamp,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,

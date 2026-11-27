@@ -25,7 +25,10 @@ float DiveReflectionShadow(RaytracingAccelerationStructure SceneTLAS,float3 posi
 #endif
 }
 
-float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 p,float3 direction,float sigma,uint firstLight)
+#include "/DiveRendering/ReflectionWaterShadow.ush"
+
+float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 p,float3 direction,float sigma,uint firstLight,
+    int virtualShadowLight,inout float2 shadowStats)
 {
     FCulledLightList lights=FCulledLightList::Create(position);
     float3 source=0;
@@ -46,7 +49,13 @@ float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 pos
             waterLength=max(0,(DiveReflectionSurface(p.xy)-p.z)/max(.1,refracted.z));
             attenuation=.98*exp(-sigma*waterLength);
             // Straight visibility ray approximation through the refracting boundary.
+#if DIVE_REFLECTION_PROFILE >= 4
+            float usedMap;
+            attenuation*=DiveReflectionMappedShadow(SceneTLAS,position,toLight,index,virtualShadowLight,usedMap);
+            shadowStats+=float2(1,usedMap);
+#else
             attenuation*=DiveReflectionShadow(SceneTLAS,position,toLight,distanceCm);
+#endif
             toLight=refracted;
         }
         else if(kind==LIGHT_TYPE_POINT || kind==LIGHT_TYPE_SPOT)
@@ -112,6 +121,10 @@ float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,fl
     float sigma=max(.001,Scene.DiveWater.Medium.z);
     float lengthMetres=min(max(0,hitDistanceCm*.01),min(200.,10./sigma));
     float transmittance=1;float3 scattering=0;
+    float2 shadowStats=0;int virtualShadowLight=-1;
+#if DIVE_REFLECTION_PROFILE >= 4
+    virtualShadowLight=DiveReflectionShadowLight();
+#endif
 #if DIVE_REFLECTION_PROFILE == 3
     // The lake scene uses sun and moon. More infinite lights fall back to the
     // complete original list; finite lights are still culled at each sample.
@@ -136,19 +149,25 @@ float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,fl
         float stepT=exp(-sigma*wet*segment);
         float3 samplePosition=origin+direction*(middle*100);
 #if DIVE_REFLECTION_PROFILE == 3
-        float3 source=DiveReflectionSource(SceneTLAS,samplePosition,sampleP,direction,sigma,cacheSun?infiniteCount:0);
+        float3 source=DiveReflectionSource(SceneTLAS,samplePosition,sampleP,direction,sigma,cacheSun?infiniteCount:0,virtualShadowLight,shadowStats);
         if(cacheSun)
         {
             [unroll] for(uint light=0;light<2;++light)
                 source+=DiveCachedSunSource(SceneTLAS,suns[light],samplePosition,sampleP,sigma);
         }
 #else
-        float3 source=DiveReflectionSource(SceneTLAS,samplePosition,sampleP,direction,sigma,0);
+        float3 source=DiveReflectionSource(SceneTLAS,samplePosition,sampleP,direction,sigma,0,virtualShadowLight,shadowStats);
 #endif
         scattering+=transmittance*source*((1-stepT)/sigma);
         transmittance*=stepT;
     }
+#if DIVE_REFLECTION_PROFILE == 6
+    // Diagnostic only: green = mapped directional shadows, red = ray fallback.
+    float coverage=shadowStats.x>0 ? shadowStats.y/shadowStats.x : 0;
+    return float3(1-coverage,coverage,0)*10000*View.PreExposure;
+#else
     return radiance*transmittance+scattering*View.PreExposure;
+#endif
 #endif
 }
 #endif
