@@ -2,6 +2,7 @@ param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
     [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Coast','CoastCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
+    [ValidateRange(1,64)][int]$MaxParallelActions=2,
     [switch]$EditorSandbox,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
@@ -37,7 +38,7 @@ if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxNam
 if($EditorSandbox) { . (Join-Path $PSScriptRoot 'PrepareEditorSandbox.ps1'); $project=Get-DiveEditorSandbox -SandboxName $SandboxName }
 if($BuildSlot -and $Target -notin @('Game','Package')) { throw 'BuildSlot applies to Game or Package only.' }
 $slotOptions=@()
-$ubtOptions='-NoUBA -MaxParallelActions=2 -NoHotReloadFromIDE'
+$ubtOptions="-NoUBA -MaxParallelActions=$MaxParallelActions -NoHotReloadFromIDE"
 if($BuildSlot) { $slotOptions+="-DiveBuildSlot=$BuildSlot"; $ubtOptions+=" -DiveBuildSlot=$BuildSlot" }
 if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' }
 # UAT changes its working directory to the engine. Resolve caller-supplied
@@ -98,7 +99,7 @@ if ($Target -eq 'Content') {
     & "$EngineRoot/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun "-project=$project" -noP4 -nocompileeditor -platform=Win64 -clientconfig=Development -build -cook '-map=/Game/Diving/Maps/L_DiveTraining' -stage -pak -archive "-archivedirectory=$PackageDirectory" "-ubtargs=$ubtOptions" -unattended
 } else {
     $name = if ($Target -eq 'Editor') { 'divingsimEditor' } else { 'divingsim' }
-    & "$EngineRoot/Engine/Build/BatchFiles/Build.bat" $name Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE -NoUBA -MaxParallelActions=2 @slotOptions
+    & "$EngineRoot/Engine/Build/BatchFiles/Build.bat" $name Win64 Development "-Project=$project" -WaitMutex -NoHotReloadFromIDE -NoUBA "-MaxParallelActions=$MaxParallelActions" @slotOptions
 }
 if ($LASTEXITCODE -ne 0) { throw "Unreal $Target failed with exit code $LASTEXITCODE" }
 if($Target -eq 'Package') {

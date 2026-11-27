@@ -44,12 +44,16 @@ git -C Builds/UE584 apply "$PWD/artifacts/source-engine-20261127/renderer-patch/
 
 & "$sourceEngineRoot/Engine/Build/BatchFiles/Build.bat" ShaderCompileWorker Win64 Development `
     -WaitMutex -NoHotReloadFromIDE -NoUBA -MaxParallelActions=2
-./Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor
+./Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4
 ```
 
 Die vorhandenen VC++-/GameInput-Laufzeitkomponenten bleiben erhalten. Es werden keine Dateizuordnungen auf die neue Engine umgestellt. Für diesen Windows-Prüfstand ausgelassene Plattformabhängigkeiten sind vor einem entsprechenden anderen Plattform-Build nachzuladen; dies ist kein macOS-Buildnachweis.
 
-Während dieses Erstbuilds hat der Nutzer die Menü-/HUD-Arbeit ausdrücklich vorgezogen. Änderungen im Hauptprojekt dürfen die laufende Sandbox-Kompilierung nicht nachträglich verändern. Nach Abschluss dieses Builds ist deshalb zuerst `Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor` erneut auszuführen: Dieser kurze Projekt-Nachbau synchronisiert die neuen UI-Quellen und erzeugt dazu passende Projektmodule. `TestCaustics.ps1` allein synchronisiert zwar Dateien, kompiliert sie aber nicht und darf diesen Schritt nicht ersetzen.
+Auf Wunsch des Nutzers wurde der Erstbuild am 27. November nach 2.014 von 4.043 abgeschlossenen Aktionen kontrolliert angehalten und mit `-MaxParallelActions=4` statt `2` inkrementell fortgesetzt. Das neue Protokoll `artifacts/source-engine-20261127/editor-build-parallel4.log` bestätigt 2.029 verbleibende Aktionen; die abgeschlossenen Ergebnisse wurden übernommen. Drei gleichzeitig aktive Compilerprozesse wurden beobachtet. Der Rechner besitzt 16 physische Kerne und 32 logische Prozessoren bei 31,08 GiB nutzbarem RAM. Die ersten Messungen nach Wiederanlauf zeigten rund 8–9 GiB freien RAM; das ist eine Momentaufnahme, keine Speicherzusage für alle Module. Kompilierung, Linken und Abhängigkeiten führen zu wechselnder Parallelität. Aus unterschiedlichen Modulabschnitten lässt sich keine belastbare Beschleunigungsrate ableiten.
+
+`Tools/Build.ps1` reicht den neuen Parameter `-MaxParallelActions` sowohl an direkte Editor-/Game-Builds als auch an den BuildCookRun-Kompilierschritt weiter. Ohne Angabe bleibt der bisherige Wert `2` erhalten. Der Parameter ändert keinen bereits laufenden Prozess. Eine weitere Erhöhung erfordert erneut eine Prüfung von physischem und zugesichertem Speicher; die Anzahl freier CPU-Kerne allein genügt nicht. Während des Wiederanlaufs wurden keine Projektquellen synchronisiert, damit der nachfolgend beschriebene Projekt-Nachbau weiterhin getrennt erfolgt.
+
+Während dieses Erstbuilds hat der Nutzer die Menü-/HUD-Arbeit ausdrücklich vorgezogen. Änderungen im Hauptprojekt dürfen die laufende Sandbox-Kompilierung nicht nachträglich verändern. Nach Abschluss dieses Builds ist deshalb zuerst `Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4` erneut auszuführen: Dieser kurze Projekt-Nachbau synchronisiert die neuen UI-Quellen und erzeugt dazu passende Projektmodule. `TestCaustics.ps1` allein synchronisiert zwar Dateien, kompiliert sie aber nicht und darf diesen Schritt nicht ersetzen.
 
 Erst nach erfolgreichen Builds folgen die Shader-Vorbereitung und **ein einzelner** nativer Tageslauf:
 
