@@ -22,6 +22,8 @@ Beide Aufnahmen zeigen dieselbe Kamera bei Weesen, 21. Juni, 12 Uhr. Die separat
 
 Der Eingriff betrifft nur gerichtetes direktes Licht im Deferred Renderer. Lokale Punkt-/Spotlichter erhalten den Faktor 1, ebenso Empfänger über Wasser. Indirektes Licht, Volumenlicht, reflektierte Wege und die bewegte Wassergrenze werden dadurch noch nicht gemeinsam korrigiert. Die mittlere Wasserhöhe ist fest `Z=0`; die ersten 20 cm blenden den Zusatz ein. Auch gerichtetes Mondlicht kann unter Wasser betroffen sein. Die Änderung ist keine vollständige spektrale Transportsimulation.
 
+Die Wasserzuordnung verwendet in diesem ersten Versuch ausschliesslich die Höhe. Eine horizontale Begrenzung auf die tatsächliche Seefläche fehlt noch: Gelände ausserhalb des Sees unterhalb `Z=0` würde ebenfalls abgeschwächt. Der Test oberhalb der Wasserfläche deckt diesen Sonderfall nicht ab. Vor einer Standardaktivierung muss die Seemaske in diese Zuordnung einbezogen werden.
+
 `PrepareSolarShaderStudy.py` kopiert die installierten privaten Shader in den ignorierten `Intermediate`-Ordner der Editor-Sandbox und ändert ausschliesslich die Kopie von `DeferredLightPixelShaders.usf`. Der Versuch registriert `/Engine/Private` auf diesen lokalen Ordner. Die installierten Engine-Dateien bleiben unverändert und werden nicht ins Repository aufgenommen. Der vorbereitende Schritt akzeptiert nur die geprüfte SHA-256-Fassung der vorhandenen UE-5.8.4-Datei; eine andere Engine-Version erfordert erneute Prüfung.
 
 ## Reproduktion

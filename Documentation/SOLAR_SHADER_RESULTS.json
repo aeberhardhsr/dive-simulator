@@ -1079,8 +1079,8 @@
   "screenshots": 26,
   "report_tool": {
     "file": "Tools/ReportSolarShaderStudy.py",
-    "sha256": "e894762e80e51d68489b642e4617b68c2a3babc36fb538a4364ff04879d84358",
-    "bytes": 6213
+    "sha256": "49a4541df7899fb3accadb375e835a05d38b1d07906c7348bbd12fa7c727d8bd",
+    "bytes": 6337
   },
   "habitat_full_frame": [
     {
@@ -1271,6 +1271,7 @@
   "ldr_scale": "0..255, tone mapped, not radiometric",
   "limits": [
     "Mean water plane Z=0; no local wave boundary.",
+    "Height-only water classification; terrain outside the lake below Z=0 would also be attenuated.",
     "Authored RGB coefficients; no measured lake calibration.",
     "Only deferred directional direct lighting; no GI, volumetric source or reflected-path correction.",
     "LDR near-identity permits temporal noise and does not prove mathematical equality.",

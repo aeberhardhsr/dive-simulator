@@ -112,6 +112,7 @@ def main():
                   habitat_full_frame=habitat, receiver_rois=ROIS, receiver_differences=receivers,
                   torch_full_frame=torch, ldr_scale='0..255, tone mapped, not radiometric',
                   limits=['Mean water plane Z=0; no local wave boundary.',
+                          'Height-only water classification; terrain outside the lake below Z=0 would also be attenuated.',
                           'Authored RGB coefficients; no measured lake calibration.',
                           'Only deferred directional direct lighting; no GI, volumetric source or reflected-path correction.',
                           'LDR near-identity permits temporal noise and does not prove mathematical equality.',
