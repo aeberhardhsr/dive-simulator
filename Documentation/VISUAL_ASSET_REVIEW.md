@@ -1,6 +1,6 @@
 # Abgleich vorhandener Assets mit dem visuellen Ziel
 
-Stand 27. November 2026. Dieser Abgleich bereitet konkrete Grafikarbeiten während des Engine-Builds vor. Er ist keine neue Spielaufnahme oder visuelle Abnahme. Die Nutzerreferenzen und der volle Qualitätsanspruch bleiben in [VISUAL_TARGET.md](VISUAL_TARGET.md) verbindlich.
+Stand 27. November 2026. Dieser Abgleich begann während des Engine-Builds und wird nach nativen Prüfungen ergänzt. Er ist keine visuelle Abnahme. Die Nutzerreferenzen und der volle Qualitätsanspruch bleiben in [VISUAL_TARGET.md](VISUAL_TARGET.md) verbindlich.
 
 ## Betrachtete Aufnahmen und Befund
 
@@ -9,7 +9,7 @@ Tatsächlich betrachtet wurden `Images/SolarVolume_Combined.png` (experimentelle
 | Bereich | Bereits vorhanden | Sichtbare beziehungsweise aus dem Code belegte Lücke | Nächste konkrete Arbeit |
 | --- | --- | --- | --- |
 | Unterwasserfels | Drei lose Scanformen und zwei kräftigere Gruppenkerne, passende PBR-Oberflächen, Geröll und Felsfuss-Ablagerungen | Einzelne Felsen sind detaillierter als die weitgehend freien, gleichförmigen Zwischenflächen; zusammenhängende Felszüge und Übergänge tragen die Szene noch nicht wie in der Referenz | Nach Prüfung des neuen Lichttransports einen vollständigen durchschwimmbaren Bereich gestalten; grosse Formen, eingebettete Blöcke, Zwischenräume und Bewuchs gemeinsam beurteilen |
-| Unterwasserlicht | Sichtweg-Dämpfung und experimenteller direkter/volumetrischer Sonnenlichttransport | Der betrachtete Versuchsstand bleibt dunkel und wenig räumlich gegliedert; mehr Geometriedetail allein beseitigt diesen Eindruck nicht | Source-Renderer fertigstellen und die vorbereiteten gepaarten Tag-/Nacht-/Tiefen-/Oberflächentests tatsächlich rendern; anschliessend Licht und Habitat zusammen prüfen |
+| Unterwasserlicht | Sichtweg-Dämpfung und experimenteller direkter/volumetrischer Sonnenlichttransport | Der betrachtete Versuchsstand bleibt dunkel und wenig räumlich gegliedert; mehr Geometriedetail allein beseitigt diesen Eindruck nicht | Source-Renderer und zehn gepaarte Prüfkörperläufe sind abgeschlossen; als Nächstes Licht und Habitat zusammen prüfen, einschliesslich Seegrenzen und Bewegung |
 | Pflanzen | Drei modellierte Wasserpflanzentypen, Wuchsgruppen und korrigierte FBX-Farbdekodierung | Dünne, teilweise gleichförmige Bestände; empfindliche Zweige und harte Lichtunterschiede | Vorhandene Modelle in zusammenhängenden Zonen abstimmen und in Bewegung auf Detailwechsel/Flimmern prüfen; konkrete Formlücken erst danach durch neue Assets ergänzen |
 | Landboden | Gras- und Waldboden-PBR, Waldmaske, Felsmaterial auf steilen Flächen | In der betrachteten Nahaufnahme bleiben unscharfe Strukturen des Luftbilds sichtbar. `GroundDetail.ush` klassifiziert Gras aus RGB-Verhältnissen und lässt neutrale Flächen beim Luftbild; die Mischung fällt zwischen 25 und 120 m zurück | Materialzuordnung gezielter machen, Neutralflächen getrennt behandeln und den Übergang anhand echter begehbarer Ansichten einstellen |
 | Fels-/Geröllhänge | swissALTI3D, Fels-PBR, bereits lokal gespeicherte swissTLM3D-Bodenbedeckung | Das Material wählt Fels bisher wesentlich über Hangneigung. Kartierte Fels-/Geröllklassen werden noch nicht benutzt | Die unten vorbereiteten Klassen kontrolliert in die Materialzuordnung integrieren; keine pauschale Felsbelegung aller steilen Flächen |
@@ -65,3 +65,9 @@ Nach dem Engine-Build: zuerst die Kandidaten im nativen Spiel vergleichen; dann 
 ```powershell
 ./Tools/.geodata-env/Scripts/python.exe Tools/analyse_bathymetry_views.py
 ```
+
+## Aktuelle native Weesen-Ansicht nach dem Engine-Build
+
+Die Originalaufnahme `artifacts/perf-underwater-1080p-q2-20261127-175113-479/Frame.png` wurde bei 1920 × 1080 betrachtet. Sie stammt aus dem separaten Quellcode-Editor, dem aktuellen Menü/HUD und der gewöhnlichen Wasservorschau; die experimentelle Wellenbeleuchtung ist ausgeschaltet. Die Mitte bleibt frei von Kopf/Flasche, während Hände und Handgelenkcomputer am unteren Rand sichtbar sind. Kamera und physischer Blick stimmen am erfassten Endpunkt überein. Dies ist kein Vergleich identischer Kameras mit dem früheren Fehlerbild.
+
+Der Grafikabstand zur Nutzerreferenz bleibt sichtbar: breite gleichförmige Bodenflächen zwischen einzelnen Felsgruppen, dünne Pflanzeninseln, wenig kleinteilige räumliche Übergänge und gedämpfte Beleuchtung. Das neue HUD ordnet die Werte, beansprucht aber weiterhin einen beträchtlichen unteren Bildstreifen; die übergreifende FPV-/HUD-Abnahme bleibt offen. Die nächste Habitatverbesserung muss diese Zwischenflächen, Gruppierung und Beleuchtung gemeinsam adressieren. Zusätzliche einzelne Steine oder eine weitere globale Farbkorrektur allein belegen das Ziel nicht.

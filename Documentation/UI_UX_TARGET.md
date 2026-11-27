@@ -4,7 +4,7 @@
 
 Der Nutzer hat am 26. November 2026 fünf eigene Designentwürfe bereitgestellt. Gewünscht ist eine Anpassung an deren Gestaltungsidee, keine 1:1-Umsetzung. Seine Bewertung des aktuellen Layouts ist ausdrücklich festgehalten: zu chaotisch, unpassende Texte, unsaubere Umlaute und verwirrende Menüführung.
 
-**Status: Umsetzung am 27. November 2026 begonnen; native Prüfung noch ausstehend.** Der Nutzer hat die Reihenfolge am 27. November ausdrücklich angepasst: Menü/HUD/FPV darf während des laufenden Unreal-Erstbuilds vorgezogen und parallel vorbereitet werden. Die ursprünglich vereinbarte Reihenfolge war:
+**Status: Menü/HUD umgesetzt und bei 1600 × 900 nativ geprüft; weitere Auflösungen, Mausbedienung und bewegte FPV-Abnahme stehen aus.** Der Nutzer hat die Reihenfolge am 27. November ausdrücklich angepasst: Menü/HUD/FPV darf während des laufenden Unreal-Erstbuilds vorgezogen und parallel vorbereitet werden. Die ursprünglich vereinbarte Reihenfolge war:
 
 1. Spielgrafik und Umgebung unter Wasser optimieren.
 2. Spielgrafik über Wasser – insbesondere Berge, Wiesen, Wald, Gelände und Ufer – auf vergleichbares Realitätsniveau bringen.
@@ -47,30 +47,40 @@ Im Hauptprojekt vorbereitet, **noch nicht nativ kompiliert oder visuell abgenomm
 - Gemessener Textumbruch, begrenzte Textflächen, sichtbarer Tastaturfokus, Tab/Pfeiltasten und Enter/Leertaste sowie vorhersehbare Esc-Rückkehr. Deutsche HUD-/Menübeschriftungen wurden korrigiert.
 - Standard-, Kompakt- und Minimal-HUD mit gespeicherter Auswahl. Ortsstatus links, Kompass oben, gruppierte Instrumente unten, priorisierte Warnungen und einklappbares Tutorial rechts. Die Spielkarte lässt diese Bereiche frei.
 - Ausrüstungstabelle und vorhandene 3D-Vorschau im neuen Raster; Werte stammen weiterhin aus der tatsächlichen Konfiguration beziehungsweise dem pausierten Simulationszustand.
-- Wetter-/Wasserseite mit Temperatur-Tiefen-Kurve aus `Dive::Model::Temperature`, passender geplanter Tiefe und manuell gesetzter Sprungschicht. Die Tiefenachse umfasst je nach Plan 40–60 m, die Temperaturachse bleibt zum Vergleichen bei 0–30 °C. Automatische Profile verwenden dieselbe saisonale Interpolation wie die Simulation; es sind keine Live-Messwerte. Die Änderung ist noch nativ zu prüfen.
+- Wetter-/Wasserseite mit Temperatur-Tiefen-Kurve aus `Dive::Model::Temperature`, passender geplanter Tiefe und manuell gesetzter Sprungschicht. Die Tiefenachse umfasst je nach Plan 40–60 m, die Temperaturachse bleibt zum Vergleichen bei 0–30 °C. Automatische Profile verwenden dieselbe saisonale Interpolation wie die Simulation; es sind keine Live-Messwerte. Die Temperaturkurve ist im nativen Menütest bei 1600 × 900 gesichtet; weitere Auflösungen bleiben offen.
 - Anzeigen und Eingabehinweise verwenden ° und °C; das portable Speicher-/Eingabeschema bleibt unverändert. Weitere deutsche Spielhinweise wurden auf korrekte Umlaute geprüft und berichtigt.
 
 `DiveUISmoke.cpp` und `Tools/SmokeTest.ps1 -Scenario ui` bereiten einen nativen Test mit 14 Zuständen vor. Aufbau und Bildschirmaufnahme erfolgen in getrennten Schritten. Der Ablauf prüft Tastatureingaben über den PlayerController, vorhandene Hitboxen, Zurück-Navigation, Dezimalkomma-Eingabe und Speicherung der HUD-Auswahl. Er erstellt DE-/EN-Aufnahmen für Menü, Dialog, Steuerung und HUD einschließlich Karte, Tutorial und 13 künstlich gleichzeitig gesetzter Warnungen. Die Simulation wird nur in diesem expliziten UI-Test eingefroren. Die Warnungsfixture ist kein Nachweis für Tauchphysik oder medizinische Modellgüte.
 
-Erforderliche nächste Prüfungen nach Ende des Engine-Builds:
+Prüfstand nach Ende des Engine-Builds:
 
-1. Projektquellen in `SourceEditorSandbox` synchronisieren und dessen Editor-Projektmodule neu bauen. Der bereits laufende Erstbuild enthält eine ältere Projektkopie.
-2. `SmokeTest.ps1 -Scenario ui -EditorSandbox -SandboxName SourceEditorSandbox -EngineRoot Builds/UE584 -Viewport 1600x900` ausführen; danach auch 1920x1080 und 1280x1024. Nur frische Bilder und vollständige Phasenprotokolle gelten. Erkannte Kürzung der Fixture-Texte lässt den Test fehlschlagen.
-3. Bilder tatsächlich ansehen; insbesondere Warnung/Tutorial/Karte, vollständige Einheiten, Sonderzeichen, Credits und den Textdialog prüfen. Der automatische Test erkennt keine allgemeine grafische Überlappung und ersetzt diese Prüfung nicht.
+1. Erledigt: aktuelle Projektquellen in `SourceEditorSandbox` synchronisiert und erfolgreich neu gebaut.
+2. Drei Läufe mit `SmokeTest.ps1 -Scenario ui -EditorSandbox -SandboxName SourceEditorSandbox -EngineRoot Builds/UE584 -Viewport 1600x900` bestanden; 1920x1080 und 1280x1024 bleiben offen. Nur frische Bilder und vollständige Phasenprotokolle gelten. Erkannte Kürzung der Fixture-Texte lässt den Test fehlschlagen.
+3. Bei 1600 × 900 erledigt, bei weiteren Auflösungen noch offen: Bilder tatsächlich ansehen; insbesondere Warnung/Tutorial/Karte, vollständige Einheiten, Sonderzeichen, Credits und den Textdialog prüfen. Der automatische Test erkennt keine allgemeine grafische Überlappung und ersetzt diese Prüfung nicht.
 4. Bestehende Konfigurations-, Ausrüstungs-, Karten-, Logbuch-, Profil-, Entdeckungs-, Steuerungs- und Tutorialtests wiederholen; echte Mausbedienung sowie lange Nutzernamen prüfen. Danach FPV-Kopf-/Körperverdeckung mit vorhandenen Avatar-Tests und Bewegung reproduzieren und korrigieren.
 
 Bisher geprüft: Die selbst gebaute Engine 5.8.4 und die aktuellen Projektmodule wurden erfolgreich kompiliert. Am 27. November liefen drei native UI-Prüfungen bei 1600 × 900 erfolgreich durch: jeweils 28 Eingabe-/Zustandsschritte, 14 frische Aufnahmen und kein gemeldeter Textüberlauf. Protokolle: `artifacts/source-engine-20261127/ui-runtime-first.log`, `ui-runtime-warm.log` und `ui-runtime-notice.log`. Alle 14 Bilder des ersten Laufs wurden betrachtet: Menü, Temperaturprofil, Ausrüstungstabelle, Eingabedialog und Warnungsübersicht bleiben innerhalb ihrer Flächen; Umlaute und Einheiten sind lesbar.
 
 Der Kaltstart zeigte noch einen vorübergehenden Shader-Hinweis. Scheinbare Textlücken in der verkleinerten Bildvorschau wurden an vergrößerten Originalausschnitten und identischen Vordergrundmasken von fünf Textregionen überprüft: Die Originalaufnahmen enthalten die vollständigen Texte. Daraus ergab sich kein erforderlicher Eingriff in das Text-Rendering. Ein bereits auf Deutsch erzeugter kurzzeitiger Hinweis blieb nach dem synthetischen Sprachwechsel bestehen; die geprüfte Korrektur blendet Hinweise aus, deren Sprache nicht mehr aktiv ist. Die getrennt erzeugten aktuellen Warnungen bleiben sichtbar. Weitere Auflösungen, echte Mausbedienung, lange Namen und FPV-Bewegung bleiben zu prüfen. Das zuletzt spielbare Paket wurde nicht ersetzt. Der reproduzierbare Prüfstand mit Protokoll- und Bildprüfsummen steht im [UI-Ergebnisbericht](UI_NATIVE_RESULTS.json).
 
-### FPV-Korrektur vorbereitet, native Reproduktion ausstehend
+### FPV-Korrektur kompiliert und Kameralogik nativ geprüft
 
 Das tatsächlich betrachtete Fehlerbild liegt unter `artifacts/perf-underwater-1080p-q2-20261127-094553-953/Frame.png`. Im zugehörigen `Runtime.log` springt die Blickanforderung bei einer blockierten Körperdrehung wiederholt zwischen den Halsgrenzen. Zwei im Quellcode nachvollziehbare Probleme wurden eingegrenzt:
 
 - Die Kamera verwendet `APawn::GetViewRotation()` und bisher damit direkt die Controller-Rotation. Neue Eingaben können auf einem Renderframe eintreffen, bevor der nächste feste 20-ms-Kollisionsschritt die Kopfhaltung freigibt. Dann stimmen Kamerablick und gerenderter Körper nicht überein. Das Projekt überschreibt nun `GetViewRotation()` während des Tauchgangs mit `PhysicalPose.Gaze`; auch Kamerakomponente und HUD-Kompass verwenden diese akzeptierte Richtung. Der erweiterte Test `DiveSim.Contacts.BlockedBodyAllowsHeadTurn` prüft ausdrücklich einen solchen Zwischenframe und die Pause.
 - Der Leistungstest schrieb pro Frame eine absolute Umlauf-Richtung, obwohl die Behandlung blockierter Drehungen weitere Eingaben als Differenz zur zuletzt akzeptierten Richtung aufnimmt. Er speiste dadurch dieselbe blockierte Anforderung mehrfach ein. Der Umlauftest gibt nun inkrementelle Drehung mit 6 Grad pro simulierter Sekunde ein; seine Anfangsneigung wird einmalig gesetzt. Streaming- und Soak-Steuerung bleiben separat. Neue Performance-Metadaten enthalten Kamera-, Controller- und physische Blickrichtung, Augenposition und blockierte Haltungsschritte.
 
-Diese Änderungen sind inzwischen **nativ kompiliert**. Der UI-Lauf zeigt eine feste Spieleransicht, prüft aber keine blockierten Körperdrehungen. Er beweist deshalb nicht, dass jede Ursache der sichtbaren Verdeckung beseitigt ist. Der Kontakttest, Avatar-Blicktests, eine Walenstadt-Wiederholung und schnelle reale Mausdrehungen bleiben erforderlich. Frühere Bildratenmessungen mit anderer Blickführung dürfen nicht als Vergleich derselben sichtbaren Szene verwendet werden.
+Diese Änderungen sind inzwischen **nativ kompiliert**. Der UI-Lauf zeigt eine feste Spieleransicht, prüft aber keine blockierten Körperdrehungen. Er beweist deshalb nicht, dass jede Ursache der sichtbaren Verdeckung beseitigt ist. Der Kontakttest ist inzwischen mit einem korrekt angelegten lokalen Testspieler bestanden, ebenso alle übrigen 34 nativen Spielfunktionstests; der [Prüfnachweis](SOURCE_NATIVE_TEST_RESULTS.json) enthält die vorherigen Fixture-Fehler. Eine neue Weesen- und Walenstadt-Wiederholung liegt nun vor (siehe unten). Avatar-Blicktests und schnelle reale Mausdrehungen bleiben erforderlich. Frühere Bildratenmessungen mit anderer Blickführung dürfen nicht als Vergleich derselben sichtbaren Szene verwendet werden.
+
+
+### Native FPV-Wiederholung: Restfehler bei blockierter Haltung
+
+Zwei 60-sekündige Unterwasser-Umläufe im Quellcode-Editor wurden mit der gewöhnlichen Wasservorschau bei 1920 × 1080, Qualitätsstufe 2 und 100 % Auflösung aufgezeichnet. Die experimentelle Wellenbeleuchtung war ausgeschaltet. Beide Original-Abschlussbilder wurden betrachtet; die Kamerarotation stimmt jeweils bis auf Rundung mit `PhysicalPose.Gaze` überein.
+
+- Weesen: zentrale Sicht frei; Hände und Handgelenkcomputer am unteren Rand. 46 blockierte Haltungsschritte, Kopf am Endpunkt wieder gerade. Durchschnittlich 68,60 FPS, 1-%-Low 53,75 FPS, maximal 47,89 ms; ein Frame über 33,33 ms.
+- Walenstadt: zentrale Sicht frei, aber eine grosse graue Körper-/Ausrüstungsfläche verdeckt weiterhin den unteren Bildbereich. Kopf am 65°-Limit, 1.354 blockierte Haltungsschritte. Das genaue Mesh ist aus dem Bild allein noch nicht bestimmt. **FPV-Bildabnahme nicht bestanden.** Durchschnittlich 74,61 FPS, 1-%-Low 50,52 FPS, maximal 35,36 ms; ein Frame über 33,33 ms.
+
+Der [Prüfnachweis](SOURCE_FPV_PERFORMANCE_RESULTS.json) bindet Bilder, Logs, CSV, Quellen-/DLL-Kennungen und Kameraposen. Die 60-FPS-Grenze wurde nicht in jedem Frame eingehalten. Unterschiedliche Kamerawege, Profile und Editor-/Paketstände erlauben keinen direkten Geschwindigkeitsvergleich mit älteren Messungen. Je ein Abschlussbild beweist nicht den gesamten Bewegungspfad. Nächster FPV-Schritt: die konkrete verdeckende Geometrie bei blockierter Körperdrehung identifizieren und die Haltung beziehungsweise Sichtgeometrie gezielt korrigieren; die akzeptierte Kopfrotation und Körperkollision bleiben massgeblich.
 
 ## Originalreferenzen
 

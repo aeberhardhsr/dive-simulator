@@ -8,6 +8,7 @@ param(
     [ValidateRange(0,2)][int]$Entry=0,
     [switch]$Editor,
     [switch]$EditorSandbox,
+    [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [switch]$DisableNanite,
     [switch]$WaterPreview,
     [switch]$SpectralView,
@@ -19,6 +20,7 @@ param(
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
@@ -43,6 +45,9 @@ $context=[ordered]@{
     spectral_view=[bool]$SpectralView
     absorption_gain=$AbsorptionGain
     editor_sandbox=[bool]$EditorSandbox
+    sandbox_name=$SandboxName
+    source_head=(& git -C $repo rev-parse HEAD)
+    source_dirty=[bool](& git -C $repo status --porcelain)
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 # Aggregate host pressure only; unrelated process names/IDs do not belong in reports.
@@ -80,9 +85,10 @@ if($ImmediatePopulationBuild) { $arguments+=' -DiveImmediatePopulationBuild' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
-    $projectRoot=if($EditorSandbox) {'Builds/EditorSandbox/divingsim'} else {'divingsim'}
+    $projectRoot=if($EditorSandbox) {"Builds/$SandboxName/divingsim"} else {'divingsim'}
     $project=Join-Path $repo "$projectRoot/divingsim.uproject"
     $context.game_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveSim.dll")).Hash.ToLowerInvariant()
+    $context.renderer_module_sha256=(Get-FileHash -LiteralPath (Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor-Renderer.dll')).Hash.ToLowerInvariant()
     if($SpectralView) {
         $context.render_module_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Binaries/Win64/UnrealEditor-DiveRendering.dll")).Hash.ToLowerInvariant()
         $context.spectral_shader_sha256=(Get-FileHash -LiteralPath (Join-Path $repo "$projectRoot/Shaders/SpectralWater.usf")).Hash.ToLowerInvariant()
