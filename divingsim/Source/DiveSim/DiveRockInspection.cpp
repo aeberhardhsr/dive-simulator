@@ -35,7 +35,14 @@ void ADiveWorld::RefreshInspectionMedium()
 {
     if(bOpticsSmoke)
     {
-        if(!FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"))) UpdateAtmosphere();
+        if(!FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"))||FParse::Param(FCommandLine::Get(),TEXT("DiveWaterline"))) UpdateAtmosphere();
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterline")))
+        {
+            float distance=0;
+            if(FParse::Value(FCommandLine::Get(),TEXT("DiveWaterlineFogDistance="),distance)&&FMath::IsFinite(distance)&&distance>=2000&&distance<=60000)
+                Fog->SetVolumetricFogDistance(distance);
+            if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterlineNoFogCutoff"))) Fog->SetFogCutoffDistance(0);
+        }
         UpdateCaustics();
         if(bBoundedWater&&Diver) UpdateWaterVolume(Diver->GetPawnViewLocation());
     }
@@ -131,6 +138,41 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView")))
     {
         if(!WaterMaterial||Variant>9||View>2) return false;
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterline")))
+        {
+            // Repeat one real shoreline viewpoint on both sides of the frozen
+            // wave. Unlike the legacy bit-mask study, keep normal medium setup.
+            FString requestedPose;
+            if(Variant!=0||!FParse::Value(FCommandLine::Get(),TEXT("DiveWaterlinePose="),requestedPose,false)) return false;
+            TArray<FString> fields;requestedPose.ParseIntoArray(fields,TEXT(","),false);
+            double values[4];
+            if(fields.Num()!=4) return false;
+            for(int i=0;i<4;++i)
+                if(!LexTryParseString(values[i],*fields[i])||!FMath::IsFinite(values[i])) return false;
+            if(FMath::Abs(values[0])>2.e7||FMath::Abs(values[1])>2.e7||FMath::Abs(values[2])>360||FMath::Abs(values[3])>75) return false;
+            Eye=FVector(values[0],values[1],0);
+            float bed=0;
+            const bool sampled=Terrain.SampleGround(Eye.X,Eye.Y,bed);
+            if(!sampled||bed>-100)
+            {UE_LOG(LogTemp,Error,TEXT("DIVE_WATERLINE_FAIL sampled=%d bed_cm=%.3f pose=%s"),sampled,bed,*requestedPose);return false;}
+            if(FVector::DistSquared2D(Eye,Diver->GetActorLocation())>10000)
+            {StreamTerrain(Eye,true);StreamPopulation(Eye,true);StreamGravel(Eye,true);}
+            constexpr double heights[]={-20,-2,20};
+            // Viewer XY and wave geometry must be centred before SurfaceZ.
+            UpdateWater(Eye);
+            Eye.Z=Waves.Sample(Eye.X/100,Eye.Y/100,Diver->Simulation.Data.ElapsedSeconds).Height*100+heights[View];
+            Rotation=FRotator(values[3],values[2],0);
+            if(Sun&&!Eye.Equals(Diver->GetPawnViewLocation(),.01))
+                UE_LOG(LogTemp,Display,TEXT("DIVE_WATERLINE_LIGHT view=%d sun=%.6f scattering=%.6f priority=%d fog_cutoff=%.3f fog_end=%.3f"),
+                    View,Sun->Intensity,Sun->VolumetricScatteringIntensity,Sun->ForwardShadingPriority,Fog->FogCutoffDistance,Fog->EndDistance);
+            Water->SetVisibility(!FParse::Param(FCommandLine::Get(),TEXT("DiveWaterlineNoSurface")));
+            if(Sun&&Sun->bCastVolumetricShadow&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterlineNoVolumeShadow")))
+            {
+                Sun->SetCastVolumetricShadow(false);
+                UE_LOG(LogTemp,Display,TEXT("DIVE_WATERLINE_VOLUME_SHADOW enabled=%d"),Sun->bCastVolumetricShadow?1:0);
+            }
+            return true;
+        }
         // Diagnostic only. Bits 0/1/2 disable the surface water volume, use air
         // fog, and omit camera attenuation. States 8/9 are clear-air controls.
         // The old entry marker occupied the exact spawn XY; an eye inside its
@@ -316,6 +358,9 @@ void ADivePawn::TickRockInspection(float Dt)
         }
         if(waterView) UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_VIEW state=%d view=%d eye=%s rotation=%s exposure=%.6f visibility=%.3f"),
             variant,view,*eye.ToString(),*rotation.ToString(),Camera->PostProcessSettings.AutoExposureBias,Simulation.Settings.VisibilityMetres);
+        if(waterView&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterline")))
+            UE_LOG(LogTemp,Display,TEXT("DIVE_WATERLINE_VIEW view=%d surface_cm=%.6f eye_height_cm=%.6f clock=%.6f"),
+                view,Environment->SurfaceZ(eye.X,eye.Y),eye.Z-Environment->SurfaceZ(eye.X,eye.Y),Simulation.Data.ElapsedSeconds);
         if(waterView)
         {
             float bed=0;const bool sampled=Environment->Terrain.Sample(eye.X,eye.Y,bed);

@@ -19,9 +19,11 @@ float3 absorption=exp(-waterPath*float3(.00045,.00009,.00012));
 // direct in-scattering. Do not attenuate that integrated result a second time.
 // Retain a smaller homogeneous diffuse-water term for unresolved ambient
 // illumination. It is not a substitute for the light-specific volume shadows.
-if(NativeScattering>.5) return Scene.rgb*absorption
-    + .3*float3(250,1050,900)*saturate(Ambient)*(1-transmission);
+if(NativeScattering>.5) return lerp(Scene.rgb, Scene.rgb*absorption
+    + .3*float3(250,1050,900)*saturate(Ambient)*(1-transmission), saturate(Immersion));
 // No constant screen tint: nearby surfaces retain their material colour.
 // Incoming daylight is handled by lighting/fog, not applied to the torch here.
-return Scene.rgb*absorption*transmission
-    + float3(250,1050,900)*saturate(Ambient)*(1-transmission);
+// Fade the resulting radiance, not the categorical mode or physical uniforms.
+// The zero-immersion default is neutral even if this material is used alone.
+return lerp(Scene.rgb, Scene.rgb*absorption*transmission
+    + float3(250,1050,900)*saturate(Ambient)*(1-transmission), saturate(Immersion));

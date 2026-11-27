@@ -1,6 +1,6 @@
 # Aktuelles spielbares Windows-Paket
 
-Aktueller Nachfolger: **`Builds/WindowsExposure/Start-WaterPreview.cmd`** mit aufgeteilter Zellvorbereitung und korrigierter Startbelichtung. [Belichtungsvergleich und Paketprüfung](EXPOSURE_START.md), [vorherige Leistungsmessungen](POPULATION_PREPARATION.md). Der folgende Bericht dokumentiert weiterhin unverändert das Vergleichspaket `WindowsCurrent` und dessen UI-/Ausrüstungsprüfungen.
+Aktueller Nachfolger: **`Builds/WindowsWaterline/Start-WaterPreview.cmd`** mit aufgeteilter Zellvorbereitung, korrigierter Startbelichtung und erhaltener Wassertrübung unmittelbar unter der Oberfläche. [Wasserlinienvergleich und Paketprüfung](WATERLINE_BLEND.md), [Belichtung](EXPOSURE_START.md), [vorherige Leistungsmessungen](POPULATION_PREPARATION.md). Der folgende Bericht dokumentiert weiterhin unverändert das Vergleichspaket `WindowsCurrent` und dessen UI-/Ausrüstungsprüfungen.
 
 **Start: `Builds/WindowsCurrent/Start-WaterPreview.cmd`.** Das gesamte Verzeichnis wird benötigt. Das Paket enthält die überarbeitete Menüführung, Standard-/Kompakt-/Minimal-HUD, korrigierte deutsche Beschriftungen, die tiefere entspannte Armhaltung und die freigestellte Hinweisposition beim Ablesen des Handgelenkcomputers. Die bisherige Wasservorschau ist eingeschaltet. Die neuen experimentellen Licht- und Seegrenzenverfahren der Quellcode-Engine bleiben getrennt.
 

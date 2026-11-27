@@ -7,6 +7,14 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [ValidateCount(5,5)][double[]]$HabitatPose,
+    [ValidateCount(4,4)][double[]]$WaterlinePose,
+    [switch]$WaterlineNoSurface, [switch]$WaterlineNoVolumeShadow, [switch]$NoReflectionScreenTraces,
+    [ValidateRange(0,60000)][double]$WaterlineFogDistance=0,
+    [ValidateSet('none','BaseColor','WorldNormal','SceneDepth')][string]$BufferView='none',
+    [ValidateRange(-1,1)][int]$FogComposition=-1,
+    [switch]$WaterlineNoFogCutoff, [switch]$DisableLightShafts,
+    [switch]$DisableFogDepthCulling, [switch]$DisableFogHistory,
+    [switch]$DisablePostProcessMaterials,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
@@ -17,7 +25,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting, [switch]$LegacyExposureStart, [switch]$ExposureProbe,
-    [ValidateSet('none','direct','sky','indirect')][string]$LightIsolation='none',
+    [ValidateSet('none','direct','sky','indirect','function')][string]$LightIsolation='none',
     [ValidateRange(0,9)][int]$WaterStart=0,
     [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
@@ -42,7 +50,7 @@ if($LakeSurfaceOff -and -not $LakeFootprint) {throw 'LakeSurfaceOff requires Lak
 if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
 if($PlantColorProbe -and $Packaged) {throw 'PlantColorProbe requires the editor runtime with CPU vertex data.'}
 if($PlantColorProbe -and $Scenario -ne 'dive') {throw 'PlantColorProbe requires the dive scenario, which validates the actual mesh buffers.'}
-if($PSBoundParameters.ContainsKey('WaterVolumeGain') -and -not $BoundedWater) {throw 'WaterVolumeGain requires BoundedWater.'}
+if($PSBoundParameters.ContainsKey('WaterVolumeGain') -and -not ($BoundedWater -or $WaterPreview)) {throw 'WaterVolumeGain requires BoundedWater or WaterPreview.'}
 if($DisableLighting -and $Packaged) { throw 'Unlit diagnostic requires the native editor runtime.' }
 if($WaterReflection -ne 'default' -and -not $WaterInterface) { throw 'WaterReflection requires WaterInterface.' }
 if($WaterReflection -eq 'hit' -and -not $HardwareLumen) { throw 'Hit lighting requires HardwareLumen.' }
@@ -78,12 +86,20 @@ if($DisableShadows) { $consoleCommands+='ShowFlag.DynamicShadows 0' }
 if($LightIsolation -eq 'direct') {$consoleCommands+='ShowFlag.DirectLighting 0'}
 if($LightIsolation -eq 'sky') {$consoleCommands+='ShowFlag.SkyLighting 0'}
 if($LightIsolation -eq 'indirect') {$consoleCommands+='ShowFlag.GlobalIllumination 0'}
+if($LightIsolation -eq 'function') {$consoleCommands+='ShowFlag.LightFunctions 0'}
 if($DisableVolumetrics) { $consoleCommands+='r.VolumetricFog 0' }
+if($NoReflectionScreenTraces) { $consoleCommands+='r.Lumen.Reflections.ScreenTraces 0' }
+if($FogComposition -ne -1) { $consoleCommands+='r.Fog.SeparateComposition '+$FogComposition }
+if($DisableLightShafts) { $consoleCommands+='ShowFlag.LightShafts 0' }
+if($DisableFogDepthCulling) { $consoleCommands+='r.VolumetricFog.ConservativeDepth 0' }
+if($DisableFogHistory) { $consoleCommands+='r.VolumetricFog.TemporalReprojection 0' }
+if($DisablePostProcessMaterials) { $consoleCommands+='ShowFlag.PostProcessMaterial 0' }
 if($HardwareLumen) { $consoleCommands+='r.Lumen.HardwareRayTracing 1' }
 if($WaterReflection -eq 'cache') { $consoleCommands+='r.Lumen.TranslucencyReflections.FrontLayer.Allow 0' }
 if($WaterReflection -in @('front','hit')) { $consoleCommands+='r.Lumen.TranslucencyReflections.FrontLayer.Allow 1'; $consoleCommands+='r.Lumen.TranslucencyReflections.FrontLayer.Enable 1' }
 if($WaterReflection -eq 'hit') { $consoleCommands+='r.Lumen.HardwareRayTracing.HitLighting.Allowed 1'; $consoleCommands+='r.Lumen.HardwareRayTracing.LightingMode 2' }
 if($DisableLighting) { $consoleCommands+='viewmode unlit'; $consoleCommands+='ShowFlag.PostProcessing 0' }
+if($BufferView -ne 'none') { $consoleCommands+='viewmode VisualizeBuffer'; $consoleCommands+='r.BufferVisualizationTarget '+$BufferView }
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }
 if($LampOff) { $arguments+=' -DiveLampOff' }
@@ -153,6 +169,27 @@ if($WaterView) {
     $arguments+=' -DiveWaterView -DiveWaterStart='+$WaterStart+' -DiveWaterEnd='+$WaterEnd
 }
 if(($WaterStart -or $WaterEnd -ne 9) -and -not $WaterView) { throw 'WaterStart/WaterEnd require WaterView.' }
+if($WaterlinePose) {
+    if(-not $WaterView -or $WaterStart -ne 0 -or $WaterEnd -ne 0) {throw 'WaterlinePose requires WaterView state 0 only.'}
+    if(@($WaterlinePose | Where-Object {[double]::IsNaN($_) -or [double]::IsInfinity($_)}).Count) {throw 'WaterlinePose must be finite.'}
+    $arguments+=' -DiveWaterline -DiveWaterlinePose='+ (($WaterlinePose | ForEach-Object {$_.ToString('R',[Globalization.CultureInfo]::InvariantCulture)}) -join ',')
+}
+if($WaterlineNoSurface) {
+    if(-not $WaterlinePose) {throw 'WaterlineNoSurface requires WaterlinePose.'}
+    $arguments+=' -DiveWaterlineNoSurface'
+}
+if($WaterlineFogDistance) {
+    if(-not $WaterlinePose -or $WaterlineFogDistance -lt 2000) {throw 'WaterlineFogDistance requires WaterlinePose and at least 2000 cm.'}
+    $arguments+=' -DiveWaterlineFogDistance='+$WaterlineFogDistance.ToString([Globalization.CultureInfo]::InvariantCulture)
+}
+if($WaterlineNoVolumeShadow) {
+    if(-not $WaterlinePose) {throw 'WaterlineNoVolumeShadow requires WaterlinePose.'}
+    $arguments+=' -DiveWaterlineNoVolumeShadow'
+}
+if($WaterlineNoFogCutoff) {
+    if(-not $WaterlinePose) {throw 'WaterlineNoFogCutoff requires WaterlinePose.'}
+    $arguments+=' -DiveWaterlineNoFogCutoff'
+}
 if($GroundView) {
     if($Scenario -ne 'shore-preview') { throw 'GroundView applies to shore-preview only.' }
     $arguments+=' -DiveGroundView'
@@ -192,6 +229,7 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Smoke test exceeded $TimeoutSeconds seconds; process $($process.Id) was left running. Inspect it and $logPath before starting another test." }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($BufferView -ne 'none' -and ($log -match 'view mode not recognized|Debug viewmodes not allowed' -or $log -notmatch ('r.BufferVisualizationTarget = "'+$BufferView+'"'))) {throw 'Requested buffer visualization was not accepted.'}
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}
 if($SolarShaderStudy -and $log -notmatch ('DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane='+[int](-not $WaveTransportStudy))) {throw 'Project-local solar shader mapping was not enabled.'}
 if($SolarVolumeStudy -and $log -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY receiver=per-froxel local_lights=unchanged') {throw 'Project-local volume shader mapping was not enabled.'}
