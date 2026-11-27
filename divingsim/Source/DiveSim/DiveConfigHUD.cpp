@@ -16,6 +16,11 @@ const Dive::ConfigInput* Input(FName Id)
 { return Dive::FindConfigInput(TCHAR_TO_UTF8(*Id.ToString().ToLower())); }
 FString Number(const Dive::ConfigInput& Spec,double Value)
 { return UTF8_TO_TCHAR(Dive::FormatConfigInput(Spec,Value).c_str()); }
+FString DisplayUnit(const Dive::ConfigInput& Spec)
+{
+    const FString unit=UTF8_TO_TCHAR(Spec.Unit);
+    return unit==TEXT("C")?TEXT("°C"):unit==TEXT("deg")?TEXT("°"):unit;
+}
 }
 
 FString ADiveHUD::ConfigValue(FName Id) const
@@ -23,7 +28,7 @@ FString ADiveHUD::ConfigValue(FName Id) const
     if(Id==TEXT("date")&&Diver) return UTF8_TO_TCHAR(Diver->PendingConfig.Date.Text().c_str());
     const auto* spec=Input(Id); if(!spec||!Diver) return FString();
     const FString value=Number(*spec,Diver->PendingConfig.Resolved().*(spec->Member));
-    return spec->Clock?value:value+TEXT(" ")+UTF8_TO_TCHAR(spec->Unit);
+    return spec->Clock?value:value+TEXT(" ")+DisplayUnit(*spec);
 }
 FString ADiveHUD::ConfigInputTitle() const
 {
@@ -55,7 +60,7 @@ FString ADiveHUD::ConfigInputHint() const
         TEXT("YYYY-MM-DD, 2000–2099. Swiss local time.\nRepeated autumn times use the first occurrence (summer time).\nEnter applies; Escape cancels."));
     const auto* spec=Input(ConfigEditing); if(!spec) return FString();
     const FString range=spec->Clock?TEXT("00:00 – 23:59 (HH:MM)"):
-        Number(*spec,spec->Minimum)+TEXT(" – ")+Number(*spec,spec->Maximum)+TEXT(" ")+UTF8_TO_TCHAR(spec->Unit);
+        Number(*spec,spec->Minimum)+TEXT(" – ")+Number(*spec,spec->Maximum)+TEXT(" ")+DisplayUnit(*spec);
     return range+TEXT("\n")+(spec->Clock?FString():Diver->Local(TEXT("Dezimalpunkt oder Komma. "),TEXT("Decimal point or comma. ")))+
         Diver->Local(TEXT("Enter übernimmt; Escape verwirft."),TEXT("Enter applies; Escape cancels."));
 }

@@ -53,7 +53,7 @@ void ADiveHUD::Menu()
     }
     else if(bEnvironmentPage)
     {
-        const float ew=310;
+        const float w=210,gap=20,ew=210;
         Text(L(TEXT("01 · ATMOSPHÄRE & DATUM"),TEXT("01 · ATMOSPHERE & DATE")),x,194,13,Accent);
         const FString weather[]={L(TEXT("Heiter"),TEXT("Clear")),L(TEXT("Bedeckt"),TEXT("Overcast")),L(TEXT("Regen"),TEXT("Rain")),L(TEXT("Sturm"),TEXT("Storm"))};
         Field(TEXT("weather"),L(TEXT("WETTER"),TEXT("WEATHER")),weather[c.Weather],x,220,ew);
@@ -79,6 +79,45 @@ void ADiveHUD::Menu()
         Button(TEXT("auto_water"),L(TEXT("Wasser: "),TEXT("Water: "))+(c.AutoTemperature?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x,634,w,38,false,!Diver->bDiveActive);
         Button(TEXT("auto_visibility"),L(TEXT("Sicht: "),TEXT("Visibility: "))+(c.AutoVisibility?TEXT("Auto"):*L(TEXT("Manuell"),TEXT("Custom"))),x+w+gap,634,w,38,false,!Diver->bDiveActive);
         Button(TEXT("current_source"),L(TEXT("Strömung: "),TEXT("Current: "))+currentModes[static_cast<int>(c.CurrentSource)],x+2*(w+gap),634,w,38,false,!Diver->bDiveActive);
+        // Draw the same temperature function used by the dive simulation.
+        // Manual end-point parameters need not equal the logistic curve at 0 m.
+        const Dive::Model profile(Diver->bDiveActive?Diver->Simulation.Settings:c);
+        const double deepest=FMath::Clamp(FMath::CeilToDouble(profile.Settings.PlannedDepthMetres/10)*10,40.,60.);
+        constexpr float gx=1232,gy=290,gw=204,gh=228;
+        Rect(1170,194,290,478,FLinearColor(.025,.065,.063,.92));
+        Text(L(TEXT("TEMPERATURPROFIL"),TEXT("TEMPERATURE PROFILE")),1186,208,14,Accent);
+        TextBlock(profile.Settings.AutoTemperature?L(TEXT("Saisonales Szenarioprofil"),TEXT("Seasonal scenario profile")):
+            L(TEXT("Aus deinen Wasserparametern"),TEXT("From your water settings")),1186,237,258,12,Muted,2);
+        Text(L(TEXT("Tiefe / m"),TEXT("Depth / m")),1186,267,12,Muted);
+        auto px=[&](double temperature){return gx+gw*FMath::Clamp(temperature/30.,0.,1.);};
+        auto py=[&](double depth){return gy+gh*depth/deepest;};
+        for(int i=0;i<=4;++i)
+        {
+            const double depth=deepest*i/4;
+            Line(gx,py(depth),gx+gw,py(depth),FLinearColor(.10,.22,.20,1),.7);
+            Text(FString::Printf(TEXT("%.0f"),depth),1186,py(depth)-7,12,Muted);
+        }
+        for(int i=0;i<=3;++i)
+        {
+            const double temperature=10.*i;
+            Line(px(temperature),gy,px(temperature),gy+gh,FLinearColor(.10,.22,.20,1),.7);
+            Text(FString::Printf(TEXT("%.0f"),temperature),px(temperature)-5,gy+gh+9,12,Muted);
+        }
+        Text(L(TEXT("Temperatur / °C"),TEXT("Temperature / °C")),1260,551,12,Muted);
+        if(!profile.Settings.AutoTemperature)
+            Line(gx,py(profile.Settings.ThermoclineMetres),gx+gw,py(profile.Settings.ThermoclineMetres),FLinearColor(.65,.48,.20,1),1);
+        for(int i=1;i<=120;++i)
+        {
+            const double before=deepest*(i-1)/120,depth=deepest*i/120;
+            Line(px(profile.Temperature(before)),py(before),px(profile.Temperature(depth)),py(depth),Accent,2);
+        }
+        const double planned=profile.Settings.PlannedDepthMetres;
+        const float planY=py(planned),planX=px(profile.Temperature(planned));
+        for(float tick=gx;tick<gx+gw;tick+=12) Line(tick,planY,FMath::Min(tick+6,gx+gw),planY,White,.8);
+        Rect(planX-3,planY-3,6,6,White);
+        TextBlock(FString::Printf(TEXT("%s %.1f m · %.1f °C"),*L(TEXT("Plan:"),TEXT("Plan:")),planned,profile.Temperature(planned)),1186,578,258,15,White,1);
+        TextBlock(profile.Settings.AutoTemperature?L(TEXT("Schichtung folgt dem Datum."),TEXT("Layering follows the date.")):
+            FString::Printf(TEXT("%s %.1f m"),*L(TEXT("Sprungschicht:"),TEXT("Thermocline:")),profile.Settings.ThermoclineMetres),1186,611,258,13,Muted,2);
         TextBlock(L(TEXT("Automatik verwendet saisonale Profile und Szenariowerte. Keine Live-Messung."),TEXT("Automatic settings use seasonal profiles and scenario values. No live measurements.")),x,698,950,15,Muted,2);
     }
     else if(Diver->bDiveActive) PauseDashboard();

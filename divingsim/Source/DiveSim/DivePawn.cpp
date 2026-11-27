@@ -880,10 +880,10 @@ void ADivePawn::SimulateStep(float Step)
     if(Simulation.Settings.Rules().AutomaticHints&&!bTutorialActive&&s.ElapsedSeconds>=NextAutomaticHint)
     {
         FString hint;
-        if(s.Warnings&Dive::NoBreathingSupply) hint=Local(TEXT("Atmung unterbrochen. Pruefe den Atemregler und deine Position."),TEXT("Breathing interrupted. Check the regulator and your position."));
-        else if(s.Warnings&Dive::FastAscent) hint=Local(TEXT("Du steigst schnell auf. Pruefe deinen Auftrieb."),TEXT("You are ascending quickly. Check your buoyancy."));
+        if(s.Warnings&Dive::NoBreathingSupply) hint=Local(TEXT("Atmung unterbrochen. Prüfe den Atemregler und deine Position."),TEXT("Breathing interrupted. Check the regulator and your position."));
+        else if(s.Warnings&Dive::FastAscent) hint=Local(TEXT("Du steigst schnell auf. Prüfe deinen Auftrieb."),TEXT("You are ascending quickly. Check your buoyancy."));
         else if(s.Warnings&Dive::LowGas) hint=Local(TEXT("Wenig Atemgas. Behalte deinen Rueckweg im Blick."),TEXT("Breathing gas is low. Keep track of your return route."));
-        else if(s.MotorCapacity<.8) hint=Local(TEXT("Deine Leistungsfaehigkeit sinkt. Pruefe Vitalwerte und Tauchprofil."),TEXT("Your capacity is falling. Check vitals and your dive profile."));
+        else if(s.MotorCapacity<.8) hint=Local(TEXT("Deine Leistungsfähigkeit sinkt. Prüfe Vitalwerte und Tauchprofil."),TEXT("Your capacity is falling. Check vitals and your dive profile."));
         if(!hint.IsEmpty()) { Notify(hint); NextAutomaticHint=s.ElapsedSeconds+30; }
     }
     bEnteredWater|=s.DepthMetres>.2;
