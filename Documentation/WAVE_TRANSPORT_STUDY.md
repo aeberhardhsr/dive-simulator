@@ -49,4 +49,19 @@ Einrichtung, Versionsbindung und aktueller Build-Stand der separaten Engine steh
 4. Nacht/Tauchlampe, Überwasserflächen, tiefe Bereiche und Land-Wasser-Grenzen prüfen; die noch fehlende horizontale Seemaske bleibt ein Ausschlussgrund für die Standardaktivierung.
 5. Erst nach Bildprüfung, Pakettest und Leistungsmessung über eine Übernahme entscheiden.
 
+### Vorbereiteter paarweiser Receiver-Vergleich
+
+`Tools/TestWaveTransport.ps1` bereitet nach bestandenem einzelnen Tageslauf zehn sequenzielle Aufnahmenläufe vor: je Projektions- und Wellenvariante für `day`, `calm`, `deep`, `air` und `night`. Beide Varianten verwenden dieselbe separate Engine, dieselben Projektmodule und dieselbe Kamerafixierung. Vier Phasen pro Lauf ergeben insgesamt 40 Bilder: Stärke ein/aus zum gleichen Zeitpunkt, ein weiterer Zeitpunkt und dessen Wiederholung als Kontrolle für zeitliches Renderrauschen.
+
+Vor dem Start werden laufende Unreal-Builds, Editor-/Spielprozesse und Shader-Worker zurückgewiesen. Engine-Renderer, Projektmodule, relevante Quellen und vorbereitete Shader werden mit Prüfsummen erfasst; nach den Läufen werden unveränderte Eingaben verlangt. Die Fälle bleiben ausdrücklich `visual_status=NOT_REVIEWED`, auch wenn alle Laufzeitmarker vorliegen. Habitatansichten, Lampen, Seegrenzen und Performance sind zusätzliche Prüfungen.
+
+```powershell
+# Erst nach erfolgreichem Engine-Build und geprüftem einzelnen Wellen-Tageslauf:
+./Tools/.geodata-env/Scripts/python.exe Tools/PrepareSolarShaderStudy.py `
+    --engine Builds/UE584 --project Builds/SourceEditorSandbox/divingsim --volume
+./Tools/TestWaveTransport.ps1
+```
+
+Aktueller Nachweis für das neue Vergleichswerkzeug: PowerShell-Syntaxprüfung und tatsächliche Abweisung beim laufenden Engine-Build bestanden. Die beiden Shader-Verzeichnisse sind vorbereitet. Die zehn nativen Vergleichsläufe wurden noch nicht ausgeführt.
+
 Die normale Vorschau bleibt `Builds/WindowsPlantColor/Start-WaterPreview.cmd`. Die vereinbarte Reihenfolge bleibt Unterwasserwelt, Überwasserlandschaft, danach [Menü/HUD/FPV](UI_UX_TARGET.md).
