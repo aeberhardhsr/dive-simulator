@@ -14,6 +14,8 @@ Der Zugriff auf `EpicGames/UnrealEngine` funktioniert nach der vom Nutzer abgesc
 
 **Status: Shader-Compiler fertig; Editor-/Renderer-Build läuft. Noch kein gültiger Renderlauf mit der geänderten Engine.** Die bestehende Vorschau und die [fehlgeschlagene erste Wellenprobe](WAVE_TRANSPORT_STUDY.md) werden dadurch nicht rückwirkend geändert. Die Protokolle liegen unter `artifacts/source-engine-20261127/`; der [Zwischenbericht](SOURCE_ENGINE_RESULTS.json) bindet den abgeschlossenen Compiler-Build und die Eingangsdaten.
 
+Inzwischen sind beide geänderten Übersetzungseinheiten `LightRendering.cpp` und `VolumetricFog.cpp` erfolgreich kompiliert, und `UnrealEditor-Renderer.lib` ist erzeugt. Die zwei Objektdateien, die Importbibliothek und ein unveränderlicher Ausschnitt des bisherigen Build-Protokolls sind im Zwischenbericht mit Prüfsummen erfasst. Zu diesem Prüfzeitpunkt existiert die Renderer-DLL noch nicht; der vollständige Editor-Build läuft weiter. Dies belegt die C++-Kompilierbarkeit der Änderung, noch nicht ihre Shader-Bindung oder Bildwirkung.
+
 Bei der anschliessenden Quellprüfung wurde der Aufruf in `FSceneRenderer::ComputeVolumetricFog` auf die dort vorhandene Memberfunktion `GetSceneUniformBufferRef(GraphBuilder)` korrigiert. Die ursprüngliche Variante mit zwei Argumenten wäre durch diese Memberfunktion verdeckt und damit nicht auflösbar. Die Korrektur ist vor dem Kompilieren dieser Datei in den laufenden Quellbaum übernommen worden; der Build wurde nicht neu gestartet. Die aktuelle Vorbereitung unter `renderer-patch-v2` stimmt bytegenau mit den zwei geänderten Quelldateien überein. Der frühere Patch bleibt als unkompilierter Zwischenstand erhalten.
 
 ## Getrennte Projekt-Binaries

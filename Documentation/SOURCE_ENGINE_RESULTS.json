@@ -1,5 +1,5 @@
 {
-  "status": "shader_worker_passed_editor_build_in_progress_not_runtime_validated",
+  "status": "changed_renderer_objects_passed_full_editor_build_in_progress_not_runtime_validated",
   "source_tag": "5.8.4-release",
   "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
   "dependencies": {
@@ -85,5 +85,33 @@
     ]
   },
   "renderer_patch_correction": "Use the one-argument FSceneRenderer member inside ComputeVolumetricFog; applied before its pending compile action, without restarting the build.",
-  "current_patch_dry_apply_check": "passed against unchanged installed originals"
+  "current_patch_dry_apply_check": "passed against unchanged installed originals",
+  "renderer_object_checkpoint": {
+    "status": "two_changed_translation_units_compiled_import_library_created",
+    "log": {
+      "path": "artifacts/source-engine-20261127/renderer-object-checkpoint.log",
+      "sha256": "1acb96386ed572eb973b9c9a8ca822058df3963aafbf26ab7815faaa690ca063",
+      "bytes": 35392
+    },
+    "outputs": [
+      {
+        "path": "Builds/UE584/Engine/Intermediate/Build/Win64/x64/UnrealEditor/Development/Renderer/LightRendering.cpp.obj",
+        "sha256": "53a3b684c2382df19d98119c61e8af90392ca8df1edefb7c2aae516af29cc77d",
+        "bytes": 16125148
+      },
+      {
+        "path": "Builds/UE584/Engine/Intermediate/Build/Win64/x64/UnrealEditor/Development/Renderer/VolumetricFog.cpp.obj",
+        "sha256": "183cb37d21c7dee80659529dc5103440302376436f35a97a3b79add43b0ac94a",
+        "bytes": 14811649
+      },
+      {
+        "path": "Builds/UE584/Engine/Intermediate/Build/Win64/x64/UnrealEditor/Development/Renderer/UnrealEditor-Renderer.lib",
+        "sha256": "98c55db42290bfcb1b434722f4d9c74ed034e8bc717a453a4212cc57a204ba4e",
+        "bytes": 407828
+      }
+    ],
+    "renderer_dll_exists": false,
+    "full_editor_build_complete": false,
+    "native_shader_binding_validated": false
+  }
 }

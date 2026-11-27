@@ -28,7 +28,7 @@ Der Versuch verlangt nun beim Modulstart die kompilierte Renderer-Fähigkeit `r.
 - dessen Zuweisung in beiden Helfern für Deferred-Licht und im Volumen-Lichtdurchlauf;
 - eine kompilierte Fähigkeitskennung, einen lesbaren Diff und ein Prüfsummenmanifest.
 
-Installierte Engine-Dateien werden nicht verändert. Die vollständigen modifizierten Epic-Dateien werden nicht in dieses Projekt-Repository übernommen. Der vorbereitete Patch ist **noch nicht als Renderer kompiliert**. Ein anderer Engine-Quellstand wird vor der Ausgabe zurückgewiesen und muss separat geprüft werden.
+Installierte Engine-Dateien werden nicht verändert. Die vollständigen modifizierten Epic-Dateien werden nicht in dieses Projekt-Repository übernommen. Die beiden geänderten C++-Dateien sind inzwischen erfolgreich kompiliert; Renderer-DLL und vollständiger Editor-Build stehen am dokumentierten Zwischenstand noch aus. Der [Objektdatei-Nachweis](SOURCE_ENGINE_RESULTS.json) ersetzt keine Shader- oder Bildprüfung. Ein anderer Engine-Quellstand wird vor der Ausgabe zurückgewiesen und muss separat geprüft werden.
 
 Die [gebundenen Prüfergebnisse](WAVE_TRANSPORT_RESULTS.json) dokumentieren den erfolgreichen Projekt-Editor-Build, den normalen Tageslauf mit vier Aufnahmen und den erwarteten sofortigen Abbruch des Wellenversuchs auf der unveränderten Engine. Die Patch-Erzeugung ist deterministisch; `git apply --check` gegen die Originale besteht. Ein veränderter Quellstand und eine Ausgabe innerhalb des Engine-Verzeichnisses werden vor dem Schreiben abgewiesen. Diese Prüfungen ersetzen ausdrücklich keinen Build des geänderten Renderers. Die vorhandenen AutomationTest-/ToolsetRegistry-Startdiagnosen sind im normalen Lauf weiterhin enthalten.
 
