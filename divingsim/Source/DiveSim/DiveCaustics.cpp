@@ -63,7 +63,9 @@ void ADiveWorld::SetCausticsTestStrength(float Value)
         // Repeat to cover newly streamed components. Keep the actual volume medium.
         TArray<UPrimitiveComponent*> components;GetComponents(components);
         for(auto* component:components)
-            if(component!=WaterVolume.Get()&&!CausticsProbe.ContainsByPredicate([component](const auto& p){return p.Get()==component;}))
+            if(component!=WaterVolume.Get()&&
+                !(component==Water.Get()&&!DiveShoreSurfaceFixture().IsEmpty())&&
+                !CausticsProbe.ContainsByPredicate([component](const auto& p){return p.Get()==component;}))
                 component->SetVisibility(false);
     }
 }

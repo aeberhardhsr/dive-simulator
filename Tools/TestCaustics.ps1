@@ -1,6 +1,6 @@
 param([string]$PackageDirectory='', [switch]$EditorSandbox, [switch]$WaterPreview, [switch]$SolarShaderStudy, [switch]$SolarVolumeStudy, [switch]$WaveTransportStudy,
-    [switch]$LakeFootprint, [string]$LakeFootprintProbeFile='',
-    [ValidateSet('day','calm','night','air','deep','shore')][string]$Case='day',
+    [switch]$LakeFootprint, [switch]$LakeSurfaceOff, [switch]$LakeSurfaceDepthDebug, [string]$LakeFootprintProbeFile='',
+    [ValidateSet('day','calm','night','air','deep','shore','shore-top','shore-under')][string]$Case='day',
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidateRange(180,7200)][int]$TimeoutSeconds=180,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8')
@@ -10,6 +10,8 @@ if($SolarShaderStudy -and ($PackageDirectory -or -not $EditorSandbox -or -not $W
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
 if($WaveTransportStudy -and -not $SolarVolumeStudy) {throw 'WaveTransportStudy requires SolarVolumeStudy.'}
 if($LakeFootprint -and -not $WaveTransportStudy) {throw 'LakeFootprint requires WaveTransportStudy.'}
+if($LakeSurfaceOff -and -not $LakeFootprint) {throw 'LakeSurfaceOff requires LakeFootprint.'}
+if($LakeSurfaceDepthDebug -and (-not $LakeFootprint -or $Case -ne 'shore-under')) {throw 'LakeSurfaceDepthDebug requires LakeFootprint and shore-under.'}
 if($LakeFootprintProbeFile) {
     if(-not $LakeFootprint) {throw 'LakeFootprintProbeFile requires LakeFootprint.'}
     $LakeFootprintProbeFile=(Resolve-Path -LiteralPath $LakeFootprintProbeFile).Path
@@ -37,6 +39,8 @@ if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
 if($SolarVolumeStudy) {$arguments+=' -DiveSolarVolumeStudy'}
 if($WaveTransportStudy) {$arguments+=' -DiveWaveTransportStudy'}
 if($LakeFootprint) {$arguments+=' -DiveLakeFootprint'}
+if($LakeSurfaceOff) {$arguments+=' -DiveLakeSurfaceOff'}
+if($LakeSurfaceDepthDebug) {$arguments+=' -DiveSpectralView -DiveSpectralDepthDebug'}
 if($LakeFootprintProbeFile) {$arguments+=' -DiveLakeFootprintProbeFile="'+$LakeFootprintProbeFile+'"'}
 $started=[DateTime]::UtcNow
 $archives=@()
@@ -52,7 +56,7 @@ if($PackageDirectory) {
 }
 @{started_utc=$started.ToString('o');executable=$executable;executable_sha256=(Get-FileHash -LiteralPath $executable).Hash;
     renderer_module=$rendererIdentity;sandbox_name=$SandboxName;timeout_seconds=$TimeoutSeconds;
-    lake_footprint=[bool]$LakeFootprint;lake_footprint_probe_file=$LakeFootprintProbeFile;
+    lake_footprint=[bool]$LakeFootprint;lake_surface_off=[bool]$LakeSurfaceOff;lake_surface_depth_debug=[bool]$LakeSurfaceDepthDebug;lake_footprint_probe_file=$LakeFootprintProbeFile;
     case=$Case;packaged=[bool]$PackageDirectory;water_preview=[bool]$WaterPreview;solar_shader_study=[bool]$SolarShaderStudy;solar_volume_study=[bool]$SolarVolumeStudy;wave_transport_study=[bool]$WaveTransportStudy;package_archives=$archives;head=(& git -C $repo rev-parse HEAD)} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $result 'Host.json') -Encoding utf8
 $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
 if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Caustics capture exceeded its $TimeoutSeconds second time limit: process $($process.Id). It was not restarted or terminated." }
@@ -63,6 +67,8 @@ if($SolarVolumeStudy -and $text -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY') {thro
 if($WaveTransportStudy -and $text -notmatch 'DIVE_WATER_SCENE_READY waves=4') {throw 'Shared water scene parameters were not uploaded.'}
 if($WaterPreview -and $text -notmatch 'DIVE_WATER_PREVIEW_READY') {throw 'Water preview was not enabled.'}
 if($LakeFootprint -and $text -notmatch 'DIVE_LAKE_FOOTPRINT_READY') {throw 'Lake footprint was not loaded.'}
+if($LakeFootprint -and $text -notmatch ('DIVE_LAKE_SURFACE_READY enabled='+[int](-not $LakeSurfaceOff)+' materials=2')) {throw 'Lake surface coverage was not bound to both water materials.'}
+if($LakeSurfaceDepthDebug -and $text -notmatch 'DIVE_SPECTRAL_VIEW_READY') {throw 'Water custom-depth diagnostic did not execute.'}
 if($LakeFootprintProbeFile) {
     if($text -notmatch 'DIVE_LAKE_GPU_PASS') {throw 'GPU footprint audit did not complete.'}
     $probe=Get-Item -LiteralPath (Join-Path $saved 'LakeFootprintGPU.csv')

@@ -5,6 +5,8 @@
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/Texture2D.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
 void ADiveWorld::CreateWaterVolume()
 {
@@ -29,6 +31,19 @@ void ADiveWorld::CreateWaterVolume()
         WaterVolumeMaterial->SetTextureParameterValue(TEXT("LakeGrid"),LakeFootprint);
         WaterVolumeMaterial->SetVectorParameterValue(TEXT("LakeMap"),FLinearColor(LakeFootprintMap.X,LakeFootprintMap.Y,LakeFootprintMap.Z,LakeFootprintMap.W));
         WaterVolumeMaterial->SetScalarParameterValue(TEXT("LakeEnabled"),1);
+        const bool surfaceEnabled=!FParse::Param(FCommandLine::Get(),TEXT("DiveLakeSurfaceOff"));
+        int32 surfaceCount=0;
+        for(auto* surface:{WaterMaterial.Get(),WaterUnderMaterial.Get()}) if(surface)
+        {
+            parameters.Reset();ids.Reset();surface->GetAllScalarParameterInfo(parameters,ids);
+            if(!parameters.ContainsByPredicate([](const auto& p){return p.Name==TEXT("LakeSurfaceEnabled");}))
+                UE_LOG(LogTemp,Fatal,TEXT("DIVE_LAKE_SURFACE_FAIL water surface materials must be rebuilt with OnlyWater"));
+            surface->SetTextureParameterValue(TEXT("LakeGrid"),LakeFootprint);
+            surface->SetVectorParameterValue(TEXT("LakeMap"),FLinearColor(LakeFootprintMap.X,LakeFootprintMap.Y,LakeFootprintMap.Z,LakeFootprintMap.W));
+            surface->SetScalarParameterValue(TEXT("LakeSurfaceEnabled"),surfaceEnabled?1:0);
+            ++surfaceCount;
+        }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_LAKE_SURFACE_READY enabled=%d materials=%d contour=zero_distance"),surfaceEnabled,surfaceCount);
     }
     WaterVolume->SetMaterial(0,WaterVolumeMaterial);
     WaterVolume->RegisterComponent();

@@ -3,10 +3,17 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 
+inline FString DiveShoreSurfaceFixture()
+{
+    FString name;FParse::Value(FCommandLine::Get(),TEXT("DiveCausticsCase="),name);
+    return FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&
+        (name==TEXT("shore-top")||name==TEXT("shore-under"))?name:FString();
+}
+
 inline bool DiveShoreCausticsFixture()
 {
     FString name;FParse::Value(FCommandLine::Get(),TEXT("DiveCausticsCase="),name);
-    return name==TEXT("shore")&&FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));
+    return (name==TEXT("shore")&&FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest")))||!DiveShoreSurfaceFixture().IsEmpty();
 }
 
 inline FVector DiveCausticsFixtureCenter(const FVector& Default)

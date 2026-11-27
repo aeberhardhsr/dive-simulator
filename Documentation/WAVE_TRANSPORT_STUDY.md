@@ -10,7 +10,7 @@ Die bisherigen skalaren Kaustiken werden auf eine repräsentative Tiefe projizie
 
 Diese Implementierung ist noch keine physikalische oder visuelle Abnahme. Vollständige Lichtwege über Seegrenzen, energieerhaltende Mehrwege-Fokussierung, angepasste Schattenstrahlen und indirekte Lichtwege fehlen. Auch räumliche Lichtbündel und zeitliche Stabilität sind erst anhand tatsächlicher Bilder zu beurteilen.
 
-Für die Seegrenzen ist inzwischen ein [geografisches Distanzraster](LAKE_FOOTPRINT.md) mit den drei ausgesparten Inseln vorbereitet. Seine Offline-Prüfung und eine nachfolgende optionale GPU-Anbindung sind bestanden. 42.793 GPU-Abfragen und ein freigelegter Ufer-Prüfkörper sind im [separaten Bericht](LAKE_FOOTPRINT_GPU_RESULTS.json) erfasst. Die unten dokumentierte ursprüngliche Zehn-Fälle-Reihe verwendete noch keine Seemaske; die sichtbare Wassergeometrie und vollständige Lichtwege an Ufern bleiben offen.
+Für die Seegrenzen ist inzwischen ein [geografisches Distanzraster](LAKE_FOOTPRINT.md) mit den drei ausgesparten Inseln vorbereitet. Seine Offline-Prüfung und eine nachfolgende optionale GPU-Anbindung sind bestanden. 42.793 GPU-Abfragen und ein freigelegter Ufer-Prüfkörper sind im [separaten Bericht](LAKE_FOOTPRINT_GPU_RESULTS.json) erfasst. Die unten dokumentierte ursprüngliche Zehn-Fälle-Reihe verwendete noch keine Seemaske. Die anschliessende [Begrenzung der sichtbaren Wasseroberfläche](LAKE_SURFACE.md) hat einen eigenen Prüfstand; vollständige Lichtwege an Ufern bleiben offen.
 
 ## Tatsächlicher Fehler und Gegenmassnahme
 

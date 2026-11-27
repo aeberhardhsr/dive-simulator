@@ -26,7 +26,7 @@ void ADivePawn::TickCausticsTest(float Dt)
     FString fixture=TEXT("day");FParse::Value(FCommandLine::Get(),TEXT("DiveCausticsCase="),fixture);
     const bool calm=fixture==TEXT("calm"),night=fixture==TEXT("night"),air=fixture==TEXT("air"),deep=fixture==TEXT("deep");
     const bool disabled=phase==1;
-    const float height=air?400:deep?-1500:-320;
+    const float height=air?400:deep?-1500:fixture==TEXT("shore-under")?-600:-320;
     const FVector center=DiveCausticsFixtureCenter(Environment->Terrain.Entries[0].Position);
     if(phase!=CausticsTestPhase)
     {
@@ -38,8 +38,9 @@ void ADivePawn::TickCausticsTest(float Dt)
         CausticsTestPhase=phase;
     }
     if(DiveShoreCausticsFixture()) Environment->SetCausticsTestStrength(disabled?0:1);
-    const FVector eye(center.X-230,center.Y,height+235);
-    const FRotator gaze=FRotator(-48,0,0);
+    const bool surfaceTop=fixture==TEXT("shore-top"),surfaceUnder=fixture==TEXT("shore-under");
+    const FVector eye(center.X-230,center.Y,surfaceTop?350:surfaceUnder?-350:height+235);
+    const FRotator gaze=FRotator(surfaceTop?-65:surfaceUnder?65:-48,0,0);
     SetActorLocation(eye-FVector(0,0,60));pc->SetControlRotation(gaze);
     Camera->SetWorldLocationAndRotation(eye,gaze);
     FString error;

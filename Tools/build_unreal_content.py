@@ -1,8 +1,10 @@
 """Run using UnrealEditor-Cmd -run=pythonscript -script=<absolute path>."""
 import unreal as u
 from pathlib import Path
+import sys
 
 ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT/'Tools') not in sys.path:sys.path.insert(0,str(ROOT/'Tools'))
 ASSETS=ROOT/'blender'/'exports'
 TOOLS=u.AssetToolsHelpers.get_asset_tools()
 LIB=u.MaterialEditingLibrary
@@ -32,6 +34,11 @@ def material(name, color, roughness=.7, vertex=False, custom_color=None, custom_
     if water:
         m.set_editor_property('shading_model',u.MaterialShadingModel.MSM_SINGLE_LAYER_WATER)
         m.set_editor_property('tangent_space_normal',False)
+        m.set_editor_property('blend_mode',u.BlendMode.BLEND_MASKED)
+        m.set_editor_property('opacity_mask_clip_value',.5)
+        from build_lake_surface_mask import lake_surface_mask
+        if not LIB.connect_material_property(lake_surface_mask(m),'',u.MaterialProperty.MP_OPACITY_MASK):
+            raise RuntimeError('Lake surface coverage connection failed')
     if translucent:
         m.set_editor_property('blend_mode',u.BlendMode.BLEND_TRANSLUCENT)
     if unlit:

@@ -18,7 +18,9 @@ def build_underwater_interface(wave_code):
     # Optional spectral-view experiment needs the actual displaced boundary,
     # including low-opacity transmission inside Snell's window.
     m.set_editor_property('allow_translucent_custom_depth_writes',True)
-    m.set_editor_property('opacity_mask_clip_value',0.)
+    # Retain the Fresnel window, but zero geographic coverage must not write
+    # custom depth. Water/air Fresnel stays well above this small threshold.
+    m.set_editor_property('opacity_mask_clip_value',.0001)
     # An infinite plane cannot use a bulk screen-space offset without exposing
     # unavailable pixels at the viewport edges. Distort only the wave normals.
     # Fresnel below still uses the physical water-to-air index ratio.
@@ -60,6 +62,7 @@ def build_underwater_interface(wave_code):
         for name,node in selected.items():
             if not lib.connect_material_expressions(node,'',fn,name):raise RuntimeError(name)
         if not lib.connect_material_property(fn,'',prop):raise RuntimeError(str(prop))
+        return fn
     custom(wave_code+'return float3(0,0,h*100*fade);',u.CustomMaterialOutputType.CMOT_FLOAT3,u.MaterialProperty.MP_WORLD_POSITION_OFFSET)
     optics=(Path(__file__).parent/'Shaders/WaterOptics.ush').read_text()
     normal=optics+wave_code+'''
@@ -70,7 +73,14 @@ float3 normal=normalize(float3(slope*fade+h*fadeSlope+(allSlope-slope),-1));
 '''
     custom(normal+'return normal;',u.CustomMaterialOutputType.CMOT_FLOAT3,u.MaterialProperty.MP_NORMAL)
     fresnel=(Path(__file__).parent/'Shaders/WaterInterfaceFresnel.ush').read_text()
-    custom(normal+fresnel,u.CustomMaterialOutputType.CMOT_FLOAT1,u.MaterialProperty.MP_OPACITY,with_view=True)
+    reflectance=custom(normal+fresnel,u.CustomMaterialOutputType.CMOT_FLOAT1,u.MaterialProperty.MP_OPACITY,with_view=True)
+    from build_lake_surface_mask import lake_surface_mask
+    coverage=lake_surface_mask(m)
+    opacity=lib.create_material_expression(m,u.MaterialExpressionMultiply)
+    lib.connect_material_expressions(reflectance,'',opacity,'A')
+    lib.connect_material_expressions(coverage,'',opacity,'B')
+    if not lib.connect_material_property(opacity,'',u.MaterialProperty.MP_OPACITY):
+        raise RuntimeError('Water underside geographic coverage connection failed')
     lib.recompile_material(m)
     if not u.EditorAssetLibrary.save_loaded_asset(m):raise RuntimeError('Water underside save failed')
     u.log('DIVE_WATER_INTERFACE_CONTENT_OK fresnel=water_to_air reflection=lumen_front_layer')
