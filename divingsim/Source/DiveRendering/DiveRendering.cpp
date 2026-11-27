@@ -136,9 +136,16 @@ public:
             if(!FFileHelper::LoadFileToString(routing,*(FPaths::GetPath(prepared)/TEXT("RoutingMode.txt")))||routing!=(unified?TEXT("unified"):TEXT("hybrid")))
                 UE_LOG(LogTemp,Fatal,TEXT("Prepared reflection shader routing mode does not match the requested mode."));
             const bool control=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl"));
+            FString requestedProfile=TEXT("full"),preparedProfile;
+            FParse::Value(FCommandLine::Get(),TEXT("DiveReflectionProfile="),requestedProfile);
+            if((requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("routing")&&requestedProfile!=TEXT("unshadowed")&&requestedProfile!=TEXT("cached"))||
+                !FFileHelper::LoadFileToString(preparedProfile,*(FPaths::GetPath(prepared)/TEXT("ProfileMode.txt")))||preparedProfile!=requestedProfile||
+                (control&&requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("cached")))
+                UE_LOG(LogTemp,Fatal,TEXT("Prepared reflection diagnostic profile does not match the request."));
             if(!control) AddShaderSourceDirectoryMapping(TEXT("/Engine/Private/Lumen"),prepared);
             UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_TRANSPORT_READY enabled=%d samples=16 light_source=scene scope=raygen_water_frontlayer"),control?0:1);
             UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_ROUTING_READY unified=%d"),unified?1:0);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_PROFILE_READY profile=%s diagnostic=%d"),*preparedProfile,preparedProfile!=TEXT("full")?1:0);
         }
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionRayStudy"))&&
            FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))

@@ -19,6 +19,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$ReflectionTransportStudy,
     [switch]$ReflectionTransportControl,
     [switch]$ReflectionUnified,
+    [ValidateSet('full','cached')][string]$ReflectionProfile='full',
     [switch]$WaterInspectionLamp,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
@@ -55,6 +56,7 @@ if($LakeFootprint -and -not ($WaveTransportStudy -or $ReflectionTransportStudy))
 if($ReflectionTransportStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview -or -not $LakeFootprint -or $SolarShaderStudy -or $ReflectionRayStudy -or $DisableRayTracing)) {throw 'ReflectionTransportStudy requires the source editor sandbox, WaterPreview, LakeFootprint and ray tracing, without other shader studies.'}
 if($ReflectionTransportControl -and -not $ReflectionTransportStudy) {throw 'ReflectionTransportControl requires ReflectionTransportStudy.'}
 if($ReflectionUnified -and -not $ReflectionTransportStudy) {throw 'ReflectionUnified requires ReflectionTransportStudy.'}
+if($ReflectionProfile -ne 'full' -and -not $ReflectionTransportStudy) {throw 'Cached reflection requires a reflection study.'}
 if($WaterInspectionLamp -and (-not $WaterView -or $LampOff)) {throw 'WaterInspectionLamp requires WaterView without LampOff.'}
 if($LakeSurfaceOff -and -not $LakeFootprint) {throw 'LakeSurfaceOff requires LakeFootprint.'}
 if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
@@ -80,6 +82,7 @@ if($ReflectionRayStudy) {$arguments+=' -DiveReflectionRayStudy'}
 if($ReflectionTransportStudy) {$arguments+=' -DiveReflectionTransportStudy'}
 if($ReflectionTransportControl) {$arguments+=' -DiveReflectionTransportControl'}
 if($ReflectionUnified) {$arguments+=' -DiveReflectionUnified'}
+if($ReflectionTransportStudy) {$arguments+=' -DiveReflectionProfile='+$ReflectionProfile}
 if($WaterInspectionLamp) {$arguments+=' -DiveWaterInspectionLamp'}
 if($SolarVolumeStudy) {$arguments+=' -DiveSolarVolumeStudy'}
 if($WaveTransportStudy) {$arguments+=' -DiveWaveTransportStudy'}
@@ -251,6 +254,7 @@ if($ReflectionRayStudy -and $log -notmatch 'DIVE_REFLECTION_RAY_STUDY_READY') {t
 if($ReflectionTransportStudy -and ($log -notmatch ('DIVE_REFLECTION_TRANSPORT_READY enabled='+[int](-not $ReflectionTransportControl)) -or $log -notmatch 'DIVE_WATER_SCENE_READY' -or $log -notmatch 'r.Lumen.HardwareRayTracing.Inline = "0"')) {throw 'Reflection water transport mode was not enabled.'}
 if($WaterInspectionLamp -and $log -notmatch 'DIVE_WATER_LAMP view=0 on=1') {throw 'The water inspection lamp was not active.'}
 if($ReflectionTransportStudy -and $log -notmatch ('DIVE_REFLECTION_ROUTING_READY unified='+[int][bool]$ReflectionUnified)) {throw 'Reflection routing mode was not verified.'}
+if($ReflectionTransportStudy -and $log -notmatch ('DIVE_REFLECTION_PROFILE_READY profile='+$ReflectionProfile+' ')) {throw 'Visual tests require the requested complete reflection integration.'}
 if($SolarShaderStudy -and $log -notmatch ('DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane='+[int](-not $WaveTransportStudy))) {throw 'Project-local solar shader mapping was not enabled.'}
 if($SolarVolumeStudy -and $log -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY receiver=per-froxel local_lights=unchanged') {throw 'Project-local volume shader mapping was not enabled.'}
 if($WaveTransportStudy -and $log -notmatch 'DIVE_WATER_SCENE_READY waves=4') {throw 'Shared water scene parameters were not uploaded.'}

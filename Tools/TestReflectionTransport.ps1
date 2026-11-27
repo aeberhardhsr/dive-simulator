@@ -1,5 +1,6 @@
 param([ValidateRange(180,1800)][int]$TimeoutSeconds=1200,
- [ValidateSet('waterline','response','consistency')][string]$Suite='waterline',[switch]$Unified)
+ [ValidateSet('waterline','response','consistency')][string]$Suite='waterline',[switch]$Unified,
+ [ValidateSet('full','cached')][string]$Profile='full')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $engine=Join-Path $repo 'Builds/UE584'
@@ -10,7 +11,7 @@ foreach($file in $files) {
  $copy=Join-Path $runtime $file.FullName.Substring((Join-Path $repo 'divingsim').Length+1)
  if((Get-FileHash -LiteralPath $file.FullName).Hash -ne (Get-FileHash -LiteralPath $copy).Hash) {throw "Stale source sandbox: $copy"}
 }
-$prepareOptions=@();if($Unified) {$prepareOptions+='--unified'}
+$prepareOptions=@('--profile',$Profile);if($Unified) {$prepareOptions+='--unified'}
 & (Join-Path $repo 'Tools/.geodata-env/Scripts/python.exe') (Join-Path $repo 'Tools/PrepareReflectionTransport.py') --engine $engine --project $runtime @prepareOptions
 if($LASTEXITCODE -ne 0) {throw 'Shader preparation failed.'}
 $root=Join-Path $repo ('artifacts/reflection-transport-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
@@ -37,6 +38,7 @@ foreach($case in $cases) {
   Hour=12;Date='2026-06-21';MaxFPS=30;TimeoutSeconds=$TimeoutSeconds;NoReflectionScreenTraces=[bool]$case.screens;
   ReflectionTransportStudy=$true;ReflectionTransportControl=[bool]$case.control;LakeFootprint=$true;RuntimeLog=(Join-Path $folder 'Runtime.log')}
  $opts.ReflectionUnified=[bool]$Unified
+ $opts.ReflectionProfile=$Profile
  if($case.near) {$opts.Remove('WaterlinePose')}
  if($case.visibility) {$opts.Visibility=$case.visibility}
  if($case.night) {$opts.Hour=1.5}

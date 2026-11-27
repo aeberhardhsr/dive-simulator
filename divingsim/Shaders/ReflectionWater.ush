@@ -12,6 +12,9 @@ float DiveReflectionPhase(float cosine)
 
 float DiveReflectionShadow(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 toLight,float distanceCm)
 {
+#if DIVE_REFLECTION_PROFILE == 2
+    return 1; // Diagnostic cost isolation only; never a lighting-quality mode.
+#else
     // Inline opaque visibility avoids changing the payload of Lumen's minimal pass.
     RayDesc ray;
     ray.Origin=position;ray.Direction=toLight;ray.TMin=.1;ray.TMax=max(.11,distanceCm);
@@ -19,13 +22,14 @@ float DiveReflectionShadow(RaytracingAccelerationStructure SceneTLAS,float3 posi
     query.TraceRayInline(SceneTLAS,0,RAY_TRACING_MASK_SHADOW,ray);
     while(query.Proceed()) {}
     return query.CommittedStatus()==COMMITTED_NOTHING ? 1 : 0;
+#endif
 }
 
-float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 p,float3 direction,float sigma)
+float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 p,float3 direction,float sigma,uint firstLight)
 {
     FCulledLightList lights=FCulledLightList::Create(position);
     float3 source=0;
-    for(uint i=0;i<lights.GetNumLights();++i)
+    for(uint i=firstLight;i<lights.GetNumLights();++i)
     {
         uint valid;uint index=lights.GetLightIndex(i,valid);
         if(!valid) continue;
@@ -65,14 +69,61 @@ float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 pos
     return source*float3(.07,.24,.16)*sigma;
 }
 
+#if DIVE_REFLECTION_PROFILE == 3
+struct FDiveReflectionSun
+{
+    float3 Direction;
+    float InverseRefractedZ;
+    float3 PhaseColor;
+};
+
+FDiveReflectionSun DiveCacheReflectionSun(uint index,float3 direction)
+{
+    FDiveReflectionSun sun=(FDiveReflectionSun)0;
+    uint kind;
+    FDeferredLightData light=GetRayTracingDeferredLightData(index,false,kind);
+    float3 toLight=normalize(light.Direction);
+    if(kind!=LIGHT_TYPE_DIRECTIONAL || toLight.z<=0) return sun;
+    float3 refracted=-refract(-toLight,float3(0,0,1),1./1.333);
+    sun.Direction=toLight;
+    sun.InverseRefractedZ=1./max(.1,refracted.z);
+    sun.PhaseColor=light.Color*(.98*DiveReflectionPhase(dot(refracted,direction)));
+    return sun;
+}
+
+float3 DiveCachedSunSource(RaytracingAccelerationStructure SceneTLAS,FDiveReflectionSun sun,
+    float3 position,float3 p,float sigma)
+{
+    if(sun.InverseRefractedZ==0) return 0;
+    float waterLength=max(0,(DiveReflectionSurface(p.xy)-p.z)*sun.InverseRefractedZ);
+    float attenuation=exp(-sigma*waterLength)*DiveReflectionShadow(SceneTLAS,position,sun.Direction,10000);
+    return sun.PhaseColor*attenuation*float3(.07,.24,.16)*sigma;
+}
+#endif
+
 float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,float3 radiance,
     float3 origin,float3 direction,float2 screenUV,float sceneDepth,float hitDistanceCm)
 {
+#if DIVE_REFLECTION_PROFILE == 1
+    return radiance; // Diagnostic: retain raw hit routing, omit water integration.
+#else
     if(!DiveIsWaterReflection(origin,screenUV,sceneDepth)) return radiance;
     float3 p=DFFastSubtractDemote(origin,PrimaryView.PreViewTranslation)*.01;
     float sigma=max(.001,Scene.DiveWater.Medium.z);
     float lengthMetres=min(max(0,hitDistanceCm*.01),min(200.,10./sigma));
     float transmittance=1;float3 scattering=0;
+#if DIVE_REFLECTION_PROFILE == 3
+    // The lake scene uses sun and moon. More infinite lights fall back to the
+    // complete original list; finite lights are still culled at each sample.
+    uint infiniteCount=RaytracingLightGridData.SceneInfiniteLightCount;
+    bool cacheSun=infiniteCount<=2;
+    FDiveReflectionSun suns[2];
+    [unroll] for(uint light=0;light<2;++light)
+    {
+        suns[light]=(FDiveReflectionSun)0;
+        if(cacheSun&&light<infiniteCount) suns[light]=DiveCacheReflectionSun(light,direction);
+    }
+#endif
     for(uint step=0;step<16;++step)
     {
         float a=step/16.,b=(step+1)/16.;
@@ -83,11 +134,22 @@ float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,fl
         if(wet<=0) continue;
         float segment=end-begin;
         float stepT=exp(-sigma*wet*segment);
-        float3 source=DiveReflectionSource(SceneTLAS,origin+direction*(middle*100),sampleP,direction,sigma);
+        float3 samplePosition=origin+direction*(middle*100);
+#if DIVE_REFLECTION_PROFILE == 3
+        float3 source=DiveReflectionSource(SceneTLAS,samplePosition,sampleP,direction,sigma,cacheSun?infiniteCount:0);
+        if(cacheSun)
+        {
+            [unroll] for(uint light=0;light<2;++light)
+                source+=DiveCachedSunSource(SceneTLAS,suns[light],samplePosition,sampleP,sigma);
+        }
+#else
+        float3 source=DiveReflectionSource(SceneTLAS,samplePosition,sampleP,direction,sigma,0);
+#endif
         scattering+=transmittance*source*((1-stepT)/sigma);
         transmittance*=stepT;
     }
     return radiance*transmittance+scattering*View.PreExposure;
+#endif
 }
 #endif
 #endif

@@ -37,6 +37,8 @@ Die Leistung wurde mit zwei aufeinanderfolgenden 60-Sekunden-Läufen bei 1920 ×
 
 Gemessen auf RTX 3090 und Ryzen 9950X3D. Die Bildrate sinkt in diesem Vergleich um 17,86 %. Die zusätzliche GPU-Zeit liegt überwiegend im Reflexionspass. Das Verfahren hält hier noch keine durchgehenden 60 FPS; die Kosten der zusätzlichen Strahlen und Lichtabtastungen sind vor der Übernahme zu optimieren.
 
+Die anschliessende [Kostenanalyse](REFLECTION_COST_STUDY.md) trennt rohe Reflexionstreffer, Wasserintegration und Schattenabfragen. Sie weist die zusätzlichen Volumenschatten als den wesentlichen Mehrbedarf in dieser Szene aus.
+
 Die Abschlussbilder beider Läufe zeigen die Unterseite der Wasseroberfläche. Tatsächliche Tiefe jeweils rund 4,35 m, Blickneigung 25°, Simulationsdauer 74,00 beziehungsweise 73,94 s; der Schlusskurs unterscheidet sich um etwa 0,34°. Beide Läufe melden 41 durch Kollision verworfene Haltungsschritte. Das sind vergleichbare bewegte Spielszenen, jedoch keine pixelidentischen GPU-Mikromessungen und keine Leistungsabnahme eines gepackten Spiels. Die zwei Läufe liegen unter `artifacts/perf-underwater-1080p-q2-20261127-231608-056` und `artifacts/perf-underwater-1080p-q2-20261127-231809-214`.
 
 Die bekannte dünne helle Linie nahe der Wasserlinie bleibt sichtbar. Indirektes Himmelslicht im Volumen, Mehrfachstreuung, vollständige sekundäre Grenzflächenwechsel und die gemeinsame photometrische Abstimmung sind weiterhin offen. Die Gelände- und Unterwassergestaltung erreicht damit noch nicht das gewünschte Referenzniveau. Diese Änderung behebt einen konkreten Widerspruch zwischen Reflexionsverfahren.

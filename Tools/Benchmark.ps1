@@ -12,6 +12,7 @@ param(
     [switch]$DisableNanite,
     [switch]$WaterPreview,
     [switch]$ReflectionTransportStudy, [switch]$ReflectionTransportControl, [switch]$ReflectionUnified,
+    [ValidateSet('full','routing','unshadowed','cached')][string]$ReflectionProfile='full',
     [ValidateRange(-70,70)][double]$LookPitch,
     [switch]$FPVProbe,
     [switch]$SpectralView,
@@ -28,6 +29,7 @@ if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPre
 if($EditorSandbox) {$Editor=$true}
 if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
 if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
+if($ReflectionProfile -ne 'full' -and (-not $ReflectionTransportStudy -or $ReflectionTransportControl)) {throw 'Diagnostic reflection profile requires active ReflectionTransportStudy.'}
 if($PSBoundParameters.ContainsKey('LookPitch') -and $Scenario -ne 'underwater') {throw 'LookPitch currently applies to the underwater benchmark.'}
 if($FPVProbe -and (-not $Editor -or $Scenario -ne 'underwater')) {throw 'FPVProbe requires an editor underwater benchmark.'}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
@@ -57,6 +59,7 @@ $context=[ordered]@{
     reflection_transport=[bool]$ReflectionTransportStudy
     reflection_control=[bool]$ReflectionTransportControl
     reflection_unified=[bool]$ReflectionUnified
+    reflection_profile=$ReflectionProfile
     requested_pitch=$(if($PSBoundParameters.ContainsKey('LookPitch')) {$LookPitch} else {$null})
     source_head=(& git -C $repo rev-parse HEAD)
     source_dirty=[bool](& git -C $repo status --porcelain)
@@ -83,6 +86,7 @@ $consoleCommands=@()
 if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
 if($ReflectionTransportStudy) {
  $arguments+=' -DiveReflectionTransportStudy -DiveLakeFootprint'
+ $arguments+=' -DiveReflectionProfile='+$ReflectionProfile
  $consoleCommands+='r.Lumen.HardwareRayTracing.Inline 0'
  if($ReflectionTransportControl) {$arguments+=' -DiveReflectionTransportControl'}
  if($ReflectionUnified) {$arguments+=' -DiveReflectionUnified'}
@@ -154,6 +158,7 @@ foreach($name in $captureFiles) {
     Copy-Item -LiteralPath $source.FullName -Destination (Join-Path $resultDir $name)
 }
 $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw | ConvertFrom-Json
+if($ReflectionTransportStudy -and $log -notmatch ('DIVE_REFLECTION_PROFILE_READY profile='+$ReflectionProfile+' ')) {throw 'Reflection diagnostic profile was not verified.'}
 if($ReflectionTransportStudy -and (-not $metadata.reflection_transport -or $metadata.reflection_control -ne [bool]$ReflectionTransportControl -or $metadata.reflection_unified -ne [bool]$ReflectionUnified -or $metadata.'r.Lumen.HardwareRayTracing.Inline' -ne 0 -or $metadata.'r.CustomDepth' -ne 3 -or $log -notmatch 'DIVE_WATER_SCENE_READY' -or $log -notmatch 'DIVE_LAKE_FOOTPRINT_READY' -or $log -notmatch ('DIVE_REFLECTION_TRANSPORT_READY enabled='+[int](-not $ReflectionTransportControl)) -or $log -notmatch ('DIVE_REFLECTION_ROUTING_READY unified='+[int][bool]$ReflectionUnified))) {throw 'Reflection benchmark mode was not preserved.'}
 if($WaterPreview -and (-not $metadata.water_preview -or -not $metadata.water_interface -or -not $metadata.bounded_water -or -not $metadata.native_scattering -or
     $metadata.'r.Lumen.TranslucencyReflections.FrontLayer.Allow' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.HitLighting.Allowed' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.LightingMode' -ne 2)) {throw 'Water preview benchmark profile was not preserved.'}
