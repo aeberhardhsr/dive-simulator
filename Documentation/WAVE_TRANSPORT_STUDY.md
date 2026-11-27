@@ -64,4 +64,8 @@ Vor dem Start werden laufende Unreal-Builds, Editor-/Spielprozesse und Shader-Wo
 
 Aktueller Nachweis für das neue Vergleichswerkzeug: PowerShell-Syntaxprüfung und tatsächliche Abweisung beim laufenden Engine-Build bestanden. Die beiden Shader-Verzeichnisse sind vorbereitet. Die zehn nativen Vergleichsläufe wurden noch nicht ausgeführt.
 
+`Tools/ReportWaveTransport.py --study <Vergleichsordner>` prüft nach diesen Läufen die vollständigen zehn Fälle, Eingabe-/Engine-Prüfsummen, Variantenmarker, Bildgrössen und identischen Kameraposen. Es erfasst Farbunterschiede für Stärke ein/aus, veränderte Zeit und eingefrorene Wiederholung sowie zwischen beiden Beleuchtungsvarianten. Die Mittelwerte werden mit 64-Bit-Summierung berechnet; reine 32-Bit-Summierung verfälschte im Test mit konstanten Pixelwerten einen Kanal um über drei RGB8-Stufen. Alle Warnungen und Fehlerzeilen bleiben im Bericht sichtbar. Das Ergebnis heisst bewusst `CAPTURE_INTEGRITY_CHECKED` mit `visual_status=NOT_REVIEWED`, nicht Grafikabnahme. Lokale Voraussetzungen für die Bildauswertung sind NumPy und Pillow.
+
+Fünf portable Werkzeugtests prüfen ungültige Phasen, Uhrzeit, Wind, Stärke, Kamerabewegung, falsche Varianten, Fehler trotz Erfolgsmarker und vorzeichenrichtige Pixelmittelwerte. Diese bestehen; sie verwenden synthetische Kontrollwerte und sind kein Ersatz für die noch ausstehenden nativen Wellenaufnahmen.
+
 Die normale Vorschau bleibt `Builds/WindowsPlantColor/Start-WaterPreview.cmd`. Die vereinbarte Reihenfolge bleibt Unterwasserwelt, Überwasserlandschaft, danach [Menü/HUD/FPV](UI_UX_TARGET.md).
