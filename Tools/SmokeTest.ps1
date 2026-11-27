@@ -16,6 +16,9 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$DisableFogDepthCulling, [switch]$DisableFogHistory,
     [switch]$DisablePostProcessMaterials,
     [switch]$ReflectionRayStudy,
+    [switch]$ReflectionTransportStudy,
+    [switch]$ReflectionTransportControl,
+    [switch]$WaterInspectionLamp,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
@@ -47,7 +50,10 @@ if($SolarShaderStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPrev
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
 if($ReflectionRayStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview -or $SolarShaderStudy -or $DisableRayTracing)) {throw 'ReflectionRayStudy requires the native EditorSandbox WaterPreview with ray tracing and no solar shader study.'}
 if($WaveTransportStudy -and -not $SolarVolumeStudy) {throw 'WaveTransportStudy requires SolarVolumeStudy.'}
-if($LakeFootprint -and -not $WaveTransportStudy) {throw 'LakeFootprint requires WaveTransportStudy.'}
+if($LakeFootprint -and -not ($WaveTransportStudy -or $ReflectionTransportStudy)) {throw 'LakeFootprint requires a water scene study.'}
+if($ReflectionTransportStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview -or -not $LakeFootprint -or $SolarShaderStudy -or $ReflectionRayStudy -or $DisableRayTracing)) {throw 'ReflectionTransportStudy requires the source editor sandbox, WaterPreview, LakeFootprint and ray tracing, without other shader studies.'}
+if($ReflectionTransportControl -and -not $ReflectionTransportStudy) {throw 'ReflectionTransportControl requires ReflectionTransportStudy.'}
+if($WaterInspectionLamp -and (-not $WaterView -or $LampOff)) {throw 'WaterInspectionLamp requires WaterView without LampOff.'}
 if($LakeSurfaceOff -and -not $LakeFootprint) {throw 'LakeSurfaceOff requires LakeFootprint.'}
 if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
 if($PlantColorProbe -and $Packaged) {throw 'PlantColorProbe requires the editor runtime with CPU vertex data.'}
@@ -69,6 +75,9 @@ if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$Absorp
 if($SpectralDepthDebug) {$arguments+=' -DiveSpectralDepthDebug'}
 if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
 if($ReflectionRayStudy) {$arguments+=' -DiveReflectionRayStudy'}
+if($ReflectionTransportStudy) {$arguments+=' -DiveReflectionTransportStudy'}
+if($ReflectionTransportControl) {$arguments+=' -DiveReflectionTransportControl'}
+if($WaterInspectionLamp) {$arguments+=' -DiveWaterInspectionLamp'}
 if($SolarVolumeStudy) {$arguments+=' -DiveSolarVolumeStudy'}
 if($WaveTransportStudy) {$arguments+=' -DiveWaveTransportStudy'}
 if($LakeFootprint) {$arguments+=' -DiveLakeFootprint'}
@@ -92,6 +101,7 @@ if($LightIsolation -eq 'indirect') {$consoleCommands+='ShowFlag.GlobalIlluminati
 if($LightIsolation -eq 'function') {$consoleCommands+='ShowFlag.LightFunctions 0'}
 if($DisableVolumetrics) { $consoleCommands+='r.VolumetricFog 0' }
 if($NoReflectionScreenTraces) { $consoleCommands+='r.Lumen.Reflections.ScreenTraces 0' }
+if($ReflectionTransportStudy) { $consoleCommands+='r.Lumen.HardwareRayTracing.Inline 0' }
 if($FogComposition -ne -1) { $consoleCommands+='r.Fog.SeparateComposition '+$FogComposition }
 if($DisableLightShafts) { $consoleCommands+='ShowFlag.LightShafts 0' }
 if($DisableFogDepthCulling) { $consoleCommands+='r.VolumetricFog.ConservativeDepth 0' }
@@ -235,6 +245,8 @@ if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gamepl
 if($BufferView -ne 'none' -and ($log -match 'view mode not recognized|Debug viewmodes not allowed' -or $log -notmatch ('r.BufferVisualizationTarget = "'+$BufferView+'"'))) {throw 'Requested buffer visualization was not accepted.'}
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}
 if($ReflectionRayStudy -and $log -notmatch 'DIVE_REFLECTION_RAY_STUDY_READY') {throw 'Reflection ray classification was not enabled.'}
+if($ReflectionTransportStudy -and ($log -notmatch ('DIVE_REFLECTION_TRANSPORT_READY enabled='+[int](-not $ReflectionTransportControl)) -or $log -notmatch 'DIVE_WATER_SCENE_READY' -or $log -notmatch 'r.Lumen.HardwareRayTracing.Inline = "0"')) {throw 'Reflection water transport mode was not enabled.'}
+if($WaterInspectionLamp -and $log -notmatch 'DIVE_WATER_LAMP view=0 on=1') {throw 'The water inspection lamp was not active.'}
 if($SolarShaderStudy -and $log -notmatch ('DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane='+[int](-not $WaveTransportStudy))) {throw 'Project-local solar shader mapping was not enabled.'}
 if($SolarVolumeStudy -and $log -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY receiver=per-froxel local_lights=unchanged') {throw 'Project-local volume shader mapping was not enabled.'}
 if($WaveTransportStudy -and $log -notmatch 'DIVE_WATER_SCENE_READY waves=4') {throw 'Shared water scene parameters were not uploaded.'}

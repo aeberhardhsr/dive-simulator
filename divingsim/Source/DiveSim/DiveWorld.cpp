@@ -19,6 +19,7 @@
 #include "Camera/CameraComponent.h"
 #include "RenderUtils.h"
 #include "RHI.h"
+#include "DiveWaterScene.h"
 
 namespace
 {
@@ -293,7 +294,7 @@ void ADiveWorld::BeginPlay()
         // Primary water shading stays rasterized; trace secondary scene hits
         // without this inconsistent water proxy (single-interface approximation).
         Water->SetVisibleInRayTracing(false);
-        if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView")))
+        if(bOpticsSmoke&&(FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView"))||DiveReflectionTransportEnabled()))
         {
             Water->SetRenderCustomDepth(true);
             Water->SetCustomDepthStencilValue(42);

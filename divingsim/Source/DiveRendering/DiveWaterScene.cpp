@@ -43,7 +43,7 @@ public:
         SHADER_PARAMETER(uint32,ProbeCount)
     END_SHADER_PARAMETER_STRUCT()
     static bool ShouldCompilePermutation(const FGlobalShaderPermutationParameters& Parameters)
-    {return DiveWaveTransportEnabled()&&IsFeatureLevelSupported(Parameters.Platform,ERHIFeatureLevel::SM5);}
+    {return DiveWaterSceneEnabled()&&IsFeatureLevelSupported(Parameters.Platform,ERHIFeatureLevel::SM5);}
 };
 IMPLEMENT_GLOBAL_SHADER(FDiveLakeFootprintCS,"/DiveRendering/LakeFootprintProbe.usf","MainCS",SF_Compute);
 
@@ -165,7 +165,7 @@ bool DiveWaveTransportEnabled()
 
 void InitializeDiveWaterScene()
 {
-    if(!DiveWaveTransportEnabled()||WaterRegistration) return;
+    if(!DiveWaterSceneEnabled()||WaterRegistration) return;
     const auto* BindingVersion=IConsoleManager::Get().FindConsoleVariable(TEXT("r.DiveWater.SceneBindingVersion"));
     if(!BindingVersion||BindingVersion->GetInt()!=1)
         UE_LOG(LogTemp,Fatal,TEXT("DIVE_WAVE_RENDERER_UNAVAILABLE: wave transport requires the separately rebuilt Renderer scene-binding patch. The installed engine is unsupported; see Documentation/WAVE_TRANSPORT_STUDY.md."));
@@ -177,7 +177,7 @@ void InitializeDiveWaterScene()
 
 void PublishDiveWaterScene(FSceneInterface* Scene,const FDiveWaterSceneInput& Input)
 {
-    if(!DiveWaveTransportEnabled()||!Scene) return;
+    if(!DiveWaterSceneEnabled()||!Scene) return;
     ENQUEUE_RENDER_COMMAND(DivePublishWater)([Scene,Input](FRHICommandListImmediate&)
     {
         auto& Stored=RenderInputs.FindOrAdd(Scene);
@@ -186,3 +186,12 @@ void PublishDiveWaterScene(FSceneInterface* Scene,const FDiveWaterSceneInput& In
         Stored.Values.FootprintResource=nullptr; // The RHI reference retains ownership after this command.
     });
 }
+
+bool DiveReflectionTransportEnabled()
+{
+    static const bool Enabled=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportStudy"))&&
+        FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview"));
+    return Enabled;
+}
+
+bool DiveWaterSceneEnabled() {return DiveWaveTransportEnabled()||DiveReflectionTransportEnabled();}

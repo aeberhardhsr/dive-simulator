@@ -33,7 +33,7 @@ void ADiveWorld::UpdateCaustics()
     const double depth=(SurfaceZ(eye.X,eye.Y)-eye.Z)/100.;
     SolarWater->SetScalarParameterValue(TEXT("VolumeDepth"),FMath::Clamp(depth,1.,20.));
     SolarWater->SetScalarParameterValue(TEXT("VolumeWaterWeight"),NativeWaterScattering()?Dive::CameraWaterBlend(depth):0.);
-    if(DiveWaveTransportEnabled())
+    if(DiveWaterSceneEnabled())
     {
         FDiveWaterSceneInput input;
         for(int i=0;i<4;++i)
@@ -49,7 +49,7 @@ void ADiveWorld::UpdateCaustics()
         PublishDiveWaterScene(GetWorld()->Scene,input);
         // The spatial renderer supplies attenuation/focusing; retaining the old
         // projected light function would attenuate the same sun path twice.
-        if(Sun->LightFunctionMaterial) Sun->SetLightFunctionMaterial(nullptr);
+        if(DiveWaveTransportEnabled()&&Sun->LightFunctionMaterial) Sun->SetLightFunctionMaterial(nullptr);
     }
 }
 

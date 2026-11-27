@@ -1,0 +1,118 @@
+#ifndef DIVE_REFLECTION_WATER
+#define DIVE_REFLECTION_WATER
+#if !COMPUTESHADER
+#include "/Engine/Private/Lumen/DiveReflectionWaterOptics.ush"
+#include "/DiveRendering/LakeFootprint.ush"
+
+// All lengths below are metres except translated renderer positions and rays.
+float DiveReflectionSurface(float2 p)
+{
+    DiveWaterOptics optics;
+    float h; float2 slope; float3 curvature;
+    float4 waves[4]={Scene.DiveWater.Wave0,Scene.DiveWater.Wave1,Scene.DiveWater.Wave2,Scene.DiveWater.Wave3};
+    optics.Surface(p,Scene.DiveWater.Medium.x,waves,Scene.DiveWater.Phases,
+        Scene.DiveWater.Medium.y,float2(0,0),float2(0,0),h,slope,curvature);
+    return h;
+}
+
+float DiveReflectionWet(float3 p)
+{
+    if(Scene.DiveWater.FootprintEnabled<.5) return 0; // Never treat the entire world as water.
+    FDiveLakeFootprint lake;
+    float shore=lake.Wet(lake.Distance(Scene.DiveWater.Footprint,Scene.DiveWater.FootprintSampler,p.xy,Scene.DiveWater.FootprintMap));
+    return shore*smoothstep(-.1,.1,DiveReflectionSurface(p.xy)-p.z);
+}
+
+float DiveReflectionPhase(float cosine)
+{
+    const float g=.55;
+    return (1-g*g)/(4*PI*pow(max(.001,1+g*g-2*g*cosine),1.5));
+}
+
+float DiveReflectionShadow(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 toLight,float distanceCm)
+{
+    // Inline opaque visibility avoids changing the payload of Lumen's minimal pass.
+    RayDesc ray;
+    ray.Origin=position;ray.Direction=toLight;ray.TMin=.1;ray.TMax=max(.11,distanceCm);
+    RayQuery<RAY_FLAG_FORCE_OPAQUE|RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_PROCEDURAL_PRIMITIVES> query;
+    query.TraceRayInline(SceneTLAS,0,RAY_TRACING_MASK_SHADOW,ray);
+    while(query.Proceed()) {}
+    return query.CommittedStatus()==COMMITTED_NOTHING ? 1 : 0;
+}
+
+float3 DiveReflectionSource(RaytracingAccelerationStructure SceneTLAS,float3 position,float3 p,float3 direction,float sigma)
+{
+    FCulledLightList lights=FCulledLightList::Create(position);
+    float3 source=0;
+    for(uint i=0;i<lights.GetNumLights();++i)
+    {
+        uint valid;uint index=lights.GetLightIndex(i,valid);
+        if(!valid) continue;
+        uint kind;
+        FDeferredLightData light=GetRayTracingDeferredLightData(index,false,kind);
+        float3 toLight;float attenuation=1;float distanceCm=10000;float waterLength=0;
+        if(kind==LIGHT_TYPE_DIRECTIONAL)
+        {
+            toLight=normalize(light.Direction);
+            if(toLight.z<=0) continue;
+            // Mean-plane Snell direction for the incoming beam; the wave surface
+            // bounds the actual view path. Spatial caustic focusing is separate.
+            float3 refracted=-refract(-toLight,float3(0,0,1),1./1.333);
+            waterLength=max(0,(DiveReflectionSurface(p.xy)-p.z)/max(.1,refracted.z));
+            attenuation=.98*exp(-sigma*waterLength);
+            // Straight visibility ray approximation through the refracting boundary.
+            attenuation*=DiveReflectionShadow(SceneTLAS,position,toLight,distanceCm);
+            toLight=refracted;
+        }
+        else if(kind==LIGHT_TYPE_POINT || kind==LIGHT_TYPE_SPOT)
+        {
+            float3 offset=light.TranslatedWorldPosition-position;
+            distanceCm=length(offset);
+            if(distanceCm<.1) continue;
+            attenuation=GetLocalLightAttenuation(position,light,offset,toLight);
+            if(light.bInverseSquared) attenuation/=max(1.,distanceCm*distanceCm);
+            if(attenuation<=0) continue;
+            // Four midpoint samples clip the lamp-to-sample water segment.
+            for(uint j=0;j<4;++j)
+                waterLength+=DiveReflectionWet(p+toLight*(distanceCm*.01)*((j+.5)/4.))*(distanceCm*.01/4.);
+            attenuation*=exp(-sigma*waterLength)*DiveReflectionShadow(SceneTLAS,position,toLight,distanceCm-.1);
+        }
+        else continue;
+        source+=light.Color*attenuation*DiveReflectionPhase(dot(toLight,direction));
+    }
+    // Same authored single-scattering albedo as M_WaterVolume.
+    return source*float3(.07,.24,.16)*sigma;
+}
+
+float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,float3 radiance,
+    float3 origin,float3 direction,float2 screenUV,float sceneDepth,float hitDistanceCm)
+{
+    if(ReflectionPass!=2 || Scene.DiveWater.Enabled<.5) return radiance;
+    if(CalcSceneCustomStencil(uint2(screenUV*View.BufferSizeAndInvSize.xy))!=42) return radiance;
+    if(abs(CalcSceneCustomDepth(screenUV)-sceneDepth)>max(2.,.01*sceneDepth)) return radiance;
+    float3 p=DFFastSubtractDemote(origin,PrimaryView.PreViewTranslation)*.01;
+    float3 eye=DFFastSubtractDemote(View.TranslatedWorldCameraOrigin,PrimaryView.PreViewTranslation)*.01;
+    // Stencil and matching front-layer depth identify water. Reject air views
+    // and any stale geometric intersection outside the current wave surface.
+    if(eye.z>=DiveReflectionSurface(eye.xy)-.005 || abs(p.z-DiveReflectionSurface(p.xy))>.5 || DiveReflectionWet(p-float3(0,0,.2))<=0) return radiance;
+    float sigma=max(.001,Scene.DiveWater.Medium.z);
+    float lengthMetres=min(max(0,hitDistanceCm*.01),min(200.,10./sigma));
+    float transmittance=1;float3 scattering=0;
+    for(uint step=0;step<16;++step)
+    {
+        float a=step/16.,b=(step+1)/16.;
+        float begin=lengthMetres*a*a,end=lengthMetres*b*b;
+        float middle=(begin+end)*.5;
+        float3 sampleP=p+direction*middle;
+        float wet=DiveReflectionWet(sampleP);
+        if(wet<=0) continue;
+        float segment=end-begin;
+        float stepT=exp(-sigma*wet*segment);
+        float3 source=DiveReflectionSource(SceneTLAS,origin+direction*(middle*100),sampleP,direction,sigma);
+        scattering+=transmittance*source*((1-stepT)/sigma);
+        transmittance*=stepT;
+    }
+    return radiance*transmittance+scattering*View.PreExposure;
+}
+#endif
+#endif

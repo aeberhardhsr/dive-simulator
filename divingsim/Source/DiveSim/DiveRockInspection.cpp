@@ -20,6 +20,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Components/DirectionalLightComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "ProceduralMeshComponent.h"
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
@@ -298,7 +299,7 @@ void ADivePawn::TickRockInspection(float Dt)
             {UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_INSPECTION_FAIL world checks did not complete"));FPlatformMisc::RequestExitWithStatus(false,1);}
             return;
         }
-        Environment->SetActorTickEnabled(false);bLamp=false;bShowInstruments=false;bShowComputer=false;bShowMap=false;NoticeUntil=0;
+        Environment->SetActorTickEnabled(false);bLamp=waterView&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterInspectionLamp"));bShowInstruments=false;bShowComputer=false;bShowMap=false;NoticeUntil=0;
         Equipment->SetActorHiddenInGame(true);if(Equipment->Avatar) Equipment->Avatar->SetActorHiddenInGame(true);
         if(auto* pc=Cast<APlayerController>(GetController())) if(pc->GetHUD()) pc->GetHUD()->bShowHUD=false;
         int start=0;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterStart="),start);
@@ -322,6 +323,7 @@ void ADivePawn::TickRockInspection(float Dt)
     SetActorLocation(eye-FVector(0,0,CameraBaseHeight));ResetContactPose();
     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(rotation);
     Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(habitatView?75:waterView?70:50);
+    if(waterView) UpdateTorch();
     // The fixture freezes world ticking. Refresh the medium after moving the
     // camera, including plant/rock close-ups that previously retained entry fog.
     // WaterView manages deliberate fog overrides inside SetRockInspection.
@@ -341,6 +343,8 @@ void ADivePawn::TickRockInspection(float Dt)
         TestLessonStage=1;
         const FString name=FString::Printf(TEXT("%s_%d_%d.png"),habitatView?TEXT("Habitat"):waterView?TEXT("Water"):plantView?TEXT("Plant"):gravelView?TEXT("Gravel"):TEXT("Rock"),variant,view);
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/name,true,false);
+        if(waterView) UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_LAMP view=%d on=%d intensity=%.6f position=%s"),
+            view,Lamp->IsVisible()?1:0,Lamp->Intensity,*Lamp->GetComponentLocation().ToString());
         UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_CAPTURE variant=%d view=%d file=%s"),variant,view,*name);
         if(habitatView) UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_VIEW view=%d eye=%s rotation=%s"),view,*eye.ToString(),*rotation.ToString());
         if(habitatView)

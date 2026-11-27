@@ -1,6 +1,6 @@
 # Herkunft der blauen Unterwasserreflexion
 
-Die blaue Fläche unmittelbar unter der Wasseroberfläche stammt im geprüften Weesen-Blick aus dem Himmels-Ersatzwert von Lumen. Die betreffenden Reflexionsstrahlen zeigen dabei nach unten. Es handelt sich somit nicht um den direkt durch die Oberfläche gesehenen Himmel. Die Darstellung benötigt eine Berechnung des Wassermediums entlang des reflektierten Lichtwegs. **Diese Untersuchung liefert die Diagnose, noch keine Korrektur im Spielpaket.**
+Die blaue Fläche unmittelbar unter der Wasseroberfläche stammt im geprüften Weesen-Blick aus dem Himmels-Ersatzwert von Lumen. Die betreffenden Reflexionsstrahlen zeigen dabei nach unten. Es handelt sich somit nicht um den direkt durch die Oberfläche gesehenen Himmel. Die Darstellung benötigt eine Berechnung des Wassermediums entlang des reflektierten Lichtwegs. Ein darauf aufbauender [nativer Transportversuch](REFLECTION_TRANSPORT_STUDY.md) beseitigt inzwischen die blaue Fläche im geprüften Blick; im Spielpaket ist diese Korrektur noch nicht aktiviert.
 
 Der zuvor korrigierte [Kameramaterial-Übergang](WATERLINE_BLEND.md) bleibt davon getrennt. Das aktuell spielbare Paket ist weiterhin `Builds/WindowsWaterline/Start-WaterPreview.cmd`.
 
