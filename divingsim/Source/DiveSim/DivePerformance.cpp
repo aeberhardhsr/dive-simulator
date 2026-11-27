@@ -106,6 +106,7 @@ void ADivePawn::TickPerformance()
         root->SetBoolField(TEXT("water_preview"),Environment->WaterPreviewEnabled());
         root->SetBoolField(TEXT("gravel_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement")));
         root->SetBoolField(TEXT("population_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement")));
+        root->SetBoolField(TEXT("legacy_rock_pose"),FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose")));
         root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());

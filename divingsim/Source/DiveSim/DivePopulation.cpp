@@ -27,6 +27,7 @@ void ADiveWorld::GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArr
 
 void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const
 {
+    const bool legacyPose=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose"));
     // World-space anchors include a one-anchor halo. Ownership is assigned by
     // final rock position, so a cluster crosses streaming boundaries unchanged.
     constexpr int AnchorsPerCell=12;
@@ -86,8 +87,19 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             accepted.Add(position);radii.Add(size*105);
             if(CellAt(position)!=Key) continue;
             const FVector normal=FVector(-(e-z)/100,-(n-z)/100,1).GetSafeNormal();
-            const FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
-            Transforms.Add(FTransform(rotation,position,FVector(size,size*aspect,size*height)));
+            FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
+            float exposedHeight=height;
+            if(!legacyPose)
+            {
+                // Preserve the candidate stream, positions and conservative
+                // exclusion spheres. Less squash and independent modest tilt
+                // expose different scan fractures without adding instances.
+                FRandomStream pose(Dive::BedDistribution::Hash(ax,ay)^uint32(i+1)*0x4c957f2du);
+                exposedHeight=core?FMath::GetMappedRangeValueClamped(FVector2D(.5,.85),FVector2D(.78,1),height):
+                    FMath::GetMappedRangeValueClamped(FVector2D(.55,.8),FVector2D(.72,1),height);
+                rotation=rotation*FRotator(pose.FRandRange(-22.f,22.f),0,pose.FRandRange(-18.f,18.f)).Quaternion();
+            }
+            Transforms.Add(FTransform(rotation,position,FVector(size,size*aspect,size*exposedHeight)));
             States.Add({position,size*105,variant});
         }
         if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"))) continue;

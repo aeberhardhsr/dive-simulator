@@ -1,5 +1,19 @@
 # Gerenderte Leistungsmessung
 
+## WindowsRockPose: weniger abgeflachte, unterschiedlich geneigte Felsblöcke
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Beim Start lief keine weitere Unreal-/Spielinstanz. Alle drei Messungen verwenden dieselbe EXE und dieselben Inhaltscontainer wie die neun bestandenen Paketfälle. `-DiveLegacyRockPose` stellt in der Unterwasserkontrolle die bisherige Ausrichtung wieder her; die optimierte Kies-/Populationsverwaltung bleibt aktiv. [Bilder und Grenzen](ROCK_POSE.md), [Prüfbericht](ROCK_POSE_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, neue Ausrichtung, 60 s | 69,93 FPS | 60,98 FPS | 15,57 ms | 17,58 ms | 0 / 4194 | 4,40 ms |
+| Weesen Kontrolle, vorherige Ausrichtung, 60 s | 68,35 FPS | 58,63 FPS | 16,07 ms | 19,86 ms | 0 / 4099 | 4,59 ms |
+| Murg Nachladen, neue Ausrichtung, 90 s | 96,90 FPS | 74,28 FPS | 11,24 ms | 27,01 ms | 0 / 8719 | 4,28 ms |
+
+Die mittlere GPU-Zeit beträgt im normalen Unterwasser-/Nachladelauf 13,66 / 9,69 ms; in der Unterwasserkontrolle 13,99 ms. Diese Einzelläufe zeigen keinen Leistungseinbruch, beweisen jedoch keine allgemeine Beschleunigung. Die Geometrie kann durch andere Überschneidungen den sichtbaren Arbeitsumfang verändern; die Abläufe sind nicht frameidentisch. Vier Unterwasserframes und zwölf Frames der normalen Strecke überschreiten 16,67 ms. Durchgehend 60 FPS sind damit nicht nachgewiesen.
+
+Die Unterwasseraufnahme zeigt sichtbaren Grund und Felsen bei 5,3 Metern, die Strecke endet bei 24,7 Metern in freiem Wasser. Laufende Wasser-/Meshprüfungen gehören weiterhin zum CPU-Aufwand. Die bisherige Nachladeoptimierung bleibt erhalten; ein aktueller Langzeittest, die manuelle Menü-zu-Tauchgang-Prüfung und die gesamte visuelle Referenzabnahme bleiben offen.
+
 ## WindowsPopulationRetire: Fels- und Pflanzenkomponenten verteilt abbauen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Beim Start lief keine weitere Unreal-/Spielinstanz. Alle drei Läufe verwenden dieselbe EXE und dieselben Inhaltscontainer wie die neun bestandenen Paketfälle. Die Kontrolle schaltet mit `-DiveImmediatePopulationRetirement` ausschließlich den großen Komponentenabbau um; der verteilte Kiesabbau bleibt in beiden Varianten aktiv. [Prüfbericht](POPULATION_RETIREMENT_RESULTS.json), [Lebensdauer, Bilder und Kontrollvergleich](POPULATION_RETIREMENT.md).

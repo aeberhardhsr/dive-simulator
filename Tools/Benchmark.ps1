@@ -11,6 +11,7 @@ param(
     [switch]$WaterPreview,
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
+    [switch]$LegacyRockPose,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -25,6 +26,7 @@ $logPath=Join-Path $resultDir 'Runtime.log'
 $context=[ordered]@{
     started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite; water_preview=[bool]$WaterPreview; gravel_immediate_retirement=[bool]$ImmediateGravelRetirement
     population_immediate_retirement=[bool]$ImmediatePopulationRetirement
+    legacy_rock_pose=[bool]$LegacyRockPose
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
@@ -36,6 +38,7 @@ if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
 if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
+if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'

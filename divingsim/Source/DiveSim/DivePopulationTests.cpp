@@ -2,6 +2,7 @@
 #include "DivePawn.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "PhysicsEngine/BodyInstance.h"
+#include "Misc/SecureHash.h"
 
 bool ADiveWorld::TestPopulationStreaming(FString& Detail)
 {
@@ -12,6 +13,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     // Cluster halos must produce exactly one owner, matching the rendered
     // instances and collision state, including across cell boundaries.
     TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0,connectedLargePairs=0,rubble=0,rubbleContacts=0;
+    int poseProbes=0,poseContacts=0,poseEmbedded=0;
     for(const auto& pair:PopulationCells)
     {
         TArray<FTransform> transforms;TArray<FDiveRock> states;
@@ -23,14 +25,33 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             valid&=transforms[i].Equals(freshTransforms[i],0)&&states[i].Position==freshStates[i].Position&&
                 states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant&&states[i].Rubble==freshStates[i].Rubble;
         valid&=transforms.Num()==states.Num()&&states.Num()<=196*46;
-        int instances[3]={};int contactSamples=0;
+        int instances[3]={};int contactSamples=0,poseSamples=0;
         for(int i=0;i<states.Num();++i)
         {
             const auto& rock=states[i];
+            const auto scale=transforms[i].GetScale3D();
+            // The source meshes fit a unit sphere. Rotation and nonuniform
+            // scale must remain within the unchanged movement/entry envelope.
+            valid&=!transforms[i].ContainsNaN()&&transforms[i].GetRotation().IsNormalized()&&
+                scale.GetMin()>0&&scale.GetMax()*100<=rock.Radius;
             const int instance=instances[rock.Variant]++;
             valid&=FMath::FloorToInt(rock.Position.X/9600)==pair.Key.X&&FMath::FloorToInt(rock.Position.Y/9600)==pair.Key.Y;
             valid&=!positions.Contains(rock.Position)&&rock.Radius>=16&&rock.Radius<=337;
             positions.Add(rock.Position);++sizes[rock.Radius<65?0:rock.Radius<126?1:2];
+            if(!rock.Rubble&&rock.Radius>=126&&poseSamples++<8)
+            {
+                ++poseProbes;float bed=0;
+                const auto* component=pair.Value.Components[rock.Variant].Get();
+                auto* body=component?component->GetBodyInstance(NAME_None,false,instance):nullptr;
+                FHitResult upper,lower;
+                const FVector above=rock.Position+FVector(0,0,400),below=rock.Position-FVector(0,0,400);
+                if(body&&Terrain.Sample(rock.Position.X,rock.Position.Y,bed)&&
+                    body->LineTrace(upper,above,below,false,false)&&body->LineTrace(lower,below,above,false,false))
+                {
+                    ++poseContacts;
+                    if(lower.ImpactPoint.Z<=bed+2&&upper.ImpactPoint.Z>bed) ++poseEmbedded;
+                }
+            }
             if(rock.Rubble)
             {
                 ++rubble;
@@ -69,6 +90,20 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     UE_LOG(LogTemp,Display,TEXT("DIVE_RUBBLE_%s fragments=%d disabled=%d contacts=%d"),valid?TEXT("PASS"):TEXT("FAIL"),rubble,rubbleDisabled,rubbleContacts);
     valid&=connectedLargePairs>8;
     UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATION_%s connected_large_pairs=%d"),connectedLargePairs>8?TEXT("PASS"):TEXT("FAIL"),connectedLargePairs);
+    valid&=poseProbes>0&&poseContacts==poseProbes&&poseEmbedded==poseProbes;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_POSE_%s legacy=%d rocks=%d envelope_preserved=1 probes=%d contacts=%d embedded=%d"),valid?TEXT("PASS"):TEXT("FAIL"),
+        bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose")),renderedRocks,poseProbes,poseContacts,poseEmbedded);
+    auto orderedStates=RockState;
+    orderedStates.Sort([](const FDiveRock& A,const FDiveRock& B)
+    {return A.Position.X==B.Position.X?A.Position.Y<B.Position.Y:A.Position.X<B.Position.X;});
+    FSHA1 stateDigest;
+    for(const auto& rock:orderedStates)
+    {
+        const double values[]={rock.Position.X,rock.Position.Y,rock.Position.Z,rock.Radius,double(rock.Variant),rock.Rubble?1.:0.};
+        stateDigest.Update(reinterpret_cast<const uint8*>(values),sizeof(values));
+    }
+    stateDigest.Final();uint8 digest[20];stateDigest.GetHash(digest);
+    UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_POSE_STATE sha1=%s"),*BytesToHex(digest,20));
     auto boundedLayouts=[&]()
     {
         FString searchDetail;if(!TestRockSearch(searchDetail)) return false;
