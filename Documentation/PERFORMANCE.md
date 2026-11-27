@@ -1,5 +1,19 @@
 # Gerenderte Leistungsmessung
 
+## WindowsWaterNearField: feinere Nebelabtastung an der Wasseroberfläche
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Alle drei Läufe verwenden die EXE und Inhaltscontainer der 13 bestandenen Paketfälle. Die erfassten Laufzeitwerte bestätigen Nebelverteilung 8, 64 Tiefenschichten und Rastergröße 16 bei aktiven Hardware- und Bildschirmreflexionen. [Gebundener Prüfbericht](SURFACE_NEAR_FIELD_RESULTS.json), [Korrektur und Vergleichsbilder](SURFACE_NEAR_FIELD.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 69,15 FPS | 60,11 FPS | 15,83 ms | 17,92 ms | 0 / 4147 | 4,59 ms |
+| Weesen Oberfläche, 60 s | 66,87 FPS | 58,78 FPS | 16,30 ms | 18,13 ms | 0 / 4011 | 4,37 ms |
+| Murg Schwimmen/Nachladen, 90 s | 97,33 FPS | 77,58 FPS | 11,16 ms | 42,81 ms | 2 / 8758 | 4,43 ms |
+
+Die mittleren GPU-Zeiten betragen 13,82 / 14,31 / 9,65 ms. Gegenüber dem vorherigen Wasserprofil mit 69,26 / 66,74 / 97,06 FPS bleibt die Leistung in diesen Einzelmessungen nahezu gleich. Das ist keine statistisch abgesicherte Gleichheit. Laufende automatisierte Wasser-/Meshprüfungen gehören weiterhin zur gemessenen CPU-Arbeit.
+
+15 Unterwasser-, 62 Oberflächen- und sechs Streckenframes überschreiten 16,67 ms. Die zwei Nachladeruckler bis 42,81 ms bleiben offen; durchgehend 60 FPS sind nicht erreicht. Die Strecke endet in freiem Wasser bei 24,7 Metern und belegt keine dauerhaft dichte Nahansicht. Die lokale Nebelkante ist im neuen Oberflächenbild behoben, die vollständige Referenzqualität und ein aktueller Langzeittest bleiben offen.
+
 ## WindowsWaterPreview: begrenztes Wasservolumen und Hardware-Reflexionen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Messstart aktiv. Das Wasserprofil hält Front-Layer-Reflexionen und Hardware-Hit-Lighting zusätzlich zur normalen Qualitätsstufe Hoch aktiv. Die tatsächlich gemessenen Einstellungen und identischen EXE-/Container-Prüfsummen stehen im [Paketbericht](WATER_PREVIEW_RESULTS.json); [Start und Bilder](WATER_PREVIEW.md).

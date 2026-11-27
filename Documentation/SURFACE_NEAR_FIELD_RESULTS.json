@@ -1,0 +1,2336 @@
+{
+  "status": "PASS",
+  "scope": "Surface fog-grid correction, packaged water regressions and short measurements; not full visual acceptance",
+  "host": {
+    "water_preview": true,
+    "started_utc": "2026-11-27T00:55:27.8995287Z",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsWaterNearField\\divingsim\\Binaries\\Win64\\divingsim-WaterNearField.exe",
+    "packaged": true,
+    "source_head": "9b8b9a2b043c006bfab3d145684bc9c420923a3f",
+    "sha256": "691c0905ddf6938a98f8a60b39325abe2db417483765f6b166e8d194d5321f24",
+    "files": [
+      {
+        "file": "divingsim/Config/DefaultEngine.ini",
+        "sha256": "c68ab50cf9ef0b292575beb33146a0b1477a5a6fece1c3060500da6cdd0ab46e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_AirBubble.uasset",
+        "sha256": "8a7c360c879e5e36be9b9d3ee02ccf1dfcf79af22f674f9b2d6f10e80868a18d"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_AquaticPlant.uasset",
+        "sha256": "828e4abd31e145ad8d92b893ebdc6d596a9f07f13f2949988495465c19681e65"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Bubble.uasset",
+        "sha256": "46a9fa2547fd2e3784152346b29f5be681d8155639b043e7848407932beb70da"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Buildings.uasset",
+        "sha256": "290d48cd5e4cf2885c327929adfafdd0b19cd1de5099b9e4b7a722032a9e39ad"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Buoy.uasset",
+        "sha256": "de5ba961920237cd1f0f4ebc2d76c9de4b3a93c7d1d302dc1b162cd8ef116ded"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_CausticsProbe.uasset",
+        "sha256": "b78795401bcaa95d04c02573cd9b9ab699a0ecb1b36134340160d5db7255a29a"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_ComputerScreen.uasset",
+        "sha256": "c809443cbba151987b9149a439918b2aaeac7e514071b37b4aafa2992a92ff23"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Equipment.uasset",
+        "sha256": "d7c5d9cdf81c215e66cbb701c64d0667530eb9d879791fc73867d4d8ac00b7d6"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_FinSediment.uasset",
+        "sha256": "dbca7f757d4e4d1d10bbecd9dcbb8ce75d30507e3b43db4d9a7a58beb0d1242c"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Fish.uasset",
+        "sha256": "27af114bb65769c82aca54621353a5400a6176a4292da037d6d8fd0a87910636"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_GravelSurface.uasset",
+        "sha256": "f5a39fcd65fe6f4d134f07d77596cc30fe9899af164d903230c52cc315c4bfb1"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Lakebed.uasset",
+        "sha256": "2fb2a55936372ee8c6e6d82c35348194356e6592de4e98206ba96437624181c7"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Landscape.uasset",
+        "sha256": "d7f572c3a76dd534cf67fef40367f20ab4ea69fd35df98ca99e12c1b6c98dde3"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_LandscapePhoto.uasset",
+        "sha256": "b7357870dc1e70e1005cb48edad5afe28b8687ea186b1c14d7a740ccdc65ccc1"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Particle.uasset",
+        "sha256": "62965c29ccdb813ccfe05c76c838d4ab4dc56fa1c8331bcb4a9e999fa4f90f8e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Plant.uasset",
+        "sha256": "1c7abb7070ae1674e9f7504bf7cb2511f23b3c17f06a415ee7278f7c72c5502e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Rain.uasset",
+        "sha256": "5d5a2f2168fed51f1ef81c5db203c4a6161175785ea61a8290a2881943a42508"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Rock.uasset",
+        "sha256": "1ec21e618e956def7e4e0a33ef0eaf7be246174c187eafc153ea08c890c022b7"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_RockScan1.uasset",
+        "sha256": "ce29d5218c13cab0146102e634f97d7ad17cf123df47a9793fe581aea0346c08"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_RockScan2.uasset",
+        "sha256": "69f0bdb555bb3bead3c3f48863af278166e4250b1a6ebcedb13c49621d3791fa"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_RockScan3.uasset",
+        "sha256": "a19b0eee86243133901805671cd5597376f5d371452cdc7dd7f3bc608398b0b8"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_RockSurface.uasset",
+        "sha256": "ae1be790b5c9c55bf3fddfcb6f5313de5e71b7d53c415da8c4ae75c14a438328"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Rope.uasset",
+        "sha256": "aea3f6f4c0cb618014730e373b3f22b5b4dcbca10681c6aa8020d2566255c217"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Shore.uasset",
+        "sha256": "c65a7e2c4563d4ce5f68c93f58e83c7087a7fbf48c5662ed859dd4891d33810d"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_ShorePhoto.uasset",
+        "sha256": "8910c91b20064397d6c7faf8b42ea251531ec1e7e4033393dcb7fed540e93aac"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset",
+        "sha256": "1da912c8eb089c1250dde4ac9060c6a5f08697b3f41c88318ccb3e47323df1ee"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Suit.uasset",
+        "sha256": "a2e9f16e327e9907868b13506704d98fa97a123b87bb32faf9d91b1f64d3aa2b"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_SuspendedWater.uasset",
+        "sha256": "5e36f150607f6d788c3d16c91ffb85eeff87225da8ff976e1562991cfe8bd575"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_TorchWater.uasset",
+        "sha256": "49cfaa9df9883d18453536f640deb277c9d9bd77e76656a13655f1da2ae8e7c6"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset",
+        "sha256": "6e65cd5a85876f24604eb589c021f8789d3ee0edff0173606f1a3cbbd18bc14e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Water.uasset",
+        "sha256": "764a534b0df3b56357bb150498b9ae7c11fb74966ce1f9e2f51565e737112e6e"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_WaterTop.uasset",
+        "sha256": "a1ff42d0c89191b7fcf65b609c314ab0a62737839027c05996ef4bfe42917b83"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_WaterUnder.uasset",
+        "sha256": "d09980f1864551047fc6828d5e966a8ca23990be87812d123b2473fa7daef86d"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset",
+        "sha256": "f89df9e863d9e329b4ac417ec35a89536f532cfdb486c363dc0bc9a263cac936"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/M_Wood.uasset",
+        "sha256": "8036e7f6ac1829780a1d0f95d79e827a8da721b961b31a891f1821c4b1fe48c5"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/MI_Cloud.uasset",
+        "sha256": "13b3075d09f4f63b4edda643412f12cf15c4eb05aea7c1575514dfc66b7931b2"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Burbot.uasset",
+        "sha256": "b17c471a55b6d7ba855a37dc7999230354116cbf72ab7e020529dc3b13d93c1c"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Perch.uasset",
+        "sha256": "7a4048bf4ea35dfc0f89bfda5651d4a19b5bbeb32845d1b13d0a3bf07c01c40a"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Pike.uasset",
+        "sha256": "dc239e00b65e7da6dcaf0d6bd68fcba8ccbdbf9336b0e4d2c352062b713bb153"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Roach.uasset",
+        "sha256": "36c147422567a9283d40b2ac621a632649380da1d5886224a0e10e8b736efc71"
+      },
+      {
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Whitefish.uasset",
+        "sha256": "f94a8d09215abecfbacd5f931f81e5ae0e7e303afd446b9b22132341a5fa117e"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAccess.cpp",
+        "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAudio.cpp",
+        "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAudio.h",
+        "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatar.cpp",
+        "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatar.h",
+        "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp",
+        "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+        "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBodyFrame.h",
+        "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp",
+        "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildings.cpp",
+        "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildings.h",
+        "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+        "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+        "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+        "sha256": "6bc2c4cb8b709aee40ea1c527acb42d90a27b67e4eca5a45e607a971e99007fe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+        "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp",
+        "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.h",
+        "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoast.cpp",
+        "sha256": "90fdbdd9655b101d757ac55abdf49cc3e4160893646bec4757e22002945eb49f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+        "sha256": "75c97a2a5ab6fbe38bbebe81df4c1284f3af6c64d6586667662bd28a628cf819"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h",
+        "sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp",
+        "sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp",
+        "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp",
+        "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.h",
+        "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveContacts.cpp",
+        "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveContacts.h",
+        "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+        "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControls.cpp",
+        "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControls.h",
+        "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp",
+        "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp",
+        "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp",
+        "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp",
+        "sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp",
+        "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.h",
+        "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp",
+        "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+        "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp",
+        "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp",
+        "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEcology.cpp",
+        "sha256": "2e0593271b9e3db485d4d0ef81a44d9c3468bcd0796841bc43063158a07c1246"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp",
+        "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEquipment.cpp",
+        "sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveEquipment.h",
+        "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp",
+        "sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp",
+        "sha256": "6d60bd17cf6f025f4d1a0f02d42f66798de2a720b2a6a35b9d827c11f6579f68"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveGameMode.cpp",
+        "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveGameMode.h",
+        "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveGravel.cpp",
+        "sha256": "6b3654dd9991eecb8991bf6d2e92ee83bca82f2078a3a5d6ab1b50c15cf56b45"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveHUD.cpp",
+        "sha256": "98d497a8c649030b96888329c4b7bafe88d1e27a06f81a92a8e2904f025f94af"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveHUD.h",
+        "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveImagery.cpp",
+        "sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+        "sha256": "31f7c60239fa146ac1edfa8f7b3438e2172b3a3eb14a0fd64924d98540fde7a0"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+        "sha256": "eb607f0a1d9674846388ba38296696fe1896c82d0b1889a38dfd378593be21d8"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+        "sha256": "7a85fd583a418e0c7c38c0c6cbdb8fc3ba7ec1085723de0f4fa3147edee941ef"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+        "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp",
+        "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp",
+        "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbook.cpp",
+        "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbook.h",
+        "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp",
+        "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp",
+        "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp",
+        "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp",
+        "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp",
+        "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp",
+        "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveParticles.cpp",
+        "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePawn.cpp",
+        "sha256": "e20ba29308f1d754e44517c9cdaf5868dbc7d1be14895476d7b87fab53d80ae0"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePawn.h",
+        "sha256": "b0d6af6fc530eb4408b353d72385ad50e48f205475c3da9ec10edb37a7d5976a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp",
+        "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePerformance.cpp",
+        "sha256": "4b184143868621d9df7c6b4f5a4f76dc46d2a1d52a1da9beaa742f4169d2d021"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePhotograph.cpp",
+        "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePlantBedsTests.cpp",
+        "sha256": "9daec5ad3a5208066ddf6a43f4454d7d837cbcfcf1723be7e0620d156a937af1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePlayerController.cpp",
+        "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePlayerController.h",
+        "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePopulation.cpp",
+        "sha256": "5b182864efcad2baed519eda2365138a50920eaa27e5eaead9c128b4f9188cea"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+        "sha256": "86951dcffdeb26cb5dde28bebc2045e515a379f54ce1b8fff2c9394c2ca6c07a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DivePose.h",
+        "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfiles.cpp",
+        "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfiles.h",
+        "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp",
+        "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp",
+        "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRecording.cpp",
+        "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRecording.h",
+        "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+        "sha256": "2926ea4adf986db7c28d0a02b942478b2c077056eda17e0b508f1ec3032b41dc"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveRockSearchTests.cpp",
+        "sha256": "0395297ff23d7ceaf8b69ee9c0f824862b1ea21c76590876ad8d648a3fe8fe14"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSediment.cpp",
+        "sha256": "f3c08475bb83a5d85b79e2c19e37d0f85269a5086d5f2a8e953a365ceaf5edec"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp",
+        "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveShoreline.cpp",
+        "sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+        "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSim.Build.cs",
+        "sha256": "67733768979fa23e231ac9ff645bebfb73f2d19036e7fd29936426978d53ef7b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSim.cpp",
+        "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSky.cpp",
+        "sha256": "b01b6b36c16e9e04c2a71911e5997bc052956cbf1ceb242d6c997af8bd1ee519"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveSoak.cpp",
+        "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTerrain.cpp",
+        "sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTerrain.h",
+        "sha256": "68def7d5e0a9340e4e9199f1f54af0014d1edd7c1d341065f80871c26ab41b57"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTextDialog.h",
+        "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.cpp",
+        "sha256": "c5135287c9e73fdb2ebe02cd95cfd66457be04941cd953f797e04211f4b9e0d7"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.h",
+        "sha256": "f9ac559cdd3b88525004915a9ecd528f76b6336fcce4c4d2f0c4f43176cb1d31"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveTorch.cpp",
+        "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveVegetation.cpp",
+        "sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveVegetation.h",
+        "sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWater.cpp",
+        "sha256": "61664c2799b066c5ffdfa945a54688de13ec4de184977d09729cf2fe423d639b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp",
+        "sha256": "cdaa25b66b35a7f6d5a48eb0fe3b01bbfbca5be773ed4554cf91b5b4bddc2683"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp",
+        "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.h",
+        "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp",
+        "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp",
+        "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp",
+        "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+        "sha256": "ce7ecff3b3fa8a5e25272fcfa848ccc7551f4c5d9eaed46ac922bc9d99b29bfe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/DiveWorld.h",
+        "sha256": "8ca3c757e249aa6ea8bd16ae3351e92bbf5634564c289e059de642ec483e06d6"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h",
+        "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h",
+        "sha256": "7c6db5c705c037ddd4b6de5289a9370c2d6c17b7bc8c9edf6dc8be89eeb65898"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h",
+        "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h",
+        "sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h",
+        "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Decompression.h",
+        "sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h",
+        "sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Ecology.h",
+        "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h",
+        "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h",
+        "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h",
+        "sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h",
+        "sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+        "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Loadout.h",
+        "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h",
+        "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Navigation.h",
+        "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/RockIndex.h",
+        "sha256": "6eac3be8b7d8f3ba7b35fe2f7f77d1a66929df60a2ffcae9c98a3b2b4f51b805"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h",
+        "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Sediment.h",
+        "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h",
+        "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h",
+        "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h",
+        "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Torch.h",
+        "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h",
+        "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h",
+        "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+        "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h",
+        "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68"
+      },
+      {
+        "file": "divingsim/Source/DiveSim/Simulation/Weather.h",
+        "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf"
+      },
+      {
+        "file": "Tools/SmokeTest.ps1",
+        "sha256": "0e58e372c0146000c497710a8792ca9bda07c18941830cd3c3b7388f63a178c4"
+      },
+      {
+        "file": "Tools/TestWaterPreview.ps1",
+        "sha256": "b4bf2549aa4bbb249f6b79e8b2e8cbbb3b4df70c2b665c15a6546dfe0973b941"
+      },
+      {
+        "file": "Tools/WaterPreviewLauncher.cmd",
+        "sha256": "0c95e90b705fa7fc63e6a891f38ad0dc9f020aaab84e7047d9ddfd7980afa034"
+      }
+    ],
+    "package_containers": [
+      {
+        "bytes": 105898051,
+        "file": "divingsim-Windows.pak",
+        "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f"
+      },
+      {
+        "bytes": 1457973520,
+        "file": "divingsim-Windows.ucas",
+        "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693"
+      },
+      {
+        "bytes": 1187020,
+        "file": "divingsim-Windows.utoc",
+        "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430"
+      },
+      {
+        "bytes": 3245920,
+        "file": "global.ucas",
+        "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d"
+      },
+      {
+        "bytes": 794,
+        "file": "global.utoc",
+        "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc"
+      }
+    ]
+  },
+  "build": {
+    "file": "artifacts/water-near-field-package-build.log",
+    "sha256": "75f83e5eba4091249a427291f9cfebdca8cb7322b549bd763013839b140f611e",
+    "bytes": 294950
+  },
+  "cases": [
+    {
+      "screenshots": [
+        {
+          "file": "Water_1_0.png",
+          "sha256": "23233c22812ce1f9dee6f7e15010edb8292babf5a20b9731f729aab0087c10fd"
+        },
+        {
+          "file": "Water_1_1.png",
+          "sha256": "923057f1d4b02a1491f258f763b3aa04ad23ceab1c9bc99fb463b48e40ecc8f5"
+        },
+        {
+          "file": "Water_1_2.png",
+          "sha256": "b52734036b74257f1154d5c4ad251156e81e15d6971e9be011182c3210b0effd"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "surface",
+      "status": "PASS",
+      "log_sha256": "05b18aa9d9bffabc854ed91b45a1d5a135c6f82685a49d5ac066271f9a8ef43d",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/surface/Runtime.log",
+        "sha256": "05b18aa9d9bffabc854ed91b45a1d5a135c6f82685a49d5ac066271f9a8ef43d",
+        "bytes": 117294
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "Habitat_0_0.png",
+          "sha256": "eea627ea6c915e607258c88dcdea51539fe870e22289d0cbc2b66e81edc57f9e"
+        },
+        {
+          "file": "Habitat_0_1.png",
+          "sha256": "4c5994356f1db6f74d1ddcd5be19a81978449d18e6604aa84f2acde8a1a58014"
+        },
+        {
+          "file": "Habitat_0_2.png",
+          "sha256": "68e02774bc836ed06b75dcc80e63394a029d8fe186185eb0a33a3f75739b9e91"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "weesen",
+      "status": "PASS",
+      "log_sha256": "1688d2b8551e29f9c2aa885a6dbc2bf06085411472306dd6177a699af18bc81c",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/weesen/Runtime.log",
+        "sha256": "1688d2b8551e29f9c2aa885a6dbc2bf06085411472306dd6177a699af18bc81c",
+        "bytes": 122116
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "Habitat_0_0.png",
+          "sha256": "376754e5d2a285e944d8d1af4d88cb1d2403fe762bb6f3d06c4e460f0ea3992a"
+        },
+        {
+          "file": "Habitat_0_1.png",
+          "sha256": "480babf0bb3b115c650720208a64dae27751fd7b62da6012aa55fac10c453053"
+        },
+        {
+          "file": "Habitat_0_2.png",
+          "sha256": "5e2e1723a40549c34d74ae7160c5cc1dc704a2ff407f826d7fc8790dcc094972"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "murg",
+      "status": "PASS",
+      "log_sha256": "b3d5c2ba0cbcad4c5cae1b4d8bd521a022f4258cb5adbdabff990febd308374d",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/murg/Runtime.log",
+        "sha256": "b3d5c2ba0cbcad4c5cae1b4d8bd521a022f4258cb5adbdabff990febd308374d",
+        "bytes": 120737
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "Habitat_0_0.png",
+          "sha256": "ac0556c539a206000edd6f474e21f2abdc233b1f45d5a120d514a4afb1dca2d0"
+        },
+        {
+          "file": "Habitat_0_1.png",
+          "sha256": "d151f522c5c9c56cba94f5db1ed876e28f6c9bd650352294f2f76c6330cfa132"
+        },
+        {
+          "file": "Habitat_0_2.png",
+          "sha256": "06586cf6609a98397458d8015e07b5459402bd286cbb808c0eb9b3af3caee027"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "ledi",
+      "status": "PASS",
+      "log_sha256": "b192f290742c2c81abe445cba277ce59ce2e546f4c30d6d065c6867b3c09aa57",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/ledi/Runtime.log",
+        "sha256": "b192f290742c2c81abe445cba277ce59ce2e546f4c30d6d065c6867b3c09aa57",
+        "bytes": 120673
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "DiveSmoke_1_surface-storm.png",
+          "sha256": "aa1fff2b1650ea65e65bb2e2fe648837783c6faeffb91c1cb17f38790e002fbe"
+        },
+        {
+          "file": "DiveUnderwater_1_surface-storm.png",
+          "sha256": "4603135a052c25de3964a3719c623766ff5dafbd1e1c5ad698f8fc9fd467d22d"
+        },
+        {
+          "file": "SurfaceAir_1_surface-storm.png",
+          "sha256": "5cbcb452e58102480f9299f27432e579d87b25b92b9aa1d58cfc830da2f54198"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "storm",
+      "status": "PASS",
+      "log_sha256": "afde7f7fcc87798a527b6761b0093cdee858fa7ab5ab5744c0abce4a4aa60f1d",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/storm/Runtime.log",
+        "sha256": "afde7f7fcc87798a527b6761b0093cdee858fa7ab5ab5744c0abce4a4aa60f1d",
+        "bytes": 434244
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "DiveSmoke_0_torch.png",
+          "sha256": "73168b46bb18892e9c6ceed18d282bd63da5d3d10188faa93927ef6ac5160bbd"
+        },
+        {
+          "file": "DiveUnderwater_0_torch.png",
+          "sha256": "f3798072416c0dccadf79bde253b789da65e94f6e39c70e270a5bc885df45cb0"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "dark-on",
+      "status": "PASS",
+      "log_sha256": "50451f2699619471b1e7721ab369dd93ba1be6e3b9033ff329517862ae5bc370",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/dark-on/Runtime.log",
+        "sha256": "50451f2699619471b1e7721ab369dd93ba1be6e3b9033ff329517862ae5bc370",
+        "bytes": 294248
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "DiveSmoke_0_torch.png",
+          "sha256": "e0d01925774613513190417f4baa9af17a1eb49cc3dc57084e5b99b04ade5e9f"
+        },
+        {
+          "file": "DiveUnderwater_0_torch.png",
+          "sha256": "211c48ee90ef53ba25233aa96f65288a71c908dc02a7d8da2df0bc6dd31c0f70"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "dark-off",
+      "status": "PASS",
+      "log_sha256": "42262631d1d108e94e6da8f2198a52314fb284041d8be376296bf0807dca6448",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/dark-off/Runtime.log",
+        "sha256": "42262631d1d108e94e6da8f2198a52314fb284041d8be376296bf0807dca6448",
+        "bytes": 294526
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "Habitat_0_0.png",
+          "sha256": "c312e65c6960ce17c35ebcb9df801ee36c7a0bdc68655eee93e7b30047798e56"
+        },
+        {
+          "file": "Habitat_0_1.png",
+          "sha256": "db74b241fd6c7f6506d3dfa2c25fb5c32812219ab1591318fbd7142b4b412a6c"
+        },
+        {
+          "file": "Habitat_0_2.png",
+          "sha256": "031ba2407e8faed76c3c9161b00b85f70d30d813684a11f34547ac5b55b0bcd0"
+        }
+      ],
+      "native_scattering": 0,
+      "name": "fog-fallback",
+      "status": "PASS",
+      "log_sha256": "db647d633f451470de2e887bacbb2a815207290c3b11dfdc24b5d405672798dd",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/fog-fallback/Runtime.log",
+        "sha256": "db647d633f451470de2e887bacbb2a815207290c3b11dfdc24b5d405672798dd",
+        "bytes": 120747
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "Water_1_0.png",
+          "sha256": "4499e07a63dfca77c713600329bc667781af7be47113b054ae9554d77e8f3ff9"
+        },
+        {
+          "file": "Water_1_1.png",
+          "sha256": "8ef3c9221dcef3ed774ea264862647c851afeabbd84a35296e30a489e0ec4c02"
+        },
+        {
+          "file": "Water_1_2.png",
+          "sha256": "52453c533c62966a8a20dcf2e1ed1622362abab457a9cf6aec52c2e9c1033faa"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "raster",
+      "status": "PASS",
+      "log_sha256": "5e71aaa5e5616e8023f6f7a74700c42b604517befeaa14587028870c264e0333",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/raster/Runtime.log",
+        "sha256": "5e71aaa5e5616e8023f6f7a74700c42b604517befeaa14587028870c264e0333",
+        "bytes": 115804
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "Water_1_0.png",
+          "sha256": "62c98441879ffab42f01ae74cf22ab95d0a92ce37d656ee0f2500ef6af9a8f0a"
+        },
+        {
+          "file": "Water_1_1.png",
+          "sha256": "55a63483a51e5dce4e8a3cc5ef93ba9f4489f2ae36f0f8748b3ad5e4effcb759"
+        },
+        {
+          "file": "Water_1_2.png",
+          "sha256": "cb52687419090394e20b29ec8e34a4f35dbda4cd8eafd9fdfa62c2fc273279e6"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "software",
+      "status": "PASS",
+      "log_sha256": "b9fca3adaf5755315b4d5e23b6e9375a59248be2c18b408c5c6e53da63b2be49",
+      "hardware": 0,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/software/Runtime.log",
+        "sha256": "b9fca3adaf5755315b4d5e23b6e9375a59248be2c18b408c5c6e53da63b2be49",
+        "bytes": 114365
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "DiveSmoke_1_stream.png",
+          "sha256": "e5d4d67bb5a42223226db86cd1bd9473351c0dbb80e9ff554d6c6b15b917df5f"
+        },
+        {
+          "file": "DiveUnderwater_1_stream.png",
+          "sha256": "629a2acca82abcb940912e781a3fc34a47d8b0cefadd45511238921a2f3d1fc6"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "stream",
+      "status": "PASS",
+      "log_sha256": "a4eef1390bc4ca551a253942b0fa664c7904ee9c115db53e12878936f8448136",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/stream/Runtime.log",
+        "sha256": "a4eef1390bc4ca551a253942b0fa664c7904ee9c115db53e12878936f8448136",
+        "bytes": 880547
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "DiveSmoke_0_shore.png",
+          "sha256": "10c69a2b5de7325eb7416dfa0acff8c2395f0f6a6245fdb08d5bc4c72b8e6fef"
+        },
+        {
+          "file": "DiveUnderwater_0_shore.png",
+          "sha256": "13256cc5f7a7283d9d2325d8c5ce730bcd868a5c22463a6fa81db0fefe1bb894"
+        },
+        {
+          "file": "ShoreComplete_0.png",
+          "sha256": "cb4bf7d5b98cde663d7c3ac48b568b7e1dd890b48f17619d0d4d09983acf4270"
+        },
+        {
+          "file": "ShoreDive_0.png",
+          "sha256": "37b9b1a6d55dc63104d3473e0ab41fc061418a4a62aa139e6dc49e2bbed305b9"
+        },
+        {
+          "file": "ShoreMenu_0.png",
+          "sha256": "992d925ed66361cdad53be6c7740fe438b763490c78e18b5e73324dc4593360c"
+        },
+        {
+          "file": "ShoreReturn_0.png",
+          "sha256": "0ed4f00dfd2c5f148bf7f5673e809bd9837c9ccb1071b0e962023ebcae4647a3"
+        },
+        {
+          "file": "ShoreStart_0.png",
+          "sha256": "9db1ed5852b3e65466188511d263ea0659698e2ca0222b256c9e27f987665e20"
+        },
+        {
+          "file": "ShoreSurface_0.png",
+          "sha256": "d9ceeb49638e70d0b67e0ac7ff585af774681e733bc04c002a3bdcf45ee3e322"
+        },
+        {
+          "file": "ShoreWater_0.png",
+          "sha256": "07558b1247b1cd2a212ad1da3866ee64b83fb134712130f114e59ca397967155"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "shore",
+      "status": "PASS",
+      "log_sha256": "13ed4fab5716cb129c8d906de17500e89abdfa19b33fff23b99f71e1c00f6e92",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/shore/Runtime.log",
+        "sha256": "13ed4fab5716cb129c8d906de17500e89abdfa19b33fff23b99f71e1c00f6e92",
+        "bytes": 517000
+      }
+    },
+    {
+      "screenshots": [
+        {
+          "file": "DiveUnderwater_0_sediment.png",
+          "sha256": "8afaff2944e4530af2441668dd3153899c30c79fe160bc27d1921476e89229de"
+        },
+        {
+          "file": "Sediment_0_Clear.png",
+          "sha256": "5ecf84276f29e32897b7dd7ae6997a7e03c6e4a4d2fb13ca44d1bbe6728f8161"
+        },
+        {
+          "file": "Sediment_0_Cloud.png",
+          "sha256": "d3eecc1bf71ba57a8648e45a00b1ca4cbc673b113818361afafd5952867955d0"
+        },
+        {
+          "file": "Sediment_0_Hidden.png",
+          "sha256": "6dbbde2c48e028e0f364b4eaabe6afbf44fa4ec0c4931515e1a9df7083b37b64"
+        },
+        {
+          "file": "Sediment_0_Settling.png",
+          "sha256": "0dcdbe55c7d586a1e00031b235dc094702751c7b8fbdcd807556c62e01c87c99"
+        },
+        {
+          "file": "Sediment_0_Start.png",
+          "sha256": "df175dd1e76da242cdfb78c0e644f99f941fb6bab45a54a210d35469f61b968a"
+        },
+        {
+          "file": "Sediment_0_Visible.png",
+          "sha256": "4bf15671a355c882d646ba9d653f7ceb6cdb94dd74fc5dcc90faed3f9c026ee6"
+        }
+      ],
+      "native_scattering": 1,
+      "name": "sediment",
+      "status": "PASS",
+      "log_sha256": "537cc44dece23e0410690ca67570670dda3544c5b1b10d2997206187e877a6da",
+      "hardware": 1,
+      "runtime_log": {
+        "file": "artifacts/water-preview-20261127-015527/sediment/Runtime.log",
+        "sha256": "537cc44dece23e0410690ca67570670dda3544c5b1b10d2997206187e877a6da",
+        "bytes": 728011
+      }
+    }
+  ],
+  "screenshot_count": 46,
+  "night": {
+    "off_p999": 0.0,
+    "lit_pixels": 254564,
+    "mean_difference": 45.63875080179602
+  },
+  "launcher": {
+    "finished_utc": "2026-11-27T01:04:53.3765665Z",
+    "child_id": 43680,
+    "log_sha256": "0E65C8644F4E2EDD92C4EA75C4D03C0090EB5C45B3A44F4561330AB974D2BB0C",
+    "status": "PASS",
+    "exit_code": 0,
+    "child": "O:\\games\\dive game\\Builds\\WindowsWaterNearField\\divingsim\\Binaries\\Win64\\divingsim-WaterNearField.exe",
+    "started_utc": "2026-11-27T01:04:22.9357300Z",
+    "executable_sha256": "691C0905DDF6938A98F8A60B39325ABE2DB417483765F6B166E8D194D5321F24"
+  },
+  "benchmarks": [
+    {
+      "result": {
+        "metadata": {
+          "scenario": "perf-underwater",
+          "csv": "O:/games/dive game/Builds/WindowsWaterNearField/divingsim/Saved/Performance/perf-underwater_99C0C746/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-58902052+++UE5+Release-5.8",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 60,
+          "simulation_seconds": 74.9799983240664,
+          "distance_m": 10.379448029785458,
+          "depth_m": 5.2262072210153825,
+          "walking": false,
+          "water_preview": true,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-27T01:05:03.4219842Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "background_processes": [],
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3073 MiB, 15 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsWaterNearField\\divingsim\\Binaries\\Win64\\divingsim-WaterNearField.exe",
+          "executable_sha256": "691c0905ddf6938a98f8a60b39325abe2db417483765f6b166e8d194d5321f24",
+          "package_containers": [
+            {
+              "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+              "bytes": 105898051,
+              "file": "divingsim-Windows.pak"
+            },
+            {
+              "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+              "bytes": 1457973520,
+              "file": "divingsim-Windows.ucas"
+            },
+            {
+              "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+              "bytes": 1187020,
+              "file": "divingsim-Windows.utoc"
+            },
+            {
+              "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+              "bytes": 3245920,
+              "file": "global.ucas"
+            },
+            {
+              "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+              "bytes": 794,
+              "file": "global.utoc"
+            }
+          ]
+        },
+        "frames": 4147,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 59.9697759,
+        "average_fps": 69.1515006978707,
+        "one_percent_low_fps": 60.10693883088569,
+        "frame": {
+          "mean_ms": 14.461002146129733,
+          "p50_ms": 14.4188,
+          "p95_ms": 15.8316,
+          "p99_ms": 16.3912,
+          "max_ms": 17.922
+        },
+        "game_thread": {
+          "mean_ms": 4.5903837714010125,
+          "p50_ms": 4.5863,
+          "p95_ms": 5.0317,
+          "p99_ms": 5.3891,
+          "max_ms": 6.6955
+        },
+        "render_thread": {
+          "mean_ms": 14.454892259464673,
+          "p50_ms": 14.4138,
+          "p95_ms": 15.8321,
+          "p99_ms": 16.3875,
+          "max_ms": 17.8975
+        },
+        "rhi_thread": {
+          "mean_ms": 3.595934482758621,
+          "p50_ms": 3.5728,
+          "p95_ms": 4.055,
+          "p99_ms": 4.3656,
+          "max_ms": 5.897
+        },
+        "gpu": {
+          "mean_ms": 13.817291005546178,
+          "p50_ms": 13.767,
+          "p95_ms": 15.0507,
+          "p99_ms": 15.4897,
+          "max_ms": 16.6959
+        },
+        "frames_over_16_67_ms": 15,
+        "frames_over_33_33_ms": 0,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": true,
+        "memory_mb": {
+          "start": 4683.9648,
+          "end": 4672.2617,
+          "max": 4698.0039
+        },
+        "terrain_chunks": {
+          "min": 9.0,
+          "max": 9.0,
+          "frames_below_nine": 0
+        },
+        "distance_m": 5.672300000000001,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 3.1857450446105617
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 1.1823360260429225
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 1.1692663853387992
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.950011212925006
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 0.9223361224981914
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.7073269351338317
+          },
+          {
+            "name": "GPU/Basepass",
+            "mean_ms": 0.6002805642633229
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.5100132143718351
+          },
+          {
+            "name": "GPU/Lights",
+            "mean_ms": 0.3759791415481071
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.33591859175307454
+          },
+          {
+            "name": "GPU/RayTracingScene",
+            "mean_ms": 0.32534936098384376
+          },
+          {
+            "name": "GPU/NaniteBasePass",
+            "mean_ms": 0.3247688449481553
+          }
+        ]
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-020503-415/Capture.csv",
+          "sha256": "c0a54d5e7099003605b5aed29ea8ca50b24ac1f2c4a9b8d2e64fc6de6fa58514",
+          "bytes": 9598273
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-020503-415/Metadata.json",
+          "sha256": "4029d0daa3e114ace94dcefab1c4201fedbc74d878710ae33de5881e4c90fa82",
+          "bytes": 1488
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-020503-415/Host.json",
+          "sha256": "c2b99a03dedff5660668eaec74e07255faef2274fb6846a9871eee8b6c543825",
+          "bytes": 1397
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-020503-415/Frame.png",
+          "sha256": "c4057f1c63b1a6b002adfa8539e5090e17c196f60f183e247f5bc9b40f311f9d",
+          "bytes": 2539852
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-020503-415/Runtime.log",
+          "sha256": "a54eac8c89b43ddd97edec4f4ab8cf0caf7f65dbd0ac1c8e08b824fb1dbb6ace",
+          "bytes": 1590262
+        }
+      ]
+    },
+    {
+      "result": {
+        "metadata": {
+          "scenario": "perf-surface",
+          "csv": "O:/games/dive game/Builds/WindowsWaterNearField/divingsim/Saved/Performance/perf-surface_AEC3CF70/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-58902052+++UE5+Release-5.8",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 60,
+          "simulation_seconds": 74.9199983254075,
+          "distance_m": 14.286255315811701,
+          "depth_m": 0,
+          "walking": false,
+          "water_preview": true,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-27T01:06:36.1525791Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "background_processes": [],
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3058 MiB, 33 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsWaterNearField\\divingsim\\Binaries\\Win64\\divingsim-WaterNearField.exe",
+          "executable_sha256": "691c0905ddf6938a98f8a60b39325abe2db417483765f6b166e8d194d5321f24",
+          "package_containers": [
+            {
+              "file": "divingsim-Windows.pak",
+              "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+              "bytes": 105898051
+            },
+            {
+              "file": "divingsim-Windows.ucas",
+              "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+              "bytes": 1457973520
+            },
+            {
+              "file": "divingsim-Windows.utoc",
+              "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+              "bytes": 1187020
+            },
+            {
+              "file": "global.ucas",
+              "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+              "bytes": 3245920
+            },
+            {
+              "file": "global.utoc",
+              "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+              "bytes": 794
+            }
+          ]
+        },
+        "frames": 4011,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 59.9799787,
+        "average_fps": 66.87231451117538,
+        "one_percent_low_fps": 58.78321610143976,
+        "frame": {
+          "mean_ms": 14.953871528297183,
+          "p50_ms": 14.9181,
+          "p95_ms": 16.305,
+          "p99_ms": 16.7693,
+          "max_ms": 18.1309
+        },
+        "game_thread": {
+          "mean_ms": 4.367929045125904,
+          "p50_ms": 4.3677,
+          "p95_ms": 4.7889,
+          "p99_ms": 5.0931,
+          "max_ms": 6.5611
+        },
+        "render_thread": {
+          "mean_ms": 14.947549862877088,
+          "p50_ms": 14.906,
+          "p95_ms": 16.3064,
+          "p99_ms": 16.7753,
+          "max_ms": 18.0879
+        },
+        "rhi_thread": {
+          "mean_ms": 3.5017528795811517,
+          "p50_ms": 3.472,
+          "p95_ms": 3.9764,
+          "p99_ms": 4.2704,
+          "max_ms": 5.9929
+        },
+        "gpu": {
+          "mean_ms": 14.308587085514834,
+          "p50_ms": 14.2252,
+          "p95_ms": 15.5142,
+          "p99_ms": 15.9139,
+          "max_ms": 16.3135
+        },
+        "frames_over_16_67_ms": 62,
+        "frames_over_33_33_ms": 0,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": true,
+        "memory_mb": {
+          "start": 4621.25,
+          "end": 4593.6484,
+          "max": 4625.6094
+        },
+        "terrain_chunks": {
+          "min": 9.0,
+          "max": 9.0,
+          "frames_below_nine": 0
+        },
+        "distance_m": 8.7254,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 3.276760159561207
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 1.6299545250560958
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 1.2945486163051607
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.9212585888805784
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 0.8897508850660684
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.7115460483669908
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.5454900024931438
+          },
+          {
+            "name": "GPU/Basepass",
+            "mean_ms": 0.4542317875841436
+          },
+          {
+            "name": "GPU/NaniteBasePass",
+            "mean_ms": 0.4359588631264024
+          },
+          {
+            "name": "GPU/RayTracingScene",
+            "mean_ms": 0.3252646472201446
+          },
+          {
+            "name": "GPU/VolumetricFog",
+            "mean_ms": 0.32200511094490153
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.3189084018947893
+          }
+        ]
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-surface-1080p-q2-20261127-020636-144/Capture.csv",
+          "sha256": "76c5d04f0d2a565d99b0ccea5b9b09e8d7cb55ac1cfdee6f968dc0ca72015a53",
+          "bytes": 9251131
+        },
+        {
+          "file": "artifacts/perf-surface-1080p-q2-20261127-020636-144/Metadata.json",
+          "sha256": "347873576877b9debc84fd443ab4777125cf3194e1155dcdfeb4da8bd7defd91",
+          "bytes": 1465
+        },
+        {
+          "file": "artifacts/perf-surface-1080p-q2-20261127-020636-144/Host.json",
+          "sha256": "55e305c0843007fd3d873effff29044d8a4a28e5d259ae2bc7bdf69b630abead",
+          "bytes": 1397
+        },
+        {
+          "file": "artifacts/perf-surface-1080p-q2-20261127-020636-144/Frame.png",
+          "sha256": "386cb46123e541c1e2e672aa9be9c4bcb21097f2c16a3365bf04195b62e6d2df",
+          "bytes": 2448754
+        },
+        {
+          "file": "artifacts/perf-surface-1080p-q2-20261127-020636-144/Runtime.log",
+          "sha256": "60a3e77d4e001469c5072a3d4b5ded777b302b3dc59f393c40658ef601a9fc40",
+          "bytes": 1555699
+        }
+      ],
+      "boundary": {
+        "roi_xyxy": [
+          100,
+          585,
+          420,
+          675
+        ],
+        "max_mean_row_step_rgb": 0.9968750000000123,
+        "largest_step_y": 586
+      }
+    },
+    {
+      "result": {
+        "metadata": {
+          "scenario": "perf-stream",
+          "csv": "O:/games/dive game/Builds/WindowsWaterNearField/divingsim/Saved/Performance/perf-stream_EE63D028/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-58902052+++UE5+Release-5.8",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 90,
+          "simulation_seconds": 104.93999765440822,
+          "distance_m": 167.99672425769663,
+          "depth_m": 24.723463243859825,
+          "walking": false,
+          "water_preview": true,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-27T01:08:08.8399286Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "background_processes": [],
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3059 MiB, 16 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsWaterNearField\\divingsim\\Binaries\\Win64\\divingsim-WaterNearField.exe",
+          "executable_sha256": "691c0905ddf6938a98f8a60b39325abe2db417483765f6b166e8d194d5321f24",
+          "package_containers": [
+            {
+              "file": "divingsim-Windows.pak",
+              "bytes": 105898051,
+              "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f"
+            },
+            {
+              "file": "divingsim-Windows.ucas",
+              "bytes": 1457973520,
+              "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693"
+            },
+            {
+              "file": "divingsim-Windows.utoc",
+              "bytes": 1187020,
+              "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430"
+            },
+            {
+              "file": "global.ucas",
+              "bytes": 3245920,
+              "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d"
+            },
+            {
+              "file": "global.utoc",
+              "bytes": 794,
+              "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc"
+            }
+          ]
+        },
+        "frames": 8758,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 89.9856112,
+        "average_fps": 97.32667126675027,
+        "one_percent_low_fps": 77.57767244062002,
+        "frame": {
+          "mean_ms": 10.274675862068966,
+          "p50_ms": 10.2353,
+          "p95_ms": 11.1561,
+          "p99_ms": 11.5606,
+          "max_ms": 42.8115
+        },
+        "game_thread": {
+          "mean_ms": 4.4326580269467915,
+          "p50_ms": 4.4353,
+          "p95_ms": 5.0306,
+          "p99_ms": 5.4047,
+          "max_ms": 42.0511
+        },
+        "render_thread": {
+          "mean_ms": 10.254700536652203,
+          "p50_ms": 10.228,
+          "p95_ms": 11.1408,
+          "p99_ms": 11.544,
+          "max_ms": 17.4971
+        },
+        "rhi_thread": {
+          "mean_ms": 3.5954395295729618,
+          "p50_ms": 3.5465,
+          "p95_ms": 4.2016,
+          "p99_ms": 4.5475,
+          "max_ms": 8.5446
+        },
+        "gpu": {
+          "mean_ms": 9.650153254167618,
+          "p50_ms": 9.6433,
+          "p95_ms": 10.2908,
+          "p99_ms": 10.5542,
+          "max_ms": 11.2778
+        },
+        "frames_over_16_67_ms": 6,
+        "frames_over_33_33_ms": 2,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": false,
+        "memory_mb": {
+          "start": 4623.3125,
+          "end": 4550.8867,
+          "max": 4631.0273
+        },
+        "terrain_chunks": {
+          "min": 7.0,
+          "max": 9.0,
+          "frames_below_nine": 4
+        },
+        "distance_m": 144.83120000000002,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 1.2803813998629825
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 1.1806894153916418
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.8662770838090889
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.6797628111440969
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 0.6721198104590089
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 0.5228243891299383
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.3144932404658598
+          },
+          {
+            "name": "GPU/Translucency",
+            "mean_ms": 0.30345511532313313
+          },
+          {
+            "name": "GPU/Lights",
+            "mean_ms": 0.2865930121032199
+          },
+          {
+            "name": "GPU/Postprocessing",
+            "mean_ms": 0.270767915049098
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.25118613838775977
+          },
+          {
+            "name": "GPU/VolumetricFog",
+            "mean_ms": 0.24711403288422015
+          }
+        ]
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-020808-832/Capture.csv",
+          "sha256": "42fea2d243d411c6f741b87109856fe28ef50c2f70b3e216aa62c5fdfd9b27fa",
+          "bytes": 20271601
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-020808-832/Metadata.json",
+          "sha256": "2a5f722edf9d977016b55211ff424d49a1f97d1a5da72bd039a7595659311b37",
+          "bytes": 1480
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-020808-832/Host.json",
+          "sha256": "3443c145478d59abea5c8f27caff02610f9b83415968606d479da3e428356d33",
+          "bytes": 1397
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-020808-832/Frame.png",
+          "sha256": "4b5701369abf803539d95c6b86c62962d4284ad0f46410bd89c7a5f90d76c919",
+          "bytes": 1621080
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-020808-832/Runtime.log",
+          "sha256": "fd11b7bc3e3c59a92e8cc46b3c7b058f63e9e06ee11c8caa73ff46ec51f551e1",
+          "bytes": 2992461
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "name": "screen-off",
+      "host": {
+        "sha256": "B5CC3AFCAA69897D687AA1570D9EDFD950A6104F2D7E79F4E68484D04C530BE2",
+        "source_head": "9b8b9a2b043c006bfab3d145684bc9c420923a3f",
+        "arguments": "-DiveSmokeTest -DiveScenario=perf-surface -DiveEntry=0 -DiveQuality=2 -DiveRenderScale=100 -DivePerfSeconds=60 -DiveWaterPreview -windowed -ForceRes -ResX=1920 -ResY=1080 -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -ExecCmds=\"r.Lumen.Reflections.ScreenTraces 0\" -abslog=\"O:\\games\\dive game\\artifacts\\surface-boundary-screen-off\\Runtime.log\"",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsWaterPreview\\divingsim\\Binaries\\Win64\\divingsim-WaterPreview.exe"
+      },
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsWaterPreview/divingsim/Saved/Performance/perf-surface_5B69468E/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.9799983240664,
+        "distance_m": 14.291175553113542,
+        "depth_m": 0,
+        "walking": false,
+        "water_preview": true,
+        "water_interface": true,
+        "bounded_water": true,
+        "native_scattering": true,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2,
+        "r.Lumen.HardwareRayTracing": 1,
+        "r.Lumen.HardwareRayTracing.LightingMode": 2,
+        "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+        "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+        "r.Lumen.Reflections.ScreenTraces": 0,
+        "r.VolumetricFog": 1
+      },
+      "boundary": {
+        "roi_xyxy": [
+          100,
+          585,
+          420,
+          675
+        ],
+        "max_mean_row_step_rgb": 8.235416666666666,
+        "largest_step_y": 621
+      },
+      "files": [
+        {
+          "file": "artifacts/surface-boundary-screen-off/Host.json",
+          "sha256": "c9c3c556bd27dc1103456c37284854ec0f60c9d85fab7dd37c382687d3fac613",
+          "bytes": 659
+        },
+        {
+          "file": "artifacts/surface-boundary-screen-off/Metadata.json",
+          "sha256": "d32c3a5afae81ce4ece51011e53f26e7b0e397a2d99ea71f70523de3aca368e6",
+          "bytes": 1342
+        },
+        {
+          "file": "artifacts/surface-boundary-screen-off/Frame.png",
+          "sha256": "7ca7fa8baf1ca25a177ebe19ea5cad08bca14501f9d785b43893de5c593c7a22",
+          "bytes": 2316796
+        },
+        {
+          "file": "artifacts/surface-boundary-screen-off/Runtime.log",
+          "sha256": "3168c62b9f27c47c3f1154189fdf1c40a90988b348fc2a0f524accd9c1825f9a",
+          "bytes": 1547906
+        },
+        {
+          "file": "artifacts/surface-boundary-screen-off/Capture.csv",
+          "sha256": "e60c16c5a720aad6e07c7c69ffd2dea8c05739165c909f65b657255bb6eeae2f",
+          "bytes": 9200021
+        }
+      ]
+    },
+    {
+      "name": "volume-off",
+      "host": {
+        "sha256": "B5CC3AFCAA69897D687AA1570D9EDFD950A6104F2D7E79F4E68484D04C530BE2",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsWaterPreview\\divingsim\\Binaries\\Win64\\divingsim-WaterPreview.exe",
+        "source_head": "9b8b9a2b043c006bfab3d145684bc9c420923a3f",
+        "arguments": "-DiveSmokeTest -DiveScenario=perf-surface -DiveEntry=0 -DiveQuality=2 -DiveRenderScale=100 -DivePerfSeconds=60 -DiveWaterPreview -windowed -ForceRes -ResX=1920 -ResY=1080 -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -ExecCmds=\"r.VolumetricFog 0\" -abslog=\"O:\\games\\dive game\\artifacts\\surface-boundary-volume-off\\Runtime.log\""
+      },
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsWaterPreview/divingsim/Saved/Performance/perf-surface_3AF0237B/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.95999832451344,
+        "distance_m": 14.289555536807592,
+        "depth_m": 0,
+        "walking": false,
+        "water_preview": true,
+        "water_interface": true,
+        "bounded_water": true,
+        "native_scattering": false,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2,
+        "r.Lumen.HardwareRayTracing": 1,
+        "r.Lumen.HardwareRayTracing.LightingMode": 2,
+        "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+        "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+        "r.Lumen.Reflections.ScreenTraces": 1,
+        "r.VolumetricFog": 0
+      },
+      "boundary": {
+        "roi_xyxy": [
+          100,
+          585,
+          420,
+          675
+        ],
+        "max_mean_row_step_rgb": 0.5364583333333334,
+        "largest_step_y": 606
+      },
+      "files": [
+        {
+          "file": "artifacts/surface-boundary-volume-off/Host.json",
+          "sha256": "f8230872bb89a657f26b142951cfc6778a60a0674a58028452c139015de3e956",
+          "bytes": 642
+        },
+        {
+          "file": "artifacts/surface-boundary-volume-off/Metadata.json",
+          "sha256": "d7d6a90797d20854925412c27bc08a9de18ab0de4c75315149610031832a683c",
+          "bytes": 1343
+        },
+        {
+          "file": "artifacts/surface-boundary-volume-off/Frame.png",
+          "sha256": "fc5d736024a03462a6d6c7106c18696dff8c97dbf6c9cda769a815cb35969b3b",
+          "bytes": 2453724
+        },
+        {
+          "file": "artifacts/surface-boundary-volume-off/Runtime.log",
+          "sha256": "6eb3112b97c961a24fe4ae85083220569a9e1adbf91b14dabcd580010cf473f1",
+          "bytes": 1572333
+        },
+        {
+          "file": "artifacts/surface-boundary-volume-off/Capture.csv",
+          "sha256": "50162c7aa614aaa11e8bc43bcee70b4b6d691ff3a22cb5a4556923b1ea4abcfa",
+          "bytes": 9238707
+        }
+      ]
+    },
+    {
+      "name": "depth-off",
+      "host": {
+        "sha256": "B5CC3AFCAA69897D687AA1570D9EDFD950A6104F2D7E79F4E68484D04C530BE2",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsWaterPreview\\divingsim\\Binaries\\Win64\\divingsim-WaterPreview.exe",
+        "arguments": "-DiveSmokeTest -DiveScenario=perf-surface -DiveEntry=0 -DiveQuality=2 -DiveRenderScale=100 -DivePerfSeconds=60 -DiveWaterPreview -windowed -ForceRes -ResX=1920 -ResY=1080 -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -ExecCmds=\"r.VolumetricFog.ConservativeDepth 0\" -abslog=\"O:\\games\\dive game\\artifacts\\surface-boundary-depth-off\\Runtime.log\"",
+        "source_head": "9b8b9a2b043c006bfab3d145684bc9c420923a3f"
+      },
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsWaterPreview/divingsim/Saved/Performance/perf-surface_74BE1299/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.93999832496047,
+        "distance_m": 14.28792635817002,
+        "depth_m": 0,
+        "walking": false,
+        "water_preview": true,
+        "water_interface": true,
+        "bounded_water": true,
+        "native_scattering": true,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2,
+        "r.Lumen.HardwareRayTracing": 1,
+        "r.Lumen.HardwareRayTracing.LightingMode": 2,
+        "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+        "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+        "r.Lumen.Reflections.ScreenTraces": 1,
+        "r.VolumetricFog": 1
+      },
+      "boundary": {
+        "roi_xyxy": [
+          100,
+          585,
+          420,
+          675
+        ],
+        "max_mean_row_step_rgb": 7.3197916666666645,
+        "largest_step_y": 625
+      },
+      "files": [
+        {
+          "file": "artifacts/surface-boundary-depth-off/Host.json",
+          "sha256": "b89e09093ce7445f9f90f86a68987b1e5cd01ef555654a246f51fac972130ebc",
+          "bytes": 659
+        },
+        {
+          "file": "artifacts/surface-boundary-depth-off/Metadata.json",
+          "sha256": "ecd7935709b33c688c6129dad2fa4f529faf12a5847b34b41cea9c4ae3517102",
+          "bytes": 1340
+        },
+        {
+          "file": "artifacts/surface-boundary-depth-off/Frame.png",
+          "sha256": "5126c1cc9db609c17b709ccd43aee3cf416bd0760a96657901852d8dcdc66ead",
+          "bytes": 2438022
+        },
+        {
+          "file": "artifacts/surface-boundary-depth-off/Runtime.log",
+          "sha256": "09aba810cd1316b0b7738a7f01d5ac4c6b3358351fbf8426989b690b5544ee73",
+          "bytes": 1561742
+        },
+        {
+          "file": "artifacts/surface-boundary-depth-off/Capture.csv",
+          "sha256": "3dea22990e0346871b517652d189da806b893f800118c08b7819ec298363fdd5",
+          "bytes": 9270313
+        }
+      ]
+    },
+    {
+      "name": "water-volume-off",
+      "host": {
+        "source_head": "9b8b9a2b043c006bfab3d145684bc9c420923a3f",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsWaterPreview\\divingsim\\Binaries\\Win64\\divingsim-WaterPreview.exe",
+        "sha256": "B5CC3AFCAA69897D687AA1570D9EDFD950A6104F2D7E79F4E68484D04C530BE2",
+        "arguments": "-DiveSmokeTest -DiveScenario=perf-surface -DiveEntry=0 -DiveQuality=2 -DiveRenderScale=100 -DivePerfSeconds=60 -DiveWaterPreview -DiveWaterVolumeGain=0 -windowed -ForceRes -ResX=1920 -ResY=1080 -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog=\"O:\\games\\dive game\\artifacts\\surface-boundary-water-volume-off\\Runtime.log\""
+      },
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsWaterPreview/divingsim/Saved/Performance/perf-surface_F77EAFE5/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.9199983254075,
+        "distance_m": 14.286255315811701,
+        "depth_m": 0,
+        "walking": false,
+        "water_preview": true,
+        "water_interface": true,
+        "bounded_water": true,
+        "native_scattering": true,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2,
+        "r.Lumen.HardwareRayTracing": 1,
+        "r.Lumen.HardwareRayTracing.LightingMode": 2,
+        "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+        "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+        "r.Lumen.Reflections.ScreenTraces": 1,
+        "r.VolumetricFog": 1
+      },
+      "boundary": {
+        "roi_xyxy": [
+          100,
+          585,
+          420,
+          675
+        ],
+        "max_mean_row_step_rgb": 1.3583333333333247,
+        "largest_step_y": 585
+      },
+      "files": [
+        {
+          "file": "artifacts/surface-boundary-water-volume-off/Host.json",
+          "sha256": "4163c6f9b5118b3ee3667f96325b244f73ac8dafa04ae670da20321cd4881220",
+          "bytes": 639
+        },
+        {
+          "file": "artifacts/surface-boundary-water-volume-off/Metadata.json",
+          "sha256": "f4ae4aa11d1221bf9b277bd1623894dc64ce32de88a146aa6fa83d1bdb76b5f6",
+          "bytes": 1342
+        },
+        {
+          "file": "artifacts/surface-boundary-water-volume-off/Frame.png",
+          "sha256": "4e9791fcb4906d6616f32dcb9b0b0e21bc20b79ba011e7c423bba5c72d589505",
+          "bytes": 2454468
+        },
+        {
+          "file": "artifacts/surface-boundary-water-volume-off/Runtime.log",
+          "sha256": "0af7ea0d8ab3da9fda3cc625a1a58f97dd9100d72b3fac37e8e8b9516b711ec0",
+          "bytes": 1563148
+        },
+        {
+          "file": "artifacts/surface-boundary-water-volume-off/Capture.csv",
+          "sha256": "b8c9309fe732f4ae1e339f758a69456f4ed2cbca767302877749568b5563354c",
+          "bytes": 9286136
+        }
+      ]
+    },
+    {
+      "name": "grid8",
+      "host": {
+        "arguments": "-DiveSmokeTest -DiveScenario=perf-surface -DiveEntry=0 -DiveQuality=2 -DiveRenderScale=100 -DivePerfSeconds=60 -DiveWaterPreview -windowed -ForceRes -ResX=1920 -ResY=1080 -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -ExecCmds=\"r.VolumetricFog.DepthDistributionScale 8\" -abslog=\"O:\\games\\dive game\\artifacts\\surface-boundary-grid8\\Runtime.log\"",
+        "sha256": "B5CC3AFCAA69897D687AA1570D9EDFD950A6104F2D7E79F4E68484D04C530BE2",
+        "source_head": "9b8b9a2b043c006bfab3d145684bc9c420923a3f",
+        "executable": "O:\\games\\dive game\\Builds\\WindowsWaterPreview\\divingsim\\Binaries\\Win64\\divingsim-WaterPreview.exe"
+      },
+      "metadata": {
+        "scenario": "perf-surface",
+        "csv": "O:/games/dive game/Builds/WindowsWaterPreview/divingsim/Saved/Performance/perf-surface_121BF6EB/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 74.9799983240664,
+        "distance_m": 14.291175553113542,
+        "depth_m": 0,
+        "walking": false,
+        "water_preview": true,
+        "water_interface": true,
+        "bounded_water": true,
+        "native_scattering": true,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2,
+        "r.Lumen.HardwareRayTracing": 1,
+        "r.Lumen.HardwareRayTracing.LightingMode": 2,
+        "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+        "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+        "r.Lumen.Reflections.ScreenTraces": 1,
+        "r.VolumetricFog": 1
+      },
+      "boundary": {
+        "roi_xyxy": [
+          100,
+          585,
+          420,
+          675
+        ],
+        "max_mean_row_step_rgb": 0.5062499999999895,
+        "largest_step_y": 612
+      },
+      "files": [
+        {
+          "file": "artifacts/surface-boundary-grid8/Host.json",
+          "sha256": "1d32c2a283e0eee1ecc930ff6dc45a6fbb490b9eedfca17b798a5a79a62fd910",
+          "bytes": 660
+        },
+        {
+          "file": "artifacts/surface-boundary-grid8/Metadata.json",
+          "sha256": "0b6044b9cbb1daac187201407ff0bbbbccecf877815861702eeab02eefb67b69",
+          "bytes": 1342
+        },
+        {
+          "file": "artifacts/surface-boundary-grid8/Frame.png",
+          "sha256": "c24a9c290ff1aa1e6a10eac648a1cafd2c7bf054d024fa23e35a8ff2167b3057",
+          "bytes": 2423692
+        },
+        {
+          "file": "artifacts/surface-boundary-grid8/Runtime.log",
+          "sha256": "d9c791933734f20e92666438821e0e4e4104ccb9d72bd9e782cae26d1dceb466",
+          "bytes": 1565756
+        },
+        {
+          "file": "artifacts/surface-boundary-grid8/Capture.csv",
+          "sha256": "36efd9093bcff6821796d9aded257978c90660ef9ba5e5335df2f58c9d30fe30",
+          "bytes": 9301275
+        }
+      ]
+    }
+  ],
+  "baseline": {
+    "file": "artifacts/perf-surface-1080p-q2-20261127-013134-976/Frame.png",
+    "sha256": "d2e969be8bb066256b87f23396885537749a1b6bc50fc8aac192ab120d452832",
+    "bytes": 2426515,
+    "boundary": {
+      "roi_xyxy": [
+        100,
+        585,
+        420,
+        675
+      ],
+      "max_mean_row_step_rgb": 7.751041666666666,
+      "largest_step_y": 625
+    }
+  },
+  "previous_report": {
+    "file": "Documentation/WATER_PREVIEW_RESULTS.json",
+    "sha256": "04519de760ba1f5cb66b1a11f638703bf3707c3c7e5a0499058d7102cae61c16",
+    "bytes": 75239
+  },
+  "published": [
+    {
+      "file": "Documentation/Images/SurfaceNearField_Before.png",
+      "sha256": "d2e969be8bb066256b87f23396885537749a1b6bc50fc8aac192ab120d452832",
+      "bytes": 2426515
+    },
+    {
+      "file": "Documentation/Images/SurfaceNearField_After.png",
+      "sha256": "386cb46123e541c1e2e672aa9be9c4bcb21097f2c16a3365bf04195b62e6d2df",
+      "bytes": 2448754
+    }
+  ],
+  "nominal_first_slice_centres_metres": {
+    "scale32": 2.277494234138485,
+    "scale8": 0.20415624344394318
+  },
+  "engine_sources": [
+    {
+      "file": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Source\\Runtime\\RenderCore\\Public\\RenderUtils.h",
+      "sha256": "7917e7a522efa3267ab3ed1995c103ae631d6a0bbffe6aa3157abeadddc8c791"
+    },
+    {
+      "file": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Source\\Runtime\\Renderer\\Private\\VolumetricFog.cpp",
+      "sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51"
+    },
+    {
+      "file": "C:\\Program Files\\Epic Games\\UE_5.8\\Engine\\Shaders\\Private\\VolumetricFogVoxelization.usf",
+      "sha256": "0a904f059acc623a50f6bd3a2281bda1cf30de8d2347c2394fb8fc60f601f22e"
+    }
+  ],
+  "limitations": [
+    "Rotating benchmark captures have slightly different final times, not pixel-identical camera poses",
+    "Boundary metric covers only the documented clear-water image region",
+    "Redistribution trades distant fog depth resolution for near-surface resolution",
+    "Software reflection gaps, complete refraction, reflected-water attenuation and reference quality remain open",
+    "Manual menu-to-game input check and current endurance acceptance remain incomplete"
+  ]
+}

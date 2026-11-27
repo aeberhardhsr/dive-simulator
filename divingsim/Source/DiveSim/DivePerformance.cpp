@@ -113,7 +113,8 @@ void ADivePawn::TickPerformance()
             TEXT("sg.ViewDistanceQuality"),TEXT("sg.AntiAliasingQuality"),TEXT("sg.ShadowQuality"),TEXT("sg.GlobalIlluminationQuality"),
             TEXT("sg.ReflectionQuality"),TEXT("sg.PostProcessQuality"),TEXT("sg.TextureQuality"),TEXT("sg.EffectsQuality"),TEXT("sg.FoliageQuality"),
             TEXT("r.Lumen.HardwareRayTracing"),TEXT("r.Lumen.HardwareRayTracing.LightingMode"),TEXT("r.Lumen.HardwareRayTracing.HitLighting.Allowed"),
-            TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),TEXT("r.Lumen.Reflections.ScreenTraces"),TEXT("r.VolumetricFog")})
+            TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),TEXT("r.Lumen.Reflections.ScreenTraces"),TEXT("r.VolumetricFog"),
+            TEXT("r.VolumetricFog.DepthDistributionScale"),TEXT("r.VolumetricFog.GridSizeZ"),TEXT("r.VolumetricFog.GridPixelSize")})
             if(auto* variable=IConsoleManager::Get().FindConsoleVariable(name)) root->SetNumberField(name,variable->GetFloat());
         FString json;
         const bool valid=FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&json))&&

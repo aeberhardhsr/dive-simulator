@@ -224,6 +224,12 @@ void ADiveWorld::BeginPlay()
         set(TEXT("r.Lumen.HardwareRayTracing.LightingMode"),2);
         set(TEXT("r.Lumen.HardwareRayTracing.HitLighting.Allowed"),1);
         set(TEXT("r.Lumen.TranslucencyReflections.FrontLayer.Allow"),1);
+        // With High's 64 slices over 600 m, the default distribution places
+        // the first fog sample about 2.3 m away. Water in that coarse cell
+        // leaks across the nearby surface as a straight brightness boundary.
+        // Redistribute the existing slices towards the camera (about 20 cm
+        // for the first centre) while retaining the full atmospheric extent.
+        set(TEXT("r.VolumetricFog.DepthDistributionScale"),8);
         UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_PREVIEW_READY smoke=%d hardware=%d bounded=1 interface=1 lighting_mode=2"),bOpticsSmoke?1:0,hardware?1:0);
     }
     bTerrainReady=Terrain.Load();

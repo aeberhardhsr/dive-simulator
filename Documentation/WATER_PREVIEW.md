@@ -1,5 +1,7 @@
 # Spielbare Vorschau des neuen Wasserpfads
 
+Dieser Bericht dokumentiert das ursprüngliche Paket. Die nachfolgende [Korrektur der Nebelkante](SURFACE_NEAR_FIELD.md) verwendet eine feinere Tiefenabtastung in Kameranähe; die damaligen Ergebnisse unten bleiben als Vergleich erhalten.
+
 `Builds/WindowsWaterPreview/Start-WaterPreview.cmd` startet das normale Spielmenü mit dem neuen Wasserpfad. Der gesamte Paketordner wird benötigt. Der Starter setzt `-DiveWaterPreview`; er startet keinen automatischen Test. Die direkte `divingsim.exe` ohne diesen Schalter verwendet weiterhin den bisherigen Wasserpfad.
 
 Die Vorschau verbindet die [an der Wasseroberfläche begrenzte Lichtstreuung](BOUNDED_WATER.md) mit den [klareren Spiegelungen an der Wasserunterseite](WATER_REFLECTIONS.md). Die optischen Einstellungen gelten für diesen Spielstart und werden nicht als neue Spielereinstellungen gespeichert. Unterstützt die aktive Grafikschnittstelle Hardware-Raytracing, verwendet die Vorschau die Beleuchtung am Reflexionstreffer. Andernfalls bleibt die Softwaredarstellung verfügbar, deren unvollständige Reflexionen des Seegrunds weiterhin sichtbar sind.
