@@ -1,4 +1,5 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
+    [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression','fish','rocks')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
@@ -28,6 +29,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($SolarShaderStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview)) {throw 'SolarShaderStudy currently requires EditorSandbox and WaterPreview; it is not cooked into a package.'}
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
@@ -42,7 +44,7 @@ if($WaterReflection -eq 'hit' -and -not $HardwareLumen) { throw 'Hit lighting re
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
-if($EditorSandbox) { $project=Join-Path $repo 'Builds/EditorSandbox/divingsim/divingsim.uproject' }
+if($EditorSandbox) { $project=Join-Path $repo "Builds/$SandboxName/divingsim/divingsim.uproject" }
 $logPath=if($RuntimeLog) { [IO.Path]::GetFullPath($RuntimeLog) } else { Join-Path $repo 'artifacts/DiveSmoke.log' }
 New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $size=$Viewport.Split('x')

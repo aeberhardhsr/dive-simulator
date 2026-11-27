@@ -1,0 +1,69 @@
+{
+  "status": "shader_worker_passed_editor_build_in_progress_not_runtime_validated",
+  "source_tag": "5.8.4-release",
+  "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
+  "dependencies": {
+    "path": "artifacts/source-engine-20261127/dependencies.log",
+    "sha256": "94cf0d4ab60e1eeff941dcb01c098a38f0a56312d1a60c8077854f7b6a2541da"
+  },
+  "shader_worker_build": {
+    "path": "artifacts/source-engine-20261127/shader-worker-build.log",
+    "sha256": "887ce01c7c55f9206aa341f12f0cd673e0df3ce1a235ac407455e70e7e8a8d06"
+  },
+  "shader_worker_binary": {
+    "path": "Builds/UE584/Engine/Binaries/Win64/ShaderCompileWorker.exe",
+    "sha256": "ecef946e17d6c6f3d490db7bb84673b4ea2d91041c86bd140089e22dc83f8036"
+  },
+  "renderer_patch_manifest": {
+    "status": "prepared_not_compiled",
+    "engine": "O:\\games\\dive game\\Builds\\UE584",
+    "binding_revision": 1,
+    "installed_engine_modified": false,
+    "files": [
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+        "original_sha256": "d4280790d78f8350826c3b34f619a6e7fc3987f9ed49736e5be9d07e9f08f9f9",
+        "prepared_sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+      },
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+        "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
+        "prepared_sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+      }
+    ]
+  },
+  "patched_renderer_sources": [
+    {
+      "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+      "sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+    },
+    {
+      "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+      "sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+    }
+  ],
+  "shader_manifest": {
+    "engine_file": "Builds\\UE584\\Engine\\Shaders\\Private\\DeferredLightPixelShaders.usf",
+    "original_sha256": "2be1df4a8ddbd6d33005e58c7cc924dcb777f3dcc4fcce14f9b9c6292706eb57",
+    "patched_sha256": "2b524f88cf025b8525a65b8f86be575805b991f3455936cf69f5ea7ecbbde295",
+    "mapping": "/Engine/Private",
+    "destination": "O:\\games\\dive game\\Builds\\SourceEditorSandbox\\divingsim\\Intermediate\\DiveWaveStudy\\Private",
+    "shader_include_sha256": "7db5deddb4a64266c101bd3b2f796c3be27c6a3c430edbe32ba653a36cbda5ac",
+    "common_include_sha256": "351a299e85b8679a54e94bb8b29fe53e64fe5ba5877de8218e6f9161673a2e47",
+    "volume_enabled": true,
+    "scope": "Shared scene waves and extinction; spatial directional attenuation/focusing and refracted shading/phase directions; original shadow rays, no GI or lake footprint.",
+    "waves_enabled": true,
+    "optics_sha256": "31eaf9809a80c970ac982b269bb4d2cc8c1b9dc17dacb62c3a6e1d938de8cb22",
+    "wave_medium_sha256": "42193fb4db97df1986bfc954621c8ca430ff35f242c14a0c91d8f76a4ff06c4c",
+    "wave_surface_sha256": "119b98e3e427b35ac0297d87aa3a045e3be09d26cba00bdf5638e1a4d36e2c0b",
+    "volume": {
+      "engine_file": "Builds\\UE584\\Engine\\Shaders\\Private\\VolumetricFog.usf",
+      "original_sha256": "e81073e5f622d73a08af916789df0fabd992cfa9fb9407df585c449dedf2dda9",
+      "patched_sha256": "529b8c4bf87abbc494c734faf391da05242b7f455c0d879428534e8fb07f5ff2"
+    }
+  },
+  "project_sandbox": "Builds/SourceEditorSandbox/divingsim",
+  "sandbox_script_parse": "passed",
+  "sandbox_path_traversal_rejection": "passed",
+  "installed_renderer_originals_unchanged": true
+}

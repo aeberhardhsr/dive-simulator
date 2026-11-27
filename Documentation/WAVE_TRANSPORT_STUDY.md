@@ -35,9 +35,11 @@ Die [gebundenen Prüfergebnisse](WAVE_TRANSPORT_RESULTS.json) dokumentieren den 
 # Nur vorbereiten/prüfen: die Ausgabe nicht in die installierte Engine kopieren.
 ```
 
-Für den nächsten nativen Lauf ist eine separate, aus autorisiert bezogenem vollständigem Quellcode gebaute Engine nötig. Der aktuelle lokale Git-Zugang und der GitHub-Connector liefern für `EpicGames/UnrealEngine` keinen Zugriff. Das allein sagt nicht, ob das Benutzerkonto bereits berechtigt ist. Die Zugangsklärung ist angefragt. Epics [Anleitung zum Quellcodezugriff](https://dev.epicgames.com/documentation/unreal-engine/downloading-source-code-in-unreal-engine) beschreibt die Kontoverknüpfung und die Einladung zur Organisation.
+Für den nächsten nativen Lauf ist eine separate, aus autorisiert bezogenem vollständigem Quellcode gebaute Engine nötig. Der Nutzer hat die Kontoverknüpfung inzwischen abgeschlossen. Am 27. November funktioniert der lokale Git-Zugriff: Tag `5.8.4-release`, aufgelöster Commit `f45729c0b6f097038e72b52d366a62baeca3275b`, liegt im ignorierten Ordner `Builds/UE584`. Beide betroffenen Renderer-Dateien stimmen vor der Änderung bytegenau mit den geprüften installierten Originalen überein. Der Patch ist ausschliesslich in dieser Kopie angewendet; der vollständige Engine-Build steht noch aus. Projekt-Binaries für diese Engine liegen getrennt in `Builds/SourceEditorSandbox/divingsim`; die Build-/Testwerkzeuge unterstützen dafür `-SandboxName SourceEditorSandbox` zusammen mit `-EditorSandbox`. Epics [Anleitung zum Quellcodezugriff](https://dev.epicgames.com/documentation/unreal-engine/downloading-source-code-in-unreal-engine) bleibt die Referenz für eine erneute Einrichtung.
 
 ## Noch erforderliche Prüfung
+
+Einrichtung, Versionsbindung und aktueller Build-Stand der separaten Engine stehen in [SOURCE_ENGINE.md](SOURCE_ENGINE.md).
 
 1. Den vorbereiteten Patch im passenden separaten Engine-Quellbaum prüfen, Renderer/Editor bauen und Projektmodule gegen diese Engine neu kompilieren.
 2. Zunächst einen einzelnen Tageslauf mit gültiger Szenenbindung und ohne neue Shader-/Parameterfehler abschliessen. Registrierungs- und Upload-Marker allein reichen nicht.

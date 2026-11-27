@@ -1,11 +1,12 @@
 function Get-DiveEditorSandbox {
-    param([string]$RepositoryRoot=(Split-Path $PSScriptRoot -Parent))
+    param([string]$RepositoryRoot=(Split-Path $PSScriptRoot -Parent),
+        [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox')
     # Separate binaries/intermediates keep a user-owned editor's loaded DLL intact.
     # Content remains shared so generated assets belong to the real project.
     $repo=[IO.Path]::GetFullPath($RepositoryRoot)
     $original=Join-Path $repo 'divingsim'
-    $sandbox=[IO.Path]::GetFullPath((Join-Path $repo 'Builds/EditorSandbox/divingsim'))
-    foreach($relative in @('Builds','Builds/EditorSandbox','Builds/EditorSandbox/divingsim')) {
+    $sandbox=[IO.Path]::GetFullPath((Join-Path $repo "Builds/$SandboxName/divingsim"))
+    foreach($relative in @('Builds',"Builds/$SandboxName","Builds/$SandboxName/divingsim")) {
         $path=Join-Path $repo $relative
         if((Test-Path -LiteralPath $path) -and ((Get-Item -LiteralPath $path).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw "Sandbox parent must be a real directory: $path" }
     }

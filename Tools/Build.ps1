@@ -3,6 +3,7 @@ param(
     [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Coast','CoastCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
     [switch]$EditorSandbox,
+    [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
     [switch]$OnlyAudio,
@@ -32,7 +33,8 @@ param(
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $repo 'divingsim/divingsim.uproject'
-if($EditorSandbox) { . (Join-Path $PSScriptRoot 'PrepareEditorSandbox.ps1'); $project=Get-DiveEditorSandbox }
+if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
+if($EditorSandbox) { . (Join-Path $PSScriptRoot 'PrepareEditorSandbox.ps1'); $project=Get-DiveEditorSandbox -SandboxName $SandboxName }
 if($BuildSlot -and $Target -notin @('Game','Package')) { throw 'BuildSlot applies to Game or Package only.' }
 $slotOptions=@()
 $ubtOptions='-NoUBA -MaxParallelActions=2 -NoHotReloadFromIDE'
