@@ -25,7 +25,7 @@ void ADiveWorld::GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArr
     Transforms.Append(layout->Transforms);States.Append(layout->States);
 }
 
-void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const
+void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly) const
 {
     const bool legacyPose=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose"));
     const bool legacyTalus=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyTalus"));
@@ -47,11 +47,14 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
         const bool outcrop=random.FRand()<.25+.6*exposure;
         double bearing=PI*Dive::BedDistribution::Noise(anchor.X/6000+7,anchor.Y/6000-13)+random.FRandRange(-.2f,.2f);
         float az,axz,ayz;
-        if(Terrain.Sample(anchor.X,anchor.Y,az)&&Terrain.Sample(anchor.X+100,anchor.Y,axz)&&Terrain.Sample(anchor.X,anchor.Y+100,ayz)&&
+        if(Terrain.SampleMeasured(anchor.X,anchor.Y,az)&&Terrain.SampleMeasured(anchor.X+100,anchor.Y,axz)&&Terrain.SampleMeasured(anchor.X,anchor.Y+100,ayz)&&
             FMath::Square(axz-az)+FMath::Square(ayz-az)>900)
             bearing=FMath::Atan2(ayz-az,axz-az)+PI*.5+random.FRandRange(-.2f,.2f);
         TArray<FVector> accepted;TArray<double> radii;
-        for(int i=0;i<22;++i)
+        // The deposit query needs only the first four outcrop candidates.
+        // Later loose stones cannot affect acceptance of those earlier cores.
+        if(MeasuredOnly&&!outcrop) continue;
+        for(int i=0;i<(MeasuredOnly?4:22);++i)
         {
             const bool core=outcrop&&i<4;
             const double angle=random.FRand()*2*PI,reach=i?150+FMath::Sqrt(random.FRand())*450:0;
@@ -70,7 +73,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             int32 variant=random.RandRange(0,2);
             if(core&&!legacyFormations) variant=3+(Dive::BedDistribution::Hash(ax,ay)^uint32(i)*0x9e3779b9u)%2;
             float z,n,e;
-            if(!Terrain.Sample(x,y,z)||z>-250||z<-6000) continue;
+            if(!Terrain.SampleMeasured(x,y,z)||z>-250||z<-6000) continue;
             const FVector position(x,y,z+size*(core?18:10));bool blocked=false;
             // Preserve entry and access routes for every size class.
             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
@@ -88,7 +91,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             if(blocked) continue;
             // Rejected 2D candidates need no slope samples. Acceptance and the
             // random sequence remain identical, including the ownership halo.
-            if(!Terrain.Sample(x+100,y,e)||!Terrain.Sample(x,y+100,n)) continue;
+            if(!Terrain.SampleMeasured(x+100,y,e)||!Terrain.SampleMeasured(x,y+100,n)) continue;
             accepted.Add(position);radii.Add(size*105);
             if(CellAt(position)!=Key) continue;
             const FVector normal=FVector(-(e-z)/100,-(n-z)/100,1).GetSafeNormal();
@@ -107,7 +110,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             Transforms.Add(FTransform(rotation,position,FVector(size,size*aspect,size*exposedHeight)));
             States.Add({position,size*105,variant});
         }
-        if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"))) continue;
+        if(MeasuredOnly||(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble")))) continue;
         // A separate random stream preserves every existing block. Intermediate
         // fragments collect around exposed feet, bridging the block/pebble gap.
         // Their full transforms enter the ordinary collision and fish state.
@@ -132,7 +135,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             // Keep the original one-anchor halo valid, including rotated groups.
             if(FMath::Abs(x-anchor.X)>600||FMath::Abs(y-anchor.Y)>600) continue;
             float z,n,e;
-            if(!Terrain.Sample(x,y,z)||z>-250||z<-4000) continue;
+            if(!Terrain.SampleMeasured(x,y,z)||z>-250||z<-4000) continue;
             const FVector position(x,y,z+size*5);bool blocked=false;
             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
                 if(FVector::Dist2D(position,entry.Position)<350+size*105) blocked=true;
@@ -149,7 +152,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
                 if(FVector::DistSquared2D(position,accepted[j])<FMath::Square(separation)) blocked=true;
             }
             if(blocked) continue;
-            if(!Terrain.Sample(x+50,y,e)||!Terrain.Sample(x,y+50,n)) continue;
+            if(!Terrain.SampleMeasured(x+50,y,e)||!Terrain.SampleMeasured(x,y+50,n)) continue;
             const FVector normal=FVector(-(e-z)/50,-(n-z)/50,1).GetSafeNormal();
             if(normal.Z<.72) continue;
             accepted.Add(position);radii.Add(size*105);
@@ -157,6 +160,24 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             const FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
             Transforms.Add(FTransform(rotation,position,FVector(size,size*aspect,size*height)));
             States.Add({position,size*105,variant,true});
+        }
+    }
+    // Keep the existing core poses. Lift loose stones onto the same
+    // deposited surface used by collision, plants and benthic fish.
+    if(!MeasuredOnly&&Terrain.DepositHeight) for(int i=0;i<States.Num();++i) if(States[i].Variant<3)
+    {
+        float measured=0,surface=0;const auto& p=States[i].Position;
+        if(Terrain.SampleMeasured(p.X,p.Y,measured)&&Terrain.Sample(p.X,p.Y,surface))
+        {
+            float mn=0,me=0,sn=0,se=0;
+            if(Terrain.SampleMeasured(p.X+100,p.Y,mn)&&Terrain.SampleMeasured(p.X,p.Y+100,me)&&
+               Terrain.Sample(p.X+100,p.Y,sn)&&Terrain.Sample(p.X,p.Y+100,se))
+            {
+                const FVector originalNormal=FVector(-(mn-measured)/100,-(me-measured)/100,1).GetSafeNormal();
+                const FVector surfaceNormal=FVector(-(sn-surface)/100,-(se-surface)/100,1).GetSafeNormal();
+                Transforms[i].SetRotation(FQuat::FindBetweenNormals(originalNormal,surfaceNormal)*Transforms[i].GetRotation());
+            }
+            States[i].Position.Z+=surface-measured;Transforms[i].SetLocation(States[i].Position);
         }
     }
 }

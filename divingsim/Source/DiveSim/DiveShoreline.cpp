@@ -81,15 +81,31 @@ bool ADiveWorld::ValidateShoreline(FString& Error) const
         { Error=TEXT("Invalid shore mesh or dry start"); return false; }
         const auto& source=Terrain.Shores[i];const Dive::ShoreTransition boundary(source,Terrain.Landscape);
         const auto* section=mesh->GetProcMeshSection(0);int seamPoints=0,interiorPoints=0,bedPoints=0;double maxError=0,sourceError=0;
+        TSet<int32> usedVertices;
+        for(const auto index:section->ProcIndexBuffer) usedVertices.Add(index);
+        int32 vertexIndex=0;
         for(const auto& vertex:section->ProcVertexBuffer)
         {
+            const bool used=usedVertices.Contains(vertexIndex++);
             const FVector p=mesh->GetComponentTransform().TransformPosition(FVector(vertex.Position));
             const auto survey=Terrain.ToSurvey(p);
             const double edge=FMath::Min(FMath::Min(FMath::Abs(survey.X-boundary.West),FMath::Abs(survey.X-boundary.East)),
                 FMath::Min(FMath::Abs(survey.Y-boundary.South),FMath::Abs(survey.Y-boundary.North)));
             float bed=0;double background=0,original=0;
-            if(Terrain.Sample(p.X,p.Y,bed))
-            { sourceError=FMath::Max(sourceError,FMath::Abs(p.Z-bed));++bedPoints;continue; }
+            if(Terrain.SampleMeasured(p.X,p.Y,bed))
+            {
+                // Fully measured triangles are omitted from this component.
+                // Its unused vertices retain the survey; referenced mixed-edge
+                // vertices must ALSO match the live deposited bed exactly.
+                sourceError=FMath::Max(sourceError,FMath::Abs(p.Z-bed));++bedPoints;
+                if(used)
+                {
+                    float surface=0;
+                    if(!Terrain.Sample(p.X,p.Y,surface)) {Error=TEXT("Missing live bed at shore seam");return false;}
+                    sourceError=FMath::Max(sourceError,FMath::Abs(p.Z-surface));
+                }
+                continue;
+            }
             if(edge>=Dive::ShoreTransition::BandMetres)
             {
                 if(!source.Sample(survey.X,survey.Y,original)) { Error=TEXT("Missing original shore interior");return false; }

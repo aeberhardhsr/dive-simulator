@@ -7,6 +7,7 @@
 bool ADiveWorld::TestPopulationStreaming(FString& Detail)
 {
     UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_TEST_BEGIN"));
+    if(!TestFootDeposits(Detail)) return false;
     const FVector original=Diver?Diver->GetActorLocation():PopulationOrigin;
     const auto savedFish=FishState;const auto savedRandom=Random;const double savedRefill=LastFishRefill;
     bool valid=true;int retained=0,reloaded=0,nearFish=0,spawned=0;

@@ -6,7 +6,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
-    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView,
+    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
@@ -72,6 +72,9 @@ if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
 if($NoPlantUnderstory) { $arguments+=' -DiveNoPlantUnderstory' }
 if($UnlimitedPlants) { $arguments+=' -DiveUnlimitedPlants' }
 if($LegacyFormations) { $arguments+=' -DiveLegacyFormations' }
+if($FootDeposits -and $NoFootDeposits) {throw 'FootDeposits and NoFootDeposits are mutually exclusive.'}
+if($FootDeposits) { $arguments+=' -DiveFootDeposits' }
+if($NoFootDeposits) { $arguments+=' -DiveNoFootDeposits' }
 if($FormationView) {
     if($Scenario -ne 'rocks' -or $HabitatView -or $PlantView -or $WaterView -or $GravelView) {throw 'FormationView requires rocks without other comparison modes.'}
     $arguments+=' -DiveFormationView'

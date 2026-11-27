@@ -85,7 +85,7 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
         {
             const FVector p=Diver->EntryLocation+FRotator(0,angle,0).Vector()*radius*100;
             float bed=0,north=0,east=0;
-            if(!Terrain.Sample(p.X,p.Y,bed)||!Terrain.Sample(p.X+200,p.Y,north)||!Terrain.Sample(p.X,p.Y+200,east)||
+            if(!Terrain.SampleMeasured(p.X,p.Y,bed)||!Terrain.SampleMeasured(p.X+200,p.Y,north)||!Terrain.SampleMeasured(p.X,p.Y+200,east)||
                 bed>-550||bed<(pass?-2200:-1100)||FMath::Abs(north-bed)>(pass?300:50)||FMath::Abs(east-bed)>(pass?300:50)) continue;
             const bool low=FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatLowView"));
             Eye=FVector(p.X,p.Y,bed+(low?130:300));
@@ -94,7 +94,7 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
             {
                 const FVector ahead=p+FRotator(0,Rotation.Yaw,0).Vector()*800;
                 float aheadBed=0;
-                if(Terrain.Sample(ahead.X,ahead.Y,aheadBed))
+                if(Terrain.SampleMeasured(ahead.X,ahead.Y,aheadBed))
                     Rotation.Pitch=FMath::Clamp(FMath::RadiansToDegrees(FMath::Atan2(aheadBed+60-Eye.Z,800.)),-65.,low?-12.:-18.);
             }
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatSunView"))&&Sun)

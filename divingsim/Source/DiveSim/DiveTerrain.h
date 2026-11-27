@@ -22,6 +22,8 @@ public:
     double CoastWeight(double East,double North) const;
     bool LoadImagery();
     bool Sample(double X,double Y,float& Z) const;
+    bool SampleMeasured(double X,double Y,float& Z) const;
+    TFunction<float(double,double,float)> DepositHeight;
     bool SampleShore(double X,double Y,float& Z) const;
     bool SampleGround(double X,double Y,float& Z) const;
     bool InShorePatch(double X,double Y,double MarginMetres=0) const;

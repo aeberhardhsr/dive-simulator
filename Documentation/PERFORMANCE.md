@@ -1,5 +1,22 @@
 # Gerenderte Leistungsmessung
 
+## WindowsFootDeposits: örtliche Böschungen am Felsfuss
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen. Sechs Einzelläufe verwenden dieselbe EXE und dieselben Inhalte wie die sieben bestandenen Paketfälle. Die Kontrollen deaktivieren ausschliesslich die Ablagerungen. [Bildvergleich und Grenzen](FOOT_DEPOSITS.md), [Paketnachweis](FOOT_DEPOSITS_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Frames >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen, mit Auflage, 60 s | 69,06 FPS | 60,34 FPS | 15,71 ms | 18,10 ms | 0 / 4142 | 5,86 ms |
+| Weesen, ohne Auflage, 60 s | 70,00 FPS | 61,12 FPS | 15,52 ms | 17,42 ms | 0 / 4198 | 5,18 ms |
+| Walenstadt, mit Auflage, 60 s | 76,90 FPS | 52,38 FPS | 14,51 ms | 80,11 ms | 3 / 4612 | 8,84 ms |
+| Walenstadt, ohne Auflage, 60 s | 74,06 FPS | 57,44 FPS | 15,19 ms | 22,86 ms | 0 / 4442 | 6,41 ms |
+| Murg-Nachladen, mit Auflage, 90 s | 96,59 FPS | 64,44 FPS | 11,13 ms | 48,83 ms | 2 / 8691 | 5,95 ms |
+| Murg-Nachladen, ohne Auflage, 90 s | 97,10 FPS | 72,79 FPS | 11,22 ms | 30,06 ms | 0 / 8737 | 4,62 ms |
+
+Die mittleren GPU-Zeiten betragen in Tabellenreihenfolge 13,84 / 13,65 / 12,34 / 12,87 / 9,70 / 9,66 ms. 10 / 6 / 18 / 30 / 18 / 15 Frames überschreiten 16,67 ms. Die Auflage erhöht den gemessenen CPU-Aufwand. Bei Walenstadt und beim Nachladen enthält sie zusätzliche lange Frames, während die jeweiligen Kontrollen unter 33,33 ms bleiben. Die genaue Ursache dieser Spitzen ist noch nicht isoliert. **Die Funktionsprüfungen bestehen; eine ruckelfreie Leistungsfreigabe besteht nicht.** Die Spitzen dürfen bei weiteren Optimierungen nicht durch Mittelwerte verdeckt werden.
+
+Die automatische Bewegung folgt der geänderten Oberfläche und ergibt andere Blickpunkte: Weesen endet mit/ohne Auflage bei 5,0/5,3 m, Walenstadt bei 5,2/4,2 m. Besonders Walenstadts höhere Durchschnitts-FPS belegen deshalb keine Beschleunigung; die neue Ansicht wird stärker von einem nahen Felsen verdeckt. Die Strecken führen jeweils rund 144,87 m und enden bei 24,6 m in freiem Wasser. Die separat aufgenommenen gestalterischen Vorher-/Nachher-Bilder haben dagegen identische Kameras. Langzeittest, Mindesthardware und vollständige visuelle Referenzabnahme bleiben offen.
+
 ## WindowsFormations: zwei zusätzliche Formen für grosse Felsgruppen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080, 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen und keine weitere Unreal-/Spielinstanz. Alle vier Läufe verwenden dieselbe EXE und dieselben Inhalte wie die zehn bestandenen Paketfälle. Die Kontrolle schaltet nur die neue Kernformauswahl ab; die Struktur für fünf Felsvarianten bleibt bestehen. [Bildvergleich und Grenzen](ROCK_FORMATIONS.md), [Prüfbericht](ROCK_FORMATIONS_RESULTS.json).

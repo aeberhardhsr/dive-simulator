@@ -48,6 +48,16 @@ struct FDivePopulationCell
     GENERATED_BODY()
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Components;
 };
+struct FDiveFootCell
+{
+    TArray<FDiveRock> Rocks;
+    TArray<float> Bearings;
+    TMap<FIntPoint,TArray<int32>> Bins;
+};
+struct FDiveDepositVertices
+{
+    TMap<FIntPoint,float> Heights;
+};
 struct FDiveSilt
 {
     FVector Origin,Position;
@@ -70,6 +80,7 @@ public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
     float GroundZ(double X,double Y) const;
+    bool TestFootDeposits(FString& Detail) const;
     FDiveTerrain Terrain;
     bool bTerrainReady=false;
     void SetEntry(int32 Index,bool Shore=false);
@@ -200,6 +211,11 @@ private:
     // Deterministic geometry only; no UObject ownership. The visible 3x3
     // population window plus its planting halo needs at most 5x5 layouts.
     mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;
+    mutable TMap<FIntPoint,FDiveFootCell> FootCells;
+    mutable TMap<FIntPoint,FDiveDepositVertices> DepositVertices;
+    float FootDepositHeight(double X,double Y,float Bed) const;
+    float ComputeFootDeposit(double X,double Y,float Bed) const;
+    const FDiveFootCell& FootCell(FIntPoint Key) const;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredPopulation;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
@@ -245,7 +261,7 @@ private:
     void Populate();
     void StreamPopulation(const FVector& Player,bool Initial=false);
     void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
-    void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
+    void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly=false) const;
     void CreatePopulationCell(FIntPoint Key);
     int32 PlantCullDistance() const;
     void BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& Nearby,TArray<TArray<FTransform>>& Instances) const;

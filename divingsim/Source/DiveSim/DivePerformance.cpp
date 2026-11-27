@@ -111,6 +111,7 @@ void ADivePawn::TickPerformance()
         root->SetBoolField(TEXT("no_plant_understory"),FParse::Param(FCommandLine::Get(),TEXT("DiveNoPlantUnderstory")));
         root->SetBoolField(TEXT("unlimited_plants"),FParse::Param(FCommandLine::Get(),TEXT("DiveUnlimitedPlants")));
         root->SetBoolField(TEXT("legacy_formations"),FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyFormations")));
+        root->SetBoolField(TEXT("foot_deposits"),bool(Environment->Terrain.DepositHeight));
         root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());

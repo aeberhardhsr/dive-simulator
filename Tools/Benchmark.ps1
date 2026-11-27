@@ -13,7 +13,7 @@ param(
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
     [switch]$LegacyRockPose,
-    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations,
+    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FootDeposits, [switch]$NoFootDeposits,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -34,6 +34,7 @@ $context=[ordered]@{
     no_plant_understory=[bool]$NoPlantUnderstory
     unlimited_plants=[bool]$UnlimitedPlants
     legacy_formations=[bool]$LegacyFormations
+    foot_deposits=(-not [bool]$NoFootDeposits)
     editor_sandbox=[bool]$EditorSandbox
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
@@ -51,6 +52,9 @@ if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
 if($NoPlantUnderstory) { $arguments+=' -DiveNoPlantUnderstory' }
 if($UnlimitedPlants) { $arguments+=' -DiveUnlimitedPlants' }
 if($LegacyFormations) { $arguments+=' -DiveLegacyFormations' }
+if($FootDeposits -and $NoFootDeposits) {throw 'FootDeposits and NoFootDeposits are mutually exclusive.'}
+if($FootDeposits) { $arguments+=' -DiveFootDeposits' }
+if($NoFootDeposits) { $arguments+=' -DiveNoFootDeposits' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
@@ -86,6 +90,7 @@ foreach($name in @('Capture.csv','Metadata.json','Frame.png')) {
 $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw | ConvertFrom-Json
 if($WaterPreview -and (-not $metadata.water_preview -or -not $metadata.water_interface -or -not $metadata.bounded_water -or -not $metadata.native_scattering -or
     $metadata.'r.Lumen.TranslucencyReflections.FrontLayer.Allow' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.HitLighting.Allowed' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.LightingMode' -ne 2)) {throw 'Water preview benchmark profile was not preserved.'}
+if($metadata.foot_deposits -ne $context.foot_deposits) {throw 'Actual foot deposits differ from requested state.'}
 if($metadata.width -ne $size[0] -or $metadata.height -ne $size[1]) { throw 'Actual viewport dimensions differ from the requested output resolution.' }
 if([Math]::Abs($metadata.'r.ScreenPercentage'-$RenderScale) -gt .01 -or $metadata.'r.SecondaryScreenPercentage.GameViewport' -ne 100 -or $metadata.'r.DynamicRes.OperationMode' -ne 0) { throw 'Actual render scale differs from the requested fixed scale.' }
 if($metadata.'r.VSync' -ne 0 -or $metadata.'t.MaxFPS' -ne 0) { throw 'Benchmark was unintentionally frame-limited.' }

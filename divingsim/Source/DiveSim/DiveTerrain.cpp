@@ -110,7 +110,7 @@ bool FDiveTerrain::LoadLandscape()
     return true;
 }
 
-bool FDiveTerrain::Sample(double X,double Y,float& Z) const
+bool FDiveTerrain::SampleMeasured(double X,double Y,float& Z) const
 {
     double height;
     if(!Mosaic.Sample(OriginEast+Y/100,OriginNorth+X/100,height)) return false;

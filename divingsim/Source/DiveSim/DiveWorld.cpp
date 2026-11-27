@@ -252,6 +252,9 @@ void ADiveWorld::BeginPlay()
         CreateAccess();
         CreateVegetation();
         if(!bTerrainReady) return;
+        if(!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoFootDeposits"))))
+            Terrain.DepositHeight=[this](double X,double Y,float Bed){return FootDepositHeight(X,Y,Bed);};
+        UE_LOG(LogTemp,Display,TEXT("DIVE_FOOT_DEPOSITS_READY enabled=%d maximum_cm=70"),Terrain.DepositHeight?1:0);
         SetEntry(0);
         for(int i=0;i<Terrain.Entries.Num();++i)
         {
