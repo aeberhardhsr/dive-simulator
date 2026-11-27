@@ -28,7 +28,7 @@ FString FDiveControls::Id(int Action)
 }
 FString FDiveControls::Label(int Action,bool English)
 {
-    static const TCHAR* de[]={TEXT("Vorwaerts gehen / schwimmen"),TEXT("Rueckwaerts"),TEXT("Nach links"),TEXT("Nach rechts"),TEXT("Nach oben"),TEXT("Nach unten"),TEXT("Schneller gehen / schwimmen"),TEXT("Jacket fuellen"),TEXT("Jacket entleeren"),TEXT("Lampe"),TEXT("Instrumente ein / aus"),TEXT("Handgelenkcomputer"),TEXT("Naechste Computerseite"),TEXT("Karte"),TEXT("Tauchgang abschliessen"),TEXT("Foto aufnehmen"),TEXT("Atemregler ein / absetzen"),TEXT("Wegpunkte bearbeiten")};
+    static const TCHAR* de[]={TEXT("Vorwärts gehen / schwimmen"),TEXT("Rückwärts"),TEXT("Nach links"),TEXT("Nach rechts"),TEXT("Nach oben"),TEXT("Nach unten"),TEXT("Schneller gehen / schwimmen"),TEXT("Jacket füllen"),TEXT("Jacket entleeren"),TEXT("Lampe"),TEXT("Instrumente ein / aus"),TEXT("Handgelenkcomputer"),TEXT("Nächste Computerseite"),TEXT("Karte"),TEXT("Tauchgang abschliessen"),TEXT("Foto aufnehmen"),TEXT("Atemregler ein / absetzen"),TEXT("Wegpunkte bearbeiten")};
     static const TCHAR* en[]={TEXT("Walk / swim forward"),TEXT("Move backward"),TEXT("Move left"),TEXT("Move right"),TEXT("Move up"),TEXT("Move down"),TEXT("Walk / swim faster"),TEXT("Inflate BCD"),TEXT("Deflate BCD"),TEXT("Torch"),TEXT("Toggle instruments"),TEXT("Wrist computer"),TEXT("Next computer page"),TEXT("Map"),TEXT("Finish dive"),TEXT("Take photograph"),TEXT("Insert / remove regulator"),TEXT("Edit waypoints")};
     return Action>=0&&Action<Count?(English?en[Action]:de[Action]):TEXT("");
 }

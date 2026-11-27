@@ -1,6 +1,6 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression','fish','rocks')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('ui','dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression','fish','rocks')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
@@ -257,6 +257,17 @@ if($MaxFPS -and $log -notmatch ('t.MaxFPS = "'+$MaxFPS+'"')) { throw 'Requested 
 if($Scenario -in @('logbook','reserve-loss') -and $log -notmatch 'DIVE_LOGBOOK_PASS') { throw "Logbook smoke test failed. See $logPath." }
 if($Scenario -eq 'audio' -and ($log -notmatch 'DIVE_AUDIO_PASS' -or $log -notmatch 'DIVE_AUDIO_SETTINGS_PASS')) { throw "Audio smoke test failed. See $logPath." }
 if($Scenario -eq 'controls' -and $log -notmatch 'DIVE_INPUT_PASS') { throw "Input smoke test failed. See $logPath." }
+if($Scenario -eq 'ui') {
+    if($log -notmatch 'DIVE_SMOKE_PASS ui=1 phases=14' -or $log -match 'DIVE_UI_TEXT_OVERFLOW') { throw 'UI input/layout test failed.' }
+    foreach($phase in 0..27) {
+        if($log -notmatch ('DIVE_UI_PHASE '+$phase+' PASS')) { throw "Missing UI phase $phase." }
+    }
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    foreach($stage in @('Plan_DE','Environment_DE','Loadout_DE','Loadout_EN','Plan_EN','Config_DE','Controls_DE','Standard_DE','WarningsMapTutorial_DE','Minimal_EN','Compact_EN','PauseWarnings_EN','Resumed_EN','Final_EN')) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "UI_$stage.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh UI screenshot: $stage" }
+    }
+}
 if($Scenario -eq 'reserve-loss' -and $log -notmatch 'DIVE_RESERVE_PASS') { throw "Breath reserve depletion test failed. See $logPath." }
 if($Scenario -eq 'breathing' -and $log -notmatch 'DIVE_BREATHING_PASS') { throw "Breathing-source smoke test failed. See $logPath." }
 if($Scenario -eq 'tutorial' -and $log -notmatch 'DIVE_TUTORIAL_PASS') { throw "Tutorial smoke test failed. See $logPath." }

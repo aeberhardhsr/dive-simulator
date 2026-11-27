@@ -49,6 +49,8 @@ git -C Builds/UE584 apply "$PWD/artifacts/source-engine-20261127/renderer-patch/
 
 Die vorhandenen VC++-/GameInput-Laufzeitkomponenten bleiben erhalten. Es werden keine Dateizuordnungen auf die neue Engine umgestellt. Für diesen Windows-Prüfstand ausgelassene Plattformabhängigkeiten sind vor einem entsprechenden anderen Plattform-Build nachzuladen; dies ist kein macOS-Buildnachweis.
 
+Während dieses Erstbuilds hat der Nutzer die Menü-/HUD-Arbeit ausdrücklich vorgezogen. Änderungen im Hauptprojekt dürfen die laufende Sandbox-Kompilierung nicht nachträglich verändern. Nach Abschluss dieses Builds ist deshalb zuerst `Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor` erneut auszuführen: Dieser kurze Projekt-Nachbau synchronisiert die neuen UI-Quellen und erzeugt dazu passende Projektmodule. `TestCaustics.ps1` allein synchronisiert zwar Dateien, kompiliert sie aber nicht und darf diesen Schritt nicht ersetzen.
+
 Erst nach erfolgreichen Builds folgen die Shader-Vorbereitung und **ein einzelner** nativer Tageslauf:
 
 ```powershell

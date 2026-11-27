@@ -35,6 +35,7 @@ bool ADiveHUD::LoadoutSmokeTest(int phase)
     if(phase==2) { NotifyHitBoxClick(TEXT("start"));return Diver->bDiveActive; }
     if(phase==3)
     {
+        NotifyHitBoxClick(TEXT("loadout"));
         const auto before=c;
         for(const TCHAR* id:{TEXT("cylinder_material"),TEXT("bcd"),TEXT("torch"),TEXT("tank"),TEXT("weight")}) NotifyHitBoxClick(id);
         if(!DiveConfigIO::Equal(before,0,c,Diver->EntryIndex)||ConfigInputOpen()) return false;

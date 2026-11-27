@@ -18,7 +18,9 @@ void ADiveHUD::ControlsMenu()
 {
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     Text(L(TEXT("DEINE STEUERUNG"),TEXT("YOUR CONTROLS")),120,70,38,White);
-    Text(L(TEXT("Taste anklicken und neue Taste druecken. Belegte Tasten werden getauscht."),TEXT("Click a binding and press a new key. Occupied bindings are swapped.")),120,125,18,Muted);
+    const FString hudStyles[]={L(TEXT("Standard"),TEXT("Standard")),L(TEXT("Kompakt"),TEXT("Compact")),L(TEXT("Minimal"),TEXT("Minimal"))};
+    Button(TEXT("hud_style"),TEXT("HUD: ")+hudStyles[FMath::Clamp(Diver->HUDStyle,0,2)],1160,70,300,44);
+    Text(L(TEXT("Taste anklicken und neue Taste drücken. Belegte Tasten werden getauscht."),TEXT("Click a binding and press a new key. Occupied bindings are swapped.")),120,125,18,Muted);
     Text(Diver->CapturingAction!=INDEX_NONE?L(TEXT("Warte auf Taste ... ESC bricht ab. Linksklick, ESC, F1 und F11 bleiben reserviert."),TEXT("Waiting for a key ... ESC cancels. Left click, ESC, F1 and F11 stay reserved.")):Diver->ControlMessage,120,160,17,Accent);
     for(int i=0;i<FDiveControls::Count;++i)
     {
@@ -36,10 +38,11 @@ void ADiveHUD::ControlsMenu()
     Button(TEXT("fov_minus"),TEXT("-"),790,698,55,42);
     Text(FString::Printf(TEXT("%.0f deg"),Diver->Controls.FieldOfView),880,708,22,White);
     Button(TEXT("fov_plus"),TEXT("+"),1010,698,55,42);
-    Text(L(TEXT("Maus: umsehen. ESC: Auswahl abbrechen / zurueck. F1: diese Hilfe."),TEXT("Mouse: look around. ESC: cancel binding / back. F1: this help.")),120,765,17,Muted);
-    Button(TEXT("controls_back"),L(TEXT("<  Zurueck"),TEXT("<  Back")),120,815,300,48,true);
+    Button(TEXT("tutorial_overlay"),bTutorialCollapsed?L(TEXT("Tutorial: ausgeblendet"),TEXT("Tutorial: hidden")):L(TEXT("Tutorial: sichtbar"),TEXT("Tutorial: visible")),1120,698,340,42);
+    Text(L(TEXT("Maus: umsehen. ESC: Auswahl abbrechen / zurück. F1: diese Hilfe."),TEXT("Mouse: look around. ESC: cancel binding / back. F1: this help.")),120,765,17,Muted);
+    Button(TEXT("controls_back"),L(TEXT("<  Zurück"),TEXT("<  Back")),120,815,300,48,true);
     Button(TEXT("controls_reset"),L(TEXT("Standards wiederherstellen"),TEXT("Restore defaults")),460,815,355,48);
-    if(!Diver->bDiveActive) Button(TEXT("tutorial"),L(TEXT("Einfuehrung starten"),TEXT("Start introduction")),855,815,330,48);
+    if(!Diver->bDiveActive) Button(TEXT("tutorial"),L(TEXT("Einführung starten"),TEXT("Start introduction")),855,815,330,48);
     Button(TEXT("controls_language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),1225,815,235,48);
 }
 void ADiveHUD::TutorialOverlay()
@@ -53,15 +56,15 @@ void ADiveHUD::TutorialOverlay()
     case Dive::Lesson::Look:
         title=L(TEXT("Schau dich um"),TEXT("Look around"));
         first=L(TEXT("Bewege die Maus und suche die Einstiegsboje."),TEXT("Move the mouse and locate the entry buoy."));
-        second=L(TEXT("Dies ist eine Einfuehrung in die Spielsteuerung."),TEXT("This introduction teaches the game controls.")); break;
+        second=L(TEXT("Dies ist eine Einführung in die Spielsteuerung."),TEXT("This introduction teaches the game controls.")); break;
     case Dive::Lesson::Swim:
         title=L(TEXT("Schwimme ein paar Meter"),TEXT("Swim a few metres"));
-        first=K(EDiveAction::Forward)+TEXT(" / ")+K(EDiveAction::Backward)+L(TEXT(" vor / zurueck, "),TEXT(" forward / backward, "))+K(EDiveAction::Left)+TEXT(" / ")+K(EDiveAction::Right)+L(TEXT(" seitwaerts"),TEXT(" sideways"));
+        first=K(EDiveAction::Forward)+TEXT(" / ")+K(EDiveAction::Backward)+L(TEXT(" vor / zurück, "),TEXT(" forward / backward, "))+K(EDiveAction::Left)+TEXT(" / ")+K(EDiveAction::Right)+L(TEXT(" seitwärts"),TEXT(" sideways"));
         second=FString::Printf(TEXT("%.1f / 3.0 m"),t.SwimMetres)+L(TEXT("   |   Du bewegst dich in Blickrichtung."),TEXT("   |   You move in the direction you look.")); break;
     case Dive::Lesson::Buoyancy:
         title=L(TEXT("Probiere das Jacket aus"),TEXT("Try the BCD controls"));
-        first=t.InflatedLitres<1.5?K(EDiveAction::Inflate)+L(TEXT(" kurz halten: Jacket fuellen."),TEXT(" hold briefly: inflate the BCD.")):K(EDiveAction::Deflate)+L(TEXT(" kurz halten: Luft wieder ablassen."),TEXT(" hold briefly: release the added air."));
-        second=L(TEXT("Beobachte Tiefe und BCD-Liter. Luft veraendert deinen Auftrieb."),TEXT("Watch depth and BCD litres. Air changes your buoyancy.")); break;
+        first=t.InflatedLitres<1.5?K(EDiveAction::Inflate)+L(TEXT(" kurz halten: Jacket füllen."),TEXT(" hold briefly: inflate the BCD.")):K(EDiveAction::Deflate)+L(TEXT(" kurz halten: Luft wieder ablassen."),TEXT(" hold briefly: release the added air."));
+        second=L(TEXT("Beobachte Tiefe und BCD-Liter. Luft verändert deinen Auftrieb."),TEXT("Watch depth and BCD litres. Air changes your buoyancy.")); break;
     case Dive::Lesson::Computer:
         title=L(TEXT("Lies deinen Tauchcomputer"),TEXT("Read your dive computer"));
         first=t.SawVitals?K(EDiveAction::Computer)+L(TEXT(" senkt deinen Arm wieder."),TEXT(" lowers your wrist again.")):K(EDiveAction::Computer)+L(TEXT(" hebt den Arm. "),TEXT(" raises your wrist. "))+K(EDiveAction::ComputerPage)+L(TEXT(" wechselt zur Vitalwerteseite."),TEXT(" switches to the vitals page."));
@@ -72,21 +75,29 @@ void ADiveHUD::TutorialOverlay()
         second=L(TEXT("Der Lichtkegel folgt deiner Blickrichtung."),TEXT("The beam follows the direction you look.")); break;
     case Dive::Lesson::Map:
         title=L(TEXT("Orientiere dich im See"),TEXT("Find your position"));
-        first=K(EDiveAction::Map)+L(TEXT(" oeffnet die Karte. Danach wieder schliessen."),TEXT(" opens the map. Close it again when ready."));
-        second=L(TEXT("Gruen zeigt dich, Gelb die Spielstarts. Deine Spur bleibt sichtbar."),TEXT("Green marks you, yellow marks the starts. Your trail stays visible.")); break;
+        first=K(EDiveAction::Map)+L(TEXT(" öffnet die Karte. Danach wieder schliessen."),TEXT(" opens the map. Close it again when ready."));
+        second=L(TEXT("Grün zeigt dich, Gelb die Spielstarts. Deine Spur bleibt sichtbar."),TEXT("Green marks you, yellow marks the starts. Your trail stays visible.")); break;
     case Dive::Lesson::Return:
-        title=L(TEXT("Kehre zur Einstiegsboje zurueck"),TEXT("Return to the entry buoy"));
+        title=L(TEXT("Kehre zur Einstiegsboje zurück"),TEXT("Return to the entry buoy"));
         first=K(EDiveAction::Ascend)+L(TEXT(" schwimmt nach oben, "),TEXT(" swims upward, "))+K(EDiveAction::Descend)+L(TEXT(" nach unten."),TEXT(" downward."));
         second=L(TEXT("Bleibe bei der Boje und erreiche weniger als 0,8 m Tiefe."),TEXT("Stay near the buoy and reach less than 0.8 m depth.")); break;
     case Dive::Lesson::Exit:
-        title=L(TEXT("Schliesse den Uebungstauchgang ab"),TEXT("Finish the practice dive"));
-        first=K(EDiveAction::Finish)+L(TEXT(" beendet den Tauchgang nahe der Boje an der Oberflaeche."),TEXT(" ends the dive at the surface near the buoy."));
+        title=L(TEXT("Schliesse den Übungstauchgang ab"),TEXT("Finish the practice dive"));
+        first=K(EDiveAction::Finish)+L(TEXT(" beendet den Tauchgang nahe der Boje an der Oberfläche."),TEXT(" ends the dive at the surface near the buoy."));
         second=L(TEXT("Danach findest du dein Profil im Logbuch."),TEXT("Your dive profile will be available in the logbook.")); break;
     default: return;
     }
-    // Keep the map readable while its lesson is active.
-    const float y=Diver->bShowMap?20:140;
-    Rect(40,y,940,146,Dark); Rect(40,y,4,146,Accent);
-    Text(FString::Printf(TEXT("%d / 8   "),static_cast<int>(t.Stage)+1)+title,60,y+17,24,Accent);
-    Text(first,60,y+60,18,White); Text(second,60,y+99,16,Muted);
+    const float y=HUDRightBottom+12;
+    Rect(1220,y,354,bTutorialCollapsed?44:236,Dark);
+    Text(FString::Printf(TEXT("TUTORIAL · %d / 8"),static_cast<int>(t.Stage)+1),1234,y+12,13,Accent);
+    if(bTutorialCollapsed)
+    {
+        Text(L(TEXT("F1: Optionen"),TEXT("F1: options")),1425,y+12,12,Muted);
+        return;
+    }
+    Text(L(TEXT("F1: Optionen"),TEXT("F1: options")),1440,y+12,11,Muted);
+    float line=y+42;
+    line+=TextBlock(title,1234,line,326,18,White,2)+8;
+    line+=TextBlock(first,1234,line,326,14,White,3)+8;
+    TextBlock(second,1234,line,326,13,Muted,3);
 }

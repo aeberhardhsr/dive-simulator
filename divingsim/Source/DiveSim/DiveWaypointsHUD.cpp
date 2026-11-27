@@ -48,11 +48,11 @@ FString ADiveHUD::WaypointError() const
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     const auto& e=Waypoints.Error;
     if(e.IsEmpty()) return WaypointMessage;
-    if(e==TEXT("name")) return L(TEXT("Name: 1–32 Zeichen, keine Zeilenumbrueche."),TEXT("Name: 1–32 characters, no line breaks."));
+    if(e==TEXT("name")) return L(TEXT("Name: 1–32 Zeichen, keine Zeilenumbrüche."),TEXT("Name: 1–32 characters, no line breaks."));
     if(e==TEXT("duplicate")) return L(TEXT("Dieser Name ist bereits vergeben."),TEXT("This name is already in use."));
     if(e==TEXT("limit")) return L(TEXT("Alle 32 Wegpunkte sind belegt."),TEXT("All 32 waypoint slots are used."));
-    if(e==TEXT("conflict")) return L(TEXT("Datei wurde anderswo geaendert. Bitte neu laden."),TEXT("File changed elsewhere. Please reload."));
-    if(e==TEXT("read")) return L(TEXT("Wegpunktdatei nicht lesbar; sie bleibt unveraendert."),TEXT("Waypoint file is unreadable; it remains unchanged."));
+    if(e==TEXT("conflict")) return L(TEXT("Datei wurde anderswo geändert. Bitte neu laden."),TEXT("File changed elsewhere. Please reload."));
+    if(e==TEXT("read")) return L(TEXT("Wegpunktdatei nicht lesbar; sie bleibt unverändert."),TEXT("Waypoint file is unreadable; it remains unchanged."));
     return L(TEXT("Nicht gespeichert. Vorheriger Stand bleibt erhalten."),TEXT("Not saved. Previous state is preserved."));
 }
 void ADiveHUD::OpenWaypointName(bool Rename)
@@ -94,7 +94,7 @@ bool ADiveHUD::PickWaypoint(double X,double Y)
     const double north=terrain.MapNorth-(Y-210)/340*(terrain.MapNorth-terrain.MapSouth);
     const auto world=terrain.ToWorld(east,north);float ground=0;
     if(X<120||X>1480||Y<210||Y>550||!terrain.Sample(world.X,world.Y,ground)||ground>=0)
-    { WaypointMessage=Diver->Local(TEXT("Hier fehlen vermessene Unterwasserdaten. Anderen Punkt waehlen."),TEXT("No surveyed underwater data here. Choose another point."));return false; }
+    { WaypointMessage=Diver->Local(TEXT("Hier fehlen vermessene Unterwasserdaten. Anderen Punkt wählen."),TEXT("No surveyed underwater data here. Choose another point."));return false; }
     WaypointDraft={FString(),FString(),east,north,-ground/100,true};bWaypointPick=false;OpenWaypointName(false);return WaypointDialog.IsValid();
 }
 void ADiveHUD::WaypointClick(FName Id)
@@ -125,7 +125,7 @@ void ADiveHUD::WaypointClick(FName Id)
     {
         if(!bWaypointDelete) { bWaypointDelete=true;return; }
         if(Waypoints.Remove(WaypointSelected))
-        { WaypointSelected=Waypoints.Items.IsEmpty()?FString():Waypoints.Items[0].Id;WaypointPage=0;WaypointMessage=Diver->Local(TEXT("Wegpunkt geloescht."),TEXT("Waypoint deleted.")); }
+        { WaypointSelected=Waypoints.Items.IsEmpty()?FString():Waypoints.Items[0].Id;WaypointPage=0;WaypointMessage=Diver->Local(TEXT("Wegpunkt gelöscht."),TEXT("Waypoint deleted.")); }
         bWaypointDelete=false;
     }
 }
@@ -175,7 +175,7 @@ void ADiveHUD::WaypointPanel()
 {
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     Rect(100,590,1400,225,Dark);
-    Text(bWaypointPick&&WaypointMessage.IsEmpty()?L(TEXT("Klicke auf eine vermessene Wasserflaeche. Esc bricht ab."),TEXT("Click surveyed water. Esc cancels.")):WaypointError(),120,590,16,Amber);
+    Text(bWaypointPick&&WaypointMessage.IsEmpty()?L(TEXT("Klicke auf eine vermessene Wasserfläche. Esc bricht ab."),TEXT("Click surveyed water. Esc cancels.")):WaypointError(),120,590,16,Amber);
     WaypointPage=FMath::Clamp(WaypointPage,0,FMath::Max(0,(Waypoints.Items.Num()-1)/5));
     for(int row=0;row<5;++row)
     {
@@ -192,11 +192,11 @@ void ADiveHUD::WaypointPanel()
             *L(point->FromMap?TEXT("Bodentiefe"):TEXT("markierte Tiefe"),point->FromMap?TEXT("bed depth"):TEXT("marked depth"))),650,653,16,White);
         Button(TEXT("waypoint_target"),Waypoints.Target==point->Id?L(TEXT("Ziel aufheben"),TEXT("Clear target")):L(TEXT("Als Ziel setzen"),TEXT("Set as target")),650,685,245,38,true);
         Button(TEXT("waypoint_rename"),L(TEXT("Umbenennen"),TEXT("Rename")),915,685,245,38);
-        Button(TEXT("waypoint_delete"),bWaypointDelete?L(TEXT("Loeschen bestaetigen"),TEXT("Confirm deletion")):L(TEXT("Loeschen ..."),TEXT("Delete ...")),1180,685,300,38,bWaypointDelete);
+        Button(TEXT("waypoint_delete"),bWaypointDelete?L(TEXT("Löschen bestätigen"),TEXT("Confirm deletion")):L(TEXT("Löschen ..."),TEXT("Delete ...")),1180,685,300,38,bWaypointDelete);
     }
     if(Diver->bDiveActive) Button(TEXT("waypoint_current"),L(TEXT("Eigene Position merken"),TEXT("Mark current position")),650,740,285,38);
     Button(TEXT("waypoint_map"),bWaypointPick?L(TEXT("Auswahl abbrechen"),TEXT("Cancel placement")):L(TEXT("Punkt auf Karte setzen"),TEXT("Place point on map")),955,740,300,38,bWaypointPick);
     Button(TEXT("waypoint_reload"),L(TEXT("Neu laden"),TEXT("Reload")),1275,740,205,38);
-    Text(L(TEXT("Luftlinie, keine Routenplanung. X = Wegpunkt. Gruen = Ziel. Maximal 32 Punkte."),TEXT("Straight line, no route planning. X = waypoint. Green = target. Up to 32 points.")),120,793,14,Muted);
+    Text(L(TEXT("Luftlinie, keine Routenplanung. X = Wegpunkt. Grün = Ziel. Maximal 32 Punkte."),TEXT("Straight line, no route planning. X = waypoint. Green = target. Up to 32 points.")),120,793,14,Muted);
     if(Diver->bDiveActive) Text(L(TEXT("TAUCHGANG PAUSIERT"),TEXT("DIVE PAUSED")),120,181,17,Accent);
 }

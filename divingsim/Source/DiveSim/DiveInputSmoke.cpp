@@ -37,6 +37,22 @@ void ADivePawn::InputSmokeTick(float Dt)
     auto* pc=Cast<APlayerController>(GetController());
     auto* hud=pc?Cast<ADiveHUD>(pc->GetHUD()):nullptr;
     if(!pc||!hud) return;
+    if(SmokeScenario==TEXT("ui"))
+    {
+        if(ControlsSmokePhase<28&&ControlsSmokeClock>ControlsSmokePhase+2)
+        {
+            const bool ok=hud->UISmokeTest(ControlsSmokePhase/2,ControlsSmokePhase%2!=0);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_UI_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));
+            if(!ok) { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+            ++ControlsSmokePhase;
+        }
+        if(ControlsSmokePhase==28&&ControlsSmokeClock>31)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS ui=1 phases=14 visual_review_required=1"));
+            FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("coast"))
     {
         auto fail=[&](const TCHAR* reason){UE_LOG(LogTemp,Error,TEXT("DIVE_COAST_ROUTE_FAIL phase=%d %s position=%s forward_down=%d intended_hold=%d"),ControlsSmokePhase,reason,*GetActorLocation().ToString(),pc->IsInputKeyDown(Controls.Key(EDiveAction::Forward)),TestHeldKeys.Contains(Controls.Key(EDiveAction::Forward)));FPlatformMisc::RequestExitWithStatus(false,1);};
@@ -110,7 +126,7 @@ void ADivePawn::InputSmokeTick(float Dt)
     }
     if(SmokeScenario==TEXT("discoveries"))
     {
-        if(ControlsSmokePhase<14&&ControlsSmokeClock>(ControlsSmokePhase+1)*2.5)
+        if(ControlsSmokePhase<28&&ControlsSmokeClock>ControlsSmokePhase+2.5)
         {
             const bool ok=hud->DiscoverySmokeTest(ControlsSmokePhase);
             UE_LOG(LogTemp,Display,TEXT("DIVE_DISCOVERY_PHASE %d %s"),ControlsSmokePhase,ok?TEXT("PASS"):TEXT("FAIL"));

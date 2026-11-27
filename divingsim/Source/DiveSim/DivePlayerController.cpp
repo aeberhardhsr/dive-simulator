@@ -21,6 +21,8 @@ bool ADivePlayerController::InputKey(const FInputKeyEventArgs& Params)
             if(auto* hud=Cast<ADiveHUD>(GetHUD())) hud->OpenControls();
             return true;
         }
+        if(diver->bMenu)
+            if(auto* hud=Cast<ADiveHUD>(GetHUD());hud&&hud->HandleMenuKey(Params.Key,IsInputKeyDown(EKeys::LeftShift)||IsInputKeyDown(EKeys::RightShift))) return true;
         const int action=diver->Controls.Find(Params.Key);
         if(action>=static_cast<int>(EDiveAction::Lamp))
         { diver->PerformAction(static_cast<EDiveAction>(action)); return true; }

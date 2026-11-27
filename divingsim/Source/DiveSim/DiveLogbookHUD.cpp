@@ -84,7 +84,7 @@ void ADiveHUD::Logbook()
     // Opaque enough to make data readable over both daylight and night scenes.
     Rect(40,25,1520,855,FLinearColor(.008f,.026f,.027f,.98f));
     Text(L(TEXT("D I V E   /   L O G B U C H"),TEXT("D I V E   /   L O G B O O K")),70,52,20,Accent);
-    Text(L(TEXT("Deine Tauchgaenge"),TEXT("Your dives")),70,95,35,White);
+    Text(L(TEXT("Deine Tauchgänge"),TEXT("Your dives")),70,95,35,White);
     const FString filters[]={L(TEXT("Alle Modi"),TEXT("All modes")),TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};
     Button(TEXT("logfilter"),filters[LogFilter]+TEXT("   >"),70,151,370,42);
     const auto visible=VisibleLogs();
@@ -99,21 +99,21 @@ void ADiveHUD::Logbook()
         Text(item.Date,85,y+8,16,index==LogSelection?Accent:White);
         Text(FString::Printf(TEXT("%s  |  %s  |  %.1f m"),*item.Location.Left(23),*Clock(item.Duration),item.MaxDepth),85,y+35,14,Muted);
     }
-    if(visible.IsEmpty()) Text(bIndexLoading?L(TEXT("Tauchgaenge werden geladen ..."),TEXT("Loading dives ...")):
-        L(TEXT("Keine Tauchgaenge in dieser Auswahl."),TEXT("No dives in this selection.")),75,227,16,Muted);
+    if(visible.IsEmpty()) Text(bIndexLoading?L(TEXT("Tauchgänge werden geladen ..."),TEXT("Loading dives ...")):
+        L(TEXT("Keine Tauchgänge in dieser Auswahl."),TEXT("No dives in this selection.")),75,227,16,Muted);
     if(LogPage>0) Button(TEXT("logprev"),TEXT("<"),70,739,68,40);
     Text(FString::Printf(TEXT("%d / %d   (%d)"),visible.IsEmpty()?0:LogPage+1,FMath::Max(1,(visible.Num()+6)/7),visible.Num()),155,752,16,Muted);
     if((LogPage+1)*7<visible.Num()) Button(TEXT("lognext"),TEXT(">"),372,739,68,40);
-    if(LogIndex.Unreadable>0) Text(FString::FromInt(LogIndex.Unreadable)+L(TEXT(" Dateien nicht lesbar / nicht unterstuetzt"),TEXT(" files unreadable / unsupported")),70,794,14,Amber);
-    Button(TEXT("logback"),L(TEXT("<  Zurueck   (Esc)"),TEXT("<  Back   (Esc)")),70,825,370,40);
+    if(LogIndex.Unreadable>0) Text(FString::FromInt(LogIndex.Unreadable)+L(TEXT(" Dateien nicht lesbar / nicht unterstützt"),TEXT(" files unreadable / unsupported")),70,794,14,Amber);
+    Button(TEXT("logback"),L(TEXT("<  Zurück   (Esc)"),TEXT("<  Back   (Esc)")),70,825,370,40);
     Button(TEXT("loglanguage"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),1270,825,260,40);
 
     if(bIndexLoading||bDetailLoading)
     { Text(L(TEXT("Profil wird geladen ..."),TEXT("Loading profile ...")),510,200,24,Muted); return; }
     if(LogSelection==INDEX_NONE)
     {
-        Text(L(TEXT("Dein naechster Tauchgang beginnt hier."),TEXT("Your next dive starts here.")),510,208,28,White);
-        Text(L(TEXT("Nach dem Tauchen findest du hier Verlaeufe und Warnungen."),TEXT("After diving, find your profiles and warnings here.")),510,260,19,Muted);
+        Text(L(TEXT("Dein nächster Tauchgang beginnt hier."),TEXT("Your next dive starts here.")),510,208,28,White);
+        Text(L(TEXT("Nach dem Tauchen findest du hier Verläufe und Warnungen."),TEXT("After diving, find your profiles and warnings here.")),510,260,19,Muted);
         return;
     }
     const auto& log=SelectedLog;
@@ -124,7 +124,7 @@ void ADiveHUD::Logbook()
     Text(log.Date+TEXT("   /   ")+Outcome(log,Diver->bEnglish),510,100,16,Muted);
     const TCHAR* modes[]={TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};
     Text(FString::Printf(TEXT("%s    /    %.0f L    /    %d %s"),modes[log.Mode],log.CylinderLitres,log.Samples.Num(),*L(TEXT("Messpunkte"),TEXT("samples"))),510,131,16,Muted);
-    if(log.bRecovered) Text(L(TEXT("Vorheriger Sicherungsstand geladen; neuere Messpunkte fehlen moeglicherweise."),
+    if(log.bRecovered) Text(L(TEXT("Vorheriger Sicherungsstand geladen; neuere Messpunkte fehlen möglicherweise."),
         TEXT("Previous backup loaded; newer samples may be missing.")),510,154,14,Amber);
     const FString titles[]={L(TEXT("DAUER"),TEXT("DURATION")),L(TEXT("MAX. TIEFE"),TEXT("MAX. DEPTH")),L(TEXT("STRECKE"),TEXT("DISTANCE")),L(TEXT("WARNEREIGNISSE"),TEXT("WARNING EVENTS"))};
     const FString values[]={Clock(log.Duration),FString::Printf(TEXT("%.1f m"),log.MaxDepth),FString::Printf(TEXT("%.0f m"),log.Distance),FString::FromInt(log.WarningEvents)};
@@ -141,10 +141,10 @@ void ADiveHUD::Logbook()
     LogCursor=FMath::Clamp(LogCursor,0,log.Samples.Num()-1);
     const auto& sample=log.Samples[LogCursor];
     Text(L(TEXT("Zeitpunkt  "),TEXT("Time  "))+Clock(sample.ElapsedSeconds),510,348,20,Accent);
-    Text(L(TEXT("Maus ueber die Kurven bewegen"),TEXT("Move the pointer across the curves")),1015,351,15,Muted);
+    Text(L(TEXT("Maus über die Kurven bewegen"),TEXT("Move the pointer across the curves")),1015,351,15,Muted);
     const TCHAR* de[4][4]={{TEXT("Tiefe / m"),TEXT("Druck / bar"),TEXT("Nullzeit / min"),TEXT("Dekotiefe / m")},
         {TEXT("Puls / bpm"),TEXT("SpO2 / %"),TEXT("Atmung / min"),TEXT("Kern / C")},
-        {TEXT("Wasser / C"),TEXT("Kern / C"),TEXT("Stress / %"),TEXT("Ermuedung / %")},
+        {TEXT("Wasser / C"),TEXT("Kern / C"),TEXT("Stress / %"),TEXT("Ermüdung / %")},
         {TEXT("Strecke / m"),TEXT("ppO2 / bar"),TEXT("Druck / bar"),TEXT("Nullzeit / min")}};
     const TCHAR* en[4][4]={{TEXT("Depth / m"),TEXT("Gas / bar"),TEXT("NDL / min"),TEXT("Ceiling / m")},
         {TEXT("Pulse / bpm"),TEXT("SpO2 / %"),TEXT("Breaths / min"),TEXT("Core / C")},
@@ -188,7 +188,7 @@ void ADiveHUD::Logbook()
     Button(TEXT("logeventprev"),TEXT("< !"),510,734,70,36);
     Button(TEXT("logeventnext"),TEXT("! >"),590,734,70,36);
     FString warnings;
-    const TCHAR* warnDE[]={TEXT("Druck niedrig"),TEXT("Aufstieg schnell"),TEXT("ppO2 hoch"),TEXT("Kaelte"),TEXT("Dekogrenze"),TEXT("Flasche leer"),TEXT("Tiefenplan"),TEXT("Zeitplan"),TEXT("Keine Atemluft"),TEXT("Reglerdefekt"),TEXT("Narkose"),TEXT("Panik"),TEXT("Dekobelastung")};
+    const TCHAR* warnDE[]={TEXT("Druck niedrig"),TEXT("Aufstieg schnell"),TEXT("ppO2 hoch"),TEXT("Kälte"),TEXT("Dekogrenze"),TEXT("Flasche leer"),TEXT("Tiefenplan"),TEXT("Zeitplan"),TEXT("Keine Atemluft"),TEXT("Reglerdefekt"),TEXT("Narkose"),TEXT("Panik"),TEXT("Dekobelastung")};
     const TCHAR* warnEN[]={TEXT("Low gas"),TEXT("Fast ascent"),TEXT("High ppO2"),TEXT("Cold"),TEXT("Above ceiling"),TEXT("Cylinder empty"),TEXT("Depth plan"),TEXT("Time plan"),TEXT("No supply"),TEXT("Regulator fault"),TEXT("Narcosis"),TEXT("Panic"),TEXT("Deco strain")};
     int count=0;
     for(int bit=0;bit<13;++bit) if(sample.Warnings&(1u<<bit))
@@ -210,6 +210,6 @@ void ADiveHUD::Logbook()
             (sample.RegulatorFreeflow?L(TEXT("Reglerdefekt: "),TEXT("Regulator fault: "))+FString::Printf(TEXT("%.0f L"),sample.FreeflowLostLitres):TEXT("")),510,834,14,Muted);
     else Text(L(TEXT("Kurven: gespeicherte Spielwerte. Gelbe Marken: neue Warnungen."),TEXT("Curves: recorded game values. Yellow marks: new warnings.")),510,834,14,Muted);
     if(log.bLoadoutContext) Text(FString::Printf(TEXT("%s %.2f kg   /   %s %.2f L   /   %s %+.2f kg"),
-        *L(TEXT("Masse"),TEXT("Mass")),sample.TotalMassKg,*L(TEXT("Verdraengung"),TEXT("Displacement")),sample.DisplacedLitres,
+        *L(TEXT("Masse"),TEXT("Mass")),sample.TotalMassKg,*L(TEXT("Verdrängung"),TEXT("Displacement")),sample.DisplacedLitres,
         *L(TEXT("Netto"),TEXT("Net")),sample.DisplacedLitres-sample.TotalMassKg),510,858,13,Muted);
 }

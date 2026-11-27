@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "InputCoreTypes.h"
 #include "DiveLogbook.h"
 #include "DiveProfiles.h"
 #include "DiveWaypoints.h"
@@ -16,6 +17,8 @@ public:
     virtual void DrawHUD() override;
     virtual void NotifyHitBoxClick(FName BoxName) override;
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
+    bool HandleMenuKey(FKey Key,bool Shift);
+    bool BackToDivePlan();
     void OpenLogbook(const FString& PreferredPath=FString(),bool IncludeTests=false);
     void OpenDiscoveries(bool SelectedDive=false);
     void CloseDiscoveries();
@@ -31,6 +34,7 @@ public:
     bool ConfigSmokeTest(int Phase);
     bool EnvironmentSmokeTest(int Phase);
     bool LoadoutSmokeTest(int Phase);
+    bool UISmokeTest(int Phase,bool CaptureOnly=false);
     bool AvatarSmokeTest(int Phase);
     bool NavigationSmokeTest(int Phase);
     bool WaypointSmokeTest(int Phase);
@@ -54,10 +58,19 @@ private:
     UPROPERTY() TObjectPtr<UFont> InterfaceFont=nullptr;
     UPROPERTY() TObjectPtr<class UTexture2D> MapTexture=nullptr;
     float Scale=1, OffsetX=0, OffsetY=0;
+    TArray<FName> ButtonOrder;
+    FName KeyboardFocus;
+    bool bKeyboardFocus=false;
+    bool bTutorialCollapsed=false;
+    float HUDRightBottom=22;
+    bool bUIOverflow=false;
+    bool bUIAudit=false;
+    float TextWidth(const FString& Value,float Size);
+    float TextBlock(const FString& Value,float X,float Y,float W,float Size,FLinearColor Color,int32 MaxLines=2);
     void Text(const FString& Value,float X,float Y,float Size,FLinearColor Color);
     void Rect(float X,float Y,float W,float H,FLinearColor Color);
     void Line(float X,float Y,float X2,float Y2,FLinearColor Color,float Thickness=1);
-    void Button(FName Id,const FString& Label,float X,float Y,float W,float H,bool Accent=false);
+    void Button(FName Id,const FString& Label,float X,float Y,float W,float H,bool Accent=false,bool Enabled=true);
     void Field(FName Id,const FString& Label,const FString& Value,float X,float Y,float W=330);
     void Menu();
     void LoadoutMenu();
@@ -71,6 +84,8 @@ private:
     TSharedPtr<class SWidget> ConfigDialog;
     TSharedPtr<class SEditableTextBox> ConfigEditor;
     void Instruments();
+    void PauseDashboard();
+    TArray<FString> WarningMessages() const;
     void Summary();
     void Map(bool SelectionPage=false);
     void MapClick(FName Id);

@@ -73,6 +73,8 @@ bool ADiveHUD::AvatarSmokeTest(int phase)
     if(phase==12)
     {
         Diver->SetMenu(true);avatar->bInspectionClose=false;
+        // Pause now opens its overview; explicitly navigate to inspection.
+        NotifyHitBoxClick(TEXT("loadout"));NotifyHitBoxClick(TEXT("avatar_view"));
         AvatarPausedUpdates=avatar->PoseUpdates;AvatarPausedPhase=avatar->MotionPhase;
     }
     if(phase==13)

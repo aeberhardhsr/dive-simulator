@@ -69,6 +69,7 @@ public:
     double NoticeUntil=0;
     double NextAutomaticHint=0,FreeflowBubbleClock=0;
     float GraphicsQuality=2;
+    int32 HUDStyle=0; // Standard, compact, minimal; mode visibility rules still apply.
     Dive::AudioLevels AudioLevels;
     UPROPERTY() TObjectPtr<UDiveAudio> Audio;
     FDiveControls Controls;

@@ -70,10 +70,10 @@ FString ADiveHUD::ProfileErrorText() const
     switch(Profiles.Error)
     {
     case EProfileError::None:return ProfileMessage;
-    case EProfileError::Read:case EProfileError::Invalid:return L(TEXT("Profildatei nicht lesbar. Sie bleibt unveraendert; bitte pruefen und neu laden."),TEXT("Profile file is unreadable. It remains unchanged; check it and reload."));
+    case EProfileError::Read:case EProfileError::Invalid:return L(TEXT("Profildatei nicht lesbar. Sie bleibt unverändert; bitte prüfen und neu laden."),TEXT("Profile file is unreadable. It remains unchanged; check it and reload."));
     case EProfileError::Write:return L(TEXT("Speichern fehlgeschlagen. Der bisherige Stand bleibt erhalten."),TEXT("Saving failed. The previous state is preserved."));
-    case EProfileError::Conflict:return L(TEXT("Datei wurde anderswo geaendert. Bitte neu laden."),TEXT("The file changed elsewhere. Please reload."));
-    case EProfileError::Name:return L(TEXT("Bitte 1–40 Zeichen ohne Zeilenumbrueche eingeben."),TEXT("Use 1–40 characters without line breaks."));
+    case EProfileError::Conflict:return L(TEXT("Datei wurde anderswo geändert. Bitte neu laden."),TEXT("The file changed elsewhere. Please reload."));
+    case EProfileError::Name:return L(TEXT("Bitte 1–40 Zeichen ohne Zeilenumbrüche eingeben."),TEXT("Use 1–40 characters without line breaks."));
     case EProfileError::Duplicate:return L(TEXT("Dieser Name existiert bereits, eventuell im Archiv."),TEXT("This name already exists, possibly in the archive."));
     case EProfileError::Limit:return L(TEXT("Grenze erreicht: 32 aktive Profile, 128 insgesamt."),TEXT("Limit reached: 32 active profiles, 128 in total."));
     case EProfileError::NoPrevious:return L(TEXT("Kein vorheriger Stand vorhanden."),TEXT("No previous version is available."));
@@ -132,20 +132,20 @@ bool ADiveHUD::ProfileClick(FName Id)
     {
         if(Diver->bDiveActive||p->Archived) return true;
         Diver->PendingConfig=p->Config; Diver->EntryIndex=p->Entry; Diver->SaveSettings();
-        ProfileMessage=Diver->Local(TEXT("Tauchplan geladen. Zurueck im Menue kannst du starten."),TEXT("Dive plan loaded. Return to the menu to begin.")); return true;
+        ProfileMessage=Diver->Local(TEXT("Tauchplan geladen. Zurück im Menü kannst du starten."),TEXT("Dive plan loaded. Return to the menu to begin.")); return true;
     }
     bool saved=false;
     if(Id==TEXT("profile_replace")) saved=Profiles.Replace(ProfileSelection,Diver->PendingConfig,Diver->EntryIndex);
     else if(Id==TEXT("profile_archive")) saved=Profiles.Archive(ProfileSelection,!p->Archived);
     else if(Id==TEXT("profile_undo")) saved=Profiles.Undo(ProfileSelection);
-    if(saved) { ProfileMessage=Diver->Local(TEXT("Aenderung gespeichert."),TEXT("Change saved.")); RefreshProfileSelection(); }
+    if(saved) { ProfileMessage=Diver->Local(TEXT("Änderung gespeichert."),TEXT("Change saved.")); RefreshProfileSelection(); }
     return true;
 }
 void ADiveHUD::ProfilesMenu()
 {
     auto L=[this](const TCHAR* de,const TCHAR* en){return Diver->Local(de,en);};
     Text(L(TEXT("DEINE TAUCHPROFILE"),TEXT("YOUR DIVE PROFILES")),120,65,38,White);
-    Text(L(TEXT("Ausruestung, Umwelt und Tauchplan als benannte Konfigurationen speichern."),TEXT("Save equipment, environment and dive plan as named configurations.")),120,120,18,Muted);
+    Text(L(TEXT("Ausrüstung, Umwelt und Tauchplan als benannte Konfigurationen speichern."),TEXT("Save equipment, environment and dive plan as named configurations.")),120,120,18,Muted);
     Text(ProfileErrorText(),120,160,17,Profiles.Error==EProfileError::None?Accent:Amber);
     const auto visible=VisibleProfiles(); const auto* selected=Profiles.Find(ProfileSelection);
     Text(bProfileArchive?L(TEXT("ARCHIV"),TEXT("ARCHIVE")):L(TEXT("AKTIVE PROFILE"),TEXT("ACTIVE PROFILES")),120,210,16,Accent);
@@ -173,15 +173,15 @@ void ADiveHUD::ProfilesMenu()
     Text(suit+TEXT("   /   ")+(autoTrim?L(TEXT("Automatische Tarierung"),TEXT("Automatic buoyancy")):L(TEXT("Manuelle Tarierung"),TEXT("Manual buoyancy"))),585,365,19,White);
     const FString hour=UTF8_TO_TCHAR(Dive::FormatConfigInput(*Dive::FindConfigInput("hour"),c.Hour).c_str());
     Text(FString::Printf(TEXT("%s   /   %s   /   %.1f m/s   /   %05.1f deg"),*(FString(UTF8_TO_TCHAR(c.Date.Text().c_str()))+TEXT("  ")+hour),*weather[c.Weather],c.WindMetresPerSecond,c.WindDirectionDegrees),585,405,19,White);
-    Text(FString::Printf(TEXT("%s %.1f m%s   /   %s %.2f m/s%s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,c.AutoVisibility?TEXT(" (Auto)"):TEXT(""),Diver->bEnglish?TEXT("Current"):TEXT("Stroemung"),c.CurrentMetresPerSecond,c.CurrentSource==Dive::CurrentSetting::Automatic?TEXT(" (Auto)"):TEXT("")),585,445,19,White);
+    Text(FString::Printf(TEXT("%s %.1f m%s   /   %s %.2f m/s%s"),Diver->bEnglish?TEXT("Visibility"):TEXT("Sicht"),c.VisibilityMetres,c.AutoVisibility?TEXT(" (Auto)"):TEXT(""),Diver->bEnglish?TEXT("Current"):TEXT("Strömung"),c.CurrentMetresPerSecond,c.CurrentSource==Dive::CurrentSetting::Automatic?TEXT(" (Auto)"):TEXT("")),585,445,19,White);
     if(c.AutoTemperature) Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s"),c.SurfaceTemperatureC,c.BottomTemperatureC,*L(TEXT("Auto: saisonales Tiefenprofil"),TEXT("Auto: seasonal depth profile"))),585,485,19,White);
     else Text(FString::Printf(TEXT("%.1f / %.1f C   /   %s %.1f m (%.1f m)"),c.SurfaceTemperatureC,c.BottomTemperatureC,Diver->bEnglish?TEXT("Thermocline"):TEXT("Sprungschicht"),c.ThermoclineMetres,c.ThermoclineWidthMetres),585,485,19,White);
-    Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphaere"),c.SurfacePressureBar),585,525,20,White);
+    Text(FString::Printf(TEXT("Plan: %.1f m   /   %.1f min   /   %s %.3f bar"),c.PlannedDepthMetres,c.PlannedMinutes,Diver->bEnglish?TEXT("Atmosphere"):TEXT("Atmosphäre"),c.SurfacePressureBar),585,525,20,White);
     const auto& torch=Dive::Torch::At(c.TorchModel);
     Text(FString::Printf(TEXT("%s: %s / %.0f lm / %.0f deg / %.0f min / %s / %s"),Diver->bEnglish?TEXT("Torch"):TEXT("Lampe"),UTF8_TO_TCHAR(torch.Name),torch.Lumens,2*torch.OuterDegrees,torch.RuntimeMinutes,
         c.CylinderMaterial==1?TEXT("Aluminium"):*L(TEXT("Stahl"),TEXT("Steel")),UTF8_TO_TCHAR(Dive::BCDEquipment::At(c.BCDModel).Item.Name)),585,563,17,White);
     if(selected&&DiveConfigIO::Equal(plan,entry,Diver->PendingConfig,Diver->EntryIndex)) Text(L(TEXT("Entspricht dem aktuellen Tauchplan."),TEXT("Matches the current dive plan.")),585,602,16,Accent);
-    if(Diver->bDiveActive) Text(L(TEXT("Laden ist erst nach Ende des laufenden Tauchgangs moeglich."),TEXT("Loading is available after the current dive ends.")),560,645,16,Amber);
+    if(Diver->bDiveActive) Text(L(TEXT("Laden ist erst nach Ende des laufenden Tauchgangs möglich."),TEXT("Loading is available after the current dive ends.")),560,645,16,Amber);
     if(selected)
     {
         if(!selected->Archived&&!Diver->bDiveActive) Button(TEXT("profile_load"),L(TEXT("Profil laden"),TEXT("Load profile")),560,680,260,48,true);
@@ -190,7 +190,7 @@ void ADiveHUD::ProfilesMenu()
         Button(TEXT("profile_rename"),L(TEXT("Umbenennen"),TEXT("Rename")),560,750,260,42);
         Button(TEXT("profile_archive"),selected->Archived?L(TEXT("Aus Archiv wiederherstellen"),TEXT("Restore from archive")):L(TEXT("Archivieren"),TEXT("Archive")),850,750,340,42);
     }
-    Button(TEXT("profile_back"),L(TEXT("< Zurueck"),TEXT("< Back")),120,825,240,48,true);
+    Button(TEXT("profile_back"),L(TEXT("< Zurück"),TEXT("< Back")),120,825,240,48,true);
     if(Profiles.bLoaded) Button(TEXT("profile_new"),L(TEXT("Aktuellen Plan als neues Profil speichern"),TEXT("Save current plan as a new profile")),390,825,610,48);
     Button(TEXT("profile_reload"),L(TEXT("Neu laden"),TEXT("Reload")),1030,825,190,48);
     Button(TEXT("profile_language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),1250,825,230,48);

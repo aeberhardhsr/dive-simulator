@@ -200,7 +200,7 @@ void ADivePawn::BeginPlay()
                 }
             }
             else if(SmokeScenario==TEXT("tutorial")) StartTutorial();
-            else if(SmokeScenario!=TEXT("discoveries")&&SmokeScenario!=TEXT("waypoints")&&SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
+            else if(SmokeScenario!=TEXT("ui")&&SmokeScenario!=TEXT("discoveries")&&SmokeScenario!=TEXT("waypoints")&&SmokeScenario!=TEXT("navigation")&&SmokeScenario!=TEXT("profiles")&&SmokeScenario!=TEXT("config")&&SmokeScenario!=TEXT("environment")&&SmokeScenario!=TEXT("loadout")&&SmokeScenario!=TEXT("avatar")) StartDive();
             if(bPerformance) SetupPerformance();
             if(FParse::Param(FCommandLine::Get(),TEXT("DiveLampOff"))) bLamp=false;
             double battery=100;FParse::Value(FCommandLine::Get(),TEXT("DiveTorchBattery="),battery);
@@ -243,12 +243,17 @@ void ADivePawn::ToggleMenu()
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->EntryMapOpen()) { hud->CloseEntryMap(); return; }
     if(bLogbook) { bLogbook=false; return; }
+    if(bMenu) if(auto* pc=Cast<APlayerController>(GetController()))
+        if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->BackToDivePlan()) return;
     SetMenu(!bMenu || !bDiveActive);
 }
 void ADivePawn::ResumeDive() { if(bDiveActive) SetMenu(false); }
 
 void ADivePawn::SetMenu(bool Open)
 {
+    if(Open&&!bMenu&&bDiveActive)
+        if(auto* pc=Cast<APlayerController>(GetController()))
+            if(auto* hud=Cast<ADiveHUD>(pc->GetHUD())) hud->BackToDivePlan();
     bMenu=Open;
     CapturingAction=INDEX_NONE;
     if(auto* PC=Cast<APlayerController>(GetController()))
@@ -431,7 +436,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("coast")||SmokeScenario==TEXT("discoveries")||SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("ui")||SmokeScenario==TEXT("coast")||SmokeScenario==TEXT("discoveries")||SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -518,7 +523,7 @@ void ADivePawn::Tick(float DeltaSeconds)
     }
     if(bSmokeTest&&SmokeScenario==TEXT("daycycle")) TickDayCycleTest(DeltaSeconds);
     if(bSmokeTest&&SmokeScenario==TEXT("decompression")) TickDecompressionTest(DeltaSeconds);
-    if(bDiveActive && !bMenu && !(bSmokeTest&&(SmokeScenario==TEXT("decompression")||SmokeScenario==TEXT("fish")||SmokeScenario==TEXT("rocks"))))
+    if(bDiveActive && !bMenu && !(bSmokeTest&&(SmokeScenario==TEXT("ui")||SmokeScenario==TEXT("decompression")||SmokeScenario==TEXT("fish")||SmokeScenario==TEXT("rocks"))))
     {
         Accumulator+=FMath::Min(DeltaSeconds,.25f);
         while(Accumulator>=.02f && bDiveActive) { SimulateStep(.02f); Accumulator-=.02f; }
@@ -611,7 +616,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("ui") && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -991,6 +996,7 @@ void ADivePawn::SaveSettings()
     DiveConfigIO::Write(obj,savedConfig,bTutorialActive?BeforeTutorialEntry:EntryIndex);
     obj->SetBoolField(TEXT("english"),bEnglish);
     obj->SetBoolField(TEXT("camera_motion"),bCameraMotion);
+    obj->SetNumberField(TEXT("hud_style"),FMath::Clamp(HUDStyle,0,2));
     AudioLevels.Sanitize();
     for(int i=0;i<5;++i) obj->SetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
     Controls.Sanitize(); Controls.Write(obj);
@@ -1010,6 +1016,9 @@ void ADivePawn::LoadSettings()
     FString configError; DiveConfigIO::Read(obj,PendingConfig,EntryIndex,false,configError);
     obj->TryGetBoolField(TEXT("english"),bEnglish);
     obj->TryGetBoolField(TEXT("camera_motion"),bCameraMotion);
+    double hudStyle=0;
+    if(obj->TryGetNumberField(TEXT("hud_style"),hudStyle)&&FMath::IsFinite(hudStyle))
+        HUDStyle=FMath::RoundToInt(FMath::Clamp(hudStyle,0.,2.));
     for(int i=0;i<5;++i) obj->TryGetNumberField(FString::Printf(TEXT("audio_%d"),i),AudioLevels.Values[i]);
     AudioLevels.Sanitize();
     Controls.Read(obj); ApplyControls();

@@ -92,7 +92,7 @@ void ADiveHUD::Discoveries()
     Text(L(TEXT("Mit [ "),TEXT("Use [ "))+Diver->KeyText(EDiveAction::Photo)+L(TEXT(" ] unter Wasser fotografieren."),TEXT(" ] to photograph underwater.")),70,729,15,Accent);
     Text(L(TEXT("Nah, mittig, beleuchtet und unverdeckt."),TEXT("Close, centered, lit and unobstructed.")),70,756,15,Muted);
     if(DiscoveryUnreadable) Text(FString::Printf(TEXT("%d "),DiscoveryUnreadable)+L(TEXT("Logdateien nicht lesbar."),TEXT("log files unreadable.")),70,790,14,Amber);
-    Button(TEXT("discovery_back"),L(TEXT("< Zurueck  (Esc)"),TEXT("< Back  (Esc)")),70,825,390,40);
+    Button(TEXT("discovery_back"),L(TEXT("< Zurück  (Esc)"),TEXT("< Back  (Esc)")),70,825,390,40);
     Button(TEXT("discovery_language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),1270,825,260,40);
     if(bDiscoveryLoading) { Text(L(TEXT("Sammlung wird geladen ..."),TEXT("Loading collection ...")),520,210,25,Muted);return; }
     if(SpeciesCatalog.IsEmpty()) { Text(L(TEXT("Artenkatalog nicht lesbar."),TEXT("Species catalog could not be loaded.")),520,210,25,Amber);return; }
@@ -112,12 +112,12 @@ void ADiveHUD::Discoveries()
             int length=FMath::Min(90,remaining.Len());if(length<remaining.Len()) { while(length>0&&remaining[length]!=' ') --length;if(length==0) length=90; }
             Text(remaining.Left(length),520,192+line*25,17,Muted);remaining=remaining.Mid(length).TrimStart();
         }
-        Button(TEXT("discovery_source"),L(TEXT("Quelle oeffnen"),TEXT("Open source")),1270,262,260,38);
+        Button(TEXT("discovery_source"),L(TEXT("Quelle öffnen"),TEXT("Open source")),1270,262,260,38);
     }
     else
     {
-        Text(L(TEXT("Dein Blick unter die Oberflaeche"),TEXT("Your view below the surface")),520,110,30,White);
-        Text(L(TEXT("Arten links auswaehlen: Steckbrief und zugehoerige Fotos."),TEXT("Choose a species on the left for its guide and photographs.")),520,169,18,Muted);
+        Text(L(TEXT("Dein Blick unter die Oberfläche"),TEXT("Your view below the surface")),520,110,30,White);
+        Text(L(TEXT("Arten links auswählen: Steckbrief und zugehörige Fotos."),TEXT("Choose a species on the left for its guide and photographs.")),520,169,18,Muted);
         Text(L(TEXT("Arterkennung ist eine Spielregel, keine biologische Bildanalyse."),TEXT("Identification is a game rule, not biological image analysis.")),520,211,16,Muted);
     }
     if(visible.IsEmpty()) { Text(L(TEXT("Dein erstes Foto wartet auf dich."),TEXT("Your first photograph awaits.")),520,390,27,White);return; }

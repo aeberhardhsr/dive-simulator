@@ -75,15 +75,71 @@ void ADiveHUD::Map(bool SelectionPage)
         MapTexture->GetPlatformData()->Mips[0].BulkData.Unlock();
         MapTexture->Filter=TF_Bilinear;MapTexture->SRGB=true;MapTexture->UpdateResource();
     }
-    if(!SelectionPage) Rect(0,0,1600,900,FLinearColor(0,.012f,.014f,.78f));
+    if(!SelectionPage)
+    {
+        // In-dive navigation stays between the instruments and warning column.
+        // The full-size selection/waypoint editor below keeps its own hit boxes.
+        constexpr float left=358,top=310,width=820,height=205;
+        auto locate=[&](const FVector& position)
+        {
+            const auto survey=data.ToSurvey(position);
+            const auto p=Dive::Navigation::Project(survey.X,survey.Y,data.MapWest,data.MapSouth,data.MapEast-data.MapWest,data.MapNorth-data.MapSouth);
+            return FVector2D(left+p.X*width,top+p.Y*height);
+        };
+        auto inside=[](const FVector2D& p){return p.X>=358&&p.X<=1178&&p.Y>=310&&p.Y<=515;};
+        Rect(340,220,856,440,Dark);
+        Text(L(TEXT("WALENSEE · TIEFENKARTE"),TEXT("WALENSEE · DEPTH MAP")),358,241,23,Accent);
+        TextBlock(Diver->KeyText(EDiveAction::Map)+L(TEXT(" schliessen"),TEXT(" close")),1010,245,168,14,White,1);
+        Text(L(TEXT("Gitternord oben · Tiefenlinien 10 m · © swisstopo / swissBATHY3D"),TEXT("Grid north up · 10 m contours · © swisstopo / swissBATHY3D")),358,281,12,Muted);
+        if(MapTexture) DrawTexture(MapTexture,OffsetX+left*Scale,OffsetY+top*Scale,width*Scale,height*Scale,0,0,1,1,FLinearColor::White,BLEND_Opaque);
+        for(int i=0;i<Diver->Samples.Num();i+=5)
+        { const auto p=locate(Diver->Samples[i].Position);if(inside(p)) Rect(p.X-1,p.Y-1,2,2,Muted); }
+        for(int i=0;i<entries.Num();++i)
+        {
+            const auto p=locate(entries[i].Position);if(!inside(p)) continue;
+            Rect(p.X-9,p.Y-10,18,22,Dark);Text(FString::FromInt(i+1),p.X-4,p.Y-9,14,Amber);
+        }
+        const auto here=locate(Diver->GetActorLocation()),start=locate(Diver->EntryLocation);
+        if(inside(start))
+        {
+            Line(start.X-7,start.Y,start.X,start.Y-7,Amber,2);Line(start.X,start.Y-7,start.X+7,start.Y,Amber,2);
+            Line(start.X+7,start.Y,start.X,start.Y+7,Amber,2);Line(start.X,start.Y+7,start.X-7,start.Y,Amber,2);
+        }
+        if(inside(here))
+        {
+            const double angle=FMath::DegreesToRadians(Diver->GetControlRotation().Yaw);
+            const FVector2D direction(FMath::Sin(angle),-FMath::Cos(angle)),side(-direction.Y,direction.X);
+            const auto tip=here+direction*11,base=here-direction*6;
+            Line(tip.X,tip.Y,base.X+side.X*6,base.Y+side.Y*6,Accent,3);
+            Line(tip.X,tip.Y,base.X-side.X*6,base.Y-side.Y*6,Accent,3);
+        }
+        EnsureWaypoints();
+        for(const auto& point:Waypoints.Items)
+        {
+            const auto p=Dive::Navigation::Project(point.East,point.North,data.MapWest,data.MapSouth,data.MapEast-data.MapWest,data.MapNorth-data.MapSouth);
+            if(!p.Inside()) continue;
+            const float px=left+p.X*width,py=top+p.Y*height;
+            const auto color=point.Id==Waypoints.Target?Accent:White;
+            Line(px-4,py-4,px+4,py+4,color,2);Line(px-4,py+4,px+4,py-4,color,2);
+        }
+        const float kilometre=width*1000/(data.MapEast-data.MapWest);
+        Line(left,530,left+kilometre,530,White,2);Text(TEXT("1 km"),left+kilometre+10,520,12,Muted);
+        TextBlock(inside(here)?L(TEXT("Grün: Position & Blickrichtung · Gelb: Spielstarts · Raute: dein Start"),TEXT("Green: position & heading · Yellow: entries · Diamond: your start")):L(TEXT("Deine Position liegt ausserhalb der Karte."),TEXT("Your position is outside this map.")),520,521,658,12,Accent,1);
+        const FVector delta=(Diver->EntryLocation-Diver->GetActorLocation())/100;
+        TextBlock(FString::Printf(TEXT("%s: %.0f m · %03d°"),*L(TEXT("Zum Start, Luftlinie"),TEXT("To start, straight line")),FVector2D(delta.X,delta.Y).Size(),Dive::Navigation::DisplayHeading(Dive::Navigation::Bearing(delta.X,delta.Y))),358,553,820,16,White,1);
+        if(const auto* point=Waypoints.Find(Waypoints.Target))
+            TextBlock(L(TEXT("Navigationsziel: "),TEXT("Navigation target: "))+point->Name,358,583,820,16,Accent,1);
+        TextBlock(Diver->KeyText(EDiveAction::Waypoints)+L(TEXT(" Wegpunkte bearbeiten (Pause) · Simulation läuft weiter"),TEXT(" Edit waypoints (pause) · Simulation continues")),358,628,820,13,Muted,1);
+        return;
+    }
     Rect(80,80,1440,740,Dark);
-    Text(bWaypointPage?L(TEXT("WALENSEE / DEINE WEGPUNKTE"),TEXT("WALENSEE / YOUR WAYPOINTS")):choosing?L(TEXT("WALENSEE / EINSTIEG WAEHLEN"),TEXT("WALENSEE / CHOOSE ENTRY")):
+    Text(bWaypointPage?L(TEXT("WALENSEE / DEINE WEGPUNKTE"),TEXT("WALENSEE / YOUR WAYPOINTS")):choosing?L(TEXT("WALENSEE / EINSTIEG WÄHLEN"),TEXT("WALENSEE / CHOOSE ENTRY")):
         L(TEXT("WALENSEE / TIEFENKARTE"),TEXT("WALENSEE / DEPTH MAP")),120,110,28,Accent);
     if(SelectionPage)
     {
         if(!bWaypointPage) Button(TEXT("map_waypoints"),L(TEXT("Wegpunkte"),TEXT("Waypoints")),875,105,185,40);
         Button(TEXT("map_language"),Diver->bEnglish?TEXT("EN / Deutsch"):TEXT("DE / English"),1080,105,180,40);
-        Button(TEXT("map_back"),L(TEXT("< Zurueck / Esc"),TEXT("< Back / Esc")),1280,105,200,40);
+        Button(TEXT("map_back"),L(TEXT("< Zurück / Esc"),TEXT("< Back / Esc")),1280,105,200,40);
     }
     Text(L(TEXT("GITTERNORD OBEN (LV95)   /   swissBATHY3D 2020 / © swisstopo"),TEXT("GRID NORTH UP (LV95)   /   swissBATHY3D 2020 / © swisstopo")),120,159,14,Muted);
     if(MapTexture) DrawTexture(MapTexture,OffsetX+MapX*Scale,OffsetY+MapY*Scale,MapW*Scale,MapH*Scale,0,0,1,1,FLinearColor::White,BLEND_Opaque);
@@ -126,7 +182,7 @@ void ADiveHUD::Map(bool SelectionPage)
         if(!bWaypointPage) Text(distance<1?L(TEXT("Am Startpunkt"),TEXT("At the start point")):
             FString::Printf(TEXT("%s: %.0f m / %03d deg"),*L(TEXT("Zum Start, Luftlinie"),TEXT("To start, straight line")),distance,
                 Dive::Navigation::DisplayHeading(Dive::Navigation::Bearing(delta.X,delta.Y))),120,181,17,White);
-        Text(inMap(here)?L(TEXT("Gruenes Dreieck: du und Blickrichtung   /   Raute: dein Start"),TEXT("Green triangle: you and heading   /   Diamond: your start")):
+        Text(inMap(here)?L(TEXT("Grünes Dreieck: du und Blickrichtung   /   Raute: dein Start"),TEXT("Green triangle: you and heading   /   Diamond: your start")):
             L(TEXT("Deine Position liegt ausserhalb dieses Kartenausschnitts."),TEXT("Your position lies outside this map extent.")),120,712,17,Accent);
     }
     DrawWaypoints();
@@ -147,9 +203,9 @@ void ADiveHUD::Map(bool SelectionPage)
     }
     if(choosing)
     {
-        Text(L(TEXT("Punkt oder Karteikarte waehlen; erst Uebernehmen aendert deinen Plan."),TEXT("Select a marker or card; Apply changes your plan.")),120,712,17,Muted);
+        Text(L(TEXT("Punkt oder Karteikarte wählen; erst Übernehmen ändert deinen Plan."),TEXT("Select a marker or card; Apply changes your plan.")),120,712,17,Muted);
         Button(TEXT("map_mode"),shore?L(TEXT("Start: am Ufer"),TEXT("Start: on shore")):L(TEXT("Start: direkt im Wasser"),TEXT("Start: offshore")),120,755,420,40);
-        Button(TEXT("map_apply"),L(TEXT("Auswahl uebernehmen   >"),TEXT("Apply selection   >")),1060,755,420,40,true);
+        Button(TEXT("map_apply"),L(TEXT("Auswahl übernehmen   >"),TEXT("Apply selection   >")),1060,755,420,40,true);
     }
     else
     {
@@ -160,7 +216,7 @@ void ADiveHUD::Map(bool SelectionPage)
         const auto& state=Diver->Simulation.Data;
         const FString gas=Diver->Simulation.Settings.Rules().LimitedGas?FString::Printf(TEXT("%.0f bar"),state.CylinderBar):TEXT("INF");
         Text(FString::Printf(TEXT("%.1f m   /   %s   /   %s"),state.DepthMetres,*gas,
-            *L(Diver->bMenu?TEXT("Tauchgang pausiert"):TEXT("Simulation laeuft weiter"),Diver->bMenu?TEXT("Dive paused"):TEXT("Simulation continues"))),120,789,14,White);
+            *L(Diver->bMenu?TEXT("Tauchgang pausiert"):TEXT("Simulation läuft weiter"),Diver->bMenu?TEXT("Dive paused"):TEXT("Simulation continues"))),120,789,14,White);
         Text(Diver->KeyText(EDiveAction::Waypoints)+L(TEXT(" Wegpunkte bearbeiten (Pause)"),TEXT(" edit waypoints (pause)")),850,789,14,Accent);
     }
 }

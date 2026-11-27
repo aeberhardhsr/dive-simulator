@@ -34,16 +34,16 @@ FString ADiveHUD::ConfigInputTitle() const
         {TEXT("pressure"),TEXT("Startdruck"),TEXT("Starting pressure")},
         {TEXT("weight"),TEXT("Bleigewicht"),TEXT("Ballast")},
         {TEXT("visibility"),TEXT("Sichtweite"),TEXT("Visibility")},
-        {TEXT("current"),TEXT("Stroemung"),TEXT("Current")},
+        {TEXT("current"),TEXT("Strömung"),TEXT("Current")},
         {TEXT("depth"),TEXT("Geplante Tiefe"),TEXT("Planned depth")},
         {TEXT("duration"),TEXT("Geplante Dauer"),TEXT("Planned duration")},
-        {TEXT("wind"),TEXT("Windstaerke"),TEXT("Wind speed")},
+        {TEXT("wind"),TEXT("Windstärke"),TEXT("Wind speed")},
         {TEXT("winddir"),TEXT("Wind weht nach"),TEXT("Wind blows toward")},
-        {TEXT("surface_temp"),TEXT("Oberflaechentemperatur"),TEXT("Surface temperature")},
+        {TEXT("surface_temp"),TEXT("Oberflächentemperatur"),TEXT("Surface temperature")},
         {TEXT("air_temp"),TEXT("Lufttemperatur"),TEXT("Air temperature")},
         {TEXT("bottom_temp"),TEXT("Tiefenwasser"),TEXT("Deep water")},
         {TEXT("thermocline"),TEXT("Sprungschicht: Tiefe"),TEXT("Thermocline depth")},
-        {TEXT("thermal_width"),TEXT("Schichtuebergang"),TEXT("Transition scale")}
+        {TEXT("thermal_width"),TEXT("Schichtübergang"),TEXT("Transition scale")}
     };
     for(const auto& label:labels) if(ConfigEditing==label.Id) return Diver->Local(label.German,label.English);
     return FString();
@@ -51,13 +51,13 @@ FString ADiveHUD::ConfigInputTitle() const
 FString ADiveHUD::ConfigInputHint() const
 {
     if(ConfigEditing==TEXT("date")) return Diver->Local(
-        TEXT("JJJJ-MM-TT, 2000–2099. Schweizer Ortszeit.\nIm Herbst gilt bei doppelter Uhrzeit die erste (Sommerzeit).\nEnter uebernimmt; Escape verwirft."),
+        TEXT("JJJJ-MM-TT, 2000–2099. Schweizer Ortszeit.\nIm Herbst gilt bei doppelter Uhrzeit die erste (Sommerzeit).\nEnter übernimmt; Escape verwirft."),
         TEXT("YYYY-MM-DD, 2000–2099. Swiss local time.\nRepeated autumn times use the first occurrence (summer time).\nEnter applies; Escape cancels."));
     const auto* spec=Input(ConfigEditing); if(!spec) return FString();
     const FString range=spec->Clock?TEXT("00:00 – 23:59 (HH:MM)"):
         Number(*spec,spec->Minimum)+TEXT(" – ")+Number(*spec,spec->Maximum)+TEXT(" ")+UTF8_TO_TCHAR(spec->Unit);
     return range+TEXT("\n")+(spec->Clock?FString():Diver->Local(TEXT("Dezimalpunkt oder Komma. "),TEXT("Decimal point or comma. ")))+
-        Diver->Local(TEXT("Enter uebernimmt; Escape verwirft."),TEXT("Enter applies; Escape cancels."));
+        Diver->Local(TEXT("Enter übernimmt; Escape verwirft."),TEXT("Enter applies; Escape cancels."));
 }
 bool ADiveHUD::OpenConfigInput(FName Id)
 {
@@ -88,7 +88,7 @@ bool ADiveHUD::SubmitConfigInput(const FString& Value)
     {
         double utc=0;
         if(Dive::ScenarioClock::StartUTC(candidate.Date,candidate.Hour,utc)) return true;
-        ConfigError=Diver->Local(TEXT("Diese Uhrzeit entfaellt bei der Sommerzeitumstellung. Bitte eine andere Uhrzeit oder ein anderes Datum waehlen."),
+        ConfigError=Diver->Local(TEXT("Diese Uhrzeit entfällt bei der Sommerzeitumstellung. Bitte eine andere Uhrzeit oder ein anderes Datum wählen."),
             TEXT("This time does not exist during the spring clock change. Choose another time or date."));
         return false;
     };
@@ -96,7 +96,7 @@ bool ADiveHUD::SubmitConfigInput(const FString& Value)
     {
         if(!Dive::CivilDate::Parse(TCHAR_TO_UTF8(*Value),candidate.Date))
         {
-            ConfigError=Diver->Local(TEXT("Ein gueltiges Datum als JJJJ-MM-TT eingeben (2000–2099)."),TEXT("Enter a valid date as YYYY-MM-DD (2000–2099).")); return false;
+            ConfigError=Diver->Local(TEXT("Ein gültiges Datum als JJJJ-MM-TT eingeben (2000–2099)."),TEXT("Enter a valid date as YYYY-MM-DD (2000–2099).")); return false;
         }
         if(!clockValid()) return false;
         Diver->PendingConfig=candidate; Diver->SaveSettings(); CloseConfigInput(); return true;
@@ -108,7 +108,7 @@ bool ADiveHUD::SubmitConfigInput(const FString& Value)
         ConfigError=error==Dive::ConfigInputError::Range?
             Diver->Local(TEXT("Bitte einen Wert innerhalb des angegebenen Bereichs eingeben."),TEXT("Enter a value within the stated range.")):
             error==Dive::ConfigInputError::Precision?
-            FString::Printf(TEXT("%s %d %s"),*Diver->Local(TEXT("Hoechstens"),TEXT("Use at most")),spec->Decimals,
+            FString::Printf(TEXT("%s %d %s"),*Diver->Local(TEXT("Höchstens"),TEXT("Use at most")),spec->Decimals,
                 *Diver->Local(TEXT("Nachkommastellen eingeben."),TEXT("decimal places."))):
             spec->Clock?Diver->Local(TEXT("Uhrzeit als HH:MM eingeben, zum Beispiel 07:05."),TEXT("Enter time as HH:MM, for example 07:05.")):
             Diver->Local(TEXT("Eine Zahl ohne Einheit eingeben, zum Beispiel 7,5."),TEXT("Enter a number without a unit, for example 7.5."));

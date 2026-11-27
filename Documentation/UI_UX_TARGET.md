@@ -4,11 +4,13 @@
 
 Der Nutzer hat am 26. November 2026 fünf eigene Designentwürfe bereitgestellt. Gewünscht ist eine Anpassung an deren Gestaltungsidee, keine 1:1-Umsetzung. Seine Bewertung des aktuellen Layouts ist ausdrücklich festgehalten: zu chaotisch, unpassende Texte, unsaubere Umlaute und verwirrende Menüführung.
 
-**Status: Anforderung und Originalreferenzen gesichert; Umsetzung noch nicht begonnen.** Die verbindliche Reihenfolge lautet:
+**Status: Umsetzung am 27. November 2026 begonnen; native Prüfung noch ausstehend.** Der Nutzer hat die Reihenfolge am 27. November ausdrücklich angepasst: Menü/HUD/FPV darf während des laufenden Unreal-Erstbuilds vorgezogen und parallel vorbereitet werden. Die ursprünglich vereinbarte Reihenfolge war:
 
 1. Spielgrafik und Umgebung unter Wasser optimieren.
 2. Spielgrafik über Wasser – insbesondere Berge, Wiesen, Wald, Gelände und Ufer – auf vergleichbares Realitätsniveau bringen.
 3. Anschließend Menüführung, HUD und FPV nach dieser Designrichtung überarbeiten.
+
+Die neue Priorisierung erlaubt jetzt die UI-Arbeit im Hauptprojekt. Der bereits laufende Engine-Build verwendet seine getrennte Quellkopie und wird nicht neu gestartet. Nach seinem Abschluss müssen die geänderten Projektmodule ausdrücklich neu gebaut werden, bevor UI- oder Grafiktests mit dem synchronisierten Projekt starten. Die grafischen Qualitätsziele bleiben vollständig bestehen.
 
 Dieser Nachtrag ergänzt die bestehenden 236 Anforderungen und das [visuelle Qualitätsziel](VISUAL_TARGET.md). Bestehende Funktionen, Spielmodi, Instrumente, Lokalisierungs- und Bedienanforderungen bleiben Teil des Gesamtziels. Einzelne Ansichten dürfen später sinnvoll zusammengefasst oder anders angeordnet werden, wenn der Ablauf dadurch verständlicher wird.
 
@@ -35,7 +37,27 @@ Die eingebetteten Zahlen, Tasten, Überschriften und Zähler sind Entwurfsinhalt
 
 ## Zusätzlicher FPV-Prüfbefund
 
-Am 27. November zeigt das Abschlussbild der Walenstadt-Leistungsmessung im Paket `WindowsStreamBuild` den eigenen Kopf/Körper gross im Sichtfeld. Die Vergleichsmessung derselben EXE blickt in eine andere Richtung. Ursache und Reproduzierbarkeit dieses Kamerazustands sind noch ungeklärt. Bei der FPV-Überarbeitung sind Eigenkörper-Verdeckung, Kopf-/Kameraabstand und Körperausrichtung während Drehungen, Bodenkontakt und Schwimmen gezielt zu prüfen. Die [gebundenen Messaufnahmen](STREAMING_BUILD_RESULTS.json) bleiben als Befund erhalten; die Meldung ist keine Änderung der vereinbarten Arbeitsreihenfolge.
+Am 27. November zeigt das Abschlussbild der Walenstadt-Leistungsmessung im Paket `WindowsStreamBuild` den eigenen Kopf/Körper gross im Sichtfeld. Die Vergleichsmessung derselben EXE blickt in eine andere Richtung. Ursache und Reproduzierbarkeit dieses Kamerazustands sind noch ungeklärt. Bei der FPV-Überarbeitung sind Eigenkörper-Verdeckung, Kopf-/Kameraabstand und Körperausrichtung während Drehungen, Bodenkontakt und Schwimmen gezielt zu prüfen. Die [gebundenen Messaufnahmen](STREAMING_BUILD_RESULTS.json) bleiben als Befund erhalten. Die aktuelle Priorisierung steht im Abschnitt „Auftrag und Reihenfolge“.
+
+## Umsetzungsstand während des Engine-Builds
+
+Im Hauptprojekt vorbereitet, **noch nicht nativ kompiliert oder visuell abgenommen**:
+
+- Drei feste Hauptbereiche mit gemeinsamer Navigation und Hauptaktion; getrennte Pause mit Übersicht aller aktiven Warnungen. Konfiguration bleibt während des laufenden Tauchgangs gesperrt.
+- Gemessener Textumbruch, begrenzte Textflächen, sichtbarer Tastaturfokus, Tab/Pfeiltasten und Enter/Leertaste sowie vorhersehbare Esc-Rückkehr. Deutsche HUD-/Menübeschriftungen wurden korrigiert.
+- Standard-, Kompakt- und Minimal-HUD mit gespeicherter Auswahl. Ortsstatus links, Kompass oben, gruppierte Instrumente unten, priorisierte Warnungen und einklappbares Tutorial rechts. Die Spielkarte lässt diese Bereiche frei.
+- Ausrüstungstabelle und vorhandene 3D-Vorschau im neuen Raster; Werte stammen weiterhin aus der tatsächlichen Konfiguration beziehungsweise dem pausierten Simulationszustand.
+
+`DiveUISmoke.cpp` und `Tools/SmokeTest.ps1 -Scenario ui` bereiten einen nativen Test mit 14 Zuständen vor. Aufbau und Bildschirmaufnahme erfolgen in getrennten Schritten. Der Ablauf prüft Tastatureingaben über den PlayerController, vorhandene Hitboxen, Zurück-Navigation, Dezimalkomma-Eingabe und Speicherung der HUD-Auswahl. Er erstellt DE-/EN-Aufnahmen für Menü, Dialog, Steuerung und HUD einschließlich Karte, Tutorial und 13 künstlich gleichzeitig gesetzter Warnungen. Die Simulation wird nur in diesem expliziten UI-Test eingefroren. Die Warnungsfixture ist kein Nachweis für Tauchphysik oder medizinische Modellgüte.
+
+Erforderliche nächste Prüfungen nach Ende des Engine-Builds:
+
+1. Projektquellen in `SourceEditorSandbox` synchronisieren und dessen Editor-Projektmodule neu bauen. Der bereits laufende Erstbuild enthält eine ältere Projektkopie.
+2. `SmokeTest.ps1 -Scenario ui -EditorSandbox -SandboxName SourceEditorSandbox -EngineRoot Builds/UE584 -Viewport 1600x900` ausführen; danach auch 1920x1080 und 1280x1024. Nur frische Bilder und vollständige Phasenprotokolle gelten. Erkannte Kürzung der Fixture-Texte lässt den Test fehlschlagen.
+3. Bilder tatsächlich ansehen; insbesondere Warnung/Tutorial/Karte, vollständige Einheiten, Sonderzeichen, Credits und den Textdialog prüfen. Der automatische Test erkennt keine allgemeine grafische Überlappung und ersetzt diese Prüfung nicht.
+4. Bestehende Konfigurations-, Ausrüstungs-, Karten-, Logbuch-, Profil-, Entdeckungs-, Steuerungs- und Tutorialtests wiederholen; echte Mausbedienung sowie lange Nutzernamen prüfen. Danach FPV-Kopf-/Körperverdeckung mit vorhandenen Avatar-Tests und Bewegung reproduzieren und korrigieren.
+
+Bisher geprüft: PowerShell-Syntax des erweiterten Teststarters und `git diff --check`. C++-Kompilierung, native UI-Aufnahmen und FPV-Korrektur stehen aus. Das zuletzt spielbare Paket wurde nicht ersetzt.
 
 ## Originalreferenzen
 
