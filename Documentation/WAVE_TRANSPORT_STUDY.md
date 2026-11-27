@@ -10,6 +10,8 @@ Die bisherigen skalaren Kaustiken werden auf eine repräsentative Tiefe projizie
 
 Diese Implementierung ist noch keine physikalische oder visuelle Abnahme. Seegrenzen, energieerhaltende Mehrwege-Fokussierung, angepasste Schattenstrahlen und indirekte Lichtwege fehlen. Auch räumliche Lichtbündel und zeitliche Stabilität sind erst anhand tatsächlicher Bilder zu beurteilen.
 
+Für die Seegrenzen ist inzwischen ein [geografisches Distanzraster](LAKE_FOOTPRINT.md) mit den drei ausgesparten Inseln vorbereitet. Seine Offline-Prüfung ist bestanden; die GPU-Anbindung steht noch aus und gehört nicht zu den hier bereits geprüften Laufzeitfunktionen.
+
 ## Tatsächlicher Fehler und Gegenmassnahme
 
 Der erste Lauf registrierte den Szenenpuffer erfolgreich. Beim Kompilieren von `FDeferredLightPS`, Permutation 12, meldete Unreal danach jedoch einen nicht gebundenen Parameter `Scene` in `ShaderParameterStruct.cpp`. Die C++-Parameterstruktur des vorhandenen Lichtdurchlaufs enthält diesen Puffer nicht. Dass die Projektmodule kompilieren oder der Puffer registriert wurde, beweist deshalb noch keine gültige Shader-Anbindung. Der Hauptdurchlauf für volumetrische Lichtstreuung benötigt dieselbe Ergänzung.
