@@ -6,12 +6,14 @@
 #include "Camera/PlayerCameraManager.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/World.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/HUD.h"
 #include "Misc/Paths.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#include "String/LexFromString.h"
 #include "Simulation/BedDistribution.h"
 #include "Simulation/Ecology.h"
 #include "Materials/MaterialInterface.h"
@@ -51,6 +53,25 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     if(!bOpticsSmoke||!Diver||Variant<0||Variant>(waterView?9:plantView?5:Rocks.Num())) return false;
     if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView")))
     {
+        FString requestedPose;
+        if(FParse::Value(FCommandLine::Get(),TEXT("DiveHabitatPose="),requestedPose,false))
+        {
+            TArray<FString> fields;requestedPose.ParseIntoArray(fields,TEXT(","),false);
+            double values[5];
+            if(fields.Num()!=5) return false;
+            for(int i=0;i<5;++i)
+                if(!LexTryParseString(values[i],*fields[i])||!FMath::IsFinite(values[i])) return false;
+            if(FMath::Abs(values[0])>2.e7||FMath::Abs(values[1])>2.e7||
+                values[2]>-100||values[2]<-6000||FMath::Abs(values[3])>360||FMath::Abs(values[4])>75) return false;
+            Eye=FVector(values[0],values[1],values[2]);
+            float measured=0;
+            if(!Terrain.SampleMeasured(Eye.X,Eye.Y,measured)||Eye.Z-measured<100||Eye.Z-measured>600) return false;
+            Rotation=FRotator(values[4],values[3]+(View-1)*35,0);
+            // Inspection ticking is frozen. Load the actual terrain/population
+            // at the requested survey point and recenter the resolved waves.
+            StreamTerrain(Eye,true);StreamPopulation(Eye,true);UpdateWater(Eye);UpdateAtmosphere();
+            return true;
+        }
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatClose")))
         {
             // Stable close views of actual outcrop feet. The comparator changes
@@ -280,6 +301,19 @@ void ADivePawn::TickRockInspection(float Dt)
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/name,true,false);
         UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_CAPTURE variant=%d view=%d file=%s"),variant,view,*name);
         if(habitatView) UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_VIEW view=%d eye=%s rotation=%s"),view,*eye.ToString(),*rotation.ToString());
+        if(habitatView)
+        {
+            FString requestedPose;
+            if(FParse::Value(FCommandLine::Get(),TEXT("DiveHabitatPose="),requestedPose,false))
+            {
+                float measured=0;const bool sampled=Environment->Terrain.SampleMeasured(eye.X,eye.Y,measured);
+                FCollisionQueryParams query(SCENE_QUERY_STAT(HabitatPose),false,this);
+                if(Equipment) query.AddIgnoredActor(Equipment);
+                const bool blocked=GetWorld()->OverlapBlockingTestByChannel(eye,FQuat::Identity,ECC_Visibility,FCollisionShape::MakeSphere(20),query);
+                UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_POSE view=%d measured=%d bed_cm=%.3f clearance_cm=%.3f camera_sphere_clear=%d radius_cm=20"),
+                    view,sampled,measured,eye.Z-measured,!blocked);
+            }
+        }
         if(waterView) UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_VIEW state=%d view=%d eye=%s rotation=%s exposure=%.6f visibility=%.3f"),
             variant,view,*eye.ToString(),*rotation.ToString(),Camera->PostProcessSettings.AutoExposureBias,Simulation.Settings.VisibilityMetres);
         if(waterView)

@@ -1,0 +1,2456 @@
+{
+  "status": "NATIVE_LANDSCAPE_CAPTURE_REVIEWED",
+  "target_quality_accepted": false,
+  "runs": [
+    {
+      "folder": "artifacts/lake-landscape-20261127-193218",
+      "host": {
+        "surface_off": false,
+        "cases": [
+          "habitat1",
+          "shore0",
+          "shore1",
+          "shore2"
+        ],
+        "inputs": [
+          {
+            "file": "divingsim/Source/divingsim.Target.cs",
+            "sha256": "E5D30C7178D4FBF003CF087677E816DC74B1A9E1E4595F1E05477FAF9A007BBA"
+          },
+          {
+            "file": "divingsim/Source/divingsimEditor.Target.cs",
+            "sha256": "A7A3C75AA6E1509AFF12332658050A22916DFC68511B5877619F4587C6521A9E"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/DiveRendering.Build.cs",
+            "sha256": "B21CA156577C83FF780748886DD04C60D77014D3FD23609F0C5C8A01C120EE3B"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/DiveRendering.cpp",
+            "sha256": "9896DA3AC5C0EB2F678CEE51C53B216D6CE4DEE98FB46EC1F471C2F141A6947F"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/DiveWaterScene.cpp",
+            "sha256": "9EB62E2697821315F9A37CAAB1E6C8F29539DE626D926E8579DD148D769D0881"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/Public/DiveWaterScene.h",
+            "sha256": "2EB3A6B13CFE7F5BFC39F500D96A12B6A4F6484433F3F82B2B57D96341EBD7B1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAccess.cpp",
+            "sha256": "C3FAFEC101CBB55ABF22BBA90913F8A3F4F5931AF7FA27ED60973D8BE83C4C5A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAudio.cpp",
+            "sha256": "297C9E861B8CC15F86D3223D7493DE76293AD2FAFD9F5AE65EF67D6800DA2482"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAudio.h",
+            "sha256": "75609B69931DE048A65EAB2E345C8BE812CAFDF2CB784113A82822517606AFE4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatar.cpp",
+            "sha256": "F687B4BDAB06480A664B0517FE58C91A9388AA21474A7DAEF045A2E3461FC4E6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatar.h",
+            "sha256": "F26B38972E03EA4679E037D1D06A32C958C6DBC92583C9548BD347003B5A1159"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp",
+            "sha256": "9B09A8D982145E01151122BFD88D678DC96938123EFD5C3457329B7D9C553352"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+            "sha256": "ACE4014999AAAD8248F22C2344DAF542D7175EE40B0A4F34D359240CC8E872C8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBodyFrame.h",
+            "sha256": "C2099C1D723A31FEA92A3B1C87C33E1D637FD55839452A4E84F64668CDF8F834"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp",
+            "sha256": "3EEA56B8C59990A161EC7B3AA0BDE33954E5AF5620BD849930F2D9873B0A883A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildings.cpp",
+            "sha256": "94B297908782011FDA8E4F8FA290780F5FA2973B9EB552A26CC08344C5C260C2"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildings.h",
+            "sha256": "AB265409DCE06E6E4B09B10076C2992FAEF4A9095BCA2FABFA9EDC47821F097E"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+            "sha256": "B01E8D0ED54535B71CBDFB98866C439FF3E34ACF5746A171B5ECCBC3F863651A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+            "sha256": "E44E0A59C5F3318764D993171EF2DAE31FE70C045016DBC4ADA08103CDCBCC6F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+            "sha256": "B6DB32B03A6070B50D7641888F316FB884D3F0DCDB6CBA1B67526EDA1BAF050F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCausticsFixture.h",
+            "sha256": "F4A61BD7C5BC86E7673F20922AE102D8131B492971F5FE77196F5347A55BF36D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+            "sha256": "23A12D42C94C681805BE43AE44F87DC817F73B831C96B895F85461F843211FF6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp",
+            "sha256": "E18C47D1BA8E01B0DD50C1737CF6BFD9EDD0BF86F53264140ED4B1BFF5A1ACF1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCelestialActor.h",
+            "sha256": "715FBC0064A800BBBD22825C588B65ED11628B6E00399095BFD8A84A0CCF25A1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoast.cpp",
+            "sha256": "90FDBDD9655B101D757AC55ABDF49CC3E4160893646BEC4757E22002945EB49F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+            "sha256": "75C97A2A5AB6FBE38BBEBE81DF4C1284F3AF6C64D6586667662BD28A628CF819"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h",
+            "sha256": "814A4B5BCD16BE9D7A97070E6A5CD27BC0ABD9E1C0E8FEB481B9F0022F747A29"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp",
+            "sha256": "49FCD98F31E1CEA4712D5AABFD1BE16207E4B5E574A245F1288E2CC282A2072D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp",
+            "sha256": "559072D49D65269F6513A3632C3EF9656DD3F8F501512788256DE21E91C4B0AA"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp",
+            "sha256": "F1B4A92483DC18EE13AA3974E8C8BACC8D574D802A3AB7622B12711B389B924D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveConfigIO.h",
+            "sha256": "72B97F4A07F2355D292827AC5FC0A3F0CEB9BD130D5E76A1527250E965A9E6D3"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveContacts.cpp",
+            "sha256": "A38CE254E78A277C1184BDD864D2209143DBE0DE3A7FB092941CA3C208D3979F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveContacts.h",
+            "sha256": "EABBDCA0E66FC48C18E743A702E577A7BB98741C222BFEA8434608A01CB2142A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+            "sha256": "7A91509D8E4FACDB6981A5B3BFC9BC02CB900947EE54FFCAB431A9CD80FA0FFB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControls.cpp",
+            "sha256": "06418DA706A7B8A76216D75842BA1D5F121C85D022D9271FA21194454E0F739B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControls.h",
+            "sha256": "AD20DCFC7F49624A93DECE5803C2BD8DAC613DB3E8AF7C4D961E182C4D0A876E"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp",
+            "sha256": "D1A21F8CC65E2EB538EF61DC1DD7613168FA40E1565F1FE5F60C3EAFC79123A9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp",
+            "sha256": "B2226E4891DDB36306FCBE77484AD8FEC71FB79C6D0AE69B1D79EBCAA84204FA"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp",
+            "sha256": "E1EAC56216D98E18C5E6289B7B1894C2693B56E35C357277307900E820ADC057"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp",
+            "sha256": "2C481A759966FC61322133C78D04DC056FC8CFE1775031993175917BE4CD2982"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp",
+            "sha256": "DE00CAB7B1EBB84603BCFDACDC192B5E11E0F456DCE54A04FD35CF33ACBF4006"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveries.h",
+            "sha256": "AF4C92B8ABA091385967322792FAD0DFEB5CA0B2CC55AAFB44BBCF5CC491094D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp",
+            "sha256": "FBFF17FCAB2251FF13892831ADA69356180AFCA788843BDE65C2D5245CBB2B39"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+            "sha256": "0441EBEA155C9C733A2B38C162C9E088C398DA77FD7B6DE7C5BEDFE6A4AEEF63"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp",
+            "sha256": "F2606F7720D050624D7186A3AC7BAC7FB910F34528F65A856535E4E03872F7FE"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp",
+            "sha256": "1060CEABBE7B9D8E973A8EEBD1BE4AB9E1D7F97492D5EE15FAD68AFA9B995F69"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEcology.cpp",
+            "sha256": "BF3F8F2ABBA4BF4AE14CEAEB2C60B856B9471220894A5FC452074993E3BBE48B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp",
+            "sha256": "029BA8E9DD19F315E0AE423BD52F3D3589EF8BA176725385E16578B2EFA04724"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEquipment.cpp",
+            "sha256": "73BC4B98D9FE50E83A539288543E969B4C09CBB72DC8CF495F71F67DB2F4FBA5"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEquipment.h",
+            "sha256": "5FAC1C0692F34211E75BDEBAAF02B597B3BADC8B6A88563D5963C866EED1E26A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp",
+            "sha256": "6D477A17225E5103EDBA471CD705EBF6BFB327A7CF41924A92B0933EDD9169CD"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp",
+            "sha256": "6D60BD17CF6F025F4D1A0F02D42F66798DE2A720B2A6A35B9D827C11F6579F68"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveFootDeposits.cpp",
+            "sha256": "3C06D8E1D1B42431ACEC594482277F8E583C4AE418E0E33618B82DC8B9109BB9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveGameMode.cpp",
+            "sha256": "4012D8013832AA0CDC8AF115E7FC47FD8AAA49248B959B0BC28D755207FE9A04"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveGameMode.h",
+            "sha256": "2BDC624EDA6C5D7161545C41E4FDB732B6362ADC698A8EF3EBF88CF51109EC1B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveGravel.cpp",
+            "sha256": "7EE6E8B2D2E9D2236179143A9624ACB584849C673BC366E54860BB5ACCE62B68"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveHUD.cpp",
+            "sha256": "AC462CAB64D999F9A1C81F7825F9ACDA29F9F95D2C108714F4B3211B29A24109"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveHUD.h",
+            "sha256": "4704F55AC43E1E023D54F3E6ED9581B32C0F9DDAA364881402DBE9BCF1FBF949"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveImagery.cpp",
+            "sha256": "350A4E678C5F91A83836C6384B9061705425191CEEF19326676B223089C98C72"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+            "sha256": "AC7159219C69BF9ABD7250798251D495632A130D68C522EB39DF4B6B37BB03D9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveInstrumentsHUD.cpp",
+            "sha256": "D63E21A44D80F0A8F176B2AFB26F0467FDF3F57D04786C7CE59D8419E6603686"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLakeFootprint.cpp",
+            "sha256": "612EB00FB2CEE3E8122CEC24A58F7001AB93F93EA0ED980271B990B1F52637CD"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+            "sha256": "EB607F0A1D9674846388BA38296696FE1896C82D0B1889A38DFD378593BE21D8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+            "sha256": "7A85FD583A418E0C7C38C0C6CBDB8FC3BA7EC1085723DE0F4FA3147EDEE941EF"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+            "sha256": "475ACF63E86DDFEE60CB9CF07ABA7428C26E3E46C4237D609BD471F645D26D12"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp",
+            "sha256": "E351982CB3279CCA3D561E46AF48D3FBF5F583F770E43067ED97137F0760ACC4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp",
+            "sha256": "B88917E693EE8B78D8F052D19167C73C8B354C3B60FD8AF597F5097AF213F328"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbook.cpp",
+            "sha256": "7DA179AE1787FC480664F54446077C49A33C8823AB6602A5952C75AF198EFDE2"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbook.h",
+            "sha256": "E5A2A5E6A6173476987FF0FEEB552753F8C7F52EF4EC1D5A8F5160CD18D2D67B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp",
+            "sha256": "89D8F4E7D825A2D53EF23A47F393B370DF235C837F68A00C3691C92150A6AD9E"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp",
+            "sha256": "E7319798D93F70E1832FEC22426A99874EC689A855F555B77D5123A1B7D736F9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp",
+            "sha256": "B211F307B7F9B258A16EE807A4704FB709C3981787CD9BCD132FDD230F9EA001"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveMenuHUD.cpp",
+            "sha256": "4DF83551F9879F23EE0B23694C6C25E71F30B548FE19446820A7DA1F52462281"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp",
+            "sha256": "0680746050DE760E6BA7AB848D8FBE1F4B02E7EA7A16255BC77A61C3C458194D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp",
+            "sha256": "A74C4C08EBA42E8269DE684B0ADA74963AE69EDC1E2B34B7A7D61FC3D75D26D6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp",
+            "sha256": "D198D82DDE63CB64315B0860BC3B15EEAC342FF24734248CA26407174EA431CB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveParticles.cpp",
+            "sha256": "14EC58F1B4733BEB3FD6DB66AE2676E854C0A675B97B5EB7C6BE793223FD3C93"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePawn.cpp",
+            "sha256": "33122F8C64A88309E2912998DE41F0A16E99EF104DA91D844B4C515767D0C5D3"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePawn.h",
+            "sha256": "DF64B56834A05F124C03AB381FD5746BE951914E616C617E8D02C9CA731DE2EC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp",
+            "sha256": "2194940A048D94214A11E03D645DE06DE7BEEA6315A2DB93059FE1BCEFBAB4A4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePerformance.cpp",
+            "sha256": "0340157116C211AF86A57B8B7E6BC9DBF6DCD9BD924831797DDCF93003E74FD3"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePhotograph.cpp",
+            "sha256": "5910608A875421AB8BF3410C71B43C5C5A2EC16AF7B31FD66E813AE207B437A8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePlantBedsTests.cpp",
+            "sha256": "337C368E05D9D53D703A228A1F7BC5CF14410A3C3D861E1B54CB3772A0AE8304"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePlayerController.cpp",
+            "sha256": "5DD209628C3DD37AD0569B29D1E92AA0408AF14B7F5640C15D1B2B4F45BBF518"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePlayerController.h",
+            "sha256": "1986A603AD1F2413EC706BD0C3804DCCBF2EB3B7B6522D19DA22DD7B2DE7A95A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePopulation.cpp",
+            "sha256": "4A546B808CEC8DF4F1185382A72DA9FE5E69FFAC9C2349DC092315671C165953"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+            "sha256": "31CA9558FE32B499A5CE11C561A3BB8C1F36FC25F5BEF26362CADC3B10C7C3E7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePose.h",
+            "sha256": "CD12A7D621C6B2745B6E096CB4BB6F31BDAC2997E7C928E34A39FB9C61333027"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfiles.cpp",
+            "sha256": "E882A22C0902E9C4366D290BF8424EF1B226957061AA06AE2FF31729A77789D8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfiles.h",
+            "sha256": "095AE4517069F3CFDB651DBCE98FCBE3E7D452A2C6B6A4DC90EFBA648209E447"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp",
+            "sha256": "51EAC40FB07D3A3D9325C2D345D6763D48BF4B5D6F6DDC71FB0ED10072BFD599"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp",
+            "sha256": "C3E287F6F8DFC944D4CA63E41544D54D9D9FBAA1DC28B0A350BA896DC9239BC0"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRecording.cpp",
+            "sha256": "FCA8445EE3F4A89AAF51C77905A9668A3583C4D32A460DE0A2557A9A3FECE43B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRecording.h",
+            "sha256": "5B1BBDE573C7A2D047C2DC6916EC1DB377FEAA09B1952E1D2F576F89C94CD08F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+            "sha256": "ACEDA63E19B5C9F860E515853D21E1F62F842B2FF7F678EC51CD6CE6EE9EA142"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRockSearchTests.cpp",
+            "sha256": "0395297FF23D7CEAF8B69EE9C0F824862B1EA21C76590876AD8D648A3FE8FE14"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSediment.cpp",
+            "sha256": "F3C08475BB83A5D85B79E2C19E37D0F85269A5086D5F2A8E953A365CEAF5EDEC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp",
+            "sha256": "496830F5125A3E0718CE91A63382F1EBBE890E09F024412125C408BCA20A2A9D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveShoreline.cpp",
+            "sha256": "C13BDC1B625B2BBB51689549D9E27542ED1BFBBC152E71FD06FEE3CC8533EDA0"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+            "sha256": "4A31C1F065AD0829CC0C81D09D7F2BF4FECBD1991B0384058A35A0A348330DEA"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSim.Build.cs",
+            "sha256": "FF5FC4B5F89D2C6218D008172AD0B7DA18A120B3A2CE3C5AB6E67AAB7C769128"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSim.cpp",
+            "sha256": "257016E4B4EAA39C145368F984EC3B84A6411CCDA4C8D836F307B7A2092330AC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSky.cpp",
+            "sha256": "B01B6B36C16E9E04C2A71911E5997BC052956CBF1CEB242D6C997AF8BD1EE519"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSoak.cpp",
+            "sha256": "DEE24F6B2C37E7D6093E63F488E61E9FE4E47C12ED3FC58D30670234766D0819"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTerrain.cpp",
+            "sha256": "5F70648D5E0D92DE09D5878AAE6B7820DA2EECEF0928D36583D46679BFF6DA3A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTerrain.h",
+            "sha256": "03440AE9B86F53481CBEF2201441884256B70BD7FBF2C09BA944FC24EC223FA4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTextDialog.h",
+            "sha256": "104891755F22DBD9528C96F156AA90CF07EE72272326AD6446B1372B2F24E7D6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.cpp",
+            "sha256": "C5135287C9E73FDB2EBE02CD95CFD66457BE04941CD953F797E04211F4B9E0D7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.h",
+            "sha256": "F9AC559CDD3B88525004915A9ECD528F76B6336FCCE4C4D2F0C4F43176CB1D31"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTorch.cpp",
+            "sha256": "3B91F1A38A8457D15A89FE48A6CAF1CB38BD3AF9E5DE7C047E83C18113BACB9B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveUISmoke.cpp",
+            "sha256": "4B67298EDF9C5AF8427E962A5728CB016025E35AA7B31396BBD469E0CD8BF026"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveVegetation.cpp",
+            "sha256": "C2D9FA1BE021654A2A9F8D7B3048802AF3D64245528A6707986CD47B9685AC7D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveVegetation.h",
+            "sha256": "6EEF5CF0074F363D04FCB8D2C27F1FD435DC2761896FB02A20557ABAC2499515"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWater.cpp",
+            "sha256": "61664C2799B066C5FFDFA945A54688DE13EC4DE184977D09729CF2FE423D639B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp",
+            "sha256": "F2DD09165017494F545D07597C882F35BE703A2D1F8E2AEEF0CF05BDB12BE770"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp",
+            "sha256": "F93A98E118F1B82C5563678360E64B871AA391F7A5DD3B53D7C427F21F24CB1B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypoints.h",
+            "sha256": "59FF377F6495563EEDD66623A8184B639183B002680C1AD02A91581F7EA647F1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp",
+            "sha256": "E494AA2DD28E05F63C90531F56C84BC2E8E3B8FF7EFC750CD727DB88F51F9DA5"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp",
+            "sha256": "6F426E28003E35600653E525840FE31C88D71A0EE64C841B16B72B23CE0BD104"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp",
+            "sha256": "7E79F43D95A3B81D0A69AE71CF8E3C13F10BA2B6D391065EF3A101924D02C613"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+            "sha256": "3499D72C97D64F06C8E0F1ABA4641A42CD497B681BE538AFE4878EC08DDEEEF0"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWorld.h",
+            "sha256": "8A978DF944C50A17816E21C83A044304F1BC8445255AFA7DA1EC2BE36A227EB7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h",
+            "sha256": "0649E7B857E0F8AC6F631E39664EEEF3C1DC3B9BF6925DC550B87629D7F01D14"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h",
+            "sha256": "7C6DB5C705C037DDD4B6DE5289A9370C2D6C17B7BC8C9EDF6DC8BE89EEB65898"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h",
+            "sha256": "DB2EE6A3D9F8AF8589FC1346FB719438BF337622C433738F153ED16AC681FB10"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h",
+            "sha256": "77EC4A163D1EBB61F2DA016674A34867EFFC647817872F1192FA27AEC1752271"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h",
+            "sha256": "D191EBE33AFB29B84A7680BC555A50BA18DFA2A66948269C32C236AC0690B47B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Decompression.h",
+            "sha256": "0112BCB88846DEFB9D353F49A8885CA9242D17C6A4139C264E438B1C08E763DB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h",
+            "sha256": "B87AB3A5265D362F0CBD3F5873277D69C27C7DA2F810490CCCAB99B09B8CF291"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Ecology.h",
+            "sha256": "AA7011C3B1F5F1EB02B76CEDDDEFA7922BE3FFC706FC94986A04E4DFEA97EFA7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h",
+            "sha256": "6F8609723DF472F48C87521DB73C3918A78B461FD5CC5F981ECD904915D5B71F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h",
+            "sha256": "D65535816D02F0CDFFE069F16D76D7DA0A5B85EDAA6088189B8321C54922EE0A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h",
+            "sha256": "6458A379AED42B5E3282DF9B421A8DBB0E6D95966C907B61F6C31FFCAEF15669"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h",
+            "sha256": "AE48F8B62441E1602654949725D254601D918BB1ED3219450609E0C4C68DC500"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/FootDeposit.h",
+            "sha256": "416FD5F23B6C9218C0C72D8913EBCB6BBF0535AB5D11FEE6661F0CF4184401A2"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+            "sha256": "0025A4D8D51D736D61C6AA677F8A5E74C84065512964777065138B29DBA85F93"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Loadout.h",
+            "sha256": "54414A8CC421D05141AEFA9B99DAE07BFDB6AEEB04DF5F50687E079A7755C99A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h",
+            "sha256": "DDFF94E0B6ADB277CC34DEFDC8113659187AD80F2065D55D084086050F3AF599"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Navigation.h",
+            "sha256": "015337FBA369C140DD648E00DE6D9539C296A7F6D155EA1F025D41CCC6A3B75D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/RockIndex.h",
+            "sha256": "6EAC3BE8B7D8F3BA7B35FE2F7F77D1A66929DF60A2FFCAE9C98A3B2B4F51B805"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h",
+            "sha256": "18A9C9886A55F3FEAFF8BD0D69F6B4781A36A3053CD332D02C844038521D0147"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Sediment.h",
+            "sha256": "835FA06FAC6E0D612B7E650B7E4E33D8194EA3DAD1434A94E8B214CB8A509633"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h",
+            "sha256": "AB04B197D8AAC45DE9FC0BDE8D2821EAC1619806A8D8AFD9DCC99834FA8EBDBE"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h",
+            "sha256": "72B3796A84ED30C52D348F3ADE8BCB4B1984F0D218A129F458B1DC67AA76F62B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h",
+            "sha256": "01083039C789FBD4A969F75ADF8E185E285FB6E3CF7E4AE85EBCF71A94C18700"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Torch.h",
+            "sha256": "CAD159088612BC2BDE330B0C697AAE6415C5865A4EE78BAD25C1CCEC516598DC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h",
+            "sha256": "DE7ADA9667D34D3554BC2C9796FF8B08D5E3AFF4F6379331B143E1F321C75CDD"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h",
+            "sha256": "0D01A8D064E55040EE2E7A1043EA3967333E88B0A1C8EFFEDE0CEFE3A7F970AB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+            "sha256": "7102E0E7625AA8A1A8268A910B51E8899B48D53E7551C9C9152FCCDD486AC725"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h",
+            "sha256": "2FBFACE3CB809442C0316697D6D9B3DB6632D3CEF00352AAE8F6D57FEEA7DB68"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Weather.h",
+            "sha256": "AFD1763ED7C9DE0D550A79C85C598F429293BEB33E17162D9C01C34A65F928CF"
+          },
+          {
+            "file": "divingsim/Shaders/LakeFootprint.ush",
+            "sha256": "D9DF6BD6E0E16B9C530EF90A6F3235D499F034ACA1D6A4B7675E4C6CFDF6BD80"
+          },
+          {
+            "file": "divingsim/Shaders/LakeFootprintProbe.usf",
+            "sha256": "65642EF473AC499C5FD8526D4073606AD9DD18FC874E9B41921C80BCEE65382A"
+          },
+          {
+            "file": "divingsim/Shaders/SolarMedium.ush",
+            "sha256": "351A299E85B8679A54E94BB8B29FE53E64FE5BA5877DE8218E6F9161673A2E47"
+          },
+          {
+            "file": "divingsim/Shaders/SolarTransport.ush",
+            "sha256": "7DB5DEDDB4A64266C101BD3B2F796C3BE27C6A3C430EDBE32BA653A36CBDA5AC"
+          },
+          {
+            "file": "divingsim/Shaders/SpectralWater.usf",
+            "sha256": "BABD2625D6C241CF1080C1A3F95BE27B4C405B42617E83F5F9CE346B106F54B8"
+          },
+          {
+            "file": "divingsim/Shaders/WaveSolarMedium.ush",
+            "sha256": "86A9BBEB47B72E1A30EC83EE2E2C82119150E592CA98F4C1DF58516A52F43749"
+          },
+          {
+            "file": "divingsim/Shaders/WaveSolarSurface.ush",
+            "sha256": "119B98E3E427B35AC0297D87AA3A045E3BE09D26CBA00BDF5638E1A4D36E2C0B"
+          },
+          {
+            "file": "divingsim/Config/DefaultEditor.ini",
+            "sha256": "103A1A8F7F7CDC4CDE6C82C09DF0246DF012FCF319A480C170A8DE7287E0E59C"
+          },
+          {
+            "file": "divingsim/Config/DefaultEditorPerProjectUserSettings.ini",
+            "sha256": "0AAF0D9BD09045215B6D9277E37ADBB6ED8F6275540E60E2744F293B032BF077"
+          },
+          {
+            "file": "divingsim/Config/DefaultEngine.ini",
+            "sha256": "C68AB50CF9EF0B292575BEB33146A0B1477A5A6FECE1C3060500DA6CDD0AB46E"
+          },
+          {
+            "file": "divingsim/Config/DefaultGame.ini",
+            "sha256": "15DAC366654B52756A58161AA2F577B581E940A9A524B7A369564D158C85C1B0"
+          },
+          {
+            "file": "divingsim/Config/DefaultInput.ini",
+            "sha256": "5DEB78555510100669F2753E737919B3275BA81CB3AC31CED138A42C2BC58FEF"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Compile.ini",
+            "sha256": "EC28CCFA77E0A9A07B82CAC7AD584EF83F45F56FFB4B50469270A213CA4C152B"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Export.ini",
+            "sha256": "F5289B73341108CA0602E636F9C05E748F186BB2518B092A6B5A9D60B0A22757"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_ExportDialogueScript.ini",
+            "sha256": "6B1E5B6E9D4173284A490C884E0E17A43915AC124B7754DC830D92FD47001560"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Gather.ini",
+            "sha256": "8E355845BFA4277355BB4951035D67DA2917D34BBF0C376406205730367AFDD2"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_GenerateReports.ini",
+            "sha256": "A51CFC2847AA4967EDB106E4E82949E1D130196C83CF22854FF13DAE6E6A8409"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Import.ini",
+            "sha256": "4DEBBCDDF9C9A79D938E95A7FB2104E2CCC8C9B9D905A58C92FE93069DF6F3D6"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_ImportDialogue.ini",
+            "sha256": "7B8FE294216195541B61CB3780CC2932E0E6D034164344C2FC3C66D4D8EE9F08"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_ImportDialogueScript.ini",
+            "sha256": "F4409926F01CF0B42714182779D1DA03C88598E3C0DFDE3135CBA011D9A456F0"
+          },
+          {
+            "file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+            "sha256": "78BDDA3A248D0EC6364121C4E0A5DB481C8D4633800B55C52494C105217600C8"
+          },
+          {
+            "file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveRendering.dll",
+            "sha256": "8A2D8EFBBD05A2F3A9ECAA7F4110F06CBFC2E53F1F8807DD455749C0FD83968B"
+          },
+          {
+            "file": "Builds/SourceEditorSandbox/divingsim/Intermediate/DiveWaveStudy/Manifest.json",
+            "sha256": "B83794E6155AF050677E6A191591093EBD8D47A9293619C535E204EA42F23696"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_AirBubble.uasset",
+            "sha256": "8A7C360C879E5E36BE9B9D3EE02CCF1DFCF79AF22F674F9B2D6F10E80868A18D"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_AquaticPlant.uasset",
+            "sha256": "5125FBE5443B0A6A2876ED5F4A156BA5972BD9BA1F0A1F51EE0EA5545B1E29D1"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Bubble.uasset",
+            "sha256": "46A9FA2547FD2E3784152346B29F5BE681D8155639B043E7848407932BEB70DA"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Buildings.uasset",
+            "sha256": "290D48CD5E4CF2885C327929ADFAFDD0B19CD1DE5099B9E4B7A722032A9E39AD"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Buoy.uasset",
+            "sha256": "DE5BA961920237CD1F0F4EBC2D76C9DE4B3A93C7D1D302DC1B162CD8EF116DED"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_CausticsProbe.uasset",
+            "sha256": "B78795401BCAA95D04C02573CD9B9AB699A0ECB1B36134340160D5DB7255A29A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_ComputerScreen.uasset",
+            "sha256": "C809443CBBA151987B9149A439918B2AAEAC7E514071B37B4AAFA2992A92FF23"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Equipment.uasset",
+            "sha256": "D7C5D9CDF81C215E66CBB701C64D0667530EB9D879791FC73867D4D8AC00B7D6"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_FinSediment.uasset",
+            "sha256": "DBCA7F757D4E4D1D10BBECD9DCBB8CE75D30507E3B43DB4D9A7A58BEB0D1242C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Fish.uasset",
+            "sha256": "27AF114BB65769C82ACA54621353A5400A6176A4292DA037D6D8FD0A87910636"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_GravelSurface.uasset",
+            "sha256": "F5A39FCD65FE6F4D134F07D77596CC30FE9899AF164D903230C52CC315C4BFB1"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Lakebed.uasset",
+            "sha256": "2FB2A55936372EE8C6E6D82C35348194356E6592DE4E98206BA96437624181C7"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Landscape.uasset",
+            "sha256": "D7F572C3A76DD534CF67FEF40367F20AB4EA69FD35DF98CA99E12C1B6C98DDE3"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_LandscapePhoto.uasset",
+            "sha256": "B7357870DC1E70E1005CB48EDAD5AFE28B8687EA186B1C14D7A740CCDC65CCC1"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Particle.uasset",
+            "sha256": "62965C29CCDB813CCFE05C76C838D4AB4DC56FA1C8331BCB4A9E999FA4F90F8E"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Plant.uasset",
+            "sha256": "1C7ABB7070AE1674E9F7504BF7CB2511F23B3C17F06A415EE7278F7C72C5502E"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Rain.uasset",
+            "sha256": "5D5A2F2168FED51F1EF81C5DB203C4A6161175785EA61A8290A2881943A42508"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Rock.uasset",
+            "sha256": "1EC21E618E956DEF7E4E0A33EF0EAF7BE246174C187EAFC153EA08C890C022B7"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan1.uasset",
+            "sha256": "CE29D5218C13CAB0146102E634F97D7AD17CF123DF47A9793FE581AEA0346C08"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan2.uasset",
+            "sha256": "69F0BDB555BB3BEAD3C3F48863AF278166E4250B1A6EBCEDB13C49621D3791FA"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan3.uasset",
+            "sha256": "A19B0EEE86243133901805671CD5597376F5D371452CDC7DD7F3BC608398B0B8"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan4.uasset",
+            "sha256": "FDF9D7E7EC3061BF7D1D7AE62F37F97176164CC283FBCF0DCC75C9F3CC377E60"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan5.uasset",
+            "sha256": "268BA0202782897452127D7FC2154BCCB6D9B2469B3A6018FD198488670BF82C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockSurface.uasset",
+            "sha256": "AE1BE790B5C9C55BF3FDDFCB6F5313DE5E71B7D53C415DA8C4AE75C14A438328"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Rope.uasset",
+            "sha256": "AEA3F6F4C0CB618014730E373B3F22B5B4DCBCA10681C6AA8020D2566255C217"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Shore.uasset",
+            "sha256": "C65A7E2C4563D4CE5F68C93F58E83C7087A7FBF48C5662ED859DD4891D33810D"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_ShorePhoto.uasset",
+            "sha256": "8910C91B20064397D6C7FAF8B42EA251531EC1E7E4033393DCB7FED540E93AAC"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset",
+            "sha256": "1DA912C8EB089C1250DDE4AC9060C6A5F08697B3F41C88318CCB3E47323DF1EE"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Suit.uasset",
+            "sha256": "A2E9F16E327E9907868B13506704D98FA97A123B87BB32FAF9D91B1F64D3AA2B"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_SuspendedWater.uasset",
+            "sha256": "5E36F150607F6D788C3D16C91FFB85EEFF87225DA8FF976E1562991CFE8BD575"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_TorchWater.uasset",
+            "sha256": "49CFAA9DF9883D18453536F640DEB277C9D9BD77E76656A13655F1DA2AE8E7C6"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset",
+            "sha256": "6E65CD5A85876F24604EB589C021F8789D3EE0EDFF0173606F1A3CBBD18BC14E"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Water.uasset",
+            "sha256": "817D6F3EA0C0383485982CDB592B201316EA444A319C254707E65AB2F097D29A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_WaterTop.uasset",
+            "sha256": "3823ADB936677FB29BEF9954F2C864193789EB7AC29464625A77C4DFE46A166C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_WaterUnder.uasset",
+            "sha256": "A9D3ADF1B7B898D053660A0CE1ED7CEE9F55DDCDF9ADC28FB0F5EDB2C8CD5C77"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset",
+            "sha256": "E93BE172FCED5DD96A5FD3EAF5460DBAF0C2CCD74C7E316570AF520D6FBE5EC0"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Wood.uasset",
+            "sha256": "8036E7F6AC1829780A1D0F95D79E827A8DA721B961B31A891F1821C4B1FE48C5"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Cloud.uasset",
+            "sha256": "13B3075D09F4F63B4EDDA643412F12CF15C4EB05AEA7C1575514DFC66B7931B2"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Burbot.uasset",
+            "sha256": "B17C471A55B6D7BA855A37DC7999230354116CBF72AB7E020529DC3B13D93C1C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Perch.uasset",
+            "sha256": "7A4048BF4EA35DFC0F89BFDA5651D4A19B5BBEB32845D1B13D0A3BF07C01C40A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Pike.uasset",
+            "sha256": "DC239E00B65E7DA6DCAF0D6BD68FCBA8CCBDBF9336B0E4D2C352062B713BB153"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Roach.uasset",
+            "sha256": "36C147422567A9283D40B2AC621A632649380DA1D5886224A0E10E8B736EFC71"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Whitefish.uasset",
+            "sha256": "F94A8D09215ABECFBACD5F931F81E5AE0E7E303AFD446B9B22132341A5FA117E"
+          }
+        ],
+        "head": "f5e153cef10ae6b5e1686477042dfc39845e6a40",
+        "engine": "O:\\games\\dive game\\Builds\\UE584",
+        "started_utc": "2026-11-27T18:32:18.5601107Z",
+        "renderer_sha256": "8FA1503831F0876E7176C3EF68A0BAC1526885103B0AB893A93D5AAE19E8253B"
+      },
+      "host_sha256": "e38dc763ba3ee82549250bf76c5dc2422f9c9afdfd9ebf52cc8aaa5bf4d9fbc9",
+      "cases": [
+        {
+          "case": "habitat1",
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "images": [
+            {
+              "file": "Habitat_0_0.png",
+              "sha256": "78207601222C7A3EFC889CB2F4DCEE80BA7FBE16EF54A785B75FB34EBB11648B"
+            },
+            {
+              "file": "Habitat_0_1.png",
+              "sha256": "10ABD01811C0103FA17782EDF22D9202EFA611060AAB86B3F6CAB26DF06E0B71"
+            },
+            {
+              "file": "Habitat_0_2.png",
+              "sha256": "16396A3C7D5910EF7CF3A7E64ECB60C4D485B48552EFF4609AB3EF0E9A1627C5"
+            }
+          ],
+          "log_sha256": "CF0FD2762B32362AAF5283A1BF239AFF20F4053D1A773A4DB0129CA0D19DDC50",
+          "options": {
+            "Hour": 12,
+            "Date": "2026-06-21",
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "Scenario": "rocks",
+            "LakeFootprint": true,
+            "Entry": 1,
+            "SolarShaderStudy": true,
+            "SandboxName": "SourceEditorSandbox",
+            "LakeSurfaceOff": false,
+            "WaterPreview": true,
+            "EditorSandbox": true,
+            "TimeoutSeconds": 600,
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193218\\habitat1\\Runtime.log",
+            "HabitatView": true,
+            "SolarVolumeStudy": true,
+            "NoBubbles": true,
+            "WaveTransportStudy": true,
+            "MaxFPS": 30
+          },
+          "pose_probes": [],
+          "views": [
+            "DIVE_HABITAT_VIEW view=0 eye=X=85450.000 Y=889050.000 Z=-609.000 rotation=P=-35.303747 Y=-50.000000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=1 eye=X=85450.000 Y=889050.000 Z=-609.000 rotation=P=-42.497472 Y=0.000000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=2 eye=X=85450.000 Y=889050.000 Z=-609.000 rotation=P=-37.333740 Y=50.000000 R=0.000000"
+          ],
+          "diagnostics": [
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.35:883][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.32.36:594][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:594][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:594][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:594][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:594][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.36:596][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.32.57:072][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.32.57:072][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.32.57:072][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.32.57:072][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.32.57:072][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        },
+        {
+          "case": "shore0",
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "images": [
+            {
+              "file": "Shore_0.png",
+              "sha256": "0CA0AC3F5713715EA18E8E1792E0465BEA52D84330D0933C04B7448F25401F52"
+            }
+          ],
+          "log_sha256": "7E009CC1992D3D2D7F055BE4D393C431D391894A3C3203AEE880516026EFA574",
+          "options": {
+            "Hour": 12,
+            "Date": "2026-06-21",
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "Scenario": "shore-preview",
+            "LakeFootprint": true,
+            "Entry": 0,
+            "SolarShaderStudy": true,
+            "SandboxName": "SourceEditorSandbox",
+            "LakeSurfaceOff": false,
+            "WaterPreview": true,
+            "EditorSandbox": true,
+            "TimeoutSeconds": 600,
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193218\\shore0\\Runtime.log",
+            "HabitatView": false,
+            "SolarVolumeStudy": true,
+            "NoBubbles": true,
+            "WaveTransportStudy": true,
+            "MaxFPS": 30
+          },
+          "pose_probes": [],
+          "views": [],
+          "diagnostics": [
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.36:941][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.33.37:772][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:772][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:772][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:772][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:772][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.37:773][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.33.57:339][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.33.57:339][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.33.57:339][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.33.57:339][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.33.57:339][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        },
+        {
+          "case": "shore1",
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "images": [
+            {
+              "file": "Shore_1.png",
+              "sha256": "A6193F84E8C35A92EFF0FE960140F8AB2711CD82E2B7809AF15E77D6E3440557"
+            }
+          ],
+          "log_sha256": "0D7120AB7FC13A38CE1F5AFB6C533D5D8EAC4C4299CEFD58339AEFCD5944DFE4",
+          "options": {
+            "Hour": 12,
+            "Date": "2026-06-21",
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "Scenario": "shore-preview",
+            "LakeFootprint": true,
+            "Entry": 1,
+            "SolarShaderStudy": true,
+            "SandboxName": "SourceEditorSandbox",
+            "LakeSurfaceOff": false,
+            "WaterPreview": true,
+            "EditorSandbox": true,
+            "TimeoutSeconds": 600,
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193218\\shore1\\Runtime.log",
+            "HabitatView": false,
+            "SolarVolumeStudy": true,
+            "NoBubbles": true,
+            "WaveTransportStudy": true,
+            "MaxFPS": 30
+          },
+          "pose_probes": [],
+          "views": [],
+          "diagnostics": [
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:032][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.34.25:835][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:835][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:835][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:835][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:835][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.25:836][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.34.45:222][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.34.45:222][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.34.45:222][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.34.45:222][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.34.45:222][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        },
+        {
+          "case": "shore2",
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "images": [
+            {
+              "file": "Shore_2.png",
+              "sha256": "01F9D945399EC5B54B29651A79DFB13D74BB5E20B60F2527D370CF1E3EA45B01"
+            }
+          ],
+          "log_sha256": "50BA823B49929A855EA349626C04B502F9A8DA8DE08B3DD8306E4E124CD6149A",
+          "options": {
+            "Hour": 12,
+            "Date": "2026-06-21",
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "Scenario": "shore-preview",
+            "LakeFootprint": true,
+            "Entry": 2,
+            "SolarShaderStudy": true,
+            "SandboxName": "SourceEditorSandbox",
+            "LakeSurfaceOff": false,
+            "WaterPreview": true,
+            "EditorSandbox": true,
+            "TimeoutSeconds": 600,
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193218\\shore2\\Runtime.log",
+            "HabitatView": false,
+            "SolarVolumeStudy": true,
+            "NoBubbles": true,
+            "WaveTransportStudy": true,
+            "MaxFPS": 30
+          },
+          "pose_probes": [],
+          "views": [],
+          "diagnostics": [
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.08:955][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:714][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.09:715][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.35.29:100][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.35.29:100][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.35.29:100][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.35.29:100][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.35.29:100][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        }
+      ]
+    },
+    {
+      "folder": "artifacts/lake-landscape-20261127-193925",
+      "host": {
+        "cases": [
+          "habitat0",
+          "habitat1",
+          "habitat2"
+        ],
+        "head": "f5e153cef10ae6b5e1686477042dfc39845e6a40",
+        "renderer_sha256": "8FA1503831F0876E7176C3EF68A0BAC1526885103B0AB893A93D5AAE19E8253B",
+        "survey_candidates": true,
+        "hour": 12.0,
+        "candidate_index": 0,
+        "engine": "O:\\games\\dive game\\Builds\\UE584",
+        "started_utc": "2026-11-27T18:39:25.5771602Z",
+        "surface_off": false,
+        "inputs": [
+          {
+            "file": "divingsim/Source/divingsim.Target.cs",
+            "sha256": "E5D30C7178D4FBF003CF087677E816DC74B1A9E1E4595F1E05477FAF9A007BBA"
+          },
+          {
+            "file": "divingsim/Source/divingsimEditor.Target.cs",
+            "sha256": "A7A3C75AA6E1509AFF12332658050A22916DFC68511B5877619F4587C6521A9E"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/DiveRendering.Build.cs",
+            "sha256": "B21CA156577C83FF780748886DD04C60D77014D3FD23609F0C5C8A01C120EE3B"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/DiveRendering.cpp",
+            "sha256": "9896DA3AC5C0EB2F678CEE51C53B216D6CE4DEE98FB46EC1F471C2F141A6947F"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/DiveWaterScene.cpp",
+            "sha256": "9EB62E2697821315F9A37CAAB1E6C8F29539DE626D926E8579DD148D769D0881"
+          },
+          {
+            "file": "divingsim/Source/DiveRendering/Public/DiveWaterScene.h",
+            "sha256": "2EB3A6B13CFE7F5BFC39F500D96A12B6A4F6484433F3F82B2B57D96341EBD7B1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAccess.cpp",
+            "sha256": "C3FAFEC101CBB55ABF22BBA90913F8A3F4F5931AF7FA27ED60973D8BE83C4C5A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAudio.cpp",
+            "sha256": "297C9E861B8CC15F86D3223D7493DE76293AD2FAFD9F5AE65EF67D6800DA2482"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAudio.h",
+            "sha256": "75609B69931DE048A65EAB2E345C8BE812CAFDF2CB784113A82822517606AFE4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatar.cpp",
+            "sha256": "F687B4BDAB06480A664B0517FE58C91A9388AA21474A7DAEF045A2E3461FC4E6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatar.h",
+            "sha256": "F26B38972E03EA4679E037D1D06A32C958C6DBC92583C9548BD347003B5A1159"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp",
+            "sha256": "9B09A8D982145E01151122BFD88D678DC96938123EFD5C3457329B7D9C553352"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+            "sha256": "ACE4014999AAAD8248F22C2344DAF542D7175EE40B0A4F34D359240CC8E872C8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBodyFrame.h",
+            "sha256": "C2099C1D723A31FEA92A3B1C87C33E1D637FD55839452A4E84F64668CDF8F834"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp",
+            "sha256": "3EEA56B8C59990A161EC7B3AA0BDE33954E5AF5620BD849930F2D9873B0A883A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildings.cpp",
+            "sha256": "94B297908782011FDA8E4F8FA290780F5FA2973B9EB552A26CC08344C5C260C2"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildings.h",
+            "sha256": "AB265409DCE06E6E4B09B10076C2992FAEF4A9095BCA2FABFA9EDC47821F097E"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+            "sha256": "B01E8D0ED54535B71CBDFB98866C439FF3E34ACF5746A171B5ECCBC3F863651A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+            "sha256": "E44E0A59C5F3318764D993171EF2DAE31FE70C045016DBC4ADA08103CDCBCC6F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+            "sha256": "B6DB32B03A6070B50D7641888F316FB884D3F0DCDB6CBA1B67526EDA1BAF050F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCausticsFixture.h",
+            "sha256": "F4A61BD7C5BC86E7673F20922AE102D8131B492971F5FE77196F5347A55BF36D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+            "sha256": "23A12D42C94C681805BE43AE44F87DC817F73B831C96B895F85461F843211FF6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp",
+            "sha256": "E18C47D1BA8E01B0DD50C1737CF6BFD9EDD0BF86F53264140ED4B1BFF5A1ACF1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCelestialActor.h",
+            "sha256": "715FBC0064A800BBBD22825C588B65ED11628B6E00399095BFD8A84A0CCF25A1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoast.cpp",
+            "sha256": "90FDBDD9655B101D757AC55ABDF49CC3E4160893646BEC4757E22002945EB49F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+            "sha256": "75C97A2A5AB6FBE38BBEBE81DF4C1284F3AF6C64D6586667662BD28A628CF819"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h",
+            "sha256": "814A4B5BCD16BE9D7A97070E6A5CD27BC0ABD9E1C0E8FEB481B9F0022F747A29"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp",
+            "sha256": "49FCD98F31E1CEA4712D5AABFD1BE16207E4B5E574A245F1288E2CC282A2072D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp",
+            "sha256": "559072D49D65269F6513A3632C3EF9656DD3F8F501512788256DE21E91C4B0AA"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp",
+            "sha256": "F1B4A92483DC18EE13AA3974E8C8BACC8D574D802A3AB7622B12711B389B924D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveConfigIO.h",
+            "sha256": "72B97F4A07F2355D292827AC5FC0A3F0CEB9BD130D5E76A1527250E965A9E6D3"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveContacts.cpp",
+            "sha256": "A38CE254E78A277C1184BDD864D2209143DBE0DE3A7FB092941CA3C208D3979F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveContacts.h",
+            "sha256": "EABBDCA0E66FC48C18E743A702E577A7BB98741C222BFEA8434608A01CB2142A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+            "sha256": "7A91509D8E4FACDB6981A5B3BFC9BC02CB900947EE54FFCAB431A9CD80FA0FFB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControls.cpp",
+            "sha256": "06418DA706A7B8A76216D75842BA1D5F121C85D022D9271FA21194454E0F739B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControls.h",
+            "sha256": "AD20DCFC7F49624A93DECE5803C2BD8DAC613DB3E8AF7C4D961E182C4D0A876E"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp",
+            "sha256": "D1A21F8CC65E2EB538EF61DC1DD7613168FA40E1565F1FE5F60C3EAFC79123A9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp",
+            "sha256": "B2226E4891DDB36306FCBE77484AD8FEC71FB79C6D0AE69B1D79EBCAA84204FA"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp",
+            "sha256": "E1EAC56216D98E18C5E6289B7B1894C2693B56E35C357277307900E820ADC057"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp",
+            "sha256": "2C481A759966FC61322133C78D04DC056FC8CFE1775031993175917BE4CD2982"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp",
+            "sha256": "DE00CAB7B1EBB84603BCFDACDC192B5E11E0F456DCE54A04FD35CF33ACBF4006"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveries.h",
+            "sha256": "AF4C92B8ABA091385967322792FAD0DFEB5CA0B2CC55AAFB44BBCF5CC491094D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp",
+            "sha256": "FBFF17FCAB2251FF13892831ADA69356180AFCA788843BDE65C2D5245CBB2B39"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+            "sha256": "0441EBEA155C9C733A2B38C162C9E088C398DA77FD7B6DE7C5BEDFE6A4AEEF63"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp",
+            "sha256": "F2606F7720D050624D7186A3AC7BAC7FB910F34528F65A856535E4E03872F7FE"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp",
+            "sha256": "1060CEABBE7B9D8E973A8EEBD1BE4AB9E1D7F97492D5EE15FAD68AFA9B995F69"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEcology.cpp",
+            "sha256": "BF3F8F2ABBA4BF4AE14CEAEB2C60B856B9471220894A5FC452074993E3BBE48B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp",
+            "sha256": "029BA8E9DD19F315E0AE423BD52F3D3589EF8BA176725385E16578B2EFA04724"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEquipment.cpp",
+            "sha256": "73BC4B98D9FE50E83A539288543E969B4C09CBB72DC8CF495F71F67DB2F4FBA5"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveEquipment.h",
+            "sha256": "5FAC1C0692F34211E75BDEBAAF02B597B3BADC8B6A88563D5963C866EED1E26A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp",
+            "sha256": "6D477A17225E5103EDBA471CD705EBF6BFB327A7CF41924A92B0933EDD9169CD"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp",
+            "sha256": "6D60BD17CF6F025F4D1A0F02D42F66798DE2A720B2A6A35B9D827C11F6579F68"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveFootDeposits.cpp",
+            "sha256": "3C06D8E1D1B42431ACEC594482277F8E583C4AE418E0E33618B82DC8B9109BB9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveGameMode.cpp",
+            "sha256": "4012D8013832AA0CDC8AF115E7FC47FD8AAA49248B959B0BC28D755207FE9A04"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveGameMode.h",
+            "sha256": "2BDC624EDA6C5D7161545C41E4FDB732B6362ADC698A8EF3EBF88CF51109EC1B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveGravel.cpp",
+            "sha256": "7EE6E8B2D2E9D2236179143A9624ACB584849C673BC366E54860BB5ACCE62B68"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveHUD.cpp",
+            "sha256": "AC462CAB64D999F9A1C81F7825F9ACDA29F9F95D2C108714F4B3211B29A24109"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveHUD.h",
+            "sha256": "4704F55AC43E1E023D54F3E6ED9581B32C0F9DDAA364881402DBE9BCF1FBF949"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveImagery.cpp",
+            "sha256": "350A4E678C5F91A83836C6384B9061705425191CEEF19326676B223089C98C72"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+            "sha256": "AC7159219C69BF9ABD7250798251D495632A130D68C522EB39DF4B6B37BB03D9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveInstrumentsHUD.cpp",
+            "sha256": "D63E21A44D80F0A8F176B2AFB26F0467FDF3F57D04786C7CE59D8419E6603686"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLakeFootprint.cpp",
+            "sha256": "612EB00FB2CEE3E8122CEC24A58F7001AB93F93EA0ED980271B990B1F52637CD"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+            "sha256": "EB607F0A1D9674846388BA38296696FE1896C82D0B1889A38DFD378593BE21D8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+            "sha256": "7A85FD583A418E0C7C38C0C6CBDB8FC3BA7EC1085723DE0F4FA3147EDEE941EF"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+            "sha256": "475ACF63E86DDFEE60CB9CF07ABA7428C26E3E46C4237D609BD471F645D26D12"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp",
+            "sha256": "E351982CB3279CCA3D561E46AF48D3FBF5F583F770E43067ED97137F0760ACC4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp",
+            "sha256": "B88917E693EE8B78D8F052D19167C73C8B354C3B60FD8AF597F5097AF213F328"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbook.cpp",
+            "sha256": "7DA179AE1787FC480664F54446077C49A33C8823AB6602A5952C75AF198EFDE2"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbook.h",
+            "sha256": "E5A2A5E6A6173476987FF0FEEB552753F8C7F52EF4EC1D5A8F5160CD18D2D67B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp",
+            "sha256": "89D8F4E7D825A2D53EF23A47F393B370DF235C837F68A00C3691C92150A6AD9E"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp",
+            "sha256": "E7319798D93F70E1832FEC22426A99874EC689A855F555B77D5123A1B7D736F9"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp",
+            "sha256": "B211F307B7F9B258A16EE807A4704FB709C3981787CD9BCD132FDD230F9EA001"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveMenuHUD.cpp",
+            "sha256": "4DF83551F9879F23EE0B23694C6C25E71F30B548FE19446820A7DA1F52462281"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp",
+            "sha256": "0680746050DE760E6BA7AB848D8FBE1F4B02E7EA7A16255BC77A61C3C458194D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp",
+            "sha256": "A74C4C08EBA42E8269DE684B0ADA74963AE69EDC1E2B34B7A7D61FC3D75D26D6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp",
+            "sha256": "D198D82DDE63CB64315B0860BC3B15EEAC342FF24734248CA26407174EA431CB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveParticles.cpp",
+            "sha256": "14EC58F1B4733BEB3FD6DB66AE2676E854C0A675B97B5EB7C6BE793223FD3C93"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePawn.cpp",
+            "sha256": "33122F8C64A88309E2912998DE41F0A16E99EF104DA91D844B4C515767D0C5D3"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePawn.h",
+            "sha256": "DF64B56834A05F124C03AB381FD5746BE951914E616C617E8D02C9CA731DE2EC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp",
+            "sha256": "2194940A048D94214A11E03D645DE06DE7BEEA6315A2DB93059FE1BCEFBAB4A4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePerformance.cpp",
+            "sha256": "0340157116C211AF86A57B8B7E6BC9DBF6DCD9BD924831797DDCF93003E74FD3"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePhotograph.cpp",
+            "sha256": "5910608A875421AB8BF3410C71B43C5C5A2EC16AF7B31FD66E813AE207B437A8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePlantBedsTests.cpp",
+            "sha256": "337C368E05D9D53D703A228A1F7BC5CF14410A3C3D861E1B54CB3772A0AE8304"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePlayerController.cpp",
+            "sha256": "5DD209628C3DD37AD0569B29D1E92AA0408AF14B7F5640C15D1B2B4F45BBF518"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePlayerController.h",
+            "sha256": "1986A603AD1F2413EC706BD0C3804DCCBF2EB3B7B6522D19DA22DD7B2DE7A95A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePopulation.cpp",
+            "sha256": "4A546B808CEC8DF4F1185382A72DA9FE5E69FFAC9C2349DC092315671C165953"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+            "sha256": "31CA9558FE32B499A5CE11C561A3BB8C1F36FC25F5BEF26362CADC3B10C7C3E7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DivePose.h",
+            "sha256": "CD12A7D621C6B2745B6E096CB4BB6F31BDAC2997E7C928E34A39FB9C61333027"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfiles.cpp",
+            "sha256": "E882A22C0902E9C4366D290BF8424EF1B226957061AA06AE2FF31729A77789D8"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfiles.h",
+            "sha256": "095AE4517069F3CFDB651DBCE98FCBE3E7D452A2C6B6A4DC90EFBA648209E447"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp",
+            "sha256": "51EAC40FB07D3A3D9325C2D345D6763D48BF4B5D6F6DDC71FB0ED10072BFD599"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp",
+            "sha256": "C3E287F6F8DFC944D4CA63E41544D54D9D9FBAA1DC28B0A350BA896DC9239BC0"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRecording.cpp",
+            "sha256": "FCA8445EE3F4A89AAF51C77905A9668A3583C4D32A460DE0A2557A9A3FECE43B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRecording.h",
+            "sha256": "5B1BBDE573C7A2D047C2DC6916EC1DB377FEAA09B1952E1D2F576F89C94CD08F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+            "sha256": "23C47975031099AB2DEB9B222B6884B436588B03CAB63C722C37499BB658EEEE"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveRockSearchTests.cpp",
+            "sha256": "0395297FF23D7CEAF8B69EE9C0F824862B1EA21C76590876AD8D648A3FE8FE14"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSediment.cpp",
+            "sha256": "F3C08475BB83A5D85B79E2C19E37D0F85269A5086D5F2A8E953A365CEAF5EDEC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp",
+            "sha256": "496830F5125A3E0718CE91A63382F1EBBE890E09F024412125C408BCA20A2A9D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveShoreline.cpp",
+            "sha256": "C13BDC1B625B2BBB51689549D9E27542ED1BFBBC152E71FD06FEE3CC8533EDA0"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+            "sha256": "4A31C1F065AD0829CC0C81D09D7F2BF4FECBD1991B0384058A35A0A348330DEA"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSim.Build.cs",
+            "sha256": "FF5FC4B5F89D2C6218D008172AD0B7DA18A120B3A2CE3C5AB6E67AAB7C769128"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSim.cpp",
+            "sha256": "257016E4B4EAA39C145368F984EC3B84A6411CCDA4C8D836F307B7A2092330AC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSky.cpp",
+            "sha256": "B01B6B36C16E9E04C2A71911E5997BC052956CBF1CEB242D6C997AF8BD1EE519"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveSoak.cpp",
+            "sha256": "DEE24F6B2C37E7D6093E63F488E61E9FE4E47C12ED3FC58D30670234766D0819"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTerrain.cpp",
+            "sha256": "5F70648D5E0D92DE09D5878AAE6B7820DA2EECEF0928D36583D46679BFF6DA3A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTerrain.h",
+            "sha256": "03440AE9B86F53481CBEF2201441884256B70BD7FBF2C09BA944FC24EC223FA4"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTextDialog.h",
+            "sha256": "104891755F22DBD9528C96F156AA90CF07EE72272326AD6446B1372B2F24E7D6"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.cpp",
+            "sha256": "C5135287C9E73FDB2EBE02CD95CFD66457BE04941CD953F797E04211F4B9E0D7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.h",
+            "sha256": "F9AC559CDD3B88525004915A9ECD528F76B6336FCCE4C4D2F0C4F43176CB1D31"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveTorch.cpp",
+            "sha256": "3B91F1A38A8457D15A89FE48A6CAF1CB38BD3AF9E5DE7C047E83C18113BACB9B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveUISmoke.cpp",
+            "sha256": "4B67298EDF9C5AF8427E962A5728CB016025E35AA7B31396BBD469E0CD8BF026"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveVegetation.cpp",
+            "sha256": "C2D9FA1BE021654A2A9F8D7B3048802AF3D64245528A6707986CD47B9685AC7D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveVegetation.h",
+            "sha256": "6EEF5CF0074F363D04FCB8D2C27F1FD435DC2761896FB02A20557ABAC2499515"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWater.cpp",
+            "sha256": "61664C2799B066C5FFDFA945A54688DE13EC4DE184977D09729CF2FE423D639B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp",
+            "sha256": "F2DD09165017494F545D07597C882F35BE703A2D1F8E2AEEF0CF05BDB12BE770"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp",
+            "sha256": "F93A98E118F1B82C5563678360E64B871AA391F7A5DD3B53D7C427F21F24CB1B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypoints.h",
+            "sha256": "59FF377F6495563EEDD66623A8184B639183B002680C1AD02A91581F7EA647F1"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp",
+            "sha256": "E494AA2DD28E05F63C90531F56C84BC2E8E3B8FF7EFC750CD727DB88F51F9DA5"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp",
+            "sha256": "6F426E28003E35600653E525840FE31C88D71A0EE64C841B16B72B23CE0BD104"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp",
+            "sha256": "7E79F43D95A3B81D0A69AE71CF8E3C13F10BA2B6D391065EF3A101924D02C613"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+            "sha256": "3499D72C97D64F06C8E0F1ABA4641A42CD497B681BE538AFE4878EC08DDEEEF0"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/DiveWorld.h",
+            "sha256": "8A978DF944C50A17816E21C83A044304F1BC8445255AFA7DA1EC2BE36A227EB7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h",
+            "sha256": "0649E7B857E0F8AC6F631E39664EEEF3C1DC3B9BF6925DC550B87629D7F01D14"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h",
+            "sha256": "7C6DB5C705C037DDD4B6DE5289A9370C2D6C17B7BC8C9EDF6DC8BE89EEB65898"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h",
+            "sha256": "DB2EE6A3D9F8AF8589FC1346FB719438BF337622C433738F153ED16AC681FB10"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h",
+            "sha256": "77EC4A163D1EBB61F2DA016674A34867EFFC647817872F1192FA27AEC1752271"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h",
+            "sha256": "D191EBE33AFB29B84A7680BC555A50BA18DFA2A66948269C32C236AC0690B47B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Decompression.h",
+            "sha256": "0112BCB88846DEFB9D353F49A8885CA9242D17C6A4139C264E438B1C08E763DB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h",
+            "sha256": "B87AB3A5265D362F0CBD3F5873277D69C27C7DA2F810490CCCAB99B09B8CF291"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Ecology.h",
+            "sha256": "AA7011C3B1F5F1EB02B76CEDDDEFA7922BE3FFC706FC94986A04E4DFEA97EFA7"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h",
+            "sha256": "6F8609723DF472F48C87521DB73C3918A78B461FD5CC5F981ECD904915D5B71F"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h",
+            "sha256": "D65535816D02F0CDFFE069F16D76D7DA0A5B85EDAA6088189B8321C54922EE0A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h",
+            "sha256": "6458A379AED42B5E3282DF9B421A8DBB0E6D95966C907B61F6C31FFCAEF15669"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h",
+            "sha256": "AE48F8B62441E1602654949725D254601D918BB1ED3219450609E0C4C68DC500"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/FootDeposit.h",
+            "sha256": "416FD5F23B6C9218C0C72D8913EBCB6BBF0535AB5D11FEE6661F0CF4184401A2"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+            "sha256": "0025A4D8D51D736D61C6AA677F8A5E74C84065512964777065138B29DBA85F93"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Loadout.h",
+            "sha256": "54414A8CC421D05141AEFA9B99DAE07BFDB6AEEB04DF5F50687E079A7755C99A"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h",
+            "sha256": "DDFF94E0B6ADB277CC34DEFDC8113659187AD80F2065D55D084086050F3AF599"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Navigation.h",
+            "sha256": "015337FBA369C140DD648E00DE6D9539C296A7F6D155EA1F025D41CCC6A3B75D"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/RockIndex.h",
+            "sha256": "6EAC3BE8B7D8F3BA7B35FE2F7F77D1A66929DF60A2FFCAE9C98A3B2B4F51B805"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h",
+            "sha256": "18A9C9886A55F3FEAFF8BD0D69F6B4781A36A3053CD332D02C844038521D0147"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Sediment.h",
+            "sha256": "835FA06FAC6E0D612B7E650B7E4E33D8194EA3DAD1434A94E8B214CB8A509633"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h",
+            "sha256": "AB04B197D8AAC45DE9FC0BDE8D2821EAC1619806A8D8AFD9DCC99834FA8EBDBE"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h",
+            "sha256": "72B3796A84ED30C52D348F3ADE8BCB4B1984F0D218A129F458B1DC67AA76F62B"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h",
+            "sha256": "01083039C789FBD4A969F75ADF8E185E285FB6E3CF7E4AE85EBCF71A94C18700"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Torch.h",
+            "sha256": "CAD159088612BC2BDE330B0C697AAE6415C5865A4EE78BAD25C1CCEC516598DC"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h",
+            "sha256": "DE7ADA9667D34D3554BC2C9796FF8B08D5E3AFF4F6379331B143E1F321C75CDD"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h",
+            "sha256": "0D01A8D064E55040EE2E7A1043EA3967333E88B0A1C8EFFEDE0CEFE3A7F970AB"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+            "sha256": "7102E0E7625AA8A1A8268A910B51E8899B48D53E7551C9C9152FCCDD486AC725"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h",
+            "sha256": "2FBFACE3CB809442C0316697D6D9B3DB6632D3CEF00352AAE8F6D57FEEA7DB68"
+          },
+          {
+            "file": "divingsim/Source/DiveSim/Simulation/Weather.h",
+            "sha256": "AFD1763ED7C9DE0D550A79C85C598F429293BEB33E17162D9C01C34A65F928CF"
+          },
+          {
+            "file": "divingsim/Shaders/LakeFootprint.ush",
+            "sha256": "D9DF6BD6E0E16B9C530EF90A6F3235D499F034ACA1D6A4B7675E4C6CFDF6BD80"
+          },
+          {
+            "file": "divingsim/Shaders/LakeFootprintProbe.usf",
+            "sha256": "65642EF473AC499C5FD8526D4073606AD9DD18FC874E9B41921C80BCEE65382A"
+          },
+          {
+            "file": "divingsim/Shaders/SolarMedium.ush",
+            "sha256": "351A299E85B8679A54E94BB8B29FE53E64FE5BA5877DE8218E6F9161673A2E47"
+          },
+          {
+            "file": "divingsim/Shaders/SolarTransport.ush",
+            "sha256": "7DB5DEDDB4A64266C101BD3B2F796C3BE27C6A3C430EDBE32BA653A36CBDA5AC"
+          },
+          {
+            "file": "divingsim/Shaders/SpectralWater.usf",
+            "sha256": "BABD2625D6C241CF1080C1A3F95BE27B4C405B42617E83F5F9CE346B106F54B8"
+          },
+          {
+            "file": "divingsim/Shaders/WaveSolarMedium.ush",
+            "sha256": "86A9BBEB47B72E1A30EC83EE2E2C82119150E592CA98F4C1DF58516A52F43749"
+          },
+          {
+            "file": "divingsim/Shaders/WaveSolarSurface.ush",
+            "sha256": "119B98E3E427B35AC0297D87AA3A045E3BE09D26CBA00BDF5638E1A4D36E2C0B"
+          },
+          {
+            "file": "divingsim/Config/DefaultEditor.ini",
+            "sha256": "103A1A8F7F7CDC4CDE6C82C09DF0246DF012FCF319A480C170A8DE7287E0E59C"
+          },
+          {
+            "file": "divingsim/Config/DefaultEditorPerProjectUserSettings.ini",
+            "sha256": "0AAF0D9BD09045215B6D9277E37ADBB6ED8F6275540E60E2744F293B032BF077"
+          },
+          {
+            "file": "divingsim/Config/DefaultEngine.ini",
+            "sha256": "C68AB50CF9EF0B292575BEB33146A0B1477A5A6FECE1C3060500DA6CDD0AB46E"
+          },
+          {
+            "file": "divingsim/Config/DefaultGame.ini",
+            "sha256": "15DAC366654B52756A58161AA2F577B581E940A9A524B7A369564D158C85C1B0"
+          },
+          {
+            "file": "divingsim/Config/DefaultInput.ini",
+            "sha256": "5DEB78555510100669F2753E737919B3275BA81CB3AC31CED138A42C2BC58FEF"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Compile.ini",
+            "sha256": "EC28CCFA77E0A9A07B82CAC7AD584EF83F45F56FFB4B50469270A213CA4C152B"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Export.ini",
+            "sha256": "F5289B73341108CA0602E636F9C05E748F186BB2518B092A6B5A9D60B0A22757"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_ExportDialogueScript.ini",
+            "sha256": "6B1E5B6E9D4173284A490C884E0E17A43915AC124B7754DC830D92FD47001560"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Gather.ini",
+            "sha256": "8E355845BFA4277355BB4951035D67DA2917D34BBF0C376406205730367AFDD2"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_GenerateReports.ini",
+            "sha256": "A51CFC2847AA4967EDB106E4E82949E1D130196C83CF22854FF13DAE6E6A8409"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_Import.ini",
+            "sha256": "4DEBBCDDF9C9A79D938E95A7FB2104E2CCC8C9B9D905A58C92FE93069DF6F3D6"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_ImportDialogue.ini",
+            "sha256": "7B8FE294216195541B61CB3780CC2932E0E6D034164344C2FC3C66D4D8EE9F08"
+          },
+          {
+            "file": "divingsim/Config/Localization/Game_ImportDialogueScript.ini",
+            "sha256": "F4409926F01CF0B42714182779D1DA03C88598E3C0DFDE3135CBA011D9A456F0"
+          },
+          {
+            "file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+            "sha256": "38A33A2CA6E4BD9EF3C09D8BD979CA249B6B57606E64EA016DC490395BF4CA88"
+          },
+          {
+            "file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveRendering.dll",
+            "sha256": "8A2D8EFBBD05A2F3A9ECAA7F4110F06CBFC2E53F1F8807DD455749C0FD83968B"
+          },
+          {
+            "file": "Builds/SourceEditorSandbox/divingsim/Intermediate/DiveWaveStudy/Manifest.json",
+            "sha256": "B83794E6155AF050677E6A191591093EBD8D47A9293619C535E204EA42F23696"
+          },
+          {
+            "file": "Tools/TestLakeLandscape.ps1",
+            "sha256": "3ECA9311AF7A2A27D4D2125D0ACDA4102E6822C381BAD7CFE1BEBA8BE2C964C9"
+          },
+          {
+            "file": "Tools/SmokeTest.ps1",
+            "sha256": "B2D1AEC890A9D2E72EC1D7414596693EDF4DDF6D8CA043CBFD15BD0CBC95D96D"
+          },
+          {
+            "file": "Documentation/BATHYMETRY_VIEW_CANDIDATES.json",
+            "sha256": "D8BBD0DD988539FDB1713A91A27E77CD8A28700215A62C1028EAA0BAC1F8E58A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_AirBubble.uasset",
+            "sha256": "8A7C360C879E5E36BE9B9D3EE02CCF1DFCF79AF22F674F9B2D6F10E80868A18D"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_AquaticPlant.uasset",
+            "sha256": "5125FBE5443B0A6A2876ED5F4A156BA5972BD9BA1F0A1F51EE0EA5545B1E29D1"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Bubble.uasset",
+            "sha256": "46A9FA2547FD2E3784152346B29F5BE681D8155639B043E7848407932BEB70DA"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Buildings.uasset",
+            "sha256": "290D48CD5E4CF2885C327929ADFAFDD0B19CD1DE5099B9E4B7A722032A9E39AD"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Buoy.uasset",
+            "sha256": "DE5BA961920237CD1F0F4EBC2D76C9DE4B3A93C7D1D302DC1B162CD8EF116DED"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_CausticsProbe.uasset",
+            "sha256": "B78795401BCAA95D04C02573CD9B9AB699A0ECB1B36134340160D5DB7255A29A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_ComputerScreen.uasset",
+            "sha256": "C809443CBBA151987B9149A439918B2AAEAC7E514071B37B4AAFA2992A92FF23"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Equipment.uasset",
+            "sha256": "D7C5D9CDF81C215E66CBB701C64D0667530EB9D879791FC73867D4D8AC00B7D6"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_FinSediment.uasset",
+            "sha256": "DBCA7F757D4E4D1D10BBECD9DCBB8CE75D30507E3B43DB4D9A7A58BEB0D1242C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Fish.uasset",
+            "sha256": "27AF114BB65769C82ACA54621353A5400A6176A4292DA037D6D8FD0A87910636"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_GravelSurface.uasset",
+            "sha256": "F5A39FCD65FE6F4D134F07D77596CC30FE9899AF164D903230C52CC315C4BFB1"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Lakebed.uasset",
+            "sha256": "2FB2A55936372EE8C6E6D82C35348194356E6592DE4E98206BA96437624181C7"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Landscape.uasset",
+            "sha256": "D7F572C3A76DD534CF67FEF40367F20AB4EA69FD35DF98CA99E12C1B6C98DDE3"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_LandscapePhoto.uasset",
+            "sha256": "B7357870DC1E70E1005CB48EDAD5AFE28B8687EA186B1C14D7A740CCDC65CCC1"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Particle.uasset",
+            "sha256": "62965C29CCDB813CCFE05C76C838D4AB4DC56FA1C8331BCB4A9E999FA4F90F8E"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Plant.uasset",
+            "sha256": "1C7ABB7070AE1674E9F7504BF7CB2511F23B3C17F06A415EE7278F7C72C5502E"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Rain.uasset",
+            "sha256": "5D5A2F2168FED51F1EF81C5DB203C4A6161175785EA61A8290A2881943A42508"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Rock.uasset",
+            "sha256": "1EC21E618E956DEF7E4E0A33EF0EAF7BE246174C187EAFC153EA08C890C022B7"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan1.uasset",
+            "sha256": "CE29D5218C13CAB0146102E634F97D7AD17CF123DF47A9793FE581AEA0346C08"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan2.uasset",
+            "sha256": "69F0BDB555BB3BEAD3C3F48863AF278166E4250B1A6EBCEDB13C49621D3791FA"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan3.uasset",
+            "sha256": "A19B0EEE86243133901805671CD5597376F5D371452CDC7DD7F3BC608398B0B8"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan4.uasset",
+            "sha256": "FDF9D7E7EC3061BF7D1D7AE62F37F97176164CC283FBCF0DCC75C9F3CC377E60"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockScan5.uasset",
+            "sha256": "268BA0202782897452127D7FC2154BCCB6D9B2469B3A6018FD198488670BF82C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_RockSurface.uasset",
+            "sha256": "AE1BE790B5C9C55BF3FDDFCB6F5313DE5E71B7D53C415DA8C4AE75C14A438328"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Rope.uasset",
+            "sha256": "AEA3F6F4C0CB618014730E373B3F22B5B4DCBCA10681C6AA8020D2566255C217"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Shore.uasset",
+            "sha256": "C65A7E2C4563D4CE5F68C93F58E83C7087A7FBF48C5662ED859DD4891D33810D"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_ShorePhoto.uasset",
+            "sha256": "8910C91B20064397D6C7FAF8B42EA251531EC1E7E4033393DCB7FED540E93AAC"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset",
+            "sha256": "1DA912C8EB089C1250DDE4AC9060C6A5F08697B3F41C88318CCB3E47323DF1EE"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Suit.uasset",
+            "sha256": "A2E9F16E327E9907868B13506704D98FA97A123B87BB32FAF9D91B1F64D3AA2B"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_SuspendedWater.uasset",
+            "sha256": "5E36F150607F6D788C3D16C91FFB85EEFF87225DA8FF976E1562991CFE8BD575"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_TorchWater.uasset",
+            "sha256": "49CFAA9DF9883D18453536F640DEB277C9D9BD77E76656A13655F1DA2AE8E7C6"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset",
+            "sha256": "6E65CD5A85876F24604EB589C021F8789D3EE0EDFF0173606F1A3CBBD18BC14E"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Water.uasset",
+            "sha256": "817D6F3EA0C0383485982CDB592B201316EA444A319C254707E65AB2F097D29A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_WaterTop.uasset",
+            "sha256": "3823ADB936677FB29BEF9954F2C864193789EB7AC29464625A77C4DFE46A166C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_WaterUnder.uasset",
+            "sha256": "A9D3ADF1B7B898D053660A0CE1ED7CEE9F55DDCDF9ADC28FB0F5EDB2C8CD5C77"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset",
+            "sha256": "E93BE172FCED5DD96A5FD3EAF5460DBAF0C2CCD74C7E316570AF520D6FBE5EC0"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/M_Wood.uasset",
+            "sha256": "8036E7F6AC1829780A1D0F95D79E827A8DA721B961B31A891F1821C4B1FE48C5"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Cloud.uasset",
+            "sha256": "13B3075D09F4F63B4EDDA643412F12CF15C4EB05AEA7C1575514DFC66B7931B2"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Burbot.uasset",
+            "sha256": "B17C471A55B6D7BA855A37DC7999230354116CBF72AB7E020529DC3B13D93C1C"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Perch.uasset",
+            "sha256": "7A4048BF4EA35DFC0F89BFDA5651D4A19B5BBEB32845D1B13D0A3BF07C01C40A"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Pike.uasset",
+            "sha256": "DC239E00B65E7DA6DCAF0D6BD68FCBA8CCBDBF9336B0E4D2C352062B713BB153"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Roach.uasset",
+            "sha256": "36C147422567A9283D40B2AC621A632649380DA1D5886224A0E10E8B736EFC71"
+          },
+          {
+            "file": "divingsim/Content/Diving/Materials/MI_Fish_Whitefish.uasset",
+            "sha256": "F94A8D09215ABECFBACD5F931F81E5AE0E7E303AFD446B9B22132341A5FA117E"
+          }
+        ]
+      },
+      "host_sha256": "fa96e9b69448ac9450a66159365d0f45ee767472901201383795c1ed59343066",
+      "cases": [
+        {
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "options": {
+            "Date": "2026-06-21",
+            "HabitatView": true,
+            "Entry": 0,
+            "WaveTransportStudy": true,
+            "TimeoutSeconds": 600,
+            "SandboxName": "SourceEditorSandbox",
+            "Scenario": "rocks",
+            "WaterPreview": true,
+            "LakeFootprint": true,
+            "EditorSandbox": true,
+            "MaxFPS": 30,
+            "Hour": 12.0,
+            "HabitatPose": [
+              266650.0,
+              26250.0,
+              -830.0,
+              98.01,
+              -10
+            ],
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193925\\habitat0\\Runtime.log",
+            "NoBubbles": true,
+            "LakeSurfaceOff": false,
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "SolarShaderStudy": true,
+            "SolarVolumeStudy": true
+          },
+          "images": [
+            {
+              "file": "Habitat_0_0.png",
+              "sha256": "041C551F4FBD136DA739D39BF96FE53A42D8C876A442500395215FB39E4F2685"
+            },
+            {
+              "file": "Habitat_0_1.png",
+              "sha256": "62E66E54388AB5EEACB4482D5159BF0AA72536958D496EF1B5E597B4B74FFFD0"
+            },
+            {
+              "file": "Habitat_0_2.png",
+              "sha256": "C8B701AB470982ED8415456810B64F7E7DA23543D8E4FFA750D6FFB830E3C055"
+            }
+          ],
+          "case": "habitat0",
+          "log_sha256": "5059CB9BE24084322E762679BB3D2125D8AACB94989324F376CD0DD8A0E74F96",
+          "pose_probes": [
+            "DIVE_HABITAT_POSE view=0 measured=1 bed_cm=-1030.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20",
+            "DIVE_HABITAT_POSE view=1 measured=1 bed_cm=-1030.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20",
+            "DIVE_HABITAT_POSE view=2 measured=1 bed_cm=-1030.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20"
+          ],
+          "views": [
+            "DIVE_HABITAT_VIEW view=0 eye=X=266650.000 Y=26250.000 Z=-830.000 rotation=P=-10.000000 Y=63.010000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=1 eye=X=266650.000 Y=26250.000 Z=-830.000 rotation=P=-10.000000 Y=98.010000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=2 eye=X=266650.000 Y=26250.000 Z=-830.000 rotation=P=-10.000000 Y=133.010000 R=0.000000"
+          ],
+          "diagnostics": [
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.39:322][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.39.40:084][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:084][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:084][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:084][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:084][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.40:085][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.39.58:789][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.39.58:789][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.39.58:789][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.39.58:789][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.39.58:789][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        },
+        {
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "options": {
+            "Date": "2026-06-21",
+            "HabitatView": true,
+            "Entry": 1,
+            "WaveTransportStudy": true,
+            "TimeoutSeconds": 600,
+            "SandboxName": "SourceEditorSandbox",
+            "Scenario": "rocks",
+            "WaterPreview": true,
+            "LakeFootprint": true,
+            "EditorSandbox": true,
+            "MaxFPS": 30,
+            "Hour": 12.0,
+            "HabitatPose": [
+              84550.0,
+              880150.0,
+              -1608.0,
+              -33.19,
+              -10
+            ],
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193925\\habitat1\\Runtime.log",
+            "NoBubbles": true,
+            "LakeSurfaceOff": false,
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "SolarShaderStudy": true,
+            "SolarVolumeStudy": true
+          },
+          "images": [
+            {
+              "file": "Habitat_0_0.png",
+              "sha256": "E76D68BA8CDA94E863068EC5881E705FF14C06681542C2C137F8DBF2CE31F9E7"
+            },
+            {
+              "file": "Habitat_0_1.png",
+              "sha256": "E49ECE2B7131B6691DA9E34D8B200E78012C68C05F6D6913C027F1C95103150C"
+            },
+            {
+              "file": "Habitat_0_2.png",
+              "sha256": "83470F42373BA1368B923D1EBFB02096AFE33A2BF47B914C0716B836CD09C560"
+            }
+          ],
+          "case": "habitat1",
+          "log_sha256": "09B60ADFF801D3317AF9D0027D094BD81218C9337DA7A14BAD8373532A4B6AC1",
+          "pose_probes": [
+            "DIVE_HABITAT_POSE view=0 measured=1 bed_cm=-1808.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20",
+            "DIVE_HABITAT_POSE view=1 measured=1 bed_cm=-1808.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20",
+            "DIVE_HABITAT_POSE view=2 measured=1 bed_cm=-1808.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20"
+          ],
+          "views": [
+            "DIVE_HABITAT_VIEW view=0 eye=X=84550.000 Y=880150.000 Z=-1608.000 rotation=P=-10.000000 Y=-68.190000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=1 eye=X=84550.000 Y=880150.000 Z=-1608.000 rotation=P=-10.000000 Y=-33.190000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=2 eye=X=84550.000 Y=880150.000 Z=-1608.000 rotation=P=-10.000000 Y=1.810000 R=0.000000"
+          ],
+          "diagnostics": [
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:261][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.40.28:944][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:944][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:944][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.28:945][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.40.45:651][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.40.45:651][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.40.45:651][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.40.45:651][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.40.45:651][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        },
+        {
+          "status": "CAPTURED_AND_VISUALLY_REVIEWED_NOT_QUALITY_ACCEPTED",
+          "options": {
+            "Date": "2026-06-21",
+            "HabitatView": true,
+            "Entry": 2,
+            "WaveTransportStudy": true,
+            "TimeoutSeconds": 600,
+            "SandboxName": "SourceEditorSandbox",
+            "Scenario": "rocks",
+            "WaterPreview": true,
+            "LakeFootprint": true,
+            "EditorSandbox": true,
+            "MaxFPS": 30,
+            "Hour": 12.0,
+            "HabitatPose": [
+              162450.0,
+              1508050.0,
+              -1318.0,
+              -144.09,
+              -10
+            ],
+            "RuntimeLog": "O:\\games\\dive game\\artifacts\\lake-landscape-20261127-193925\\habitat2\\Runtime.log",
+            "NoBubbles": true,
+            "LakeSurfaceOff": false,
+            "EngineRoot": "O:\\games\\dive game\\Builds\\UE584",
+            "SolarShaderStudy": true,
+            "SolarVolumeStudy": true
+          },
+          "images": [
+            {
+              "file": "Habitat_0_0.png",
+              "sha256": "4AB02BA05264B1DB67AA4C747BDCB0727AAC09A81BB3FA89569A790A4B68E186"
+            },
+            {
+              "file": "Habitat_0_1.png",
+              "sha256": "C77D60DAB81C48D04EBD8CDD8DBEE1DF60BC06725A731D1E603AD168C1990D79"
+            },
+            {
+              "file": "Habitat_0_2.png",
+              "sha256": "5EDAD1D3EFBD2DAD171A5C6FB9D3D337D0EC7529F27472C25DCAB3E70D2D98E8"
+            }
+          ],
+          "case": "habitat2",
+          "log_sha256": "FA0A835DA7864A280C7622E5D27B64345CD257226E89A28D60F358C251269B5C",
+          "pose_probes": [
+            "DIVE_HABITAT_POSE view=0 measured=1 bed_cm=-1518.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20",
+            "DIVE_HABITAT_POSE view=1 measured=1 bed_cm=-1518.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20",
+            "DIVE_HABITAT_POSE view=2 measured=1 bed_cm=-1518.000 clearance_cm=200.000 camera_sphere_clear=1 radius_cm=20"
+          ],
+          "views": [
+            "DIVE_HABITAT_VIEW view=0 eye=X=162450.000 Y=1508050.000 Z=-1318.000 rotation=P=-10.000000 Y=-179.090000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=1 eye=X=162450.000 Y=1508050.000 Z=-1318.000 rotation=P=-10.000000 Y=-144.090000 R=0.000000",
+            "DIVE_HABITAT_VIEW view=2 eye=X=162450.000 Y=1508050.000 Z=-1318.000 rotation=P=-10.000000 Y=-109.090000 R=0.000000"
+          ],
+          "diagnostics": [
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.20:946][  0]LogAutomationTest: Error: Condition failed",
+            "[2026.11.27-18.41.21:709][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'ActorLayersWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:709][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:709][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AlertHeaderWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:709][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'UObjectLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:709][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'FolderCompatibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DiskSizeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataItemTypeWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataLabelWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetDataVirtualPathWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'AssetNameWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'DynamicAssetDataColumnBaseWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'StaticMeshTrianglesWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'OutlinerUnsavedHeaderConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'SocketWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'TypeInfoWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.21:710][  0]LogEditorDataStorageUI: Warning: Unable to register widget factory 'VisibilityWidgetConstructor' as purpose '0' isn't registered.",
+            "[2026.11.27-18.41.41:105][  0]LogPython: Error: Traceback (most recent call last):",
+            "[2026.11.27-18.41.41:106][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+            "[2026.11.27-18.41.41:106][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+            "[2026.11.27-18.41.41:106][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+            "[2026.11.27-18.41.41:106][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+          ]
+        }
+      ]
+    }
+  ],
+  "documentation_images": {
+    "Documentation/Images/LakeLandscape_Murg_Bed.png": "10abd01811c0103fa17782edf22d9202efa611060aab86b3f6cab26df06e0b71",
+    "Documentation/Images/LakeLandscape_Weesen_Shore.png": "0ca0ac3f5713715ea18e8e1792e0465bea52d84330d0933c04b7448f25401f52",
+    "Documentation/Images/LakeLandscape_Weesen_Candidate.png": "041c551f4fbd136da739d39bf96fe53a42d8c876a442500395215fb39e4f2685",
+    "Documentation/Images/LakeLandscape_Murg_Candidate.png": "e76d68ba8cda94e863068ec5881e705ff14c06681542c2c137f8dbf2ce31f9e7",
+    "Documentation/Images/LakeLandscape_Walenstadt_Candidate.png": "4ab02ba05264b1db67aa4c747bdcb0727aac09a81bb3fa89569a790a4b68e186"
+  },
+  "build_logs": {
+    "candidate-build.log": "ab3f69cfdc345af3de206c0c5a1e5aac03c9bc27c1f4d4971941be79242fc059",
+    "candidate-build-fixed.log": "c34cac2000c28cd42c457fb662249c673fdaa6ec71d117fc2eede45d2ae0dce7",
+    "candidate-parser-build.log": "964c6a08bb0e2ea2a60f33afa5d6c05b14fea177ab54191b8725b8478e06bf8a"
+  },
+  "excluded_runs": [
+    {
+      "folder": "artifacts/lake-landscape-20261127-193749",
+      "reason": "Unreal default command-line parsing stopped the comma-separated pose at its first field; fixed using the whitespace-only parse option, then repeated."
+    }
+  ],
+  "findings": [
+    "Three shore starts render the masked surface in the actual landscape; no broad natural-shore or island acceptance.",
+    "All three candidate cameras sample measured terrain 200 cm below the eye and have clear 20 cm collision spheres.",
+    "Murg and Walenstadt downhill views lose the floor into water; inspect across the slope before choosing a designed swimming area.",
+    "Murg near-entry rocks have readable scan detail, but lighting is muted and plant/ground transitions remain weak.",
+    "Land silhouettes exist but distant cliffs stretch imagery and lack surface/forest volume; entry fixtures remain visually simple."
+  ],
+  "limits": [
+    "No new gameplay entry, terrain height or population distribution was authored.",
+    "Camera clearance does not establish whole-diver clearance or a safe/continuous swimming route.",
+    "Still captures do not prove moving detail, streaming, performance, wave-edge continuity or package support.",
+    "Source-engine wave/lake experiments remain separate from the normal playable renderer."
+  ]
+}

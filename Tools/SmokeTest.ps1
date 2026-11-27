@@ -6,12 +6,14 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+    [ValidateCount(5,5)][double[]]$HabitatPose,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
     [switch]$SpectralView, [switch]$SpectralDepthDebug, [ValidateRange(0,2)][double]$AbsorptionGain=1, [switch]$SolarShaderStudy, [switch]$SolarVolumeStudy, [switch]$WaveTransportStudy,
+    [switch]$LakeFootprint, [switch]$LakeSurfaceOff,
     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
@@ -35,6 +37,8 @@ if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPre
 if($SolarShaderStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview)) {throw 'SolarShaderStudy currently requires EditorSandbox and WaterPreview; it is not cooked into a package.'}
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
 if($WaveTransportStudy -and -not $SolarVolumeStudy) {throw 'WaveTransportStudy requires SolarVolumeStudy.'}
+if($LakeFootprint -and -not $WaveTransportStudy) {throw 'LakeFootprint requires WaveTransportStudy.'}
+if($LakeSurfaceOff -and -not $LakeFootprint) {throw 'LakeSurfaceOff requires LakeFootprint.'}
 if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
 if($PlantColorProbe -and $Packaged) {throw 'PlantColorProbe requires the editor runtime with CPU vertex data.'}
 if($PlantColorProbe -and $Scenario -ne 'dive') {throw 'PlantColorProbe requires the dive scenario, which validates the actual mesh buffers.'}
@@ -56,6 +60,8 @@ if($SpectralDepthDebug) {$arguments+=' -DiveSpectralDepthDebug'}
 if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
 if($SolarVolumeStudy) {$arguments+=' -DiveSolarVolumeStudy'}
 if($WaveTransportStudy) {$arguments+=' -DiveWaveTransportStudy'}
+if($LakeFootprint) {$arguments+=' -DiveLakeFootprint'}
+if($LakeSurfaceOff) {$arguments+=' -DiveLakeSurfaceOff'}
 if($DiscoveryVerify) {
     if($Scenario -ne 'discoveries' -or $DiscoveryVerify.Contains('"')) { throw 'DiscoveryVerify requires the discoveries scenario and an unquoted path.' }
     $arguments+=' -DiveDiscoveryVerify="'+[IO.Path]::GetFullPath($DiscoveryVerify)+'"'
@@ -101,6 +107,11 @@ if($FormationView) {
 if($HabitatView) {
     if($Scenario -ne 'rocks' -or $GravelView -or $PlantView -or $WaterView) { throw 'HabitatView requires rocks without other comparison modes.' }
     $arguments+=' -DiveHabitatView'
+}
+if($PSBoundParameters.ContainsKey('HabitatPose')) {
+    if(-not $HabitatView -or $HabitatClose -or $HabitatSunView) {throw 'HabitatPose requires HabitatView without Close or SunView.'}
+    foreach($value in $HabitatPose) {if([double]::IsNaN($value) -or [double]::IsInfinity($value)) {throw 'HabitatPose must be finite.'}}
+    $arguments+=' -DiveHabitatPose='+ (($HabitatPose | ForEach-Object {$_.ToString('R',[Globalization.CultureInfo]::InvariantCulture)}) -join ',')
 }
 if($HabitatClose) {
     if(-not $HabitatView) {throw 'HabitatClose requires HabitatView.'}
@@ -183,6 +194,8 @@ if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notma
 if($SolarShaderStudy -and $log -notmatch ('DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane='+[int](-not $WaveTransportStudy))) {throw 'Project-local solar shader mapping was not enabled.'}
 if($SolarVolumeStudy -and $log -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY receiver=per-froxel local_lights=unchanged') {throw 'Project-local volume shader mapping was not enabled.'}
 if($WaveTransportStudy -and $log -notmatch 'DIVE_WATER_SCENE_READY waves=4') {throw 'Shared water scene parameters were not uploaded.'}
+if($LakeFootprint -and $log -notmatch 'DIVE_LAKE_FOOTPRINT_READY') {throw 'Lake footprint was not loaded.'}
+if($LakeFootprint -and $log -notmatch ('DIVE_LAKE_SURFACE_READY enabled='+[int](-not $LakeSurfaceOff)+' materials=2')) {throw 'Lake surface coverage was not bound to both water materials.'}
 if($HabitatView) {
     if($log -notmatch 'DIVE_HABITAT_INSPECTION_PASS views=3') { throw 'Habitat comparison did not finish.' }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
