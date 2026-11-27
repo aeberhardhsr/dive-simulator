@@ -1,5 +1,20 @@
 # Gerenderte Leistungsmessung
 
+## WindowsFormations: zwei zusätzliche Formen für grosse Felsgruppen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080, 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen und keine weitere Unreal-/Spielinstanz. Alle vier Läufe verwenden dieselbe EXE und dieselben Inhalte wie die zehn bestandenen Paketfälle. Die Kontrolle schaltet nur die neue Kernformauswahl ab; die Struktur für fünf Felsvarianten bleibt bestehen. [Bildvergleich und Grenzen](ROCK_FORMATIONS.md), [Prüfbericht](ROCK_FORMATIONS_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Frames >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen/West, neue Kernformen, 60 s | 69,53 FPS | 60,07 FPS | 15,69 ms | 17,46 ms | 0 / 4170 | 5,15 ms |
+| Weesen/West, bisherige Kernformen, 60 s | 68,37 FPS | 59,43 FPS | 15,97 ms | 18,33 ms | 0 / 4101 | 5,33 ms |
+| Walenstadt/Ost, neue Kernformen, 60 s | 72,91 FPS | 55,11 FPS | 15,49 ms | 27,63 ms | 0 / 4373 | 6,56 ms |
+| Murg/Süd, Nachladestrecke, 90 s | 95,96 FPS | 67,70 FPS | 11,52 ms | 29,82 ms | 0 / 8635 | 4,65 ms |
+
+Die mittlere GPU-Zeit beträgt 13,75 / 13,98 / 13,06 / 9,77 ms in Tabellenreihenfolge. 17 / 23 / 42 / 16 Frames überschreiten 16,67 ms. Die Einzelläufe zeigen bei Weesen keinen Leistungsrückgang durch die neue Formauswahl; andere Sichtflächen und Verdeckungen sowie nicht frameidentische Abläufe verhindern daraus eine allgemeine Beschleunigungsbehauptung. Der Walenstadt-Ausreisser bleibt in den Werten enthalten. Durchgehend 60 FPS sind nicht belegt.
+
+Die Bildprüfung zeigt sichtbaren Grund bei Weesen auf 5,3 m und bei Walenstadt auf 4,2 m. Die 144,86 m lange Nachladestrecke endet bei 24,6 m in freiem Wasser; ihr höherer Mittelwert ist kein Vergleich derselben sichtbaren Felsgruppe. Langzeittest, Mindesthardware, vollständige manuelle Bedienprüfung und visuelle Gesamtfreigabe bleiben offen.
+
 ## WindowsPlantCover: niedriger Bewuchs mit optimierter Darstellung
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080, 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen und keine weitere Unreal-/Spielinstanz. Alle vier Läufe verwenden dieselbe EXE und dieselben Inhalte wie die zwölf bestandenen Paketfälle. Die Kontrolle schaltet nur die entfernte Darstellungsgrenze ab; die zusätzlichen niedrigen Pflanzen, reduzierten Algenzweige und angepasste Bewegung bleiben aktiv. [Bildvergleich, Entwicklung und Grenzen](PLANT_UNDERSTORY.md), [Prüfbericht](PLANT_COVER_RESULTS.json).

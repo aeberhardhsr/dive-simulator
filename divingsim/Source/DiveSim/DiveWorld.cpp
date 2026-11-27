@@ -45,11 +45,11 @@ ADiveWorld::ADiveWorld()
         component->SetupAttachment(RootComponent); component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
         return component;
     };
-    for(int32 i=0;i<3;++i)
+    for(int32 i=0;i<5;++i)
     {
         auto* component=create(*FString::Printf(TEXT("LakeRock%d"),i+1));
         component->SetCollisionProfileName(TEXT("BlockAll"));Rocks.Add(component);
-        Gravel.Add(create(*FString::Printf(TEXT("Gravel%d"),i+1)));
+        if(i<3) Gravel.Add(create(*FString::Printf(TEXT("Gravel%d"),i+1)));
     }
     for(const auto& profile:Dive::PlantProfiles)
         Plants.Add(create(UTF8_TO_TCHAR(profile.Mesh)));
@@ -147,7 +147,14 @@ void ADiveWorld::Populate()
     {
         const FString name=FString::Printf(TEXT("SM_LakeRock%d"),i+1);
         Rocks[i]->ClearInstances();
-        Rocks[i]->SetStaticMesh(Mesh(*(TEXT("/Game/Diving/Rocks/")+name+TEXT(".")+name)));
+        auto* rockMesh=LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/Rocks/")+name+TEXT(".")+name));
+        if(!rockMesh)
+        {
+            UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_MESH_FAIL missing %s"),*name);
+            if(bOpticsSmoke) FPlatformMisc::RequestExitWithStatus(false,1);
+            return;
+        }
+        Rocks[i]->SetStaticMesh(rockMesh);
         auto* surface=RockSurfaceMaterial(i);
         if(!surface)
         {
@@ -157,6 +164,9 @@ void ADiveWorld::Populate()
         }
         Rocks[i]->SetMaterial(0,surface);
         if(bOpticsSmoke) UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_SURFACE_READY variant=%d material=%s"),i+1,*surface->GetPathName());
+    }
+    for(int32 i=0;i<Gravel.Num();++i)
+    {
         const FString gravel=FString::Printf(TEXT("SM_Gravel%d"),i+1);
         Gravel[i]->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,*(TEXT("/Game/Diving/Gravel/")+gravel+TEXT(".")+gravel)));
         Gravel[i]->SetMaterial(0,Mat(TEXT("M_GravelSurface")));

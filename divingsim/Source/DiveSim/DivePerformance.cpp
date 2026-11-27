@@ -110,6 +110,7 @@ void ADivePawn::TickPerformance()
         root->SetBoolField(TEXT("legacy_talus"),FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyTalus")));
         root->SetBoolField(TEXT("no_plant_understory"),FParse::Param(FCommandLine::Get(),TEXT("DiveNoPlantUnderstory")));
         root->SetBoolField(TEXT("unlimited_plants"),FParse::Param(FCommandLine::Get(),TEXT("DiveUnlimitedPlants")));
+        root->SetBoolField(TEXT("legacy_formations"),FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyFormations")));
         root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());

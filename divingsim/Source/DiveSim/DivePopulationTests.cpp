@@ -15,6 +15,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     TSet<FVector> positions;int sizes[3]={};int renderedRocks=0,plants=0,connectedLargePairs=0,rubble=0,rubbleContacts=0;
     int poseProbes=0,poseContacts=0,poseEmbedded=0;
     int rubbleProbes=0;TMap<FVector,FTransform> mainTransforms;
+    int formationCores=0;TArray<int32> variants;variants.Init(0,Rocks.Num());
     for(const auto& pair:PopulationCells)
     {
         TArray<FTransform> transforms;TArray<FDiveRock> states;
@@ -26,10 +27,13 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             valid&=transforms[i].Equals(freshTransforms[i],0)&&states[i].Position==freshStates[i].Position&&
                 states[i].Radius==freshStates[i].Radius&&states[i].Variant==freshStates[i].Variant&&states[i].Rubble==freshStates[i].Rubble;
         valid&=transforms.Num()==states.Num()&&states.Num()<=196*94;
-        int instances[3]={};int contactSamples=0,poseSamples=0;
+        TArray<int32> instances;instances.Init(0,Rocks.Num());int contactSamples=0,poseSamples=0;
         for(int i=0;i<states.Num();++i)
         {
             const auto& rock=states[i];
+            if(!instances.IsValidIndex(rock.Variant)) {Detail=TEXT("Invalid rock variant");return false;}
+            ++variants[rock.Variant];
+            if(rock.Variant>=3) {++formationCores;valid&=!rock.Rubble&&rock.Radius>=189;}
             const auto scale=transforms[i].GetScale3D();
             if(!rock.Rubble) mainTransforms.Add(rock.Position,transforms[i]);
             // The source meshes fit a unit sphere. Rotation and nonuniform
@@ -86,6 +90,10 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
             else {const int count=pair.Value.Components[i]->GetInstanceCount();plants+=count;valid&=count<=26*26*18;}
     }
     valid&=positions.Num()==RockState.Num()&&renderedRocks==RockState.Num();
+    const bool legacyFormations=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyFormations"));
+    valid&=Rocks.Num()==5&&(legacyFormations?formationCores==0:formationCores>0&&variants[3]>0&&variants[4]>0);
+    UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATIONS_%s legacy=%d cores=%d variants=%d,%d,%d,%d,%d"),
+        valid?TEXT("PASS"):TEXT("FAIL"),legacyFormations?1:0,formationCores,variants[0],variants[1],variants[2],variants[3],variants[4]);
     FString plantDetail;valid&=TestPlantBeds(plantDetail);
     const bool rubbleDisabled=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockRubble"));
     valid&=rubbleDisabled?rubble==0:rubble>0;

@@ -29,6 +29,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
 {
     const bool legacyPose=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyRockPose"));
     const bool legacyTalus=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyTalus"));
+    const bool legacyFormations=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveLegacyFormations"));
     // World-space anchors include a one-anchor halo. Ownership is assigned by
     // final rock position, so a cluster crosses streaming boundaries unchanged.
     constexpr int AnchorsPerCell=12;
@@ -64,7 +65,10 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             const float size=core?random.FRandRange(1.8f,3.2f):i==0?random.FRandRange(1.2f,2.4f):i<(outcrop?9:5)?random.FRandRange(.5f,1.2f):random.FRandRange(.16f,.62f);
             const float yaw=core?bearing+random.FRandRange(-.35f,.35f):random.FRand()*2*PI;
             const float aspect=random.FRandRange(.72f,1.f),height=core?random.FRandRange(.5f,.85f):random.FRandRange(.55f,.8f);
-            const int32 variant=random.RandRange(0,Rocks.Num()-1);
+            // Preserve the original random sequence and loose-stone forms.
+            // The two closed, more massive scans belong to outcrop cores only.
+            int32 variant=random.RandRange(0,2);
+            if(core&&!legacyFormations) variant=3+(Dive::BedDistribution::Hash(ax,ay)^uint32(i)*0x9e3779b9u)%2;
             float z,n,e;
             if(!Terrain.Sample(x,y,z)||z>-250||z<-6000) continue;
             const FVector position(x,y,z+size*(core?18:10));bool blocked=false;
@@ -124,7 +128,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
             const double x=accepted[parent].X+FMath::Cos(angle)*reach;
             const double y=accepted[parent].Y+FMath::Sin(angle)*reach;
             const float yaw=debris.FRand()*2*PI,aspect=debris.FRandRange(.65f,1.f),height=debris.FRandRange(.55f,.9f);
-            const int variant=debris.RandRange(0,Rocks.Num()-1);
+            const int variant=debris.RandRange(0,2);
             // Keep the original one-anchor halo valid, including rotated groups.
             if(FMath::Abs(x-anchor.X)>600||FMath::Abs(y-anchor.Y)>600) continue;
             float z,n,e;

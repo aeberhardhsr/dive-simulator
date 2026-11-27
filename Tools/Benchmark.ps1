@@ -13,7 +13,7 @@ param(
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
     [switch]$LegacyRockPose,
-    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants,
+    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -33,6 +33,7 @@ $context=[ordered]@{
     legacy_talus=[bool]$LegacyTalus
     no_plant_understory=[bool]$NoPlantUnderstory
     unlimited_plants=[bool]$UnlimitedPlants
+    legacy_formations=[bool]$LegacyFormations
     editor_sandbox=[bool]$EditorSandbox
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
@@ -49,6 +50,7 @@ if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
 if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
 if($NoPlantUnderstory) { $arguments+=' -DiveNoPlantUnderstory' }
 if($UnlimitedPlants) { $arguments+=' -DiveUnlimitedPlants' }
+if($LegacyFormations) { $arguments+=' -DiveLegacyFormations' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'

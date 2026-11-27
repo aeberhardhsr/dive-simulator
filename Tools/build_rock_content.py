@@ -13,14 +13,15 @@ def props(obj, **values):
     return obj
 
 
-def build_rocks():
-    manifest=json.loads((ROOT/'blender/exports/Rocks/Manifest.json').read_text())
-    if len(manifest['assets'])!=3: raise RuntimeError('Expected three bounded rock forms')
+def build_rocks(manifest=None,report_name='RockContentBuild.json'):
+    if manifest is None:manifest=json.loads((ROOT/'blender/exports/Rocks/Manifest.json').read_text(encoding='utf-8'))
+    if not manifest['assets']: raise RuntimeError('Missing bounded rock forms')
     material=u.load_asset('/Game/Diving/Materials/M_RockSurface')
     if not material: raise RuntimeError('Build the lakebed materials first')
-    props(material,used_with_nanite=True,used_with_instanced_static_meshes=True)
-    u.MaterialEditingLibrary.recompile_material(material)
-    if not u.EditorAssetLibrary.save_loaded_asset(material): raise RuntimeError('Rock Nanite material save failed')
+    if not all(material.get_editor_property(p) for p in ('used_with_nanite','used_with_instanced_static_meshes')):
+        props(material,used_with_nanite=True,used_with_instanced_static_meshes=True)
+        u.MaterialEditingLibrary.recompile_material(material)
+        if not u.EditorAssetLibrary.save_loaded_asset(material): raise RuntimeError('Rock Nanite material save failed')
     editor=u.get_editor_subsystem(u.StaticMeshEditorSubsystem) or u.new_object(u.StaticMeshEditorSubsystem)
     tools=u.AssetToolsHelpers.get_asset_tools()
     flag='Interchange.FeatureFlags.Import.FBX'
@@ -75,13 +76,13 @@ def build_rocks():
                 fallback_target=str(editor.get_nanite_settings(mesh).get_editor_property('fallback_target'))))
     finally:
         u.SystemLibrary.execute_console_command(None,flag+' '+str(previous))
-    (ROOT/'artifacts/RockContentBuild.json').write_text(json.dumps(records,indent=2)+'\n')
-    u.log('DIVE_ROCK_CONTENT_PASS variants=3 lods=4 nanite=1 collision=1')
+    (ROOT/'artifacts'/report_name).write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8')
+    u.log(f'DIVE_ROCK_CONTENT_PASS variants={len(records)} lods=4 nanite=1 collision=1')
 
 
-def audit_rocks():
+def audit_rocks(manifest=None,report_name='RockRenderAudit.json'):
     """Check built render data, not just the requested reduction settings."""
-    manifest=json.loads((ROOT/'blender/exports/Rocks/Manifest.json').read_text())
+    if manifest is None:manifest=json.loads((ROOT/'blender/exports/Rocks/Manifest.json').read_text(encoding='utf-8'))
     editor=u.get_editor_subsystem(u.StaticMeshEditorSubsystem) or u.new_object(u.StaticMeshEditorSubsystem)
     records=[]
     for source in manifest['assets']:
@@ -94,8 +95,8 @@ def audit_rocks():
         if target!=u.NaniteFallbackTarget.PERCENT_TRIANGLES: raise RuntimeError('Automatic fallback overrides full detail')
         records.append(dict(name=source['name'],triangles=triangles,
             screen_sizes=list(editor.get_lod_screen_sizes(mesh)),fallback_target=str(target)))
-    (ROOT/'artifacts/RockRenderAudit.json').write_text(json.dumps(records,indent=2)+'\n')
-    u.log('DIVE_ROCK_RENDER_AUDIT_PASS variants=3 full_detail_fallback=1')
+    (ROOT/'artifacts'/report_name).write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8')
+    u.log(f'DIVE_ROCK_RENDER_AUDIT_PASS variants={len(records)} full_detail_fallback=1')
 
 
 if __name__=='__main__':

@@ -48,7 +48,7 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
 {
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
     const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
-    if(!bOpticsSmoke||!Diver||Variant<0||Variant>(waterView?9:plantView?5:3)) return false;
+    if(!bOpticsSmoke||!Diver||Variant<0||Variant>(waterView?9:plantView?5:Rocks.Num())) return false;
     if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView")))
     {
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatClose")))
@@ -219,6 +219,7 @@ void ADivePawn::TickRockInspection(float Dt)
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
     const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
     const bool habitatView=FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView"));
+    const bool formationView=FParse::Param(FCommandLine::Get(),TEXT("DiveFormationView"));
     const int views=(waterView||habitatView)?3:2;
     int end=9;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterEnd="),end);
     end=FMath::Clamp(end,0,9);
@@ -238,12 +239,14 @@ void ADivePawn::TickRockInspection(float Dt)
         Equipment->SetActorHiddenInGame(true);if(Equipment->Avatar) Equipment->Avatar->SetActorHiddenInGame(true);
         if(auto* pc=Cast<APlayerController>(GetController())) if(pc->GetHUD()) pc->GetHUD()->bShowHUD=false;
         int start=0;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterStart="),start);
+        if(formationView) start=4;
         ControlsSmokePhase=1+FMath::Clamp(start,0,9)*views;ControlsSmokeClock=0;TestLessonStage=0;
     }
-    if(ControlsSmokePhase>(habitatView?3:waterView?(end+1)*views:plantView?12:gravelView?4:8))
+    if(ControlsSmokePhase>(habitatView?3:waterView?(end+1)*views:plantView||formationView?12:gravelView?4:8))
     {
         if(habitatView) {UE_LOG(LogTemp,Display,TEXT("DIVE_HABITAT_INSPECTION_PASS views=3"));}
         else if(waterView) {UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INSPECTION_PASS final_state=%d views=3 diagnostic=1"),end);}
+        else if(formationView) {UE_LOG(LogTemp,Display,TEXT("DIVE_FORMATION_INSPECTION_PASS variants=2 views=2 captures=4"));}
         else if(plantView) {UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_INSPECTION_PASS groups=3 states=2 views=2 captures=12"));}
         else if(gravelView) {UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_INSPECTION_PASS states=2 views=2 captures=4"));}
         else {UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_INSPECTION_PASS forms=4 views=2 captures=8"));}

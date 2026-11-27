@@ -11,8 +11,8 @@ from texture_color import set_scan_source_encoding
 BASE='/Game/Diving'
 
 
-def build_rock_surfaces():
-    manifest=json.loads((ROOT/'Documentation/ROCK_SURFACES.json').read_text())
+def build_rock_surfaces(manifest=None,report_name='RockSurfaceContentBuild.json',max_texture_size=2048):
+    if manifest is None:manifest=json.loads((ROOT/'Documentation/ROCK_SURFACES.json').read_text(encoding='utf-8'))
     lib=u.MaterialEditingLibrary;tools=u.AssetToolsHelpers.get_asset_tools()
     editor=u.get_editor_subsystem(u.StaticMeshEditorSubsystem) or u.new_object(u.StaticMeshEditorSubsystem)
     shared=(ROOT/'Tools/Shaders/Lakebed.ush').read_text()
@@ -24,7 +24,8 @@ Roughness=ARM.g; Occlusion=ARM.r;
 float IsRock=1;
 '''+shared[shared.index('float wet='):]
     records=[]
-    for index,source in enumerate(manifest['assets']):
+    for source in manifest['assets']:
+        index=int(source['mesh'].removeprefix('SM_LakeRock'))-1
         textures={}
         for kind,pin in [('Diffuse','Color'),('nor_dx','ScanNormal'),('arm','ARM')]:
             item=source['maps'][kind];p=ROOT/item['file']
@@ -38,7 +39,7 @@ float IsRock=1;
                 if not texture:raise RuntimeError('Missing texture '+path)
                 u.EditorAssetLibrary.set_metadata_tag(texture,'DiveScanSHA256',item['sha256'])
             for key,value in dict(srgb=kind=='Diffuse',compression_settings=u.TextureCompressionSettings.TC_NORMALMAP if kind=='nor_dx' else u.TextureCompressionSettings.TC_MASKS if kind=='arm' else u.TextureCompressionSettings.TC_DEFAULT,
-                flip_green_channel=False,lod_bias=0,max_texture_size=2048,never_stream=False).items():texture.set_editor_property(key,value)
+                flip_green_channel=False,lod_bias=0,max_texture_size=max_texture_size,never_stream=False).items():texture.set_editor_property(key,value)
             set_scan_source_encoding(texture, kind == 'Diffuse')
             if not u.EditorAssetLibrary.save_loaded_asset(texture):raise RuntimeError(path)
             textures[pin]=texture
@@ -73,8 +74,8 @@ float IsRock=1;
         mesh.set_material(0,m)
         if not u.EditorAssetLibrary.save_loaded_asset(mesh):raise RuntimeError('Cannot assign scan material')
         records.append(dict(mesh=source['mesh'],material=path,uv_channels=editor.get_num_uv_channels(mesh,0),textures={k:v.get_path_name() for k,v in textures.items()},shader_sha256=hashlib.sha256(code.encode()).hexdigest()))
-    (ROOT/'artifacts/RockSurfaceContentBuild.json').write_text(json.dumps(records,indent=2)+'\n')
-    u.log('DIVE_ROCK_SURFACE_CONTENT_PASS variants=3 uv0=1 native_normal_decode=1')
+    (ROOT/'artifacts'/report_name).write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8')
+    u.log(f'DIVE_ROCK_SURFACE_CONTENT_PASS variants={len(records)} uv0=1 native_normal_decode=1')
 
 
 if __name__=='__main__':build_rock_surfaces()

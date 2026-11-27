@@ -8,13 +8,15 @@ import bmesh
 import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 from mathutils import Matrix, Vector
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT/'blender/exports/Rocks'
+formations='--formations' in sys.argv
+OUT = ROOT/('blender/exports/FormationRocks' if formations else 'blender/exports/Rocks')
 OUT.mkdir(parents=True, exist_ok=True)
-manifest = json.loads((ROOT/'Documentation/ROCK_ASSETS.json').read_text())
+manifest = json.loads((ROOT/('Documentation/ROCK_FORMATION_ASSETS.json' if formations else 'Documentation/ROCK_ASSETS.json')).read_text(encoding='utf-8'))
 report = dict(schema=1, units='metres', radius_metres=1, local_geology_claim=False, assets=[])
 prepared = []
 
@@ -62,7 +64,7 @@ for index, source in enumerate(manifest['assets']):
         raise ValueError('Degenerate rock faces '+source['id'])
     for polygon in mesh.polygons:
         polygon.use_smooth = True
-    obj.name = f'SM_LakeRock{index+1}'
+    obj.name = source.get('mesh',f'SM_LakeRock{index+1}')
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
@@ -80,6 +82,6 @@ for index, source in enumerate(manifest['assets']):
 for obj in list(bpy.data.objects):
     if obj not in prepared:
         bpy.data.objects.remove(obj, do_unlink=True)
-bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'blender/RockAssets.blend'))
-(OUT/'Manifest.json').write_text(json.dumps(report,indent=2)+'\n')
+bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/('blender/FormationRocks.blend' if formations else 'blender/RockAssets.blend')))
+(OUT/'Manifest.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
 print('ROCK_GEOMETRY_PASS', json.dumps(report))
