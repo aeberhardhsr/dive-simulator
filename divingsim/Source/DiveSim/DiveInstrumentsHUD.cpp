@@ -52,10 +52,12 @@ void ADiveHUD::Instruments()
         Rect(26,22,330,76,Dark);
         TextBlock(TEXT("WALENSEE / ")+Diver->EntryName(),40,33,302,14,White,2);
         Text(Diver->bWalking?L(TEXT("GEHEN / WATEN"),TEXT("WALKING / WADING")):L(TEXT("SCHWIMMEN"),TEXT("SWIMMING")),40,76,12,Accent);
-        Rect(26,110,330,64,Dark);
+        Rect(26,110,330,s.MotorCapacity<.98?88:64,Dark);
         const FString source=s.BreathSource==Dive::BreathingSource::Air?L(TEXT("Umgebungsluft"),TEXT("Ambient air")):s.BreathSource==Dive::BreathingSource::Regulator?L(TEXT("Atemregler aktiv"),TEXT("Regulator active")):L(TEXT("Keine Atemluft"),TEXT("No breathing supply"));
         TextBlock(source+TEXT("  [")+Diver->KeyText(EDiveAction::Regulator)+TEXT("]"),40,121,302,15,s.BreathSource==Dive::BreathingSource::None?Amber:White,1);
         Text(L(TEXT("Atemreserve "),TEXT("Breath reserve "))+FString::Printf(TEXT("%.0f %%"),s.BreathReserve*100),40,149,13,s.BreathReserve<.25?Amber:Muted);
+        if(s.MotorCapacity<.98)
+            Text(L(TEXT("Leistungsfähigkeit "),TEXT("Motor capacity "))+FString::Printf(TEXT("%.0f %%"),s.MotorCapacity*100),40,173,13,Amber);
     }
     WaypointInstrument();
     const FString gas=Diver->Simulation.Settings.GameMode==Dive::Mode::Exploration?TEXT("∞"):FString::Printf(TEXT("%.0f bar"),s.CylinderBar);
@@ -70,24 +72,31 @@ void ADiveHUD::Instruments()
     else
     {
         const float y=compact?790:766,h=compact?82:106;
+        const float valueSize=compact?24:29,valueY=compact?31:34;
         Rect(340,y,920,h,Dark);
         for(int i=1;i<4;++i) Line(340+i*230,y+14,340+i*230,y+h-14,Panel,1);
         const float a=356,b=586,c=816,d=1046;
         Text(L(TEXT("TIEFE"),TEXT("DEPTH")),a,y+12,12,Muted);
-        Text(FString::Printf(TEXT("%.1f m"),s.DepthMetres),a,y+34,29,White);
+        Text(FString::Printf(TEXT("%.1f m"),s.DepthMetres),a,y+valueY,valueSize,White);
         Text(L(TEXT("FLASCHENDRUCK"),TEXT("CYLINDER PRESSURE")),b,y+12,12,Muted);
-        Text(gas,b,y+34,29,s.CylinderBar<50?Amber:White);
+        Text(gas,b,y+valueY,valueSize,s.CylinderBar<50?Amber:White);
         const float pressure=FMath::Clamp(s.CylinderBar/FMath::Max(1.,Diver->Simulation.Settings.StartPressureBar),0.,1.);
         Rect(b,y+h-13,194,3,Panel);Rect(b,y+h-13,194*pressure,3,s.CylinderBar<50?Amber:Accent);
         Text(L(TEXT("NULLZEIT / BCD"),TEXT("NDL / BCD")),c,y+12,12,Muted);
-        Text(FString::Printf(TEXT("%.0f min"),s.NDLMinutes),c,y+34,29,White);
+        Text(FString::Printf(TEXT("%.0f min"),s.NDLMinutes),c,y+valueY,valueSize,White);
         Text(L(TEXT("VITALWERTE"),TEXT("VITALS")),d,y+12,12,Muted);
-        Text(FString::Printf(TEXT("%.0f bpm"),s.HeartBPM),d,y+34,29,White);
+        Text(FString::Printf(TEXT("%.0f bpm"),s.HeartBPM),d,y+valueY,valueSize,White);
         if(!compact)
         {
             Text(FString::Printf(TEXT("MAX %.1f m · %.1f °C"),s.MaxDepthMetres,s.WaterTemperatureC),a,y+82,12,Muted);
             Text(FString::Printf(TEXT("%+.1f m/min · BCD %.1f L"),s.AscentMetresPerMinute,s.BCDLitres),c,y+82,12,s.AscentMetresPerMinute>9?Amber:Muted);
             Text(FString::Printf(TEXT("SpO₂ %.0f %% · %.1f °C"),s.SpO2,s.CoreTemperatureC),d,y+82,12,Muted);
+        }
+        else
+        {
+            Text(FString::Printf(TEXT("%+.1f m/min"),s.AscentMetresPerMinute),a,y+62,11,s.AscentMetresPerMinute>9?Amber:Muted);
+            Text(FString::Printf(TEXT("BCD %.1f L"),s.BCDLitres),c,y+62,11,Muted);
+            Text(FString::Printf(TEXT("SpO₂ %.0f %%"),s.SpO2),d,y+62,11,Muted);
         }
     }
     const auto messages=WarningMessages();

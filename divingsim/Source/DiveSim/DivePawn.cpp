@@ -235,7 +235,7 @@ void ADivePawn::ToggleMenu()
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->WaypointsOpen()) { hud->CloseWaypoints();return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ConfigInputOpen()) { hud->CloseConfigInput(); return; }
-    if(CapturingAction!=INDEX_NONE) { CapturingAction=INDEX_NONE; ControlMessage=Local(TEXT("Belegung unveraendert."),TEXT("Binding unchanged.")); return; }
+    if(CapturingAction!=INDEX_NONE) { CapturingAction=INDEX_NONE; ControlMessage=Local(TEXT("Belegung unverändert."),TEXT("Binding unchanged.")); return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
         if(auto* hud=Cast<ADiveHUD>(pc->GetHUD());hud&&hud->ProfilesOpen()) { hud->CloseProfiles(); return; }
     if(auto* pc=Cast<APlayerController>(GetController()))
@@ -367,7 +367,7 @@ void ADivePawn::StartDive()
     if(!bContactPoseReady)
     {
         bDiveActive=false;SetMenu(true);
-        Notify(Local(TEXT("Am Startpunkt ist zu wenig Platz fuer Taucher und Ausruestung. Bitte einen anderen Einstieg waehlen."),
+        Notify(Local(TEXT("Am Startpunkt ist zu wenig Platz für Taucher und Ausrüstung. Bitte einen anderen Einstieg wählen."),
             TEXT("The start point has insufficient space for the diver and equipment. Please choose another entry.")));
         if(bSmokeTest) FPlatformMisc::RequestExitWithStatus(false,1);
         return;
@@ -925,7 +925,7 @@ void ADivePawn::Interact()
         FinishDive(TEXT("completed"));
     else if(PendingConfig.StartOnShore&&!bEnteredWater)
         Notify(Local(TEXT("Erst abtauchen; nach der Rueckkehr hier den Tauchgang beenden."),TEXT("Dive first; return here afterwards to finish.")));
-    else Notify(PendingConfig.StartOnShore?Local(TEXT("Zum Beenden auf das Startpodest zurueckgehen."),TEXT("Return to the starting platform to finish.")):Local(TEXT("Zum Beenden an der Oberflaeche zur Einstiegsboje zurueckkehren."),TEXT("Return to the entry buoy at the surface to finish your dive.")));
+    else Notify(PendingConfig.StartOnShore?Local(TEXT("Zum Beenden auf das Startpodest zurückgehen."),TEXT("Return to the starting platform to finish.")):Local(TEXT("Zum Beenden an der Oberfläche zur Einstiegsboje zurückkehren."),TEXT("Return to the entry buoy at the surface to finish your dive.")));
 }
 
 FString ADivePawn::EntryName() const

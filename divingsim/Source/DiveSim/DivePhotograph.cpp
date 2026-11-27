@@ -12,7 +12,7 @@ void ADivePawn::Photograph()
     if(PhotoPending()||FScreenshotRequest::IsScreenshotRequested())
     { Notify(Local(TEXT("Die vorherige Aufnahme wird noch gespeichert."),TEXT("The previous capture is still being saved.")));return; }
     if(Photographs.Num()>=DiveDiscoveries::PhotoLimit)
-    { Notify(Local(TEXT("Fotoalbum fuer diesen Tauchgang voll (1000)."),TEXT("This dive's photo album is full (1000).")));return; }
+    { Notify(Local(TEXT("Fotoalbum für diesen Tauchgang voll (1000)."),TEXT("This dive's photo album is full (1000).")));return; }
     FDivePhotograph photo;photo.Id=FGuid::NewGuid().ToString(EGuidFormats::Digits);
     photo.UTC=FDateTime::UtcNow().ToIso8601();photo.Seconds=Simulation.Data.ElapsedSeconds;photo.Depth=Simulation.Data.DepthMetres;
     photo.Species=Environment->PhotographSpecies(Camera->GetComponentLocation(),Camera->GetForwardVector());

@@ -172,7 +172,7 @@ void ADiveEquipment::DrawDisplay(UCanvas* Canvas,int32 Width,int32 Height)
     { FCanvasTileItem item(FVector2D(x,y),FVector2D(w,h),color); item.BlendMode=SE_BLEND_Opaque; Canvas->DrawItem(item); };
     auto L=[&](const TCHAR* de,const TCHAR* en) {return FString(bEnglish?en:de);};
     rect(0,0,Width,Height,FLinearColor(.005f,.015f,.012f,1));
-    text(Page==3?L(TEXT("DEKO-PROGNOSE"),TEXT("DECO FORECAST")):FString::Printf(TEXT("AIR 21%%   %03.0f deg"),Heading),24,12,32,dim);
+    text(Page==3?L(TEXT("DEKO-PROGNOSE"),TEXT("DECO FORECAST")):FString::Printf(TEXT("O₂ %.0f%%   %03.0f°"),Diver->Simulation.Settings.OxygenFraction*100,Heading),24,12,32,dim);
     text(Clock(s.ElapsedSeconds),540,12,40,white);
     rect(24,58,720,2,dim);
     text(L(TEXT("TIEFE / m"),TEXT("DEPTH / m")),24,76,32,dim);
@@ -186,28 +186,28 @@ void ADiveEquipment::DrawDisplay(UCanvas* Canvas,int32 Width,int32 Height)
     {
         value(L(TEXT("NULLZEIT"),TEXT("NDL")),FString::Printf(TEXT("%.0f min"),s.NDLMinutes),0,0);
         value(L(TEXT("AUFSTIEG"),TEXT("ASCENT")),FString::Printf(TEXT("%+.1f m/min"),s.AscentMetresPerMinute),1,0);
-        value(L(TEXT("MAX / TEMP"),TEXT("MAX / TEMP")),FString::Printf(TEXT("%.1f m / %.1f C"),s.MaxDepthMetres,s.WaterTemperatureC),0,1);
+        value(L(TEXT("MAX / TEMP"),TEXT("MAX / TEMP")),FString::Printf(TEXT("%.1f m / %.1f °C"),s.MaxDepthMetres,s.WaterTemperatureC),0,1);
         value(s.DecoStopMetres>0?L(TEXT("DEKOSTOPP / m"),TEXT("DECO STOP / m")):L(TEXT("STOPP 3-6 m"),TEXT("STOP 3-6 m")),
             s.DecoStopMetres>0?FString::Printf(TEXT("%.1f / %s"),s.DecoStopMetres,*Clock(s.DecoStopSeconds)):
             s.MaxDepthMetres>10?Clock(s.StopRemainingSeconds):TEXT("--:--"),1,1);
     }
     else if(Page==1)
     {
-        value(L(TEXT("PULS / SpO2"),TEXT("PULSE / SpO2")),FString::Printf(TEXT("%.0f / %.0f%%"),s.HeartBPM,s.SpO2),0,0);
-        value(L(TEXT("ATMUNG / KERN"),TEXT("BREATH / CORE")),FString::Printf(TEXT("%.0f / %.1f C"),s.RespiratoryBPM,s.CoreTemperatureC),1,0);
+        value(L(TEXT("PULS / SpO₂"),TEXT("PULSE / SpO₂")),FString::Printf(TEXT("%.0f / %.0f%%"),s.HeartBPM,s.SpO2),0,0);
+        value(L(TEXT("ATMUNG / KERN"),TEXT("BREATH / CORE")),FString::Printf(TEXT("%.0f / %.1f °C"),s.RespiratoryBPM,s.CoreTemperatureC),1,0);
         value(TEXT("STRESS"),FString::Printf(TEXT("%.0f%%"),s.Stress*100),0,1);
-        value(L(TEXT("ERMUEDUNG"),TEXT("FATIGUE")),FString::Printf(TEXT("%.0f%%"),s.Fatigue*100),1,1);
+        value(L(TEXT("ERMÜDUNG"),TEXT("FATIGUE")),FString::Printf(TEXT("%.0f%%"),s.Fatigue*100),1,1);
     }
     else if(Page==2)
     {
-        value(TEXT("ppO2 / bar"),FString::Printf(TEXT("%.2f"),s.PPO2),0,0);
+        value(TEXT("ppO₂ / bar"),FString::Printf(TEXT("%.2f"),s.PPO2),0,0);
         value(L(TEXT("UMGEBUNG / bar"),TEXT("AMBIENT / bar")),FString::Printf(TEXT("%.2f"),s.AmbientBar),1,0);
         value(L(TEXT("GAS BIS 50 bar"),TEXT("GAS TO 50 bar")),bUnlimited?TEXT("INF"):FString::Printf(TEXT("%.0f min"),s.RemainingGasMinutes),0,1);
         value(L(TEXT("DEKO / LAMPE"),TEXT("CEILING / TORCH")),FString::Printf(TEXT("%.1f m / %.0f%%"),s.CeilingMetres,s.LampBattery),1,1);
     }
     else
     {
-        value(L(TEXT("NAECHSTER STOPP"),TEXT("NEXT STOP")),s.DecoForecastValid&&s.DecoStopMetres>0?FString::Printf(TEXT("%.1f m"),s.DecoStopMetres):TEXT("--"),0,0);
+        value(L(TEXT("NÄCHSTER STOPP"),TEXT("NEXT STOP")),s.DecoForecastValid&&s.DecoStopMetres>0?FString::Printf(TEXT("%.1f m"),s.DecoStopMetres):TEXT("--"),0,0);
         value(L(TEXT("STOPPZEIT"),TEXT("STOP TIME")),s.DecoForecastValid&&s.DecoStopMetres>0?Clock(s.DecoStopSeconds):TEXT("--:--"),1,0);
         value(L(TEXT("AUFSTIEG 9 m/min"),TEXT("ASCENT 9 m/min")),s.DecoForecastValid?Clock(s.TimeToSurfaceSeconds):TEXT("--:--"),0,1);
         value(L(TEXT("DEKOGRENZE"),TEXT("CEILING")),FString::Printf(TEXT("%.1f m"),s.CeilingMetres),1,1);
@@ -220,9 +220,11 @@ void ADiveEquipment::DrawDisplay(UCanvas* Canvas,int32 Width,int32 Height)
     else if(s.Warnings&Dive::CeilingViolation) warning=L(TEXT("! DEKOTIEFE UNTERSCHRITTEN"),TEXT("! ABOVE CEILING"));
     else if(s.Warnings&Dive::FastAscent) warning=L(TEXT("! HOHE AUFSTIEGSRATE"),TEXT("! HIGH ASCENT RATE"));
     else if(s.Warnings&Dive::LowGas) warning=L(TEXT("! NIEDRIGER DRUCK"),TEXT("! LOW GAS"));
-    else if(s.Warnings&Dive::HighPO2) warning=L(TEXT("! HOHER ppO2"),TEXT("! HIGH ppO2"));
-    else if(s.Warnings&Dive::Cold) warning=L(TEXT("! KAELTEBELASTUNG"),TEXT("! COLD STRAIN"));
-    else if(s.Warnings&Dive::DepthPlan) warning=L(TEXT("! GEPLANTE TIEFE UEBERSCHRITTEN"),TEXT("! BEYOND PLANNED DEPTH"));
-    else if(s.Warnings&Dive::TimePlan) warning=L(TEXT("! GEPLANTE ZEIT UEBERSCHRITTEN"),TEXT("! BEYOND PLANNED TIME"));
-    text(warning.IsEmpty()?FString::Printf(TEXT("%d/4    R %s    C %s"),Page+1,*L(TEXT("Seite"),TEXT("Page")),*L(TEXT("senken"),TEXT("lower"))):warning,24,465,30,warning.IsEmpty()?dim:amber);
+    else if(s.Warnings&Dive::HighPO2) warning=L(TEXT("! HOHER ppO₂"),TEXT("! HIGH ppO₂"));
+    else if(s.Warnings&Dive::Cold) warning=L(TEXT("! KÄLTEBELASTUNG"),TEXT("! COLD STRAIN"));
+    else if(s.Warnings&Dive::DepthPlan) warning=L(TEXT("! GEPLANTE TIEFE ÜBERSCHRITTEN"),TEXT("! BEYOND PLANNED DEPTH"));
+    else if(s.Warnings&Dive::TimePlan) warning=L(TEXT("! GEPLANTE ZEIT ÜBERSCHRITTEN"),TEXT("! BEYOND PLANNED TIME"));
+    text(warning.IsEmpty()?FString::Printf(TEXT("%d/4    %s: %s    %s: %s"),Page+1,
+        *Diver->KeyText(EDiveAction::ComputerPage),*L(TEXT("Seite"),TEXT("Page")),
+        *Diver->KeyText(EDiveAction::Computer),*L(TEXT("senken"),TEXT("lower"))):warning,24,465,warning.IsEmpty()?24:30,warning.IsEmpty()?dim:amber);
 }
