@@ -39,10 +39,12 @@ struct FDivePoseState
 
     FTransform Hand(bool Left) const
     {
-        if(!Left) return FTransform(FRotator(8,-5,0),FVector(29,24,-20));
+        // Relaxed forearms sit below the eye line, including a sideways look
+        // over blocked shoulders. The same targets drive skin and contacts.
+        if(!Left) return FTransform(FRotator(8,-5,0),FVector(29,24,-30));
         const float reading=FMath::Clamp(Swim/.45f,0.f,1.f);
         return FTransform(FMath::Lerp(FRotator(18,-8,0),FRotator(FMath::Lerp(75.f,60.f,reading),-8,0),Wrist),
-            FMath::Lerp(FVector(35,-24,-18),FVector(FMath::Lerp(28.f,26.f,reading),-6,-6),Wrist));
+            FMath::Lerp(FVector(35,-24,-28),FVector(FMath::Lerp(28.f,26.f,reading),-6,-6),Wrist));
     }
 };
 

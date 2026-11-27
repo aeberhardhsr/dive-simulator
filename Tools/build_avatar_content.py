@@ -8,19 +8,19 @@ tools = u.AssetToolsHelpers.get_asset_tools()
 lib = u.MaterialEditingLibrary
 
 
-def build_avatar():
+def build_avatar(materials_only=False):
     # Keep rig and colour import on the FBX factory controlled by FbxImportUI.
     # Restore the editor's original route after this isolated import.
     flag = 'Interchange.FeatureFlags.Import.FBX'
     previous = u.SystemLibrary.get_console_variable_int_value(flag)
     u.SystemLibrary.execute_console_command(None, flag+' 0')
     try:
-        _build_avatar()
+        _build_avatar(materials_only)
     finally:
         u.SystemLibrary.execute_console_command(None, flag+' '+str(previous))
 
 
-def _build_avatar():
+def _build_avatar(materials_only=False):
     def material(name, roughness, metallic=0, suit=False, fin=False):
         path = BASE+'/'+name
         mat = u.load_asset(path) if u.EditorAssetLibrary.does_asset_exist(path) else tools.create_asset(name, BASE, u.Material, u.MaterialFactoryNew())
@@ -29,7 +29,18 @@ def _build_avatar():
         mat.set_editor_property('used_with_skeletal_mesh', suit)
         mat.set_editor_property('two_sided', fin)
         color = lib.create_material_expression(mat, u.MaterialExpressionVertexColor)
-        if not lib.connect_material_property(color, '', u.MaterialProperty.MP_BASE_COLOR):
+        base_color = color
+        if suit:
+            # The FBX importer retains encoded RGB8 (black = 46,54,58).
+            # VertexColor does not decode these authored sRGB reflectances.
+            decode = lib.create_material_expression(mat, u.MaterialExpressionCustom)
+            inp = u.CustomInput(); inp.set_editor_property('input_name', 'Encoded')
+            decode.set_editor_property('inputs', [inp])
+            decode.set_editor_property('output_type', u.CustomMaterialOutputType.CMOT_FLOAT3)
+            decode.set_editor_property('code', 'float3 c=saturate(Encoded.rgb); return lerp(c/12.92,pow((c+.055)/1.055,2.4),step(.04045,c));')
+            lib.connect_material_expressions(color, '', decode, 'Encoded')
+            base_color = decode
+        if not lib.connect_material_property(base_color, '', u.MaterialProperty.MP_BASE_COLOR):
             raise RuntimeError('Vertex colour connection failed '+name)
         for value, prop in [(roughness, u.MaterialProperty.MP_ROUGHNESS), (metallic, u.MaterialProperty.MP_METALLIC)]:
             node = lib.create_material_expression(mat, u.MaterialExpressionConstant)
@@ -64,6 +75,9 @@ def _build_avatar():
             raise RuntimeError('Material save failed '+name)
         return mat
     suit = material('M_DiverSuit', .83, suit=True)
+    if materials_only:
+        u.log('DIVE_AVATAR_MATERIALS_OK suit_rgb=srgb_decoded meshes_unchanged=1')
+        return
     rubber = material('M_DiverRubber', .67)
     metal = material('M_DiverCylinder', .35, .6)
     fin = material('M_DiverFin', .65, fin=True)
@@ -135,4 +149,4 @@ def _build_avatar():
 
 
 if __name__ == '__main__':
-    build_avatar()
+    build_avatar('-DiveAvatarMaterialsOnly' in u.SystemLibrary.get_command_line().split())

@@ -41,7 +41,7 @@ Am 27. November zeigt das Abschlussbild der Walenstadt-Leistungsmessung im Paket
 
 ## Umsetzungsstand während des Engine-Builds
 
-Im Hauptprojekt vorbereitet, **noch nicht nativ kompiliert oder visuell abgenommen**:
+Während des Engine-Builds vorbereitet; inzwischen nativ kompiliert und bei 1600 × 900 geprüft (Nachweise unten). **Die vollständige Designabnahme bleibt offen**:
 
 - Drei feste Hauptbereiche mit gemeinsamer Navigation und Hauptaktion; getrennte Pause mit Übersicht aller aktiven Warnungen. Konfiguration bleibt während des laufenden Tauchgangs gesperrt.
 - Gemessener Textumbruch, begrenzte Textflächen, sichtbarer Tastaturfokus, Tab/Pfeiltasten und Enter/Leertaste sowie vorhersehbare Esc-Rückkehr. Deutsche HUD-/Menübeschriftungen wurden korrigiert.
@@ -81,6 +81,29 @@ Zwei 60-sekündige Unterwasser-Umläufe im Quellcode-Editor wurden mit der gewö
 - Walenstadt: zentrale Sicht frei, aber eine grosse graue Körper-/Ausrüstungsfläche verdeckt weiterhin den unteren Bildbereich. Kopf am 65°-Limit, 1.354 blockierte Haltungsschritte. Das genaue Mesh ist aus dem Bild allein noch nicht bestimmt. **FPV-Bildabnahme nicht bestanden.** Durchschnittlich 74,61 FPS, 1-%-Low 50,52 FPS, maximal 35,36 ms; ein Frame über 33,33 ms.
 
 Der [Prüfnachweis](SOURCE_FPV_PERFORMANCE_RESULTS.json) bindet Bilder, Logs, CSV, Quellen-/DLL-Kennungen und Kameraposen. Die 60-FPS-Grenze wurde nicht in jedem Frame eingehalten. Unterschiedliche Kamerawege, Profile und Editor-/Paketstände erlauben keinen direkten Geschwindigkeitsvergleich mit älteren Messungen. Je ein Abschlussbild beweist nicht den gesamten Bewegungspfad. Nächster FPV-Schritt: die konkrete verdeckende Geometrie bei blockierter Körperdrehung identifizieren und die Haltung beziehungsweise Sichtgeometrie gezielt korrigieren; die akzeptierte Kopfrotation und Körperkollision bleiben massgeblich.
+
+
+### Verdeckung eingegrenzt und entspannte Armhaltung korrigiert
+
+Die anschliessende explizite Editor-Diagnose hält den Endpunkt des Walenstadt-Umlaufs fest und erstellt drei Aufnahmen: vollständig, ohne Anzugmesh und mit wiederhergestelltem Mesh. Zusätzlich exportiert sie dessen tatsächlich verformte LOD0-Geometrie in Kamerakoordinaten. Die Fläche verschwindet nur in der Aufnahme ohne Anzug. Strahlabfragen auf die sichtbare Fläche ordnen die betreffenden Dreiecke dem Unterarm (`lower_l`, importierte Bone-Bezeichnung) und am rechten Rand dem Oberarm zu. Sie liegen etwa 33–40 cm vor der Kamera. Damit ist diese konkrete Verdeckung als Arm identifiziert; sie war kein Kopf- oder Flaschenmesh.
+
+Die entspannten Handziele liegen jetzt zehn Zentimeter tiefer: rechts −30 statt −20 cm, links −28 statt −18 cm. Ablesestellung und Gelenklängen bleiben erhalten. Dieselben Ziele treiben sichtbare Arme und Kontaktgeometrie; die Kollision wird nicht umgangen. Die neue native Walenstadt-Aufnahme erreicht weiterhin die 65°-Kopfgrenze, zeigt aber keine grosse Armfläche mehr oberhalb der Instrumente. Keine der neun festgelegten Stichproben trifft nun das Anzugmesh; vorher waren es fünf, davon mehrere oberhalb des HUD. Diese Stichproben sind keine vollständige Prüfung aller Bildpixel oder Haltungen. Weltposition und absoluter Kurs unterscheiden sich durch den geänderten Kontaktverlauf; die Aufnahmen sind kein identischer Landschafts-/Lichtvergleich.
+
+Zusätzlich dekodiert `M_DiverSuit` die sRGB-kodierten FBX-Vertexfarben in lineare Reflexionsfarben. Die im nativen Buffer gemessenen Grundwerte 46/54/58 entsprechen nach Dekodierung 0,0273/0,0369/0,0423 und damit den in Blender angelegten 0,028/0,037/0,043 innerhalb der 8-Bit-Quantisierung. Die vorher direkte Auswertung stellte den Anzug zu hell dar. Alpha, Hautgeometrie und Hautgewichte werden nicht verändert. Die Farbbehandlung weiterer Ausrüstungsteile gehört zur verbleibenden Materialprüfung.
+
+Die beiden Originalaufnahmen sind [vorher](Images/FPV_BlockedArm_Before.png) und [mit entspannter Armhaltung](Images/FPV_RelaxedArms.png) erhalten. Die Nachweise sind im [FPV-Ergebnisbericht](FPV_ARM_CLEARANCE_RESULTS.json) gebunden. Alle 35 nativen Tests mit der neuen Armhaltung sind bestanden. Ebenso bestanden sind sechs Ausrüstungsvarianten mit je 25 Testphasen und elf Aufnahmen (150 Phasen, 66 Bilder). Alle sechs Kontaktbögen und ausgewählte Originalbilder wurden betrachtet; echte Mausbewegungen, weitere Kopfstellungen, Bewegungspfade und das aktualisierte Spielpaket bleiben eigene Prüfungen.
+
+Beim nativen Ablesen verdeckte der kurzzeitige F1-/Esc-Hinweis die unterste Zeile des Handgelenkcomputers. Während der Computer angehoben ist, werden Hinweise und die Abschlussaktion deshalb unter der linken Statusanzeige angeordnet. Die Höhe der Hinweisbox folgt dem gemessenen Textumbruch. Die zusätzliche HUD-Änderung wurde nach der vollständigen Arm-/Ausrüstungsmatrix separat gebaut; der erneute native UI-Lauf besteht alle 28 Schritte mit 14 frischen Bildern ohne gemeldeten Textüberlauf. Die [Originalaufnahme beim Ablesen](Images/FPV_WristComputer_Clear.png) zeigt die unterste Computerzeile vollständig und die kompakte Hinweisbox links. Der separate Avatar-Lauf prüft zusätzlich 25 Phasen der ersten Ausrüstungsvariante. Weitere Auflösungen und lange Hinweise sind damit noch nicht vollständig visuell geprüft.
+
+Reproduktion der gezielten Diagnose:
+
+```powershell
+./Tools/Benchmark.ps1 -EngineRoot Builds/UE584 -EditorSandbox -SandboxName SourceEditorSandbox `
+    -WaterPreview -FPVProbe -Scenario underwater -Entry 2 -Resolution 1080p -Quality 2 -Seconds 60
+./Tools/.geodata-env/Scripts/python.exe Tools/ReportFPVProbe.py <Ergebnisordner>
+```
+
+Die Sichtbarkeitsumschaltung läuft ausschliesslich nach dem Messintervall im ausdrücklich angeforderten Editor-Probe-Modus. Der normale Spielablauf blendet den Anzug nicht aus. Der Bericht klassifiziert zweisichtig getestete CPU-Dreiecke von LOD0; tatsächliche Render-LOD, andere verdeckende Objekte und temporale Effekte begrenzen seine Aussage. Drei portable Tests prüfen bekannte Strahltreffer, Near-Plane/negative Tiefe und Auflösungsumrechnung.
 
 ## Originalreferenzen
 

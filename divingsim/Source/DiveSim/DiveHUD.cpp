@@ -44,7 +44,7 @@ float ADiveHUD::TextWidth(const FString& Value,float Size)
     return FSlateApplication::Get().GetRenderer()->GetFontMeasureService()->Measure(Value,font).X/Scale;
 }
 
-float ADiveHUD::TextBlock(const FString& Value,float X,float Y,float W,float Size,FLinearColor Color,int32 MaxLines)
+float ADiveHUD::TextBlock(const FString& Value,float X,float Y,float W,float Size,FLinearColor Color,int32 MaxLines,bool MeasureOnly)
 {
     TArray<FString> paragraphs,lines;
     Value.ParseIntoArrayLines(paragraphs,false);
@@ -61,6 +61,7 @@ float ADiveHUD::TextBlock(const FString& Value,float X,float Y,float W,float Siz
         lines.Add(line);
     }
     const int32 count=FMath::Min(MaxLines,lines.Num());
+    if(MeasureOnly) return count*(Size+5);
     for(int32 i=0;i<count;++i)
     {
         FString line=lines[i];
@@ -160,10 +161,22 @@ void ADiveHUD::DrawHUD()
         if(Diver->bTutorialActive) TutorialOverlay();
         if(Diver->bNoticeEnglish==Diver->bEnglish&&GetWorld()->GetTimeSeconds()<Diver->NoticeUntil)
         {
-            Rect(450,690,700,64,Dark); TextBlock(Diver->Notice,468,702,664,16,White,2);
+            if(Diver->bShowComputer)
+            {
+                const float height=TextBlock(Diver->Notice,44,222,294,16,White,5,true);
+                Rect(26,210,330,height+24,Dark);
+                TextBlock(Diver->Notice,44,222,294,16,White,5);
+            }
+            else
+            { Rect(450,690,700,64,Dark);TextBlock(Diver->Notice,468,702,664,16,White,2); }
         }
         if(Diver->Simulation.Settings.Rules().AutomaticHints&&Diver->CanFinishDive()&&!Diver->bShowMap)
-        { Rect(570,644,460,36,Dark); TextBlock(TEXT("[ ")+Diver->KeyText(EDiveAction::Finish)+TEXT(" ]  ")+Diver->Local(TEXT("Tauchgang abschliessen"),TEXT("Finish dive")),586,652,428,16,Accent,1); }
+        {
+            const FString hint=TEXT("[ ")+Diver->KeyText(EDiveAction::Finish)+TEXT(" ]  ")+Diver->Local(TEXT("Tauchgang abschliessen"),TEXT("Finish dive"));
+            if(Diver->bShowComputer)
+            { Rect(26,351,330,56,Dark);TextBlock(hint,44,359,294,16,Accent,2); }
+            else { Rect(570,644,460,36,Dark);TextBlock(hint,586,652,428,16,Accent,1); }
+        }
         if(Diver->bShowMap) Map();
         else Text(TEXT("+"),795,445,14,FLinearColor(.75,.9,.86,.45));
     }

@@ -66,7 +66,7 @@ private:
     bool bUIOverflow=false;
     bool bUIAudit=false;
     float TextWidth(const FString& Value,float Size);
-    float TextBlock(const FString& Value,float X,float Y,float W,float Size,FLinearColor Color,int32 MaxLines=2);
+    float TextBlock(const FString& Value,float X,float Y,float W,float Size,FLinearColor Color,int32 MaxLines=2,bool MeasureOnly=false);
     void Text(const FString& Value,float X,float Y,float Size,FLinearColor Color);
     void Rect(float X,float Y,float W,float H,FLinearColor Color);
     void Line(float X,float Y,float X2,float Y2,FLinearColor Color,float Thickness=1);

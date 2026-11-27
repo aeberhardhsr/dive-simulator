@@ -16,6 +16,7 @@ param(
     [switch]$OnlyParticles,
     [switch]$OnlySediment,
     [switch]$OnlyAvatar,
+    [switch]$OnlyAvatarMaterials,
     [switch]$OnlyBed,
     [switch]$OnlyBenthic,
     [switch]$OnlyBenthicColor,
@@ -68,11 +69,12 @@ if ($Target -eq 'Content') {
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
     if($OnlyParticles) { $script=Join-Path $PSScriptRoot 'build_particle_content.py' }
     if($OnlySediment) { $script=Join-Path $PSScriptRoot 'build_sediment_content.py' }
-    if($OnlyAvatar) { $script=Join-Path $PSScriptRoot 'build_avatar_content.py' }
+    if($OnlyAvatar -or $OnlyAvatarMaterials) { $script=Join-Path $PSScriptRoot 'build_avatar_content.py' }
     if($OnlyBed) { $script=Join-Path $PSScriptRoot 'build_bed_content.py' }
     if($OnlyBenthic) { $script=Join-Path $PSScriptRoot 'build_benthic_content.py' }
     if($OnlyBenthicColor) { $script=Join-Path $PSScriptRoot 'build_benthic_color.py' }
     $contentOptions=@()
+    if($OnlyAvatarMaterials) { $contentOptions+='-DiveAvatarMaterialsOnly' }
     if($OnlyPlantMaterial) { $contentOptions+='-DivePlantMaterialOnly' }
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     if($OnlyWater) { $contentOptions+='-DiveWaterOnly' }

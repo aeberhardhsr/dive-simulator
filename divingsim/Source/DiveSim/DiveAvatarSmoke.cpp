@@ -113,10 +113,10 @@ bool ADiveHUD::AvatarSmokeTest(int phase)
         if(auto* pc=Cast<APlayerController>(Diver->GetController())) pc->SetControlRotation(FRotator(0,pc->GetControlRotation().Yaw,0));
         Diver->bRegulatorInMouth=false;
     }
-    if(phase==20) { Diver->SetMenu(true);NotifyHitBoxClick(TEXT("avatar_view")); }
+    if(phase==20) { Diver->SetMenu(true);NotifyHitBoxClick(TEXT("loadout"));NotifyHitBoxClick(TEXT("avatar_view")); }
     if(phase==21) { shot(TEXT("RegulatorOut"));return avatar->IsInspection()&&!Diver->bRegulatorInMouth; }
     if(phase==22) { Diver->ResumeDive();Diver->bRegulatorInMouth=true; }
-    if(phase==23) Diver->SetMenu(true);
+    if(phase==23) { Diver->SetMenu(true);NotifyHitBoxClick(TEXT("loadout"));NotifyHitBoxClick(TEXT("avatar_view")); }
     if(phase==24) { shot(TEXT("RegulatorIn"));return avatar->IsInspection()&&Diver->bRegulatorInMouth; }
     return true;
 }

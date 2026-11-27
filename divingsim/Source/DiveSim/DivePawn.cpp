@@ -392,6 +392,12 @@ void ADivePawn::StartDive()
 void ADivePawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+#if WITH_EDITOR
+    // Explicit diagnostic only: keep the accepted endpoint pose unchanged
+    // while comparing the rendered suit with the same view without it.
+    if(bPerformance&&PerformancePhase>=2&&FParse::Param(FCommandLine::Get(),TEXT("DiveFPVProbe")))
+    { TickPerformance();return; }
+#endif
     if(const auto saved=RecordingWriter.Poll(); saved.IsSet())
     {
         if(saved->bSuccess) ++SoakSaves; else ++SoakSaveErrors;

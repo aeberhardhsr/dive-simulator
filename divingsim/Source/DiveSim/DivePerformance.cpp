@@ -19,8 +19,62 @@
 #include "Misc/EngineVersion.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#if WITH_EDITOR
+#include "DiveEquipment.h"
+#include "DiveAvatar.h"
+#include "Components/PoseableMeshComponent.h"
+#include "Engine/SkeletalMesh.h"
+#include "Rendering/SkeletalMeshRenderData.h"
+#endif
 
 CSV_DEFINE_CATEGORY(DivePerf,true);
+
+#if WITH_EDITOR
+namespace
+{
+bool SaveFPVGeometry(ADivePawn* Pawn,const FString& Directory)
+{
+    auto* suit=Pawn->Equipment&&Pawn->Equipment->Avatar?Pawn->Equipment->Avatar->Suit.Get():nullptr;
+    auto* asset=suit?Cast<USkeletalMesh>(suit->GetSkinnedAsset()):nullptr;
+    auto* render=asset?asset->GetResourceForRendering():nullptr;
+    if(!render||render->LODRenderData.IsEmpty()) return false;
+    auto& lod=render->LODRenderData[0];
+    TArray<FMatrix44f> matrices;suit->GetCurrentRefToLocalMatrices(matrices,0);
+    TArray<FVector3f> positions;
+    USkinnedMeshComponent::ComputeSkinnedPositions(suit,positions,matrices,lod,*lod.GetSkinWeightVertexBuffer());
+    const FTransform view=Pawn->Camera->GetComponentTransform();
+    TArray<TSharedPtr<FJsonValue>> vertices;
+    for(int32 i=0;i<positions.Num();++i)
+    {
+        const FVector point=view.InverseTransformPosition(suit->GetComponentTransform().TransformPosition(FVector(positions[i])));
+        const auto* section=lod.RenderSections.FindByPredicate([i](const auto& s){return i>=static_cast<int32>(s.BaseVertexIndex)&&i<static_cast<int32>(s.BaseVertexIndex+s.NumVertices);});
+        int32 influence=0;const auto* weights=lod.GetSkinWeightVertexBuffer();
+        for(uint32 j=1;j<weights->GetMaxBoneInfluences();++j)
+            if(weights->GetBoneWeight(i,j)>weights->GetBoneWeight(i,influence)) influence=j;
+        const int32 localBone=weights->GetBoneIndex(i,influence);
+        const FString bone=section&&section->BoneMap.IsValidIndex(localBone)?asset->GetRefSkeleton().GetBoneName(section->BoneMap[localBone]).ToString():TEXT("unknown");
+        const FColor color=lod.StaticVertexBuffers.ColorVertexBuffer.GetNumVertices()>static_cast<uint32>(i)?lod.StaticVertexBuffers.ColorVertexBuffer.VertexColor(i):FColor::White;
+        TArray<TSharedPtr<FJsonValue>> row;
+        for(double n:{point.X,point.Y,point.Z}) row.Add(MakeShared<FJsonValueNumber>(n));
+        row.Add(MakeShared<FJsonValueString>(bone));
+        for(uint8 n:{color.R,color.G,color.B}) row.Add(MakeShared<FJsonValueNumber>(n));
+        vertices.Add(MakeShared<FJsonValueArray>(row));
+    }
+    TArray<uint32> indices;lod.MultiSizeIndexContainer.GetIndexBuffer(indices);
+    TArray<TSharedPtr<FJsonValue>> triangles;
+    for(uint32 i:indices) triangles.Add(MakeShared<FJsonValueNumber>(i));
+    auto root=MakeShared<FJsonObject>();
+    root->SetStringField(TEXT("mesh"),asset->GetPathName());
+    root->SetStringField(TEXT("coordinates"),TEXT("camera centimetres: X forward, Y right, Z up; vertex rows XYZ, dominant bone, RGB8"));
+    root->SetNumberField(TEXT("horizontal_fov_degrees"),Pawn->Camera->FieldOfView);
+    root->SetNumberField(TEXT("body_pitch"),Pawn->PhysicalPose.BodyPitch);
+    root->SetNumberField(TEXT("head_yaw"),Pawn->PhysicalPose.HeadYaw);
+    root->SetArrayField(TEXT("vertices"),vertices);root->SetArrayField(TEXT("indices"),triangles);
+    FString json;
+    return FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&json))&&FFileHelper::SaveStringToFile(json,*(Directory/TEXT("FPVGeometry.json")));
+}
+}
+#endif
 
 void ADivePawn::SetupPerformance()
 {
@@ -154,15 +208,49 @@ void ADivePawn::TickPerformance()
             FFileHelper::SaveStringToFile(json,*(PerformanceDirectory/TEXT("Metadata.json")))&&IFileManager::Get().FileSize(*csv)>1000;
         if(!valid) { UE_LOG(LogTemp,Error,TEXT("DIVE_PERF_FAIL missing capture or metadata")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         FScreenshotRequest::RequestScreenshot(PerformanceDirectory/TEXT("Frame.png"),true,false);
+#if WITH_EDITOR
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveFPVProbe"))&&!SaveFPVGeometry(this,PerformanceDirectory))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_FPV_PROBE_FAIL geometry export"));FPlatformMisc::RequestExitWithStatus(false,1);return; }
+#endif
         PerformancePhase=3; PerformanceStarted=now;
     }
     if(PerformancePhase==3&&now-PerformanceStarted>2)
     {
+#if WITH_EDITOR
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveFPVProbe")))
+        {
+            Equipment->Avatar->Suit->SetVisibility(false);
+            PerformancePhase=4;PerformanceStarted=now;return;
+        }
+#endif
         const bool valid=IFileManager::Get().FileSize(*(PerformanceDirectory/TEXT("Frame.png")))>10000&&bSmokeChunkLimit;
         FinishDive(valid?TEXT("smoke_perf_capture"):TEXT("smoke_perf_failed"));
         UE_LOG(LogTemp,Display,TEXT("DIVE_PERF_%s directory=%s"),valid?TEXT("CAPTURE_READY"):TEXT("FAIL"),*PerformanceDirectory);
         FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
     }
+#if WITH_EDITOR
+    if(PerformancePhase==4&&now-PerformanceStarted>1)
+    {
+        FScreenshotRequest::RequestScreenshot(PerformanceDirectory/TEXT("Frame_NoSuit.png"),true,false);
+        PerformancePhase=5;PerformanceStarted=now;
+    }
+    if(PerformancePhase==5&&now-PerformanceStarted>2)
+    {
+        Equipment->Avatar->Suit->SetVisibility(true);
+        FScreenshotRequest::RequestScreenshot(PerformanceDirectory/TEXT("Frame_Restored.png"),true,false);
+        PerformancePhase=6;PerformanceStarted=now;
+    }
+    if(PerformancePhase==6&&now-PerformanceStarted>2)
+    {
+        bool valid=bSmokeChunkLimit;
+        for(const TCHAR* name:{TEXT("Frame.png"),TEXT("Frame_NoSuit.png"),TEXT("Frame_Restored.png"),TEXT("FPVGeometry.json")})
+            valid&=IFileManager::Get().FileSize(*(PerformanceDirectory/name))>10000;
+        UE_LOG(LogTemp,Display,TEXT("DIVE_FPV_PROBE_%s head_yaw=%.3f body_pitch=%.3f"),valid?TEXT("PASS"):TEXT("FAIL"),PhysicalPose.HeadYaw,PhysicalPose.BodyPitch);
+        FinishDive(TEXT("smoke_fpv_probe"));
+        UE_LOG(LogTemp,Display,TEXT("DIVE_PERF_%s directory=%s"),valid?TEXT("CAPTURE_READY"):TEXT("FAIL"),*PerformanceDirectory);
+        FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
+    }
+#endif
     if(PerformancePhase==2&&now-PerformanceCaptureStarted>PerformanceSeconds+30)
     { UE_LOG(LogTemp,Error,TEXT("DIVE_PERF_FAIL CSV write timeout")); FPlatformMisc::RequestExitWithStatus(false,1); }
 #else

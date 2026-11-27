@@ -11,6 +11,7 @@ param(
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [switch]$DisableNanite,
     [switch]$WaterPreview,
+    [switch]$FPVProbe,
     [switch]$SpectralView,
     [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [switch]$ImmediateGravelRetirement,
@@ -23,6 +24,7 @@ $ErrorActionPreference='Stop'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
+if($FPVProbe -and (-not $Editor -or $Scenario -ne 'underwater')) {throw 'FPVProbe requires an editor underwater benchmark.'}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
@@ -46,6 +48,7 @@ $context=[ordered]@{
     absorption_gain=$AbsorptionGain
     editor_sandbox=[bool]$EditorSandbox
     sandbox_name=$SandboxName
+    fpv_probe=[bool]$FPVProbe
     source_head=(& git -C $repo rev-parse HEAD)
     source_dirty=[bool](& git -C $repo status --porcelain)
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
@@ -69,6 +72,7 @@ $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
 if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
 if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
+if($FPVProbe) {$arguments+=' -DiveFPVProbe'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -115,7 +119,12 @@ foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS
 if($log -notmatch 'DIVE_PERF_CAPTURE_READY directory=([^\r\n]+)') { throw 'No completed capture was reported.' }
 $captureDir=$Matches[1].Trim()
 if($SpectralView -and $log -notmatch ('DIVE_SPECTRAL_VIEW_READY gain='+$AbsorptionGain.ToString('F3',[Globalization.CultureInfo]::InvariantCulture)+' samples=16 fog_resource=1 stage=BeforeDOF')) {throw 'Missing spectral rendering pass.'}
-foreach($name in @('Capture.csv','Metadata.json','Frame.png')) {
+$captureFiles=@('Capture.csv','Metadata.json','Frame.png')
+if($FPVProbe) {
+    if($log -notmatch 'DIVE_FPV_PROBE_PASS') {throw 'FPV probe did not complete.'}
+    $captureFiles+=@('FPVGeometry.json','Frame_NoSuit.png','Frame_Restored.png')
+}
+foreach($name in $captureFiles) {
     $source=Get-Item -LiteralPath (Join-Path $captureDir $name)
     if($source.LastWriteTimeUtc -lt $started -or $source.Length -lt 100) { throw "Missing fresh benchmark artifact: $name" }
     Copy-Item -LiteralPath $source.FullName -Destination (Join-Path $resultDir $name)
