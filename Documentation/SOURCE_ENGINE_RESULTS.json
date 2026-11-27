@@ -16,7 +16,7 @@
   },
   "renderer_patch_manifest": {
     "status": "prepared_not_compiled",
-    "engine": "O:\\games\\dive game\\Builds\\UE584",
+    "engine": "C:\\Program Files\\Epic Games\\UE_5.8",
     "binding_revision": 1,
     "installed_engine_modified": false,
     "files": [
@@ -28,7 +28,7 @@
       {
         "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
         "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
-        "prepared_sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+        "prepared_sha256": "f72140569bbbb6a4d2956feafd59b5b20ae53f5fd38552dc3777cc36259993e7"
       }
     ]
   },
@@ -39,7 +39,7 @@
     },
     {
       "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
-      "sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+      "sha256": "f72140569bbbb6a4d2956feafd59b5b20ae53f5fd38552dc3777cc36259993e7"
     }
   ],
   "shader_manifest": {
@@ -65,5 +65,25 @@
   "project_sandbox": "Builds/SourceEditorSandbox/divingsim",
   "sandbox_script_parse": "passed",
   "sandbox_path_traversal_rejection": "passed",
-  "installed_renderer_originals_unchanged": true
+  "installed_renderer_originals_unchanged": true,
+  "previous_prepared_patch_manifest": {
+    "status": "prepared_not_compiled",
+    "engine": "O:\\games\\dive game\\Builds\\UE584",
+    "binding_revision": 1,
+    "installed_engine_modified": false,
+    "files": [
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+        "original_sha256": "d4280790d78f8350826c3b34f619a6e7fc3987f9ed49736e5be9d07e9f08f9f9",
+        "prepared_sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+      },
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+        "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
+        "prepared_sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+      }
+    ]
+  },
+  "renderer_patch_correction": "Use the one-argument FSceneRenderer member inside ComputeVolumetricFog; applied before its pending compile action, without restarting the build.",
+  "current_patch_dry_apply_check": "passed against unchanged installed originals"
 }

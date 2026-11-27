@@ -14,6 +14,8 @@ Der Zugriff auf `EpicGames/UnrealEngine` funktioniert nach der vom Nutzer abgesc
 
 **Status: Shader-Compiler fertig; Editor-/Renderer-Build läuft. Noch kein gültiger Renderlauf mit der geänderten Engine.** Die bestehende Vorschau und die [fehlgeschlagene erste Wellenprobe](WAVE_TRANSPORT_STUDY.md) werden dadurch nicht rückwirkend geändert. Die Protokolle liegen unter `artifacts/source-engine-20261127/`; der [Zwischenbericht](SOURCE_ENGINE_RESULTS.json) bindet den abgeschlossenen Compiler-Build und die Eingangsdaten.
 
+Bei der anschliessenden Quellprüfung wurde der Aufruf in `FSceneRenderer::ComputeVolumetricFog` auf die dort vorhandene Memberfunktion `GetSceneUniformBufferRef(GraphBuilder)` korrigiert. Die ursprüngliche Variante mit zwei Argumenten wäre durch diese Memberfunktion verdeckt und damit nicht auflösbar. Die Korrektur ist vor dem Kompilieren dieser Datei in den laufenden Quellbaum übernommen worden; der Build wurde nicht neu gestartet. Die aktuelle Vorbereitung unter `renderer-patch-v2` stimmt bytegenau mit den zwei geänderten Quelldateien überein. Der frühere Patch bleibt als unkompilierter Zwischenstand erhalten.
+
 ## Getrennte Projekt-Binaries
 
 `-EditorSandbox -SandboxName SourceEditorSandbox` richtet `Builds/SourceEditorSandbox/divingsim` ein. Source, Config und Shaders werden wie in der bestehenden Sandbox kopiert; Content verweist über eine geprüfte Junction auf die vorhandenen Spielinhalte. Binaries, Intermediate und Saved bleiben getrennt von `Builds/EditorSandbox/divingsim`. Ein Sandbox-Name darf keine Pfadtrenner oder Punktsegmente enthalten. Ohne den neuen Parameter bleibt das bisherige Verhalten erhalten.

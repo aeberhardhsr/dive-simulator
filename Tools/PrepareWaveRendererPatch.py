@@ -50,7 +50,9 @@ static TAutoConsoleVariable<int32> CVarDiveWaterSceneBindingVersion(
     else:
         text = add_scene_parameter(text, 'FVolumetricFogLightScatteringCS')
         anchor = '\t\t\tFVolumetricFogLightScatteringCS::FParameters* PassParameters = GraphBuilder.AllocParameters<FVolumetricFogLightScatteringCS::FParameters>();\n'
-        text = replace_exact(text, anchor, anchor+'\t\t\tPassParameters->Scene = GetSceneUniformBufferRef(GraphBuilder, View);\n')
+        # This call is inside FSceneRenderer::ComputeVolumetricFog. Its member
+        # overload hides the namespace-level helper taking (GraphBuilder, View).
+        text = replace_exact(text, anchor, anchor+'\t\t\tPassParameters->Scene = GetSceneUniformBufferRef(GraphBuilder);\n')
     return text
 
 
