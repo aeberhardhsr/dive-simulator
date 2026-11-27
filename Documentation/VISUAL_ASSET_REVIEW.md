@@ -45,3 +45,23 @@ Reproduktion mit dem vorhandenen Geodaten-Environment:
 ```powershell
 ./Tools/.geodata-env/Scripts/python.exe Tools/prepare_surface_cover.py
 ```
+
+## Vermessene Unterwasserhänge für die nächste Grafikprüfung
+
+`Tools/analyse_bathymetry_views.py` durchsucht die vorhandenen 1-m-Tiefendaten im Umkreis von 250 m um jeden der drei Manifest-Einstiegsmarker. Diese Marker liegen im Wasser und belegen keinen öffentlichen Uferzugang. Die Suche berücksichtigt Bodentiefen von 5–35 m relativ zum Szenario-Wasserspiegel von 419 m LN02. Hangneigungen werden über 10 m berechnet; der Höhenunterschied stammt aus 25 Stichproben auf einem 20×20-m-Ausschnitt. Unvermessene Stichproben werden ausgeschlossen, nicht aufgefüllt.
+
+| Gebiet | Erster Prüfkandidat LV95 E / N | Horizontale Entfernung zum Marker | Bodentiefe | Neigung über 10 m | Höhenunterschied der Stichproben |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Weesen / West | 2726262,5 / 1221666,5 | 176,18 m | 10,30 m | 15,25° | 4,62 m |
+| Murg / Süd | 2734801,5 / 1219845,5 | 89,09 m | 18,08 m | 43,85° | 18,01 m |
+| Walenstadt / Ost | 2741080,5 / 1220624,5 | 30,41 m | 15,18 m | 36,62° | 13,29 m |
+
+Murg und Walenstadt bieten damit konkrete Kandidaten für stärker gegliederte Ansichten. Weesen bleibt als flacherer Vergleich relevant. Die Auswahl priorisiert Neigung und lokalen Höhenunterschied mit einem Entfernungsabschlag; sie bestimmt weder den jeweils steilsten Ort noch eine sichere oder durchgehend erreichbare Schwimmroute. Höhen allein belegen keine Fels-, Sediment- oder Pflanzenart.
+
+Der [reproduzierbare Bericht](BATHYMETRY_VIEW_CANDIDATES.json) enthält je drei räumlich getrennte Kandidaten, Quellprüfsummen und Kameraansätze in Unreal-Koordinaten. Die gelesenen Laufzeitdaten werden gegen die ursprünglichen Float-Höhen geprüft, einschliesslich NoData und maximal 0,005 m Quantisierungsabweichung. Die Kameraansätze liegen nominell 2 m über dem jeweiligen Bodenpunkt und schauen hangabwärts; sie sind **noch nicht im Spiel auf Sicht, Kollisionen oder Zugänglichkeit geprüft**. Terrain, Habitat und Einstiegspunkte bleiben unverändert.
+
+Nach dem Engine-Build: zuerst die Kandidaten im nativen Spiel vergleichen; dann einen vollständigen durchschwimmbaren Bereich mit Grossformen, eingebetteten Blöcken, freien Bodenflächen und Bewuchs gestalten. Die vermessene Geländeform bleibt erhalten. Diese Vorbereitung ersetzt weder die Lichtprüfung noch die visuelle Abnahme.
+
+```powershell
+./Tools/.geodata-env/Scripts/python.exe Tools/analyse_bathymetry_views.py
+```

@@ -1,0 +1,217 @@
+{
+  "status": "OFFLINE_CANDIDATES_NOT_RUNTIME_VALIDATED",
+  "manifest_sha256": "537697f0a84cb2117489ab35ace6a9eb6dffd1e929aeacdce7088c792cc2a147",
+  "tile_sha256": {
+    "swissBATHY3D_CHLV95_LN02_2726_1221.i16": "04f9184c23fb127a39b684e8b2d6e4b9bf612fa60aa85f4668fdbb4adeb75a55",
+    "swissBATHY3D_CHLV95_LN02_2734_1219.i16": "6c040da7727c422a7d72c1a69426c59c38e29d6e5bbc76e56ca8dffcbe01af0d",
+    "swissBATHY3D_CHLV95_LN02_2734_1220.i16": "f52c43db991db1b72bcf1c383e1e9f120ee0e64da2f65936e5e4da5960de22ca",
+    "swissBATHY3D_CHLV95_LN02_2735_1219.i16": "565604e0f0b34659ab24a60f5b1843eaa1b9c6fa9149f27313a648e275a38520",
+    "swissBATHY3D_CHLV95_LN02_2735_1220.i16": "db7a68a8a3805513cc71a1ea332a8e8c32d4dc4df8332b5be50247e786eea5ae",
+    "swissBATHY3D_CHLV95_LN02_2740_1220.i16": "1ac1ac11170504022c15fe0529001e2f10061368c1b8db0fc1a58307c1e33dd3",
+    "swissBATHY3D_CHLV95_LN02_2741_1220.i16": "bb375e887752432c09dc3577f9184f421fb9ad09475bf92e92d5d23913cc7123"
+  },
+  "source_float_tile_sha256": {
+    "swissBATHY3D_CHLV95_LN02_2726_1221.f32": "6e01d4a7e12d803b80809921233f5ab3395ace566ad7d9e614c7a5e534e56011",
+    "swissBATHY3D_CHLV95_LN02_2734_1219.f32": "0ae2c3f2937aaaf4be41086669ffe86c52fd9862bab989c775eb0bf4d3f7672f",
+    "swissBATHY3D_CHLV95_LN02_2734_1220.f32": "d835393dcc19403b3205ecc0d9a335fdb2516e8836dfab2f9ada7a70634a1bb6",
+    "swissBATHY3D_CHLV95_LN02_2735_1219.f32": "edb391008a8ce35c05fd1dd747e2a6054ce8516c4272667c13fd876857d668ba",
+    "swissBATHY3D_CHLV95_LN02_2735_1220.f32": "77aefec49e15ec04fe4a6202f1a5883a2158a6c384314515f2f8c38bd5912aef",
+    "swissBATHY3D_CHLV95_LN02_2740_1220.f32": "6180cc87781909f3ab36d09d7155f5da5519a2412e2900d28def62080c6f9821",
+    "swissBATHY3D_CHLV95_LN02_2741_1220.f32": "e8303543cf8edae7708377a7aeabcf905a93a640c774fbbae1f4a1b35c24e6ba"
+  },
+  "source_validation": {
+    "checked_local_samples": 390425,
+    "max_height_encoding_error_m": 0.005000000000009663,
+    "nodata_equal": true
+  },
+  "water_reference_m_LN02": 419.0,
+  "method": {
+    "radius_m": 250,
+    "bed_depth_band_m": [
+      5,
+      35
+    ],
+    "slope_baseline_m": 10,
+    "relief_samples": 25,
+    "relief_sample_spacing_m": 5,
+    "candidate_separation_m": 40,
+    "score": "slope_degrees + 0.5 * sampled_relief_m - 0.04 * horizontal_distance_m"
+  },
+  "limitations": [
+    "No terrain, habitat, collision, entry or camera setting has been changed.",
+    "Depths use scenario water reference, not current lake level.",
+    "Relief is the range of 25 samples, not every cell in the square.",
+    "NoData is excluded, never filled; unsampled gaps can remain between stencil points.",
+    "Horizontal distance does not establish an accessible swimming route.",
+    "Manifest entry markers are offshore game references, not surveyed public shore access points.",
+    "Height data does not identify rock, sediment or vegetation.",
+    "Camera is nominally 2 m above its centre bed sample; collision and view require native inspection."
+  ],
+  "entries": [
+    {
+      "entry": {
+        "name": "Weesen / West",
+        "east": 2726086.5,
+        "north": 1221674.5
+      },
+      "eligible_cells": 42811,
+      "candidates": [
+        {
+          "east": 2726262.5,
+          "north": 1221666.5,
+          "bed_depth_m": 10.3,
+          "entry_horizontal_distance_m": 176.18,
+          "slope_10m_degrees": 15.25,
+          "sampled_relief_20m_m": 4.62,
+          "camera_world_cm": [
+            266650.0,
+            26250.0,
+            -830.0
+          ],
+          "camera_yaw_degrees": 98.01,
+          "camera_pitch_degrees": -10
+        },
+        {
+          "east": 2726334.5,
+          "north": 1221651.5,
+          "bed_depth_m": 11.73,
+          "entry_horizontal_distance_m": 249.06,
+          "slope_10m_degrees": 16.21,
+          "sampled_relief_20m_m": 7.61,
+          "camera_world_cm": [
+            265150.0,
+            33450.0,
+            -973.0
+          ],
+          "camera_yaw_degrees": -141.0,
+          "camera_pitch_degrees": -10
+        },
+        {
+          "east": 2726082.5,
+          "north": 1221576.5,
+          "bed_depth_m": 6.24,
+          "entry_horizontal_distance_m": 98.08,
+          "slope_10m_degrees": 9.63,
+          "sampled_relief_20m_m": 5.3,
+          "camera_world_cm": [
+            257650.0,
+            8250.0,
+            -424.0
+          ],
+          "camera_yaw_degrees": 33.22,
+          "camera_pitch_degrees": -10
+        }
+      ]
+    },
+    {
+      "entry": {
+        "name": "Murg / Sued",
+        "east": 2734890.5,
+        "north": 1219849.5
+      },
+      "eligible_cells": 23411,
+      "candidates": [
+        {
+          "east": 2734801.5,
+          "north": 1219845.5,
+          "bed_depth_m": 18.08,
+          "entry_horizontal_distance_m": 89.09,
+          "slope_10m_degrees": 43.85,
+          "sampled_relief_20m_m": 18.01,
+          "camera_world_cm": [
+            84550.0,
+            880150.0,
+            -1608.0
+          ],
+          "camera_yaw_degrees": -33.19,
+          "camera_pitch_degrees": -10
+        },
+        {
+          "east": 2735102.5,
+          "north": 1219737.5,
+          "bed_depth_m": 27.77,
+          "entry_horizontal_distance_m": 239.77,
+          "slope_10m_degrees": 50.66,
+          "sampled_relief_20m_m": 15.76,
+          "camera_world_cm": [
+            73750.0,
+            910250.0,
+            -2577.0
+          ],
+          "camera_yaw_degrees": 109.49,
+          "camera_pitch_degrees": -10
+        },
+        {
+          "east": 2734761.5,
+          "north": 1219850.5,
+          "bed_depth_m": 26.84,
+          "entry_horizontal_distance_m": 129.0,
+          "slope_10m_degrees": 43.96,
+          "sampled_relief_20m_m": 16.22,
+          "camera_world_cm": [
+            85050.0,
+            876150.0,
+            -2484.0
+          ],
+          "camera_yaw_degrees": 7.51,
+          "camera_pitch_degrees": -10
+        }
+      ]
+    },
+    {
+      "entry": {
+        "name": "Walenstadt / Ost",
+        "east": 2741110.5,
+        "north": 1220619.5
+      },
+      "eligible_cells": 47400,
+      "candidates": [
+        {
+          "east": 2741080.5,
+          "north": 1220624.5,
+          "bed_depth_m": 15.18,
+          "entry_horizontal_distance_m": 30.41,
+          "slope_10m_degrees": 36.62,
+          "sampled_relief_20m_m": 13.29,
+          "camera_world_cm": [
+            162450.0,
+            1508050.0,
+            -1318.0
+          ],
+          "camera_yaw_degrees": -144.09,
+          "camera_pitch_degrees": -10
+        },
+        {
+          "east": 2741047.5,
+          "north": 1220647.5,
+          "bed_depth_m": 25.41,
+          "entry_horizontal_distance_m": 68.94,
+          "slope_10m_degrees": 29.82,
+          "sampled_relief_20m_m": 10.18,
+          "camera_world_cm": [
+            164750.0,
+            1504750.0,
+            -2341.0
+          ],
+          "camera_yaw_degrees": -118.44,
+          "camera_pitch_degrees": -10
+        },
+        {
+          "east": 2741075.5,
+          "north": 1220578.5,
+          "bed_depth_m": 10.45,
+          "entry_horizontal_distance_m": 53.91,
+          "slope_10m_degrees": 25.92,
+          "sampled_relief_20m_m": 13.95,
+          "camera_world_cm": [
+            157850.0,
+            1507550.0,
+            -845.0
+          ],
+          "camera_yaw_degrees": -43.25,
+          "camera_pitch_degrees": -10
+        }
+      ]
+    }
+  ]
+}
