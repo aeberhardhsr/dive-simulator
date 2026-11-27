@@ -9,6 +9,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater,
+    [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
     [ValidateSet('none','direct','sky','indirect')][string]$LightIsolation='none',
@@ -27,6 +28,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
 $ErrorActionPreference='Stop'
 if($PSBoundParameters.ContainsKey('WaterVolumeGain') -and -not $BoundedWater) {throw 'WaterVolumeGain requires BoundedWater.'}
 if($DisableLighting -and $Packaged) { throw 'Unlit diagnostic requires the native editor runtime.' }
+if($WaterReflection -ne 'default' -and -not $WaterInterface) { throw 'WaterReflection requires WaterInterface.' }
+if($WaterReflection -eq 'hit' -and -not $HardwareLumen) { throw 'Hit lighting requires HardwareLumen.' }
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
 $project=Join-Path $repo 'divingsim/divingsim.uproject'
@@ -54,6 +57,9 @@ if($LightIsolation -eq 'sky') {$consoleCommands+='ShowFlag.SkyLighting 0'}
 if($LightIsolation -eq 'indirect') {$consoleCommands+='ShowFlag.GlobalIllumination 0'}
 if($DisableVolumetrics) { $consoleCommands+='r.VolumetricFog 0' }
 if($HardwareLumen) { $consoleCommands+='r.Lumen.HardwareRayTracing 1' }
+if($WaterReflection -eq 'cache') { $consoleCommands+='r.Lumen.TranslucencyReflections.FrontLayer.Allow 0' }
+if($WaterReflection -in @('front','hit')) { $consoleCommands+='r.Lumen.TranslucencyReflections.FrontLayer.Allow 1'; $consoleCommands+='r.Lumen.TranslucencyReflections.FrontLayer.Enable 1' }
+if($WaterReflection -eq 'hit') { $consoleCommands+='r.Lumen.HardwareRayTracing.HitLighting.Allowed 1'; $consoleCommands+='r.Lumen.HardwareRayTracing.LightingMode 2' }
 if($DisableLighting) { $consoleCommands+='viewmode unlit'; $consoleCommands+='ShowFlag.PostProcessing 0' }
 if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }

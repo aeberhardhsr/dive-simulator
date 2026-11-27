@@ -30,7 +30,9 @@ def build_underwater_interface(wave_code):
     white.set_editor_property('constant',u.LinearColor(1,1,1,1))
     lib.connect_material_property(white,'',u.MaterialProperty.MP_BASE_COLOR)
     scalar(1,u.MaterialProperty.MP_METALLIC)
-    scalar(.08,u.MaterialProperty.MP_ROUGHNESS)
+    # Resolved waves already supply the surface slopes. Keep only a small
+    # unresolved micro-roughness instead of blurring the entire reflected scene.
+    scalar(.02,u.MaterialProperty.MP_ROUGHNESS)
     scalar(1/1.333,u.MaterialProperty.MP_REFRACTION)
     nodes={'P':lib.create_material_expression(m,u.MaterialExpressionWorldPosition),
            'View':lib.create_material_expression(m,u.MaterialExpressionCameraVectorWS)}

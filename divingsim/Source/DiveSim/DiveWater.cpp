@@ -162,7 +162,7 @@ bool ADiveWorld::ValidateWater(FString& Error) const
     if(bWaterInterface)
     {
         const auto* under=Water->GetProcMeshSection(1);
-        if(!under||!WaterUnderMaterial||Water->GetMaterial(1)!=WaterUnderMaterial||
+        if(!under||!WaterUnderMaterial||Water->GetMaterial(1)!=WaterUnderMaterial||Water->bVisibleInRayTracing||
             WaterMaterial->IsTwoSided()||WaterUnderMaterial->IsTwoSided()||
             WaterUnderMaterial->GetBlendMode()!=BLEND_Translucent||
             under->ProcVertexBuffer.Num()!=section->ProcVertexBuffer.Num()||
@@ -183,7 +183,7 @@ bool ADiveWorld::ValidateWater(FString& Error) const
         for(const FName name:{FName(TEXT("Viewer")),FName(TEXT("Wave0")),FName(TEXT("Wave1")),FName(TEXT("Wave2")),FName(TEXT("Wave3")),FName(TEXT("WavePhase"))})
             if(!WaterMaterial->K2_GetVectorParameterValue(name).Equals(WaterUnderMaterial->K2_GetVectorParameterValue(name),1.e-5f))
             {Error=TEXT("Water interface wave parameters differ");return false;}
-        UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INTERFACE_PASS layers=2 vertices=%d triangles=%d shared_waves=1"),
+        UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INTERFACE_PASS layers=2 vertices=%d triangles=%d shared_waves=1 ray_surface=0"),
             under->ProcVertexBuffer.Num(),under->ProcIndexBuffer.Num()/3);
     }
     if(Diver&&Diver->bDiveActive)

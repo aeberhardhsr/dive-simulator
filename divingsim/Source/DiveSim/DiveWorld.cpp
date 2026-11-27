@@ -251,6 +251,11 @@ void ADiveWorld::BeginPlay()
     {
         WaterUnderMaterial=UMaterialInstanceDynamic::Create(Mat(TEXT("M_WaterUnder")),this);
         Water->SetMaterial(1,WaterUnderMaterial);
+        // ProceduralMesh builds its ray geometry from the undisplaced vertices.
+        // The rasterized wave can therefore reflect into its own flat top face.
+        // Primary water shading stays rasterized; trace secondary scene hits
+        // without this inconsistent water proxy (single-interface approximation).
+        Water->SetVisibleInRayTracing(false);
     }
     Water->SetCastShadow(false);
     CreateSky();

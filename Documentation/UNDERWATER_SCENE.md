@@ -2,6 +2,8 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
+Die [Spiegelungen an der Wasserunterseite](WATER_REFLECTIONS.md) sind im Grafikprototyp schärfer. Eine Hardware-Raytracing-Kontrolle mit Beleuchtung am Trefferpunkt ergänzt die bislang fehlenden Bodenoberflächen. Die falsche flache Wassergeometrie wird dabei aus sekundären Strahlen entfernt; die beobachtete rechteckige Grenze verschwindet. Paketleistung, normaler Spielbetrieb und vollständiger reflektierter Wasserweg bleiben noch zu prüfen beziehungsweise umzusetzen.
+
 Im [Prototyp des begrenzten Wasservolumens](BOUNDED_WATER.md#kameralicht-nach-den-material--und-pflanzenkorrekturen) entfällt jetzt ein zusätzlicher unverschatteter Kamera-Lichtanteil. Die kleine Farb-/Helligkeitskorrektur besteht zwölf native Szenenfälle mit 33 Aufnahmen, einschliesslich Nacht, Sturm und Ersatzdarstellung. Sie ist noch kein neuer normaler Spielpfad; dessen Paketstand bleibt unten unverändert. Vollständige spektrale Dämpfung und eine überzeugende Wasserbrechung bleiben offen.
 
 Die anschliessende [Überarbeitung der Pflanzenformen](PLANT_GROWTH.md) ergänzt gebogene Triebe, dichtere obere Blattbereiche und zurückhaltendere Gewebefarben. Die feste Nahkamera zeigt weniger starre Silhouetten; automatische Detailreduktion, feine Blattdarstellung und Materialqualität bleiben begrenzt.
