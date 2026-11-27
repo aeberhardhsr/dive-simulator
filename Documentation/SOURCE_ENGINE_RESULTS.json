@@ -1,5 +1,5 @@
 {
-  "status": "changed_renderer_objects_passed_full_editor_build_in_progress_not_runtime_validated",
+  "status": "renderer_dll_linked_full_editor_build_in_progress_not_runtime_validated",
   "source_tag": "5.8.4-release",
   "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
   "dependencies": {
@@ -113,5 +113,24 @@
     "renderer_dll_exists": false,
     "full_editor_build_complete": false,
     "native_shader_binding_validated": false
+  },
+  "renderer_dll_checkpoint": {
+    "status": "linked_not_runtime_validated",
+    "binary": {
+      "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+      "sha256": "8fa1503831f0876e7176c3ef68a0bac1526885103b0ab893a93d5aae19e8253b",
+      "bytes": 36422144
+    },
+    "completed_build_segment_log": {
+      "path": "artifacts/source-engine-20261127/editor-build.log",
+      "sha256": "59aa1fe6998a230113c2749f6982873d9dd4cdfc6e32eceeefb236b98d6bae67",
+      "bytes": 128127
+    },
+    "link_marker": "[1546/4043] Link [x64] UnrealEditor-Renderer.dll [NoUba]",
+    "resume_log": "artifacts/source-engine-20261127/editor-build-parallel4.log",
+    "resume_max_parallel_actions": 4,
+    "remaining_actions_at_resume": 2029,
+    "project_sources_still_require_sync_and_build": true,
+    "limitations": "The original segment was deliberately interrupted after 2014 actions to increase parallelism. This checkpoint proves linking, not shader binding, runtime stability or visual quality."
   }
 }
