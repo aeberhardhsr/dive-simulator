@@ -1,6 +1,6 @@
 # Kameramaterial am Wasserübergang
 
-Die schwarze Fläche unmittelbar unter der Wasseroberfläche entsteht im geprüften Blick durch die Parameterüberblendung des Kamera-Materials. Das korrigierte Windows-Paket erhält dort die bereits integrierte grüne Wassertrübung. Die blaue Fläche in der Oberflächenreflexion bleibt ein separates offenes Problem; die Referenzqualität ist damit nicht erreicht.
+Die schwarze Fläche unmittelbar unter der Wasseroberfläche entsteht im geprüften Blick durch die Parameterüberblendung des Kamera-Materials. Das korrigierte Windows-Paket erhält dort die bereits integrierte grüne Wassertrübung. Die blaue Fläche in der Oberflächenreflexion bleibt ein separates offenes Problem; ihre [Herkunft aus dem Himmels-Ersatzwert](WATER_REFLECTION_DIAGNOSIS.md) ist inzwischen im nativen Shader nachgewiesen. Die Referenzqualität ist damit nicht erreicht.
 
 Start: **`Builds/WindowsWaterline/Start-WaterPreview.cmd`**. Der gesamte Paketordner wird benötigt. Menü/HUD/FPV, aufgeteilte Zellvorbereitung und korrigierte Startbelichtung sind enthalten. Die experimentellen Verfahren der Quellcode-Engine bleiben deaktiviert.
 

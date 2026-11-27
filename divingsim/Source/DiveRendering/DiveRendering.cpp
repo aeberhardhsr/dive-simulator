@@ -115,6 +115,17 @@ public:
     {
         InitializeDiveWaterScene();
         AddShaderSourceDirectoryMapping(TEXT("/DiveRendering"),FPaths::Combine(FPaths::ProjectDir(),TEXT("Shaders")));
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionRayStudy"))&&
+           FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
+        {
+            if(FParse::Param(FCommandLine::Get(),TEXT("DiveSolarShaderStudy")))
+                UE_LOG(LogTemp,Fatal,TEXT("Reflection classification and solar shader studies must run separately."));
+            const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),TEXT("DiveReflectionRayStudy/Lumen"));
+            if(!IFileManager::Get().FileExists(*(prepared/TEXT("LumenReflectionHardwareRayTracing.usf"))))
+                UE_LOG(LogTemp,Fatal,TEXT("Reflection ray study requires Tools/PrepareReflectionRayStudy.py."));
+            AddShaderSourceDirectoryMapping(TEXT("/Engine/Private/Lumen"),prepared);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_RAY_STUDY_READY mapping=project-local legend=Intermediate/DiveReflectionRayStudy/Manifest.json"));
+        }
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveSolarShaderStudy"))&&
            FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
         {

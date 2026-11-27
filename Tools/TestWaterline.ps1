@@ -1,11 +1,13 @@
 param(
  [ValidateCount(4,4)][double[]]$Pose=@(329185.873,172781.736,180,0),
- [ValidateSet('standard','volume','light','shadow','geometry','sky','composition','depth','camera','correction')][string]$Study='standard',
- [string]$PackageDirectory=''
+ [ValidateSet('standard','volume','light','shadow','geometry','sky','composition','depth','camera','correction','reflection')][string]$Study='standard',
+ [string]$PackageDirectory='',
+ [ValidateSet('classification','direction')][string]$ReflectionMode='classification'
 )
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $runtime=Join-Path $repo 'Builds/EditorSandbox/divingsim'
+if($Study -eq 'reflection' -and $PackageDirectory) {throw 'Reflection classification is editor-only.'}
 if($PackageDirectory) {
  if(-not [IO.Path]::IsPathRooted($PackageDirectory)) {$PackageDirectory=Join-Path $repo $PackageDirectory}
  $runtime=Join-Path $PackageDirectory 'divingsim'
@@ -13,9 +15,16 @@ if($PackageDirectory) {
  $exe=Resolve-DivePackageExecutable $PackageDirectory
 }
 if(Get-Process | Where-Object {$_.ProcessName -like 'UnrealEditor*' -or $_.ProcessName -like 'divingsim*'}) {throw 'An Unreal/game process is already running.'}
+if($Study -eq 'reflection') {
+ & (Join-Path $repo 'Tools/.geodata-env/Scripts/python.exe') (Join-Path $repo 'Tools/PrepareReflectionRayStudy.py') --project $runtime --mode $ReflectionMode
+ if($LASTEXITCODE -ne 0) {throw 'Reflection shader preparation failed.'}
+}
 $root=Join-Path $repo ('artifacts/waterline-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Force $root | Out-Null
-$files=@(Get-ChildItem (Join-Path $repo 'divingsim/Source/DiveSim') -File -Recurse)
+if($Study -eq 'reflection') {
+ Copy-Item -LiteralPath (Join-Path $runtime 'Intermediate/DiveReflectionRayStudy/Manifest.json') -Destination (Join-Path $root 'ShaderManifest.json')
+}
+$files=@(Get-ChildItem (Join-Path $repo 'divingsim/Source') -File -Recurse)
 if(-not $PackageDirectory) {foreach($file in $files) {
  $copy=Join-Path $runtime $file.FullName.Substring((Join-Path $repo 'divingsim').Length+1)
  if((Get-FileHash -LiteralPath $file.FullName).Hash -ne (Get-FileHash -LiteralPath $copy).Hash) {throw "Stale sandbox: $copy"}
@@ -25,12 +34,20 @@ foreach($name in @('Tools/SmokeTest.ps1','Tools/TestWaterline.ps1','divingsim/Co
 if($PackageDirectory) {
  $files+=Get-Item $exe
  $files+=@(Get-ChildItem (Join-Path $runtime 'Content/Paks') -File)
-} else {$files+=Get-Item (Join-Path $runtime 'Binaries/Win64/UnrealEditor-DiveSim.dll')}
+} else {
+ $files+=Get-Item (Join-Path $runtime 'Binaries/Win64/UnrealEditor-DiveSim.dll')
+ $files+=Get-Item (Join-Path $runtime 'Binaries/Win64/UnrealEditor-DiveRendering.dll')
+}
+if($Study -eq 'reflection') {
+ $files+=Get-Item (Join-Path $repo 'Tools/PrepareReflectionRayStudy.py')
+ $files+=@(Get-ChildItem (Join-Path $runtime 'Intermediate/DiveReflectionRayStudy') -Recurse -File)
+}
 $files+=@(Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Materials') -File -Filter '*.uasset')
 $records=@($files | Sort-Object FullName | ForEach-Object {@{file=$_.FullName.Substring($repo.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}})
 @{source_head=(& git -C $repo rev-parse HEAD);native_editor=(-not $PackageDirectory);package=$PackageDirectory;study=$Study;pose=$Pose;files=$records;started_utc=[DateTime]::UtcNow.ToString('o')} |
  ConvertTo-Json -Depth 5 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
-$cases=if($Study -eq 'correction') {@(@{name='normal'},@{name='no-post-process-materials';post=$true},@{name='fog-fallback';volume=$true})}
+$cases=if($Study -eq 'reflection') {@(@{name='normal'},@{name="ray-$ReflectionMode";rays=$true},@{name="ray-$ReflectionMode-no-screens";rays=$true;screens=$true})}
+ elseif($Study -eq 'correction') {@(@{name='normal'},@{name='no-post-process-materials';post=$true},@{name='fog-fallback';volume=$true})}
  elseif($Study -eq 'camera') {@(@{name='no-post-process-materials';post=$true})}
  elseif($Study -eq 'depth') {@(@{name='no-fog-depth-culling';depth=$true},@{name='no-fog-history';history=$true})}
  elseif($Study -eq 'composition') {@(@{name='separate-fog';composition=$true},@{name='no-fog-cutoff';cutoff=$true},@{name='no-sky-layers';hide='deep,proxy,stars,planets,moon'},@{name='no-light-shafts';shafts=$true})}
@@ -59,6 +76,7 @@ foreach($case in $cases) {
  if($case.depth) {$opts.DisableFogDepthCulling=$true}
  if($case.history) {$opts.DisableFogHistory=$true}
  if($case.post) {$opts.DisablePostProcessMaterials=$true}
+ if($case.rays) {$opts.ReflectionRayStudy=$true;$opts.TimeoutSeconds=900}
  $started=[DateTime]::UtcNow
  & (Join-Path $PSScriptRoot 'SmokeTest.ps1') @opts *> (Join-Path $folder 'Summary.log')
  $log=Get-Content $opts.RuntimeLog -Raw
