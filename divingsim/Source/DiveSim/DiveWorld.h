@@ -202,6 +202,7 @@ private:
     mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredGravel;
     FIntPoint GravelCell=FIntPoint(MAX_int32,MAX_int32);
     FIntPoint PopulationCell=FIntPoint(MAX_int32,MAX_int32);
     double LastFishRefill=-1;

@@ -104,6 +104,7 @@ void ADivePawn::TickPerformance()
         root->SetNumberField(TEXT("depth_m"),Simulation.Data.DepthMetres);
         root->SetBoolField(TEXT("walking"),bWalking);
         root->SetBoolField(TEXT("water_preview"),Environment->WaterPreviewEnabled());
+        root->SetBoolField(TEXT("gravel_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement")));
         root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());

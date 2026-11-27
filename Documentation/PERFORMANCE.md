@@ -1,5 +1,19 @@
 # Gerenderte Leistungsmessung
 
+## WindowsGravelRetire: alte Kies-Kollisionskörper verteilt abbauen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Alle drei Läufe verwenden die EXE und Inhaltscontainer der neun bestandenen Paketfälle. Die Kontrolle stellt mit `-DiveImmediateGravelRetirement` den sofortigen Abbau in derselben EXE wieder her. [Prüfbericht](GRAVEL_RETIREMENT_RESULTS.json), [Lebensdauer, Bilder und Kontrollvergleich](GRAVEL_RETIREMENT.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 68,56 FPS | 58,95 FPS | 15,96 ms | 18,72 ms | 0 / 4112 | 4,59 ms |
+| Murg Nachladen, verteilter Abbau, 90 s | 97,11 FPS | 72,97 FPS | 11,20 ms | 45,96 ms | 1 / 8738 | 4,27 ms |
+| Murg Kontrolle, sofortiger Abbau, 90 s | 97,30 FPS | 72,35 FPS | 11,16 ms | 56,94 ms | 3 / 8756 | 4,29 ms |
+
+Die mittlere GPU-Zeit beträgt im normalen Unterwasser-/Nachladelauf 13,95 / 9,66 ms. Der Unterwasser-Mittelwert bleibt nahe am vorherigen Paket mit 68,74 FPS. Im direkten Streckenvergleich sinkt die höchste direkte Kies-Abbauzeit von 12,72 auf 3,72 ms und die höchste Physikwartezeit von 35,18 auf 21,85 ms. Der verbleibende große Ruckler fällt zeitlich mit dem Wechsel der größeren Fels-/Pflanzenzellen zusammen. Die mittlere Bildrate bleibt annähernd gleich; die gesamte Arbeit wird verteilt, nicht beseitigt.
+
+36 Unterwasserframes überschreiten 16,67 ms. Auf der Strecke sind es zwölf statt neun in der Kontrolle: Die größten Spitzen werden auf mehr moderat langsame Frames verteilt. Durchgehend 60 FPS sind nicht nachgewiesen. Die variabel getakteten Einzelläufe besitzen ähnliche, aber nicht frameidentische Simulationsverläufe. Die Strecke endet bei 24,6 Metern in freiem Wasser; sie beweist keine dauerhaft dichte Nahansicht. Laufende Wasser-/Meshprüfungen gehören weiterhin zum erfassten CPU-Aufwand. Ein aktueller Langzeittest und die gesamte visuelle Referenzabnahme bleiben offen.
+
 ## WindowsGravelRelief: dichteres Kiesrelief auf kleineren Nachladezellen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Beide Messungen verwenden dieselbe EXE und dieselben Inhaltscontainer wie die neun bestandenen Paketfälle. [Prüfbericht](GRAVEL_RELIEF_RESULTS.json), [Verteilung, Vergleichsbilder und Grenzen](GRAVEL_RELIEF.md).

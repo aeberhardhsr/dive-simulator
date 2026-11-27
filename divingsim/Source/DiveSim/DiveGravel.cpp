@@ -3,6 +3,9 @@
 #include "Simulation/BedDistribution.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "ProfilingDebugging/CsvProfiler.h"
+
+CSV_DEFINE_CATEGORY(DiveGravel,true);
 
 namespace
 {
@@ -16,6 +19,8 @@ FIntPoint GravelKey(const FVector& P)
 
 void ADiveWorld::CreateGravelCell(FIntPoint Key)
 {
+    CSV_SCOPED_TIMING_STAT(DiveGravel,BuildCell);
+    const double generatedAt=FPlatformTime::Seconds();
     auto& cell=GravelCells.Add(Key);
     const bool aprons=!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockAprons")));
     const int candidates=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveSparseGravel"))?1024:GravelCandidates;
@@ -68,8 +73,8 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
         }
         if(blocked) continue;
         // Broken skirts of rubble tie outcrops to the bed without filling every
-        // sediment patch. The bounded candidates and bed-relative relief stay
-        // unchanged; this is authored dressing, not a measured erosion model.
+        // sediment patch. Relief is bounded relative to the surveyed bed;
+        // this is authored dressing, not a measured erosion model.
         const double broken=.2+.8*Dive::BedDistribution::Noise(x/230,y/230);
         const double density=FMath::Max(gravel*gravel*.9,apron*broken*.85*(1-Dive::BedDistribution::Smooth(25,40,-z*.01)));
         if(chance>density) continue;
@@ -82,33 +87,57 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
         const FVector position=FVector(x,y,z);
         instances[variant].Add(FTransform(rotation,position,FVector(size,size*aspect,FMath::Min(size*height,.06f))));
     }
+    const double generationMs=(FPlatformTime::Seconds()-generatedAt)*1000;
+    double setupMs=0,addMs=0,registerMs=0;
     for(int i=0;i<3;++i)
     {
+        double phase=FPlatformTime::Seconds();
         auto* component=NewObject<UInstancedStaticMeshComponent>(this);
         component->SetupAttachment(RootComponent);component->SetMobility(EComponentMobility::Static);
         component->SetStaticMesh(Gravel[i]->GetStaticMesh());component->SetMaterial(0,Gravel[i]->GetMaterial(0));
         component->SetCollisionProfileName(TEXT("BlockAll"));component->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
         component->SetCanEverAffectNavigation(false);component->SetCullDistances(1200,1500);
-        component->AddInstances(instances[i],false,false,false);
-        component->RegisterComponent();cell.Components.Add(component);
+        setupMs+=(FPlatformTime::Seconds()-phase)*1000;phase=FPlatformTime::Seconds();
+        {CSV_SCOPED_TIMING_STAT(DiveGravel,AddInstances);component->AddInstances(instances[i],false,false,false);}
+        addMs+=(FPlatformTime::Seconds()-phase)*1000;phase=FPlatformTime::Seconds();
+        {CSV_SCOPED_TIMING_STAT(DiveGravel,Register);component->RegisterComponent();}
+        registerMs+=(FPlatformTime::Seconds()-phase)*1000;
+        cell.Components.Add(component);
     }
+    if(bOpticsSmoke) UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_BUILD x=%d y=%d generation_ms=%.3f setup_ms=%.3f add_ms=%.3f register_ms=%.3f"),Key.X,Key.Y,generationMs,setupMs,addMs,registerMs);
 }
 
 void ADiveWorld::StreamGravel(const FVector& Player,bool Immediate)
 {
     const auto centre=GravelKey(Player);
-    if(centre==GravelCell&&GravelCells.Num()==9) return;
     // Entry placement and teleports need a complete window immediately. During
     // swimming only one new distant cell is built per frame; the 15 m draw
     // range remains inside the retained cells at a 16 m boundary crossing.
     Immediate|=GravelCells.IsEmpty()||FMath::Abs(int64(centre.X)-GravelCell.X)>1||FMath::Abs(int64(centre.Y)-GravelCell.Y)>1;
+    const bool instantRetire=Immediate||(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement")));
+    auto retire=[this,instantRetire]()
+    {
+        CSV_SCOPED_TIMING_STAT(DiveGravel,Retire);
+        const double started=FPlatformTime::Seconds();
+        // Old cells are outside the 15 m render range. Hide their proxies now,
+        // but spread body removal and the resulting Chaos work over frames.
+        // Fast oscillation is bounded; entry/teleport requests flush immediately.
+        const int count=FMath::Min(RetiredGravel.Num(),instantRetire?RetiredGravel.Num():FMath::Max(2,RetiredGravel.Num()-27));
+        for(int i=0;i<count;++i) RetiredGravel[i]->DestroyComponent();
+        RetiredGravel.RemoveAt(0,count,EAllowShrinking::No);
+        if(count&&bOpticsSmoke) UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_RETIRE removed=%d pending=%d immediate=%d milliseconds=%.3f"),count,RetiredGravel.Num(),instantRetire,(FPlatformTime::Seconds()-started)*1000);
+    };
+    if(centre==GravelCell&&GravelCells.Num()==9) {retire();return;}
+    CSV_SCOPED_TIMING_STAT(DiveGravel,Stream);
     const double started=FPlatformTime::Seconds();int loaded=0,unloaded=0,count=0;
     for(auto it=GravelCells.CreateIterator();it;++it)
         if(FMath::Abs(it.Key().X-centre.X)>1||FMath::Abs(it.Key().Y-centre.Y)>1)
         {
-            for(const auto& component:it.Value().Components) component->DestroyComponent();
+            for(const auto& component:it.Value().Components)
+            {component->SetVisibility(false);RetiredGravel.Add(component);}
             it.RemoveCurrent();++unloaded;
         }
+    retire();
     TArray<FIntPoint> missing;
     for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
         if(!GravelCells.Contains(centre+FIntPoint(x,y))) missing.Add(centre+FIntPoint(x,y));
@@ -127,6 +156,10 @@ void ADiveWorld::StreamGravel(const FVector& Player,bool Immediate)
 
 bool ADiveWorld::ValidateGravel(FString& Error) const
 {
+    if(RetiredGravel.Num()>27) {Error=TEXT("Unbounded gravel retirement");return false;}
+    for(const auto& component:RetiredGravel)
+        if(!component||component->IsVisible()||!component->IsRegistered())
+        {Error=TEXT("Invalid pending gravel retirement");return false;}
     if(Gravel.Num()!=3||GravelCells.IsEmpty()||GravelCells.Num()>9) {Error=TEXT("Invalid gravel window");return false;}
     int total=0;
     for(const auto& pair:GravelCells)
@@ -201,6 +234,25 @@ bool ADiveWorld::TestGravelStreaming(FString& Detail)
     valid&=retained==6&&reloaded==9&&GravelCells.Num()==9;
     int stones=0;for(const auto& pair:snapshots) stones+=pair.Value.Num();
     valid&=stones==0||contacts>0;
+    bool retirementValid=RetiredGravel.IsEmpty(); // The far teleport above flushes old bodies.
+    const bool instant=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement"));
+    int maximumPending=0;
+    // Stress rapid reversals at a cell edge, then drain without moving. Pending
+    // components must stay hidden and the complete layout must recover exactly.
+    for(int i=0;i<20;++i)
+    {
+        const FVector p=before+FVector(i%2?0:GravelWidth,0,0);
+        StreamGravel(p);
+        maximumPending=FMath::Max(maximumPending,RetiredGravel.Num());
+        retirementValid&=RetiredGravel.Num()<=27;
+        for(const auto& component:RetiredGravel) retirementValid&=!component->IsVisible();
+    }
+    for(int i=0;i<16;++i) StreamGravel(before);
+    retirementValid&=RetiredGravel.IsEmpty()&&GravelCells.Num()==9&&(instant?maximumPending==0:maximumPending>0);
+    for(const auto& pair:snapshots)
+    {const auto* cell=GravelCells.Find(pair.Key);retirementValid&=cell&&same(*cell,pair.Value);}
+    valid&=retirementValid;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_RETIREMENT_%s maximum_pending=%d drained=%d immediate=%d"),retirementValid?TEXT("PASS"):TEXT("FAIL"),maximumPending,RetiredGravel.IsEmpty(),instant);
     StreamGravel(original);
     Detail=FString::Printf(TEXT("retained=%d reloaded=%d cells=%d stones=%d contacts=%d staged=7,8,9 edge_stones=%d"),retained,reloaded,GravelCells.Num(),stones,contacts,edgeStones);
     UE_LOG(LogTemp,Display,TEXT("DIVE_GRAVEL_%s %s"),valid?TEXT("PASS"):TEXT("FAIL"),*Detail);
