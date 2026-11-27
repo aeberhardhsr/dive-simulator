@@ -1,5 +1,18 @@
 # Gerenderte Leistungsmessung
 
+## WindowsGravelRelief: dichteres Kiesrelief auf kleineren Nachladezellen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Beide Messungen verwenden dieselbe EXE und dieselben Inhaltscontainer wie die neun bestandenen Paketfälle. [Prüfbericht](GRAVEL_RELIEF_RESULTS.json), [Verteilung, Vergleichsbilder und Grenzen](GRAVEL_RELIEF.md).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Bilder >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen unter Wasser, 60 s | 68,74 FPS | 59,40 FPS | 15,90 ms | 17,80 ms | 0 / 4122 | 4,33 ms |
+| Murg Schwimmen/Nachladen, 90 s | 97,41 FPS | 72,36 FPS | 11,17 ms | 57,21 ms | 3 / 8765 | 4,09 ms |
+
+Die mittlere GPU-Zeit beträgt 13,91 / 9,63 ms. Die Mittelwerte liegen nahe am vorherigen Paket mit 69,15 / 97,33 FPS. Die Nachladespitzen fallen jedoch schlechter aus: maximal 57,21 statt 42,81 ms und 1%-Low 72,36 statt 77,58 FPS. Die beiden größten Spitzen fallen zeitlich mit Kies-Zellwechseln zusammen. Spielthread-Maximum 56,96 ms bei GPU-Maximum 11,41 ms deutet auf CPU-/Nachladeaufwand; es beweist noch keine isolierte Ursache. Alle Spitzen bleiben in der Auswertung erhalten.
+
+26 Unterwasser- und acht Streckenframes überschreiten 16,67 ms. Durchgehend 60 FPS sind damit nicht nachgewiesen. Die aktuellen Wasser-/Meshprüfungen sind Teil des gemessenen CPU-Aufwands. Der Unterwasserblick zeigt Grund und Felsen bei 5,3 Metern; die Strecke endet in freiem Wasser bei 24,7 Metern und belegt keine dauerhaft dichte Nahansicht. Einzelne aufeinanderfolgende Läufe ersetzen weder einen statistischen Kostenvergleich noch einen aktuellen Langzeittest oder die visuelle Referenzabnahme.
+
 ## WindowsWaterNearField: feinere Nebelabtastung an der Wasseroberfläche
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, **Hoch mit Wasserprofil**, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Keine weitere Unreal-/Spielinstanz war beim Start aktiv. Alle drei Läufe verwenden die EXE und Inhaltscontainer der 13 bestandenen Paketfälle. Die erfassten Laufzeitwerte bestätigen Nebelverteilung 8, 64 Tiefenschichten und Rastergröße 16 bei aktiven Hardware- und Bildschirmreflexionen. [Gebundener Prüfbericht](SURFACE_NEAR_FIELD_RESULTS.json), [Korrektur und Vergleichsbilder](SURFACE_NEAR_FIELD.md).

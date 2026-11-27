@@ -6,8 +6,10 @@
 
 namespace
 {
-constexpr double GravelWidth=3200;
-constexpr int GravelCandidates=4096;
+constexpr double GravelWidth=1600;
+constexpr int GravelCandidates=8192;
+constexpr int GravelBins=4;
+constexpr double GravelBinWidth=GravelWidth/GravelBins;
 FIntPoint GravelKey(const FVector& P)
 {return FIntPoint(FMath::FloorToInt(P.X/GravelWidth),FMath::FloorToInt(P.Y/GravelWidth));}
 }
@@ -16,18 +18,28 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
 {
     auto& cell=GravelCells.Add(Key);
     const bool aprons=!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoRockAprons")));
+    const int candidates=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveSparseGravel"))?1024:GravelCandidates;
     TArray<FTransform> instances[3];
-    TArray<const FDiveRock*> nearby;
+    // Conservative 4 m bins retain source order and the exact contact tests.
+    // A denser bed should not scan every rock in the 16 m cell per pebble.
+    TArray<const FDiveRock*> nearby[GravelBins*GravelBins];
     for(const auto& rock:RockState)
     {
         const double reach=rock.Radius>=126?rock.Radius*1.6+60:rock.Radius+25;
         if(rock.Position.X>=Key.X*GravelWidth-reach&&rock.Position.X<=(Key.X+1)*GravelWidth+reach&&
-            rock.Position.Y>=Key.Y*GravelWidth-reach&&rock.Position.Y<=(Key.Y+1)*GravelWidth+reach) nearby.Add(&rock);
+            rock.Position.Y>=Key.Y*GravelWidth-reach&&rock.Position.Y<=(Key.Y+1)*GravelWidth+reach)
+        {
+            const int x0=FMath::Clamp(FMath::FloorToInt((rock.Position.X-reach-Key.X*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+            const int x1=FMath::Clamp(FMath::FloorToInt((rock.Position.X+reach-Key.X*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+            const int y0=FMath::Clamp(FMath::FloorToInt((rock.Position.Y-reach-Key.Y*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+            const int y1=FMath::Clamp(FMath::FloorToInt((rock.Position.Y+reach-Key.Y*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+            for(int by=y0;by<=y1;++by) for(int bx=x0;bx<=x1;++bx) nearby[by*GravelBins+bx].Add(&rock);
+        }
     }
     FRandomStream random(Dive::BedDistribution::Hash(Key.X,Key.Y)^0x35ad902bu);
     // Independent fixed candidates: material patches control density, while
     // random positions and skewed sizes avoid a regular gravel lattice.
-    for(int i=0;i<GravelCandidates;++i)
+    for(int i=0;i<candidates;++i)
     {
         const double x=(Key.X+random.FRand())*GravelWidth,y=(Key.Y+random.FRand())*GravelWidth;
         const float chance=random.FRand(),size=.035f+.21f*FMath::Square(random.FRand());
@@ -37,7 +49,9 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
         if(!Terrain.Sample(x,y,z)||z>-120||z<-4000) continue;
         const double gravel=Dive::BedDistribution::Gravel(x*.01,y*.01,-z*.01);
         bool blocked=false;double apron=0;
-        for(const auto* rock:nearby)
+        const int bx=FMath::Clamp(FMath::FloorToInt((x-Key.X*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+        const int by=FMath::Clamp(FMath::FloorToInt((y-Key.Y*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+        for(const auto* rock:nearby[by*GravelBins+bx])
         {
             const double distanceSquared=FVector::DistSquared2D(rock->Position,FVector(x,y,z));
             // The movement/steering radius encloses the whole boulder, not its
@@ -74,7 +88,7 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
         component->SetupAttachment(RootComponent);component->SetMobility(EComponentMobility::Static);
         component->SetStaticMesh(Gravel[i]->GetStaticMesh());component->SetMaterial(0,Gravel[i]->GetMaterial(0));
         component->SetCollisionProfileName(TEXT("BlockAll"));component->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-        component->SetCanEverAffectNavigation(false);component->SetCullDistances(2300,3000);
+        component->SetCanEverAffectNavigation(false);component->SetCullDistances(1200,1500);
         component->AddInstances(instances[i],false,false,false);
         component->RegisterComponent();cell.Components.Add(component);
     }
@@ -85,8 +99,8 @@ void ADiveWorld::StreamGravel(const FVector& Player,bool Immediate)
     const auto centre=GravelKey(Player);
     if(centre==GravelCell&&GravelCells.Num()==9) return;
     // Entry placement and teleports need a complete window immediately. During
-    // swimming only one new distant cell is built per frame; the 30 m draw
-    // range remains inside the retained cells at a 32 m boundary crossing.
+    // swimming only one new distant cell is built per frame; the 15 m draw
+    // range remains inside the retained cells at a 16 m boundary crossing.
     Immediate|=GravelCells.IsEmpty()||FMath::Abs(int64(centre.X)-GravelCell.X)>1||FMath::Abs(int64(centre.Y)-GravelCell.Y)>1;
     const double started=FPlatformTime::Seconds();int loaded=0,unloaded=0,count=0;
     for(auto it=GravelCells.CreateIterator();it;++it)

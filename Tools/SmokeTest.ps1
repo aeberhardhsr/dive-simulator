@@ -5,7 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
-    [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView,
+    [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
@@ -76,6 +76,7 @@ if($HabitatClose) {
 }
 if($NoRockAprons) {$arguments+=' -DiveNoRockAprons'}
 if($NoRockRubble) {$arguments+=' -DiveNoRockRubble'}
+if($SparseGravel) {$arguments+=' -DiveSparseGravel'}
 if($LegacyRockSurface) {$arguments+=' -DiveLegacyRockSurface'}
 if($NativeScattering) {$arguments+=' -DiveNativeScattering'}
 if($WaterInterface) {$arguments+=' -DiveWaterInterface'}
