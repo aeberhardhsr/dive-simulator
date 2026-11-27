@@ -25,6 +25,7 @@ Art/Vegetation/**/*.bin filter=lfs diff=lfs merge=lfs -text
 Art/Vegetation/**/*.exr filter=lfs diff=lfs merge=lfs -text
 Art/Vegetation/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 Geodata/VegetationSource/*.geojson filter=lfs diff=lfs merge=lfs -text
+Geodata/SurfaceCoverSource/*.geojson filter=lfs diff=lfs merge=lfs -text
 Documentation/WALENSEE_VEGETATION_SOURCE.json -text whitespace=cr-at-eol
 Documentation/VEGETATION_BEECH_SOURCE.json -text whitespace=cr-at-eol
 Documentation/VEGETATION_ASSETS.json -text whitespace=cr-at-eol

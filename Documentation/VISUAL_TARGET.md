@@ -10,7 +10,7 @@ Das Ziel ist eine zusammenhängende, räumlich glaubwürdige Umgebung: große Fe
 
 Licht von der Wasseroberfläche, Abschattung, lokale Lichtmuster und allmählicher Kontrastverlust mit der Entfernung müssen gemeinsam Tiefe erzeugen. Farbe, Trübung und Lichtstrahlen bleiben abhängig von Sichtweite, Tiefe, Wetter und Sonnenstand. Der helle türkisgrüne Referenzzustand ist kein konstanter Filter für alle Tauchgänge. Materialdetails müssen bei normalem Spielabstand sichtbar sein; Nahansichten dürfen keine vorzeitig groben Detailstufen zeigen.
 
-Der aktuelle Stand liegt deutlich unter dieser Gesamtreferenz. Die drei detaillierteren Felsformen sind ein Baustein. Besonders offen bleiben die Verzahnung der unterschiedlichen Größenstufen, organischer Bewuchs, natürliche Materialübergänge sowie die gemeinsame visuelle Wirkung von Gelände, Wasser und Beleuchtung.
+Der aktuelle Stand liegt deutlich unter dieser Gesamtreferenz. Drei detailliertere lose Felsformen und zwei zusätzliche Gruppenkerne sind Bausteine. Besonders offen bleiben die Verzahnung der unterschiedlichen Größenstufen, organischer Bewuchs, natürliche Materialübergänge sowie die gemeinsame visuelle Wirkung von Gelände, Wasser und Beleuchtung. Der [Asset- und Lückenabgleich](VISUAL_ASSET_REVIEW.md) konkretisiert die nächsten Arbeiten anhand vorhandener Spielaufnahmen und Quelldaten.
 
 ## Über Wasser – anschließend auf vergleichbarem Niveau
 
@@ -26,6 +26,6 @@ Verglichen werden echte Spielaufnahmen und Bewegung im ausgelieferten Unreal-Pak
 
 Technische Testmarker, Polygonzahlen oder einzelne attraktive Standbilder ersetzen diese visuelle Gesamtabnahme nicht. Die bestehenden Anforderungen an spielbare Bildraten und Stabilität gelten weiterhin. Ein bestandener Renderingtest bedeutet daher noch nicht, dass das Qualitätsziel dieser Referenzen erreicht ist.
 
-## Anschließende Menü-/HUD-Überarbeitung
+## Menü-/HUD-Überarbeitung während des Engine-Builds
 
-Nach der Optimierung der Unterwasser- und Überwasser-Grafik folgt die vom Nutzer separat vorgegebene Neugestaltung von Menüführung, HUD und FPV. Die fünf zusätzlichen Entwürfe, die bemängelten Layout-/Text-/Umlautprobleme und die späteren Abnahmekriterien stehen im [UI-/UX-Designziel](UI_UX_TARGET.md). Dieser nachgelagerte Schritt ersetzt keine der oben beschriebenen Grafikarbeiten.
+Ursprünglich war die Neugestaltung von Menüführung, HUD und FPV nach der Unterwasser- und Überwasser-Grafik vorgesehen. Am 27. November hat der Nutzer ausdrücklich erlaubt, diese Arbeit während des laufenden Engine-Builds vorzuziehen. Die fünf zusätzlichen Entwürfe, die bemängelten Layout-/Text-/Umlautprobleme und die Abnahmekriterien stehen im [UI-/UX-Designziel](UI_UX_TARGET.md). Die parallele UI-Arbeit ersetzt keine der oben beschriebenen Grafikarbeiten.

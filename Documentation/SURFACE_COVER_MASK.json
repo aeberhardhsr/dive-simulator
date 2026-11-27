@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "status": "OFFLINE_VALIDATED_NOT_RUNTIME_INTEGRATED",
+  "source_url": "https://data.geo.admin.ch/ch.swisstopo.swisstlm3d/swisstlm3d_2026-02/swisstlm3d_2026-02_2056_5728.shp.zip",
+  "source_attribution": "swisstopo",
+  "source_manifest": "Documentation/WALENSEE_VEGETATION_SOURCE.json",
+  "crs": "EPSG:2056",
+  "bounds": [
+    2723000,
+    1215000,
+    2745000,
+    1228000
+  ],
+  "north_up": true,
+  "width": 4096,
+  "height": 4096,
+  "pixel_metres": [
+    5.37109375,
+    3.173828125
+  ],
+  "bits": {
+    "Fels": 1,
+    "Fels locker": 2,
+    "Lockergestein": 4,
+    "Lockergestein locker": 8,
+    "Felsbloecke": 16,
+    "Felsbloecke locker": 32,
+    "Feuchtgebiet": 64
+  },
+  "bbox_candidates": {
+    "Wald": 1240,
+    "Fels": 1972,
+    "Stehende Gewaesser": 76,
+    "Fliessgewaesser": 18,
+    "Felsbloecke": 6,
+    "Lockergestein": 593,
+    "Gehoelzflaeche": 2280,
+    "Feuchtgebiet": 294,
+    "Wald offen": 139,
+    "Gebueschwald": 355,
+    "Lockergestein locker": 101,
+    "Fels locker": 293,
+    "Felsbloecke locker": 8
+  },
+  "selected_features": {
+    "Fels": 1972,
+    "Felsbloecke": 6,
+    "Lockergestein": 593,
+    "Feuchtgebiet": 294,
+    "Lockergestein locker": 101,
+    "Fels locker": 293,
+    "Felsbloecke locker": 8
+  },
+  "interior_rings": {
+    "Fels": 315,
+    "Felsbloecke": 0,
+    "Lockergestein": 23,
+    "Feuchtgebiet": 38,
+    "Lockergestein locker": 4,
+    "Fels locker": 25,
+    "Felsbloecke locker": 0
+  },
+  "unclassified_pixels": 15408259,
+  "overlap_pixels": 49,
+  "class_pixels": {
+    "Fels": 645471,
+    "Fels locker": 156648,
+    "Lockergestein": 206428,
+    "Lockergestein locker": 44900,
+    "Felsbloecke": 1448,
+    "Felsbloecke locker": 11756,
+    "Feuchtgebiet": 302355
+  },
+  "independent_pixel_checks": 30000,
+  "pixel_mismatches": 0,
+  "inputs": [
+    {
+      "file": "Geodata/Raw/Vegetation/swissTLM3D_TLM_BODENBEDECKUNG_OST.CPG",
+      "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+      "bytes": 5
+    },
+    {
+      "file": "Geodata/Raw/Vegetation/swissTLM3D_TLM_BODENBEDECKUNG_OST.prj",
+      "sha256": "f160fd6f149ff8288abd2a59f56556d034e87a0fda3dbf463761faf4210c30f5",
+      "bytes": 600
+    },
+    {
+      "file": "Geodata/Raw/Vegetation/swissTLM3D_TLM_BODENBEDECKUNG_OST.shx",
+      "sha256": "09a4e35cdca6ccaad3ec4a8341107462c062d6a2ec17556ef8e2e96c0fc946dc",
+      "bytes": 3826300
+    },
+    {
+      "file": "Geodata/Raw/Vegetation/swissTLM3D_TLM_BODENBEDECKUNG_OST.dbf",
+      "sha256": "ab80eda4fb3eb86eb7dedecf2c6cc8befded2bbdb33fa5344a03576eced38c93",
+      "bytes": 104742675
+    },
+    {
+      "file": "Geodata/Raw/Vegetation/swissTLM3D_TLM_BODENBEDECKUNG_OST.shp",
+      "sha256": "e7f326df02211aa92400abc7a6259f12890b2a13b78fd2d94cfecb34b04ced77",
+      "bytes": 1501877768
+    }
+  ],
+  "outputs": [
+    {
+      "file": "Geodata/SurfaceCoverSource/cover.geojson",
+      "sha256": "887a4363bbc2f7349648c058eafb9dc2b2213d4504edf5b9926d1e6d0ddd33ca",
+      "bytes": 11604383
+    },
+    {
+      "file": "Art/GroundMaterials/SurfaceCoverMask.png",
+      "sha256": "a076e76cb963b63ed531efc18de0e5363feabe4120529f231f919c917a75ecb9",
+      "bytes": 384520
+    }
+  ],
+  "runtime_contract": "Unorm8 bitfield: point sample, no sRGB, no lossy compression, no averaged mipmaps. Decode bits before any authored spatial blend.",
+  "limits": "Mapped cover categories, not measured substrate colours or species. Loose classes are not continuous bare ground. Zero is unclassified, not grass. No terrain, collision, material or content asset changed."
+}
