@@ -10,6 +10,8 @@ const FLinearColor White(.87f,.94f,.92f,1),Muted(.42f,.59f,.57f,1),Accent(.43f,.
 const FLinearColor Panel(.025f,.065f,.063f,.92f),Amber(1,.73f,.3f,1),Grid(.08f,.15f,.14f,1);
 FString Clock(double seconds)
 { const int t=FMath::Max(0,FMath::FloorToInt(seconds)); return FString::Printf(TEXT("%02d:%02d"),t/60,t%60); }
+FString LocationTitle(const FString& location)
+{ return location==TEXT("Murg / Sued")?FString(TEXT("Murg / Süd")):location; }
 double Metric(const Dive::State& s,int group,int row)
 {
     const double values[4][4]={{s.DepthMetres,s.CylinderBar,s.NDLMinutes,s.CeilingMetres},
@@ -97,7 +99,7 @@ void ADiveHUD::Logbook()
         Button(FName(*FString::Printf(TEXT("logrow_%d"),index)),TEXT(""),70,y,370,65);
         if(index==LogSelection) Rect(70,y,3,65,Accent);
         Text(item.Date,85,y+8,16,index==LogSelection?Accent:White);
-        Text(FString::Printf(TEXT("%s  |  %s  |  %.1f m"),*item.Location.Left(23),*Clock(item.Duration),item.MaxDepth),85,y+35,14,Muted);
+        Text(FString::Printf(TEXT("%s  |  %s  |  %.1f m"),*LocationTitle(item.Location).Left(23),*Clock(item.Duration),item.MaxDepth),85,y+35,14,Muted);
     }
     if(visible.IsEmpty()) Text(bIndexLoading?L(TEXT("Tauchgänge werden geladen ..."),TEXT("Loading dives ...")):
         L(TEXT("Keine Tauchgänge in dieser Auswahl."),TEXT("No dives in this selection.")),75,227,16,Muted);
@@ -119,7 +121,7 @@ void ADiveHUD::Logbook()
     const auto& log=SelectedLog;
     if(!log.Error.IsEmpty())
     { Text(L(TEXT("Dieses Protokoll konnte nicht geladen werden."),TEXT("This log could not be loaded.")),510,208,24,Amber); return; }
-    Text(log.Location.Left(30),510,53,31,White);
+    Text(LocationTitle(log.Location).Left(30),510,53,31,White);
     Button(TEXT("logphotos"),FString::FromInt(log.Photographs.Num())+L(TEXT(" Fotos / Arten"),TEXT(" photos / species")),1230,52,300,42);
     Text(log.Date+TEXT("   /   ")+Outcome(log,Diver->bEnglish),510,100,16,Muted);
     const TCHAR* modes[]={TEXT("Exploration"),TEXT("Simulation"),TEXT("Hardcore")};

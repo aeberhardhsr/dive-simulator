@@ -882,7 +882,7 @@ void ADivePawn::SimulateStep(float Step)
         FString hint;
         if(s.Warnings&Dive::NoBreathingSupply) hint=Local(TEXT("Atmung unterbrochen. Prüfe den Atemregler und deine Position."),TEXT("Breathing interrupted. Check the regulator and your position."));
         else if(s.Warnings&Dive::FastAscent) hint=Local(TEXT("Du steigst schnell auf. Prüfe deinen Auftrieb."),TEXT("You are ascending quickly. Check your buoyancy."));
-        else if(s.Warnings&Dive::LowGas) hint=Local(TEXT("Wenig Atemgas. Behalte deinen Rueckweg im Blick."),TEXT("Breathing gas is low. Keep track of your return route."));
+        else if(s.Warnings&Dive::LowGas) hint=Local(TEXT("Wenig Atemgas. Behalte deinen Rückweg im Blick."),TEXT("Breathing gas is low. Keep track of your return route."));
         else if(s.MotorCapacity<.8) hint=Local(TEXT("Deine Leistungsfähigkeit sinkt. Prüfe Vitalwerte und Tauchprofil."),TEXT("Your capacity is falling. Check vitals and your dive profile."));
         if(!hint.IsEmpty()) { Notify(hint); NextAutomaticHint=s.ElapsedSeconds+30; }
     }
@@ -924,7 +924,7 @@ void ADivePawn::Interact()
     if(CanFinishDive())
         FinishDive(TEXT("completed"));
     else if(PendingConfig.StartOnShore&&!bEnteredWater)
-        Notify(Local(TEXT("Erst abtauchen; nach der Rueckkehr hier den Tauchgang beenden."),TEXT("Dive first; return here afterwards to finish.")));
+        Notify(Local(TEXT("Erst abtauchen; nach der Rückkehr hier den Tauchgang beenden."),TEXT("Dive first; return here afterwards to finish.")));
     else Notify(PendingConfig.StartOnShore?Local(TEXT("Zum Beenden auf das Startpodest zurückgehen."),TEXT("Return to the starting platform to finish.")):Local(TEXT("Zum Beenden an der Oberfläche zur Einstiegsboje zurückkehren."),TEXT("Return to the entry buoy at the surface to finish your dive.")));
 }
 

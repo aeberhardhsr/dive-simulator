@@ -57,6 +57,7 @@ bool FDiveTerrain::Load()
         const auto entry=value->AsObject(); if(!entry) continue;
         FDiveEntry result; double east=0,north=0;
         if(!entry->TryGetStringField(TEXT("name"),result.Name)||!entry->TryGetNumberField(TEXT("east"),east)||!entry->TryGetNumberField(TEXT("north"),north)) continue;
+        if(result.Name==TEXT("Murg / Sued")) result.Name=TEXT("Murg / Süd");
         result.Position=ToWorld(east,north);
         float z,n,s,e,w;
         if(!Sample(result.Position.X,result.Position.Y,z)||z>-300) continue;
