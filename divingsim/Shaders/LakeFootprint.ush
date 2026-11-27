@@ -1,0 +1,20 @@
+#ifndef DIVE_LAKE_FOOTPRINT
+#define DIVE_LAKE_FOOTPRINT
+// Shared by the volume material, directional-light shaders and GPU audit.
+// Map: west/east-axis origin, north/north-axis origin (local metres), 1/width, 1/height.
+// World X=north, Y=east. UVs address cell edges; sampling supplies the half texel.
+struct FDiveLakeFootprint
+{
+    float Distance(Texture2D Grid,SamplerState GridSampler,float2 Position,float4 Map)
+    {
+        float2 uv=float2(Position.y-Map.x,Map.y-Position.x)*Map.zw;
+        if(any(uv<0)||any(uv>=1)) return -32;
+        return Grid.SampleLevel(GridSampler,uv,0).r;
+    }
+    float Wet(float DistanceMetres)
+    {
+        // Raster representation uncertainty, not a simulated tide or wave run-up.
+        return smoothstep(-.75,.75,DistanceMetres);
+    }
+};
+#endif

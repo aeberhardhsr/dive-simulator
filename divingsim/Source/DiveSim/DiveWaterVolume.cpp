@@ -4,9 +4,11 @@
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/Texture2D.h"
 
 void ADiveWorld::CreateWaterVolume()
 {
+    LoadLakeFootprint();
     WaterVolume=NewObject<UStaticMeshComponent>(this,TEXT("BoundedWaterMedium"));
     WaterVolume->SetupAttachment(RootComponent);
     WaterVolume->SetMobility(EComponentMobility::Movable);
@@ -18,6 +20,16 @@ void ADiveWorld::CreateWaterVolume()
     WaterVolume->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cube.Cube")));
     WaterVolumeMaterial=UMaterialInstanceDynamic::Create(LoadObject<UMaterialInterface>(nullptr,
         TEXT("/Game/Diving/Materials/M_WaterVolume.M_WaterVolume")),this);
+    if(LakeFootprint)
+    {
+        TArray<FMaterialParameterInfo> parameters;TArray<FGuid> ids;
+        WaterVolumeMaterial->GetAllTextureParameterInfo(parameters,ids);
+        if(!parameters.ContainsByPredicate([](const auto& p){return p.Name==TEXT("LakeGrid");}))
+            UE_LOG(LogTemp,Fatal,TEXT("DIVE_LAKE_FOOTPRINT_FAIL volume material must be rebuilt with OnlyWaterVolume"));
+        WaterVolumeMaterial->SetTextureParameterValue(TEXT("LakeGrid"),LakeFootprint);
+        WaterVolumeMaterial->SetVectorParameterValue(TEXT("LakeMap"),FLinearColor(LakeFootprintMap.X,LakeFootprintMap.Y,LakeFootprintMap.Z,LakeFootprintMap.W));
+        WaterVolumeMaterial->SetScalarParameterValue(TEXT("LakeEnabled"),1);
+    }
     WaterVolume->SetMaterial(0,WaterVolumeMaterial);
     WaterVolume->RegisterComponent();
 }

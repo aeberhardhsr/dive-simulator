@@ -91,7 +91,8 @@ def main():
         report.update(waves_enabled=True, optics_sha256=digest(optics),
             wave_medium_sha256=digest(ROOT/'divingsim/Shaders/WaveSolarMedium.ush'),
             wave_surface_sha256=digest(ROOT/'divingsim/Shaders/WaveSolarSurface.ush'),
-            scope='Shared scene waves and extinction; spatial directional attenuation/focusing and refracted shading/phase directions; original shadow rays, no GI or lake footprint.')
+            lake_footprint_shader_sha256=digest(ROOT/'divingsim/Shaders/LakeFootprint.ush'),
+            scope='Shared scene waves and extinction; optional receiver lake footprint; spatial directional attenuation/focusing and refracted shading/phase directions; original shadow rays, no GI or clipped shoreline light paths.')
     if args.volume:
         volume_patched = destination/volume_original.name
         volume_patched.write_text(volume_code, encoding='utf-8', newline='\n')

@@ -21,6 +21,7 @@ param(
     [switch]$OnlyBenthic,
     [switch]$OnlyBenthicColor,
     [switch]$OnlyWater,
+    [switch]$OnlyWaterVolume,
     [switch]$OnlyBuildings,
     [switch]$OnlyVegetation,
     [switch]$OnlyGround,
@@ -52,6 +53,7 @@ $PackageDirectory=[IO.Path]::GetFullPath($PackageDirectory)
 # normal build; it does not change those structures.
 if ($Target -eq 'Content') {
     $script = Join-Path $PSScriptRoot 'build_unreal_content.py'
+    if($OnlyWaterVolume) { $script=Join-Path $PSScriptRoot 'build_water_volume_content.py' }
     if($OnlyAudio) { $script=Join-Path $PSScriptRoot 'build_audio_content.py' }
     if($OnlyShore) { $script=Join-Path $PSScriptRoot 'build_shore_content.py' }
     if($OnlyImagery) { $script=Join-Path $PSScriptRoot 'build_imagery_content.py' }

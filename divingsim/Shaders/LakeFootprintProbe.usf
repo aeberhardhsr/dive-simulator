@@ -1,0 +1,14 @@
+#include "/Engine/Private/Common.ush"
+#include "/DiveRendering/LakeFootprint.ush"
+StructuredBuffer<float4> ProbePositions;
+RWStructuredBuffer<float2> ProbeResults;
+uint ProbeCount;
+[numthreads(64,1,1)]
+void MainCS(uint3 id:SV_DispatchThreadID)
+{
+    if(id.x>=ProbeCount) return;
+    FDiveLakeFootprint lake;
+    float d=lake.Distance(Scene.DiveWater.Footprint,Scene.DiveWater.FootprintSampler,
+        ProbePositions[id.x].xy,Scene.DiveWater.FootprintMap);
+    ProbeResults[id.x]=float2(d,Scene.DiveWater.FootprintEnabled*lake.Wet(d));
+}

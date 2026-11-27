@@ -6,7 +6,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "ProceduralMeshComponent.h"
 #include "DiveWaterScene.h"
+#include "DiveCausticsFixture.h"
 #include "Engine/World.h"
+#include "Engine/Texture2D.h"
 
 void ADiveWorld::UpdateCaustics()
 {
@@ -41,6 +43,9 @@ void ADiveWorld::UpdateCaustics()
         }
         input.Phases=FVector4f(Waves.Waves[0].Phase,Waves.Waves[1].Phase,Waves.Waves[2].Phase,Waves.Waves[3].Phase);
         input.Medium=FVector4f(clock,FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.),1.45/VisibleDistance,CausticsStrength);
+        input.FootprintResource=LakeFootprint?LakeFootprint->GetResource():nullptr;
+        input.FootprintMap=LakeFootprintMap;
+        input.FootprintProbes=LakeFootprintProbes;
         PublishDiveWaterScene(GetWorld()->Scene,input);
         // The spatial renderer supplies attenuation/focusing; retaining the old
         // projected light function would attenuate the same sun path twice.
@@ -52,6 +57,15 @@ void ADiveWorld::SetCausticsTestStrength(float Value)
 {
     if(!bOpticsSmoke) return;
     CausticsStrength=FMath::Clamp(Value,0.f,1.f);UpdateCaustics();
+    if(DiveShoreCausticsFixture())
+    {
+        // Expose the receiver below the surveyed ground for this diagnostic only.
+        // Repeat to cover newly streamed components. Keep the actual volume medium.
+        TArray<UPrimitiveComponent*> components;GetComponents(components);
+        for(auto* component:components)
+            if(component!=WaterVolume.Get()&&!CausticsProbe.ContainsByPredicate([component](const auto& p){return p.Get()==component;}))
+                component->SetVisibility(false);
+    }
 }
 
 bool ADiveWorld::ValidateCaustics(FString& Error) const
@@ -90,7 +104,7 @@ void ADiveWorld::ConfigureCausticsProbe(const Dive::Config& Settings,float Heigh
 {
     if(!bOpticsSmoke) return;
     Configure(Settings);
-    const FVector center=Terrain.Entries[0].Position;
+    const FVector center=DiveCausticsFixtureCenter(Terrain.Entries[0].Position);
     if(CausticsProbe.IsEmpty())
     {
         CausticsProbe.Add(Prop(TEXT("CausticsReceiver"),TEXT("/Engine/BasicShapes/Cube.Cube"),center,FVector(10,10,.1),TEXT("M_CausticsProbe"),false));

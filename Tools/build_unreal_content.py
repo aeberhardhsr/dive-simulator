@@ -141,21 +141,7 @@ if not ONLY_ENVIRONMENT:
     material('M_Landscape',(.2,.24,.12),.95,vertex=True)
     material('M_Equipment',(.04,.05,.05),.82,vertex=True,custom_color='return C.rgb*.35;')
     material('M_Suit',(.07,.11,.13),.9,vertex=True,custom_color='return C.rgb*lerp(float3(.12,.13,.13),float3(.5,.5,.5),DrySuit);')
-wave_code='''
-float2 xy=P.xy*.01;
-float4 waves[4]={Wave0,Wave1,Wave2,Wave3};
-float h=0; float2 slope=0;
-for(int i=0;i<4;++i) {
-    float phase=dot(waves[i].xy,xy)-waves[i].z*T+WavePhase[i];
-    h+=waves[i].w*sin(phase);
-    slope+=waves[i].xy*waves[i].w*cos(phase);
-}
-float2 delta=xy-Viewer.xy;
-float d=length(delta);
-float f=saturate((d-32)/16);
-float fade=1-f*f*(3-2*f);
-float2 fadeSlope=-6*f*(1-f)/16*delta/max(.001,d);
-'''
+wave_code=(ROOT/'Tools/Shaders/WaterWaveDisplacement.ush').read_text()
 material('M_Water',(.012,.035,.028),.13,water=True,
          custom_wpo=wave_code+'return float3(0,0,h*100*fade);',
          custom_normal=(ROOT/'Tools/Shaders/WaterOptics.ush').read_text()+wave_code+'''

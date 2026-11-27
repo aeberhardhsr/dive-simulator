@@ -16,10 +16,14 @@ def build_water_volume(wave_code):
     albedo.set_editor_property('constant',u.LinearColor(.07,.24,.16,1))
     lib.connect_material_property(albedo,'',u.MaterialProperty.MP_BASE_COLOR)
     nodes={'P':lib.create_material_expression(m,u.MaterialExpressionWorldPosition)}
-    for name,param,value in [('T','WaveTime',0),('Visibility','VisibilityMetres',14),('DensityGain','DensityGain',1)]:
+    grid=lib.create_material_expression(m,u.MaterialExpressionTextureObjectParameter)
+    grid.set_editor_property('parameter_name','LakeGrid')
+    grid.set_editor_property('texture',u.load_asset('/Engine/EngineResources/WhiteSquareTexture'))
+    nodes['LakeGrid']=grid
+    for name,param,value in [('T','WaveTime',0),('Visibility','VisibilityMetres',14),('DensityGain','DensityGain',1),('LakeEnabled','LakeEnabled',0)]:
         n=lib.create_material_expression(m,u.MaterialExpressionScalarParameter)
         n.set_editor_property('parameter_name',param);n.set_editor_property('default_value',value);nodes[name]=n
-    for name in ['Viewer','Wave0','Wave1','Wave2','Wave3','WavePhase']:
+    for name in ['Viewer','Wave0','Wave1','Wave2','Wave3','WavePhase','LakeMap']:
         n=lib.create_material_expression(m,u.MaterialExpressionVectorParameter);n.set_editor_property('parameter_name',name)
         a=lib.create_material_expression(m,u.MaterialExpressionAppendVector)
         lib.connect_material_expressions(n,'RGB',a,'A');lib.connect_material_expressions(n,'A',a,'B');nodes[name]=a
@@ -28,7 +32,8 @@ def build_water_volume(wave_code):
     for name in nodes:
         item=u.CustomInput();item.set_editor_property('input_name',name);inputs.append(item)
     fn.set_editor_property('inputs',inputs);fn.set_editor_property('output_type',u.CustomMaterialOutputType.CMOT_FLOAT3)
-    fn.set_editor_property('code',wave_code+(Path(__file__).parent/'Shaders/WaterVolume.ush').read_text())
+    shared=(Path(__file__).resolve().parents[1]/'divingsim/Shaders/LakeFootprint.ush').read_text()
+    fn.set_editor_property('code',shared+'\n'+wave_code+(Path(__file__).parent/'Shaders/WaterVolume.ush').read_text())
     for name,node in nodes.items():lib.connect_material_expressions(node,'',fn,name)
     # Volume-domain extinction uses the subsurface slot. Unreal converts /metre
     # to /centimetre in VolumetricFogVoxelization.usf, so no /100 here.
@@ -36,3 +41,7 @@ def build_water_volume(wave_code):
     lib.recompile_material(m)
     if not u.EditorAssetLibrary.save_loaded_asset(m):raise RuntimeError('Water volume save failed')
     u.log('DIVE_WATER_VOLUME_CONTENT_OK extent=below_shared_waves units=inverse_metres')
+
+
+if __name__ == '__main__':
+    build_water_volume((Path(__file__).parent/'Shaders/WaterWaveDisplacement.ush').read_text())

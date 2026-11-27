@@ -1,5 +1,6 @@
 param([string]$PackageDirectory='', [switch]$EditorSandbox, [switch]$WaterPreview, [switch]$SolarShaderStudy, [switch]$SolarVolumeStudy, [switch]$WaveTransportStudy,
-    [ValidateSet('day','calm','night','air','deep')][string]$Case='day',
+    [switch]$LakeFootprint, [string]$LakeFootprintProbeFile='',
+    [ValidateSet('day','calm','night','air','deep','shore')][string]$Case='day',
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidateRange(180,7200)][int]$TimeoutSeconds=180,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8')
@@ -8,6 +9,11 @@ if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxNam
 if($SolarShaderStudy -and ($PackageDirectory -or -not $EditorSandbox -or -not $WaterPreview)) {throw 'SolarShaderStudy requires the native editor sandbox and WaterPreview.'}
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
 if($WaveTransportStudy -and -not $SolarVolumeStudy) {throw 'WaveTransportStudy requires SolarVolumeStudy.'}
+if($LakeFootprint -and -not $WaveTransportStudy) {throw 'LakeFootprint requires WaveTransportStudy.'}
+if($LakeFootprintProbeFile) {
+    if(-not $LakeFootprint) {throw 'LakeFootprintProbeFile requires LakeFootprint.'}
+    $LakeFootprintProbeFile=(Resolve-Path -LiteralPath $LakeFootprintProbeFile).Path
+}
 $repo=Split-Path $PSScriptRoot -Parent
 $result=Join-Path $repo ('artifacts/caustics-'+$Case+'-validation-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $result -Force | Out-Null
@@ -30,6 +36,8 @@ if($WaterPreview) {$arguments+=' -DiveWaterPreview'}
 if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
 if($SolarVolumeStudy) {$arguments+=' -DiveSolarVolumeStudy'}
 if($WaveTransportStudy) {$arguments+=' -DiveWaveTransportStudy'}
+if($LakeFootprint) {$arguments+=' -DiveLakeFootprint'}
+if($LakeFootprintProbeFile) {$arguments+=' -DiveLakeFootprintProbeFile="'+$LakeFootprintProbeFile+'"'}
 $started=[DateTime]::UtcNow
 $archives=@()
 $rendererIdentity=$null
@@ -44,6 +52,7 @@ if($PackageDirectory) {
 }
 @{started_utc=$started.ToString('o');executable=$executable;executable_sha256=(Get-FileHash -LiteralPath $executable).Hash;
     renderer_module=$rendererIdentity;sandbox_name=$SandboxName;timeout_seconds=$TimeoutSeconds;
+    lake_footprint=[bool]$LakeFootprint;lake_footprint_probe_file=$LakeFootprintProbeFile;
     case=$Case;packaged=[bool]$PackageDirectory;water_preview=[bool]$WaterPreview;solar_shader_study=[bool]$SolarShaderStudy;solar_volume_study=[bool]$SolarVolumeStudy;wave_transport_study=[bool]$WaveTransportStudy;package_archives=$archives;head=(& git -C $repo rev-parse HEAD)} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $result 'Host.json') -Encoding utf8
 $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
 if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Caustics capture exceeded its $TimeoutSeconds second time limit: process $($process.Id). It was not restarted or terminated." }
@@ -53,6 +62,13 @@ if($SolarShaderStudy -and $text -notmatch 'DIVE_SOLAR_SHADER_STUDY_READY') {thro
 if($SolarVolumeStudy -and $text -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY') {throw 'Missing project-local volume shader mapping.'}
 if($WaveTransportStudy -and $text -notmatch 'DIVE_WATER_SCENE_READY waves=4') {throw 'Shared water scene parameters were not uploaded.'}
 if($WaterPreview -and $text -notmatch 'DIVE_WATER_PREVIEW_READY') {throw 'Water preview was not enabled.'}
+if($LakeFootprint -and $text -notmatch 'DIVE_LAKE_FOOTPRINT_READY') {throw 'Lake footprint was not loaded.'}
+if($LakeFootprintProbeFile) {
+    if($text -notmatch 'DIVE_LAKE_GPU_PASS') {throw 'GPU footprint audit did not complete.'}
+    $probe=Get-Item -LiteralPath (Join-Path $saved 'LakeFootprintGPU.csv')
+    if($probe.LastWriteTimeUtc -lt $started) {throw 'Stale GPU footprint readback.'}
+    Copy-Item -LiteralPath $probe.FullName -Destination $result
+}
 foreach($i in 0..3) {
     if($text -notmatch ('DIVE_CAUSTICS_CAPTURE phase='+$i+' ')) { throw "Missing phase $i" }
     $file=Get-Item -LiteralPath (Join-Path $saved ('Screenshots/Caustics_{0:00}.png' -f $i))

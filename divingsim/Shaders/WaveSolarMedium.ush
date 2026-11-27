@@ -2,6 +2,7 @@
 #define DIVE_WAVE_SOLAR_MEDIUM
 // Prepared copy of the same analytic optics used by the visible water normals.
 #include "/Engine/Private/DiveWaterOptics.ush"
+#include "/DiveRendering/LakeFootprint.ush"
 struct FDiveSolarSample
 {
     float3 Transmission;
@@ -20,6 +21,11 @@ FDiveSolarSample DiveEvaluateWaveSolar(float3 Position,float3 ToLight,float2 Foo
     float h;float2 slope;float3 curve;
     optics.Surface(p.xy,medium.x,waves,phases,medium.y,FootprintX,FootprintY,h,slope,curve);
     float wet=smoothstep(0,.15,h-p.z);
+    if(Scene.DiveWater.FootprintEnabled>.5)
+    {
+        FDiveLakeFootprint lake;
+        wet*=lake.Wet(lake.Distance(Scene.DiveWater.Footprint,Scene.DiveWater.FootprintSampler,p.xy,Scene.DiveWater.FootprintMap));
+    }
     if(wet<=0) return result;
     float3 incident=-normalize(ToLight),ray=optics.Refract(incident,float2(0,0));
     float2 uv=p.xy-ray.xy*((p.z-h)/min(-.1,ray.z));

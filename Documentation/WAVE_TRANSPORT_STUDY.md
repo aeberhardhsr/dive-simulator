@@ -8,9 +8,9 @@ Die bisherigen skalaren Kaustiken werden auf eine repräsentative Tiefe projizie
 
 `DiveWaterScene` übergibt diese Werte pro Szene an den Render-Thread und ergänzt den erweiterbaren Unreal-Szenenpuffer. `WaveSolarMedium.ush` verwendet die vorhandene gemeinsame Wellenoptik für eine Näherung des gebrochenen Strahlwegs, der Fokussierung und der Absorption. `WaveSolarSurface.ush` nutzt das Ergebnis für direktes Sonnenlicht; die vorbereitete Volumenvariante nutzt es an jedem Streupunkt und berücksichtigt die gebrochene Richtung in der Phasenfunktion. Die alte Sonnen-Light-Function wird ausschliesslich in diesem Versuch deaktiviert, um doppelte skalare Abschwächung zu vermeiden.
 
-Diese Implementierung ist noch keine physikalische oder visuelle Abnahme. Seegrenzen, energieerhaltende Mehrwege-Fokussierung, angepasste Schattenstrahlen und indirekte Lichtwege fehlen. Auch räumliche Lichtbündel und zeitliche Stabilität sind erst anhand tatsächlicher Bilder zu beurteilen.
+Diese Implementierung ist noch keine physikalische oder visuelle Abnahme. Vollständige Lichtwege über Seegrenzen, energieerhaltende Mehrwege-Fokussierung, angepasste Schattenstrahlen und indirekte Lichtwege fehlen. Auch räumliche Lichtbündel und zeitliche Stabilität sind erst anhand tatsächlicher Bilder zu beurteilen.
 
-Für die Seegrenzen ist inzwischen ein [geografisches Distanzraster](LAKE_FOOTPRINT.md) mit den drei ausgesparten Inseln vorbereitet. Seine Offline-Prüfung ist bestanden; die GPU-Anbindung steht noch aus und gehört nicht zu den hier bereits geprüften Laufzeitfunktionen.
+Für die Seegrenzen ist inzwischen ein [geografisches Distanzraster](LAKE_FOOTPRINT.md) mit den drei ausgesparten Inseln vorbereitet. Seine Offline-Prüfung und eine nachfolgende optionale GPU-Anbindung sind bestanden. 42.793 GPU-Abfragen und ein freigelegter Ufer-Prüfkörper sind im [separaten Bericht](LAKE_FOOTPRINT_GPU_RESULTS.json) erfasst. Die unten dokumentierte ursprüngliche Zehn-Fälle-Reihe verwendete noch keine Seemaske; die sichtbare Wassergeometrie und vollständige Lichtwege an Ufern bleiben offen.
 
 ## Tatsächlicher Fehler und Gegenmassnahme
 
@@ -46,7 +46,7 @@ Einrichtung, Versionsbindung und aktueller Build-Stand der separaten Engine steh
 1. Erledigt: Patch im passenden separaten Engine-Quellbaum geprüft, Renderer/Editor gebaut und aktuelle Projektmodule neu kompiliert.
 2. Erledigt: einzelner Tageslauf mit gültiger Szenenbindung, vier geprüften Bildern und ohne neue Shader-/Parameterfehler. Registrierungs- und Upload-Marker allein wurden nicht als Nachweis verwendet.
 3. Erledigt für die feststehenden Prüfkörper: identische Kameraposen mit ruhigem und bewegtem Wasser, zwei Zeitpunkte und eingefrorene Wiederholung. Bewegte Habitatansichten und längere Zeitreihen bleiben offen.
-4. Nacht ohne Lampe, Überwasserflächen und tiefe Prüfkörper sind geprüft. Tauchlampen und Land-Wasser-Grenzen bleiben offen; die noch fehlende horizontale Seemaske bleibt ein Ausschlussgrund für die Standardaktivierung.
+4. Nacht ohne Lampe, Überwasserflächen und tiefe Prüfkörper sind geprüft. Tauchlampen und natürliche Land-Wasser-Ansichten bleiben offen. Eine optionale horizontale Empfängermaske wurde nachfolgend nativ geprüft; fehlende Begrenzung der sichtbaren Wassergeometrie und vollständiger Uferlichtwege verhindert weiterhin eine Standardfreigabe.
 5. Erst nach Bildprüfung, Pakettest und Leistungsmessung über eine Übernahme entscheiden.
 
 ### Abgeschlossener paarweiser Receiver-Vergleich

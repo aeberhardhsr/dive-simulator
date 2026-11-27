@@ -1,6 +1,7 @@
 #include "DivePawn.h"
 #include "DiveWorld.h"
 #include "DiveEquipment.h"
+#include "DiveCausticsFixture.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/HUD.h"
@@ -26,7 +27,7 @@ void ADivePawn::TickCausticsTest(float Dt)
     const bool calm=fixture==TEXT("calm"),night=fixture==TEXT("night"),air=fixture==TEXT("air"),deep=fixture==TEXT("deep");
     const bool disabled=phase==1;
     const float height=air?400:deep?-1500:-320;
-    const FVector center=Environment->Terrain.Entries[0].Position;
+    const FVector center=DiveCausticsFixtureCenter(Environment->Terrain.Entries[0].Position);
     if(phase!=CausticsTestPhase)
     {
         Dive::Config config;config.Hour=night?0:13;config.Date={2026,6,21};config.WindMetresPerSecond=calm?0:6;
@@ -36,6 +37,7 @@ void ADivePawn::TickCausticsTest(float Dt)
         Environment->SetCausticsTestStrength(disabled?0:1);
         CausticsTestPhase=phase;
     }
+    if(DiveShoreCausticsFixture()) Environment->SetCausticsTestStrength(disabled?0:1);
     const FVector eye(center.X-230,center.Y,height+235);
     const FRotator gaze=FRotator(-48,0,0);
     SetActorLocation(eye-FVector(0,0,60));pc->SetControlRotation(gaze);

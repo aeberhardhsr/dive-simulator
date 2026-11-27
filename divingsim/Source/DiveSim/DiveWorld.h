@@ -256,6 +256,10 @@ private:
     bool bNativeWaterScattering=false;
     bool bWaterInterface=false;
     bool bBoundedWater=false;
+    UPROPERTY() TObjectPtr<class UTexture2D> LakeFootprint;
+    FVector4f LakeFootprintMap=FVector4f(0,0,0,0);
+    TSharedPtr<const TArray<FVector4f>,ESPMode::ThreadSafe> LakeFootprintProbes;
+    void LoadLakeFootprint();
     bool bWaterPreview=false;
     float WaterVolumeGain=1;
     bool bOpticsSmoke=false;
