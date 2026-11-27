@@ -1,0 +1,448 @@
+diff --git a/Tools/Benchmark.ps1 b/Tools/Benchmark.ps1
+index 8980fb7..6789c82 100644
+--- a/Tools/Benchmark.ps1
++++ b/Tools/Benchmark.ps1
+@@ -7,13 +7,16 @@ param(
+     [ValidateRange(10,7200)][int]$Seconds=60,
+     [ValidateRange(0,2)][int]$Entry=0,
+     [switch]$Editor,
++    [switch]$EditorSandbox,
+     [switch]$DisableNanite,
+     [switch]$WaterPreview,
+     [switch]$ImmediateGravelRetirement,
+     [switch]$ImmediatePopulationRetirement,
++    [switch]$BedReliefOff,
+     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
+ )
+ $ErrorActionPreference='Stop'
++if($EditorSandbox -and -not $Editor) {throw 'EditorSandbox requires Editor.'}
+ . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
+ $repo=Split-Path $PSScriptRoot -Parent
+ if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
+@@ -25,6 +28,8 @@ $logPath=Join-Path $resultDir 'Runtime.log'
+ $context=[ordered]@{
+     started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite; water_preview=[bool]$WaterPreview; gravel_immediate_retirement=[bool]$ImmediateGravelRetirement
+     population_immediate_retirement=[bool]$ImmediatePopulationRetirement
++    bed_relief=-not [bool]$BedReliefOff
++    editor_sandbox=[bool]$EditorSandbox
+     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
+ }
+ if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
+@@ -36,10 +41,12 @@ if($DisableNanite) { $arguments+=' -ExecCmds="r.Nanite 0"' }
+ if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
+ if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
+ if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
++if($BedReliefOff) { $arguments+=' -DiveBedReliefOff' }
+ $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
+ if($Editor) {
+     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
+-    $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f (Join-Path $repo 'divingsim/divingsim.uproject'))+$arguments
++    $editorProject=if($EditorSandbox) {'Builds/EditorSandbox/divingsim/divingsim.uproject'} else {'divingsim/divingsim.uproject'}
++    $arguments=('"{0}" /Game/Diving/Maps/L_DiveTraining -game ' -f (Join-Path $repo $editorProject))+$arguments
+ }
+ $context.executable=$executable
+ $context.executable_sha256=(Get-FileHash -LiteralPath $executable -Algorithm SHA256).Hash.ToLowerInvariant()
+diff --git a/Tools/ReportBedRelief.py b/Tools/ReportBedRelief.py
+new file mode 100644
+index 0000000..9724ab0
+--- /dev/null
++++ b/Tools/ReportBedRelief.py
+@@ -0,0 +1,98 @@
++"""Bind height-based bed comparisons to exact runtime, assets and captures."""
++import argparse
++import json
++import re
++from pathlib import Path
++
++import numpy as np
++from ReportNativeWaterLighting import ROOT, pixels, record, sha
++from ReportRocks import package_check
++from analyze_performance import analyze
++
++
++def read(path):
++    return json.loads(path.read_text(encoding='utf-8-sig'))
++
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('run',type=Path)
++    parser.add_argument('--output',type=Path,required=True)
++    parser.add_argument('--benchmark',type=Path,action='append',default=[])
++    args=parser.parse_args()
++    run=args.run.resolve()
++    host=read(run/'Host.json')
++    for item in host['files']:
++        assert sha(ROOT/item['file'])==item['sha256'],item['file']
++    if host['packaged']:
++        package_check(host)
++    names={'weesen-before':3,'weesen-after':3}
++    if not host['preview']:
++        names.update({'ledi-before':3,'ledi-after':3,'murg-before':3,'murg-after':3,'raster':3,'stream':2,'shore':9,'sediment':7})
++    cases=read(run/'Cases.json')
++    assert len(cases)==len(names) and {c['name'] for c in cases}==set(names)
++    evidence=[];logs={}
++    for case in cases:
++        name=case['name'];folder=run/name
++        log=(folder/'Runtime.log').read_text(encoding='utf-8-sig');logs[name]=log
++        assert case['status']=='PASS' and 'DIVE_SMOKE_PASS' in log
++        assert not re.search(r'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:',log)
++        assert 'DIVE_WATER_PREVIEW_READY smoke=1 hardware=1 bounded=1 interface=1 lighting_mode=2' in log
++        disabled=name.endswith('-before')
++        assert ('-DiveBedReliefOff' in log)==disabled
++        strengths=re.findall(r'DIVE_BED_RELIEF_PASS strength=([\d.]+)',log)
++        assert strengths and all(float(v)==(0 if disabled else 1) for v in strengths)
++        if name not in {'shore','sediment'}:
++            for marker in ['DIVE_GRAVEL_PASS','DIVE_POPULATION_PASS','DIVE_POPULATION_RETIREMENT_PASS','DIVE_POPULATION_NEAR_TELEPORT_PASS']:
++                assert marker in log,marker
++        if name=='raster': assert 'r.Nanite = "0"' in log
++        images=sorted(folder.glob('*.png'))
++        assert len(images)==names[name]==case['screenshots']
++        for path in images: pixels(path)
++        evidence.append(dict(**case,runtime=record(folder/'Runtime.log'),images=[record(p) for p in images],
++                             engine_errors=[s for s in log.splitlines() if ': Error:' in s]))
++    pairs=[]
++    for site in ['weesen'] if host['preview'] else ['weesen','ledi','murg']:
++        before,after=site+'-before',site+'-after'
++        poses=[re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',logs[n]) for n in [before,after]]
++        assert len(poses[0])==3 and poses[0]==poses[1]
++        for i in range(3):
++            paths=[run/n/f'Habitat_0_{i}.png' for n in [before,after]]
++            delta=np.abs(pixels(paths[0])-pixels(paths[1]))
++            pairs.append(dict(site=site,pose=poses[0][i],before=record(paths[0]),after=record(paths[1]),
++                              mean_absolute_rgb_difference=float(delta.mean()),
++                              bed_lower_half_difference=float(delta[450:].mean())))
++    sources=read(ROOT/'Documentation/BED_RELIEF_SOURCES.json')
++    assert {a['id'] for a in sources['assets']}=={'gravelly_sand','river_small_rocks'}
++    for source in sources['assets']: assert sha(ROOT/source['file'])==source['sha256']
++    benchmarks=[]
++    for folder in args.benchmark:
++        folder=folder.resolve();result=analyze(folder)
++        h,m=result['host'],result['metadata']
++        assert not h['background_processes'] and h['water_preview']
++        assert m['bed_relief']==h['bed_relief']
++        if host['packaged']:
++            assert not h['editor'] and h['executable_sha256']==host['sha256'].lower()
++            assert h['package_containers']==host['package_containers']
++        for key,value in {'width':1920,'height':1080,'quality':2,'r.ScreenPercentage':100,'r.VSync':0,'t.MaxFPS':0}.items():
++            assert m[key]==value,(key,m[key])
++        benchmarks.append(dict(result=result,files=[record(folder/n) for n in ['Capture.csv','Metadata.json','Host.json','Frame.png','Runtime.log']]))
++    launcher=None
++    if host['packaged']:
++        launcher=read(run/'launcher/Launcher.json')
++        assert launcher['status']=='PASS' and launcher['exit_code']==0
++        assert launcher['executable_sha256'].lower()==host['sha256'].lower()
++        assert launcher['log_sha256'].lower()==sha(run/'launcher/Launcher.log')
++        assert len(benchmarks)>=2
++    result=dict(status='PASS',scope='Bound runtime and visual comparisons, not full reference-quality acceptance',
++                host=host,cases=evidence,comparisons=pairs,sources=sources,benchmarks=benchmarks,launcher=launcher,
++                limitations=['Parallax changes shading coordinates, not collision, silhouettes or real geometry',
++                             'No self-shadow tracing or pixel-depth offset',
++                             'Short captures do not establish temporal stability or sustained performance',
++                             'Image differences alone do not prove an improvement'])
++    args.output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
++    print(f'BED_RELIEF_PASS cases={len(cases)} captures={sum(names.values())}')
++
++
++if __name__=='__main__':
++    main()
+diff --git a/Tools/Shaders/Lakebed.ush b/Tools/Shaders/Lakebed.ush
+index 832844f..dd137b6 100644
+--- a/Tools/Shaders/Lakebed.ush
++++ b/Tools/Shaders/Lakebed.ush
+@@ -30,6 +30,43 @@ struct BedSurface
+         float2 xy=(rg*2-1)*strength;
+         return float3(xy,sqrt(saturate(1-dot(xy,xy))));
+     }
++    float ReliefDepth(Texture2D sand,Texture2D gravel,SamplerState sharedSampler,
++        float2 p,float2 dx,float2 dy,float gravelWeight)
++    {
++        float sh=Texture2DSampleGrad(sand,sharedSampler,p/250,dx/250,dy/250).r;
++        float gh=Texture2DSampleGrad(gravel,sharedSampler,p/290,dx/290,dy/290).r;
++        // Authored centimetre amplitudes, not surveyed sediment heights.
++        // Source maps reserve much of their numeric range. Use pinned 1st/99th
++        // percentiles as the authored relief range; clamp sparse scan outliers.
++        sh=saturate((sh-11212.0/65535)/(8460.0/65535));
++        gh=saturate((gh-116.0/255)/(49.0/255));
++        return lerp((1-sh)*1.5,(1-gh)*6,gravelWeight);
++    }
++    float3 Relief(Texture2D sand,Texture2D gravel,SamplerState sharedSampler,
++        float3 p,float3 n,float3 camera,float gravelWeight,float strength)
++    {
++        float3 v=normalize(camera-p);
++        float facing=dot(v,n);
++        float fade=strength*(1-smoothstep(800,1600,distance(camera,p)))
++            *smoothstep(.76,.92,n.z)*smoothstep(.08,.25,facing)*(1-smoothstep(-20,0,p.z));
++        // Derivatives must be evaluated outside the divergent march. Explicit
++        // gradients preserve mip selection and avoid grazing-angle shimmer.
++        float2 dx=ddx(p.xy),dy=ddy(p.xy);
++        [branch] if(fade<.001) return p;
++        float3 ray=-v/max(facing,.08);
++        int steps=(int)lerp(28,12,saturate(facing));
++        float stepDepth=6.0/steps;
++        float depth=0,previousDepth=0,previousError=0;
++        float error=-ReliefDepth(sand,gravel,sharedSampler,p.xy,dx,dy,gravelWeight);
++        [loop] for(int i=0;i<28;++i)
++        {
++            if(i>=steps||error>=0) break;
++            previousDepth=depth;previousError=error;depth+=stepDepth;
++            error=depth-ReliefDepth(sand,gravel,sharedSampler,(p+ray*depth*fade).xy,dx,dy,gravelWeight);
++        }
++        float fraction=saturate(-previousError/max(error-previousError,.0001));
++        return p+ray*lerp(previousDepth,depth,fraction)*fade;
++    }
+     float3 Layer(Texture2D colorTex,SamplerState colorSampler,
+         Texture2D normalTex,SamplerState normalSampler,Texture2D armTex,SamplerState armSampler,
+         float3 p,float3 n,float scale,float strength,out float3 surfaceNormal,out float2 ar)
+@@ -71,11 +108,19 @@ if(IsRock<.5)
+     float depth=max(0,-P.z*.01);
+     float rockWeight=1-smoothstep(.58,.88,n.z);
+     float gravelWeight=smoothstep(.35,.95,patch)*(1-smoothstep(12,55,depth));
++    float3 reliefP=bed.Relief(SandHeight,GravelHeight,View.MaterialTextureBilinearWrapedSampler,
++        P,n,Camera,gravelWeight,saturate(ReliefStrength)*(1-rockWeight));
++    // Preserve individual high stones at sediment boundaries instead of
++    // averaging two unrelated colour/normal patterns into a blurry surface.
++    float grainHeight=saturate((Texture2DSample(GravelHeight,View.MaterialTextureBilinearWrapedSampler,reliefP.xy/290).r-116.0/255)/(49.0/255));
++    float edgeWeight=smoothstep(-.08,.08,gravelWeight-.5+(grainHeight-.5)*.65);
++    float blendDetail=saturate(ReliefStrength)*(1-smoothstep(1500,3000,distance(P,Camera)));
++    gravelWeight=lerp(gravelWeight,edgeWeight,blendDetail);
+     float3 sn,gn; float2 sa,ga;
+     float3 sand=bed.Layer(SandColor,SandColorSampler,SandNormal,SandNormalSampler,SandARM,SandARMSampler,
+-        P,n,250,.35,sn,sa);
++        reliefP,n,250,.35,sn,sa);
+     float3 gravel=bed.Layer(GravelColor,GravelColorSampler,GravelNormal,GravelNormalSampler,GravelARM,GravelARMSampler,
+-        P,n,290,.65,gn,ga);
++        reliefP,n,290,.65,gn,ga);
+     // Fine sediment is less saturated than the dry source photograph.
+     sand=lerp(dot(sand,float3(.2126,.7152,.0722)).xxx,sand,.45);
+     color=lerp(lerp(sand,gravel,gravelWeight),rock,rockWeight);
+diff --git a/Tools/SmokeTest.ps1 b/Tools/SmokeTest.ps1
+index c660095..f058f65 100644
+--- a/Tools/SmokeTest.ps1
++++ b/Tools/SmokeTest.ps1
+@@ -5,7 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
+     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
+     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
+     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+-    [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView,
++    [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$BedReliefOff,
+     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
+     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
+     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
+@@ -66,6 +66,7 @@ if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join
+ if($LampOff) { $arguments+=' -DiveLampOff' }
+ if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
+ if($GroundOff) { $arguments+=' -DiveGroundOff' }
++if($BedReliefOff) { $arguments+=' -DiveBedReliefOff' }
+ if($HabitatView) {
+     if($Scenario -ne 'rocks' -or $GravelView -or $PlantView -or $WaterView) { throw 'HabitatView requires rocks without other comparison modes.' }
+     $arguments+=' -DiveHabitatView'
+diff --git a/Tools/TestBedRelief.ps1 b/Tools/TestBedRelief.ps1
+new file mode 100644
+index 0000000..d705888
+--- /dev/null
++++ b/Tools/TestBedRelief.ps1
+@@ -0,0 +1,60 @@
++param([switch]$Packaged,[switch]$Preview,[string]$PackageDirectory='Builds/WindowsBedRelief')
++$ErrorActionPreference='Stop'
++$repo=Split-Path $PSScriptRoot -Parent
++if($Packaged -and $Preview) {throw 'A packaged validation requires all cases.'}
++if(Get-Process | Where-Object {$_.ProcessName -like 'UnrealEditor*' -or $_.ProcessName -like 'divingsim*'}) {throw 'An Unreal/game process is already running.'}
++$root=Join-Path $repo ('artifacts/bed-relief-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
++New-Item -ItemType Directory -Force $root | Out-Null
++$runtime=Join-Path $repo 'Builds/EditorSandbox/divingsim'
++$hostRecord=@{packaged=[bool]$Packaged;preview=[bool]$Preview;source_head=(& git -C $repo rev-parse HEAD);started_utc=[DateTime]::UtcNow.ToString('o')}
++if($Packaged) {
++    if(-not [IO.Path]::IsPathRooted($PackageDirectory)) {$PackageDirectory=Join-Path $repo $PackageDirectory}
++    . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
++    $exe=Resolve-DivePackageExecutable $PackageDirectory
++    $runtime=Join-Path $PackageDirectory 'divingsim'
++    $hostRecord.executable=$exe;$hostRecord.sha256=(Get-FileHash -LiteralPath $exe).Hash.ToLowerInvariant()
++    $hostRecord.package_containers=@(Get-ChildItem (Join-Path $runtime 'Content/Paks') -File | Sort-Object Name | ForEach-Object {
++        @{file=$_.Name;bytes=$_.Length;sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}
++    })
++}
++$files=@(Get-ChildItem (Join-Path $repo 'divingsim/Source/DiveSim') -File -Recurse)
++foreach($pattern in @('T_Bed_*.uasset','T_RockScan*.uasset')) {$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Textures') -Filter $pattern}
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Rocks') -Filter '*.uasset'
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Materials') -Filter '*.uasset'
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Gravel') -Filter '*.uasset'
++foreach($f in @('Tools/TestBedRelief.ps1','Tools/SmokeTest.ps1','Tools/Shaders/Lakebed.ush','Tools/build_bed_content.py','Tools/build_gravel_content.py','Documentation/BED_RELIEF_SOURCES.json','divingsim/Config/DefaultEngine.ini')) {$files+=Get-Item (Join-Path $repo $f)}
++if(-not $Packaged) {$files+=Get-Item (Join-Path $runtime 'Binaries/Win64/UnrealEditor-DiveSim.dll')}
++$hostRecord.files=@($files | Sort-Object FullName -Unique | ForEach-Object {
++    @{file=$_.FullName.Substring($repo.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}
++})
++$hostRecord | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
++$cases=@(@{name='weesen-before';entry=0;low=$true;disabled=$true},@{name='weesen-after';entry=0;low=$true})
++if(-not $Preview) {$cases+=@(@{name='ledi-before';entry=2;close=$true;disabled=$true},@{name='ledi-after';entry=2;close=$true},@{name='murg-before';entry=1;low=$true;disabled=$true},@{name='murg-after';entry=1;low=$true},@{name='raster';entry=2;close=$true;raster=$true},@{name='stream';stream=$true},@{name='shore';shore=$true},@{name='sediment';sediment=$true})}
++$completed=@()
++foreach($case in $cases) {
++    $folder=Join-Path $root $case.name;New-Item -ItemType Directory -Force $folder | Out-Null
++    $opts=@{Scenario='rocks';Hour=12;Date='2026-06-21';MaxFPS=30;RuntimeLog=(Join-Path $folder 'Runtime.log');BedReliefOff=[bool]$case.disabled;WaterPreview=$true}
++    if($Packaged) {$opts.Packaged=$true;$opts.PackageDirectory=$PackageDirectory} else {$opts.EditorSandbox=$true}
++    if($case.sediment) {$opts.Scenario='sediment';$opts.Entry=0}
++    elseif($case.shore) {$opts.Scenario='shore';$opts.Entry=0}
++    elseif($case.stream) {$opts.Scenario='stream';$opts.Entry=1;$opts.PopulationChecks=$true}
++    else {$opts.HabitatView=$true;$opts.Entry=$case.entry;$opts.PopulationChecks=$true;$opts.HabitatLowView=[bool]$case.low;$opts.HabitatClose=[bool]$case.close;$opts.DisableNanite=[bool]$case.raster}
++    $started=[DateTime]::UtcNow
++    & (Join-Path $PSScriptRoot 'SmokeTest.ps1') @opts *> (Join-Path $folder 'Summary.log')
++    $log=Get-Content $opts.RuntimeLog -Raw
++    if($log -match 'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:') {throw "Rendering failed: $($case.name)"}
++    if(-not $case.shore -and -not $case.sediment -and $log -notmatch 'DIVE_GRAVEL_PASS') {throw "Missing gravel validation: $($case.name)"}
++    $images=@(Get-ChildItem (Join-Path $runtime 'Saved/Screenshots') -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
++    $expected=if($case.sediment){7}elseif($case.shore){9}elseif($case.stream){2}else{3}
++    if($case.shore) {
++        $names=@('DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png','ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png')
++        if(Compare-Object ($images.Name | Sort-Object) ($names | Sort-Object)) {throw 'Unexpected shore capture names.'}
++    }
++    if($images.Count -ne $expected) {throw "Missing captures $($case.name): $($images.Count)/$expected"}
++    $images | Copy-Item -Destination $folder
++    $completed+=@{name=$case.name;disabled=[bool]$case.disabled;status='PASS';screenshots=$expected}
++    $completed | ConvertTo-Json | Set-Content (Join-Path $root 'Cases.json') -Encoding utf8
++    Write-Output "PASS $($case.name) $folder"
++}
++foreach($input in $hostRecord.files) {if((Get-FileHash -LiteralPath (Join-Path $repo $input.file)).Hash.ToLowerInvariant() -ne $input.sha256) {throw "Input changed during tests: $($input.file)"}}
++Write-Output "BED_RELIEF=$root"
+diff --git a/Tools/build_bed_content.py b/Tools/build_bed_content.py
+index 00bf1d5..38dde88 100644
+--- a/Tools/build_bed_content.py
++++ b/Tools/build_bed_content.py
+@@ -11,6 +11,34 @@ from texture_color import set_scan_source_encoding
+ BASE = '/Game/Diving'
+ 
+ 
++def import_relief_textures():
++    manifest = json.loads((ROOT/'Documentation/BED_RELIEF_SOURCES.json').read_text())
++    textures = {}
++    for item in manifest['assets']:
++        source = ROOT/item['file']
++        assert hashlib.sha256(source.read_bytes()).hexdigest()==item['sha256']
++        name = {'gravelly_sand':'SandHeight', 'river_small_rocks':'GravelHeight'}[item['id']]
++        path = BASE+'/Textures/T_Bed_'+name
++        texture = u.load_asset(path) if u.EditorAssetLibrary.does_asset_exist(path) else None
++        if not texture or u.EditorAssetLibrary.get_metadata_tag(texture,'DiveBedSHA256')!=item['sha256']:
++            task = u.AssetImportTask()
++            for key,value in dict(filename=str(source),destination_path=BASE+'/Textures',destination_name='T_Bed_'+name,
++                                  automated=True,replace_existing=True,save=False).items():
++                task.set_editor_property(key,value)
++            u.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
++            texture = u.load_asset(path)
++            if not texture: raise RuntimeError('Missing height map '+path)
++            u.EditorAssetLibrary.set_metadata_tag(texture,'DiveBedSHA256',item['sha256'])
++        set_scan_source_encoding(texture,False)
++        for key,value in dict(compression_settings=u.TextureCompressionSettings.TC_GRAYSCALE,srgb=False,
++                              address_x=u.TextureAddress.TA_WRAP,address_y=u.TextureAddress.TA_WRAP,
++                              lod_bias=0,max_texture_size=2048,never_stream=True).items():
++            texture.set_editor_property(key,value)
++        if not u.EditorAssetLibrary.save_loaded_asset(texture): raise RuntimeError(path)
++        textures[name]=texture
++    return textures
++
++
+ def build_bed(material_names=None):
+     manifest = json.loads((ROOT / 'Documentation/BED_MATERIALS.json').read_text(encoding='utf-8'))
+     tools = u.AssetToolsHelpers.get_asset_tools()
+@@ -52,6 +80,7 @@ def build_bed(material_names=None):
+             if not u.EditorAssetLibrary.save_loaded_asset(texture): raise RuntimeError('Cannot save ' + name)
+             textures[prefix + suffix] = texture
+ 
++    textures.update(import_relief_textures())
+     code = (ROOT / 'Tools/Shaders/Lakebed.ush').read_text(encoding='utf-8')
+     from build_ground_content import import_ground_textures, wire_ground, ground_code
+     ground_textures = import_ground_textures() if material_names is None or 'M_ShorePhoto' in material_names else {}
+@@ -80,8 +109,8 @@ float3 GroundPhoto=lerp(Texture2DSample(FarPhoto,FarPhotoSampler,farUV).rgb,Phot
+ ''' + ground_code())
+         custom.set_editor_property('code', shader)
+         custom.set_editor_property('output_type', u.CustomMaterialOutputType.CMOT_FLOAT3)
+-        names = ['P', 'N', 'T', 'IsRock'] + list(textures)
+-        if name == 'M_ShorePhoto': names.extend(['Photo', 'FarPhoto', 'PatchBlend', 'Camera', 'DetailStrength'] + list(ground_textures))
++        names = ['P', 'N', 'T', 'IsRock', 'Camera', 'ReliefStrength'] + list(textures)
++        if name == 'M_ShorePhoto': names.extend(['Photo', 'FarPhoto', 'PatchBlend', 'DetailStrength'] + list(ground_textures))
+         inputs = []
+         for input_name in names:
+             item = u.CustomInput(); item.set_editor_property('input_name', input_name); inputs.append(item)
+@@ -98,10 +127,18 @@ float3 GroundPhoto=lerp(Texture2DSample(FarPhoto,FarPhotoSampler,farUV).rgb,Phot
+             node = lib.create_material_expression(material, cls)
+             if input_name == 'IsRock': node.set_editor_property('r', is_rock)
+             if not lib.connect_material_expressions(node, '', custom, input_name): raise RuntimeError(input_name)
++        relief = lib.create_material_expression(material,u.MaterialExpressionScalarParameter)
++        relief.set_editor_property('parameter_name','BedReliefStrength')
++        relief.set_editor_property('default_value',1.)
++        if not lib.connect_material_expressions(relief,'',custom,'ReliefStrength'): raise RuntimeError('Relief strength')
++        if name != 'M_ShorePhoto':
++            camera = lib.create_material_expression(material,u.MaterialExpressionCameraPositionWS)
++            if not lib.connect_material_expressions(camera,'',custom,'Camera'): raise RuntimeError('Bed camera')
+         for input_name, texture in textures.items():
+             node = lib.create_material_expression(material, u.MaterialExpressionTextureObject)
+             node.set_editor_property('texture', texture)
+             node.set_editor_property('sampler_type', u.MaterialSamplerType.SAMPLERTYPE_NORMAL if input_name.endswith('Normal')
++                                     else u.MaterialSamplerType.SAMPLERTYPE_LINEAR_GRAYSCALE if input_name.endswith('Height')
+                                      else u.MaterialSamplerType.SAMPLERTYPE_MASKS if input_name.endswith('ARM')
+                                      else u.MaterialSamplerType.SAMPLERTYPE_COLOR)
+             if not lib.connect_material_expressions(node, '', custom, input_name): raise RuntimeError(input_name)
+diff --git a/Tools/build_gravel_content.py b/Tools/build_gravel_content.py
+index 67cf914..6d34628 100644
+--- a/Tools/build_gravel_content.py
++++ b/Tools/build_gravel_content.py
+@@ -24,6 +24,9 @@ def build_gravel_material():
+     # Reuse the lakebed gravel PBR maps so exposed stones belong to the same
+     # substrate. The boulder graph and its larger-scale projection stay intact.
+     code = (ROOT/'Tools/Shaders/Lakebed.ush').read_text()
++    # Small stones use only the rock branch. Their existing graph has no bed
++    # height/camera inputs, and parallax must not deform an already solid pebble.
++    code = code[:code.index('if(IsRock<.5)')]+code[code.index('float wet='):]
+     needle = 'P,n,180,.65,rn,ra)'
+     if code.count(needle) != 1:
+         raise RuntimeError('Lakebed rock projection changed; review gravel scale')
+diff --git a/divingsim/Source/DiveSim/DiveImagery.cpp b/divingsim/Source/DiveSim/DiveImagery.cpp
+index 2a43fd9..7845987 100644
+--- a/divingsim/Source/DiveSim/DiveImagery.cpp
++++ b/divingsim/Source/DiveSim/DiveImagery.cpp
+@@ -69,6 +69,8 @@ UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FS
+ #endif
+     auto* instance=UMaterialInstanceDynamic::Create(material,this);
+     if(FParse::Param(FCommandLine::Get(),TEXT("DiveGroundOff"))) instance->SetScalarParameterValue(TEXT("GroundDetailStrength"),0);
++    if(FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveBedReliefOff")))
++        instance->SetScalarParameterValue(TEXT("BedReliefStrength"),0);
+ #if WITH_EDITOR
+     TArray<UTexture*> groundTextures;
+     for(const TCHAR* suffix:{TEXT("Woodland"),TEXT("GrassColor"),TEXT("GrassNormal"),TEXT("GrassARM"),TEXT("ForestColor"),TEXT("ForestNormal"),TEXT("ForestARM")})
+diff --git a/divingsim/Source/DiveSim/DivePerformance.cpp b/divingsim/Source/DiveSim/DivePerformance.cpp
+index f45ec17..1ba76fb 100644
+--- a/divingsim/Source/DiveSim/DivePerformance.cpp
++++ b/divingsim/Source/DiveSim/DivePerformance.cpp
+@@ -106,6 +106,7 @@ void ADivePawn::TickPerformance()
+         root->SetBoolField(TEXT("water_preview"),Environment->WaterPreviewEnabled());
+         root->SetBoolField(TEXT("gravel_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement")));
+         root->SetBoolField(TEXT("population_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement")));
++        root->SetBoolField(TEXT("bed_relief"),!FParse::Param(FCommandLine::Get(),TEXT("DiveBedReliefOff")));
+         root->SetBoolField(TEXT("water_interface"),Environment->WaterInterfaceEnabled());
+         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
+         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());
+diff --git a/divingsim/Source/DiveSim/DiveWorld.cpp b/divingsim/Source/DiveSim/DiveWorld.cpp
+index 3d979e3..18a5589 100644
+--- a/divingsim/Source/DiveSim/DiveWorld.cpp
++++ b/divingsim/Source/DiveSim/DiveWorld.cpp
+@@ -126,7 +126,21 @@ void ADiveWorld::CreateChunk(FIntPoint Key)
+     component->bUseAsyncCooking=true; component->SetCollisionProfileName(TEXT("BlockAll"));
+     component->RegisterComponent();
+     if(indices.Num()>0) component->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,true);
+-    component->SetMaterial(0,Mat(TEXT("M_Lakebed"))); Chunks.Add(Key,component);
++    UMaterialInterface* bedMaterial=Mat(TEXT("M_Lakebed"));
++    const bool reliefOff=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveBedReliefOff"));
++    if(reliefOff)
++    {
++        auto* instance=UMaterialInstanceDynamic::Create(bedMaterial,this);
++        instance->SetScalarParameterValue(TEXT("BedReliefStrength"),0);bedMaterial=instance;
++    }
++    component->SetMaterial(0,bedMaterial); Chunks.Add(Key,component);
++    if(bOpticsSmoke)
++    {
++        float strength=-1;
++        const bool reliefValid=bedMaterial&&bedMaterial->GetScalarParameterValue(FMaterialParameterInfo(TEXT("BedReliefStrength")),strength)&&
++            FMath::IsNearlyEqual(strength,reliefOff?0.f:1.f);
++        UE_LOG(LogTemp,Display,TEXT("DIVE_BED_RELIEF_%s strength=%.1f"),reliefValid?TEXT("PASS"):TEXT("FAIL"),strength);
++    }
+ }
+ 
+ UStaticMeshComponent* ADiveWorld::Prop(const FString& Name,const FString& MeshPath,
