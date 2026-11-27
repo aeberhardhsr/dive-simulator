@@ -14,7 +14,12 @@ float veinCoord=uv.x*8+.13*sin(uv.y*3.14159);
 float veins=1-smoothstep(.025,.025+max(fwidth(veinCoord),.035),abs(frac(veinCoord)-.5));
 float margin=smoothstep(.32,.5,abs(uv.x-.5));
 float mottling=smoothstep(.45,.88,broad)*(.08+.2*age);
-float3 color=C.rgb*lerp(.85,.62,blade)*lerp(.84,1.13,broad);
+// Blender exports authored linear RGB as sRGB in FBX. Unreal's static-mesh
+// color buffer retains those encoded bytes; VertexColor does not decode them.
+// Decode reflectance once. Alpha remains a linear root/animation weight.
+float3 encoded=saturate(C.rgb);
+float3 reflectance=select(encoded>.04045,pow((encoded+.055)/1.055,2.4),encoded/12.92);
+float3 color=reflectance*lerp(.85,.62,blade)*lerp(.84,1.13,broad);
 color=lerp(color,color*float3(.92,.78,.57),mottling+margin*.12*blade);
 color*=1+blade*(midrib*.15+veins*.055)+fine*.025;
 Roughness=clamp(.58+mottling*.22+margin*.07,.54,.9);

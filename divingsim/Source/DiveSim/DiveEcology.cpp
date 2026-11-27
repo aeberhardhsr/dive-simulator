@@ -5,6 +5,8 @@
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInterface.h"
 #include "StaticMeshResources.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
@@ -71,6 +73,26 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
         for(const auto& lod:render->LODResources)
             if(lod.VertexBuffers.ColorVertexBuffer.GetNumVertices()==0||lod.VertexBuffers.StaticMeshVertexBuffer.GetNumTexCoords()<2)
             {Error=TEXT("Missing plant root weights or leaf surface coordinates");return false;}
+#if WITH_EDITOR
+        // Inspect the actual upload bytes, not only the Blender authoring data.
+        // Cooked meshes need not retain CPU buffers; this probe is editor-only.
+        static TSet<TWeakObjectPtr<UStaticMesh>> probedMeshes;
+        if(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DivePlantColorProbe"))&&!probedMeshes.Contains(mesh))
+        {
+            const auto& colors=render->LODResources[0].VertexBuffers.ColorVertexBuffer;
+            if(!colors.GetVertexData()) {Error=TEXT("Missing CPU plant colors for editor probe");return false;}
+            FColor low(255,255,255,255),high(0,0,0,0);
+            for(uint32 vertex=0;vertex<colors.GetNumVertices();++vertex)
+            {
+                const auto c=colors.VertexColor(vertex);
+                low.R=FMath::Min(low.R,c.R);low.G=FMath::Min(low.G,c.G);low.B=FMath::Min(low.B,c.B);low.A=FMath::Min(low.A,c.A);
+                high.R=FMath::Max(high.R,c.R);high.G=FMath::Max(high.G,c.G);high.B=FMath::Max(high.B,c.B);high.A=FMath::Max(high.A,c.A);
+            }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_PLANT_COLOR_BUFFER mesh=%s vertices=%u min=%u,%u,%u,%u max=%u,%u,%u,%u"),
+                *mesh->GetName(),colors.GetNumVertices(),low.R,low.G,low.B,low.A,high.R,high.G,high.B,high.A);
+            probedMeshes.Add(mesh);
+        }
+#endif
     }
     for(const auto& fish:FishState)
     {

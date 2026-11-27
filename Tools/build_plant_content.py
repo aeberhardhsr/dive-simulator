@@ -13,7 +13,7 @@ def props(obj,**values):
 def save(obj):
     if not u.EditorAssetLibrary.save_loaded_asset(obj):raise RuntimeError('Plant asset save failed')
 
-def build_plants():
+def build_plants(material_only=False):
     tools=u.AssetToolsHelpers.get_asset_tools()
     material=u.load_asset(BASE+'/Materials/M_AquaticPlant')
     if not material:material=tools.create_asset('M_AquaticPlant',BASE+'/Materials',u.Material,u.MaterialFactoryNew())
@@ -46,6 +46,9 @@ def build_plants():
     output(motion,'',u.MaterialProperty.MP_WORLD_POSITION_OFFSET)
     lib.recompile_material(material)
     u.EditorAssetLibrary.set_metadata_tag(material,'DivePlantShaderSHA256',hashlib.sha256(code.encode()).hexdigest());save(material)
+    if material_only:
+        u.log('DIVE_PLANT_MATERIAL_PASS sha256='+hashlib.sha256(code.encode()).hexdigest())
+        return
     manifest=json.loads((ROOT/'blender/exports/Plants/Manifest.json').read_text())
     editor=u.get_editor_subsystem(u.StaticMeshEditorSubsystem) or u.new_object(u.StaticMeshEditorSubsystem)
     flag='Interchange.FeatureFlags.Import.FBX';previous=u.SystemLibrary.get_console_variable_int_value(flag)
@@ -83,4 +86,4 @@ def build_plants():
     (ROOT/'artifacts/PlantContentBuild.json').write_text(json.dumps(records,indent=2)+'\n')
     u.log('DIVE_PLANT_CONTENT_PASS groups=3 lods=4 uv=2')
 
-if __name__=='__main__':build_plants()
+if __name__=='__main__':build_plants(material_only='-DivePlantMaterialOnly' in u.SystemLibrary.get_command_line())

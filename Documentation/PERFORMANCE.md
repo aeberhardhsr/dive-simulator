@@ -1,5 +1,16 @@
 # Gerenderte Leistungsmessung
 
+## WindowsPlantColor: korrekte Pflanzenfarbauswertung
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080, Hoch, feste 100 Prozent Renderauflösung mit Wasserprofil, ohne VSync/Bildratenlimit, jeweils 15 Sekunden Aufwärmen. Gemessen wurde das fertig gepackte Spiel aus demselben EXE-/Inhaltsstand wie die sieben bestandenen Paketfälle. Keine weitere Unreal-/Spielinstanz lief gleichzeitig. Die RGB-Kameraweg-Studie war ausgeschaltet.
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Frames >33,33 ms | GPU / Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen, bodennah, 60 s | 69,79 FPS | 58,22 FPS | 15,65 ms | 19,49 ms | 0 / 4.185 | 13,70 / 6,08 ms |
+| Murg, Nachladen, 90 s | 97,66 FPS | 68,99 FPS | 11,22 ms | 27,79 ms | 0 / 8.788 | 9,61 / 5,94 ms |
+
+Alle inneren Bildintervalle bleiben erhalten; nur je ein Randbild wird verworfen. 35 bzw. 14 Frames überschreiten 16,67 ms. Das Weesener Messbild zeigt den Boden mit Pflanzen/Felsen bei rund 5 m Tiefe, das Murg-Bild weitgehend offenes Wasser bei 24,6 m. Der zweite Lauf ist deshalb kein Leistungsnachweis dichter sichtbarer Vegetation. Die Messungen belegen weder durchgehend 60 FPS noch einen isolierten Geschwindigkeitsgewinn gegenüber älteren Paketen. Unterschiedliche Rechnerlast, Blickrichtungen und Langzeitstabilität bleiben Grenzen. [Farbumrechnung und Vergleichsbilder](PLANT_COLOR.md), [EXE, Container, vollständige Rohdaten- und Bildnachweise](PLANT_COLOR_RESULTS.json).
+
 ## WindowsStreamBuild: Aufbauarbeit aufteilen
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080, 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen. Sechs Läufe verwenden dieselbe EXE und dieselben Inhalte wie die sieben bestandenen Paketfälle. Die Kontrollen schalten nur den schrittweisen Kies- und Fels-/Pflanzenaufbau ab; Bodenform und Objektverteilung bleiben gleich. [Verfahren, Bilder und Grenzen](STREAMING_BUILD.md), [Prüfbericht](STREAMING_BUILD_RESULTS.json).

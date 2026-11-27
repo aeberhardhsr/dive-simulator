@@ -122,7 +122,8 @@ class Plant:
         bpy.ops.object.select_all(action='DESELECT');obj.select_set(True);bpy.context.view_layer.objects.active=obj
         path=OUT/(obj.name+'.fbx')
         bpy.ops.export_scene.fbx(filepath=str(path),use_selection=True,apply_unit_scale=True,
-            axis_forward='-Y',axis_up='Z',mesh_smooth_type='FACE',add_leaf_bones=False,bake_anim=False)
+            axis_forward='-Y',axis_up='Z',mesh_smooth_type='FACE',add_leaf_bones=False,bake_anim=False,
+            colors_type='SRGB') # AquaticPlant.ush decodes RGB; alpha stays linear.
         report['assets'].append(dict(name=obj.name,triangles=len(mesh.loop_triangles),vertices=len(mesh.vertices),
             height_metres=max(v[2] for v in self.vertices),uv_channels=2,root_weight=0,
             file=path.relative_to(ROOT).as_posix(),sha256=hashlib.sha256(path.read_bytes()).hexdigest()))

@@ -26,7 +26,8 @@ param(
     [switch]$OnlyFormations,
     [switch]$OnlyRockSurfaces,
     [switch]$OnlyGravel,
-    [switch]$OnlyPlants
+    [switch]$OnlyPlants,
+    [switch]$OnlyPlantMaterial
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -58,7 +59,7 @@ if ($Target -eq 'Content') {
     if($OnlyFormations) { $script=Join-Path $PSScriptRoot 'build_formation_content.py' }
     if($OnlyRockSurfaces) { $script=Join-Path $PSScriptRoot 'build_rock_surface_content.py' }
     if($OnlyGravel) { $script=Join-Path $PSScriptRoot 'build_gravel_content.py' }
-    if($OnlyPlants) { $script=Join-Path $PSScriptRoot 'build_plant_content.py' }
+    if($OnlyPlants -or $OnlyPlantMaterial) { $script=Join-Path $PSScriptRoot 'build_plant_content.py' }
     if($OnlyOptics) { $script=Join-Path $PSScriptRoot 'build_optics_content.py' }
     if($OnlyCaustics) { $script=Join-Path $PSScriptRoot 'build_caustics_content.py' }
     if($OnlyTorch) { $script=Join-Path $PSScriptRoot 'build_torch_content.py' }
@@ -69,6 +70,7 @@ if ($Target -eq 'Content') {
     if($OnlyBenthic) { $script=Join-Path $PSScriptRoot 'build_benthic_content.py' }
     if($OnlyBenthicColor) { $script=Join-Path $PSScriptRoot 'build_benthic_color.py' }
     $contentOptions=@()
+    if($OnlyPlantMaterial) { $contentOptions+='-DivePlantMaterialOnly' }
     if($OnlyEnvironment) { $contentOptions+='-DiveEnvironmentOnly' }
     if($OnlyWater) { $contentOptions+='-DiveWaterOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$script" -unattended -nullrhi -nosplash '-log=ContentBuild.log' @contentOptions

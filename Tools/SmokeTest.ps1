@@ -24,12 +24,14 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(2,40)][double]$Visibility=14,
     [ValidateRange(0,100)][double]$Battery=100,
     [ValidateRange(0,30)][double]$ParticleScale=1,
-    [switch]$PopulationChecks, [switch]$VegetationChecks, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [switch]$FinInspection, [string]$RuntimeLog='',
+    [switch]$PopulationChecks, [switch]$VegetationChecks, [switch]$PlantColorProbe, [switch]$NavShore, [switch]$NoBubbles, [switch]$AutomaticEnvironment, [switch]$FinInspection, [string]$RuntimeLog='',
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
+if($PlantColorProbe -and $Packaged) {throw 'PlantColorProbe requires the editor runtime with CPU vertex data.'}
+if($PlantColorProbe -and $Scenario -ne 'dive') {throw 'PlantColorProbe requires the dive scenario, which validates the actual mesh buffers.'}
 if($PSBoundParameters.ContainsKey('WaterVolumeGain') -and -not $BoundedWater) {throw 'WaterVolumeGain requires BoundedWater.'}
 if($DisableLighting -and $Packaged) { throw 'Unlit diagnostic requires the native editor runtime.' }
 if($WaterReflection -ne 'default' -and -not $WaterInterface) { throw 'WaterReflection requires WaterInterface.' }
@@ -71,6 +73,7 @@ if($MaxFPS) { $consoleCommands+="t.MaxFPS $MaxFPS" }
 if($consoleCommands.Count) { $arguments+=' -ExecCmds="'+($consoleCommands -join ',')+'"' }
 if($LampOff) { $arguments+=' -DiveLampOff' }
 if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
+if($PlantColorProbe) { $arguments+=' -DivePlantColorProbe' }
 if($GroundOff) { $arguments+=' -DiveGroundOff' }
 if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
 if($LegacyTalus) { $arguments+=' -DiveLegacyTalus' }
@@ -225,6 +228,11 @@ if($PSBoundParameters.ContainsKey('FogScatterGain') -or $PSBoundParameters.Conta
     if(-not $log.Contains($expected)) {throw 'Scattering diagnostic gains were not applied.'}
 }
 if($log -notmatch 'DIVE_OPTICS_PASS' -or $log -notmatch 'DIVE_LIGHT_PASS') { throw "Lighting/material stage test failed. See $logPath." }
+if($PlantColorProbe) {
+    foreach($mesh in @('SM_Pondweed','SM_Stonewort','SM_Milfoil')) {
+        if($log -notmatch ('DIVE_PLANT_COLOR_BUFFER mesh='+$mesh+' ')) {throw 'Missing plant color-buffer inspection; use the dive scenario.'}
+    }
+}
 if($log -notmatch 'Set CVar \[\[r.EyeAdaptation.CachedLightingPreExposure:8\]\]') { throw 'Lighting cache exposure range was not applied.' }
 if($LampOff -and $Scenario -eq 'dive' -and $log -notmatch 'DIVE_TORCH_PASS on=0') { throw 'Night comparison did not switch the torch off.' }
 if($Scenario -like 'surface*' -or $Scenario -eq 'shore') {
