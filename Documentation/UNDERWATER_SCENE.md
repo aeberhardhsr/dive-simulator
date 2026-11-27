@@ -2,6 +2,8 @@
 
 Maßstab ist die [vom Nutzer bereitgestellte Qualitätsreferenz](VISUAL_TARGET.md), nicht die Abnahme einzelner Modelle. Der aktuelle Stand erreicht diese Gesamtreferenz noch nicht.
 
+Eine [zusätzliche geometrische Sedimentschicht](SEDIMENT_RELIEF_INVESTIGATION.md) wurde bei Weesen erprobt und nicht übernommen: Trotz bestandener Kontaktprüfungen bleiben die flächigen Bodenwellen gestalterisch zu wenig gezielt; zugleich verschiebt die neue Höhenabfrage die Felsen. Die weitere Arbeit soll Ablagerungen an bestehende Felsfüsse anbinden und deren Formen erhalten. Die Spielvorschau bleibt beim geprüften Felsausrichtungsstand.
+
 Die [überarbeitete Felsausrichtung](ROCK_POSE.md) verwendet weniger abgeflachte, unterschiedlich geneigte Blöcke. Echte Konturen und Kontaktflächen ändern sich, während Positionen, Anzahl und konservative Hindernishüllen erhalten bleiben. Neun Paketfälle mit 36 Bildern, zusätzliche Einbettungsproben und der Launcher-Test bestehen. Die Unterwassermessung erreicht bei 1080p/Hoch mit Wasserprofil 69,93 FPS im Mittel. Sedimentformen, Bodenanschlüsse, Pflanzen und Lichtwirkung bleiben weiter in Arbeit.
 
 Der [Versuch mit Scan-Höhenkarten und Parallax am Seegrund](BED_RELIEF_INVESTIGATION.md) wurde nicht in die Spielvorschau übernommen: Die Materialdetails ändern sich, die großräumig flache Bodenwirkung bleibt jedoch erhalten. Zwei native Vergleichsläufe zeigen zusätzlich rund 0,27 ms GPU-Aufwand. Quellen, Patch und Bilder bleiben dokumentiert; die nächste visuelle Arbeit muss tatsächliche Bodenformen und Übergänge in der vollständigen Szene betreffen.
