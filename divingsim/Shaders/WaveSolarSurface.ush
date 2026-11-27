@@ -1,0 +1,10 @@
+#include "/DiveRendering/WaveSolarMedium.ush"
+void DiveApplyWaveSolar(inout FDeferredLightData LightData,float3 Position)
+{
+#if LIGHT_SOURCE_SHAPE == 0
+    float2 metres=Position.xy*.01;
+    FDiveSolarSample sample=DiveEvaluateWaveSolar(Position,LightData.Direction,ddx(metres),ddy(metres));
+    LightData.Color*=sample.Transmission;
+    LightData.Direction=sample.ToLight;
+#endif
+}

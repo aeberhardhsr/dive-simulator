@@ -1,9 +1,10 @@
-param([string]$PackageDirectory='', [switch]$EditorSandbox, [switch]$WaterPreview, [switch]$SolarShaderStudy, [switch]$SolarVolumeStudy,
+param([string]$PackageDirectory='', [switch]$EditorSandbox, [switch]$WaterPreview, [switch]$SolarShaderStudy, [switch]$SolarVolumeStudy, [switch]$WaveTransportStudy,
     [ValidateSet('day','calm','night','air','deep')][string]$Case='day',
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8')
 $ErrorActionPreference='Stop'
 if($SolarShaderStudy -and ($PackageDirectory -or -not $EditorSandbox -or -not $WaterPreview)) {throw 'SolarShaderStudy requires the native editor sandbox and WaterPreview.'}
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
+if($WaveTransportStudy -and -not $SolarVolumeStudy) {throw 'WaveTransportStudy requires SolarVolumeStudy.'}
 $repo=Split-Path $PSScriptRoot -Parent
 $result=Join-Path $repo ('artifacts/caustics-'+$Case+'-validation-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $result -Force | Out-Null
@@ -25,6 +26,7 @@ $arguments+=' -DiveCausticsCase='+$Case
 if($WaterPreview) {$arguments+=' -DiveWaterPreview'}
 if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
 if($SolarVolumeStudy) {$arguments+=' -DiveSolarVolumeStudy'}
+if($WaveTransportStudy) {$arguments+=' -DiveWaveTransportStudy'}
 $started=[DateTime]::UtcNow
 $archives=@()
 if($PackageDirectory) {
@@ -33,13 +35,14 @@ if($PackageDirectory) {
     }
 }
 @{started_utc=$started.ToString('o');executable=$executable;executable_sha256=(Get-FileHash -LiteralPath $executable).Hash;
-    case=$Case;packaged=[bool]$PackageDirectory;water_preview=[bool]$WaterPreview;solar_shader_study=[bool]$SolarShaderStudy;solar_volume_study=[bool]$SolarVolumeStudy;package_archives=$archives;head=(& git -C $repo rev-parse HEAD)} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $result 'Host.json') -Encoding utf8
+    case=$Case;packaged=[bool]$PackageDirectory;water_preview=[bool]$WaterPreview;solar_shader_study=[bool]$SolarShaderStudy;solar_volume_study=[bool]$SolarVolumeStudy;wave_transport_study=[bool]$WaveTransportStudy;package_archives=$archives;head=(& git -C $repo rev-parse HEAD)} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $result 'Host.json') -Encoding utf8
 $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
 if(-not $process.WaitForExit(180000)) { throw "Caustics capture exceeded its time limit: process $($process.Id). It was not restarted or terminated." }
 $text=Get-Content -LiteralPath $log -Raw
-if($process.ExitCode -ne 0 -or $text -notmatch 'DIVE_CAUSTICS_PROBE_PASS captures=4' -or $text -match 'DIVE_\w+_FAIL|Failed to compile Material|Default Material will be used') { throw "Caustics probe failed: $log" }
+if($process.ExitCode -ne 0 -or $text -notmatch 'DIVE_CAUSTICS_PROBE_PASS captures=4' -or $text -match 'DIVE_\w+_FAIL|Failed to compile Material|Default Material will be used|unbound parameters|DIVE_WAVE_RENDERER_UNAVAILABLE') { throw "Caustics probe failed: $log" }
 if($SolarShaderStudy -and $text -notmatch 'DIVE_SOLAR_SHADER_STUDY_READY') {throw 'Missing project-local solar shader mapping.'}
 if($SolarVolumeStudy -and $text -notmatch 'DIVE_SOLAR_VOLUME_STUDY_READY') {throw 'Missing project-local volume shader mapping.'}
+if($WaveTransportStudy -and $text -notmatch 'DIVE_WATER_SCENE_READY waves=4') {throw 'Shared water scene parameters were not uploaded.'}
 if($WaterPreview -and $text -notmatch 'DIVE_WATER_PREVIEW_READY') {throw 'Water preview was not enabled.'}
 foreach($i in 0..3) {
     if($text -notmatch ('DIVE_CAUSTICS_CAPTURE phase='+$i+' ')) { throw "Missing phase $i" }

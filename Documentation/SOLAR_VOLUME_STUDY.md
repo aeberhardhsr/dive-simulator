@@ -64,3 +64,5 @@ Der reine Volumeneffekt ist damit sichtbar nachgewiesen und grösser als die Abw
 Die beiden Varianten liegen getrennt in `Intermediate/DiveSolarStudy` und `Intermediate/DiveSolarVolumeStudy`. Beide Vorbereitungen prüfen die Engine-Originaldateien; die zusätzliche Variante prüft auch die exakte Fassung von `VolumetricFog.usf`. Installierte Engine-Dateien werden nicht verändert oder ins Repository kopiert. Zur manuellen nativen Szenenprüfung ergänzt `-SolarVolumeStudy` den bestehenden `-SolarShaderStudy`-Schalter; `-SpectralView` schaltet zusätzlich den Kameraweg ein. Alle Läufe erfolgen nacheinander in der Editor-Sandbox.
 
 Die vereinbarte Reihenfolge bleibt Unterwasserwelt, Überwasserlandschaft und danach [Menü/HUD/FPV](UI_UX_TARGET.md).
+
+Der folgende [Versuch mit gemeinsamem Wellenzustand](WAVE_TRANSPORT_STUDY.md) ist separat dokumentiert. Sein erster Lauf scheiterte an der fehlenden Szenenpuffer-Bindung im Engine-Renderer; er ersetzt die hier bestandenen Ergebnisse nicht.

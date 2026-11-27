@@ -1,0 +1,78 @@
+{
+  "status": "wave_runtime_not_validated_requires_engine_rebuild",
+  "base_commit": "21a0eb185189c8f138ca00586a41dae2a72cba8f",
+  "failed_wave_probe": {
+    "path": "artifacts/caustics-day-validation-20261127-123212/Runtime.log",
+    "sha256": "09cc6268b9a47edb57c267354dfba3241c42c41eea84aec5b5a2a7010d00a7db"
+  },
+  "expected_unsupported_engine_rejection": {
+    "path": "artifacts/caustics-day-validation-20261127-125105/Runtime.log",
+    "sha256": "de9747f668172ca65afa3a2f7797a44d070ba79d1de40b141eabefb9b31f2a0f"
+  },
+  "default_regression": {
+    "status": "passed",
+    "log": {
+      "path": "artifacts/caustics-day-validation-20261127-124922/Runtime.log",
+      "sha256": "4e31044960503b9545188e4465d4a2e21dfa11a4b22415467ffb0a570283c18e"
+    },
+    "images": [
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_00.png",
+        "sha256": "95ed546f7e5cdcbcfadc39a092bdc0389e4c45534e5a33f8f95ab3e041368243"
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_01.png",
+        "sha256": "63d86b2d257f5e98505a57de31e25ca3479f5114f879dd2d2a4e45cd3efcbb76"
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_02.png",
+        "sha256": "3df6d9fc3aac1a71e756571808798f1ea06e96ed960a6d931ddd2cf5235e01ac"
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_03.png",
+        "sha256": "ea1f6106d8b3ff0196aec2bfae2e7c77c55a7ef5ff9108154ea054adcac2274b"
+      }
+    ],
+    "known_startup_diagnostics": [
+      "AutomationTest Condition failed",
+      "ToolsetRegistry PythonTestRunner unavailable"
+    ]
+  },
+  "project_editor_build": {
+    "status": "passed",
+    "log": {
+      "path": "artifacts/wave-transport-study-20261127/editor-build-guarded.log",
+      "sha256": "3f67f62afabd043cb1abd0fe11d3c314876addf091cfc4a4c4ce48da67487da7"
+    }
+  },
+  "renderer_patch": {
+    "status": "prepared_not_compiled",
+    "dry_apply_check": "passed",
+    "deterministic_output": "passed",
+    "changed_revision_rejected_before_output": true,
+    "output_inside_engine_rejected": true,
+    "manifest": {
+      "status": "prepared_not_compiled",
+      "engine": "C:\\Program Files\\Epic Games\\UE_5.8",
+      "binding_revision": 1,
+      "installed_engine_modified": false,
+      "files": [
+        {
+          "path": "Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+          "original_sha256": "d4280790d78f8350826c3b34f619a6e7fc3987f9ed49736e5be9d07e9f08f9f9",
+          "prepared_sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+        },
+        {
+          "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+          "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
+          "prepared_sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+        }
+      ]
+    }
+  },
+  "playable_executable_unchanged": {
+    "path": "Builds/WindowsPlantColor/divingsim/Binaries/Win64/divingsim-PlantColor.exe",
+    "sha256": "21b24680279b3762d283fe6c5ae00646b4500d22dacf47c4462f8526d94c5b53"
+  },
+  "engine_inputs_unchanged": true
+}

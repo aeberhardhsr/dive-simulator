@@ -5,6 +5,8 @@
 #include "Materials/Material.h"
 #include "Components/StaticMeshComponent.h"
 #include "ProceduralMeshComponent.h"
+#include "DiveWaterScene.h"
+#include "Engine/World.h"
 
 void ADiveWorld::UpdateCaustics()
 {
@@ -29,6 +31,21 @@ void ADiveWorld::UpdateCaustics()
     const double depth=(SurfaceZ(eye.X,eye.Y)-eye.Z)/100.;
     SolarWater->SetScalarParameterValue(TEXT("VolumeDepth"),FMath::Clamp(depth,1.,20.));
     SolarWater->SetScalarParameterValue(TEXT("VolumeWaterWeight"),NativeWaterScattering()?Dive::CameraWaterBlend(depth):0.);
+    if(DiveWaveTransportEnabled())
+    {
+        FDiveWaterSceneInput input;
+        for(int i=0;i<4;++i)
+        {
+            const auto& w=Waves.Waves[i];
+            input.Waves[i]=FVector4f(w.Kx,w.Ky,w.Omega,w.Amplitude);
+        }
+        input.Phases=FVector4f(Waves.Waves[0].Phase,Waves.Waves[1].Phase,Waves.Waves[2].Phase,Waves.Waves[3].Phase);
+        input.Medium=FVector4f(clock,FMath::Clamp(WeatherSettings.WindMetresPerSecond/12,0.,1.),1.45/VisibleDistance,CausticsStrength);
+        PublishDiveWaterScene(GetWorld()->Scene,input);
+        // The spatial renderer supplies attenuation/focusing; retaining the old
+        // projected light function would attenuate the same sun path twice.
+        if(Sun->LightFunctionMaterial) Sun->SetLightFunctionMaterial(nullptr);
+    }
 }
 
 void ADiveWorld::SetCausticsTestStrength(float Value)
@@ -39,7 +56,7 @@ void ADiveWorld::SetCausticsTestStrength(float Value)
 
 bool ADiveWorld::ValidateCaustics(FString& Error) const
 {
-    if(!SolarWater||!Sun||Sun->LightFunctionMaterial!=SolarWater||SolarWater->GetMaterial()->MaterialDomain!=MD_LightFunction)
+    if(!SolarWater||!Sun||Sun->LightFunctionMaterial!=(DiveWaveTransportEnabled()?nullptr:SolarWater.Get())||SolarWater->GetMaterial()->MaterialDomain!=MD_LightFunction)
     { Error=TEXT("Missing solar underwater light function");return false; }
     TArray<FMaterialParameterInfo> parameters;TArray<FGuid> ids;
     SolarWater->GetAllScalarParameterInfo(parameters,ids);

@@ -4,6 +4,7 @@
 #include "Misc/Parse.h"
 #include "Misc/CoreDelegates.h"
 #include "HAL/FileManager.h"
+#include "DiveWaterScene.h"
 #include "Engine/Engine.h"
 #include "HAL/IConsoleManager.h"
 #include "SceneViewExtension.h"
@@ -112,21 +113,24 @@ class FDiveRenderingModule final : public IModuleInterface
 public:
     void StartupModule() override
     {
+        InitializeDiveWaterScene();
         AddShaderSourceDirectoryMapping(TEXT("/DiveRendering"),FPaths::Combine(FPaths::ProjectDir(),TEXT("Shaders")));
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveSolarShaderStudy"))&&
            FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
         {
             const bool volume=FParse::Param(FCommandLine::Get(),TEXT("DiveSolarVolumeStudy"));
-            const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),volume?TEXT("DiveSolarVolumeStudy/Private"):TEXT("DiveSolarStudy/Private"));
+            const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),DiveWaveTransportEnabled()?TEXT("DiveWaveStudy/Private"):
+                volume?TEXT("DiveSolarVolumeStudy/Private"):TEXT("DiveSolarStudy/Private"));
             if(!IFileManager::Get().FileExists(*(prepared/TEXT("DeferredLightPixelShaders.usf"))))
                 UE_LOG(LogTemp,Fatal,TEXT("Solar shader study requires Tools/PrepareSolarShaderStudy.py for this project."));
             AddShaderSourceDirectoryMapping(TEXT("/Engine/Private"),prepared);
-            UE_LOG(LogTemp,Display,TEXT("DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane=1"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane=%d"),DiveWaveTransportEnabled()?0:1);
             if(volume) UE_LOG(LogTemp,Display,TEXT("DIVE_SOLAR_VOLUME_STUDY_READY receiver=per-froxel local_lights=unchanged"));
         }
         if(GEngine) InitializeView();
         else EngineReady=FCoreDelegates::GetOnPostEngineInit().AddRaw(this,&FDiveRenderingModule::InitializeView);
     }
+    bool SupportsDynamicReloading() override {return false;}
     void ShutdownModule() override
     {
         FCoreDelegates::GetOnPostEngineInit().Remove(EngineReady);

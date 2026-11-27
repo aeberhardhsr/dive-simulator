@@ -23,7 +23,10 @@ def main():
     parser.add_argument('--engine', type=Path, default=Path('C:/Program Files/Epic Games/UE_5.8'))
     parser.add_argument('--project', type=Path, default=ROOT/'Builds/EditorSandbox/divingsim')
     parser.add_argument('--volume', action='store_true', help='Also absorb the directional source at each fog scattering sample')
+    parser.add_argument('--waves', action='store_true', help='Use shared scene waves, spatial attenuation and focusing; requires --volume')
     args = parser.parse_args()
+    if args.waves and not args.volume:
+        parser.error('--waves requires --volume')
     project = args.project.resolve()
     if not project.is_relative_to(ROOT) or not (project/'divingsim.uproject').is_file():
         raise ValueError('Use an existing project inside this checkout')
@@ -38,6 +41,16 @@ def main():
         raise ValueError('Ambiguous deferred-light patch anchors')
     code = code.replace(anchor, '#include "/DiveRendering/SolarTransport.ush"\n\n'+anchor)
     code = code.replace(output, '\tLightDataColor *= AttenuationRGB * DiveSunWaterTransmission(InTranslatedWorldPosition);')
+    if args.waves:
+        code = original.read_text(encoding='utf-8').replace(anchor, '#include "/DiveRendering/WaveSolarSurface.ush"\n\n'+anchor)
+        calls = [('UpdateLightDataColor(LightData.Color, InputParams, DerivedParams.TranslatedWorldPosition);',
+                  'DerivedParams.TranslatedWorldPosition', 2),
+                 ('UpdateLightDataColor(LightData.Color, ScreenPosition, UV, Sample.Depth, TranslatedWorldPosition);',
+                  'TranslatedWorldPosition', 1)]
+        for call, position, count in calls:
+            if code.count(call) != count:
+                raise ValueError('Ambiguous spatial surface patch anchors')
+            code = code.replace(call, call+'\n\t\tDiveApplyWaveSolar(LightData, '+position+');')
     volume_original = source/'VolumetricFog.usf'
     volume_code = None
     if args.volume:
@@ -51,7 +64,15 @@ def main():
         volume_code = volume_code.replace(volume_anchor, volume_anchor+'\n#include "/DiveRendering/SolarMedium.ush"')
         volume_code = volume_code.replace(volume_term, volume_term.replace('DirectionalLightColor *',
             'DirectionalLightColor * DiveDirectionalWaterTransmission(TranslatedWorldPosition, InDirectionalLightDirection) *'))
-    destination = project/'Intermediate'/('DiveSolarVolumeStudy' if args.volume else 'DiveSolarStudy')/'Private'
+        if args.waves:
+            volume_code = volume_original.read_text(encoding='utf-8').replace(volume_anchor,
+                volume_anchor+'\n#include "/DiveRendering/WaveSolarMedium.ush"')
+            spatial_term = '''float2 DiveFootprintX=(ComputeCellTranslatedWorldPosition(GridCoordinate+uint3(1,0,0),CellOffset)-TranslatedWorldPosition).xy*.01;
+            float2 DiveFootprintY=(ComputeCellTranslatedWorldPosition(GridCoordinate+uint3(0,1,0),CellOffset)-TranslatedWorldPosition).xy*.01;
+            FDiveSolarSample DiveSun=DiveEvaluateWaveSolar(TranslatedWorldPosition,InDirectionalLightDirection,DiveFootprintX,DiveFootprintY);
+            LightScattering += DirectionalLightColor * LightFunctionColor * DiveSun.Transmission * ShadowFactor * PhaseFunction(PhaseG, dot(DiveSun.ToLight, -CameraVector));'''
+            volume_code = volume_code.replace(volume_term, spatial_term)
+    destination = project/'Intermediate'/('DiveWaveStudy' if args.waves else 'DiveSolarVolumeStudy' if args.volume else 'DiveSolarStudy')/'Private'
     # A complete local mirror is required because UE resolves the longest
     # virtual directory prefix; missing sibling shaders do not fall back.
     shutil.copytree(source, destination, dirs_exist_ok=True)
@@ -64,6 +85,13 @@ def main():
                   common_include_sha256=digest(ROOT/'divingsim/Shaders/SolarMedium.ush'),
                   volume_enabled=args.volume,
                   scope='Directional direct surfaces'+(' and per-sample fog source' if args.volume else '')+'; mean water plane; no GI update or lake footprint.')
+    if args.waves:
+        optics = ROOT/'Tools/Shaders/WaterOptics.ush'
+        shutil.copyfile(optics, destination/'DiveWaterOptics.ush')
+        report.update(waves_enabled=True, optics_sha256=digest(optics),
+            wave_medium_sha256=digest(ROOT/'divingsim/Shaders/WaveSolarMedium.ush'),
+            wave_surface_sha256=digest(ROOT/'divingsim/Shaders/WaveSolarSurface.ush'),
+            scope='Shared scene waves and extinction; spatial directional attenuation/focusing and refracted shading/phase directions; original shadow rays, no GI or lake footprint.')
     if args.volume:
         volume_patched = destination/volume_original.name
         volume_patched.write_text(volume_code, encoding='utf-8', newline='\n')
