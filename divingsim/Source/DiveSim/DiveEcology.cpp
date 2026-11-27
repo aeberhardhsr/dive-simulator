@@ -9,6 +9,10 @@
 bool ADiveWorld::ValidateEcology(FString& Error) const
 {
     if(!ValidateGravel(Error)) return false;
+    if(PendingPopulation.Components.Num()>=Rocks.Num()+Plants.Num()||(!bPopulationBuilding&&!PendingPopulation.Components.IsEmpty()))
+    {Error=TEXT("Invalid staged population build");return false;}
+    for(const auto& component:PendingPopulation.Components)
+        if(!component||component->IsVisible()||!component->IsRegistered()) {Error=TEXT("Invalid hidden population component");return false;}
     if(RetiredPopulation.Num()>9*(Rocks.Num()+Plants.Num()))
     {Error=TEXT("Unbounded population retirement");return false;}
     for(const auto& component:RetiredPopulation)

@@ -142,6 +142,7 @@ UStaticMeshComponent* ADiveWorld::Prop(const FString& Name,const FString& MeshPa
 
 void ADiveWorld::Populate()
 {
+    CancelPopulationCell();CancelGravelCell();
     FishState.Reset(); RockState.Reset(); RockSearch.Reset(); RockLayouts.Reset();
     for(int32 i=0;i<Rocks.Num();++i)
     {

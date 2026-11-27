@@ -190,22 +190,12 @@ int32 ADiveWorld::PlantCullDistance() const
     return FMath::CeilToInt(FMath::Max(4000.f,VisibleDistance*500.f));
 }
 
-void ADiveWorld::CreatePopulationCell(FIntPoint Key)
+void ADiveWorld::BeginPopulationCell(FIntPoint Key)
 {
-    CSV_SCOPED_TIMING_STAT(DivePopulation,BuildCell);
-    auto& cell=PopulationCells.Add(Key);
-    TArray<TArray<FTransform>> instances;instances.SetNum(Rocks.Num()+Plants.Num());
-    auto create=[this,&cell](UInstancedStaticMeshComponent* source,bool collision)
-    {
-        auto* component=NewObject<UInstancedStaticMeshComponent>(this);
-        component->SetupAttachment(RootComponent);component->SetStaticMesh(source->GetStaticMesh());
-        component->SetMaterial(0,source->GetMaterial(0));
-        component->SetCollisionProfileName(collision?TEXT("BlockAll"):TEXT("NoCollision"));
-        if(!collision) component->SetCullDistances(0,PlantCullDistance());
-        cell.Components.Add(component);return component;
-    };
-    for(const auto& source:Rocks) create(source,true);
-    for(const auto& source:Plants) create(source,false);
+    CSV_SCOPED_TIMING_STAT(DivePopulation,PrepareCell);
+    check(!bPopulationBuilding&&PendingPopulation.Components.IsEmpty());
+    PendingPopulationKey=Key;bPopulationBuilding=true;
+    auto& instances=PendingPopulationTransforms;instances.SetNum(Rocks.Num()+Plants.Num());
     TArray<FTransform> transforms;TArray<FDiveRock> states;
     GenerateRocks(Key,transforms,states);
     for(int32 i=0;i<transforms.Num();++i) instances[states[i].Variant].Add(transforms[i]);
@@ -220,11 +210,37 @@ void ADiveWorld::CreatePopulationCell(FIntPoint Key)
                rock.Position.Y>=Key.Y*CellWidth-rock.Radius-600&&rock.Position.Y<=(Key.Y+1)*CellWidth+rock.Radius+600) nearby.Add(rock);
     }
     BuildPlantLayout(Key,nearby,instances);
-    for(int i=0;i<cell.Components.Num();++i)
+}
+
+bool ADiveWorld::AdvancePopulationCell(bool Complete)
+{
+    CSV_SCOPED_TIMING_STAT(DivePopulation,BuildCell);
+    check(bPopulationBuilding);
+    for(int i=PendingPopulation.Components.Num();i<Rocks.Num()+Plants.Num();++i)
     {
-        {CSV_SCOPED_TIMING_STAT(DivePopulation,AddInstances);cell.Components[i]->AddInstances(instances[i],false,false,false);}
-        {CSV_SCOPED_TIMING_STAT(DivePopulation,Register);cell.Components[i]->RegisterComponent();}
+        const bool collision=i<Rocks.Num();
+        auto* source=collision?Rocks[i].Get():Plants[i-Rocks.Num()].Get();
+        auto* component=NewObject<UInstancedStaticMeshComponent>(this);
+        component->SetupAttachment(RootComponent);component->SetStaticMesh(source->GetStaticMesh());
+        component->SetMaterial(0,source->GetMaterial(0));
+        component->SetCollisionProfileName(collision?TEXT("BlockAll"):TEXT("NoCollision"));
+        if(!collision) component->SetCullDistances(0,PlantCullDistance());
+        component->SetVisibility(false);
+        {CSV_SCOPED_TIMING_STAT(DivePopulation,AddInstances);component->AddInstances(PendingPopulationTransforms[i],false,false,false);}
+        {CSV_SCOPED_TIMING_STAT(DivePopulation,Register);component->RegisterComponent();}
+        PendingPopulation.Components.Add(component);++PopulationBatchComponents;
+        if(!Complete) break;
     }
+    if(PendingPopulation.Components.Num()!=Rocks.Num()+Plants.Num()) return false;
+    for(const auto& component:PendingPopulation.Components) component->SetVisibility(true);
+    PopulationCells.Add(PendingPopulationKey,MoveTemp(PendingPopulation));PendingPopulation.Components.Reset();
+    PendingPopulationTransforms.Reset();bPopulationBuilding=false;return true;
+}
+
+void ADiveWorld::CancelPopulationCell()
+{
+    for(const auto& component:PendingPopulation.Components) RetiredPopulation.Add(component);
+    PendingPopulation.Components.Reset();PendingPopulationTransforms.Reset();bPopulationBuilding=false;
 }
 
 void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,TArray<TArray<FTransform>>& instances) const
@@ -374,6 +390,7 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
 
 void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
 {
+    PopulationBatchComponents=0;
     const bool instantRetire=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement"));
     auto retire=[this](bool immediate)
     {
@@ -386,6 +403,7 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         if(count&&bOpticsSmoke) UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_RETIRE removed=%d pending=%d immediate=%d milliseconds=%.3f"),count,RetiredPopulation.Num(),immediate,(FPlatformTime::Seconds()-started)*1000);
     };
     const FIntPoint center=CellAt(Player);
+    if(bPopulationBuilding&&(FMath::Abs(PendingPopulationKey.X-center.X)>1||FMath::Abs(PendingPopulationKey.Y-center.Y)>1)) CancelPopulationCell();
     const bool shifted=center!=PopulationCell;
     if(shifted||PopulationCells.Num()!=9)
     {
@@ -424,13 +442,29 @@ void ADiveWorld::StreamPopulation(const FVector& Player,bool Initial)
         // Nearby missing geometry (including adjacent-cell teleports) still
         // loads immediately, and its obsolete bodies are flushed in that case.
         retire(immediate||instantRetire);
-        for(const auto& key:missing)
-        {CreatePopulationCell(key);++loaded;if(!immediate) break;}
+        const bool legacyBuild=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationBuild"));
+        if(immediate)
+        {
+            for(const auto key:missing)
+            {
+                if(bPopulationBuilding&&PendingPopulationKey!=key) {CancelPopulationCell();retire(true);}
+                if(!bPopulationBuilding) BeginPopulationCell(key);
+                if(AdvancePopulationCell(true)) ++loaded;
+            }
+        }
+        else if(!bPopulationBuilding)
+        {
+            BeginPopulationCell(missing[0]);
+            if(legacyBuild&&AdvancePopulationCell(true)) ++loaded;
+        }
+        else if(AdvancePopulationCell(legacyBuild)) ++loaded;
+        CSV_CUSTOM_STAT(DivePopulation,BuildComponents,PopulationBatchComponents,ECsvCustomStatOp::Set);
         if(shifted)
         {
             RockState.Reset();
             // Collision/avoidance always describes the complete target window.
-            // Only distant component creation is spread across frames.
+            // Distant component registration is staged; near collision and
+            // avoidance still describe the complete target window.
             for(int y=-1;y<=1;++y) for(int x=-1;x<=1;++x)
             {
                 TArray<FTransform> transforms;GenerateRocks(center+FIntPoint(x,y),transforms,RockState);

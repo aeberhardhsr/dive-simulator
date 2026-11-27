@@ -13,7 +13,7 @@ param(
     [switch]$ImmediateGravelRetirement,
     [switch]$ImmediatePopulationRetirement,
     [switch]$LegacyRockPose,
-    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FootDeposits, [switch]$NoFootDeposits,
+    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
@@ -35,9 +35,23 @@ $context=[ordered]@{
     unlimited_plants=[bool]$UnlimitedPlants
     legacy_formations=[bool]$LegacyFormations
     foot_deposits=(-not [bool]$NoFootDeposits)
+    gravel_staged_build=(-not [bool]$ImmediateGravelBuild)
+    population_staged_build=(-not [bool]$ImmediatePopulationBuild)
     editor_sandbox=[bool]$EditorSandbox
     background_processes=@(Get-Process UnrealEditor,divingsim* -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,StartTime,WorkingSet64)
 }
+# Aggregate host pressure only; unrelated process names/IDs do not belong in reports.
+function Get-DiveHostCpuLoad {
+    try {
+        $sample=@(Get-CimInstance Win32_PerfFormattedData_PerfProc_Process -ErrorAction Stop | Where-Object {$_.Name -notin @('_Total','Idle')})
+        if(-not $sample.Count) {return @{available=$false}}
+        return @{available=$true;logical_processors=[Environment]::ProcessorCount;
+            total_core_percent=($sample | Measure-Object PercentProcessorTime -Sum).Sum;
+            peak_core_percent=($sample | Measure-Object PercentProcessorTime -Maximum).Maximum;
+            processes_over_tenth_core=@($sample | Where-Object {$_.PercentProcessorTime -gt 10}).Count}
+    } catch {return @{available=$false}}
+}
+$context.host_cpu_before=Get-DiveHostCpuLoad
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $context.gpu_before=@(& nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu --format=csv)
 }
@@ -55,6 +69,8 @@ if($LegacyFormations) { $arguments+=' -DiveLegacyFormations' }
 if($FootDeposits -and $NoFootDeposits) {throw 'FootDeposits and NoFootDeposits are mutually exclusive.'}
 if($FootDeposits) { $arguments+=' -DiveFootDeposits' }
 if($NoFootDeposits) { $arguments+=' -DiveNoFootDeposits' }
+if($ImmediateGravelBuild) { $arguments+=' -DiveImmediateGravelBuild' }
+if($ImmediatePopulationBuild) { $arguments+=' -DiveImmediatePopulationBuild' }
 $executable=if($Editor) { '' } else { Resolve-DivePackageExecutable $PackageDirectory }
 if($Editor) {
     $executable=Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor.exe'
@@ -97,6 +113,8 @@ if($metadata.'r.VSync' -ne 0 -or $metadata.'t.MaxFPS' -ne 0) { throw 'Benchmark 
 foreach($group in @('ViewDistance','AntiAliasing','Shadow','GlobalIllumination','Reflection','PostProcess','Texture','Effects','Foliage')) {
     if($metadata."sg.${group}Quality" -ne $Quality) { throw "Actual $group quality differs from the requested preset." }
 }
+$context.host_cpu_after=Get-DiveHostCpuLoad
+$context | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $resultDir 'Host.json') -Encoding utf8
 Write-Output "DIVE_BENCHMARK_CAPTURE_READY $resultDir"
 & python (Join-Path $PSScriptRoot 'analyze_performance.py') $resultDir
 if($LASTEXITCODE -ne 0) { throw "Benchmark analysis failed: $resultDir" }

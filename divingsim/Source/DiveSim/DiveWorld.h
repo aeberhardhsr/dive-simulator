@@ -48,6 +48,16 @@ struct FDivePopulationCell
     GENERATED_BODY()
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Components;
 };
+struct FDiveGravelBuild
+{
+    FIntPoint Key;
+    FRandomStream Random;
+    TArray<FTransform> Instances[3];
+    TArray<FDiveRock> Nearby[16];
+    int Next=0,Candidates=0;
+    bool Active=false,Aprons=true;
+    double GenerationMs=0,SetupMs=0,AddMs=0,RegisterMs=0;
+};
 struct FDiveFootCell
 {
     TArray<FDiveRock> Rocks;
@@ -218,8 +228,16 @@ private:
     const FDiveFootCell& FootCell(FIntPoint Key) const;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredPopulation;
+    UPROPERTY() FDivePopulationCell PendingPopulation;
+    TArray<TArray<FTransform>> PendingPopulationTransforms;
+    FIntPoint PendingPopulationKey;
+    bool bPopulationBuilding=false;
+    int PopulationBatchComponents=0;
     UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredGravel;
+    FDiveGravelBuild GravelBuild;
+    UPROPERTY() FDivePopulationCell PendingGravel;
+    int GravelBatchCandidates=0,GravelBatchComponents=0;
     FIntPoint GravelCell=FIntPoint(MAX_int32,MAX_int32);
     FIntPoint PopulationCell=FIntPoint(MAX_int32,MAX_int32);
     double LastFishRefill=-1;
@@ -262,11 +280,15 @@ private:
     void StreamPopulation(const FVector& Player,bool Initial=false);
     void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
     void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly=false) const;
-    void CreatePopulationCell(FIntPoint Key);
+    void BeginPopulationCell(FIntPoint Key);
+    bool AdvancePopulationCell(bool Complete);
+    void CancelPopulationCell();
     int32 PlantCullDistance() const;
     void BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& Nearby,TArray<TArray<FTransform>>& Instances) const;
     bool TestPlantBeds(FString& Detail) const;
-    void CreateGravelCell(FIntPoint Key);
+    void BeginGravelCell(FIntPoint Key);
+    bool AdvanceGravelCell(bool Complete);
+    void CancelGravelCell();
     void StreamGravel(const FVector& Player,bool Immediate=false);
     void RefillFish(const FVector& Player,bool Initial);
     void TickFish(float Dt,const FVector& Player);

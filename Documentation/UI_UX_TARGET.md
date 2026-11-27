@@ -33,6 +33,10 @@ Die eingebetteten Zahlen, Tasten, Überschriften und Zähler sind Entwurfsinhalt
 | UX-REF-09 | Tabellen, Diagramme und Ausrüstungsvorschau erklären die tatsächlichen Spielwerte. Bearbeiten derselben Einstellung an mehreren Stellen darf keine abweichenden Zustände erzeugen. | Ausrüstung/Tarierung, Wetter/Wasserprofil und Tauchkonfiguration mit Änderungen und Rücknavigation prüfen; Zahlen stimmen mit dem Simulationszustand überein. |
 | UX-REF-10 | Der Gesamteindruck muss die dokumentierten Probleme sichtbar beheben und zur weiterentwickelten Spielgrafik passen. | Vergleichbare echte Aufnahmen und durchgespielte Abläufe im fertigen Unreal-Paket; ein statischer Entwurf oder technische Layouttests allein gelten nicht als Designabnahme. |
 
+## Zusätzlicher FPV-Prüfbefund
+
+Am 27. November zeigt das Abschlussbild der Walenstadt-Leistungsmessung im Paket `WindowsStreamBuild` den eigenen Kopf/Körper gross im Sichtfeld. Die Vergleichsmessung derselben EXE blickt in eine andere Richtung. Ursache und Reproduzierbarkeit dieses Kamerazustands sind noch ungeklärt. Bei der FPV-Überarbeitung sind Eigenkörper-Verdeckung, Kopf-/Kameraabstand und Körperausrichtung während Drehungen, Bodenkontakt und Schwimmen gezielt zu prüfen. Die [gebundenen Messaufnahmen](STREAMING_BUILD_RESULTS.json) bleiben als Befund erhalten; die Meldung ist keine Änderung der vereinbarten Arbeitsreihenfolge.
+
 ## Originalreferenzen
 
 Alle fünf Originalbilder liegen unverändert unter `References/`; Dateigrößen und SHA-256-Prüfsummen sind in [UI_REFERENCE_MANIFEST.json](References/UI_REFERENCE_MANIFEST.json) festgehalten. Die Bilder sind Nutzerentwürfe, keine bereits erreichten Spielaufnahmen. Ihre Hintergründe ersetzen keine tatsächliche Spielwelt.

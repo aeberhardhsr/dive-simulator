@@ -1,5 +1,28 @@
 # Gerenderte Leistungsmessung
 
+## WindowsStreamBuild: Aufbauarbeit aufteilen
+
+RTX 3090 / Ryzen 9 9950X3D, 1920×1080, 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen. Sechs Läufe verwenden dieselbe EXE und dieselben Inhalte wie die sieben bestandenen Paketfälle. Die Kontrollen schalten nur den schrittweisen Kies- und Fels-/Pflanzenaufbau ab; Bodenform und Objektverteilung bleiben gleich. [Verfahren, Bilder und Grenzen](STREAMING_BUILD.md), [Prüfbericht](STREAMING_BUILD_RESULTS.json).
+
+| Messung | Mittel | 1%-Low | P95 | Maximum | Frames >33,33 ms | Spielthread im Mittel |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Weesen, schrittweise, 60 s | 70,12 FPS | 58,94 FPS | 15,66 ms | 19,97 ms | 0 / 4206 | 6,19 ms |
+| Weesen, bisheriger Aufbau, 60 s | 70,14 FPS | 57,22 FPS | 15,72 ms | 26,70 ms | 0 / 4207 | 6,28 ms |
+| Walenstadt, schrittweise, 60 s | 78,43 FPS | 54,71 FPS | 14,48 ms | 34,38 ms | 1 / 4704 | 8,91 ms |
+| Walenstadt, bisheriger Aufbau, 60 s | 78,67 FPS | 51,82 FPS | 14,30 ms | 77,96 ms | 3 / 4718 | 9,03 ms |
+| Murg-Nachladen, schrittweise, 90 s | 100,30 FPS | 74,64 FPS | 10,71 ms | 25,70 ms | 0 / 9025 | 5,73 ms |
+| Murg-Nachladen, bisheriger Aufbau, 90 s | 98,73 FPS | 59,88 FPS | 11,07 ms | 47,72 ms | 3 / 8883 | 6,00 ms |
+
+Die mittleren GPU-Zeiten betragen in Tabellenreihenfolge 13,63 / 13,63 / 12,12 / 12,07 / 9,35 / 9,49 ms. 23 / 47 / 30 / 24 / 14 / 24 Frames überschreiten 16,67 ms. Weesen enthält in diesem Messfenster keine neuen Kies- oder Fels-/Pflanzenaufbauten und prüft vor allem den laufenden Aufwand. Die Spitzen bleiben vollständig enthalten.
+
+Die CSV-Aufgabenbereiche zeigen den gezielten Effekt: Walenstadts maximaler Kies-Nachladebereich sinkt von 41,37 auf 7,22 ms je Frame, die Registrierung von 17,28 auf 6,77 ms. Die Kandidatenzahl sinkt pro normalem Arbeitsschritt von 8192 auf 1024, die Komponentenanzahl von drei auf eine. Auf der Murg-Strecke sinkt der maximale Fels-/Pflanzen-Nachladebereich von 28,17 auf 15,84 ms; je Registrierungsschritt wird eine statt acht Komponenten erstellt. Die Transformationsvorbereitung bleibt mit maximal 15,81 ms ein zusammenhängender Arbeitsschritt. Verschachtelte CSV-Bereiche werden nicht addiert.
+
+Walenstadts verbleibender 34,38-ms-Frame folgt auf 34,45 ms Spielthreadarbeit mit 7,02 ms Kies-Nachladen und 15,26 ms Physikwartezeit. Die 77,96-ms-Kontrollspitze folgt auf 77,95 ms Spielthreadarbeit mit 41,37 ms Kies-Nachladen und 24,79 ms Physikwartezeit. Die CSV-FrameTime erfasst den Abstand zum vorherigen Frame; deshalb gehört die Arbeit zur vorhergehenden Messzeile. Murgs längste Kontrollspitze enthält 28,17 ms Fels-/Pflanzen-Nachladen. Ein weiterer Kontrollausreisser von 44,45 ms fällt dagegen mit Renderthreadarbeit ohne Objektaufbau zusammen. Es bleibt damit zusätzliche Arbeit ausserhalb der jetzt aufgeteilten Aufbauphasen.
+
+**Prüfgrenzen:** Die aggregierten CPU-Momentaufnahmen liegen vor/nach den Läufen zwischen 91 und 949 Prozent eines logischen Prozessors auf einem System mit 32 logischen Prozessoren. 100 dieser Einheiten entsprechen einem ausgelasteten logischen Prozessor, nicht dem gesamten Rechner. Die Murg-Kontrolle startet mit der höchsten Momentaufnahme. Diese Stichproben belegen schwankende Rechnerlast, aber weder deren Verlauf im Messfenster noch die Ursache einzelner Ausreisser. Es handelt sich um je einen Lauf, nicht um eine statistisch abgesicherte Mindestbildrate.
+
+Die Unterwasseransichten drehen sich und sind nicht frameidentisch; bei Walenstadt verdeckt im Abschlussbild des neuen Laufs der eigene Avatar grosse Teile der Sicht. Die Kontrolle zeigt einen anderen Blickwinkel. Dieser offene FPV-Befund begrenzt insbesondere Grafik-/GPU-Vergleiche. Die festen gestalterischen Vergleichsbilder besitzen dagegen identische Kameradaten. Die Nachladestrecken sind rund 144,83 m lang und enden bei 24,6 m Tiefe in freiem Wasser. Vollständige visuelle Referenzqualität, durchgehend 60 FPS, Langzeittest und Mindesthardware sind weiterhin nicht belegt.
+
 ## WindowsFootDeposits: örtliche Böschungen am Felsfuss
 
 RTX 3090 / Ryzen 9 9950X3D, 1920×1080 bei 100 Prozent Renderauflösung, Hoch mit Wasserprofil, ohne VSync/Limit, jeweils 15 Sekunden Aufwärmen. Sechs Einzelläufe verwenden dieselbe EXE und dieselben Inhalte wie die sieben bestandenen Paketfälle. Die Kontrollen deaktivieren ausschliesslich die Ablagerungen. [Bildvergleich und Grenzen](FOOT_DEPOSITS.md), [Paketnachweis](FOOT_DEPOSITS_RESULTS.json).

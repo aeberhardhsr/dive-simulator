@@ -206,18 +206,23 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     const double boundary=FMath::RoundToDouble(anchor.X/9600)*9600;
     const FVector before(boundary-1,anchor.Y,anchor.Z),after(boundary+1,anchor.Y,anchor.Z);
     LastFishRefill=WorldTime;StreamPopulation(before);
-    for(int i=0;i<8&&PopulationCells.Num()!=9;++i) StreamPopulation(before);
+    for(int i=0;i<40&&PopulationCells.Num()!=9;++i) StreamPopulation(before);
     TMap<FIntPoint,TArray<TArray<FTransform>>> snapshots;
     TMap<FIntPoint,UInstancedStaticMeshComponent*> identities;
     for(const auto& pair:PopulationCells) { snapshots.Add(pair.Key,capture(pair.Value));identities.Add(pair.Key,pair.Value.Components[0]); }
     const auto beforeFish=FishState;
-    LastFishRefill=WorldTime;StreamPopulation(after);
-    valid&=boundedLayouts();
-    bool staged=PopulationCells.Num()==7;
-    StreamPopulation(after);staged&=PopulationCells.Num()==8;
-    StreamPopulation(after);staged&=PopulationCells.Num()==9;
+    const bool legacyBuild=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationBuild"));
+    int stages=0;bool sawSeven=false,sawEight=false;
+    do
+    {
+        LastFishRefill=WorldTime;StreamPopulation(after);++stages;
+        valid&=boundedLayouts()&&(legacyBuild||PopulationBatchComponents<=1);
+        sawSeven|=PopulationCells.Num()==7;sawEight|=PopulationCells.Num()==8;
+        for(const auto& component:PendingPopulation.Components) valid&=!component->IsVisible()&&component->IsRegistered();
+    } while(PopulationCells.Num()!=9&&stages<40);
+    const bool staged=sawSeven&&sawEight&&PopulationCells.Num()==9&&stages==(legacyBuild?3:3*(1+Rocks.Num()+Plants.Num()));
     valid&=staged;
-    UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_STAGED_%s cells=7,8,9"),staged?TEXT("PASS"):TEXT("FAIL"));
+    UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_STAGED_%s cells=7,8,9 steps=%d legacy=%d"),staged?TEXT("PASS"):TEXT("FAIL"),stages,legacyBuild?1:0);
     for(const auto& pair:PopulationCells)
         if(const auto* expected=snapshots.Find(pair.Key))
         { ++retained;valid&=identities[pair.Key]==pair.Value.Components[0]&&same(pair.Value,*expected); }
@@ -263,9 +268,19 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
     {const auto* cell=PopulationCells.Find(pair.Key);retirementValid&=cell&&same(*cell,pair.Value);}
     valid&=retirementValid;
     UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_RETIREMENT_%s maximum_pending=%d drained=%d immediate=%d layouts_equal=%d"),retirementValid?TEXT("PASS"):TEXT("FAIL"),maximumPending,RetiredPopulation.IsEmpty(),instant,retirementValid);
+    if(!legacyBuild)
+    {
+        LastFishRefill=WorldTime;StreamPopulation(after);StreamPopulation(after);
+        valid&=bPopulationBuilding&&PendingPopulation.Components.Num()==1;
+        LastFishRefill=WorldTime;StreamPopulation(before,true);
+        valid&=!bPopulationBuilding&&PendingPopulation.Components.IsEmpty()&&RetiredPopulation.IsEmpty()&&boundedLayouts();
+        for(const auto& pair:snapshots)
+        {const auto* cell=PopulationCells.Find(pair.Key);valid&=cell&&same(*cell,pair.Value);}
+        UE_LOG(LogTemp,Display,TEXT("DIVE_POPULATION_BUILD_CANCEL_%s restored=1"),valid?TEXT("PASS"):TEXT("FAIL"));
+    }
     // Restore all gameplay state before the ordinary update/render of this frame.
     LastFishRefill=WorldTime;StreamPopulation(original);
-    for(int i=0;i<8&&PopulationCells.Num()!=9;++i) StreamPopulation(original);
+    for(int i=0;i<40&&PopulationCells.Num()!=9;++i) StreamPopulation(original);
     valid&=boundedLayouts();
     UE_LOG(LogTemp,Display,TEXT("DIVE_ROCK_LAYOUT_%s layouts=%d max=25 fresh_equal=1"),valid?TEXT("PASS"):TEXT("FAIL"),RockLayouts.Num());
     valid&=TestPlantBeds(plantDetail);

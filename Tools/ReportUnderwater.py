@@ -34,7 +34,8 @@ def main():
             assert {p.name for p in folder.glob('*.png')}=={f'{prefix}_{v}_{a}.png' for v in range(variants) for a in range(2)}
         if case['raster']:assert 'r.Nanite = "0"' in log
         if case['scenario']=='stream':
-            for marker in ['DIVE_POPULATION_PASS','DIVE_STEERING_WORLD_PASS species=5 steps_per_species=60','DIVE_GRAVEL_PASS','staged=7,8,9']:assert marker in log
+            for marker in ['DIVE_POPULATION_PASS','DIVE_STEERING_WORLD_PASS species=5 steps_per_species=60','DIVE_GRAVEL_PASS']:assert marker in log
+            assert 'staged=7,8,9' in log or 'completed=7,8,9' in log
         if case['scenario']=='discoveries':assert 'DIVE_DISCOVERY_VISIBILITY_PASS' in log
         images=[]
         for path in sorted(folder.glob('*.png')):

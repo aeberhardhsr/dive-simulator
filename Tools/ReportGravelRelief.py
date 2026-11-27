@@ -63,7 +63,7 @@ def main():
         assert 'DIVE_WATER_PREVIEW_READY smoke=1 hardware=1 bounded=1 interface=1 lighting_mode=2' in log
         assert ('-DiveSparseGravel' in log) == (name == 'close-before')
         checks = [dict(retained=int(a), reloaded=int(b), cells=int(c), stones=int(d), contacts=int(e), edge_stones=int(f))
-            for a,b,c,d,e,f in re.findall(r'DIVE_GRAVEL_PASS retained=(\d+) reloaded=(\d+) cells=(\d+) stones=(\d+) contacts=(\d+) staged=7,8,9 edge_stones=(\d+)', log)]
+            for a,b,c,d,e,f in re.findall(r'DIVE_GRAVEL_PASS retained=(\d+) reloaded=(\d+) cells=(\d+) stones=(\d+) contacts=(\d+) (?:staged|completed)=7,8,9 edge_stones=(\d+)', log)]
         retirement_checks=[]
         population_retirement_checks=[]
         if name not in {'shore', 'sediment'}:
