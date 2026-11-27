@@ -1,0 +1,162 @@
+diff --git a/Tests/CMakeLists.txt b/Tests/CMakeLists.txt
+index c1d1c8f..8068559 100644
+--- a/Tests/CMakeLists.txt
++++ b/Tests/CMakeLists.txt
+@@ -1,6 +1,9 @@
+ cmake_minimum_required(VERSION 3.20)
+ project(DiveModelTests LANGUAGES CXX)
+ enable_testing()
++add_executable(sediment-bedform-tests SedimentBedformTests.cpp)
++target_compile_features(sediment-bedform-tests PRIVATE cxx_std_17)
++add_test(NAME sediment-bedform COMMAND sediment-bedform-tests)
+ add_executable(foot-deposit-tests FootDepositTests.cpp)
+ target_compile_features(foot-deposit-tests PRIVATE cxx_std_17)
+ add_test(NAME foot-deposit COMMAND foot-deposit-tests)
+diff --git a/Tests/SedimentBedformTests.cpp b/Tests/SedimentBedformTests.cpp
+new file mode 100644
+index 0000000..5596824
+--- /dev/null
++++ b/Tests/SedimentBedformTests.cpp
+@@ -0,0 +1,31 @@
++#include "../divingsim/Source/DiveSim/Simulation/SedimentBedform.h"
++#include <iostream>
++#include <limits>
++
++int main()
++{
++    using S=Dive::SedimentBedform;
++    int failures=0;double lowest=100,highest=0,maxStep=0;
++    auto check=[&](bool value,const char* why){if(!value){++failures;std::cerr<<why<<'\n';}};
++    for(double origin:{-17000.,0.,5300.}) for(int y=-64;y<=64;++y) for(int x=-64;x<=64;++x)
++    {
++        const double px=origin+x,py=origin*.37+y;
++        const double h=S::Height(px,py,8);
++        check(std::isfinite(h)&&h>=0&&h<=S::Maximum,"Bedform exceeds bounded relief");
++        lowest=std::min(lowest,h);highest=std::max(highest,h);
++        maxStep=std::max(maxStep,std::abs(h-S::Height(px+1,py,8)));
++        maxStep=std::max(maxStep,std::abs(h-S::Height(px,py+1,8)));
++        check(h==S::Height(px,py,8),"World-space reconstruction changed");
++    }
++    check(highest-lowest>20,"Relief lacks spatial variation");
++    check(maxStep<45,"Metre-grid relief produced a vertical step");
++    for(double boundary:{-192.,-96.,0.,96.,192.}) for(double along:{-31.7,0.,27.4})
++    {
++        check(std::abs(S::Height(boundary-1.e-7,along,8)-S::Height(boundary+1.e-7,along,8))<1.e-4,"Streaming X seam");
++        check(std::abs(S::Height(along,boundary-1.e-7,8)-S::Height(along,boundary+1.e-7,8))<1.e-4,"Streaming Y seam");
++    }
++    check(S::Height(std::numeric_limits<double>::infinity(),0,8)==0,"Invalid coordinates accepted");
++    check(S::Height(0,0,std::numeric_limits<double>::quiet_NaN())==0,"Invalid depth accepted");
++    std::cout<<"Sediment bedforms: "<<failures<<" failures; range="<<lowest<<".."<<highest<<"cm max metre step="<<maxStep<<"cm\n";
++    return failures?1:0;
++}
+diff --git a/Tools/SmokeTest.ps1 b/Tools/SmokeTest.ps1
+index e97a156..166bf78 100644
+--- a/Tools/SmokeTest.ps1
++++ b/Tools/SmokeTest.ps1
+@@ -6,7 +6,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
+     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
+     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
+-    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
++    [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$SedimentBedforms, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
+     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
+     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
+     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
+@@ -83,6 +83,10 @@ if($LegacyFormations) { $arguments+=' -DiveLegacyFormations' }
+ if($FootDeposits -and $NoFootDeposits) {throw 'FootDeposits and NoFootDeposits are mutually exclusive.'}
+ if($FootDeposits) { $arguments+=' -DiveFootDeposits' }
+ if($NoFootDeposits) { $arguments+=' -DiveNoFootDeposits' }
++if($SedimentBedforms) {
++    if($NoFootDeposits){throw 'SedimentBedforms requires the shared deposit surface.'}
++    $arguments+=' -DiveSedimentBedforms'
++}
+ if($ImmediateGravelBuild) { $arguments+=' -DiveImmediateGravelBuild' }
+ if($ImmediatePopulationBuild) { $arguments+=' -DiveImmediatePopulationBuild' }
+ if($FormationView) {
+@@ -228,6 +232,7 @@ if($PSBoundParameters.ContainsKey('FogScatterGain') -or $PSBoundParameters.Conta
+     if(-not $log.Contains($expected)) {throw 'Scattering diagnostic gains were not applied.'}
+ }
+ if($log -notmatch 'DIVE_OPTICS_PASS' -or $log -notmatch 'DIVE_LIGHT_PASS') { throw "Lighting/material stage test failed. See $logPath." }
++if($SedimentBedforms -and $log -notmatch 'DIVE_SEDIMENT_BEDFORMS_READY enabled=1 maximum_cm=45') {throw 'Sediment bedforms were not enabled.'}
+ if($PlantColorProbe) {
+     foreach($mesh in @('SM_Pondweed','SM_Stonewort','SM_Milfoil')) {
+         if($log -notmatch ('DIVE_PLANT_COLOR_BUFFER mesh='+$mesh+' ')) {throw 'Missing plant color-buffer inspection; use the dive scenario.'}
+diff --git a/divingsim/Source/DiveSim/DiveFootDeposits.cpp b/divingsim/Source/DiveSim/DiveFootDeposits.cpp
+index 09ffd4a..690c8e4 100644
+--- a/divingsim/Source/DiveSim/DiveFootDeposits.cpp
++++ b/divingsim/Source/DiveSim/DiveFootDeposits.cpp
+@@ -1,5 +1,6 @@
+ #include "DiveWorld.h"
+ #include "Simulation/FootDeposit.h"
++#include "Simulation/SedimentBedform.h"
+ #include "ProceduralMeshComponent.h"
+ #include "Engine/World.h"
+ 
+@@ -113,6 +114,8 @@ float ADiveWorld::ComputeFootDeposit(double X,double Y,float Bed) const
+             height=FMath::Max(height,Dive::FootDeposit::Height(X-rock.Position.X,Y-rock.Position.Y,rock.Radius,cell.Bearings[index],phase));
+         }
+     }
++    if(bSedimentBedforms)
++        height=FMath::Max(height,Dive::SedimentBedform::Height(X*.01,Y*.01,depth));
+     return height*depthWeight*slopeWeight*clearance;
+ }
+ 
+diff --git a/divingsim/Source/DiveSim/DiveWorld.cpp b/divingsim/Source/DiveSim/DiveWorld.cpp
+index 97291c3..d6fb0c6 100644
+--- a/divingsim/Source/DiveSim/DiveWorld.cpp
++++ b/divingsim/Source/DiveSim/DiveWorld.cpp
+@@ -253,9 +253,11 @@ void ADiveWorld::BeginPlay()
+         CreateAccess();
+         CreateVegetation();
+         if(!bTerrainReady) return;
++        bSedimentBedforms=bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveSedimentBedforms"));
+         if(!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoFootDeposits"))))
+             Terrain.DepositHeight=[this](double X,double Y,float Bed){return FootDepositHeight(X,Y,Bed);};
+         UE_LOG(LogTemp,Display,TEXT("DIVE_FOOT_DEPOSITS_READY enabled=%d maximum_cm=70"),Terrain.DepositHeight?1:0);
++        UE_LOG(LogTemp,Display,TEXT("DIVE_SEDIMENT_BEDFORMS_READY enabled=%d maximum_cm=45"),bSedimentBedforms?1:0);
+         SetEntry(0);
+         for(int i=0;i<Terrain.Entries.Num();++i)
+         {
+diff --git a/divingsim/Source/DiveSim/DiveWorld.h b/divingsim/Source/DiveSim/DiveWorld.h
+index f04dc73..8caa7b2 100644
+--- a/divingsim/Source/DiveSim/DiveWorld.h
++++ b/divingsim/Source/DiveSim/DiveWorld.h
+@@ -223,6 +223,7 @@ private:
+     mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;
+     mutable TMap<FIntPoint,FDiveFootCell> FootCells;
+     mutable TMap<FIntPoint,FDiveDepositVertices> DepositVertices;
++    bool bSedimentBedforms=false;
+     float FootDepositHeight(double X,double Y,float Bed) const;
+     float ComputeFootDeposit(double X,double Y,float Bed) const;
+     const FDiveFootCell& FootCell(FIntPoint Key) const;
+diff --git a/divingsim/Source/DiveSim/Simulation/SedimentBedform.h b/divingsim/Source/DiveSim/Simulation/SedimentBedform.h
+new file mode 100644
+index 0000000..cc90245
+--- /dev/null
++++ b/divingsim/Source/DiveSim/Simulation/SedimentBedform.h
+@@ -0,0 +1,25 @@
++#pragma once
++#include "BedDistribution.h"
++
++namespace Dive
++{
++// Authored sub-metre relief on the measured metre grid, not survey data or
++// a sediment-transport simulation. World coordinates make streaming repeatable.
++struct SedimentBedform
++{
++    static constexpr double Maximum=45; // centimetres, before habitat masks
++    static double Height(double xMetres,double yMetres,double depthMetres)
++    {
++        using B=BedDistribution;
++        if(!std::isfinite(xMetres)||!std::isfinite(yMetres)||!std::isfinite(depthMetres)||
++           std::abs(xMetres)>1.e7||std::abs(yMetres)>1.e7) return 0;
++        const double warp=(B::Noise(xMetres/17,yMetres/17)-.5)*5;
++        const double along=xMetres*.62+yMetres*.7846+warp;
++        const double across=-xMetres*.7846+yMetres*.62;
++        const double ridge=B::Smooth(.28,.78,B::Noise(along/3.8,across/8.5));
++        const double envelope=.45+.55*B::Noise(xMetres/21+13,yMetres/21-7);
++        const double fineSediment=.35+.65*(1-B::Gravel(xMetres,yMetres,depthMetres));
++        return Maximum*ridge*envelope*fineSediment;
++    }
++};
++}

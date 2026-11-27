@@ -10,7 +10,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
-    [switch]$SpectralView, [switch]$SpectralDepthDebug, [ValidateRange(0,2)][double]$AbsorptionGain=1,
+    [switch]$SpectralView, [switch]$SpectralDepthDebug, [ValidateRange(0,2)][double]$AbsorptionGain=1, [switch]$SolarShaderStudy,
     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
     [switch]$DisableShadows, [switch]$DisableLighting,
@@ -29,6 +29,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
+if($SolarShaderStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview)) {throw 'SolarShaderStudy currently requires EditorSandbox and WaterPreview; it is not cooked into a package.'}
 if($SpectralDepthDebug -and -not $SpectralView) {throw 'SpectralDepthDebug requires SpectralView.'}
 if($PlantColorProbe -and $Packaged) {throw 'PlantColorProbe requires the editor runtime with CPU vertex data.'}
 if($PlantColorProbe -and $Scenario -ne 'dive') {throw 'PlantColorProbe requires the dive scenario, which validates the actual mesh buffers.'}
@@ -47,6 +48,7 @@ $arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -un
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($SpectralDepthDebug) {$arguments+=' -DiveSpectralDepthDebug'}
+if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
 if($DiscoveryVerify) {
     if($Scenario -ne 'discoveries' -or $DiscoveryVerify.Contains('"')) { throw 'DiscoveryVerify requires the discoveries scenario and an unquoted path.' }
     $arguments+=' -DiveDiscoveryVerify="'+[IO.Path]::GetFullPath($DiscoveryVerify)+'"'
@@ -171,6 +173,7 @@ if(-not $process.WaitForExit(180000)) { throw 'Smoke test exceeded three minutes
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}
+if($SolarShaderStudy -and $log -notmatch 'DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane=1') {throw 'Project-local solar shader mapping was not enabled.'}
 if($HabitatView) {
     if($log -notmatch 'DIVE_HABITAT_INSPECTION_PASS views=3') { throw 'Habitat comparison did not finish.' }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }

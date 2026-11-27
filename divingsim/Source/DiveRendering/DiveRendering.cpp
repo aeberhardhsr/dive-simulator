@@ -3,6 +3,7 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Misc/CoreDelegates.h"
+#include "HAL/FileManager.h"
 #include "Engine/Engine.h"
 #include "HAL/IConsoleManager.h"
 #include "SceneViewExtension.h"
@@ -112,6 +113,15 @@ public:
     void StartupModule() override
     {
         AddShaderSourceDirectoryMapping(TEXT("/DiveRendering"),FPaths::Combine(FPaths::ProjectDir(),TEXT("Shaders")));
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveSolarShaderStudy"))&&
+           FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
+        {
+            const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),TEXT("DiveSolarStudy/Private"));
+            if(!IFileManager::Get().FileExists(*(prepared/TEXT("DeferredLightPixelShaders.usf"))))
+                UE_LOG(LogTemp,Fatal,TEXT("Solar shader study requires Tools/PrepareSolarShaderStudy.py for this project."));
+            AddShaderSourceDirectoryMapping(TEXT("/Engine/Private"),prepared);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SOLAR_SHADER_STUDY_READY mapping=project-local directional_only=1 mean_plane=1"));
+        }
         if(GEngine) InitializeView();
         else EngineReady=FCoreDelegates::GetOnPostEngineInit().AddRaw(this,&FDiveRenderingModule::InitializeView);
     }
