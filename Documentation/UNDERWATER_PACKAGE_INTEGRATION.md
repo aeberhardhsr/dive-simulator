@@ -1,8 +1,8 @@
 # Abschlussrunde 3: normal startbares Wasserpaket
 
-Stand: 28. November 2026. **In Bearbeitung. Nativer Editor-Nachbau und erster gerenderter Integrationslauf bestanden; Source-Game-Build fortgesetzt, noch kein neues Paket.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
+Stand: 28. November 2026. **In Bearbeitung. Nativer Editor-Nachbau, erster gerenderter Integrationslauf und Source-Game-Build bestanden; Paketierung gestartet, noch kein freigegebenes neues Paket.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
 
-## Laufender Build und eingefrorene Eingaben
+## Buildverlauf und eingefrorene Eingaben
 
 Der erste monolithische Source-Game-Build verwendete die getrennte Sandbox `Builds/SourceEditorSandbox/divingsim` mit Quellstand `edf27cd728b02eae05020e46536f19980d6d2dea`, vor der normalen Laufzeitintegration. Das Protokoll liegt unter `artifacts/underwater-package-20261128/source-game-build.log`; `FoundationInputs.json` bindet die damaligen Source-, Config- und Shaderdateien. Von 1’117 eingeplanten Aktionen waren 234 abgeschlossen, als der Build bewusst für die vorgezogene Integrationsprüfung unterbrochen wurde. Seine letzten Prozesse wurden anhand der tatsächlichen UnrealBuildTool-Kommandozeile identifiziert und beendet. Der resultierende Exitcode 1 ist kein erfolgreicher Abschluss und kein nachgewiesener Compilerfehler.
 
@@ -11,6 +11,10 @@ Der Grund für die Unterbrechung: Die parallele Integrationsvorbereitung war fer
 Bis zu vier Aktionen dürfen parallel laufen; tatsächlich begrenzen auch Abhängigkeiten und die Speicherprognose die Ausführung. Eine wegen Speicherdruck angehaltene `PCH.Engine.cpp`-Aktion wurde im Foundation-Lauf erfolgreich wiederholt. Verwaiste MSBuild-Hilfsprozesse des abgeschlossenen Build-Tool-Setups wurden nach Prüfung ihrer Herkunft und des fehlenden Elternprozesses geschlossen. Die Speicher-Schutzgrenzen wurden nicht gelockert.
 
 ## Vorbereitete Integration
+
+Der fortgesetzte Game-Build ist mit Exitcode 0 und `Result: Succeeded` abgeschlossen: 882 Aktionen, 4’157,70 Sekunden, einschliesslich Verlinkung und Zielmetadaten. Die erzeugte `divingsim.exe` ist 335’105’536 Bytes gross. Der [Buildnachweis](PRODUCTION_GAME_BUILD_EVIDENCE.json) bindet EXE, Zielmetadaten, vollständiges Buildprotokoll und alle 174 Projektquellen, Konfigurations- und Shaderdateien. Diese Eingaben stimmen nach dem Build weiterhin mit dem nativ geprüften Integrationsstand `0751e593504fc43bb0a4a1e7274d100dffeff07a` und dem Hauptprojekt überein. Spätere Werkzeug-/Dokumentationsänderungen werden im Nachweis getrennt ausgewiesen.
+
+Anschliessend wurde `Build.ps1 -Target Package` für `Builds/WindowsUnderwaterFinalCandidate` gestartet. `production-package-build.log` erfasst die Asset-Vorprüfungen, UAT, Cook und Paketierung. Ein erfolgreicher Game-Build ist noch kein Cook- oder Paketnachweis; der Kandidat bleibt bis zu den unten genannten Prüfungen offen.
 
 - `[DiveRendering] ProductionWater=True` wählt auf der separat gepatchten Source-Engine den geprüften Renderweg für normale Starts. Die drei Binding-Versionen müssen vorhanden sein. Die unveränderte installierte Engine erhält dadurch keine inkompatible Szenenstruktur.
 - Wasseroberfläche, begrenztes Volumen, Seegrenzenraster und Reflexionsmaske werden ohne Smoke-/Study-Schalter aktiviert. Das Profil bleibt `unified/vsm` mit ursprünglicher Spielbelichtung und ursprünglichen Lichtintensitäten. Die anderen Lichtmodell-Experimente werden nicht freigegeben.
@@ -31,7 +35,7 @@ Der [Prüfnachweis](PRODUCTION_EDITOR_EVIDENCE.json) bindet Quellen, Konfigurati
 
 ## Noch auszuführen
 
-Der Editor-Nachbau und der erste Smoke-Test aus der folgenden Befehlsfolge sind bereits bestanden. Der Game-Build läuft. Nach dessen erfolgreichem Ende folgen Package und Paketserie; einen noch laufenden oder bereits bestandenen Schritt nicht grundlos nochmals starten:
+Der Editor-Nachbau, der erste Smoke-Test und der Game-Build aus der folgenden Befehlsfolge sind bereits bestanden. Der Package-Schritt läuft. Nach dessen erfolgreichem Ende folgt die Paketserie; einen noch laufenden oder bereits bestandenen Schritt nicht grundlos nochmals starten:
 
 ```powershell
 ./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4

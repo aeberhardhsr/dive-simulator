@@ -111,6 +111,6 @@ Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_
 | --- | --- | --- |
 | 1 – Wasserlinie | Prüfrunde beendet mit Abweichung | [Übergangsbericht](WATERLINE_SEAM_STUDY.md); ursprüngliches Fehlerfrei-Kriterium nicht erfüllt, Restpunkte ausdrücklich unter UW-LATER-07 vertagt |
 | 2 – Licht-Randfälle | Bestanden | [Licht- und Schattenprüfung](REFLECTION_FINISH_VALIDATION.md); acht Grundkontrollen und vier physische Randfallkontrollen bestanden, vereinigter VSM-Pfad für Paketintegration ausgewählt |
-| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); normaler Renderpfad nativ im Editor geprüft, Source-Game-Build fortgesetzt, Cook und Paketabnahme noch ausstehend |
+| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); normaler Renderpfad nativ im Editor geprüft, Source-Game-Build bestanden, Paketierung gestartet; Cook-Abschluss und Paketabnahme noch ausstehend |
 | 4 – Leistung | Geplant | Ausstehend |
 | 5 – Stabilität und Übergabe | Geplant | Ausstehend |
