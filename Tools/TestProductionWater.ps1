@@ -16,6 +16,8 @@ if((Get-FileHash (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')).Hash -
     source_dirty=[bool](& git -C $repo status --porcelain);note='Automated packaged scenarios. Normal interactive launch is a separate check.'} |
     ConvertTo-Json -Depth 5 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
 $cases=@(
+    @{name='sun-shadow';probe='sun';count=3},
+    @{name='moon-shadow';probe='moon';count=3},
     @{name='shore-weesen';scenario='shore';entry=0;count=9},
     @{name='shore-murg';scenario='shore';entry=1;count=9},
     @{name='shore-mols';scenario='shore';entry=2;count=9},
@@ -29,8 +31,6 @@ $cases=@(
     @{name='turbid';visibility=4;count=3},
     @{name='night-off';night=$true;count=3},
     @{name='night-lamp';night=$true;lamp=$true;count=3},
-    @{name='sun-shadow';probe='sun';count=3},
-    @{name='moon-shadow';probe='moon';count=3},
     @{name='software';noRT=$true;count=3},
     @{name='ui';scenario='ui';count=14},
     @{name='wrist';scenario='wrist';count=4;
