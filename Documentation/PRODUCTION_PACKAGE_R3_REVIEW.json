@@ -1,0 +1,780 @@
+{
+  "status": "AUTOMATED_AND_VISUAL_REVIEW_COMPLETE_WITH_KNOWN_LIMITATIONS_INTERACTIVE_PENDING",
+  "created_utc": "2026-11-28T03:44:25.134547+00:00",
+  "package_identity": {
+    "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+    "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+  },
+  "package_files_reverified": 53,
+  "host": {
+    "file": "artifacts/production-water-20261128-043340/Host.json",
+    "sha256": "796bb5d15c5f14c4a1f5b02b902279b8a856544b2e743c4b3f0db2168833e04e"
+  },
+  "case_manifest": {
+    "file": "artifacts/production-water-20261128-043340/Cases.json",
+    "sha256": "d0c922649dedca9740dc24dd2dcdf918a54fb484baf7c60135b589e5c358b851"
+  },
+  "case_count": 18,
+  "image_count": 84,
+  "cases": [
+    {
+      "name": "sun-shadow",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/sun-shadow/Runtime.log",
+        "sha256": "8fe456d1bac50c49141656338eda6a5d6dab0566a4fa98741d55cdd28257a271"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/sun-shadow/Water_0_0.png",
+          "sha256": "e9e1f278feef60541a162a735fd844382919c19203a85a677431faa7a0c3f3b8"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/sun-shadow/Water_0_1.png",
+          "sha256": "c120171ec7ffc8a6c3401273c8740cbc81b924e4a3f91bb3f76496fdea9d6bb2"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/sun-shadow/Water_0_2.png",
+          "sha256": "254832b83fbf967b74e4f21d280dbebc37319c668b0a91eb559737b7b0cabece"
+        }
+      ]
+    },
+    {
+      "name": "moon-shadow",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/moon-shadow/Runtime.log",
+        "sha256": "679c36b6a897afb3e8e7fb4874e79e4ed112b8b1c1b983087abe6cc8f57c363a"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/moon-shadow/Water_0_0.png",
+          "sha256": "fbaab0d4df42ad36613783e03e3b576284b76a822c6eee42da01864899427977"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/moon-shadow/Water_0_1.png",
+          "sha256": "450fe60dd4e5dafb16d0fb81e54f8d0ec53505a0bcc9317c223943562f02db6a"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/moon-shadow/Water_0_2.png",
+          "sha256": "b5e430b271567e99757ca49181bf4812e05874c62a6d335f5cee78735bfe9dee"
+        }
+      ]
+    },
+    {
+      "name": "shore-weesen",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/shore-weesen/Runtime.log",
+        "sha256": "3aed117d59cfcdf7e2340520e1a3c72495ce28a516148fa662baa2e426402cb2"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/DiveSmoke_0_shore.png",
+          "sha256": "f320ce3b1afd8ff7501a7b8846f1252c95f3a34b72b040e24c8ddce19384efc5"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/DiveUnderwater_0_shore.png",
+          "sha256": "88ea89d84d54908762fdc7bb2c203e948f6e486d3c1fdf7f1d4260077c835c94"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreComplete_0.png",
+          "sha256": "a7d674c706d4e9eca52342e42838c735eb1f6fd4d42931041ea5f4b9e0a21c20"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreDive_0.png",
+          "sha256": "9ab6080b1f33018986ed49bdf375106b5185d5b56fcbad7c7146dce20725c179"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreMenu_0.png",
+          "sha256": "6d34e97fe4bf6467cc670839acd2a275871469546c5f09bc186a4dfbc88c8b0b"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreReturn_0.png",
+          "sha256": "16a68a79c7a9bed0e2d2079b11add3c1a3f150b0bfab3d07e92c1a8afb906e44"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreStart_0.png",
+          "sha256": "5b471c12484c5f36b82995f46197688c7c99ff0ead908f6ba4df22cfb6ac45a2"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreSurface_0.png",
+          "sha256": "2224f2a8a67bac4f839a1063e1dbd668043fc7226945fb92e400d0390958024d"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-weesen/ShoreWater_0.png",
+          "sha256": "27f5dbc67a69d6528ea76a54b719a237c90e4dcfbd745bbf1b24b1627095869d"
+        }
+      ]
+    },
+    {
+      "name": "shore-murg",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/shore-murg/Runtime.log",
+        "sha256": "a2f19ca7a9dd68f9300484b95da7ff0c81cb98a1c5122896d5b7ebdd556b8b1b"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/DiveSmoke_1_shore.png",
+          "sha256": "0b88d8826b200db47ca8b1d6484110019dcc97c90c86dcb1820d74d0aab3eaa2"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/DiveUnderwater_1_shore.png",
+          "sha256": "f78d7f061215bca77a79a4e38a5cba7e521135897cf386b06ca31aae7ad61083"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreComplete_1.png",
+          "sha256": "dd9cd65cc37cc5227d3c44ac30f381d56a440bf8a338e7bba570f66a1d7c0092"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreDive_1.png",
+          "sha256": "3530496e3ffc2f34dfc68a5317b0bf49a4edd5bed513d3d763970834cf2f093b"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreMenu_1.png",
+          "sha256": "f0595ef9b3937b36af4be61db4aa67b7a199eb492f23065ec792aa3e139d1a96"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreReturn_1.png",
+          "sha256": "fdc1b390bc9bae85c08a3d6d5e403529f41a8dbac6cf6c531d4a4a92a7194ed0"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreStart_1.png",
+          "sha256": "07cf746f63a448cadc092f2c1c4cb6b622c603c4e5ae241f4e41b4f98cdafd0a"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreSurface_1.png",
+          "sha256": "db434712e2f46e615f98954695c07c49ead1d56d677996c6429cfbef74045423"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-murg/ShoreWater_1.png",
+          "sha256": "edefb860db385dc0088af530d9208253fbb50137ad94389058245afe3f3c1938"
+        }
+      ]
+    },
+    {
+      "name": "shore-mols",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/shore-mols/Runtime.log",
+        "sha256": "a628363c3c00428570f88e5f7906d002a6358fcbf34f3722a9382ba951741afb"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/DiveSmoke_2_shore.png",
+          "sha256": "b1e9875b0637a9e7944818a7752b54745241fbaaf7be69700da8bd8f25a7071d"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/DiveUnderwater_2_shore.png",
+          "sha256": "2b8c1e0c7ae314294deeaa366dfed7803d1a54a41335e0fd146260d4927116d6"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreComplete_2.png",
+          "sha256": "2a1da818e27fa167f215950f5b6909fe83a43201020e6adc77d562b90c9d1a11"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreDive_2.png",
+          "sha256": "45840722bb8b53ea42ed2276637192623aea5723380cf1e1eae37e620f191a36"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreMenu_2.png",
+          "sha256": "02d238b8031275bc34a57edb63f3a36b25fe8e45b1bd2f805069e27085cdfac6"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreReturn_2.png",
+          "sha256": "a943236ef213c405d89a1241f2b9a30a4d66301b099a675cd26db73e324d2272"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreStart_2.png",
+          "sha256": "abcf6c32406f42b2816b550093bb6f555e3817a5c9b8094e1c5fcee2187b0c48"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreSurface_2.png",
+          "sha256": "82b7e28d2bf8e64d507d0e293a12d89000ac486fb3b7913ee08a471a0df7ccf3"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/shore-mols/ShoreWater_2.png",
+          "sha256": "5ace767a5177b24f7fdbf43ce3f320d3b1afba2ed12aa01a30a3131c5cb1f812"
+        }
+      ]
+    },
+    {
+      "name": "water-weesen",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/water-weesen/Runtime.log",
+        "sha256": "b657e4fbb7ab54135f54a87c23bfef64eaf6dc17d3ebdda1210f3d6b8cebc0c1"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/water-weesen/Habitat_0_0.png",
+          "sha256": "bce135e0f8f23fe9dd514107d7a64c77c626aa43697a434ec40d3d503fa4ec5e"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/water-weesen/Habitat_0_1.png",
+          "sha256": "52c27553b09609559d6778ca50c0925c44f1e92332fabd5273b34fb12cc7d36f"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/water-weesen/Habitat_0_2.png",
+          "sha256": "bddc8e4a43b92801d8e3b437c8bd69e1bb0901c4fa4f1d7bfa14427ae6ff9811"
+        }
+      ]
+    },
+    {
+      "name": "water-murg",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/water-murg/Runtime.log",
+        "sha256": "08a468b9a0d3da413629ebdca422d3836cf2e45b548a7922aea1cc2b4165bc8f"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/water-murg/Habitat_0_0.png",
+          "sha256": "3eb5c8e040f8b9b63168cd736fac491db4de18573cfa6d81fce3796af6d7f878"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/water-murg/Habitat_0_1.png",
+          "sha256": "ab3d406d17d762257cfe878c23fb0f9b9052c7abe621b9f48ed31eebdb828193"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/water-murg/Habitat_0_2.png",
+          "sha256": "ed331db0f33f4c881257935a3faa664b117e99c7ac64c0f3805b1fc6f7f3497f"
+        }
+      ]
+    },
+    {
+      "name": "water-walenstadt",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/water-walenstadt/Runtime.log",
+        "sha256": "9c173c071419b611bfd1c994b9f19333c4a8a6c387bc543e9ab4241eeb92abae"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/water-walenstadt/Habitat_0_0.png",
+          "sha256": "963fc02bbf770b1dca7c627671e2c24da37898b8eb3006b51b675463a351282a"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/water-walenstadt/Habitat_0_1.png",
+          "sha256": "35fc2f27de40c9374eb858050566b36efe68ad42c1b2d93504f15d939efd6963"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/water-walenstadt/Habitat_0_2.png",
+          "sha256": "ac96537292c760f9534eac8e0073e1829d6b546c0aa4d2a46f7515d3145cb4f2"
+        }
+      ]
+    },
+    {
+      "name": "line-weesen",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/line-weesen/Runtime.log",
+        "sha256": "17b8851323e0b88df0878ab316cfaaeb32a356257fc407bc418e5108657cde23"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/line-weesen/Water_0_0.png",
+          "sha256": "0c031d73447f402be9ea0d1654cca7a8e0c0bc2eff95fa8d622b9bb3ca209a0e"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/line-weesen/Water_0_1.png",
+          "sha256": "b9aa5be9e9098d65b0c560a4621361a30b3cc355db44dd141db38759e90c50f1"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/line-weesen/Water_0_2.png",
+          "sha256": "cee5a2f89e1b86dac3bc33541b25ffcea67b618fbdc72dffa8ce8cdda1b2f1a2"
+        }
+      ]
+    },
+    {
+      "name": "line-murg",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/line-murg/Runtime.log",
+        "sha256": "943fdfea284c0ebcdb79a99775fe4aacc8bddc327173ed58790baeb6ad503454"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/line-murg/Water_0_0.png",
+          "sha256": "7260510c74bd3bd53aba6c095af37dce48d2fb327aa97ef8f37573f533207d66"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/line-murg/Water_0_1.png",
+          "sha256": "482c018801a1b491146db1270aab6d63270a78827e11ca498655d042d59e51f3"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/line-murg/Water_0_2.png",
+          "sha256": "f6788855e47b775409bc5f57389e1d430863e5b788d8e42247f4d4a3c5a562c9"
+        }
+      ]
+    },
+    {
+      "name": "line-mols",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/line-mols/Runtime.log",
+        "sha256": "6a347e67a42f561340ae399541d51e7eb82827f91941e30a1ea57a70d5c7245b"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/line-mols/Water_0_0.png",
+          "sha256": "809ea9761d71f6e65590d931ce88fce3bbacfcc7b9cce903e933f10d3f3a30c7"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/line-mols/Water_0_1.png",
+          "sha256": "8cbf664f4e02ff27afb7d8f4e707d6aca527fd78aba2a3d4b966a641e3e447d0"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/line-mols/Water_0_2.png",
+          "sha256": "8f10cffa63bdaa25fb20371533df2ddd027be8bed46f2cb74904576b7c91a4d7"
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/clear/Runtime.log",
+        "sha256": "4ebc82269dc628e8ea45ded94fb4413d3fe27af46281e03921846877e12a0282"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/clear/Water_0_0.png",
+          "sha256": "9e20f239ad05a00790ace168fac71c7c8f05840dab7d1095ebc697b104e5066b"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/clear/Water_0_1.png",
+          "sha256": "1acd713d676faf82f449efd6d26b560e84b7c068e4bf6f3987eda6f829d50644"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/clear/Water_0_2.png",
+          "sha256": "52352f76c085f904762dcb26477b90220358838d6b847d4e3447f67eb92461b5"
+        }
+      ]
+    },
+    {
+      "name": "turbid",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/turbid/Runtime.log",
+        "sha256": "3702e0a4aa4395ee42400ee0b34b2f87ed78ee3db84a2e3f7b245de5d83bd9d3"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/turbid/Water_0_0.png",
+          "sha256": "8ecf200461c8e5be0be9a30561c9e473c9fc12477db8d5db484290c9d7d3e479"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/turbid/Water_0_1.png",
+          "sha256": "594b29598c1f1991f8df052e3f831649ff0c3c2374a28886be767f715fe593fc"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/turbid/Water_0_2.png",
+          "sha256": "2b02fa400dedfc2ab7639d8d49bddb002d045b8c23ec5c9520609697edbcb849"
+        }
+      ]
+    },
+    {
+      "name": "night-off",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/night-off/Runtime.log",
+        "sha256": "c70778fb746449db11a06a226a17cdec58e15c0a5c78442a6dcd5ce4ea8e5925"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/night-off/Water_0_0.png",
+          "sha256": "b7773340370885a97c14f72831b9fe7cb3b2bea7e4e023409444cf3270945b4d"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/night-off/Water_0_1.png",
+          "sha256": "89dc341a61964383f4380e46b5f748f8570879dc3bf17cda1dfab4d5915a9288"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/night-off/Water_0_2.png",
+          "sha256": "1464d46b14d1814cff6917a23a14d262ded4f936b34ce39c973f68c3cf5380c8"
+        }
+      ]
+    },
+    {
+      "name": "night-lamp",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/night-lamp/Runtime.log",
+        "sha256": "897ca76191f5c2523361b54827d463c849618b7f2804ada5f0571cf5d22f7b5b"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/night-lamp/Water_0_0.png",
+          "sha256": "549c1150c773a911e1c3b57795224330a0b979df9c24a946e20af73188b24892"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/night-lamp/Water_0_1.png",
+          "sha256": "9470416a1568a67417612e7fbf2a66457e75596b00bd18ebca4ddae1b0ed250c"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/night-lamp/Water_0_2.png",
+          "sha256": "f66b76c18d293f9943f596e9b5da98c588aacdc5815ef67f5a2f71c8f0e151c7"
+        }
+      ]
+    },
+    {
+      "name": "software",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/software/Runtime.log",
+        "sha256": "ca02d94524e0626a109de2f3d9f4fc177177ac9f2a484dad15b2a4290ff0c49e"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/software/Water_0_0.png",
+          "sha256": "7d3993043276ecbf07672bb9bdfe9da4bafbfb45ffda48bb3fef259fae15aa7f"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/software/Water_0_1.png",
+          "sha256": "05d9729a4bb01016a7c26af6f9b00675305c32125ed8f4b9d5d932df2a605133"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/software/Water_0_2.png",
+          "sha256": "69ac84197492fe608e3026e148b43b269da551382a7759328fe6e9d2a9055a5b"
+        }
+      ]
+    },
+    {
+      "name": "ui",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/ui/Runtime.log",
+        "sha256": "618048e0665609a4676b3cadb8c9a5a1c554c65f91056987939842a87a7c068e"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Compact_EN.png",
+          "sha256": "89d2d45580ba5a7581016e2e75e6980568b92d6c29e4c845893db5b8cfcb5d45"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Config_DE.png",
+          "sha256": "ced71269d6a259eb26ee0ff3fdf35c11a31cc73dc9c11caac5526e52577123d6"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Controls_DE.png",
+          "sha256": "e74243b14927c5d3940761a537e5b9380ba10a450fd0e6e5a1bc46f1c0214c35"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Environment_DE.png",
+          "sha256": "e90c8cfbdd2f444c2d1b541bbf8c841a12bc65fadb9c12291a875f948d67ffdf"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Final_EN.png",
+          "sha256": "f91326c4a0e27143ac05346103f8fda89abc353423c72a40816fa1ffc5582145"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Loadout_DE.png",
+          "sha256": "5dca0e0a7f830bc4cc146a361703c0fe5ecb05f874436317d44594ec633b44b7"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Loadout_EN.png",
+          "sha256": "ba52f0648c6bdabacbf5c375d6477fc741eeb8237d21d0ab121c8a006f75e588"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Minimal_EN.png",
+          "sha256": "5317fba0f74b4e9f6374c9d17ccdc85a5d961f2edc820c6e186f2832cc4ee82a"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_PauseWarnings_EN.png",
+          "sha256": "b24fd59c9b8e4e817a1b9ed9854944edd937addfc1223193ac2a48f856d70cff"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Plan_DE.png",
+          "sha256": "71d11eaa95659bf972d91d0d906cc293253f8a54967fa26c223bba838c4cb164"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Plan_EN.png",
+          "sha256": "d2e69f5863bb1c3ffee85f8dfe95deba864ec51ed617de7b834359de01c98679"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Resumed_EN.png",
+          "sha256": "adbbfd1b770f696897f937fa166cb391c499a0830e5bc5946d1be285eb7dbbef"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_Standard_DE.png",
+          "sha256": "f124753ce046281f038c4a72951299f896fa11c2aadd0a1f0776d0eef2a3661d"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/ui/UI_WarningsMapTutorial_DE.png",
+          "sha256": "15496660316212bbea0dd4e0fb5d88e7394bc4c55a69c394cc0ba7ea0bcb0a10"
+        }
+      ]
+    },
+    {
+      "name": "wrist",
+      "runtime_log": {
+        "file": "artifacts/production-water-20261128-043340/wrist/Runtime.log",
+        "sha256": "816486dbac8d7c0ce65441944e4c330b8ff6912dda5562b1190a6acf011d114c"
+      },
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-043340/wrist/DiveSmoke_0_wrist.png",
+          "sha256": "4e1ebf47bde031c9473f0b99b538dbd871e727fd0ad95961f86fea249e5c540e"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/wrist/DiveUnderwater_0_wrist.png",
+          "sha256": "94b90a65db4f3ae2a5fd5cea5429b78b154c583a1c590eef352d79f379cfbbf4"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/wrist/WristTexture_wrist.png",
+          "sha256": "45790ff871d22e41c4016039953bb458dd9b8c9bdf0b5d27b75f078880cdbac2"
+        },
+        {
+          "file": "artifacts/production-water-20261128-043340/wrist/WristVitals_wrist.png",
+          "sha256": "c66fb298bed6b874b14dc21e5cec91f4662fa6acc12611f9f7e43d12505c64a5"
+        }
+      ]
+    }
+  ],
+  "editor_comparisons": [
+    {
+      "name": "sun-shadow",
+      "pairs": [
+        [
+          {
+            "file": "artifacts/underwater-package-20261128/sun-production-editor/Water_0_0.png",
+            "sha256": "007d68faa153b3286e6a840460165ac11f79b6bd64261cb13569323dba956824"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/sun-shadow/Water_0_0.png",
+            "sha256": "e9e1f278feef60541a162a735fd844382919c19203a85a677431faa7a0c3f3b8"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/underwater-package-20261128/sun-production-editor/Water_0_1.png",
+            "sha256": "70773cf5a6004c374407c5c41859f1e86773a982c593024d3ec2a1eead4fad51"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/sun-shadow/Water_0_1.png",
+            "sha256": "c120171ec7ffc8a6c3401273c8740cbc81b924e4a3f91bb3f76496fdea9d6bb2"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/underwater-package-20261128/sun-production-editor/Water_0_2.png",
+            "sha256": "748d7d9daef8e33242303a323b8512ff171d309dc528b4d55b50e997ba248a88"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/sun-shadow/Water_0_2.png",
+            "sha256": "254832b83fbf967b74e4f21d280dbebc37319c668b0a91eb559737b7b0cabece"
+          }
+        ]
+      ],
+      "contact_sheet": {
+        "file": "artifacts/underwater-package-20261128/Compare_R3_sun-shadow.jpg",
+        "sha256": "21bbfbee28791943f2be5eafe43ecc5b902a48363534f2f4dbec2a4637b9cbc6"
+      },
+      "whole_image_luma_editor_r3": [
+        [
+          58.151297538472214,
+          58.1906166175
+        ],
+        [
+          9.774344156388889,
+          7.932694166805555
+        ],
+        [
+          57.9119471575,
+          58.08330876777777
+        ]
+      ],
+      "blocked_drop": 50.204268525833335,
+      "restored_difference": 0.10730784972222551,
+      "editor_drop": 48.25727819159722
+    },
+    {
+      "name": "moon-shadow",
+      "pairs": [
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-012900/moon-shadow/Water_0_0.png",
+            "sha256": "62c237b0fca09b3a8bec86b7001b46fb1a3ec1be2fec16c6a50fdb731736d755"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/moon-shadow/Water_0_0.png",
+            "sha256": "fbaab0d4df42ad36613783e03e3b576284b76a822c6eee42da01864899427977"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-012900/moon-shadow/Water_0_1.png",
+            "sha256": "e00796266cf7ab679828760258077aeb1828a6ab67a75fedc57bd1933f0ce2f9"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/moon-shadow/Water_0_1.png",
+            "sha256": "450fe60dd4e5dafb16d0fb81e54f8d0ec53505a0bcc9317c223943562f02db6a"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-012900/moon-shadow/Water_0_2.png",
+            "sha256": "15227ae355dd179314c2e4644e3c8f783b2c23cf09e901b236b204788afadd15"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/moon-shadow/Water_0_2.png",
+            "sha256": "b5e430b271567e99757ca49181bf4812e05874c62a6d335f5cee78735bfe9dee"
+          }
+        ]
+      ],
+      "contact_sheet": {
+        "file": "artifacts/underwater-package-20261128/Compare_R3_moon-shadow.jpg",
+        "sha256": "119993b643d3070ea3b990ada8544efd31d273c3d52aef70d43ed678c4e4a570"
+      },
+      "whole_image_luma_editor_r3": [
+        [
+          102.44621258930556,
+          101.07359687375
+        ],
+        [
+          68.1444241036111,
+          63.871892492222216
+        ],
+        [
+          102.30848317513887,
+          100.99194198847222
+        ]
+      ],
+      "blocked_drop": 37.160876938888904,
+      "restored_difference": 0.08165488527778564,
+      "editor_drop": 34.23292377861111
+    },
+    {
+      "name": "clear",
+      "pairs": [
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-010832/clear/Water_0_0.png",
+            "sha256": "9d3c5bbac3df3f923e4fd52112d3b7ea507b18db929a9385c42544d2a1488e01"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/clear/Water_0_0.png",
+            "sha256": "9e20f239ad05a00790ace168fac71c7c8f05840dab7d1095ebc697b104e5066b"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-010832/clear/Water_0_1.png",
+            "sha256": "0374a609e1849cded0965b230f39fb9a962cbcade93b6aa9f31c6b62ffca931b"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/clear/Water_0_1.png",
+            "sha256": "1acd713d676faf82f449efd6d26b560e84b7c068e4bf6f3987eda6f829d50644"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-010832/clear/Water_0_2.png",
+            "sha256": "0aa3ef569fb930144082fd628afa6cecead2ecd98554e5e7f5bbe881ce3387a4"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/clear/Water_0_2.png",
+            "sha256": "52352f76c085f904762dcb26477b90220358838d6b847d4e3447f67eb92461b5"
+          }
+        ]
+      ],
+      "contact_sheet": {
+        "file": "artifacts/underwater-package-20261128/Compare_R3_clear.jpg",
+        "sha256": "c148706dd795cd511ed68644882bcd6f7e81c1af0cf31a1294878f4ef6275b8f"
+      },
+      "whole_image_luma_editor_r3": [
+        [
+          32.93663247736111,
+          32.49659449777778
+        ],
+        [
+          24.138718067777774,
+          23.286805122777775
+        ],
+        [
+          91.76285353569445,
+          74.93595033166665
+        ]
+      ]
+    },
+    {
+      "name": "night-lamp",
+      "pairs": [
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-010832/night-lamp-transport/Water_0_0.png",
+            "sha256": "082e510b8c01e7285e3d6e993db54d958660d6674fd4f07126ee60f6db4a3880"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/night-lamp/Water_0_0.png",
+            "sha256": "549c1150c773a911e1c3b57795224330a0b979df9c24a946e20af73188b24892"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-010832/night-lamp-transport/Water_0_1.png",
+            "sha256": "89165314d83e74c72a9708487b196a20f82e58adbd2cbd2caf79581b3c9f835d"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/night-lamp/Water_0_1.png",
+            "sha256": "9470416a1568a67417612e7fbf2a66457e75596b00bd18ebca4ddae1b0ed250c"
+          }
+        ],
+        [
+          {
+            "file": "artifacts/reflection-transport-20261128-010832/night-lamp-transport/Water_0_2.png",
+            "sha256": "a7d9645eff962f1cc9bce74f1c4907d6dc72852b27d94e3017f5b3175686979d"
+          },
+          {
+            "file": "artifacts/production-water-20261128-043340/night-lamp/Water_0_2.png",
+            "sha256": "f66b76c18d293f9943f596e9b5da98c588aacdc5815ef67f5a2f71c8f0e151c7"
+          }
+        ]
+      ],
+      "contact_sheet": {
+        "file": "artifacts/underwater-package-20261128/Compare_R3_night-lamp.jpg",
+        "sha256": "fb92c7e56d5fc6c17b8d375c71983deec1b32837b0da6162d7bac5a60187d997"
+      },
+      "whole_image_luma_editor_r3": [
+        [
+          8.33241033861111,
+          9.201993709583332
+        ],
+        [
+          12.389347875972222,
+          13.56272463986111
+        ],
+        [
+          0.8044306465277776,
+          0.49507407680555554
+        ]
+      ]
+    }
+  ],
+  "shadow_metric_scope": "Whole image, including direct view and reflection; not reflection-only. Moon +8 EV measurement exposure.",
+  "remaining": "Real normal menu/input check pending user closing the Windows Security dialog. Baseline and confirmation numerical criteria met; visible terrain continuity during streaming remains unverified. No final round-3 or round-4 acceptance. Two-hour soak not started.",
+  "visual_review": {
+    "case_images_reviewed": 84,
+    "editor_pairs_reviewed": 12,
+    "sun_and_moon": "Occlusion and restoration match the editor in the reviewed pairs. Normal production setting, no coarse-page command override.",
+    "water_world": "All three shore cycles and water-start habitats present; bed, rocks and plants retained. Clear/turbid and night lamp responses present.",
+    "ui_wrist": "14 menu/HUD captures and 4 wrist captures reviewed. No new missing panels or visible text overflow.",
+    "limitations": [
+      "UW-LATER-07: narrow bright seam and transition bands retained.",
+      "UW-LATER-08: software path starts, but blue underwater bands and inferior underside reflections remain. No visual parity.",
+      "Above-water clear comparison has different reflection detail; these are not pixel-identical renderers or a completed above-water graphics acceptance."
+    ],
+    "interactive": "Not yet verified. Automated route completion is separate from real menu/input checks."
+  },
+  "normal_launch": {
+    "launcher": {
+      "file": "artifacts/underwater-package-20261128/NormalStartR3.json",
+      "sha256": "42dace5a1bced9130539c4dc9ae28b668b48d7d60f1e2c34645f9eb6970c7e88"
+    },
+    "process": {
+      "file": "artifacts/underwater-package-20261128/NormalProcessR3.json",
+      "sha256": "fe6e388641f5d485f1efea001c0b2fc451de55352f52b0868a69ebeaaf4e6689"
+    },
+    "runtime_log": {
+      "file": "artifacts/underwater-package-20261128/normal-start-r3.log",
+      "sha256": "69979f6f764fdad74c72a6963da2b088c52bb3d56aa7e83a48c716ddb0d9b8d3"
+    },
+    "observed": "Main menu displayed. Windows Security .NET Host dialog visible in actual window capture despite absence from list_windows. No Windows input sent. Own test process closed by verified PID/path.",
+    "runtime_verified": [
+      "empty game command line",
+      "cooked=1",
+      "smoke=0 hardware=1 bounded=1 interface=1 lighting_mode=2",
+      "directional_coarse=1"
+    ],
+    "status": "NORMAL_START_VERIFIED_INTERACTIVE_PENDING"
+  },
+  "performance": {
+    "file": "Documentation/UNDERWATER_FINISH_PERFORMANCE_R3.json",
+    "sha256": "09e62a079ea913a92f9ee311b7b15320060e1d34a590917f0775064935d83665"
+  }
+}

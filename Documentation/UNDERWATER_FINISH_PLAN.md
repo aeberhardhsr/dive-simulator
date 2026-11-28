@@ -56,7 +56,24 @@ Diese Grenzen sind konkrete Prüfkriterien dieser Abschlussiteration. Sie behaup
 
 **Ergebnis:** Ein gemessener, eingefrorener Paketkandidat und ein kurzer Leistungsbericht. Weitere allgemeine Engine-Optimierung wird nicht an diese Iteration angehängt.
 
-**Vorbereitung, noch keine Messung:** `Tools/TestUnderwaterFinishPerformance.ps1` führt nach Abschluss der Paketprüfung die drei festgelegten Fälle mit 15 s Aufwärmen, 1080p, Qualität 2 und 100 % Renderauflösung aus. Die ersten beiden Fälle sind stationäre Rundblicke: Weesen mit +35° angeforderter Blickneigung zur Wasserunterseite, Walenstadt mit −12° zum Grund. Der dritte Fall durchschwimmt den bestehenden Murg-Nachladepfad. Tatsächliche Kamerapose und Abschlussbild bleiben Bestandteil der Prüfung. Der Aufruf verwendet `-Pass baseline` beziehungsweise `-Pass confirmation`; eine vorhandene Spiel-, Editor- oder UnrealBuildTool-Instanz verhindert den Start. `Benchmark.ps1 -ProductionWater` verlangt den normalen Renderpfad samt aktiver Reflexion, Seegrenzen und unveränderten Qualitätswerten, ohne einen Grafik-Testschalter an das Spiel zu übergeben. Das Werkzeug erfasst alle drei Ergebnisse auch bei verfehlten Leistungsgrenzen und schreibt höchstens `NUMERICAL_PASS_REQUIRES_IMAGE_REVIEW`, keine automatische visuelle Abnahme.
+**Baseline und Bestätigung gemessen, Abschluss offen:** Beide Serien mit dem unveränderten R3-Paket erfüllen die Zahlenkriterien. Die formale Paketabnahme wartet weiterhin auf die reale Menübedienung nach dem manuellen Schliessen der Windows-Sicherheitsabfrage; zusätzlich ist die sichtbare Nachladeprüfung offen. Das Vorziehen der Messarbeit ersetzt diese Abschlusskriterien nicht.
+
+Der [Messnachweis](UNDERWATER_FINISH_PERFORMANCE_R3.json) bindet alle sechs CSV-Aufzeichnungen, Protokolle, Metadaten und Abschlussbilder über die Originalberichte sowie identische EXE-/Container-Prüfsummen. Alle sechs Abschlussbilder wurden gesichtet. Es gab keine Render-, Qualitäts- oder Auflösungsänderung zwischen den Serien.
+
+| Strecke | Serie | Mittel FPS | 1%-Low FPS | P95 ms | Maximum ms | Bilder >16,67 / >33,33 ms |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Weesen, Wasserunterseite | Baseline | 64,39 | 54,12 | 17,51 | 19,39 | 855 / 0 |
+| Weesen, Wasserunterseite | Bestätigung | 65,25 | 55,66 | 17,16 | 18,59 | 533 / 0 |
+| Walenstadt, Boden | Baseline | 71,72 | 53,71 | 15,48 | 38,18 | 22 / 1 |
+| Walenstadt, Boden | Bestätigung | 73,96 | 49,82 | 15,21 | 31,89 | 43 / 0 |
+| Murg, Nachladen | Baseline | 94,74 | 71,59 | 11,32 | 26,30 | 13 / 0 |
+| Murg, Nachladen | Bestätigung | 94,92 | 70,67 | 11,30 | 27,65 | 14 / 0 |
+
+CPU-/Render-/RHI-/GPU-Zeiten mit Perzentilen stehen vollständig im Messnachweis. Kein inneres Messbild überschreitet 100 ms. Die Messungen beweisen keine durchgehenden 60 FPS; insbesondere ist der 1%-Low in Walenstadt sichtbar niedriger. Es wird keine Beschleunigung zwischen Baseline und Bestätigung behauptet.
+
+**Grenzen der Sichtprüfung:** Weesen zeigt die Wasserunterseite, Walenstadt sichtbaren Grund und Felsen. In Walenstadt begrenzt die physische Kollisionsprüfung die Drehung unterschiedlich: Endkurs 206° beziehungsweise 51°, im Bestätigungslauf 1’582 verworfene Posenschritte. Gleiche Eingaben sind hier keine identische Kamerafahrt. Beide Murg-Abschlussbilder zeigen überwiegend offenes Wasser bei 24,6 m Tiefe. In beiden Murg-Läufen sind vier Bilder mit sieben beziehungsweise acht statt neun Geländezellen protokolliert; alle übrigen haben neun. Der Code baut fehlende Randzellen von 64 m Breite schrittweise auf. Das erklärt die Zählung, belegt aber weder ein sichtbares Loch noch dessen Abwesenheit. Die Sichtprüfung eines tatsächlich sichtbaren Bodenabschnitts während Zellwechseln bleibt erforderlich; Runde 4 ist deshalb ausdrücklich noch nicht abgeschlossen.
+
+`Tools/TestUnderwaterFinishPerformance.ps1` führt die drei festgelegten Fälle mit 15 s Aufwärmen, 1080p, Qualität 2 und 100 % Renderauflösung aus. Die ersten beiden Fälle sind stationäre Rundblicke: Weesen mit +35° angeforderter Blickneigung zur Wasserunterseite, Walenstadt mit −12° zum Grund. Der dritte Fall durchschwimmt den bestehenden Murg-Nachladepfad. Tatsächliche Kamerapose und Abschlussbild bleiben Bestandteil der Prüfung. Der Aufruf verwendet `-Pass baseline` beziehungsweise `-Pass confirmation`; eine vorhandene Spiel-, Editor- oder UnrealBuildTool-Instanz verhindert den Start. `Benchmark.ps1 -ProductionWater` verlangt den normalen Renderpfad samt aktiver Reflexion, Seegrenzen und unveränderten Qualitätswerten, ohne einen Grafik-Testschalter an das Spiel zu übergeben. Das Werkzeug erfasst alle drei Ergebnisse auch bei verfehlten Leistungsgrenzen und schreibt höchstens `NUMERICAL_PASS_REQUIRES_IMAGE_REVIEW`, keine automatische visuelle Abnahme.
 
 ```powershell
 ./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR3 -Pass baseline
@@ -102,7 +119,7 @@ Diese Punkte blockieren die gestalterische Unterwasser-Abnahme und den anschlies
 | UW-LATER-05 | Weitere Hardware, durchgehende 60 FPS in allen Szenen, 1440p/4K und macOS-Grafikgleichwertigkeit | Anforderungen erhalten; heutige lokale Windows-Messungen nicht als globale Erfüllung ausgeben |
 | UW-LATER-06 | Vollständige reale Maus-/FPV-Ergonomieabnahme und zusätzliche Menü-/HUD-Wünsche | Bestehende UI erhalten und in Iteration 3/5 auf Regression prüfen; umfassende weitere Gestaltung bleibt eigene Arbeit |
 | UW-LATER-07 | Verbliebener heller Saum und kurze breite blaue Streifen direkt beim Grenzflächendurchgang | In Iteration 1 mit altem und korrigiertem Material an festen Simulationszeiten nachgewiesen; Saum vermindert, keine vollständige Fehlerbehebung. Ausdrückliche Abweichung vom ursprünglichen Abschlusskriterium; spätere gezielte Grenzflächenarbeit, keine neue Unterwasser-Gestaltungsrunde |
-| UW-LATER-08 | Software-Ersatzpfad ohne Hardware-Raytracing | Paket R2 startet, zeigt jedoch blaue Unterwasserbänder und deutlich schwächere Reflexionen der Wasserunterseite. Keine Gleichwertigkeit zur abgenommenen Hardware-Darstellung; gesonderte spätere Kompatibilitätsarbeit |
+| UW-LATER-08 | Software-Ersatzpfad ohne Hardware-Raytracing | Pakete R2 und R3 starten, zeigen jedoch blaue Unterwasserbänder und deutlich schwächere Reflexionen der Wasserunterseite. Keine Gleichwertigkeit zur abgenommenen Hardware-Darstellung; gesonderte spätere Kompatibilitätsarbeit |
 
 Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_CONTEXT.md), [Originalanforderungen](REQUIREMENTS.csv), [Testorte](TEST_ENTRY_LOCATIONS.md), [Wasserlinienkorrektur](WATERLINE_BLEND.md), [Source-Engine](SOURCE_ENGINE.md), [abgeschlossene Schattenoptimierung](REFLECTION_SHADOW_STUDY.md).
 
@@ -112,6 +129,6 @@ Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_
 | --- | --- | --- |
 | 1 – Wasserlinie | Prüfrunde beendet mit Abweichung | [Übergangsbericht](WATERLINE_SEAM_STUDY.md); ursprüngliches Fehlerfrei-Kriterium nicht erfüllt, Restpunkte ausdrücklich unter UW-LATER-07 vertagt |
 | 2 – Licht-Randfälle | Bestanden | [Licht- und Schattenprüfung](REFLECTION_FINISH_VALIDATION.md); acht Grundkontrollen und vier physische Randfallkontrollen bestanden, vereinigter VSM-Pfad für Paketintegration ausgewählt |
-| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); R2 liefert 18 native Fälle/84 gesichtete Bilder, fällt jedoch im Sonnen-Schattenvergleich durch. Gezielte Cache-Korrektur im Kontrolllauf bestätigt; separater Kandidat R3 erfolgreich gebaut, native Prüfung läuft. Normale Menübedienung und Paketabnahme ausstehend |
-| 4 – Leistung | Geplant | Ausstehend |
+| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); R3 besteht nach Cache-Korrektur alle 18 nativen Fälle mit 84 gesichteten Bildern und zwölf Editorvergleichen. Normaler Start bestätigt; reale Menübedienung wartet auf das manuelle Schliessen der Sicherheitsabfrage. Paketabnahme bleibt offen |
+| 4 – Leistung | Zahlenkriterien bestanden; Sichtprüfung offen | [Sechs Messläufe](UNDERWATER_FINISH_PERFORMANCE_R3.json), alle Abschlussbilder gesichtet. Sichtbare Kontinuität beim Nachladen und reale Menüprüfung noch offen; keine vollständige Abnahme |
 | 5 – Stabilität und Übergabe | Geplant | Ausstehend |
