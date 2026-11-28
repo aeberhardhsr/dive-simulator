@@ -54,6 +54,12 @@ bool FDiveTerrain::LoadImagery()
 
 UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FString& TexturePath)
 {
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveNaturalGround")))
+    {
+        if(FCString::Strcmp(Base,TEXT("M_LandscapePhoto"))==0) Base=TEXT("M_LandscapeNatural");
+        else if(FCString::Strcmp(Base,TEXT("M_ShorePhoto"))==0) Base=TEXT("M_ShoreNatural");
+        UE_LOG(LogTemp,Display,TEXT("DIVE_NATURAL_GROUND_APPLIED material=%s"),Base);
+    }
     const FString path=FString(TEXT("/Game/Diving/Materials/"))+Base+TEXT(".")+Base;
     auto* material=LoadObject<UMaterialInterface>(nullptr,*path);
     auto* texture=LoadObject<UTexture2D>(nullptr,*TexturePath);

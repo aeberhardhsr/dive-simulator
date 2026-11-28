@@ -497,12 +497,24 @@ void ADivePawn::InputSmokeTick(float Dt)
         }
         if(ControlsSmokePhase==3&&bWalking&&distance<.6)
         {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_RETURN_CHECK finish=%d entered=%d height_error_cm=%.4f pose_walking=%d swim=%.4f"),
+                CanFinishDive(),bEnteredWater,FMath::Abs(GetActorLocation().Z-EntryLocation.Z),PhysicalPose.Walking,PhysicalPose.Swim);
             bControlsSmokeValid&=CanFinishDive()&&bEnteredWater&&FMath::Abs(GetActorLocation().Z-EntryLocation.Z)<1&&
                 PhysicalPose.Walking&&PhysicalPose.Swim<.05;
             tap(Controls.Key(EDiveAction::Regulator));
             next(4,TEXT("ShoreReturn"));
         }
-        TestKey(Controls.Key(EDiveAction::Forward),ControlsSmokePhase==1||ControlsSmokePhase==2||(ControlsSmokePhase==3&&TestLessonStage==1));
+        const bool returning=ControlsSmokePhase==3&&TestLessonStage==1;
+        // Water current displaces the outbound path sideways. Retracing only
+        // its heading can put the standing body against the stair rail. Use
+        // ordinary lateral input to aim at the landing centre, with velocity
+        // anticipation to brake before crossing it. Collision remains active.
+        const FVector right=FRotationMatrix(FRotator(0,PhysicalPose.BodyYaw(),0)).GetUnitAxis(EAxis::Y);
+        const double lateralError=FVector::DotProduct(EntryLocation-GetActorLocation(),right);
+        const double predictedError=lateralError-FVector::DotProduct(VelocityMetres,right)*100*(bWalking?.45:1.0);
+        TestKey(Controls.Key(EDiveAction::Right),returning&&predictedError>10);
+        TestKey(Controls.Key(EDiveAction::Left),returning&&predictedError<-10);
+        TestKey(Controls.Key(EDiveAction::Forward),ControlsSmokePhase==1||ControlsSmokePhase==2||returning);
         TestKey(Controls.Key(EDiveAction::Descend),ControlsSmokePhase==2);
         TestKey(Controls.Key(EDiveAction::Ascend),ControlsSmokePhase==3&&!bWalking);
         if(ControlsSmokePhase==4&&TestLessonAge>.8)

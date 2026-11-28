@@ -8,6 +8,7 @@ param(
     [switch]$BoundaryStudy,
     [switch]$ResidentStudy,
     [switch]$LandscapePilot,
+    [switch]$NaturalGround,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
@@ -39,6 +40,7 @@ param(
     [switch]$OnlyPlantMaterial
 )
 $ErrorActionPreference = 'Stop'
+if($NaturalGround -and ($Target -ne 'Package' -or -not $LandscapePilot)) {throw 'NaturalGround packaging requires Target Package and LandscapePilot.'}
 if($RefreshSources -and $Target -notin @('Editor','Game')) {throw 'RefreshSources applies to Editor or Game compilation.'}
 if($ResidentStudy -and $Target -notin @('LandscapeFallback','LandscapeFallbackCheck')) {throw 'ResidentStudy requires LandscapeFallback or LandscapeFallbackCheck.'}
 if($LandscapePilot -and ($ResidentStudy -or $BoundaryStudy -or $Target -notin @('LandscapeFallback','LandscapeFallbackCheck','Package'))) {throw 'LandscapePilot requires LandscapeFallback, LandscapeFallbackCheck or Package without other study flags.'}
@@ -121,6 +123,11 @@ if ($Target -eq 'Content') {
     if($Target -in @('LandscapeDetail','LandscapeDetailCheck')) { $landOptions+='-DetailStudy' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions
 } elseif ($Target -eq 'Package') {
+    if($NaturalGround) {
+        $groundScript=Join-Path $repo 'Tools/build_natural_ground.py'
+        & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=pythonscript' "-script=$groundScript" '-NaturalGroundVerify' -unattended -nullrhi -nosplash '-log=NaturalGroundCheck.log'
+        if($LASTEXITCODE -ne 0) {throw 'Natural ground material source verification failed.'}
+    }
     if($LandscapePilot) {
         & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' '-LandscapePilot' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=LandscapePilotCheck.log'
         if($LASTEXITCODE -ne 0) {throw 'Landscape pilot assets/data failed verification.'}
@@ -141,6 +148,9 @@ if($Target -eq 'Package') {
     Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartDiveSimulator.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
     if($LandscapePilot) {
         Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartLandscapePilot.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
+    }
+    if($NaturalGround) {
+        Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartNaturalLandscape.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
     }
     Copy-Item -LiteralPath (Join-Path $repo 'Tools/WaterPreviewLauncher.cmd') -Destination (Join-Path $PackageDirectory 'Start-WaterPreview.cmd')
     # Keep scenario-data attribution readable without extracting the game pak.

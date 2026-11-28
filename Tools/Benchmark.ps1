@@ -22,6 +22,7 @@ param(
     [switch]$LandscapeResidentStudy,
     [switch]$LandscapePilot,
     [switch]$TreeAnchorProbe,
+    [switch]$NaturalGround,
     [ValidateRange(-180,360)][double]$FixedYaw,
     [ValidateRange(-1,3)][int]$TreeLOD=-1,
     [switch]$SpectralView,
@@ -33,6 +34,7 @@ param(
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+if($NaturalGround -and $FarCliffStudy) {throw 'NaturalGround and FarCliffStudy use different landscape materials.'}
 if($TreeLOD -ge 0 -and -not $DisableNanite) {throw 'TreeLOD requires DisableNanite to inspect conventional foliage LODs.'}
 if($PSBoundParameters.ContainsKey('FixedYaw') -and $Scenario -eq 'stream') {throw 'FixedYaw is for stationary captures, not the streaming route.'}
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
@@ -46,7 +48,7 @@ if($ProductionWater -and ($ReflectionTransportStudy -or $SpectralView)) {throw '
 if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
 if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
 if($ReflectionProfile -ne 'full' -and (-not $ReflectionTransportStudy -or $ReflectionTransportControl)) {throw 'Diagnostic reflection profile requires active ReflectionTransportStudy.'}
-if($PSBoundParameters.ContainsKey('LookPitch') -and $Scenario -ne 'underwater') {throw 'LookPitch currently applies to the underwater benchmark.'}
+if($PSBoundParameters.ContainsKey('LookPitch') -and $Scenario -eq 'stream') {throw 'LookPitch applies to stationary benchmarks, not the streaming route.'}
 if($FPVProbe -and (-not $Editor -or $Scenario -ne 'underwater')) {throw 'FPVProbe requires an editor underwater benchmark.'}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $repo=Split-Path $PSScriptRoot -Parent
@@ -80,6 +82,7 @@ $context=[ordered]@{
     landscape_resident_study=[bool]$LandscapeResidentStudy
     landscape_pilot=[bool]$LandscapePilot
     tree_anchor_probe=[bool]$TreeAnchorProbe
+    natural_ground=[bool]$NaturalGround
     fixed_yaw=if($PSBoundParameters.ContainsKey('FixedYaw')){$FixedYaw}else{$null}
     tree_lod=$TreeLOD
     production_water=[bool]$ProductionWater
@@ -150,6 +153,7 @@ if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
 if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($TreeAnchorProbe) {$arguments+=' -DiveTreeAnchorProbe'}
+if($NaturalGround) {$arguments+=' -DiveNaturalGround'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -224,6 +228,8 @@ $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw |
 if($PSBoundParameters.ContainsKey('FixedYaw') -and ($metadata.orbit_input -ne 'fixed_yaw' -or
    [math]::Abs(([math]::IEEERemainder($metadata.camera_rotation_degrees.yaw-$FixedYaw,360))) -gt .1)) {throw 'Fixed camera heading not reached.'}
 if($TreeLOD -ge 0 -and $log -notmatch ('foliage.ForceLOD = "'+$TreeLOD+'"')) {throw 'Requested tree LOD was not activated.'}
+if($NaturalGround -and ($log -notmatch 'DIVE_NATURAL_GROUND_APPLIED material=M_LandscapeNatural' -or
+   ([regex]::Matches($log,'DIVE_NATURAL_GROUND_APPLIED material=M_ShoreNatural')).Count -ne 4)) {throw 'Natural ground materials were not applied to all five surfaces.'}
 if($ProductionWater) {
     $cooked=if($Editor){0}else{1}
     foreach($marker in @("DIVE_PRODUCTION_WATER_READY cooked=$cooked",'DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0',
