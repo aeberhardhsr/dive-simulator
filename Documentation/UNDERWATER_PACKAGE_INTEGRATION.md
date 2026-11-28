@@ -1,12 +1,14 @@
 # Abschlussrunde 3: normal startbares Wasserpaket
 
-Stand: 28. November 2026. **In Bearbeitung. Noch kein neues Paket und noch kein nativer Nachweis der unten beschriebenen Laufzeitintegration.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
+Stand: 28. November 2026. **In Bearbeitung. Nativer Editor-Nachbau und erster gerenderter Integrationslauf bestanden; Source-Game-Build fortgesetzt, noch kein neues Paket.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
 
 ## Laufender Build und eingefrorene Eingaben
 
-Der erste monolithische Source-Game-Build verwendet die getrennte Sandbox `Builds/SourceEditorSandbox/divingsim` mit Quellstand `edf27cd728b02eae05020e46536f19980d6d2dea`, vor der normalen Laufzeitintegration. Das Protokoll liegt unter `artifacts/underwater-package-20261128/source-game-build.log`; `FoundationInputs.json` bindet die eingefrorenen Source-, Config- und Shaderdateien. Unreal hat 1’117 Aktionen eingeplant. Vier Aktionen dürfen gleichzeitig laufen; die tatsächliche Zahl hängt von Abhängigkeiten und Speicher ab. Eine wegen Speicherdruck angehaltene `PCH.Engine.cpp`-Aktion wurde im weiteren Verlauf erfolgreich abgeschlossen. Das ist kein abgeschlossener Buildnachweis.
+Der erste monolithische Source-Game-Build verwendete die getrennte Sandbox `Builds/SourceEditorSandbox/divingsim` mit Quellstand `edf27cd728b02eae05020e46536f19980d6d2dea`, vor der normalen Laufzeitintegration. Das Protokoll liegt unter `artifacts/underwater-package-20261128/source-game-build.log`; `FoundationInputs.json` bindet die damaligen Source-, Config- und Shaderdateien. Von 1’117 eingeplanten Aktionen waren 234 abgeschlossen, als der Build bewusst für die vorgezogene Integrationsprüfung unterbrochen wurde. Seine letzten Prozesse wurden anhand der tatsächlichen UnrealBuildTool-Kommandozeile identifiziert und beendet. Der resultierende Exitcode 1 ist kein erfolgreicher Abschluss und kein nachgewiesener Compilerfehler.
 
-Während dieses Builds werden Änderungen nur im Hauptprojekt vorbereitet. **Die laufende Sandbox nicht synchronisieren.** Nach erfolgreichem Abschluss sind zuerst der Editor und dann das Game mit den neuen Projektquellen nachzubauen. Der erste Game-Build allein enthält die folgende Integration noch nicht.
+Der Grund für die Unterbrechung: Die parallele Integrationsvorbereitung war fertig; ein kurzer Editor-Nachbau konnte deren native Funktion vor dem restlichen langen Game-Build prüfen. Die bereits erzeugten Engine-Objekte bleiben erhalten. Erst nach dem bestätigten Prozessende wurde die Sandbox auf `0751e593504fc43bb0a4a1e7274d100dffeff07a` synchronisiert. Der Editor-Nachbau unter `production-editor-build.log` bestand nach elf Aktionen und 58,99 Sekunden. Zwei bereits vorhandene `double`-zu-`float`-Warnungen in der Kaustikprüfung verhindern den Build nicht. Nach erfolgreichem Renderlauf wurde der Game-Build unter `production-game-build.log` inkrementell fortgesetzt. **Eine laufende Sandbox weiterhin nicht synchronisieren.**
+
+Bis zu vier Aktionen dürfen parallel laufen; tatsächlich begrenzen auch Abhängigkeiten und die Speicherprognose die Ausführung. Eine wegen Speicherdruck angehaltene `PCH.Engine.cpp`-Aktion wurde im Foundation-Lauf erfolgreich wiederholt. Verwaiste MSBuild-Hilfsprozesse des abgeschlossenen Build-Tool-Setups wurden nach Prüfung ihrer Herkunft und des fehlenden Elternprozesses geschlossen. Die Speicher-Schutzgrenzen wurden nicht gelockert.
 
 ## Vorbereitete Integration
 
@@ -17,11 +19,19 @@ Während dieses Builds werden Änderungen nur im Hauptprojekt vorbereitet. **Die
 - `Start-DiveSimulator.cmd` startet die Paket-EXE ohne Grafik-Testschalter. Der bisherige Vorschau-Launcher bleibt zusätzlich vorhanden. Der neue Paketordner wird `Builds/WindowsUnderwaterFinalCandidate`; bisherige Paketordner werden nicht ersetzt.
 - `SmokeTest.ps1 -ProductionWater` ist ausschliesslich eine Erwartungsprüfung des Testwerkzeugs: Es aktiviert keinen Renderzweig per Kommandozeile. Es verlangt die normalen Laufzeitmarker, Seegrenzen und passende Hardware-/Software-Auswahl.
 
-Die Vorbereitung mit `PrepareReflectionTransport.py --production --unified --profile vsm --project divingsim` wurde ausgeführt. Alle 96 vorbereiteten Shaderdateien stimmen bytegenau mit dem ausgewählten VSM-Versuch überein. Ungültige Produktionsanforderungen (fehlende vereinigte Führung oder Diagnoseprofil) werden abgewiesen. Die geänderten PowerShell-Skripte bestehen die Syntaxprüfung. **Das ersetzt weder C++-Nachbau noch Cook oder Paketstart.**
+Die Vorbereitung mit `PrepareReflectionTransport.py --production --unified --profile vsm --project divingsim` wurde ausgeführt. Alle 96 vorbereiteten Shaderdateien stimmen bytegenau mit dem ausgewählten VSM-Versuch überein. Ungültige Produktionsanforderungen (fehlende vereinigte Führung oder Diagnoseprofil) werden abgewiesen. Die geänderten PowerShell-Skripte und alle 43 lokalen Python-Prüfungen bestehen. Die GitHub-Prüfungen des Integrationsstands sind in [Push](https://github.com/aeberhardhsr/dive-simulator/actions/runs/46090206490) und [PR](https://github.com/aeberhardhsr/dive-simulator/actions/runs/46090211200) erfolgreich. **Das ersetzt weder Cook noch Paketstart.**
+
+## Erster nativer Integrationsnachweis
+
+`production-editor.log` und `production-editor-summary.log` belegen den erfolgreichen Lauf mit `-ProductionWater` als Werkzeugprüfung und ohne `-DiveWaterPreview`, `-DiveReflectionTransportStudy` oder `-DiveReflectionUnified` in der tatsächlichen Spielkommandozeile. Der Lauf meldet `profile=vsm diagnostic=0`, `unified=1`, `DIVE_PRODUCTION_WATER_READY cooked=0`, die registrierte Wasserszene und das Seegrenzenraster mit 15’586 × 3’003 Zellen. Alle drei Bilder wurden gesichtet: Wasserunterseite mit gespiegeltem Grund, Blickfenster zur Sonne und Überwasseransicht. Keine Shader-Ersatzmaterialien oder nativen Testfehler.
+
+Der [Prüfnachweis](PRODUCTION_EDITOR_EVIDENCE.json) bindet Quellen, Konfiguration, Shader, Projekt-/Renderer-DLLs, Build-/Laufzeitprotokolle und Originalbilder. Eine unverwandte Meldung des experimentellen Editor-Plugins `ToolsetRegistry` über ein fehlendes Python-Attribut `PythonTestRunner` bleibt im Originalprotokoll erhalten; sie hat den nativen Bildtest nicht verhindert. Dieser Nachweis stammt aus dem Editor mit automatisierten Kameras, ausdrücklich noch nicht aus einem gekochten Paket oder einer interaktiven Menüabnahme.
+
+![Erste normale Renderprüfung: zwei Unterwasseransichten und eine Überwasseransicht](Images/ProductionWater_Editor.jpg)
 
 ## Noch auszuführen
 
-Nach Ende des laufenden Foundation-Builds, nacheinander:
+Der Editor-Nachbau und der erste Smoke-Test aus der folgenden Befehlsfolge sind bereits bestanden. Der Game-Build läuft. Nach dessen erfolgreichem Ende folgen Package und Paketserie; einen noch laufenden oder bereits bestandenen Schritt nicht grundlos nochmals starten:
 
 ```powershell
 ./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4
