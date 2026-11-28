@@ -253,6 +253,7 @@ void ADiveWorld::BeginPlay()
         CreateCoast();
         CreateAccess();
         CreateShoreStones();
+        CreateLawn();
         CreateVegetation();
         if(!bTerrainReady) return;
         if(!(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveNoFootDeposits"))))

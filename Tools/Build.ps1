@@ -10,6 +10,7 @@ param(
     [switch]$LandscapePilot,
     [switch]$NaturalGround,
     [switch]$ShoreStones,
+    [switch]$LawnStudy,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
@@ -41,6 +42,7 @@ param(
     [switch]$OnlyPlantMaterial
 )
 $ErrorActionPreference = 'Stop'
+if($LawnStudy -and -not $ShoreStones) {throw 'LawnStudy packaging requires ShoreStones.'}
 if($ShoreStones -and -not $NaturalGround) {throw 'ShoreStones packaging requires NaturalGround.'}
 if($NaturalGround -and ($Target -ne 'Package' -or -not $LandscapePilot)) {throw 'NaturalGround packaging requires Target Package and LandscapePilot.'}
 if($RefreshSources -and $Target -notin @('Editor','Game')) {throw 'RefreshSources applies to Editor or Game compilation.'}
@@ -125,6 +127,10 @@ if ($Target -eq 'Content') {
     if($Target -in @('LandscapeDetail','LandscapeDetailCheck')) { $landOptions+='-DetailStudy' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions
 } elseif ($Target -eq 'Package') {
+    if($LawnStudy) {
+        & (Join-Path $repo 'Tools/.geodata-env/Scripts/python.exe') (Join-Path $repo 'Tools/validate_lawn.py') --verify-content
+        if($LASTEXITCODE -ne 0) {throw 'Lawn source/content verification failed.'}
+    }
     if($ShoreStones) {
         & (Join-Path $repo 'Tools/.geodata-env/Scripts/python.exe') (Join-Path $repo 'Tools/validate_shore_stones.py') --verify-content
         if($LASTEXITCODE -ne 0) {throw 'Shore bank source/content verification failed.'}
@@ -160,6 +166,9 @@ if($Target -eq 'Package') {
     }
     if($ShoreStones) {
         Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartShoreLandscape.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
+    }
+    if($LawnStudy) {
+        Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartLawnLandscape.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
     }
     Copy-Item -LiteralPath (Join-Path $repo 'Tools/WaterPreviewLauncher.cmd') -Destination (Join-Path $PackageDirectory 'Start-WaterPreview.cmd')
     # Keep scenario-data attribution readable without extracting the game pak.

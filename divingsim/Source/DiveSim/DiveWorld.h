@@ -288,6 +288,8 @@ private:
     void CreateBuildings();
     void CreateShoreline();
     void CreateShoreStones();
+    void CreateLawn();
+    UPROPERTY() TObjectPtr<class UHierarchicalInstancedStaticMeshComponent> LawnGrass;
     UPROPERTY() TArray<TObjectPtr<class UHierarchicalInstancedStaticMeshComponent>> ShoreStones;
     void CreateAccess();
     UMaterialInstanceDynamic* ImageryMaterial(const TCHAR* Base,const FString& TexturePath);

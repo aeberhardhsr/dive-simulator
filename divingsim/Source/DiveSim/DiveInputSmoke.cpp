@@ -40,6 +40,67 @@ void ADivePawn::InputSmokeTick(float Dt)
     auto* pc=Cast<APlayerController>(GetController());
     auto* hud=pc?Cast<ADiveHUD>(pc->GetHUD()):nullptr;
     if(!pc||!hud) return;
+    if(SmokeScenario==TEXT("land-detail")&&FParse::Param(FCommandLine::Get(),TEXT("DiveLawnWalk")))
+    {
+        auto fail=[&](const TCHAR* reason)
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_LAWN_WALK_FAIL phase=%d %s"),ControlsSmokePhase,reason);FPlatformMisc::RequestExitWithStatus(false,1); };
+        auto& terrain=Environment->Terrain;
+        constexpr double startEast=2727728.125,endEast=startEast+6,routeNorth=1222311.1875;
+        if(!FParse::Param(FCommandLine::Get(),TEXT("DiveLawnStudy"))||ControlsSmokeClock>90) {fail(TEXT("Missing lawn or timeout"));return;}
+        if(ControlsSmokePhase==0)
+        {
+            if(ControlsSmokeClock<12||FScreenshotRequest::IsScreenshotRequested()) return;
+            FVector p=terrain.ToWorld(startEast,routeNorth);float ground=0;
+            if(!terrain.SampleGround(p.X,p.Y,ground)) {fail(TEXT("Start ground missing"));return;}
+            p.Z=ground+Dive::ShoreMovement::FloorClearance*100;
+            SetActorLocation(p);VelocityMetres=FVector::ZeroVector;bWalking=true;
+            pc->SetControlRotation(FRotator(-40,90,0));ResetContactPose();
+            if(!bContactPoseReady) {fail(TEXT("Start pose blocked"));return;}
+            TestBreathingGas=Simulation.Data.DistanceMetres;TestLessonStage=0;TestLessonScreenshots=1;
+            ControlsSmokePhase=1;TutorialFinishedAt=0;
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/LawnWalk_00.png"),true,false);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LAWN_WALK_START east=%.4f north=%.4f"),startEast,routeNorth);
+            return;
+        }
+        const FVector p=GetActorLocation();const FVector2D survey=terrain.ToSurvey(p);float ground=0;
+        const double travelled=Simulation.Data.DistanceMetres-TestBreathingGas;
+        if(!terrain.SampleGround(p.X,p.Y,ground)||!bWalking||FMath::Abs(p.Z-ground-Dive::ShoreMovement::FloorClearance*100)>.5||FMath::Abs(survey.Y-routeNorth)>.4)
+        {fail(TEXT("Lost ground support or route"));return;}
+        if(TestLessonScreenshots<=6&&travelled>=2*TestLessonScreenshots&&!FScreenshotRequest::IsScreenshotRequested())
+        {
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/LawnWalk_%02d.png"),TestLessonScreenshots),true,false);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LAWN_WALK_SAMPLE shot=%d east=%.4f north=%.4f distance=%.4f floor_error_cm=%.4f"),TestLessonScreenshots,survey.X,survey.Y,travelled,p.Z-ground-Dive::ShoreMovement::FloorClearance*100);
+            ++TestLessonScreenshots;
+        }
+        if(ControlsSmokePhase==1||ControlsSmokePhase==4)
+        {
+            TestKey(Controls.Key(EDiveAction::Forward),true);
+            if((ControlsSmokePhase==1&&survey.X>=endEast)||(ControlsSmokePhase==4&&survey.X<=startEast))
+            {
+                TestKey(Controls.Key(EDiveAction::Forward),false);++ControlsSmokePhase;
+                if(ControlsSmokePhase==5) TutorialFinishedAt=ControlsSmokeClock;
+            }
+        }
+        else if(ControlsSmokePhase==2&&VelocityMetres.Size2D()<.01)
+        {ControlsSmokePhase=3;TestLessonAge=ControlsSmokeClock;}
+        else if(ControlsSmokePhase==3)
+        {
+            const double fraction=FMath::Clamp((ControlsSmokeClock-TestLessonAge)/1.5,0.,1.);
+            pc->SetControlRotation(FRotator(-40,90+180*fraction,0));
+            if(fraction>=.5&&TestLessonStage==0&&!FScreenshotRequest::IsScreenshotRequested())
+            {
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/LawnWalk_Turn.png"),true,false);TestLessonStage=1;
+            }
+            if(fraction>=1) ControlsSmokePhase=4;
+        }
+        else if(ControlsSmokePhase==5&&ControlsSmokeClock>TutorialFinishedAt+2)
+        {
+            if(travelled<12||TestLessonScreenshots!=7||TestLessonStage!=1) {fail(TEXT("Incomplete route or captures"));return;}
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LAWN_WALK_PASS distance_m=%.4f shots=8 turn_degrees=180 walking=1"),travelled);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS lawn_walk=1"));FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+        return;
+    }
     if(SmokeScenario==TEXT("land-detail"))
     {
         const bool boundaryProbe=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeBoundaryProbe"));

@@ -24,6 +24,7 @@ param(
     [switch]$TreeAnchorProbe,
     [switch]$NaturalGround,
     [switch]$ShoreStones,
+    [switch]$LawnStudy,
     [ValidateRange(-180,360)][double]$FixedYaw,
     [ValidateRange(-1,3)][int]$TreeLOD=-1,
     [switch]$SpectralView,
@@ -35,6 +36,7 @@ param(
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+if($LawnStudy -and -not $ShoreStones) {throw 'LawnStudy requires ShoreStones.'}
 if($ShoreStones -and -not $NaturalGround) {throw 'ShoreStones requires NaturalGround.'}
 if($NaturalGround -and $FarCliffStudy) {throw 'NaturalGround and FarCliffStudy use different landscape materials.'}
 if($TreeLOD -ge 0 -and -not $DisableNanite) {throw 'TreeLOD requires DisableNanite to inspect conventional foliage LODs.'}
@@ -86,6 +88,7 @@ $context=[ordered]@{
     tree_anchor_probe=[bool]$TreeAnchorProbe
     natural_ground=[bool]$NaturalGround
     shore_stones=[bool]$ShoreStones
+    lawn_study=[bool]$LawnStudy
     fixed_yaw=if($PSBoundParameters.ContainsKey('FixedYaw')){$FixedYaw}else{$null}
     tree_lod=$TreeLOD
     production_water=[bool]$ProductionWater
@@ -158,6 +161,7 @@ if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($TreeAnchorProbe) {$arguments+=' -DiveTreeAnchorProbe'}
 if($NaturalGround) {$arguments+=' -DiveNaturalGround'}
 if($ShoreStones) {$arguments+=' -DiveShoreStones'}
+if($LawnStudy) {$arguments+=' -DiveLawnStudy'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -233,6 +237,7 @@ if($PSBoundParameters.ContainsKey('FixedYaw') -and ($metadata.orbit_input -ne 'f
    [math]::Abs(([math]::IEEERemainder($metadata.camera_rotation_degrees.yaw-$FixedYaw,360))) -gt .1)) {throw 'Fixed camera heading not reached.'}
 if($TreeLOD -ge 0 -and $log -notmatch ('foliage.ForceLOD = "'+$TreeLOD+'"')) {throw 'Requested tree LOD was not activated.'}
 if($ShoreStones -and ($log -notmatch 'DIVE_SHORE_STONES_READY authored=\d+ placed=\d+' -or $log -notmatch 'DIVE_SHORE_STONES_COLLISION_PASS probes=\d+')) {throw 'Shore stone study did not initialize.'}
+if($LawnStudy -and ($log -notmatch 'DIVE_LAWN_READY authored=\d+ placed=\d+' -or $log -notmatch 'DIVE_LAWN_MASK_PASS')) {throw 'Lawn study did not initialize.'}
 if($NaturalGround -and ($log -notmatch 'DIVE_NATURAL_GROUND_APPLIED material=M_LandscapeNatural' -or
    ([regex]::Matches($log,'DIVE_NATURAL_GROUND_APPLIED material=M_ShoreNatural')).Count -ne $(if($ShoreStones){3}else{4}) -or
    ($ShoreStones -and $log -notmatch 'DIVE_SHORE_BANK_MASK_PASS'))) {throw 'Natural ground materials were not applied to all five surfaces.'}

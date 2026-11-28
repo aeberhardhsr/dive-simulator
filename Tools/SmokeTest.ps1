@@ -22,6 +22,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$LandscapePilot,
     [switch]$NaturalGround,
     [switch]$ShoreStones,
+    [switch]$LawnStudy,
+    [switch]$LawnWalk,
     [switch]$ReflectionTransportStudy,
     [switch]$ProductionWater,
     [switch]$ReflectionTransportControl,
@@ -55,6 +57,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($LawnStudy -and -not $ShoreStones) {throw 'LawnStudy requires ShoreStones.'}
+if($LawnWalk -and (-not $LawnStudy -or $Scenario -ne 'land-detail' -or $Entry -ne 0 -or $LandscapeBoundaryProbe -or $LandscapeTurnWalk)) {throw 'LawnWalk requires LawnStudy and entry0 land-detail without terrain probe flags.'}
 if($ShoreStones -and -not $NaturalGround) {throw 'ShoreStones requires NaturalGround.'}
 if($NaturalGround -and $FarCliffStudy) {throw 'NaturalGround and FarCliffStudy use different landscape materials.'}
 if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStudy requires an editor sandbox; it is not a released package feature.'}
@@ -104,6 +108,8 @@ if($LandscapeTurnWalk) {$arguments+=' -DiveLandscapeTurnWalk'}
 if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($NaturalGround) {$arguments+=' -DiveNaturalGround'}
 if($ShoreStones) {$arguments+=' -DiveShoreStones'}
+if($LawnStudy) {$arguments+=' -DiveLawnStudy'}
+if($LawnWalk) {$arguments+=' -DiveLawnWalk'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
 if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
@@ -309,8 +315,16 @@ if($LandscapeBoundaryProbe) {
         if($image.LastWriteTimeUtc -lt $startedAt -or $image.Length -lt 10000) {throw 'Missing fresh boundary probe screenshot.'}
     }
 }
-if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe -and ($log -notmatch 'DIVE_LAND_DETAIL_WALK_PASS' -or $log -match 'DIVE_LAND_DETAIL_WALK_FAIL')) {throw 'Terrain walk failed.'}
-if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe) {
+if($LawnWalk) {
+    if($log -notmatch 'DIVE_LAWN_WALK_PASS distance_m=\d+\.\d+ shots=8 turn_degrees=180 walking=1' -or $log -match 'DIVE_LAWN_WALK_FAIL') {throw 'Lawn walk failed.'}
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
+    foreach($stage in @('00','01','02','03','04','05','06','Turn')) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "LawnWalk_$stage.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) {throw "Missing fresh lawn walk capture: $stage"}
+    }
+}
+if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe -and -not $LawnWalk -and ($log -notmatch 'DIVE_LAND_DETAIL_WALK_PASS' -or $log -match 'DIVE_LAND_DETAIL_WALK_FAIL')) {throw 'Terrain walk failed.'}
+if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe -and -not $LawnWalk) {
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
     $stages=@('Start','Inside','Return')
     if($LandscapeTurnWalk) {
@@ -369,6 +383,7 @@ if($Scenario -eq 'navigation' -and ($log -notmatch 'DIVE_NAV_PASS' -or $log -mat
 if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -notmatch 'DIVE_SEDIMENT_PAUSE_PASS' -or $log -match 'DIVE_SEDIMENT_FAIL')) { throw 'Sediment lifecycle or pause failed.' }
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }
 if($ShoreStones -and ($log -notmatch 'DIVE_SHORE_STONES_READY authored=\d+ placed=\d+' -or $log -notmatch 'DIVE_SHORE_STONES_COLLISION_PASS probes=\d+')) {throw 'Shore stone study did not initialize.'}
+if($LawnStudy -and ($log -notmatch 'DIVE_LAWN_READY authored=\d+ placed=\d+' -or $log -notmatch 'DIVE_LAWN_MASK_PASS')) {throw 'Lawn study did not initialize.'}
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }
 if($GroundOff -and $log -notmatch 'DIVE_GROUND_PASS materials=5 textures=7 enabled=0') { throw 'Ground comparison override missing.' }
 if($NaturalGround -and ($log -notmatch 'DIVE_NATURAL_GROUND_APPLIED material=M_LandscapeNatural' -or
