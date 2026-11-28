@@ -138,7 +138,7 @@ public:
             const bool control=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl"));
             FString requestedProfile=TEXT("full"),preparedProfile;
             FParse::Value(FCommandLine::Get(),TEXT("DiveReflectionProfile="),requestedProfile);
-            const bool mappedShadow=requestedProfile==TEXT("vsm")||requestedProfile==TEXT("vsm-fallback")||requestedProfile==TEXT("vsm-coverage");
+            const bool mappedShadow=requestedProfile==TEXT("vsm")||requestedProfile==TEXT("vsm-fallback")||requestedProfile==TEXT("vsm-coverage")||requestedProfile==TEXT("vsm-path");
             if((requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("routing")&&requestedProfile!=TEXT("unshadowed")&&requestedProfile!=TEXT("cached")&&!mappedShadow)||
                 !FFileHelper::LoadFileToString(preparedProfile,*(FPaths::GetPath(prepared)/TEXT("ProfileMode.txt")))||preparedProfile!=requestedProfile||
                 (control&&requestedProfile!=TEXT("full")&&requestedProfile!=TEXT("cached")&&!mappedShadow))

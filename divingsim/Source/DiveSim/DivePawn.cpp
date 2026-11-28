@@ -601,7 +601,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             }
         }
     }
-    if(bSmokeTest && !bPerformance && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
     {
         FString particleDetail;const bool particlesValid=Environment->ValidateParticles(particleDetail);
         UE_LOG(LogTemp,Display,TEXT("DIVE_PARTICLES_%s %s"),particlesValid?TEXT("PASS"):TEXT("FAIL"),*particleDetail);
@@ -624,12 +624,12 @@ void ADivePawn::Tick(float DeltaSeconds)
             Equipment->ExportDisplayForTest(FPaths::ProjectSavedDir()/TEXT("Screenshots"),TEXT("WristTexture_")+SmokeScenario+TEXT(".png"));
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveUnderwater_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
     {
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("ui") && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && SmokeScenario!=TEXT("ui") && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:

@@ -283,6 +283,8 @@ void ADivePawn::TickRockInspection(float Dt)
     const bool plantView=FParse::Param(FCommandLine::Get(),TEXT("DivePlantView"));
     const bool waterView=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView"));
     const bool habitatView=FParse::Param(FCommandLine::Get(),TEXT("DiveHabitatView"));
+    const bool waterSweep=waterView&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterlineSweep"))&&
+        FParse::Param(FCommandLine::Get(),TEXT("DiveWaterline"));
     const bool formationView=FParse::Param(FCommandLine::Get(),TEXT("DiveFormationView"));
     const int views=(waterView||habitatView)?3:2;
     int end=9;if(waterView) FParse::Value(FCommandLine::Get(),TEXT("DiveWaterEnd="),end);
@@ -317,9 +319,17 @@ void ADivePawn::TickRockInspection(float Dt)
         UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS rocks=1"));FPlatformMisc::RequestExitWithStatus(false,0);return;
     }
     const int variant=(ControlsSmokePhase-1)/views,view=(ControlsSmokePhase-1)%views;
+    const double sweepSeconds=FMath::Min(TestLessonStage,200)*.1;
+    if(waterSweep&&ControlsSmokeClock>=3) Simulation.Data.ElapsedSeconds=sweepSeconds;
     FVector eye;FRotator rotation;
     if(!Environment->SetRockInspection(variant,view,eye,rotation))
     {UE_LOG(LogTemp,Error,TEXT("DIVE_ROCK_INSPECTION_FAIL phase=%d"),ControlsSmokePhase);FPlatformMisc::RequestExitWithStatus(false,1);return;}
+    if(waterSweep)
+    {
+        // One continuous up/down crossing, with the actual waves advancing.
+        const double phase=sweepSeconds/20.;
+        eye.Z+=20*(1-FMath::Cos(2*PI*phase));
+    }
     SetActorLocation(eye-FVector(0,0,CameraBaseHeight));ResetContactPose();
     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(rotation);
     Camera->SetWorldLocationAndRotation(eye,rotation);Camera->SetFieldOfView(habitatView?75:waterView?70:50);
@@ -338,6 +348,24 @@ void ADivePawn::TickRockInspection(float Dt)
         Camera->PostProcessSettings.VignetteIntensity=0;
     }
     Equipment->SetActorHiddenInGame(true);if(Equipment->Avatar) Equipment->Avatar->SetActorHiddenInGame(true);
+    if(waterSweep)
+    {
+        if(ControlsSmokeClock>=3&&TestLessonStage<=200)
+        {
+            const FString name=FString::Printf(TEXT("WaterSweep_%04d.png"),TestLessonStage);
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots")/name,true,false);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_WATERLINE_SWEEP_FRAME index=%d seconds=%.6f eye_height_cm=%.6f wave_seconds=%.6f eye=%s"),
+                TestLessonStage,sweepSeconds,eye.Z-Environment->SurfaceZ(eye.X,eye.Y),Simulation.Data.ElapsedSeconds,*eye.ToString());
+            ++TestLessonStage;
+            if(TestLessonStage>200) ControlsSmokeClock=-1; // Allow the final PNG to finish writing.
+        }
+        if(TestLessonStage>200&&ControlsSmokeClock>=0)
+        {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_WATERLINE_SWEEP_PASS frames=%d"),TestLessonStage);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS rocks=1"));FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+        return;
+    }
     if(ControlsSmokeClock>3&&!TestLessonStage)
     {
         TestLessonStage=1;

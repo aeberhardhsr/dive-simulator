@@ -161,7 +161,10 @@ float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,fl
         scattering+=transmittance*source*((1-stepT)/sigma);
         transmittance*=stepT;
     }
-#if DIVE_REFLECTION_PROFILE == 6
+#if DIVE_REFLECTION_PROFILE == 7
+    // Diagnostic only: R = surviving radiance, G = extinction, B = upward ray.
+    return float3(transmittance,1-transmittance,direction.z>0?1:0)*10000*View.PreExposure;
+#elif DIVE_REFLECTION_PROFILE == 6
     // Diagnostic only: green = mapped directional shadows, red = ray fallback.
     float coverage=shadowStats.x>0 ? shadowStats.y/shadowStats.x : 0;
     return float3(1-coverage,coverage,0)*10000*View.PreExposure;

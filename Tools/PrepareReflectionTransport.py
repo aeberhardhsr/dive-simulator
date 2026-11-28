@@ -25,7 +25,7 @@ def main():
     parser.add_argument('--engine', type=Path, default=ROOT / 'Builds/UE584')
     parser.add_argument('--project', type=Path, default=ROOT / 'Builds/SourceEditorSandbox/divingsim')
     parser.add_argument('--unified', action='store_true', help='Route only underwater water reflections through hardware tracing')
-    parser.add_argument('--profile', choices=['full', 'routing', 'unshadowed', 'cached', 'vsm', 'vsm-fallback', 'vsm-coverage'], default='full',
+    parser.add_argument('--profile', choices=['full', 'routing', 'unshadowed', 'cached', 'vsm', 'vsm-fallback', 'vsm-coverage', 'vsm-path'], default='full',
                         help='Diagnostic ablation; routing and unshadowed are not visual fixes')
     args = parser.parse_args()
     project = args.project.resolve()
@@ -40,7 +40,7 @@ def main():
     output = '\t\tRWTraceRadiance[ReflectionTracingCoord.CoordFlatten] = MakeFinite(TraceResult.Lighting);'
     if code.count(include) != 1 or code.count(output) != 1:
         raise ValueError('Ambiguous reflection transport anchors')
-    profile = ['full', 'routing', 'unshadowed', 'cached', 'vsm', 'vsm-fallback', 'vsm-coverage'].index(args.profile)
+    profile = ['full', 'routing', 'unshadowed', 'cached', 'vsm', 'vsm-fallback', 'vsm-coverage', 'vsm-path'].index(args.profile)
     code = code.replace(include, f'#define DIVE_REFLECTION_PROFILE {profile}\n#include "/DiveRendering/ReflectionWater.ush"\n\n' + include)
     code = code.replace(output, '''#if !COMPUTESHADER
         // Only raw ray results: screen-hit radiance already contains the camera medium.

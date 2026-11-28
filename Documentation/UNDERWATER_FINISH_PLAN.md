@@ -1,6 +1,6 @@
 # Unterwasserwelt: Abnahme und genau fünf Abschlussiterationen
 
-Stand: 28. November 2026. Status: **Plan festgelegt; 0 von 5 Iterationen abgeschlossen.**
+Stand: 28. November 2026. Status: **1 von 5 Arbeitsrunden beendet, mit dokumentierter Abweichung; Iteration 2 folgt.** Das ursprüngliche Fehlerfrei-Kriterium der ersten Runde ist nicht vollständig erfüllt und wird nicht als bestanden gezählt.
 
 Der Nutzer hat die Unterwasserwelt gestalterisch abgenommen. Felsen, Boden, Pflanzen, Verteilung und grundlegende Atmosphäre werden deshalb nicht erneut zur offenen Gestaltungsaufgabe. Die Referenzbilder bleiben Orientierung; eine identische Umsetzung oder eine erneute allgemeine Fotorealismus-Abnahme ist nicht erforderlich. Nach genau fünf zusätzlichen, begrenzten Iterationen wechselt der Schwerpunkt zur Überwasserwelt.
 
@@ -21,6 +21,8 @@ Diese Optimierung ist im separaten Source-Editor geprüft. Das spielbare Paket b
 **Fertig, wenn:** Der durch Rendering verursachte Saum im reproduzierten Fehlerblick behoben ist, keine schwarze oder blaue Ersatzfläche zurückkehrt und alle drei bewegten Übergänge ohne neu eingeführtes Aufblitzen oder sichtbare Lücke geprüft sind. Vorher-/Nachher-Bilder und kurze Bewegungsaufnahmen belegen die Änderung. Falls die Untersuchung einen natürlichen Glanzreflex statt eines Fehlers nachweist, wird dieser Befund mit einer isolierenden Kontrolle dokumentiert; er wird nicht durch einen pauschalen dunklen Filter verdeckt.
 
 **Ergebnis:** Ein abgeschlossener Übergangsbericht mit Codeänderung oder nachgewiesenem Nichtfehler und eindeutigen Prüfergebnissen.
+
+**Abschlussentscheidung mit Abweichung:** Die begrenzte Prüfrunde ist durchgeführt; die kamerarelative Normalkorrektur vermindert den Saum. Der verbleibende Saum sowie kurze blaue Streifen beim exakten Grenzflächendurchgang bleiben Fehler beziehungsweise Einschränkungen, keine nachgewiesenen natürlichen Reflexe. Beide sind auch mit dem bisherigen Material reproduziert. Gemäss der Nutzervorgabe, offene Punkte für später festzuhalten und die fünf Runden zu begrenzen, werden sie ausdrücklich als UW-LATER-07 vertagt. Das oben formulierte vollständige Fehlerfrei-Kriterium bleibt **nicht erfüllt**. Diese Abweichung ist keine vollständige Implementierung und keine erneute gestalterische Abnahme; sie verhindert aber eine endlose Verlängerung dieser Runde. Belege und Grenzen stehen im [Übergangsbericht](WATERLINE_SEAM_STUDY.md).
 
 ### 2. Licht, Sichtweite und Schatten-Rückfall absichern
 
@@ -82,6 +84,7 @@ Diese Punkte blockieren die gestalterische Unterwasser-Abnahme und den anschlies
 | UW-LATER-04 | Neue Sedimentformen, zusätzliche Pflanzen-/Felsassets, weitere Materialdetails und feinere Fischanimation | Keine erneute Gestaltung der abgenommenen Welt; frühere verworfene Versuche nicht automatisch wieder aufnehmen |
 | UW-LATER-05 | Weitere Hardware, durchgehende 60 FPS in allen Szenen, 1440p/4K und macOS-Grafikgleichwertigkeit | Anforderungen erhalten; heutige lokale Windows-Messungen nicht als globale Erfüllung ausgeben |
 | UW-LATER-06 | Vollständige reale Maus-/FPV-Ergonomieabnahme und zusätzliche Menü-/HUD-Wünsche | Bestehende UI erhalten und in Iteration 3/5 auf Regression prüfen; umfassende weitere Gestaltung bleibt eigene Arbeit |
+| UW-LATER-07 | Verbliebener heller Saum und kurze breite blaue Streifen direkt beim Grenzflächendurchgang | In Iteration 1 mit altem und korrigiertem Material an festen Simulationszeiten nachgewiesen; Saum vermindert, keine vollständige Fehlerbehebung. Ausdrückliche Abweichung vom ursprünglichen Abschlusskriterium; spätere gezielte Grenzflächenarbeit, keine neue Unterwasser-Gestaltungsrunde |
 
 Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_CONTEXT.md), [Originalanforderungen](REQUIREMENTS.csv), [Testorte](TEST_ENTRY_LOCATIONS.md), [Wasserlinienkorrektur](WATERLINE_BLEND.md), [Source-Engine](SOURCE_ENGINE.md), [abgeschlossene Schattenoptimierung](REFLECTION_SHADOW_STUDY.md).
 
@@ -89,7 +92,7 @@ Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_
 
 | Iteration | Status | Abschlussnachweis |
 | --- | --- | --- |
-| 1 – Wasserlinie | Geplant | Ausstehend |
+| 1 – Wasserlinie | Prüfrunde beendet mit Abweichung | [Übergangsbericht](WATERLINE_SEAM_STUDY.md); ursprüngliches Fehlerfrei-Kriterium nicht erfüllt, Restpunkte ausdrücklich unter UW-LATER-07 vertagt |
 | 2 – Licht-Randfälle | Geplant | Ausstehend |
 | 3 – Spielpaket | Geplant | Ausstehend |
 | 4 – Leistung | Geplant | Ausstehend |

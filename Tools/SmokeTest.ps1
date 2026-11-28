@@ -8,6 +8,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [ValidateCount(5,5)][double[]]$HabitatPose,
     [ValidateCount(4,4)][double[]]$WaterlinePose,
+    [switch]$WaterlineSweep,
     [switch]$WaterlineNoSurface, [switch]$WaterlineNoVolumeShadow, [switch]$NoReflectionScreenTraces,
     [ValidateRange(0,60000)][double]$WaterlineFogDistance=0,
     [ValidateSet('none','BaseColor','WorldNormal','SceneDepth')][string]$BufferView='none',
@@ -19,7 +20,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$ReflectionTransportStudy,
     [switch]$ReflectionTransportControl,
     [switch]$ReflectionUnified,
-    [ValidateSet('full','cached','vsm','vsm-fallback','vsm-coverage')][string]$ReflectionProfile='full',
+    [ValidateSet('full','cached','vsm','vsm-fallback','vsm-coverage','vsm-path')][string]$ReflectionProfile='full',
     [switch]$WaterInspectionLamp,
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
@@ -197,6 +198,10 @@ if($WaterlineNoSurface) {
     if(-not $WaterlinePose) {throw 'WaterlineNoSurface requires WaterlinePose.'}
     $arguments+=' -DiveWaterlineNoSurface'
 }
+if($WaterlineSweep) {
+    if(-not $WaterlinePose -or $WaterlineNoSurface) {throw 'WaterlineSweep requires a visible waterline comparison.'}
+    $arguments+=' -DiveWaterlineSweep'
+}
 if($WaterlineFogDistance) {
     if(-not $WaterlinePose -or $WaterlineFogDistance -lt 2000) {throw 'WaterlineFogDistance requires WaterlinePose and at least 2000 cm.'}
     $arguments+=' -DiveWaterlineFogDistance='+$WaterlineFogDistance.ToString([Globalization.CultureInfo]::InvariantCulture)
@@ -268,7 +273,8 @@ if($HabitatView) {
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh habitat comparison: $view" }
     }
 }
-if($WaterView) {
+if($WaterlineSweep -and $log -notmatch 'DIVE_WATERLINE_SWEEP_PASS') {throw 'Waterline sweep did not finish.'}
+if($WaterView -and -not $WaterlineSweep) {
     if($log -notmatch "DIVE_WATER_INSPECTION_PASS final_state=$WaterEnd views=3 diagnostic=1") { throw 'Water comparison did not finish.' }
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
     foreach($state in $WaterStart..$WaterEnd) { foreach($view in 0..2) {

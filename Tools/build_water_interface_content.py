@@ -42,6 +42,9 @@ def build_underwater_interface(wave_code):
     scalar(1/1.333,u.MaterialProperty.MP_REFRACTION)
     nodes={'P':lib.create_material_expression(m,u.MaterialExpressionWorldPosition),
            'View':lib.create_material_expression(m,u.MaterialExpressionCameraVectorWS)}
+    relative=lib.create_material_expression(m,u.MaterialExpressionWorldPosition)
+    relative.set_editor_property('world_position_shader_offset',u.WorldPositionIncludedOffsets.WPT_CAMERA_RELATIVE)
+    nodes['RelativeP']=relative
     for input_name,param,default in [('T','WaveTime',0),('WindStrength','WindStrength',.25)]:
         node=lib.create_material_expression(m,u.MaterialExpressionScalarParameter)
         node.set_editor_property('parameter_name',param);node.set_editor_property('default_value',default)
@@ -70,8 +73,25 @@ DiveWaterOptics optical;
 float height;float2 allSlope;float3 curvature;
 optical.Surface(xy,T,waves,WavePhase,WindStrength,ddx(xy),ddy(xy),height,allSlope,curvature);
 float3 normal=normalize(float3(slope*fade+h*fadeSlope+(allSlope-slope),-1));
+// Keep the mirror ray on the visible side of the rendered triangle.
+// Camera-relative derivatives retain precision immediately below the surface.
+float3 geometricGradient=cross(ddx(RelativeP),ddy(RelativeP));
+float gradientLengthSquared=dot(geometricGradient,geometricGradient);
+float3 geometricNormal=gradientLengthSquared>1.e-12 ? geometricGradient*rsqrt(gradientLengthSquared) :
+    normalize(float3(slope*fade+h*fadeSlope,-1));
+if(geometricNormal.z>0) geometricNormal=-geometricNormal;
+float3 viewDirection=normalize(View);
+float3 reflected=reflect(-viewDirection,normal);
+float horizon=dot(reflected,geometricNormal);
+if(horizon<0)
+{
+    reflected-=2*horizon*geometricNormal;
+    float3 halfDirection=viewDirection+reflected;
+    float halfLengthSquared=dot(halfDirection,halfDirection);
+    normal=halfLengthSquared>1.e-12 ? halfDirection*rsqrt(halfLengthSquared) : geometricNormal;
+}
 '''
-    custom(normal+'return normal;',u.CustomMaterialOutputType.CMOT_FLOAT3,u.MaterialProperty.MP_NORMAL)
+    custom(normal+'return normal;',u.CustomMaterialOutputType.CMOT_FLOAT3,u.MaterialProperty.MP_NORMAL,with_view=True)
     fresnel=(Path(__file__).parent/'Shaders/WaterInterfaceFresnel.ush').read_text()
     reflectance=custom(normal+fresnel,u.CustomMaterialOutputType.CMOT_FLOAT1,u.MaterialProperty.MP_OPACITY,with_view=True)
     from build_lake_surface_mask import lake_surface_mask
@@ -84,3 +104,9 @@ float3 normal=normalize(float3(slope*fade+h*fadeSlope+(allSlope-slope),-1));
     lib.recompile_material(m)
     if not u.EditorAssetLibrary.save_loaded_asset(m):raise RuntimeError('Water underside save failed')
     u.log('DIVE_WATER_INTERFACE_CONTENT_OK fresnel=water_to_air reflection=lumen_front_layer')
+
+
+if __name__ == '__main__':
+    import sys
+    sys.path.insert(0,str(Path(__file__).parent))
+    build_underwater_interface((Path(__file__).parent/'Shaders/WaterWaveDisplacement.ush').read_text())
