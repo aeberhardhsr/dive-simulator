@@ -287,6 +287,8 @@ private:
     void CreateCoast();
     void CreateBuildings();
     void CreateShoreline();
+    void CreateShoreStones();
+    UPROPERTY() TArray<TObjectPtr<class UHierarchicalInstancedStaticMeshComponent>> ShoreStones;
     void CreateAccess();
     UMaterialInstanceDynamic* ImageryMaterial(const TCHAR* Base,const FString& TexturePath);
     void Populate();

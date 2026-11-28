@@ -58,6 +58,8 @@ UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FS
     {
         if(FCString::Strcmp(Base,TEXT("M_LandscapePhoto"))==0) Base=TEXT("M_LandscapeNatural");
         else if(FCString::Strcmp(Base,TEXT("M_ShorePhoto"))==0) Base=TEXT("M_ShoreNatural");
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveShoreStones"))&&FCString::Strcmp(Base,TEXT("M_ShoreNatural"))==0&&
+            TexturePath==TEXT("/Game/Diving/Textures/T_Ortho_weesen_strandbad.T_Ortho_weesen_strandbad")) Base=TEXT("M_ShoreBank");
         UE_LOG(LogTemp,Display,TEXT("DIVE_NATURAL_GROUND_APPLIED material=%s"),Base);
     }
     const FString path=FString(TEXT("/Game/Diving/Materials/"))+Base+TEXT(".")+Base;
@@ -79,6 +81,7 @@ UMaterialInstanceDynamic* ADiveWorld::ImageryMaterial(const TCHAR* Base,const FS
     TArray<UTexture*> groundTextures;
     for(const TCHAR* suffix:{TEXT("Woodland"),TEXT("GrassColor"),TEXT("GrassNormal"),TEXT("GrassARM"),TEXT("ForestColor"),TEXT("ForestNormal"),TEXT("ForestARM")})
         if(auto* ground=instance->K2_GetTextureParameterValue(FName(FString(TEXT("Ground"))+suffix))) groundTextures.Add(ground);
+    if(auto* bank=instance->K2_GetTextureParameterValue(TEXT("ShoreBankMask"))) groundTextures.Add(bank);
     FTextureCompilingManager::Get().FinishCompilation(groundTextures);
 #endif
     instance->SetTextureParameterValue(TEXT("Ortho"),texture); ImageryMaterials.Add(instance);
@@ -131,6 +134,15 @@ bool ADiveWorld::ValidateImagery(FString& Error) const
         }
     }
     UE_LOG(LogTemp,Display,TEXT("DIVE_GROUND_PASS materials=5 textures=7 enabled=%d resident_bytes=%llu"),!groundOff,groundBytes);
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveShoreStones")))
+    {
+        const auto* mask=Cast<UTexture2D>(ImageryMaterials[1]->K2_GetTextureParameterValue(TEXT("ShoreBankMask")));
+        if(!mask||mask->GetName()!=TEXT("T_WeesenBankMask")||mask->GetSizeX()!=1024||mask->GetSizeY()!=1024||
+            mask->GetNumMips()!=11||mask->GetStreamableResourceState().NumResidentLODs!=11||mask->SRGB||!mask->NeverStream||
+            mask->AddressX!=TA_Clamp||mask->AddressY!=TA_Clamp)
+        { Error=TEXT("Shore bank mask is missing or not fully resident");return false; }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_BANK_MASK_PASS size=1024 mips=11 bytes=%u"),mask->CalcTextureMemorySizeEnum(TMC_AllMips));
+    }
     // UVs must be north-up and tied to the same LV95 extents as the images.
     auto registered=[this](UProceduralMeshComponent* mesh,const Dive::SurfaceGrid& grid)
     {

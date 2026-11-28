@@ -21,6 +21,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$LandscapeTurnWalk,
     [switch]$LandscapePilot,
     [switch]$NaturalGround,
+    [switch]$ShoreStones,
     [switch]$ReflectionTransportStudy,
     [switch]$ProductionWater,
     [switch]$ReflectionTransportControl,
@@ -54,6 +55,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($ShoreStones -and -not $NaturalGround) {throw 'ShoreStones requires NaturalGround.'}
 if($NaturalGround -and $FarCliffStudy) {throw 'NaturalGround and FarCliffStudy use different landscape materials.'}
 if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStudy requires an editor sandbox; it is not a released package feature.'}
 if($LandscapeDetailView -and ($Packaged -or -not $EditorSandbox -or $Scenario -ne 'shore-preview' -or $BuildingsView -or $GroundView -or $ShoreLookBack)) {throw 'LandscapeDetailView requires a dedicated editor shore-preview.'}
@@ -101,6 +103,7 @@ if($LandscapeBoundaryProbe) {$arguments+=' -DiveLandscapeBoundaryProbe'}
 if($LandscapeTurnWalk) {$arguments+=' -DiveLandscapeTurnWalk'}
 if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($NaturalGround) {$arguments+=' -DiveNaturalGround'}
+if($ShoreStones) {$arguments+=' -DiveShoreStones'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
 if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
@@ -365,10 +368,12 @@ if($Scenario -eq 'waypoints' -and ($log -notmatch 'DIVE_WAYPOINT_PASS' -or $log 
 if($Scenario -eq 'navigation' -and ($log -notmatch 'DIVE_NAV_PASS' -or $log -match 'DIVE_NAV_FAIL|DIVE_NAV_PHASE \d+ FAIL')) { throw 'Navigation selection test failed.' }
 if($Scenario -eq 'sediment' -and ($log -notmatch 'DIVE_SEDIMENT_PASS' -or $log -notmatch 'DIVE_SEDIMENT_PAUSE_PASS' -or $log -match 'DIVE_SEDIMENT_FAIL')) { throw 'Sediment lifecycle or pause failed.' }
 if($log -match 'DIVE_CONTACT_FAIL') { throw "Body collision integrity failed. See $logPath." }
+if($ShoreStones -and ($log -notmatch 'DIVE_SHORE_STONES_READY authored=\d+ placed=\d+' -or $log -notmatch 'DIVE_SHORE_STONES_COLLISION_PASS probes=\d+')) {throw 'Shore stone study did not initialize.'}
 if($log -notmatch 'DIVE_IMAGERY_PASS') { throw "Imagery registration/content test failed. See $logPath." }
 if($GroundOff -and $log -notmatch 'DIVE_GROUND_PASS materials=5 textures=7 enabled=0') { throw 'Ground comparison override missing.' }
 if($NaturalGround -and ($log -notmatch 'DIVE_NATURAL_GROUND_APPLIED material=M_LandscapeNatural' -or
-   ([regex]::Matches($log,'DIVE_NATURAL_GROUND_APPLIED material=M_ShoreNatural')).Count -ne 4)) {throw 'Natural ground materials were not applied to all five surfaces.'}
+   ([regex]::Matches($log,'DIVE_NATURAL_GROUND_APPLIED material=M_ShoreNatural')).Count -ne $(if($ShoreStones){3}else{4}) -or
+   ($ShoreStones -and $log -notmatch 'DIVE_SHORE_BANK_MASK_PASS'))) {throw 'Natural ground materials were not applied to all five surfaces.'}
 if($log -notmatch 'DIVE_LANDSCAPE_PASS') { throw "Landscape asset test failed. See $logPath." }
 if($log -match 'DIVE_COAST_READY|DIVE_COAST_FAIL') {
     if($log -notmatch 'DIVE_COAST_COLLISION_PASS' -or $log -match 'DIVE_COAST_\w*FAIL') { throw "Coast collision test failed. See $logPath." }

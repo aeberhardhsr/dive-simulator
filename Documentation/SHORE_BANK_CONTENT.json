@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "mask_sha256": "871a919a3d6429268711b8a622437ccca50067707b049bc454b71051e32dac71",
+  "build_report": {
+    "mask": {
+      "file": "Art/GroundMaterials/WeesenBankMask.png",
+      "sha256": "871a919a3d6429268711b8a622437ccca50067707b049bc454b71051e32dac71",
+      "width": 1024,
+      "height": 1024,
+      "full_width_m": 4.6,
+      "feather_m": 1.2
+    },
+    "material": "/Game/Diving/Materials/M_ShoreBank",
+    "shader_sha256": "f3bf153cfd32bb13e14ebca6312776b5b61369759697e0a85e18a233f774184c",
+    "rock_materials": [
+      {
+        "source": "/Game/Diving/Materials/M_RockScan1",
+        "target": "/Game/Diving/Materials/M_ShoreBankRock1",
+        "shader_sha256": "1f4e02821fddc41e544d4cecbb25a058a876d9285307603aec8f4596c0e0626f"
+      },
+      {
+        "source": "/Game/Diving/Materials/M_RockScan2",
+        "target": "/Game/Diving/Materials/M_ShoreBankRock2",
+        "shader_sha256": "1f4e02821fddc41e544d4cecbb25a058a876d9285307603aec8f4596c0e0626f"
+      },
+      {
+        "source": "/Game/Diving/Materials/M_RockScan3",
+        "target": "/Game/Diving/Materials/M_ShoreBankRock3",
+        "shader_sha256": "1f4e02821fddc41e544d4cecbb25a058a876d9285307603aec8f4596c0e0626f"
+      }
+    ]
+  },
+  "files": [
+    {
+      "file": "Tools/build_shore_bank.py",
+      "sha256": "dea53fda1fcbb92a2900e5c1e04e684deb3436a71f46da0fc2b3b63dccdc300f"
+    },
+    {
+      "file": "Tools/prepare_shore_stones.py",
+      "sha256": "ea148fba95edf1ca7dfa95fd2f3afbe7a5ddb2462cc2926282d50a8c3dffb09b"
+    },
+    {
+      "file": "divingsim/Content/Diving/Geodata/shore_stones.json",
+      "sha256": "233747a07a2d7128f57bb07d09f3c0e8cd60434239e0545aa7b20e64074f3a1a"
+    },
+    {
+      "file": "Art/GroundMaterials/WeesenBankMask.png",
+      "sha256": "871a919a3d6429268711b8a622437ccca50067707b049bc454b71051e32dac71"
+    },
+    {
+      "file": "divingsim/Content/Diving/Textures/T_WeesenBankMask.uasset",
+      "sha256": "a042b89062ccf6e26c8e249351ffa01dba6e34f6407333f38fd70dd20281279c"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_ShoreNatural.uasset",
+      "sha256": "c0e63a5395eef56d81ad28d62451c9c31e3445d4fa3f8eb7cb45a8fe640696dc"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_ShoreBank.uasset",
+      "sha256": "fa1e8bffc0a6de3020306b573c982772d87025b96293ceddc63a4b6300bb9328"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_RockScan1.uasset",
+      "sha256": "ce29d5218c13cab0146102e634f97d7ad17cf123df47a9793fe581aea0346c08"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_RockScan2.uasset",
+      "sha256": "69f0bdb555bb3bead3c3f48863af278166e4250b1a6ebcedb13c49621d3791fa"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_RockScan3.uasset",
+      "sha256": "a19b0eee86243133901805671cd5597376f5d371452cdc7dd7f3bc608398b0b8"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_ShoreBankRock1.uasset",
+      "sha256": "1dbbf5f65449ca595f00040eb95cfcdf69169795989380b75934c4ae44c24e9c"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_ShoreBankRock2.uasset",
+      "sha256": "3ec457601377d11310fe4eb6dc543ba869188226aafb37edf4450b8a393fad2d"
+    },
+    {
+      "file": "divingsim/Content/Diving/Materials/M_ShoreBankRock3.uasset",
+      "sha256": "c890bdb572bbd44834b060403fd907684a31cda1d3ca696559a4d87f34c69281"
+    },
+    {
+      "file": "divingsim/Content/Diving/Rocks/SM_LakeRock1.uasset",
+      "sha256": "40336aafe593e2e6d229969c8952c09d6a961daaf164a80971560ea63ecc3c0c"
+    },
+    {
+      "file": "divingsim/Content/Diving/Rocks/SM_LakeRock2.uasset",
+      "sha256": "632513928327799ff67958598934db24b764c21ee71b6f34ca7454b192cde712"
+    },
+    {
+      "file": "divingsim/Content/Diving/Rocks/SM_LakeRock3.uasset",
+      "sha256": "30e3072ae09b1081b65769affa689480ccd4c7dbd89d317158930fb20af1fe6a"
+    }
+  ],
+  "scope": "Pins the successful Variant3 content build and its recipes; runtime tests separately validate rendered content and collision."
+}

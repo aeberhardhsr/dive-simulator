@@ -35,6 +35,7 @@ Documentation/VEGETATION_PLACEMENT_AUDIT.json -text whitespace=cr-at-eol
 blender/exports/Vegetation/Manifest.json -text whitespace=cr-at-eol
 # Keep the pinned catalogue byte checksum identical on every checkout platform.
 divingsim/Content/Diving/Geodata/buildings_sources.json text eol=crlf
+divingsim/Content/Diving/Geodata/shore_stones.json text eol=crlf
 divingsim/Content/Diving/Geodata/buildings.json text eol=lf
 # Small report previews are stored directly with the report.
 Documentation/Images/Environment_Winter.png -filter -diff -merge -text

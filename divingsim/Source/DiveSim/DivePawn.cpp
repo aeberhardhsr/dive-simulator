@@ -620,7 +620,10 @@ void ADivePawn::Tick(float DeltaSeconds)
             }
         }
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured)
+    // Phase captures requested earlier in this tick take precedence. Unreal
+    // keeps one pending screenshot; generic captures retry on the next frame
+    // instead of replacing e.g. the shore route's required dive image.
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && Simulation.Data.ElapsedSeconds>8 && !bSmokeUnderwaterCaptured && !FScreenshotRequest::IsScreenshotRequested())
     {
         FString particleDetail;const bool particlesValid=Environment->ValidateParticles(particleDetail);
         UE_LOG(LogTemp,Display,TEXT("DIVE_PARTICLES_%s %s"),particlesValid?TEXT("PASS"):TEXT("FAIL"),*particleDetail);
@@ -643,7 +646,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             Equipment->ExportDisplayForTest(FPaths::ProjectSavedDir()/TEXT("Screenshots"),TEXT("WristTexture_")+SmokeScenario+TEXT(".png"));
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveUnderwater_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && Simulation.Data.ElapsedSeconds>smokeDuration-3 && !bSmokeCaptured && !FScreenshotRequest::IsScreenshotRequested())
     {
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);

@@ -1,5 +1,6 @@
-param([Parameter(Mandatory=$true)][string]$PackageDirectory,[Parameter(Mandatory=$true)][string]$OutputDirectory,[switch]$WaterPreview,[switch]$LandscapePilot,[switch]$NaturalGround)
+param([Parameter(Mandatory=$true)][string]$PackageDirectory,[Parameter(Mandatory=$true)][string]$OutputDirectory,[switch]$WaterPreview,[switch]$LandscapePilot,[switch]$NaturalGround,[switch]$ShoreStones)
 $ErrorActionPreference='Stop'
+if($ShoreStones -and -not $NaturalGround) {throw 'ShoreStones requires NaturalGround.'}
 . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
 $PackageDirectory=[IO.Path]::GetFullPath($PackageDirectory)
 $OutputDirectory=[IO.Path]::GetFullPath($OutputDirectory)
@@ -12,6 +13,7 @@ $arguments='-DiveSmokeTest -DiveScenario=dive -DiveEntry=1 -DiveAutomaticEnviron
 if($WaterPreview) {$arguments+=' -DiveWaterPreview'}
 if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($NaturalGround) {$arguments+=' -DiveNaturalGround'}
+if($ShoreStones) {$arguments+=' -DiveShoreStones'}
 $launcher=Start-Process (Join-Path $PackageDirectory 'divingsim.exe') -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $found=$null
 for($i=0;$i -lt 30 -and -not $found;++$i) {
@@ -27,8 +29,9 @@ if($game.ExitCode -ne 0 -or $text -notmatch 'DIVE_SMOKE_PASS' -or $text -match '
 if($WaterPreview -and $text -notmatch 'DIVE_WATER_PREVIEW_READY') {throw 'Root launcher did not activate the water preview.'}
 if($LandscapePilot -and $text -notmatch 'DIVE_LAND_PILOT_READY tiles=2 spacing=2m root_pages=1330 budget_pages=2048 cooked=1') {throw 'Root launcher did not activate the cooked terrain pilot.'}
 if($NaturalGround -and ($text -notmatch 'DIVE_NATURAL_GROUND_APPLIED material=M_LandscapeNatural' -or
-   ([regex]::Matches($text,'DIVE_NATURAL_GROUND_APPLIED material=M_ShoreNatural')).Count -ne 4)) {throw 'Root launcher did not activate natural ground.'}
-@{status='PASS';landscape_pilot=[bool]$LandscapePilot;natural_ground=[bool]$NaturalGround;child=$child;child_id=$found.ProcessId;exit_code=$game.ExitCode;started_utc=$started.ToString('o');finished_utc=[DateTime]::UtcNow.ToString('o');
+   ([regex]::Matches($text,'DIVE_NATURAL_GROUND_APPLIED material=M_ShoreNatural')).Count -ne $(if($ShoreStones){3}else{4}))) {throw 'Root launcher did not activate natural ground.'}
+if($ShoreStones -and ($text -notmatch 'DIVE_SHORE_STONES_COLLISION_PASS' -or $text -notmatch 'DIVE_SHORE_BANK_MASK_PASS')) {throw 'Root launcher did not validate shore stones.'}
+@{status='PASS';landscape_pilot=[bool]$LandscapePilot;natural_ground=[bool]$NaturalGround;shore_stones=[bool]$ShoreStones;child=$child;child_id=$found.ProcessId;exit_code=$game.ExitCode;started_utc=$started.ToString('o');finished_utc=[DateTime]::UtcNow.ToString('o');
     log_sha256=(Get-FileHash -LiteralPath $log).Hash;executable_sha256=(Get-FileHash -LiteralPath $child).Hash} |
     ConvertTo-Json | Set-Content (Join-Path $OutputDirectory 'Launcher.json') -Encoding utf8
 Write-Output "LAUNCHER_PASS=$OutputDirectory"
