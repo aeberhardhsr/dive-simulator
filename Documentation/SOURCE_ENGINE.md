@@ -38,7 +38,7 @@ git -c core.longpaths=true clone --depth 1 --single-branch --branch 5.8.4-releas
 $sourceEngineRoot = Join-Path $PWD 'Builds/UE584'
 & "$sourceEngineRoot/Engine/Binaries/DotNET/GitDependencies/win-x64/GitDependencies.exe" `
     "--root=$sourceEngineRoot" --threads=8 `
-    --exclude=Mac --exclude=Linux --exclude=LinuxArm64 --exclude=Android --exclude=IOS --exclude=TVOS
+    --exclude=Mac --exclude=Linux --exclude=LinuxArm64 --exclude=Android --exclude=TVOS
 
 ./Tools/.geodata-env/Scripts/python.exe Tools/PrepareWaveRendererPatch.py `
     --engine Builds/UE584 --output artifacts/source-engine-20261127/renderer-patch
@@ -52,6 +52,8 @@ git -C Builds/UE584 apply "$PWD/artifacts/source-engine-20261127/renderer-patch/
 ```
 
 Die vorhandenen VC++-/GameInput-Laufzeitkomponenten bleiben erhalten. Es werden keine Dateizuordnungen auf die neue Engine umgestellt. Für diesen Windows-Prüfstand ausgelassene Plattformabhängigkeiten sind vor einem entsprechenden anderen Plattform-Build nachzuladen; dies ist kein macOS-Buildnachweis.
+
+**Korrektur für die Paketierung:** Der ursprüngliche Setup-Aufruf schloss zusätzlich `IOS` aus. Dadurch scheiterte der erste Source-Package-Aufruf vor dem Cook mit `MSB3554`: Das auch für Windows gestartete AutomationTool baut sein iOS-Modul und benötigt dessen `GreenCheck.png` und `GreyCheck.png`. Zusätzlich fehlte die referenzierte `Engine/Binaries/ThirdParty/IOS/BouncyCastle.Crypto.dll`. Der obige Setup-Aufruf lässt deshalb iOS-Abhängigkeiten zu. Im bereits gebauten Arbeitsbaum wurden gezielt die drei Originaldateien wiederhergestellt und gegen `Commit.gitdeps.xml` geprüft: beide PNGs aus der installierten Engine, die DLL aus dem lokalen GitDependencies-Pack-Cache. Die DLL der installierten Engine hat eine andere Prüfsumme und wurde ausdrücklich nicht übernommen. Der [Wiederherstellungsnachweis](SOURCE_AUTOMATION_DEPENDENCIES.json) dokumentiert Herkunft und Hashes; weder Engine-Quellen noch diese Binärdateien werden ins öffentliche Spiel-Repository übernommen.
 
 Auf Wunsch des Nutzers wurde der Erstbuild am 27. November nach 2.014 von 4.043 abgeschlossenen Aktionen kontrolliert angehalten und mit `-MaxParallelActions=4` statt `2` inkrementell fortgesetzt. Das neue Protokoll `artifacts/source-engine-20261127/editor-build-parallel4.log` bestätigt 2.029 verbleibende Aktionen; die abgeschlossenen Ergebnisse wurden übernommen. Drei gleichzeitig aktive Compilerprozesse wurden beobachtet. Der Rechner besitzt 16 physische Kerne und 32 logische Prozessoren bei 31,08 GiB nutzbarem RAM. Die ersten Messungen nach Wiederanlauf zeigten rund 8–9 GiB freien RAM; das ist eine Momentaufnahme, keine Speicherzusage für alle Module. Kompilierung, Linken und Abhängigkeiten führen zu wechselnder Parallelität. Aus unterschiedlichen Modulabschnitten lässt sich keine belastbare Beschleunigungsrate ableiten.
 
