@@ -1,5 +1,5 @@
 {
-  "status": "AUTOMATED_AND_VISUAL_REVIEW_COMPLETE_WITH_KNOWN_LIMITATIONS_INTERACTIVE_PENDING",
+  "status": "AUTOMATED_AND_VISUAL_REVIEW_COMPLETE_WITH_KNOWN_LIMITATIONS_INTERACTIVE_PARTIAL",
   "created_utc": "2026-11-28T03:44:25.134547+00:00",
   "package_identity": {
     "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
@@ -737,7 +737,7 @@
     }
   ],
   "shadow_metric_scope": "Whole image, including direct view and reflection; not reflection-only. Moon +8 EV measurement exposure.",
-  "remaining": "Real normal menu/input check pending user closing the Windows Security dialog. Baseline and confirmation numerical criteria met; visible terrain continuity during streaming remains unverified. No final round-3 or round-4 acceptance. Two-hour soak not started.",
+  "remaining": "Partial real-input evidence plus user-reported Murg/Weesen testing without flashes or control issues. Full route details, Mols and targeted visible streaming continuity remain unverified. Two-hour soak launched; no completion claim.",
   "visual_review": {
     "case_images_reviewed": 84,
     "editor_pairs_reviewed": 12,
@@ -749,7 +749,7 @@
       "UW-LATER-08: software path starts, but blue underwater bands and inferior underside reflections remain. No visual parity.",
       "Above-water clear comparison has different reflection detail; these are not pixel-identical renderers or a completed above-water graphics acceptance."
     ],
-    "interactive": "Not yet verified. Automated route completion is separate from real menu/input checks."
+    "interactive": "See the separately bound partial real-input report; automated routes do not replace complete real swim/return checks."
   },
   "normal_launch": {
     "launcher": {
@@ -775,6 +775,10 @@
   },
   "performance": {
     "file": "Documentation/UNDERWATER_FINISH_PERFORMANCE_R3.json",
-    "sha256": "09e62a079ea913a92f9ee311b7b15320060e1d34a590917f0775064935d83665"
+    "sha256": "5ba3b0a3502a4dd04e1af7a8a4a32e14de1252a4aa12734aa67d62b1961d9cf3"
+  },
+  "interactive_review": {
+    "file": "Documentation/PRODUCTION_INTERACTIVE_R3_REVIEW.json",
+    "sha256": "eb1cb4e77b9c8340dcbff8955abcd10ff3dbb252042bbbbeb33e37e86187da90"
   }
 }

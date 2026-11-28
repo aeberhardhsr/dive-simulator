@@ -1,6 +1,6 @@
 # Abschlussrunde 3: normal startbares Wasserpaket
 
-Stand: 28. November 2026. **R3 besteht alle 18 nativen Paketfälle; 84 Bilder und zwölf Editorvergleiche sind gesichtet. Der normale Start ist bestätigt. Reale Menübedienung und vollständige Paketabnahme bleiben offen.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt. Die folgenden früheren Build- und Paketstände dokumentieren den Verlauf; massgeblich ist der Abschnitt „R3“.
+Stand: 28. November 2026. **R3 besteht alle 18 nativen Paketfälle; 84 Bilder und zwölf Editorvergleiche sind gesichtet. Normaler Start, reale Menüauswahl aller drei Ufer und mehrere Instrumentenfunktionen sind bestätigt. Der Nutzer berichtet Tests in Murg und Weesen ohne Aufblitzen oder Bedienprobleme. Nicht belegte Teile der vollständigen Schwimm-/Rückkehrabläufe und Paketabnahme bleiben offen; der freigegebene zweistündige Dauerlauf ist gestartet.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt. Die folgenden früheren Build- und Paketstände dokumentieren den Verlauf; massgeblich sind die Abschnitte „R3“ und „Reale Bedienprüfung“.
 
 ## Buildverlauf und eingefrorene Eingaben
 
@@ -91,11 +91,19 @@ Die Paketserie enthält drei Uferabläufe (Weesen, Murg, Mols), drei direkte Was
 
 Zusätzlich ist ein echter normaler Start ohne Smoke-/Study-Schalter und die Bedienung aus dem Menü zu prüfen. Ein Test der automatisierten Szenarien ersetzt diesen Schritt nicht. Erst danach werden Paketidentität, Launcher, Laufzeitkonfiguration, Bildvergleich, Einschränkungen und Build-/Cook-Protokolle als Abschlussnachweis gebunden. Leistungsprüfung und zweistündiger Dauerlauf bleiben die anschliessenden Runden 4 und 5.
 
-### Verbleibende reale Bedienprüfung am unveränderten R3-Paket
+### Reale Bedienprüfung: Teilnachweis und Übergabe an den Nutzer
 
-Nach dem manuellen Schliessen der Windows-Sicherheitsabfrage und ohne parallel laufende Leistungsmessung:
+Die Windows-Sicherheitsabfrage war bei der erneuten Sichtkontrolle geschlossen. Anschliessend wurde R3 normal ohne zusätzliche Argumente gestartet. Der [reale Bediennachweis](PRODUCTION_INTERACTIVE_R3_REVIEW.json) dokumentiert echte Maus-/Tastatureingaben: Auswahl und Uferstart in Weesen, Murg und Mols; Atemregler, Handgelenkcomputer mit Seitenwechsel, Pause, laufende Tiefenkarte, Abbruch, Logbuch und Planung des nächsten Tauchgangs. Nach dem Start in der breiten Desktopansicht wurde per Alt+Enter auf ein Fenster mit 1280 × 720 Pixeln Spielfläche gewechselt. Das ist keine neue 1080p-Leistungsmessung.
 
-1. Den normalen Launcher ohne Testargumente öffnen und die tatsächliche Paket-EXE im Laufzeitprotokoll festhalten.
+Die kurzen normalen Weesen-/Murg-Sitzungen sind als abgebrochen mit 110,66 beziehungsweise 21,64 Sekunden, jeweils 0 m Strecke und 0 m maximaler Tiefe gespeichert. Sie belegen **keinen vollständigen Tauchgang**. Der einzelne W-Tastendruck erzeugte keinen nachgewiesenen Weg. Das verfügbare Desktopwerkzeug bietet keine dokumentierte Haltedauer für Bewegungstasten. Die automatische native Streckenprüfung bleibt davon getrennt.
+
+Beim anschliessenden Mols-Versuch meldete das Desktopwerkzeug einen physischen Escape-Stopp des Nutzers. Der Ausgang des letzten Pause-Versuchs wurde nicht mehr überprüft. Der Nutzer hat danach ausdrücklich **„Ich teste selbst weiter“** gewählt. Während seines Tests blieb die Spielinstanz ihm überlassen. Anschliessend meldete er den Test als beendet und gab Messungen sowie weitere Tests ausdrücklich frei. Sein Ergebnis: Murg und Weesen getestet, keine Aufblitzer oder Bedienprobleme. Mols und die vollständigen Rückkehr-/Logbuchfolgen wurden in der Rückmeldung nicht einzeln bestätigt. Das gesicherte Schlussprotokoll dokumentiert ein geordnetes Beenden der normalen Spielinstanz; vor Start des Dauerlaufs lief kein Spiel oder Editor mehr.
+
+Als späterer UI-Restpunkt wurde beobachtet: Die Abschlussansicht zeigt den Rohwert `aborted`, während das Logbuch korrekt „Abgebrochen“ schreibt. Das wird unter UW-LATER-06 festgehalten; in dieser Runde erfolgt kein weiterer UI-Umbau. Die Lampe wurde bei Tageslicht betätigt, aber dadurch kein belastbarer visueller Ein-/Aus-Vergleich gewonnen.
+
+Verbleibende Prüfungen nach beziehungsweise durch den Nutzer:
+
+1. Bereits bestätigt: normaler Launcher ohne Testargumente und Produktionsmarker im gesicherten Laufzeitprotokoll.
 2. Weesen/Strandbad, Murg/West und Mols/Lediwracks jeweils im Menü auswählen; am Ufer starten, ins Wasser gehen, tauchen und zurückkehren.
 3. Lampe, Handgelenkcomputer und Pause über reale Eingaben bedienen; anschliessend Logbuch und Neustart prüfen. Automatisierte Bildbelege bleiben ergänzende Nachweise.
 4. In Murg einen sichtbaren Bodenabschnitt über Zellwechsel verfolgen. Der automatische Leistungspfad endet im offenen Wasser; sein Abschlussbild und die Geländezellzahl beweisen keine sichtbare Lückenfreiheit während der Fahrt.
