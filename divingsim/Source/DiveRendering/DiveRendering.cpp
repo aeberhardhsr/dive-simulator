@@ -16,6 +16,7 @@
 #include "ShaderParameterStruct.h"
 #include "RenderGraphBuilder.h"
 #include "ScreenPass.h"
+#include "HAL/PlatformProperties.h"
 
 class FDiveSpectralWaterPS : public FGlobalShader
 {
@@ -107,6 +108,8 @@ class FDiveRenderingModule final : public IModuleInterface
     {
         if(DiveReflectionTransportEnabled())
             if(auto* CustomDepth=IConsoleManager::Get().FindConsoleVariable(TEXT("r.CustomDepth"))) CustomDepth->Set(3,ECVF_SetByCode);
+        if(DiveProductionWaterEnabled())
+            if(auto* Inline=IConsoleManager::Get().FindConsoleVariable(TEXT("r.Lumen.HardwareRayTracing.Inline"))) Inline->Set(0,ECVF_SetByCode);
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
         {
             if(auto* CustomDepth=IConsoleManager::Get().FindConsoleVariable(TEXT("r.CustomDepth"))) CustomDepth->Set(3,ECVF_SetByCode);
@@ -116,9 +119,33 @@ class FDiveRenderingModule final : public IModuleInterface
 public:
     void StartupModule() override
     {
+        if(FPlatformProperties::RequiresCookedData()&&DiveProductionWaterEnabled())
+            for(const TCHAR* name:{TEXT("DiveReflectionTransportStudy"),TEXT("DiveReflectionRayStudy"),TEXT("DiveSolarShaderStudy"),TEXT("DiveSpectralView")})
+                if(FParse::Param(FCommandLine::Get(),name))
+                    UE_LOG(LogTemp,Fatal,TEXT("Shader experiments require an uncooked editor build; packaged play uses its cooked production profile."));
         InitializeDiveWaterScene();
         AddShaderSourceDirectoryMapping(TEXT("/DiveRendering"),FPaths::Combine(FPaths::ProjectDir(),TEXT("Shaders")));
-        if(DiveReflectionTransportEnabled())
+        if(DiveProductionWaterEnabled())
+        {
+            // Source files are needed by the editor/cooker only. Packaged games
+            // consume cooked shaders and must not depend on Intermediate files.
+            if(!FPlatformProperties::RequiresCookedData())
+            {
+                const FString prepared=FPaths::Combine(FPaths::ProjectIntermediateDir(),TEXT("DiveReflectionProduction/Lumen"));
+                FString routing,profile;
+                if(!IFileManager::Get().FileExists(*(prepared/TEXT("LumenReflectionHardwareRayTracing.usf")))||
+                   !IFileManager::Get().FileExists(*(prepared/TEXT("LumenReflectionTracing.usf")))||
+                   !FFileHelper::LoadFileToString(routing,*(FPaths::GetPath(prepared)/TEXT("RoutingMode.txt")))||routing!=TEXT("unified")||
+                   !FFileHelper::LoadFileToString(profile,*(FPaths::GetPath(prepared)/TEXT("ProfileMode.txt")))||profile!=TEXT("vsm"))
+                    UE_LOG(LogTemp,Fatal,TEXT("Normal water rendering requires Tools/PrepareReflectionTransport.py --production --unified --profile vsm before editor/cook."));
+                AddShaderSourceDirectoryMapping(TEXT("/Engine/Private/Lumen"),prepared);
+            }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_TRANSPORT_READY enabled=1 samples=16 light_source=scene scope=raygen_water_frontlayer"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_ROUTING_READY unified=1"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0"));
+            UE_LOG(LogTemp,Display,TEXT("DIVE_PRODUCTION_WATER_READY cooked=%d"),FPlatformProperties::RequiresCookedData()?1:0);
+        }
+        else if(DiveReflectionTransportEnabled())
         {
             const bool unified=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionUnified"));
             if(unified)

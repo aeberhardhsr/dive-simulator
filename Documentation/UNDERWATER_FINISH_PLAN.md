@@ -1,6 +1,6 @@
 # Unterwasserwelt: Abnahme und genau fünf Abschlussiterationen
 
-Stand: 28. November 2026. Status: **2 von 5 Arbeitsrunden beendet: Runde 1 mit dokumentierter Abweichung, Runde 2 bestanden; als Nächstes folgt Iteration 3.** Das ursprüngliche Fehlerfrei-Kriterium der ersten Runde ist nicht vollständig erfüllt und wird nicht als bestanden gezählt.
+Stand: 28. November 2026. Status: **2 von 5 Arbeitsrunden beendet: Runde 1 mit dokumentierter Abweichung, Runde 2 bestanden; Iteration 3 läuft.** Das ursprüngliche Fehlerfrei-Kriterium der ersten Runde ist nicht vollständig erfüllt und wird nicht als bestanden gezählt.
 
 Der Nutzer hat die Unterwasserwelt gestalterisch abgenommen. Felsen, Boden, Pflanzen, Verteilung und grundlegende Atmosphäre werden deshalb nicht erneut zur offenen Gestaltungsaufgabe. Die Referenzbilder bleiben Orientierung; eine identische Umsetzung oder eine erneute allgemeine Fotorealismus-Abnahme ist nicht erforderlich. Nach genau fünf zusätzlichen, begrenzten Iterationen wechselt der Schwerpunkt zur Überwasserwelt.
 
@@ -94,6 +94,6 @@ Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_
 | --- | --- | --- |
 | 1 – Wasserlinie | Prüfrunde beendet mit Abweichung | [Übergangsbericht](WATERLINE_SEAM_STUDY.md); ursprüngliches Fehlerfrei-Kriterium nicht erfüllt, Restpunkte ausdrücklich unter UW-LATER-07 vertagt |
 | 2 – Licht-Randfälle | Bestanden | [Licht- und Schattenprüfung](REFLECTION_FINISH_VALIDATION.md); acht Grundkontrollen und vier physische Randfallkontrollen bestanden, vereinigter VSM-Pfad für Paketintegration ausgewählt |
-| 3 – Spielpaket | Geplant | Ausstehend |
+| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); Source-Game-Build läuft, normale Laufzeitintegration vorbereitet, native Nachprüfung und Cook noch ausstehend |
 | 4 – Leistung | Geplant | Ausstehend |
 | 5 – Stabilität und Übergabe | Geplant | Ausstehend |

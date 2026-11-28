@@ -25,9 +25,12 @@ def main():
     parser.add_argument('--engine', type=Path, default=ROOT / 'Builds/UE584')
     parser.add_argument('--project', type=Path, default=ROOT / 'Builds/SourceEditorSandbox/divingsim')
     parser.add_argument('--unified', action='store_true', help='Route only underwater water reflections through hardware tracing')
+    parser.add_argument('--production', action='store_true', help='Prepare the selected unified VSM shaders for normal editor/cook starts')
     parser.add_argument('--profile', choices=['full', 'routing', 'unshadowed', 'cached', 'vsm', 'vsm-fallback', 'vsm-coverage', 'vsm-path'], default='full',
                         help='Diagnostic ablation; routing and unshadowed are not visual fixes')
     args = parser.parse_args()
+    if args.production and (not args.unified or args.profile != 'vsm'):
+        parser.error('Production preparation requires --unified --profile vsm')
     project = args.project.resolve()
     if not project.is_relative_to(ROOT) or not (project / 'divingsim.uproject').is_file():
         raise ValueError('Use an existing project in this checkout')
@@ -75,7 +78,7 @@ def main():
             // in hardware for marked underwater water, preserving air SSR.
             if (DiveIsWaterReflection(TranslatedWorldPosition, ScreenUV, SceneDepth)) return;''')
         screen_code = screen_code[:begin]+block+screen_code[end:]
-    destination = project / 'Intermediate/DiveReflectionTransportStudy/Lumen'
+    destination = project / ('Intermediate/DiveReflectionProduction/Lumen' if args.production else 'Intermediate/DiveReflectionTransportStudy/Lumen')
     if not destination.resolve().is_relative_to(project / 'Intermediate'):
         raise ValueError('Output escaped project')
     shutil.copytree(source, destination, dirs_exist_ok=True)
@@ -90,7 +93,7 @@ def main():
                   shader_sha256=sha(ROOT / 'divingsim/Shaders/ReflectionWater.ush'),
                   mask_sha256=sha(ROOT / 'divingsim/Shaders/ReflectionWaterMask.ush'),
                   shadow_sha256=sha(ROOT / 'divingsim/Shaders/ReflectionWaterShadow.ush'),
-                  unified=args.unified, profile=args.profile, screen_original_sha256=EXPECTED_SCREEN,
+                  unified=args.unified, profile=args.profile, production=args.production, screen_original_sha256=EXPECTED_SCREEN,
                   scope=('Underwater water routed through raw hardware hit lighting; air SSR unchanged' if args.unified else 'Raygen water front-layer results; screen hits unchanged')+'; direct single scattering; opaque near-field shadows; no multiple scattering',
                   files=[dict(file=p.relative_to(destination).as_posix(), sha256=sha(p))
                          for p in sorted(destination.rglob('*')) if p.is_file()])

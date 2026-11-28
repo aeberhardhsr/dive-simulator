@@ -47,6 +47,16 @@ if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' 
 # relative output paths against the repository before passing them to UAT.
 if(-not [IO.Path]::IsPathRooted($PackageDirectory)) { $PackageDirectory=Join-Path $repo $PackageDirectory }
 $PackageDirectory=[IO.Path]::GetFullPath($PackageDirectory)
+# The patched source engine needs the selected water shaders before normal
+# editor/cook startup. Preparation stays local; Epic shader sources are not
+# copied into the repository or required by a cooked executable.
+$reflectionBinding=Join-Path $EngineRoot 'Engine/Source/Runtime/Renderer/Private/Lumen/LumenReflectionHardwareRayTracing.cpp'
+if((Test-Path -LiteralPath $reflectionBinding) -and
+   (Select-String -LiteralPath $reflectionBinding -Pattern 'r.DiveWater.ReflectionShadowBindingVersion' -Quiet)) {
+    & (Join-Path $PSScriptRoot '.geodata-env/Scripts/python.exe') (Join-Path $PSScriptRoot 'PrepareReflectionTransport.py') `
+        --engine $EngineRoot --project (Split-Path $project -Parent) --production --unified --profile vsm
+    if($LASTEXITCODE -ne 0) {throw 'Production water shader preparation failed.'}
+}
 # Preserve the installed engine's WITH_LIVE_CODING ABI. -NoLiveCoding changes
 # registration structure layouts in a monolithic Development build and is unsafe
 # with this engine's precompiled libraries. -NoHotReloadFromIDE only selects a
@@ -107,6 +117,7 @@ if ($Target -eq 'Content') {
 }
 if ($LASTEXITCODE -ne 0) { throw "Unreal $Target failed with exit code $LASTEXITCODE" }
 if($Target -eq 'Package') {
+    Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartDiveSimulator.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
     Copy-Item -LiteralPath (Join-Path $repo 'Tools/WaterPreviewLauncher.cmd') -Destination (Join-Path $PackageDirectory 'Start-WaterPreview.cmd')
     # Keep scenario-data attribution readable without extracting the game pak.
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/TEMPERATURE_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'TEMPERATURE_NOTICE.txt')

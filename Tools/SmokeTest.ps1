@@ -18,6 +18,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$DisablePostProcessMaterials,
     [switch]$ReflectionRayStudy,
     [switch]$ReflectionTransportStudy,
+    [switch]$ProductionWater,
     [switch]$ReflectionTransportControl,
     [switch]$ReflectionUnified,
     [ValidateSet('full','unshadowed','cached','vsm','vsm-fallback','vsm-coverage','vsm-path')][string]$ReflectionProfile='full',
@@ -49,6 +50,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
+if($ProductionWater -and ($ReflectionTransportStudy -or $ReflectionRayStudy -or $SolarShaderStudy -or $SpectralView)) {throw 'ProductionWater validates normal rendering and cannot enable a shader study.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($SolarShaderStudy -and ($Packaged -or -not $EditorSandbox -or -not $WaterPreview)) {throw 'SolarShaderStudy currently requires EditorSandbox and WaterPreview; it is not cooked into a package.'}
 if($SolarVolumeStudy -and -not $SolarShaderStudy) {throw 'SolarVolumeStudy requires SolarShaderStudy.'}
@@ -215,8 +217,8 @@ if($WaterlineSweep) {
     $arguments+=' -DiveWaterlineSweep'
 }
 if($ReflectionShadowProbe -ne 'none') {
-    if(-not $ReflectionTransportStudy -or -not $WaterView -or $WaterlinePose -or $WaterStart -ne 0 -or $WaterEnd -ne 0) {
-        throw 'ReflectionShadowProbe requires reflection transport, WaterView state 0 and no WaterlinePose.'
+    if(-not ($ReflectionTransportStudy -or $ProductionWater) -or -not $WaterView -or $WaterlinePose -or $WaterStart -ne 0 -or $WaterEnd -ne 0) {
+        throw 'ReflectionShadowProbe requires reflection transport or validated production water, WaterView state 0 and no WaterlinePose.'
     }
     $arguments+=' -DiveReflectionShadowProbe='+$ReflectionShadowProbe
 }
@@ -325,6 +327,15 @@ if($log -match 'DIVE_BUILDINGS_READY|DIVE_BUILDINGS_FAIL') {
     if($log -notmatch 'DIVE_BUILDINGS_PASS' -or $log -match 'DIVE_BUILDINGS_FAIL') { throw "Building registration/collision test failed. See $logPath." }
 }
 if($log -notmatch 'DIVE_MEDIUM_PASS') { throw "Camera medium test failed. See $logPath." }
+if($ProductionWater) {
+    $cooked=if($Packaged){1}else{0}
+    $hardware=if($DisableRayTracing){0}else{1}
+    foreach($marker in @("DIVE_PRODUCTION_WATER_READY cooked=$cooked",'DIVE_REFLECTION_ROUTING_READY unified=1',
+        'DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0','DIVE_WATER_SCENE_READY','DIVE_LAKE_FOOTPRINT_READY',
+        "DIVE_WATER_PREVIEW_READY smoke=1 hardware=$hardware bounded=1 interface=1 lighting_mode=2")) {
+        if(-not $log.Contains($marker)) {throw "Missing normal water configuration: $marker"}
+    }
+}
 if($WaterInterface -and $log -notmatch 'DIVE_WATER_INTERFACE_PASS layers=2') {throw 'Requested water interface was not validated.'}
 if($BoundedWater) {
     $native=if($DisableVolumetrics){0}else{1}

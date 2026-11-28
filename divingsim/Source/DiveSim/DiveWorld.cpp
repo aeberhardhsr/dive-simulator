@@ -210,7 +210,7 @@ void ADiveWorld::BeginPlay()
 {
     Super::BeginPlay();
     bOpticsSmoke=FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"));
-    bWaterPreview=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview"));
+    bWaterPreview=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview"))||DiveProductionWaterEnabled();
     if(bOpticsSmoke)
     {
         bNativeWaterScattering=FParse::Param(FCommandLine::Get(),TEXT("DiveNativeScattering"));
@@ -294,7 +294,7 @@ void ADiveWorld::BeginPlay()
         // Primary water shading stays rasterized; trace secondary scene hits
         // without this inconsistent water proxy (single-interface approximation).
         Water->SetVisibleInRayTracing(false);
-        if(bOpticsSmoke&&(FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView"))||DiveReflectionTransportEnabled()))
+        if(DiveReflectionTransportEnabled()||(bOpticsSmoke&&FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView"))))
         {
             Water->SetRenderCustomDepth(true);
             Water->SetCustomDepthStencilValue(42);

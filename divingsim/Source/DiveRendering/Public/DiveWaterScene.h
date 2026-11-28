@@ -15,6 +15,7 @@ struct FDiveWaterSceneInput
 };
 
 DIVERENDERING_API bool DiveWaveTransportEnabled();
+DIVERENDERING_API bool DiveProductionWaterEnabled();
 DIVERENDERING_API bool DiveReflectionTransportEnabled();
 DIVERENDERING_API bool DiveWaterSceneEnabled();
 DIVERENDERING_API void PublishDiveWaterScene(FSceneInterface* Scene,const FDiveWaterSceneInput& Input);

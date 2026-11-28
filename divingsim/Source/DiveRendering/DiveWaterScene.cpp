@@ -16,6 +16,8 @@
 #include "RHIGPUReadback.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "Misc/ConfigCacheIni.h"
+#include "HAL/PlatformProperties.h"
 
 BEGIN_SHADER_PARAMETER_STRUCT(FDiveWaterParameters, )
     SHADER_PARAMETER(FVector4f, Wave0)
@@ -191,6 +193,32 @@ bool DiveReflectionTransportEnabled()
 {
     static const bool Enabled=FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportStudy"))&&
         FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview"));
+    return Enabled||DiveProductionWaterEnabled();
+}
+
+bool DiveProductionWaterEnabled()
+{
+    static const bool Enabled=[]
+    {
+        // Explicit editor experiments keep their isolated routing and controls.
+        // Generic packaged smoke/performance runs use the same layout as play.
+        const TCHAR* command=FCommandLine::Get();
+        const bool study=!FPlatformProperties::RequiresCookedData()&&FParse::Param(command,TEXT("DiveSmokeTest"))&&FParse::Param(command,TEXT("DiveWaterPreview"))&&
+            (FParse::Param(command,TEXT("DiveReflectionTransportStudy"))||FParse::Param(command,TEXT("DiveReflectionRayStudy"))||
+             FParse::Param(command,TEXT("DiveSolarShaderStudy"))||FParse::Param(command,TEXT("DiveSpectralView")));
+        bool requested=false;
+        if(study||!GConfig||!GConfig->GetBool(TEXT("DiveRendering"),TEXT("ProductionWater"),requested,GEngineIni)||!requested) return false;
+        // These bindings identify the separate patched source engine. Do not
+        // register a different scene layout on the unchanged installed engine.
+        for(const TCHAR* name:{TEXT("r.DiveWater.SceneBindingVersion"),TEXT("r.DiveWater.ReflectionBindingVersion"),TEXT("r.DiveWater.ReflectionShadowBindingVersion")})
+        {
+            const auto* version=IConsoleManager::Get().FindConsoleVariable(name);
+            if(!version||version->GetInt()!=1) return false;
+        }
+        // Hardware ray tracing can be disabled at runtime without changing the
+        // cooked scene layout. The existing software path remains available.
+        return true;
+    }();
     return Enabled;
 }
 

@@ -9,7 +9,7 @@
 
 void ADiveWorld::LoadLakeFootprint()
 {
-    if(!FParse::Param(FCommandLine::Get(),TEXT("DiveLakeFootprint"))) return;
+    if(!DiveProductionWaterEnabled()&&!FParse::Param(FCommandLine::Get(),TEXT("DiveLakeFootprint"))) return;
     if(!DiveWaterSceneEnabled())
         UE_LOG(LogTemp,Fatal,TEXT("DIVE_LAKE_FOOTPRINT_FAIL requires explicit wave transport study"));
     // This pinned raster has one-metre cells, north-to-south rows and three island holes.

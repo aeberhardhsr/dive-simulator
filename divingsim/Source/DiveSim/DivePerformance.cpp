@@ -201,8 +201,9 @@ void ADivePawn::TickPerformance()
         root->SetBoolField(TEXT("bounded_water"),Environment->BoundedWaterEnabled());
         root->SetBoolField(TEXT("native_scattering"),Environment->NativeWaterScattering());
         root->SetBoolField(TEXT("reflection_transport"),DiveReflectionTransportEnabled());
-        root->SetBoolField(TEXT("reflection_control"),FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl")));
-        root->SetBoolField(TEXT("reflection_unified"),FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionUnified")));
+        root->SetBoolField(TEXT("production_water"),DiveProductionWaterEnabled());
+        root->SetBoolField(TEXT("reflection_control"),!DiveProductionWaterEnabled()&&FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionTransportControl")));
+        root->SetBoolField(TEXT("reflection_unified"),DiveProductionWaterEnabled()||FParse::Param(FCommandLine::Get(),TEXT("DiveReflectionUnified")));
         root->SetNumberField(TEXT("sediment_born"),Environment->SedimentBorn());
         root->SetNumberField(TEXT("sediment_live"),Environment->SedimentLive());
         for(const TCHAR* name:{TEXT("r.ScreenPercentage"),TEXT("r.SecondaryScreenPercentage.GameViewport"),TEXT("r.DynamicRes.OperationMode"),TEXT("r.VSync"),TEXT("t.MaxFPS"),
