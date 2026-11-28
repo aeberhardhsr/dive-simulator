@@ -1,6 +1,6 @@
 # Abschlussrunde 3: normal startbares Wasserpaket
 
-Stand: 28. November 2026. **In Bearbeitung. Nativer Editor-Nachbau, erster gerenderter Integrationslauf und Source-Game-Build bestanden; Paketierung gestartet, noch kein freigegebenes neues Paket.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
+Stand: 28. November 2026. **In Bearbeitung. Source-Game-Build und erste vollständige Paketierung bestanden. Der normale Paketstart bestätigt den Produktionspfad, meldet aber einen fehlenden Himmel-Materialverweis; die gezielte Korrektur wird nachgebaut. Noch kein freigegebenes neues Paket.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
 
 ## Buildverlauf und eingefrorene Eingaben
 
@@ -18,7 +18,17 @@ Anschliessend wurde `Build.ps1 -Target Package` für `Builds/WindowsUnderwaterFi
 
 Der erste Paketaufruf bestand alle drei Asset-Vorprüfungen: Ufer 644 Kacheln/496 Assets, Gebäude 16’249 Gebäude/715 Kacheln und Gelände 77 Kacheln. Er brach danach beim Kompilieren des AutomationTool-iOS-Moduls mit `MSB3554` ab; der Cook hatte noch nicht begonnen. Ursache waren beim ursprünglichen Engine-Setup ausgeschlossene iOS-Ressourcen. Drei Originalabhängigkeiten wurden gemäss [Einrichtungsnachweis](SOURCE_AUTOMATION_DEPENDENCIES.json) ergänzt. Der zweite Paketaufruf schreibt in `production-package-build-r02.log`; das erste Fehlerprotokoll bleibt erhalten. Für diesen Aufruf verhindert `MSBUILDDISABLENODEREUSE=1` nur im gestarteten Prozessbaum zurückbleibende MSBuild-Hilfsprozesse. Projekt-, Renderer- und Shaderquellen bleiben unverändert.
 
-Der zweite Aufruf hat die AutomationTool-Initialisierung erfolgreich passiert und baut nun das noch benötigte Hilfsprogramm `UnrealPak` aus derselben Source-Engine (348 Aktionen). Das ist ein zusätzlicher Verpackungswerkzeug-Build, keine Wiederholung des vollständigen Game-Builds. Der Cook-Abschluss bleibt bis zum tatsächlichen Ergebnis offen.
+Der zweite Aufruf hat die AutomationTool-Initialisierung erfolgreich passiert, `UnrealPak` (348 Aktionen) und den Bootstrap-Launcher gebaut sowie Cook, Staging und Archivierung abgeschlossen: `BUILD SUCCESSFUL`, Exitcode 0, insgesamt 26 Minuten 3 Sekunden AutomationTool-Laufzeit. Die Speicherbereinigung während des Cooks hat Fortschritt zugelassen; dieser erfolgreiche Vorgang ersetzt keinen späteren Spiel-Dauerlauf. Der [erste Paketnachweis](PRODUCTION_PACKAGE_FIRST_EVIDENCE.json) bindet 53 Laufzeitdateien einschliesslich EXE, Launcher und aller Pak-/IoStore-Container. Die Spiel-EXE stimmt mit dem zuvor abgeschlossenen Game-Build überein.
+
+## Erster normaler Paketstart und gezielte Korrektur
+
+`Start-DiveSimulator.cmd` wurde ohne zusätzliche Argumente gestartet. Das Hauptmenü wurde angezeigt. Das Laufzeitprotokoll bestätigt eine leere Spielkommandozeile, `cooked=1`, `profile=vsm diagnostic=0`, `unified=1`, `smoke=0`, die Wasserszene und das Seegrenzenraster. Die eigentliche Maus-/Menüprüfung ist noch offen: Eine Windows-Sicherheitsabfrage für `.NET Host` verdeckt die Oberfläche und muss vom Nutzer selbst geschlossen werden; es wurde keine Netzwerkfreigabe erteilt.
+
+Der erste Start meldet zudem einen echten Inhaltsfehler: Der `CelestialVaultDaySequenceActor` sucht sein voreingestelltes Sternenmaterial unter einem alten Objektnamen. Eine native Editor-Inspektion weist die alte Datei als `ObjectRedirector` und das Ziel als `/CelestialVault/Materials/MI_Stars_EnergyConservative.MI_Stars_EnergyConservative` nach. Das Ziel ist gekocht, der alte Editor-Redirector nicht. Das Spiel setzt zwar dieses kanonische Material später selbst, der Konstruktorfehler wird dennoch nicht als erfolgreiche Paketabnahme gewertet.
+
+`Tools/PrepareCelestialPackagePatch.py` bereitet für den geprüften 5.8.4-Quellstand die Korrektur genau dieses hart codierten Verweises vor. Die kleine Änderung wurde ausschliesslich in der separaten Source-Engine angewendet. Das Material und die gewünschte Darstellung werden dadurch nicht ersetzt. `SmokeTest.ps1` weist nun auch fehlende Konstruktor-Assets zurück: Ein echter Lauf des ersten Pakets meldet zwar `DIVE_SMOKE_PASS rocks=1`, endet wegen des fehlenden Materials aber korrekt mit Werkzeug-Exitcode 1. Der [Korrekturbericht](CELESTIAL_PACKAGE_FIX.json) hält diese Gegenprobe und die Inspektion fest. Alle drei Bilder des ersten Pakets wurden gesichtet: grüne Unterwasserreflexion mit gespiegeltem Grund, Sonnenblick durch das Brechungsfenster und Überwasseransicht mit Boje und sichtbarem Grund. Diese Tagesbilder heben den protokollierten Materialfehler und die ausstehende Nachtprüfung nicht auf.
+
+Der gezielte Editor-Nachbau unter `celestial-editor-build.log` bestand mit Exitcode 0 nach 21,84 Sekunden. Das korrigierte Paket wird nun als `Builds/WindowsUnderwaterFinalCandidateR2` erstellt (`production-package-build-r03.log`). Danach folgen derselbe Start-/Kameratest und die vollständige Paketserie. `WindowsUnderwaterFinalCandidate` bleibt als erster, nicht freigegebener Kandidat erhalten.
 
 - `[DiveRendering] ProductionWater=True` wählt auf der separat gepatchten Source-Engine den geprüften Renderweg für normale Starts. Die drei Binding-Versionen müssen vorhanden sein. Die unveränderte installierte Engine erhält dadurch keine inkompatible Szenenstruktur.
 - Wasseroberfläche, begrenztes Volumen, Seegrenzenraster und Reflexionsmaske werden ohne Smoke-/Study-Schalter aktiviert. Das Profil bleibt `unified/vsm` mit ursprünglicher Spielbelichtung und ursprünglichen Lichtintensitäten. Die anderen Lichtmodell-Experimente werden nicht freigegeben.
@@ -39,7 +49,7 @@ Der [Prüfnachweis](PRODUCTION_EDITOR_EVIDENCE.json) bindet Quellen, Konfigurati
 
 ## Noch auszuführen
 
-Der Editor-Nachbau, der erste Smoke-Test und der Game-Build aus der folgenden Befehlsfolge sind bereits bestanden. Der Package-Schritt läuft. Nach dessen erfolgreichem Ende folgt die Paketserie; einen noch laufenden oder bereits bestandenen Schritt nicht grundlos nochmals starten:
+Der ursprüngliche Editor-Nachbau, der erste Editor-Smoke-Test, Game-Build und erste Package-Schritt aus der folgenden Befehlsfolge sind bestanden. Der erste Paketstart hat die oben beschriebene Korrektur erforderlich gemacht; seine vollständige Paketserie wurde deshalb noch nicht gestartet. Vor der Fortsetzung den gezielten Nachbau und den neuen Kandidaten verwenden, nicht den verworfenen ersten Kandidaten als bestanden behandeln:
 
 ```powershell
 ./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4

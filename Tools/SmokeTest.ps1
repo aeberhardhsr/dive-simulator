@@ -425,6 +425,9 @@ if($Scenario -in @('controls','tutorial','profiles','environment','config','torc
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh screenshot: $name" }
     }
 }
+if($log -match 'CDO Constructor[^\r\n]*Failed to find') {
+    throw "A default object references a missing or uncooked asset. See $logPath."
+}
 if($log -match 'unbound parameters|DIVE_WAVE_RENDERER_UNAVAILABLE|Failed to compile Material|Default Material will be used|WALENSEE_DATA_FAILED|DIVE_ECOLOGY_FAIL|DIVE_EQUIPMENT_FAIL|DIVE_WATER_FAIL|DIVE_MEDIUM_FAIL|DIVE_LIGHT_FAIL|DIVE_OPTICS_FAIL|DIVE_AUDIO_FAIL|DIVE_ACCESS_FAIL|DIVE_BREATHING_FAIL|DIVE_RESERVE_FAIL|DIVE_ENVIRONMENT_FAIL|DIVE_CONFIG_FAIL|DIVE_WEATHER_FAIL|DIVE_DAYCYCLE_FAIL|DIVE_CELESTIAL_FAIL|DIVE_PARTICLES_FAIL') {
     throw "Runtime content validation failed. See $logPath."
 }
