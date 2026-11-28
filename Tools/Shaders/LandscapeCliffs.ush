@@ -1,11 +1,11 @@
 // Above-water landscape experiment only. Coordinates are world centimetres.
-// Keep geographic land cover; replace stretched aerial colour on steep exposed
-// faces with spatially projected stone. This adds no surveyed rock geometry.
+// Decoded geographic rock coverage; no classification from stretched photo hue.
+// This adds no surveyed rock geometry. Loose-rock strength is authored.
+float2 cliffUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
+float2 cliffCover=Texture2DSample(Coverage,CoverageSampler,cliffUV).rg;
 float cliffDistance=smoothstep(6000,16000,distance(P,Camera));
 float cliffSlope=1-smoothstep(.48,.76,abs(n.z));
-float cliffGreen=smoothstep(1.04,1.22,Photo.g/max(Photo.r,.008))
-                *smoothstep(1.05,1.4,Photo.g/max(Photo.b,.008));
-float cliffWeight=cliffSlope*(1-.92*cliffGreen)*cliffDistance
+float cliffWeight=saturate(cliffCover.r+.45*cliffCover.g)*lerp(.3,1,cliffSlope)*cliffDistance
                  *smoothstep(200,1400,P.z)*saturate(DetailStrength);
 [branch] if(cliffWeight>.001)
 {
@@ -20,7 +20,6 @@ float cliffWeight=cliffSlope*(1-.92*cliffGreen)*cliffDistance
     float3 cliffStone=lerp(cliffA,cliffB,.34)*lerp(.84,1.13,cliffPatch);
     // Low-frequency registered tint retains regional variation without copying
     // every projected aerial streak into the cliff. Explicit mip is geographic.
-    float2 cliffUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
     float3 cliffRegion=Texture2DSampleLevel(FarOrtho,FarOrthoSampler,cliffUV,4).rgb;
     float cliffLuma=dot(cliffRegion,float3(.2126,.7152,.0722));
     float3 cliffTint=clamp(cliffRegion/max(cliffLuma,.015),.78,1.16);

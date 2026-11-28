@@ -1,5 +1,7 @@
 # Räumliche Felsoberflächen der entfernten Bergflanken
 
+**Historischer erster Versuch:** Die anschliessende [kartierte Felsauswahl](LANDSCAPE_CLIFF_COVERAGE.md) ersetzt die Auswahl über Luftbildfarbe. Die untenstehenden Bilder und Messungen beziehen sich auf die archivierten Eingaben des ersten Versuchs. Die Reproduktionsbefehle verwenden im aktuellen Checkout den weiterentwickelten Stand; exakte historische Quellen und Module sind im damaligen Prüfbericht gebunden.
+
 Stand: 28. November 2026. **Erste sichtbare Verbesserung im Source-Editor; noch keine Übernahme ins normale Spielpaket.** Die neue Landschaftsvariante vermindert in den Murg-Vergleichen die hellen senkrechten Luftbildstreifen und ergänzt räumlich projizierte Steinstruktur. Gestreckte Grünanteile, teilweise harte Felsgrenzen und grobe Geländeformen bleiben sichtbar. Die Referenzqualität ist nicht erreicht.
 
 ## Vergleich mit identischer Kamera

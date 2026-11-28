@@ -7,6 +7,10 @@
 #include "Serialization/JsonSerializer.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#if WITH_EDITOR
+#include "Engine/Texture2D.h"
+#include "TextureCompiler.h"
+#endif
 
 void ADiveWorld::CreateLandscape()
 {
@@ -34,6 +38,20 @@ void ADiveWorld::CreateLandscape()
     auto* material=ImageryMaterial(landscapeMaterial,Terrain.LandscapeImagery);
     if(!material) return;
     UE_LOG(LogTemp,Display,TEXT("DIVE_LANDSCAPE_MATERIAL name=%s"),landscapeMaterial);
+#if WITH_EDITOR
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveFarCliffStudy")))
+    {
+        auto* coverage=Cast<UTexture2D>(material->K2_GetTextureParameterValue(TEXT("CliffCoverage")));
+        if(coverage) FTextureCompilingManager::Get().FinishCompilation({coverage});
+        if(!coverage||coverage->GetSizeX()!=4096||coverage->GetSizeY()!=4096||coverage->SRGB||!coverage->NeverStream||
+            coverage->CompressionSettings!=TC_VectorDisplacementmap||coverage->MipGenSettings!=TMGS_SimpleAverage||
+            coverage->Filter!=TF_Trilinear||coverage->AddressX!=TA_Clamp||coverage->AddressY!=TA_Clamp||
+            coverage->GetNumMips()!=13||coverage->GetStreamableResourceState().NumResidentLODs!=13)
+        { fail(TEXT("Cliff study requires resident linear decoded coverage.")); return; }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_CLIFF_COVERAGE_PASS texture=%s size=4096 mips=13 bytes=%u"),
+            *coverage->GetName(),coverage->CalcTextureMemorySizeEnum(TMC_AllMips));
+    }
+#endif
     TSet<FIntPoint> visited;
     int naniteAssets=0;
     for(const auto& item:*tiles)

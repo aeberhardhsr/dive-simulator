@@ -279,6 +279,7 @@ if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Smoke test exceeded
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff study material was not selected.'}
+if($FarCliffStudy -and -not $log.Contains('DIVE_CLIFF_COVERAGE_PASS texture=T_CliffCoverage size=4096 mips=13')) {throw 'Mapped cliff coverage was not validated.'}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and -not $log.Contains('DIVE_SHORE_PREVIEW_CAPTURE warmup='+$ShorePreviewSeconds.ToString('F3',[Globalization.CultureInfo]::InvariantCulture))) {throw 'Requested shore preview warmup was not confirmed.'}
 if($BufferView -ne 'none' -and ($log -match 'view mode not recognized|Debug viewmodes not allowed' -or $log -notmatch ('r.BufferVisualizationTarget = "'+$BufferView+'"'))) {throw 'Requested buffer visualization was not accepted.'}
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}

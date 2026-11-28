@@ -4,7 +4,7 @@
 
 Der [Überwasser-Ausgangsstand](Documentation/ABOVE_WATER_BASELINE.md) ist mit sechs gesichteten Paketansichten an Weesen, Murg und Mols gesichert. Zuerst werden die gestreckten Felsoberflächen der gegenüberliegenden Bergflanken bearbeitet; Geländeanschlüsse, Waldvolumen und Wiesen folgen. Diese Baseline ist noch keine grafische Verbesserung oder Referenzabnahme.
 
-Eine erste [räumliche Felsmaterial-Variante](Documentation/LANDSCAPE_CLIFF_STUDY.md) ist im Source-Editor sichtbar geprüft. Sie vermindert helle senkrechte Streifen, zeigt jedoch noch harte Auswahlgrenzen und unveränderte grobe Geländeformen. Sie bleibt ausdrücklich ausserhalb des normalen Spielstarts; das R3-Paket ist unverändert.
+Die [räumliche Felsmaterial-Variante](Documentation/LANDSCAPE_CLIFF_STUDY.md) nutzt jetzt [kartierte Felsflächen](Documentation/LANDSCAPE_CLIFF_COVERAGE.md). Vier identische Editor-Bildpaare zeigen weniger Farbstreckung, aber auch auffällige helle Materialgrenzen in Weesen und verbleibende Streckung in Mols. Die Datenprüfung besteht. Vier Leistungsläufe zeigen jedoch Aussetzer bis 376 ms; Übergänge und CPU-/Speicherbereinigung müssen vor normaler Übernahme weiter untersucht werden. Das R3-Paket ist unverändert.
 
 Die begrenzte [Speicherdiagnose](Documentation/RECORDING_MEMORY_DIAGNOSIS.md) ist abgeschlossen: 360 erfolgreiche Sicherungen zeigen grössenabhängigen Speicherbedarf, bei 60 gleich grossen Sicherungen nur +0,25 MiB Endwertänderung. Die Zuordnung des gesamten R3-Speichertrends bleibt offen. Das Spielpaket wurde dafür nicht verändert; weitergehende Serialisierungsarbeit ist als Restpunkt dokumentiert.
 

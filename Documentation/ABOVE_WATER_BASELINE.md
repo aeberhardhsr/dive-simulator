@@ -2,7 +2,7 @@
 
 Stand: 28. November 2026. Nach den [fünf begrenzten Unterwasser-Runden](UNDERWATER_FINISH_HANDOVER.md) liegt der Schwerpunkt auf der Landschaft über Wasser. **Die sechs Ausgangsansichten sind aufgenommen und gesichtet; eine grafische Verbesserung ist in diesem Bericht noch nicht umgesetzt.**
 
-Folgeschritt: Eine separate [Felsmaterial-Variante](LANDSCAPE_CLIFF_STUDY.md) ist inzwischen im Source-Editor umgesetzt und an drei Ufern sowie bei zwei Sonnenständen geprüft. Sie vermindert einen Teil der Farbstreckung; Auswahlgrenzen und grobe Geländeformen verhindern vorerst die normale Integration. Die unten beschriebenen R3-Bilder bleiben die unveränderte Baseline.
+Folgeschritt: Eine separate [Felsmaterial-Variante](LANDSCAPE_CLIFF_STUDY.md) und ihre [kartierte Flächenauswahl](LANDSCAPE_CLIFF_COVERAGE.md) sind inzwischen im Source-Editor umgesetzt und an drei Ufern sowie bei zwei Sonnenständen geprüft. Sie vermindern einen Teil der Farbstreckung; Auswahlgrenzen und grobe Geländeformen verhindern vorerst die normale Integration. Die unten beschriebenen R3-Bilder bleiben die unveränderte Baseline.
 
 ## Reproduzierbarer Ausgangsstand
 

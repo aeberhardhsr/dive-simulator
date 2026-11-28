@@ -1,11 +1,42 @@
 """Build an isolated far-cliff material; never rebuild shore/underwater assets."""
 import hashlib
+import json
 from pathlib import Path
 import unreal as u
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = '/Game/Diving/Materials/M_LandscapePhoto'
 TARGET = '/Game/Diving/Materials/M_LandscapeCliffStudy'
+
+
+def coverage_texture():
+    report = json.loads((ROOT / 'Documentation/CLIFF_COVERAGE.json').read_text(encoding='utf-8'))
+    if report['status'] != 'DECODED_COVERAGE_VALIDATED' or report['bounds'] != [2723000,1215000,2745000,1228000]:
+        raise RuntimeError('Validated cliff coverage required')
+    item = report['output']
+    path = ROOT / item['file']
+    if hashlib.sha256(path.read_bytes()).hexdigest() != item['sha256']:
+        raise RuntimeError('Cliff coverage source changed')
+    asset = '/Game/Diving/Textures/T_CliffCoverage'
+    texture = u.load_asset(asset) if u.EditorAssetLibrary.does_asset_exist(asset) else None
+    if not texture or u.EditorAssetLibrary.get_metadata_tag(texture, 'DiveCliffCoverageSHA256') != item['sha256']:
+        task = u.AssetImportTask()
+        for key,value in [('filename',str(path)),('destination_path','/Game/Diving/Textures'),
+                          ('destination_name','T_CliffCoverage'),('automated',True),('replace_existing',True),('save',False)]:
+            task.set_editor_property(key,value)
+        u.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+        texture = u.load_asset(asset)
+    if not texture:
+        raise RuntimeError('Cliff coverage import failed')
+    for key,value in [('srgb',False),('compression_settings',u.TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP),
+                      ('mip_gen_settings',u.TextureMipGenSettings.TMGS_SIMPLE_AVERAGE),
+                      ('filter',u.TextureFilter.TF_TRILINEAR),('address_x',u.TextureAddress.TA_CLAMP),
+                      ('address_y',u.TextureAddress.TA_CLAMP),('never_stream',True),('max_texture_size',4096),('lod_bias',0)]:
+        texture.set_editor_property(key,value)
+    u.EditorAssetLibrary.set_metadata_tag(texture,'DiveCliffCoverageSHA256',item['sha256'])
+    if not u.EditorAssetLibrary.save_loaded_asset(texture):
+        raise RuntimeError('Cannot save cliff coverage')
+    return texture
 
 
 def build():
@@ -20,6 +51,7 @@ def build():
     if not material:
         raise RuntimeError('Cannot create isolated cliff material')
     lib = u.MaterialEditingLibrary
+    coverage = coverage_texture()
     customs = [node for node in lib.get_material_expressions(material)
                if isinstance(node, u.MaterialExpressionCustom)]
     if len(customs) != 1:
@@ -47,6 +79,18 @@ def build():
         texture.set_editor_property('sampler_type', u.MaterialSamplerType.SAMPLERTYPE_COLOR)
         if not lib.connect_material_expressions(texture, '', custom, 'FarOrtho'):
             raise RuntimeError('Cannot connect registered far-cliff tint')
+    inputs = list(custom.get_editor_property('inputs'))
+    if not any(str(item.get_editor_property('input_name')) == 'Coverage' for item in inputs):
+        item = u.CustomInput()
+        item.set_editor_property('input_name','Coverage')
+        inputs.append(item)
+        custom.set_editor_property('inputs',inputs)
+        texture = lib.create_material_expression(material,u.MaterialExpressionTextureObjectParameter)
+        texture.set_editor_property('parameter_name','CliffCoverage')
+        texture.set_editor_property('texture',coverage)
+        texture.set_editor_property('sampler_type',u.MaterialSamplerType.SAMPLERTYPE_LINEAR_COLOR)
+        if not lib.connect_material_expressions(texture,'',custom,'Coverage'):
+            raise RuntimeError('Cannot connect cliff coverage')
     lib.recompile_material(material)
     u.EditorAssetLibrary.set_metadata_tag(material, 'DiveCliffStudyShaderSHA256', hashlib.sha256(code.encode()).hexdigest())
     if not u.EditorAssetLibrary.save_loaded_asset(material):

@@ -86,7 +86,7 @@ function Get-DiveHostCpuLoad {
 }
 $context.host_cpu_before=Get-DiveHostCpuLoad
 if($FarCliffStudy) {
-    $context.far_cliff_inputs=@('Tools/Shaders/LandscapeCliffs.ush','divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset') | ForEach-Object {
+    $context.far_cliff_inputs=@('Tools/Shaders/LandscapeCliffs.ush','divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset','divingsim/Content/Diving/Textures/T_CliffCoverage.uasset','Documentation/CLIFF_COVERAGE.json') | ForEach-Object {
         @{file=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo $_)).Hash.ToLowerInvariant()}
     }
 }
@@ -156,6 +156,7 @@ $log=Get-Content -LiteralPath $logPath -Raw
 if($DisableNanite -and $log -notmatch 'r.Nanite = "0"') { throw 'Nanite fallback override was not applied.' }
 if($process.ExitCode -ne 0 -or $log -match 'DIVE_\w+_FAIL|WALENSEE_DATA_FAILED|Failed to compile Material|Default Material will be used') { throw "Benchmark capture failed: $logPath" }
 if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff material not confirmed in benchmark.'}
+if($FarCliffStudy -and -not $log.Contains('DIVE_CLIFF_COVERAGE_PASS texture=T_CliffCoverage size=4096 mips=13')) {throw 'Mapped cliff coverage not confirmed in benchmark.'}
 foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS','DIVE_LIGHT_PASS','DIVE_PERF_CAPTURE_BEGIN')) {
     if($log -notmatch $marker) { throw "Missing $marker in $logPath" }
 }
