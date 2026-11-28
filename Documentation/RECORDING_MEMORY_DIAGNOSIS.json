@@ -1,0 +1,140 @@
+{
+  "scope": "Accelerated Windows editor NullRHI recording diagnostic; no rendered-game acceptance",
+  "production_recording_code_changed": false,
+  "host": {
+    "file": "artifacts/recording-memory-r3-isolation-20261128/Host.json",
+    "sha256": "4e9bc60bc71f5c264a0fc42d7f6b2f9845fd79fd6ec4488a7b7e1ec95848b01c"
+  },
+  "build": {
+    "file": "artifacts/underwater-package-20261128/recording-memory-build.log",
+    "sha256": "c1bef9673f7f9b11e50128b4e8ed97e04256416475994fcb311e3bee0f81286b"
+  },
+  "runs": {
+    "control": {
+      "csv": {
+        "file": "artifacts/recording-memory-r3-isolation-20261128/control/Measurements/Memory.csv",
+        "sha256": "b127f8ecb7a7fecd28f510c72e89ace00a43ca998a3113d204656fadb13957e8"
+      },
+      "runtime": {
+        "file": "artifacts/recording-memory-r3-isolation-20261128/control/Runtime.log",
+        "sha256": "348610daa798101286ec7e5d2528cafb01afcf9e03b4bb18344179658d15434c"
+      },
+      "automation": {
+        "file": "artifacts/recording-memory-r3-isolation-20261128/control/Report/index.json",
+        "sha256": "c25fb4b1341a13a95dc1df6d15b0dd0542768f9454d9ff491b1cf0cf1b3e3ce0"
+      },
+      "elapsed_seconds": 0.056127,
+      "initial_commit_mib": 2324.3671875,
+      "final_commit_mib": 2324.3671875,
+      "final_minus_initial_mib": 0.0,
+      "max_sample_buffer_mib": 4.43328857421875,
+      "phases": {
+        "grow": {
+          "count": 240,
+          "first_mib": 2324.3671875,
+          "last_mib": 2333.640625,
+          "min_mib": 2324.3671875,
+          "max_mib": 2333.640625,
+          "delta_mib": 9.2734375,
+          "linear_mib_per_save": 0.019515226297874094,
+          "elapsed_seconds": 0.024037,
+          "last_sample_buffer_mib": 4.43328857421875,
+          "mean_write_ms": 0.0
+        },
+        "hold": {
+          "count": 60,
+          "first_mib": 2333.640625,
+          "last_mib": 2333.640625,
+          "min_mib": 2333.640625,
+          "max_mib": 2333.640625,
+          "delta_mib": 0.0,
+          "linear_mib_per_save": 0.0,
+          "elapsed_seconds": 0.029948000000000002,
+          "last_sample_buffer_mib": 4.43328857421875,
+          "mean_write_ms": 0.0
+        },
+        "reset": {
+          "count": 60,
+          "first_mib": 2324.3671875,
+          "last_mib": 2324.3671875,
+          "min_mib": 2324.3671875,
+          "max_mib": 2324.3671875,
+          "delta_mib": 0.0,
+          "linear_mib_per_save": 0.0,
+          "elapsed_seconds": 0.0010770000000000016,
+          "last_sample_buffer_mib": 0.02617645263671875,
+          "mean_write_ms": 0.0
+        }
+      }
+    },
+    "writer": {
+      "csv": {
+        "file": "artifacts/recording-memory-r3-isolation-20261128/writer/Measurements/Memory.csv",
+        "sha256": "12f5916395d644ccd9a0394caebfbaefd6331cac99d484db7e665a63dab638d9"
+      },
+      "runtime": {
+        "file": "artifacts/recording-memory-r3-isolation-20261128/writer/Runtime.log",
+        "sha256": "5dd2434085d447389ef5d03b0351e732d1ced6a8cf81a730e31ba8287764ea18"
+      },
+      "automation": {
+        "file": "artifacts/recording-memory-r3-isolation-20261128/writer/Report/index.json",
+        "sha256": "c57473f16ab404d00681106c1bca481b6e8eecca3dd2b3a93e9872e55a55b013"
+      },
+      "elapsed_seconds": 198.163016,
+      "initial_commit_mib": 2339.91015625,
+      "final_commit_mib": 2403.19921875,
+      "final_minus_initial_mib": 63.2890625,
+      "max_sample_buffer_mib": 4.43328857421875,
+      "phases": {
+        "grow": {
+          "count": 240,
+          "first_mib": 2341.6640625,
+          "last_mib": 2407.70703125,
+          "min_mib": 2312.16796875,
+          "max_mib": 2407.70703125,
+          "delta_mib": 66.04296875,
+          "linear_mib_per_save": 0.38689632469747737,
+          "elapsed_seconds": 128.908157,
+          "last_sample_buffer_mib": 4.43328857421875,
+          "mean_write_ms": 529.4521162875001
+        },
+        "hold": {
+          "count": 60,
+          "first_mib": 2407.70703125,
+          "last_mib": 2407.9609375,
+          "min_mib": 2407.70703125,
+          "max_mib": 2412.4609375,
+          "delta_mib": 0.25390625,
+          "linear_mib_per_save": 0.008913283203667686,
+          "elapsed_seconds": 66.69708500000002,
+          "last_sample_buffer_mib": 4.43328857421875,
+          "mean_write_ms": 1114.0459321833332
+        },
+        "reset": {
+          "count": 60,
+          "first_mib": 2403.19921875,
+          "last_mib": 2403.19921875,
+          "min_mib": 2403.19921875,
+          "max_mib": 2403.19921875,
+          "delta_mib": 0.0,
+          "linear_mib_per_save": 0.0,
+          "elapsed_seconds": 1.0110310000000027,
+          "last_sample_buffer_mib": 0.02617645263671875,
+          "mean_write_ms": 23.502448183333335
+        }
+      }
+    }
+  },
+  "limits": [
+    "Separate editor processes; timings differ substantially. Do not subtract their slopes as a controlled time-matched effect.",
+    "Repeated valid synthetic state, no photographs, renderer, streaming or advancing game ticks.",
+    "OS process commit includes allocator-held pages; it does not identify live ownership or prove a leak.",
+    "Only end-of-save samples; temporary allocation peaks during serialization are not measured.",
+    "60 repeated saves at fixed size is bounded evidence only; no assertion of indefinite stability.",
+    "Original R3 rendered-game memory gate remains open."
+  ],
+  "plot": {
+    "file": "artifacts/recording-memory-r3-isolation-20261128/RecordingMemory.png",
+    "sha256": "fd1542ad79a9bbe4ae962025051693530ecde349fcf4e329eab0b3898a745157"
+  }
+}
