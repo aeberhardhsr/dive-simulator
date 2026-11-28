@@ -1,0 +1,1395 @@
+{
+  "status": "PASS",
+  "executable": {
+    "executable": "O:\\games\\dive game\\Builds\\WindowsVegetation\\divingsim\\Binaries\\Win64\\divingsim-Vegetation.exe",
+    "sha256": "264144503E29FC4CCA00A4B582F0CBCA7830BB0C7712E0D9BDBA9928AF9A360E",
+    "packaged": true,
+    "package_containers": [
+      {
+        "sha256": "7c00e82f2fe04d81bbd0982495496fd3cb8617cd97a954d095ace087015c42f0",
+        "bytes": 105893955,
+        "file": "divingsim-Windows.pak"
+      },
+      {
+        "sha256": "9f7ed43dc47aa4542caa8d79cc36275785a602e1aa21da8b2a3b90f94b056901",
+        "bytes": 1136679296,
+        "file": "divingsim-Windows.ucas"
+      },
+      {
+        "sha256": "2799dee785c4e9101f64f8ce712576f343c564d1083bdcff000f4ed2e76ad52b",
+        "bytes": 1040341,
+        "file": "divingsim-Windows.utoc"
+      },
+      {
+        "sha256": "b65f8471a3f07a2e50fbd526ddb6b5bf51694e98084d053edc4e1c41ce257a59",
+        "bytes": 3245520,
+        "file": "global.ucas"
+      },
+      {
+        "sha256": "21dda7816912cfdd30e42cf5f865cb61b0280402116ba251bd9b1cbdd63b6a07",
+        "bytes": 794,
+        "file": "global.utoc"
+      }
+    ],
+    "started_utc": "2026-11-26T06:34:40.3870236Z"
+  },
+  "cases": [
+    {
+      "status": "PASS",
+      "name": "walenstadt-crossing",
+      "viewport": "1600x900",
+      "screenshots": 5,
+      "scenario": "coast",
+      "entry": 2,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/walenstadt-crossing/Coast_2_Crossed.png",
+          "sha256": "7c16aae07a1a7c1a28fb24268452015a4375ad25d6562b1c8b38e1d1366ae7dc"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/walenstadt-crossing/Coast_2_Returned.png",
+          "sha256": "b332e6b1987185fc8bf3f898044e2220e5a8c9de16c3a525240e67659df5df9d"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/walenstadt-crossing/Coast_2_Start.png",
+          "sha256": "98daa5f55fb2c854de9e0c1cd58d63cd76d59f9e1fe701e7228286ae2f36624d"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/walenstadt-crossing/DiveSmoke_2_coast.png",
+          "sha256": "7fa774d81959ca5a266c5d91cafc620bea5a1ac31d5d66f7927e22354b7a0704"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/walenstadt-crossing/DiveUnderwater_2_coast.png",
+          "sha256": "faba35a627fddae4605532352088f8d7364ff640b6affc523cc082525172a604"
+        }
+      ],
+      "runtime_sha256": "1711501aec553e4cd7b5591fa450f453365768d30759dcf1cd5a3c03452497fa",
+      "cells": 94,
+      "instances": 16450,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "weesen-land",
+      "viewport": "1600x900",
+      "screenshots": 1,
+      "scenario": "shore-preview",
+      "entry": 0,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-land/Shore_0_Land.png",
+          "sha256": "8a50d66725110eb79dffc4769761c9d6e8f02139e22f433b3900f8eb2020a560"
+        }
+      ],
+      "runtime_sha256": "98a4d9efb431cc8acaf19007452e200a06d3d780de48ba073c379f6470fc1829",
+      "cells": 84,
+      "instances": 16688,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "murg-land",
+      "viewport": "1600x900",
+      "screenshots": 1,
+      "scenario": "shore-preview",
+      "entry": 1,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-land/Shore_1_Land.png",
+          "sha256": "e6621a8b963fa9cc54e0f8cededc95b60b10bd5254061e87ceadbacbd2e99e45"
+        }
+      ],
+      "runtime_sha256": "d34f2cafb10007f6338e50e1d2b6dae18a91a79122a75168bbc4482db77a25f5",
+      "cells": 66,
+      "instances": 16078,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "mols-land",
+      "viewport": "1600x900",
+      "screenshots": 1,
+      "scenario": "shore-preview",
+      "entry": 2,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-land/Shore_2_Land.png",
+          "sha256": "d520d2908b4c99aeec89f07c01396c143f23317b4337cebf77be109ebbea871e"
+        }
+      ],
+      "runtime_sha256": "fa2dd393e4cd0da51a8ab125a3416cc48735ec8f30f410f2e69bdb1b2613a35d",
+      "cells": 82,
+      "instances": 15973,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "murg-fallback",
+      "viewport": "1280x1024",
+      "screenshots": 1,
+      "scenario": "shore-preview",
+      "entry": 1,
+      "fallback": true,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-fallback/Shore_1_Land.png",
+          "sha256": "49a8cdd69f1254c0f16f4d8aa4cef014b8caaf7fef7b7ac3f7e7b91a99ef9fce"
+        }
+      ],
+      "runtime_sha256": "5f1c0b8af25fd3d7bed7ee9f6d2164120eda0547a0d1ee9e5a92c5364c6bb2f9",
+      "cells": 66,
+      "instances": 16078,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "weesen-fallback",
+      "viewport": "1600x900",
+      "screenshots": 1,
+      "scenario": "shore-preview",
+      "entry": 0,
+      "fallback": true,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-fallback/Shore_0_Land.png",
+          "sha256": "57715b6f3854d1e0afd985e907bbe2de4b5db73d2c2a95fe34d4f38449361d63"
+        }
+      ],
+      "runtime_sha256": "b779bf6011694062b8e5bc5d44b896fd794fc3de7e437d0236a81c7ed5c7e805",
+      "cells": 84,
+      "instances": 16688,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "mols-water-4k",
+      "viewport": "3840x2160",
+      "screenshots": 1,
+      "scenario": "shore-preview",
+      "entry": 2,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-water-4k/Shore_2.png",
+          "sha256": "1946689017b1ac5809f8ed1b4f7e6298efabdea87262b717c1c194ae93802a10"
+        }
+      ],
+      "runtime_sha256": "7602f8bb5b5f318a09a2dc8d3a24c59c06a01ecfb0ca1d9e87d4a93c92797e26",
+      "cells": 82,
+      "instances": 15973,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "weesen-shore",
+      "viewport": "1600x900",
+      "screenshots": 9,
+      "scenario": "shore",
+      "entry": 0,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/DiveSmoke_0_shore.png",
+          "sha256": "7bd1cf94f5661335f46f9efe1a9a3997cd78b2cd0d5c9e175330b376ba68e6f3"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/DiveUnderwater_0_shore.png",
+          "sha256": "64b9dc79b2e95894d48e249b860e37d71636d96b7c0fe919a24e0429bce19a83"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreComplete_0.png",
+          "sha256": "922bab689f42e7768736ffb25c45a58e51849fc3f07b376d44455bc3ec663877"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreDive_0.png",
+          "sha256": "ed9a99904dba5538614d6cf37126d9a6a1a704a280236a32252e09f76f2e5141"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreMenu_0.png",
+          "sha256": "7fd8337799429910689ca2e065b65ca1e853732686bb527dd2d8854ec48ecfe2"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreReturn_0.png",
+          "sha256": "c70e07b2cfd5d0c7672ce871617308fa3de23867d94da99c0231d8b13978c0de"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreStart_0.png",
+          "sha256": "02465c95f2bcd9821b1776291b6f13d5bb4468b64077649ed48a506c3425e69f"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreSurface_0.png",
+          "sha256": "ccaf0145ab20ec7e29be8ee059556278a71c9bb3cea6475a1f0310029b766bbf"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-shore/ShoreWater_0.png",
+          "sha256": "d299ab04ebfa908b650d2d2bca4178921e4df784fb178cc706cdd77d1c818b00"
+        }
+      ],
+      "runtime_sha256": "2493eaf6aa7b48208a1f40aa661d6967bd159f0d6210a6313b708134000bca5f",
+      "cells": 84,
+      "instances": 16688,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "murg-shore",
+      "viewport": "1600x900",
+      "screenshots": 9,
+      "scenario": "shore",
+      "entry": 1,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/DiveSmoke_1_shore.png",
+          "sha256": "1e78476ea7d132697cf0750a746688f791d75ae19dd4f13ab1418ea8b011e38a"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/DiveUnderwater_1_shore.png",
+          "sha256": "fdb30ce69a06682609bb4ccf40a38b5a0e850161fbfc038d90d8200bc22b5413"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreComplete_1.png",
+          "sha256": "a36e49890b4914390d17540df134fdbb0986ededd16f39e4643ac943d2bbe135"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreDive_1.png",
+          "sha256": "cf424b74ceeb58e772f00fe2db639261de99ae663ecffd28d0bafcf3d260e1b0"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreMenu_1.png",
+          "sha256": "de9197be74dadafcaa2330db7e0a83cd75b58586dfbe15b1c741232e13d2f2d5"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreReturn_1.png",
+          "sha256": "d922962533f5f92e0e1386b6617a335b86178a0edd690c91374d06bd16a9de36"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreStart_1.png",
+          "sha256": "277fd6c2fc2c28a26c0d0e5d72f31691b68e2e14d9398dcb7035ddc2048a9805"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreSurface_1.png",
+          "sha256": "a85469e7b0c6e4fbc924af25f5a3a4cf0a580abfab16cf08015c858e58ad9d07"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-shore/ShoreWater_1.png",
+          "sha256": "78c369f4e04e33760524321e0a044568c0ea53a93cb1ab7f3cc0b79e7faeffd0"
+        }
+      ],
+      "runtime_sha256": "681a8995dd2da78501d2fec177590e3b1022f2ad72fb588f9efa4a158ea9dc01",
+      "cells": 66,
+      "instances": 16078,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "mols-shore",
+      "viewport": "1600x900",
+      "screenshots": 9,
+      "scenario": "shore",
+      "entry": 2,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/DiveSmoke_2_shore.png",
+          "sha256": "fe26d359e62bed8feeb185f3f83eba006bfc3520f5977e612c87d7ca31b1660e"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/DiveUnderwater_2_shore.png",
+          "sha256": "e573871f67c2959e95d05258e9429da992ee0a4ab64380a900beed1ab9e01ba2"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreComplete_2.png",
+          "sha256": "43bae932cb2d9bb05a0a5c3c0f35cc0f619eeb343da51e3d7891192767df0ae0"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreDive_2.png",
+          "sha256": "d31bcf4121d98e686c8cd5a21c6ffd8b6a1f5fa1ad48adcc7dc606ca3c6ea1d5"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreMenu_2.png",
+          "sha256": "8c50f0ad94cd730550aba1414791e4c2d77ced73c9330c7c522e048949e12526"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreReturn_2.png",
+          "sha256": "4e0264f7e448b1767a3704318682ba70632a9f877740cb9549250e2384eb164a"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreStart_2.png",
+          "sha256": "fedc404fadc306d31c7476963bed1b796ae398f8d27999240e927353f8ac3226"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreSurface_2.png",
+          "sha256": "cec32ffa385981582d3620ef2d1390ea82ca6b2a6d0e267fc132ef4c128f6c5b"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/mols-shore/ShoreWater_2.png",
+          "sha256": "efa0e1171af0670ecd39deac1e05548acc3399ef907d6fc65e32ec01fea27665"
+        }
+      ],
+      "runtime_sha256": "6734eb351b2163070a35e1a77c9c80ef8d6ead9dbfff90620b70b9c3a5fa2863",
+      "cells": 82,
+      "instances": 15973,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "weesen-crossing",
+      "viewport": "1600x900",
+      "screenshots": 5,
+      "scenario": "coast",
+      "entry": 0,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-crossing/Coast_0_Crossed.png",
+          "sha256": "ee25b801c85f86d1b92de97b2bad6cc32600cce030af527685dc79b5b4b8dfe5"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-crossing/Coast_0_Returned.png",
+          "sha256": "74dd32972da76538f94eb881850d071bd08611950dbeb9f6350b002312fe206c"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-crossing/Coast_0_Start.png",
+          "sha256": "893cc8063e95056f3bcdf584c741bc0fcc6ea063dd01b0d1efe655f36eea6eea"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-crossing/DiveSmoke_0_coast.png",
+          "sha256": "8638ed7b84e53c407ac8ceb09d9e40c704a3cc481b690e36dafadee816c14ccb"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/weesen-crossing/DiveUnderwater_0_coast.png",
+          "sha256": "22817eedd165e09f8c4a8af0da64b2763dfa74b1b1285669cb405c63721165ca"
+        }
+      ],
+      "runtime_sha256": "2f08969525deffed477898284609622fd5003850143b9c05cd1ea6af2b933b27",
+      "cells": 108,
+      "instances": 17785,
+      "trunk_probes": 8
+    },
+    {
+      "status": "PASS",
+      "name": "murg-crossing",
+      "viewport": "1600x900",
+      "screenshots": 5,
+      "scenario": "coast",
+      "entry": 1,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-crossing/Coast_1_Crossed.png",
+          "sha256": "f0b51a66a932cf992a91dbfd384e87c8543f676751686a6bbcf2051ca5c341a2"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-crossing/Coast_1_Returned.png",
+          "sha256": "c462fbeeec48653e2be0ea5caf33771c2123c77d48db4f6baa3210b9df597454"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-crossing/Coast_1_Start.png",
+          "sha256": "bd1fc1f7355cfea3710b708eea1fc12d305309ee61adb981de0b37ebbd11d3d2"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-crossing/DiveSmoke_1_coast.png",
+          "sha256": "832bf04e8904397ba2c2e829ae45e6cff558ef6fa9c5499bc3b96a43b80dc47b"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/murg-crossing/DiveUnderwater_1_coast.png",
+          "sha256": "d99685284652233a7003893c1cc97ca36085f1789d93c4021ae38460cafb9343"
+        }
+      ],
+      "runtime_sha256": "66c062a6a8063efc0155fda6bc167a701ae672abf4f03c587439410aa82e5833",
+      "cells": 57,
+      "instances": 11146,
+      "trunk_probes": 4
+    },
+    {
+      "status": "PASS",
+      "name": "discoveries",
+      "viewport": "1600x900",
+      "screenshots": 5,
+      "scenario": "discoveries",
+      "entry": 2,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/discoveries/Discoveries_2_Gallery_DE.png",
+          "sha256": "89e78aae0c87d6c06f3476291e49bb47bf9df38332d3d933b4fac35eb4514682"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/discoveries/Discoveries_2_Logbook.png",
+          "sha256": "b2808b54a1a37ecc565e2911bd318070d6765a50fa659de6683fd8784b567901"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/discoveries/Discoveries_2_Plant_EN.png",
+          "sha256": "69e15aed4e7b20b3bced324ab0ec8eb55aca12ebed7702e2f28f30535ba21ba5"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/discoveries/Discoveries_2_Species_DE.png",
+          "sha256": "1806769fdc44604ffdfcbde71566c692b90f5e49f1ca0ac5b4a9942a14c9a146"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/discoveries/Discoveries_2_Species_EN.png",
+          "sha256": "7f87125621f0eb6271c311a0d0f969216c983e7e00b95f353e7de13a76dba7d5"
+        }
+      ],
+      "runtime_sha256": "3a2335bcfa223c7033961c2ddfbb9b033c07b0505b1df18629b350369bf1093b",
+      "cells": 94,
+      "instances": 16450,
+      "trunk_probes": 6
+    },
+    {
+      "status": "PASS",
+      "name": "controls",
+      "viewport": "1600x900",
+      "screenshots": 4,
+      "scenario": "controls",
+      "entry": 0,
+      "fallback": false,
+      "images": [
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/controls/Controls_DE.png",
+          "sha256": "fafd8aa0c12fb86f71108d8f2130c322f8784becd53524caa0304a1449341738"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/controls/Controls_EN.png",
+          "sha256": "996ea7642814506051d2bc66762500b2b756ec3186f026998c568153edf37259"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/controls/DiveSmoke_0_controls.png",
+          "sha256": "f899b077ec3349ebe883f93b56a98bfa6c43c61365b546522be005c08ed58fc9"
+        },
+        {
+          "file": "artifacts/vegetation-validation-20261126-073439/controls/DiveUnderwater_0_controls.png",
+          "sha256": "82e96edb62aeb1e90af7c21d9526562afe9a8e9126385efc7f1da71140656bcd"
+        }
+      ],
+      "runtime_sha256": "36c7a001ac6a4306a450a38c67d2556aa52609629b10934c724261355fc25768",
+      "cells": 108,
+      "instances": 17785,
+      "trunk_probes": 8
+    }
+  ],
+  "native_tests": {
+    "succeeded": 35,
+    "failed": 0
+  },
+  "package_log_sha256": "5959f5a61868a52282772349d617f679097c07ac35db931e27f652ece2976ac4",
+  "sources": [
+    {
+      "file": "Source/DiveSim/DiveAccess.cpp",
+      "canonical_lf_sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a"
+    },
+    {
+      "file": "Source/DiveSim/DiveAudio.cpp",
+      "canonical_lf_sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482"
+    },
+    {
+      "file": "Source/DiveSim/DiveAudio.h",
+      "canonical_lf_sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatar.cpp",
+      "canonical_lf_sha256": "9cc4e47cc8e3959067335965e04799705d37ebb6a09c533745321e826bce5f60"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatar.h",
+      "canonical_lf_sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatarInspection.cpp",
+      "canonical_lf_sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatarSmoke.cpp",
+      "canonical_lf_sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f"
+    },
+    {
+      "file": "Source/DiveSim/DiveBodyFrame.h",
+      "canonical_lf_sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834"
+    },
+    {
+      "file": "Source/DiveSim/DiveBodyFrameTests.cpp",
+      "canonical_lf_sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildings.cpp",
+      "canonical_lf_sha256": "7b4ba0e71dd5977088f985ff3c8ccb829456698ec86434a16d21dd5e7a3180c4"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildings.h",
+      "canonical_lf_sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+      "canonical_lf_sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+      "canonical_lf_sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f"
+    },
+    {
+      "file": "Source/DiveSim/DiveCaustics.cpp",
+      "canonical_lf_sha256": "53539f013bf803cd2cb77df4f3b2491380bb8f54cc9a82df4728ab8754ef7223"
+    },
+    {
+      "file": "Source/DiveSim/DiveCausticsSmoke.cpp",
+      "canonical_lf_sha256": "8b17c9b33cc9c574c8f911c88faac6010babe3d87b1f045e642425dccd8992ec"
+    },
+    {
+      "file": "Source/DiveSim/DiveCelestialActor.cpp",
+      "canonical_lf_sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1"
+    },
+    {
+      "file": "Source/DiveSim/DiveCelestialActor.h",
+      "canonical_lf_sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoast.cpp",
+      "canonical_lf_sha256": "827cc0f004b5449181ad887de1c366049ecb87d90ebd3ed51ce259cf13db92e8"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+      "canonical_lf_sha256": "af08eac3ac52f8bb6e3cd5f7194f2cd3b7c072544d501962bd695d45c3f58b28"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoastBakeCommandlet.h",
+      "canonical_lf_sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoastTerrain.cpp",
+      "canonical_lf_sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d"
+    },
+    {
+      "file": "Source/DiveSim/DiveConfigHUD.cpp",
+      "canonical_lf_sha256": "8d930abd1b94795ee1b3154515851a36065291386c3d0f82215c7fd0002d8ae3"
+    },
+    {
+      "file": "Source/DiveSim/DiveConfigIO.cpp",
+      "canonical_lf_sha256": "30eb07afffbe4eb49c048d1e8b50f55fc89c0fea1276030cca26bb2406ace3f0"
+    },
+    {
+      "file": "Source/DiveSim/DiveConfigIO.h",
+      "canonical_lf_sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3"
+    },
+    {
+      "file": "Source/DiveSim/DiveContacts.cpp",
+      "canonical_lf_sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f"
+    },
+    {
+      "file": "Source/DiveSim/DiveContacts.h",
+      "canonical_lf_sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a"
+    },
+    {
+      "file": "Source/DiveSim/DiveContactsTests.cpp",
+      "canonical_lf_sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74"
+    },
+    {
+      "file": "Source/DiveSim/DiveControls.cpp",
+      "canonical_lf_sha256": "ee90738914ae0496486493c182a3652da3fce6fde731147e1a85f7428e97a0bb"
+    },
+    {
+      "file": "Source/DiveSim/DiveControls.h",
+      "canonical_lf_sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e"
+    },
+    {
+      "file": "Source/DiveSim/DiveControlsHUD.cpp",
+      "canonical_lf_sha256": "251a1b4fe2caa5ad231b0b6e5e3d6109534bedbe96a5accc8f78f58150b3a2d1"
+    },
+    {
+      "file": "Source/DiveSim/DiveControlsTests.cpp",
+      "canonical_lf_sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa"
+    },
+    {
+      "file": "Source/DiveSim/DiveDayCycleSmoke.cpp",
+      "canonical_lf_sha256": "56533293d5c874cbd5ca3628bdae965283c58deeaa58517c18cde53956dbe589"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveries.cpp",
+      "canonical_lf_sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveries.h",
+      "canonical_lf_sha256": "efcb071d53a3885267224f97a59736fd9f5eed8d88033d13609b6629aef5104b"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveriesHUD.cpp",
+      "canonical_lf_sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+      "canonical_lf_sha256": "c5597b50f0a66c595bbf9a95527117c28038be3beb4f817a02d507a8c6111bdf"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveriesTests.cpp",
+      "canonical_lf_sha256": "9bd9c408b12945fa368d434a71bdd65b90aef23c1187deb7c69ff3b598ee8d06"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveryObservation.cpp",
+      "canonical_lf_sha256": "1da9d21a61a2d5f0b05501697712dac762f911665a3d65e8cbe9c74ef50ea84c"
+    },
+    {
+      "file": "Source/DiveSim/DiveEcology.cpp",
+      "canonical_lf_sha256": "ca7d8290ae489dacbb5b8899e50bd9a588c733602dd8ac91128da562d215d631"
+    },
+    {
+      "file": "Source/DiveSim/DiveEnvironmentSmoke.cpp",
+      "canonical_lf_sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724"
+    },
+    {
+      "file": "Source/DiveSim/DiveEquipment.cpp",
+      "canonical_lf_sha256": "0930c9a14517e341059bb24b2e11adcda1664ddf566bc9df5367f5f26247169d"
+    },
+    {
+      "file": "Source/DiveSim/DiveEquipment.h",
+      "canonical_lf_sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a"
+    },
+    {
+      "file": "Source/DiveSim/DiveGameMode.cpp",
+      "canonical_lf_sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04"
+    },
+    {
+      "file": "Source/DiveSim/DiveGameMode.h",
+      "canonical_lf_sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b"
+    },
+    {
+      "file": "Source/DiveSim/DiveHUD.cpp",
+      "canonical_lf_sha256": "60266a9354226bac525b83cc137a28861d9922780a474b1280515652bd5f4cc4"
+    },
+    {
+      "file": "Source/DiveSim/DiveHUD.h",
+      "canonical_lf_sha256": "ae94eb44e6013ec5946551592eec11d44f711f76a871853113ba3035f4fc5d05"
+    },
+    {
+      "file": "Source/DiveSim/DiveImagery.cpp",
+      "canonical_lf_sha256": "a759d51622082c5598428285284b3acb0861dd65e8119aee1bbf62cbbaa59342"
+    },
+    {
+      "file": "Source/DiveSim/DiveInputSmoke.cpp",
+      "canonical_lf_sha256": "abc6ce1532ab017e809769e0b6f25bfcc76807ae365760fe929eadf56a52b52c"
+    },
+    {
+      "file": "Source/DiveSim/DiveLandscape.cpp",
+      "canonical_lf_sha256": "8ef845c78fa718222d1310955ee92cf4150a6e52f0492fd4352664aacabcc776"
+    },
+    {
+      "file": "Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "canonical_lf_sha256": "9ff6b4892c515d063ec8cd6c6f6dda76d652207e05b727b54b4e110664952275"
+    },
+    {
+      "file": "Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+      "canonical_lf_sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12"
+    },
+    {
+      "file": "Source/DiveSim/DiveLoadoutHUD.cpp",
+      "canonical_lf_sha256": "d44bb0380bf94a84e730191d67cfea56ee20a81dde8a255dc979065c2cae6ba8"
+    },
+    {
+      "file": "Source/DiveSim/DiveLoadoutSmoke.cpp",
+      "canonical_lf_sha256": "f6db1ce9a974170a6ae982cd0a1e472507d2d076de74da9bc86490a0f4c5c573"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbook.cpp",
+      "canonical_lf_sha256": "506639bd54ce8879173be2b414763a6e817796c5d3f0b6caa4298e8caecdec7b"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbook.h",
+      "canonical_lf_sha256": "5bfcbe91bb22d6998522ee88f4214272b87f8c235ab27b345f033f4320b2580c"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbookHUD.cpp",
+      "canonical_lf_sha256": "94e7ec83337816e0cfc846e2131f4777335668fb0d342b4435c307028c8c686c"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbookTests.cpp",
+      "canonical_lf_sha256": "02866804e9d1d94b2e30d0ea9304c882da184d9f363b7448426e920c8ce5ee19"
+    },
+    {
+      "file": "Source/DiveSim/DiveMapHUD.cpp",
+      "canonical_lf_sha256": "4b90506404dde20d722a0015f68ed54db472718320e000b59d40218fb1d56703"
+    },
+    {
+      "file": "Source/DiveSim/DiveModeSmoke.cpp",
+      "canonical_lf_sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d"
+    },
+    {
+      "file": "Source/DiveSim/DiveNavigationSmoke.cpp",
+      "canonical_lf_sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6"
+    },
+    {
+      "file": "Source/DiveSim/DiveNavigationTests.cpp",
+      "canonical_lf_sha256": "7e54c7ec0bd809a9f08e113e2193503e6d455effb3260c7caa6865f51a3c5f89"
+    },
+    {
+      "file": "Source/DiveSim/DiveParticles.cpp",
+      "canonical_lf_sha256": "81d9293de9ebf0a29656c5c71348f59d1294803819495b53aa997c8cbd93b96a"
+    },
+    {
+      "file": "Source/DiveSim/DivePawn.cpp",
+      "canonical_lf_sha256": "913d9b18db60629ecf55c2998ff54f962b6a5e7c722de85ccea2738eb41e9246"
+    },
+    {
+      "file": "Source/DiveSim/DivePawn.h",
+      "canonical_lf_sha256": "ba88be219356a9ef2d16c071eae91ec3e1585b6740c2fd9b7414da70deb6ba9e"
+    },
+    {
+      "file": "Source/DiveSim/DivePawnContacts.cpp",
+      "canonical_lf_sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4"
+    },
+    {
+      "file": "Source/DiveSim/DivePerformance.cpp",
+      "canonical_lf_sha256": "4327caf4ce19e8934fb4397696dd8187c53c44efeba7ad3067a8dfb8a9c7fdff"
+    },
+    {
+      "file": "Source/DiveSim/DivePhotograph.cpp",
+      "canonical_lf_sha256": "9159bf392d6d93e5121607d212fadd8f5b29e714b4db029c32db7e51d4b5cdb5"
+    },
+    {
+      "file": "Source/DiveSim/DivePlayerController.cpp",
+      "canonical_lf_sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88"
+    },
+    {
+      "file": "Source/DiveSim/DivePlayerController.h",
+      "canonical_lf_sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a"
+    },
+    {
+      "file": "Source/DiveSim/DivePopulation.cpp",
+      "canonical_lf_sha256": "b345ca6c07c588c20f70d2b9d931fb98be1a9134e31027b5a2f6953e5dc3290b"
+    },
+    {
+      "file": "Source/DiveSim/DivePopulationTests.cpp",
+      "canonical_lf_sha256": "a3fb577c2d49b77b7220856e9ac6a61fe71339b7a4c6b44cd2407f2692eb6fe8"
+    },
+    {
+      "file": "Source/DiveSim/DivePose.h",
+      "canonical_lf_sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfiles.cpp",
+      "canonical_lf_sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfiles.h",
+      "canonical_lf_sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfilesHUD.cpp",
+      "canonical_lf_sha256": "aa35d4a85360b3b5b4cfcb9b5be59f00017a9bea50402c9865776dba983f15d7"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfilesTests.cpp",
+      "canonical_lf_sha256": "1d2874ed3e2f9070c4e71e900fdfb62e2cca5538fd1e4933befe903cdd6f75bf"
+    },
+    {
+      "file": "Source/DiveSim/DiveRecording.cpp",
+      "canonical_lf_sha256": "fb933620688ccbf4fe2df0c287963e84dc1932d63f9c4a6e900ec889e2865a92"
+    },
+    {
+      "file": "Source/DiveSim/DiveRecording.h",
+      "canonical_lf_sha256": "c5c3f2cda31276efef6fe612971fd495d5b0eea3ac1c52c79d5848a6a91e421b"
+    },
+    {
+      "file": "Source/DiveSim/DiveSediment.cpp",
+      "canonical_lf_sha256": "20839104bf706865ae0e57c37d5bc6c3117a5cf16bb508e8c7df2edefc9a2067"
+    },
+    {
+      "file": "Source/DiveSim/DiveSedimentSmoke.cpp",
+      "canonical_lf_sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d"
+    },
+    {
+      "file": "Source/DiveSim/DiveShoreline.cpp",
+      "canonical_lf_sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9"
+    },
+    {
+      "file": "Source/DiveSim/DiveShoreMovement.cpp",
+      "canonical_lf_sha256": "ba83514e33f3bd2ed8ae50821688e9edc05014922211700ac0450ce498e5c9a9"
+    },
+    {
+      "file": "Source/DiveSim/DiveSim.Build.cs",
+      "canonical_lf_sha256": "7fd2ff06162cfb3e8715269a95886f81d149f629775ab5c523dd8f4f8b6d27ad"
+    },
+    {
+      "file": "Source/DiveSim/DiveSim.cpp",
+      "canonical_lf_sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac"
+    },
+    {
+      "file": "Source/DiveSim/DiveSky.cpp",
+      "canonical_lf_sha256": "3c04d3976724f433eac4e0477561bdd5feeae34d7bb7f65df0dc85262c5b2dac"
+    },
+    {
+      "file": "Source/DiveSim/DiveSoak.cpp",
+      "canonical_lf_sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819"
+    },
+    {
+      "file": "Source/DiveSim/DiveTerrain.cpp",
+      "canonical_lf_sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb"
+    },
+    {
+      "file": "Source/DiveSim/DiveTerrain.h",
+      "canonical_lf_sha256": "59a55f61dcc2becfdef355fbee22f678a94f798d82cb5b2bc0f612dfe54407b9"
+    },
+    {
+      "file": "Source/DiveSim/DiveTextDialog.h",
+      "canonical_lf_sha256": "9cda96423136338044352c21647f3f9b4bb8c2a6c7fa82629c42caa85ae413df"
+    },
+    {
+      "file": "Source/DiveSim/DiveTorch.cpp",
+      "canonical_lf_sha256": "653a66049972cd7424f3a97d88171ebc042c3ea3071049c7560bb4423b2e2ddd"
+    },
+    {
+      "file": "Source/DiveSim/DiveVegetation.cpp",
+      "canonical_lf_sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d"
+    },
+    {
+      "file": "Source/DiveSim/DiveVegetation.h",
+      "canonical_lf_sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515"
+    },
+    {
+      "file": "Source/DiveSim/DiveWater.cpp",
+      "canonical_lf_sha256": "9a49996fe9749934986f5c809533d0877c16f132e69ac86c7bae5e777fc1f116"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypoints.cpp",
+      "canonical_lf_sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypoints.h",
+      "canonical_lf_sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypointsHUD.cpp",
+      "canonical_lf_sha256": "0704ec2d444cb84cf3a8ad488cb2c0395621d7b2fd84cd86a3303ffb12fdf15b"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypointsSmoke.cpp",
+      "canonical_lf_sha256": "962ca8fc9da283cda6b3c51f5d7512598e247f4bd29c940492f7e4db8195c33c"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypointsTests.cpp",
+      "canonical_lf_sha256": "6ce3b978f6c3edccbb21388dacc2b79252b7ed5caafaefefce219a50aacb64c1"
+    },
+    {
+      "file": "Source/DiveSim/DiveWorld.cpp",
+      "canonical_lf_sha256": "808762299d4b338dd5a6b80c7837e090d8f50b4b0c67ad9b553cb8b20ccf6d84"
+    },
+    {
+      "file": "Source/DiveSim/DiveWorld.h",
+      "canonical_lf_sha256": "b6f557ae79d3f1389998395eb21a6d170e94483a8f5fe1e7ef8c7c4112119d22"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/AudioModel.h",
+      "canonical_lf_sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Bubbles.h",
+      "canonical_lf_sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/CoastGrid.h",
+      "canonical_lf_sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ConfigInput.h",
+      "canonical_lf_sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/DiveModel.h",
+      "canonical_lf_sha256": "4840d1c0075e0409fc22785b4e0fa8cb1688d329e9fdc6cae90a4d539937c877"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Ecology.h",
+      "canonical_lf_sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/EnvironmentLight.h",
+      "canonical_lf_sha256": "a28d77368048b73cc392845f8bf9f0f9d1ad23481817888211bddf1ab1859a5d"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/EnvironmentScenario.h",
+      "canonical_lf_sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/HeightGrid.h",
+      "canonical_lf_sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Loadout.h",
+      "canonical_lf_sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ModeRules.h",
+      "canonical_lf_sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Navigation.h",
+      "canonical_lf_sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ScenarioClock.h",
+      "canonical_lf_sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Sediment.h",
+      "canonical_lf_sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ShoreMovement.h",
+      "canonical_lf_sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ShoreTransition.h",
+      "canonical_lf_sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/SoakMetrics.h",
+      "canonical_lf_sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Torch.h",
+      "canonical_lf_sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Tutorial.h",
+      "canonical_lf_sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/VisualMedium.h",
+      "canonical_lf_sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+      "canonical_lf_sha256": "6c6d4ce7765211d0a4b200bceda8571694c6bb13f6fe8c6ae98b20abde1ce0f9"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/WaterSurface.h",
+      "canonical_lf_sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Weather.h",
+      "canonical_lf_sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf"
+    },
+    {
+      "file": "Source/divingsim.Target.cs",
+      "canonical_lf_sha256": "32db049a5630ebf6eecdba35cc0f641254c27028dbfb47145d3fd230ae6bdb47"
+    },
+    {
+      "file": "Source/divingsimEditor.Target.cs",
+      "canonical_lf_sha256": "cca3119d115b2c39690c250545bfc837c9c50a9e994d29205fe1cbacddb86dcf"
+    },
+    {
+      "file": "Config/DefaultEditor.ini",
+      "canonical_lf_sha256": "a4ff0fbcc4dff2c12ccf6421b09dfb1d428a57088247bee76831e1099456057f"
+    },
+    {
+      "file": "Config/DefaultEditorPerProjectUserSettings.ini",
+      "canonical_lf_sha256": "42d2ec4f935f2985f9c0cb9c94653cb438ce2931e4ad51d726b227f02d35a97d"
+    },
+    {
+      "file": "Config/DefaultEngine.ini",
+      "canonical_lf_sha256": "955232c66051a6bf0507f5c9c7cc76d2c7a76b3c17bca43f623b170f85728da7"
+    },
+    {
+      "file": "Config/DefaultGame.ini",
+      "canonical_lf_sha256": "e0ed9777a8e2aff0d6c66d5babd7ae52e6d5abd5d4452269836bd42ff7d4fb73"
+    },
+    {
+      "file": "Config/DefaultInput.ini",
+      "canonical_lf_sha256": "d75df96d5079f8458f77ea5e7cfec30c0e6f7e3d9e7034a73666daf22d56be5f"
+    },
+    {
+      "file": "Config/Localization/Game_Compile.ini",
+      "canonical_lf_sha256": "997da9295d215b9c7a27d01769f3701dc7d4788d842c06a3d64f53c65638938b"
+    },
+    {
+      "file": "Config/Localization/Game_Export.ini",
+      "canonical_lf_sha256": "0b014f570b7b552c22e3da7c5b8bc395e8f100959ca69b79a52b3f5fd41f49d1"
+    },
+    {
+      "file": "Config/Localization/Game_ExportDialogueScript.ini",
+      "canonical_lf_sha256": "fe7cc625b6564a7a0fcb7469e9a1cc39c23ec7eb0459d5f8222f08937275be8e"
+    },
+    {
+      "file": "Config/Localization/Game_Gather.ini",
+      "canonical_lf_sha256": "38421ea9f477aaae00eb0201649b248e8bc3fcd75e0c86fa182e7bfbbbec6455"
+    },
+    {
+      "file": "Config/Localization/Game_GenerateReports.ini",
+      "canonical_lf_sha256": "d75fe4f7a8a156be2be7313cded14672c3f8a404e0dfb4493bdf2f46cc89c78f"
+    },
+    {
+      "file": "Config/Localization/Game_Import.ini",
+      "canonical_lf_sha256": "b582476cb7c5bcb95bdb1aaa95336ed96897a1b8a12aff93bacd92485689fe64"
+    },
+    {
+      "file": "Config/Localization/Game_ImportDialogue.ini",
+      "canonical_lf_sha256": "b9224764ca31193607c30c28d541f4c61463b0bf1bf3d56a77b5b263ed9e5893"
+    },
+    {
+      "file": "Config/Localization/Game_ImportDialogueScript.ini",
+      "canonical_lf_sha256": "1294c496ff7eee2539fdc7fbd150815091792b3777432d3a8e698ba160d9fe4c"
+    }
+  ],
+  "assets": [
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_bark.uasset",
+      "bytes": 10378,
+      "sha256": "85762f22d591b278838b51acbd3ddb8dfc464a2cf17ea71b1704d6d48765afae"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_bark_lod1.uasset",
+      "bytes": 10403,
+      "sha256": "947a112b71b027f0479bcb258a57a89975b5badb7e1bca4613d4a1befe242366"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_bark_lod2.uasset",
+      "bytes": 10403,
+      "sha256": "fb10e37cc6940e104a48b131500e6769c64bcad09a0db04c6c0b70fe748d6f15"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_leaves.uasset",
+      "bytes": 11486,
+      "sha256": "d7ec56f01612aa5e68071b09c67048fedfdb44644761b3ba934e226704a5f945"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_leaves_lod1.uasset",
+      "bytes": 11511,
+      "sha256": "2daede075f9070763eedf5673b9cdc74d85bc9150c91ccceebc241bfb1bc80a2"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_leaves_lod2.uasset",
+      "bytes": 11511,
+      "sha256": "cea2cd535277eded7faaae1bebc9e3d797490f76e2897f188157b95ff12c187d"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_twig.uasset",
+      "bytes": 10378,
+      "sha256": "7533cf8c4d581ce395e4f62487573803d9e59fb2d9ae35f53bb5b319f8ec1245"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_beech_twig_lod1.uasset",
+      "bytes": 10403,
+      "sha256": "0422e0307db425fa4f6bfb1245f15efbc159b2740d27dad1b1d6f9089122cdac"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_fir_tree_01_bark.uasset",
+      "bytes": 10667,
+      "sha256": "a3bc2d7271ae69ee2490a342eb59d8556df8b3e40f9b0f39fecdf36a28f6fb6a"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_fir_tree_01_dead_branches.uasset",
+      "bytes": 10712,
+      "sha256": "72f57411d5c03686ee1c8db214e8a35e8bd50b98273fcc5604f4b6e5563bf763"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_fir_tree_01_trunk_a.uasset",
+      "bytes": 10700,
+      "sha256": "01a0e629c9ffd9a0063148d96f6931699cfcef2e0734cf795242bffd5d4e6671"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_fir_tree_01_trunk_b.uasset",
+      "bytes": 10700,
+      "sha256": "5471e456532462733fd4b0b1e095160479f951553ae8b9380a2d99bd073011ae"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_fir_tree_01_trunk_c.uasset",
+      "bytes": 10700,
+      "sha256": "0b7009147c4ada76f2e87d33196b2de6e2b7215f51465b39b2ebaf9acf6484a3"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_fir_tree_01_twig.uasset",
+      "bytes": 12291,
+      "sha256": "aefd4363cf013e804b0ffb87089e701a534419bac889f78645c2b74f63468f50"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_tree_small_02_branches.uasset",
+      "bytes": 10721,
+      "sha256": "a929981e9ad7772a662150f79b9f8a8661788df6b93662f6d7bb8d03cebef9a7"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_tree_small_02_leaves.uasset",
+      "bytes": 12343,
+      "sha256": "c81105ef4654f5a4c191a6d084e8b01bb035e0ed4176999603d60960c19b656d"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Materials/M_tree_small_02_trunk.uasset",
+      "bytes": 10664,
+      "sha256": "786c05501e44899d11bba3c2d698925d0d7cdd7e19501f7f9e379a7e73d3d536"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Meshes/SM_Beech.uasset",
+      "bytes": 2523684,
+      "sha256": "dae60b582da0146cc3b4f8b9f632123b78cdb0965a1a7ff27bb3d5270db0b2fb"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Meshes/SM_FirA.uasset",
+      "bytes": 7941215,
+      "sha256": "1f48dac13d3c60fd3a08f34a1cab6f78fe16704ee3dee7d5b531b9726660b565"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Meshes/SM_FirB.uasset",
+      "bytes": 5771595,
+      "sha256": "459b0b21efe9a5dd829da69cb552aab7d466c8ca9a41b42b77753fc36b48bfd7"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Meshes/SM_FirC.uasset",
+      "bytes": 3162674,
+      "sha256": "c777dd92e39645d5ef628a33dbb483bddc8d86e1062695010ad7b230de3f9b08"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Meshes/SM_LeafTree.uasset",
+      "bytes": 96897463,
+      "sha256": "0b6782dba2a5e9b8904807c0e27934c1775b4ff0cb9a3f9a1e397bacd888df85"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_bark_diff_2k_color.uasset",
+      "bytes": 22835251,
+      "sha256": "91a604c150f207f851966c4985964a5b6d3c00693605207ef9d5db1fa837a53f"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_bark_nor_gl_2k_normal.uasset",
+      "bytes": 24120399,
+      "sha256": "44a9243a232661a625882d3ed7a104812d6793c567f58bc53de12800da79dd96"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_bark_rough_2k_roughness.uasset",
+      "bytes": 7146429,
+      "sha256": "affdf57b023421c0b80d5f601e1580839dfeb1b7a68fa237767a713fafc0ba9d"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_a_diff_2k_color.uasset",
+      "bytes": 18549241,
+      "sha256": "9d601d6d4b44f7b4963ed9a66641511a114f764a4de235c6f841e8b9c59a516e"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_a_nor_gl_2k_normal.uasset",
+      "bytes": 17183367,
+      "sha256": "1c031a81a1a2f7022786d1f6aabe8dfa47c6bff14493098f9c9e1e2fb3078faa"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_a_rough_2k_roughness.uasset",
+      "bytes": 5804236,
+      "sha256": "b5ccc0f702a53bf16d0c91a37e9a56b4ec791ba99d551a574e44d93971ed9955"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_b_diff_2k_color.uasset",
+      "bytes": 17506352,
+      "sha256": "8c0390f27b533af1fa938875988576c97716652381b35b33132fa9d89865f4b7"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_b_nor_gl_2k_normal.uasset",
+      "bytes": 16481475,
+      "sha256": "e62ac51da7175ee95f780383e2c756184322fdd0095e7f5036df061c886a2bad"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_b_rough_2k_roughness.uasset",
+      "bytes": 5533476,
+      "sha256": "d71a4efde4bdd6021bfc9bd46c510e58509222b4a288fc6ab55b411644f2f028"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_c_diff_2k_color.uasset",
+      "bytes": 18822773,
+      "sha256": "0c27f53bddd9301168b1b278f2632c619e33590f046483ab991e0e2a525b064f"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_c_nor_gl_2k_normal.uasset",
+      "bytes": 17808927,
+      "sha256": "99becd535dac85cb8531c284c25e9e0e78ec0d8c0c4ef4a93b75f858b61be012"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_trunk_c_rough_2k_roughness.uasset",
+      "bytes": 6075712,
+      "sha256": "10310971f3dbe91f049bff11acbac2e3c4d84215ff68691a344e776fa1988438"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_twig_alpha_2k_alpha.uasset",
+      "bytes": 1868835,
+      "sha256": "0648aaa2d30451931301722a16c8c39020d1dfdfc5de11ee71d590f781fc84e1"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_twig_diff_2k_color.uasset",
+      "bytes": 10920187,
+      "sha256": "367643c37c4f5f3438521429d8566034f02cbaa7b50f4663a42b8559662d0059"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_twig_nor_gl_2k_normal.uasset",
+      "bytes": 5329584,
+      "sha256": "6197a550dd4db6f051cbd58953230926a077f63536c9f8e95aa23de44e100cd3"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_fir_tree_01_twig_rough_2k_roughness.uasset",
+      "bytes": 3513283,
+      "sha256": "26b9362ccac1d5dd2f01ff6ca5790bfb78820d665af87edb6bb2e66189c4c09d"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod0_texture0_normal.uasset",
+      "bytes": 711340,
+      "sha256": "1e6e2eb657622e6ef06b0ed45292cda09876b67eaabba3399ed38ef874a06768"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod0_texture1_color.uasset",
+      "bytes": 2125788,
+      "sha256": "4f02fd9c94660fd058a708b2cda135dee53f8d484473a999abdd5037373a5c70"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod0_texture2_normal.uasset",
+      "bytes": 207829,
+      "sha256": "b41ba094ee460d5fc41066829a26c93127231112f99934e190d70f9354edd2bd"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod0_texture3_color.uasset",
+      "bytes": 1190069,
+      "sha256": "41164921dc743150da65053d876708b874b31d66444554ffffd5767c9846c559"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod1_texture0_normal.uasset",
+      "bytes": 163801,
+      "sha256": "96de2a122a700b2321025c2fb97378ab254a1a23377e0fd10c1ee2fa57957946"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod1_texture1_color.uasset",
+      "bytes": 160340,
+      "sha256": "b23e101a1e58881d9b25269f4546f0b1176a2b8b81a24c13b290b76581f95b1a"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod1_texture2_normal.uasset",
+      "bytes": 207830,
+      "sha256": "a36d7fac336ecae61cda51457dc8466cd7036b249b2efbefa6fec828b7e8a752"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod1_texture3_color.uasset",
+      "bytes": 379649,
+      "sha256": "1868c4c557e7cde80713af8eb661d5ffbb700a511acc8061df360181b4d50e56"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod2_texture0_normal.uasset",
+      "bytes": 42121,
+      "sha256": "9db8a3a8c6fdf7d92f039d3af07e0bb95f02ad7c5fd4fbd41850135c762a8672"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod2_texture1_color.uasset",
+      "bytes": 52750,
+      "sha256": "a5072c4402a7a7ecc0c9b8eec1db1960c2aec71daa348052d1fe686d5b90816f"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod2_texture2_normal.uasset",
+      "bytes": 207830,
+      "sha256": "d58db0ab9cada14012e8b567ec5005976c147d9ca34f7ca74135f5b6f2180c4a"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_lod2_texture3_color.uasset",
+      "bytes": 129429,
+      "sha256": "f63ff5a055c54d57b064bcfb0a7ffb3090d8741a9fb8882f0e5a5d5480779df2"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_branch_diff_2k_color.uasset",
+      "bytes": 2966464,
+      "sha256": "76781a30835d46b57096116fe06283d5e01acaaf41779ca4a1cceb6ef3781b03"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_branch_nor_gl_2k_normal.uasset",
+      "bytes": 13795824,
+      "sha256": "3a6e7fba525ae43114946c424ade3c77ef2050b2f531e3633fb76e9e65c5f191"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_branch_rough_2k_roughness.uasset",
+      "bytes": 861080,
+      "sha256": "ad976d7c277d7583f860777ec446df85ffd61ddfdd4b1282b7873fd7bf56a163"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_diff_2k_color.uasset",
+      "bytes": 3181568,
+      "sha256": "00c308942fc7162421c7a9bcacfd307ee3b196265a41697190eb338a32f7cd1f"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_leaves_alpha_2k_alpha.uasset",
+      "bytes": 547249,
+      "sha256": "c69532b6090be1c738d5cffa185b5cfc0920782bc9965a6f19f37e7b353bd6ec"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_leaves_diff_2k_color.uasset",
+      "bytes": 6381545,
+      "sha256": "a8571dc3821dfa8e1edc3ce82bdb7cf352c85ac64111bfa61384cf074b725b73"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_leaves_nor_gl_2k_normal.uasset",
+      "bytes": 19916207,
+      "sha256": "19eab614da316fdd269bff6504b28b8997609dc99bcc4371e12fb06138d83f21"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_leaves_rough_2k_roughness.uasset",
+      "bytes": 2447508,
+      "sha256": "72d23fa15b0867f7cc3ed8903c28d550479a98e196257dc17a2d63162a209534"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_nor_gl_2k_normal.uasset",
+      "bytes": 17216249,
+      "sha256": "5c2c2a2659b2a7153e32edbeb564fc8c04c8268c2332b2d2cc9ae264940d46dc"
+    },
+    {
+      "file": "Content/Diving/Vegetation/Textures/T_tree_small_02_rough_2k_roughness.uasset",
+      "bytes": 4211000,
+      "sha256": "f99089dc393dbfa28c16fc810a558d6c43092c73c74b3f8e3be0c6eef053574f"
+    }
+  ],
+  "package_containers": [
+    {
+      "file": "divingsim-Windows.pak",
+      "bytes": 105893955,
+      "sha256": "7c00e82f2fe04d81bbd0982495496fd3cb8617cd97a954d095ace087015c42f0"
+    },
+    {
+      "file": "divingsim-Windows.ucas",
+      "bytes": 1136679296,
+      "sha256": "9f7ed43dc47aa4542caa8d79cc36275785a602e1aa21da8b2a3b90f94b056901"
+    },
+    {
+      "file": "divingsim-Windows.utoc",
+      "bytes": 1040341,
+      "sha256": "2799dee785c4e9101f64f8ce712576f343c564d1083bdcff000f4ed2e76ad52b"
+    },
+    {
+      "file": "global.ucas",
+      "bytes": 3245520,
+      "sha256": "b65f8471a3f07a2e50fbd526ddb6b5bf51694e98084d053edc4e1c41ce257a59"
+    },
+    {
+      "file": "global.utoc",
+      "bytes": 794,
+      "sha256": "21dda7816912cfdd30e42cf5f865cb61b0280402116ba251bd9b1cbdd63b6a07"
+    }
+  ],
+  "audits": {
+    "VEGETATION_SOURCE_AUDIT": "3ac6d07b1a854fd1a1fc258f9eb411ff60a63ab4f6612d282aeb45a17a8c7be8",
+    "VEGETATION_PLACEMENT_AUDIT": "c51694f9e20b755f78dd8e59d76dc9379eb6e01aee72c401798a412e84047f34"
+  },
+  "baseline_executable_sha256": "8be183006ebc405e7cffff0ec8529f31e798d24fdab2c9743afb3f909f7c6932",
+  "candidate_sha256": "d2e1dd7e0bd5412165b26765bf24c623ca8f3dbd7706f02bb7ab0d939c8795aa",
+  "scope": "Packaged views, fallback and 4K rendering, cell retention/retirement/return, trunk ray collisions, wind/time uniforms and existing gameplay routes.",
+  "limits": "The streaming probe moves the focus, not a player over 3.5 km. Scripted input is not manual acceptance. No minimum-hardware, long-session or native macOS game certification.",
+  "root_launcher": {
+    "child_id": 19588,
+    "status": "PASS",
+    "log_sha256": "874846CDAFA727D8E9A24E5258FE5B1E4600382A57AED57FDCC8A884C2DE97EF",
+    "finished_utc": "2026-11-26T06:43:13.7005334Z",
+    "started_utc": "2026-11-26T06:42:44.2671533Z",
+    "child": "O:\\games\\dive game\\Builds\\WindowsVegetation\\divingsim\\Binaries\\Win64\\divingsim-Vegetation.exe",
+    "executable_sha256": "264144503E29FC4CCA00A4B582F0CBCA7830BB0C7712E0D9BDBA9928AF9A360E",
+    "exit_code": 0
+  },
+  "input_regression_recovery": {
+    "prior_runtime": "O:\\games\\dive game\\artifacts\\vegetation-validation-20261126-070607\\walenstadt-crossing\\Runtime.log",
+    "prior_runtime_sha256": "f56fc2a2f5c20593f2b8f55a877d90d313fce4ea87d34e6760ab2fceb017bdd2",
+    "prior_failure": "Walenstadt movement timed out after intended synthetic key holds were lost.",
+    "diagnosis_limit": "The old log did not record the desktop focus event; loss of input was inferred from stopped propulsion without collision.",
+    "verified_fix": "All three current coast routes deliberately flush engine key state, restore the held keys and complete the crossing and return.",
+    "toggle_guard": {
+      "prior_runtime": "O:\\games\\dive game\\artifacts\\vegetation-validation-20261126-072059\\controls\\Runtime.log",
+      "prior_runtime_sha256": "0e41417cd30fdd95e5699ef171c03537d123dbfed6bfd6cfc70ff8bbcd5f9343",
+      "cause": "The first driver fix also replayed toggle actions consumed before Unreal held-key tracking.",
+      "correction": "Only continuous movement and buoyancy actions can be restored. The current remapping/lamp/regulator test passes without replaying toggle keys."
+    }
+  }
+}

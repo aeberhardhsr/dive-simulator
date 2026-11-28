@@ -1,0 +1,67 @@
+#include "/Engine/Private/Common.ush"
+
+Texture2D InputColor;
+Texture2D InputDepth;
+Texture2D WaterDepth;
+Texture2D<uint2> WaterStencil;
+Texture3D IntegratedFog;
+SamplerState FogSampler;
+float4 InputRect;
+float4 OutputRect;
+float EyeHeightCm;
+float AbsorptionGain;
+float DepthDebug;
+
+float3 FogAt(float2 ScreenUV,float ViewDepth)
+{
+    float z=log2(max(0.0001,ViewDepth*View.VolumetricFogGridZParams.x+View.VolumetricFogGridZParams.y))
+        *View.VolumetricFogGridZParams.z*View.VolumetricFogInvGridSize.z;
+    float3 uv=min(float3(ScreenUV*View.VolumetricFogScreenToResourceUV.xy,saturate(z)),float3(View.VolumetricFogUVMax,1));
+    // Both SceneColor and this texture use the current pre-exposure.
+    return IntegratedFog.SampleLevel(FogSampler,uv,0).rgb;
+}
+
+void MainPS(float4 Position:SV_Position,out float4 OutColor:SV_Target0)
+{
+    float2 pixel=InputRect.xy+(Position.xy-OutputRect.xy)*InputRect.zw/OutputRect.zw;
+    float4 color=InputColor.Load(int3(int2(pixel),0));
+    OutColor=color;
+    float deviceZ=InputDepth.Load(int3(int2(pixel),0)).r;
+    float waterZ=WaterDepth.Load(int3(int2(pixel),0)).r;
+    uint waterMask=WaterStencil.Load(int3(int2(pixel),0)) STENCIL_COMPONENT_SWIZZLE;
+    bool boundary=waterMask==42&&waterZ>deviceZ;
+    if(boundary) deviceZ=waterZ;
+    if(DepthDebug>.5)
+    {
+        OutColor=float4(boundary?float3(1,0,0):float3(0,0,1),1);
+        return;
+    }
+    if(deviceZ<=0) return;
+    float viewDepth=ConvertFromDeviceZ(deviceZ);
+    float3 end=SvPositionToTranslatedWorld(float4(pixel,deviceZ,1));
+    float3 ray=end-View.TranslatedWorldCameraOrigin;
+    float distanceM=length(ray)*.01;
+    // Use the displaced, translucent water boundary for the first camera leg.
+    // Reflected/refracted travel beyond that boundary is still not modelled.
+    if(distanceM<=.001) return;
+    float2 screenUV=(pixel-View.ViewRectMin.xy)*View.ViewSizeAndInvSize.zw;
+    float3 absorption=AbsorptionGain*float3(.12,.015,.035); // authored m^-1, not lake measurements
+    float3 previous=0,correction=0;
+    float integratedDepth=min(viewDepth,View.VolumetricFogMaxDistance);
+    float integratedDistance=distanceM*integratedDepth/max(.001,viewDepth);
+    // Integrated fog is cumulative premultiplied radiance. Reweight each
+    // interval by its own camera path; never absorb all foreground fog using
+    // the opaque background's distance. Native light/shadow terms are retained.
+    [unroll] for(int i=1;i<=16;++i)
+    {
+        float t=i/16.;
+        float3 cumulative=FogAt(screenUV,integratedDepth*t);
+        float3 interval=max(0,cumulative-previous);
+        correction+=interval*(exp(-absorption*integratedDistance*(t-.5/16.))-1);
+        previous=cumulative;
+    }
+    float3 surface=max(0,color.rgb-previous);
+    correction+=surface*(exp(-absorption*distanceM)-1);
+    float immersion=saturate((-EyeHeightCm-5)/45.);
+    OutColor=float4(max(0,color.rgb+immersion*correction),color.a);
+}

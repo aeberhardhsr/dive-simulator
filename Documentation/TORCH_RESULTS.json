@@ -1,0 +1,456 @@
+{
+  "status": "PASS",
+  "host": {
+    "source_dirty": true,
+    "executable_sha256": "10DDB46CD8BC6CA23670D1990404B989F1459C6A9E7BBB86E46C5960650D3E77",
+    "background_processes": [],
+    "source_head": "c08778883dbb2ceb033cb752906e7669e4f9d0d0",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsTorch\\divingsim\\Binaries\\Win64\\divingsim-Torch.exe",
+    "started_utc": "2026-11-25T13:39:44.9300053Z"
+  },
+  "cases": {
+    "allround": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "43bc26098f65c2b7d1ddb37cd7533f3c9b99f85f26e2b7aff7a0db6e1e28c821",
+        "DiveSmoke_1_torch.png": "e8417232b981fa7016a10c3458525b6394ec00a9b48ecde7cf35ae82235a8ea1",
+        "DiveUnderwater_1_torch.png": "c5ee33ff8a927564596675e74a96d11d290a8110f7802574569394ee311193a2",
+        "Runtime.log": "ca8443234ff78b203055402046fd838affcbf840960bb02da8fef0bb6038e9b2",
+        "Summary.log": "84007ccc4f67b0a36ed0c85e296c08a95c41288c78ccdb498f54c30b576f555b"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 1000.0,
+      "target_distance_m": 7.25,
+      "remaining_percent": 99.69388889572753,
+      "max_battery_error": 3.481659405224491e-12,
+      "scene_mean": 3.3209429121231557,
+      "scene_p99": 29.0,
+      "pixels_brighter_than_off_by_10": 61990
+    },
+    "spot": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "43a9dc07b8d02dbaf31de4eeca63dc1d61762d1c7ac5c44c713f57b6150ae9ba",
+        "DiveSmoke_1_torch.png": "bf7270b3fd4c36d91841dfb9b61ee422786fe1e7f4002c38e6375b20bebe0142",
+        "DiveUnderwater_1_torch.png": "2fce79f44381980252c06a5612a9ba68353080845ac68bccd5064009de5e95ce",
+        "Runtime.log": "58e0cc8adeddc1b9c8bf8a784d98bfa1bbb1e6176ba97690db9fe80aa188b5e7",
+        "Summary.log": "b43e20f71fa7ddc225f8636dd82da1ea3cf3a55f826c28c0958874b63100e2eb"
+      },
+      "model": "spot",
+      "nominal_lumens": 700,
+      "full_cone_degrees": 16,
+      "observed_lumens": 700.0,
+      "target_distance_m": 7.25,
+      "remaining_percent": 99.79611111566085,
+      "max_battery_error": 7.531752999057062e-12,
+      "scene_mean": 1.2587924951892238,
+      "scene_p99": 28.0,
+      "pixels_brighter_than_off_by_10": 22365
+    },
+    "wide": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "8896fea307eee4da3dc79e2db3f7aad1638aa5780b93f2456e001c391db94454",
+        "DiveSmoke_1_torch.png": "83f953ddc787b160da67683b4c3fc6088507a4a5dff174835220e548530b73a3",
+        "DiveUnderwater_1_torch.png": "9d68c77285865cf2221c68d9d34adf68caf3f7048c6452adb5b20ebab737cfeb",
+        "Runtime.log": "d2d053cf96e2f631fb322f507f62cf9cb1189eec6f77867277d0b4b8013ab4bd",
+        "Summary.log": "d33482aabffc11eb558c86a375b4df6c7c42a4e8515c1092cc42fd7d2d9889aa"
+      },
+      "model": "wide",
+      "nominal_lumens": 3000,
+      "full_cone_degrees": 110,
+      "observed_lumens": 3000.0,
+      "target_distance_m": 7.25,
+      "remaining_percent": 99.33272728763866,
+      "max_battery_error": 3.325340003357269e-12,
+      "scene_mean": 10.194741821680564,
+      "scene_p99": 61.0,
+      "pixels_brighter_than_off_by_10": 154517
+    },
+    "off": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "8930168f457f7fb33219192416ccb5bc05b4e67e96aad627f41284e74d39b0e5",
+        "DiveSmoke_1_torch.png": "b6d151ee463833a39e7d9d72f7e9ac3ffb1454c6ffbf61741a95111fe26dfca3",
+        "DiveUnderwater_1_torch.png": "b00399813f2368983c6b7cd832f54076ff5014675a348bf66d6fd4dae2b625e6",
+        "Runtime.log": "3ce59e34474b039f7aeadf2f00d0cac3da298b196370b1f3df52c618601e0969",
+        "Summary.log": "d387e3f4b13f5d0217619791e41c4b79ebfe464c5ad3e334fd9304835b67acc3"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 1000.0,
+      "target_distance_m": 7.253,
+      "remaining_percent": 100,
+      "max_battery_error": 0,
+      "scene_mean": 3.784528543938422,
+      "scene_p99": 9.0
+    },
+    "empty": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "01e81b5e701dd86bb3200d5f3eb651c101472afcb664e25c5eadd0f7c60cc4d4",
+        "DiveSmoke_1_torch.png": "c21dd00c13bbf501c639b17e6c5e49d60948f9e6ac7289a42dd7fe25cba5ab2c",
+        "DiveUnderwater_1_torch.png": "313a7540e6f9762705454f19598be64cef653779cfdc10ebb69ea6c484d5f608",
+        "Runtime.log": "1c77ac4b1e4bd34f13a5f32e2ebd9fdb319baf7827fd856b8d98f89deea802da",
+        "Summary.log": "117db97dd3233db9507cb62c69a9b37f689c0eca827c04ce66fe81c5dab326b7"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 0.0,
+      "target_distance_m": 7.25,
+      "remaining_percent": 0,
+      "max_battery_error": 0,
+      "scene_mean": 3.7859749839640795,
+      "scene_p99": 9.0
+    },
+    "low": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "d67636c49e34ada02fd5628fa3cc5077b66d7de2a86f8eb53f2b6fcb5da897e8",
+        "DiveSmoke_1_torch.png": "7bccfcf966434f576c3f91bf2b3aaf9544384dc392672955d8dec25d307b3898",
+        "DiveUnderwater_1_torch.png": "536485b9778bdae05ad954820e42f5838d23ffa66ac75c2b36dae810012f665b",
+        "Runtime.log": "c65c0bf68b6ada01e3e4454f3d0a069035986c350cd51a96506b36b40b32a96c",
+        "Summary.log": "2f970d63a1568eb4ca5a1426130eb11a222e753dad10d9f567aa2cd68df879a9"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 488.8,
+      "target_distance_m": 7.253,
+      "remaining_percent": 4.69388889573144,
+      "max_battery_error": 4.3520742565306136e-13,
+      "scene_mean": 1.471266837716485,
+      "scene_p99": 15.0
+    },
+    "turbid": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "e7b4d3e032a1f893c672808f554c2ca3121dc2549a9f9d7ee0c8097ca7232e1c",
+        "DiveSmoke_1_torch.png": "5e10b4fed46bae132a3e0d773abb4585673d1a755dab131735b31015220275e8",
+        "DiveUnderwater_1_torch.png": "cb8298fc3d0fb9f66886d26dbcf136b6f8281bf9878d2f58b7a8f395669da458",
+        "Runtime.log": "bc6310db4994850c7ed42bdf4bb93dc4f657e150c530bb5e21091f0deb693aa5",
+        "Summary.log": "bbbec86daa1521a8445cc72317d4ed0338279af93d7ba58de850acff737f2685"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 1000.0,
+      "target_distance_m": 7.253,
+      "remaining_percent": 99.6941666734991,
+      "max_battery_error": 3.481659405224491e-12,
+      "scene_mean": 0.37641597177678,
+      "scene_p99": 9.0
+    },
+    "clear": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "b684ff69caafcb47fc90e6df415aae5870276a9b5071ec56dd83f728c144a272",
+        "DiveSmoke_1_torch.png": "f0b816ca51ac335558a3e01e9d84337399963da4257d7171e616438ca976b69e",
+        "DiveUnderwater_1_torch.png": "4d7521562284acf1b9c7c055ce5567faa5dfbbaa908063496b9f9b85dbd393bb",
+        "Runtime.log": "9c49955d2c291e2d1859fbc4d40956f77505f9b79096b1e340e6d08afba67b96",
+        "Summary.log": "a2fac34084cff32daf8d88f19a26755aa9fbc0869cd56c903ff65399ffcf5aed"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 1000.0,
+      "target_distance_m": 7.253,
+      "remaining_percent": 99.6941666734991,
+      "max_battery_error": 3.481659405224491e-12,
+      "scene_mean": 5.218122193713919,
+      "scene_p99": 43.0
+    },
+    "day": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "d0478f9710251859abf9d297020bd0d5af00ddafbf275354ed77f79ab5c9271b",
+        "DiveSmoke_1_torch.png": "1dbe47777a122002dc3648939108c30fcf641f5b29110026495ac628059693a7",
+        "DiveUnderwater_1_torch.png": "b1cd60187a455ac46ec7e74c51d5105374ccb0f601d920769abb4deceb4c0ab0",
+        "Runtime.log": "965a76c7e54361869656732ff6b9b4a6b11572bd9aedb7a363d95b96ea469e7d",
+        "Summary.log": "41b28e9a9855933e339289dc466943063d17cad58afe3bc20c310e33539141c5"
+      },
+      "model": "allround",
+      "nominal_lumens": 1000,
+      "full_cone_degrees": 54,
+      "observed_lumens": 1000.0,
+      "target_distance_m": 7.253,
+      "remaining_percent": 99.6941666734991,
+      "max_battery_error": 3.481659405224491e-12,
+      "scene_mean": 28.425230917254652,
+      "scene_p99": 47.0
+    },
+    "day-spot": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "d3533d25fa74c624639aaa3f2b2ebbbd5a0109092ec52ce3e2fb9430d71a9452",
+        "DiveSmoke_1_torch.png": "28e3535b18b7ccdc6fceffe91cac8f7d70f5596a300749018b38a72850b07570",
+        "DiveUnderwater_1_torch.png": "f6b5c1cfc0f73e5b8ade9c0fcf896ca244b361a1039bf54f9e55879e9a518c77",
+        "Runtime.log": "8bc4d489c8d98cf443238a72482498b380a5d9ea111f62f88ad3d748eab82446",
+        "Summary.log": "d2da2b3d9568b5b4a9c37ca28a2621dcc47d95084c83d0a0cf54f7af98505aef"
+      },
+      "model": "spot",
+      "nominal_lumens": 700,
+      "full_cone_degrees": 16,
+      "observed_lumens": 700.0,
+      "target_distance_m": 7.253,
+      "remaining_percent": 99.79611111566085,
+      "max_battery_error": 7.531752999057062e-12,
+      "scene_mean": 28.416905067350864,
+      "scene_p99": 47.0
+    },
+    "day-wide": {
+      "scenario": "torch",
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "0507bb88c80ec56566e20f7b6705c123aa657c4be068ba122437cd6ec3e46b52",
+        "DiveSmoke_1_torch.png": "d6ae69d7007ae5f0a9ff970d578ec17b97ea90dc5891d68c3b01507069312246",
+        "DiveUnderwater_1_torch.png": "3fb7cc7f29b8b9247b62db43bf869666d1544a2298764fc58bb0005a23db1771",
+        "Runtime.log": "89c2eb5cfc540c87033713c16f1e696cd23f70bce573ab3df05063ea3016ca64",
+        "Summary.log": "35470a04f8e422e6f10f36c0793643110d6709e7eafd5ecc622498824c27a3af"
+      },
+      "model": "wide",
+      "nominal_lumens": 3000,
+      "full_cone_degrees": 110,
+      "observed_lumens": 3000.0,
+      "target_distance_m": 7.25,
+      "remaining_percent": 99.33212122704614,
+      "max_battery_error": 3.325340003357269e-12,
+      "scene_mean": 28.440968569595896,
+      "scene_p99": 47.0
+    },
+    "config": {
+      "scenario": "config",
+      "fresh_images": 10,
+      "sha256": {
+        "ConfigAir_EN.png": "be6994d732cd94313ed1dd486a0aae75eedd4dcdeab68160c602483a3dee0e65",
+        "ConfigDate_EN.png": "14fd0cedff3dbbaa2d6399e97b9568eca4d0573e90ef34d631cc56c926adf669",
+        "ConfigDateValues_EN.png": "948572c1920fbca6ae446808d18dfc5d6daa017a0c4254b840ecc6b011bf7fff",
+        "ConfigPressure_DE.png": "381cc7dbf020caf9b73ea847a9bba4431ab43759a8bde586a8cfeb7c33d059d4",
+        "ConfigRange_DE.png": "afd8e3fcd20189d4ded88cf45751273ee0986ba7b1a3fbe975e0c30e8c515b2c",
+        "ConfigSpringGap_EN.png": "04d1592e5c2ace10e969ac28f03ed8a09d030df0dc7acf287b8a780c7e2798ac",
+        "ConfigTime_DE.png": "32aef58693052c9b828f48b26e55de6389ec66175dd3de9b4297109a4d2acb55",
+        "ConfigTorch_EN.png": "0e0c6459beae235e83778c53b8a22ded233780ac17b248b9f3a6f9643f2abe99",
+        "ConfigValues_DE.png": "2acc55e2211f3f995fcf7e2d97c046c3cb74fba6c07dd912faf1bdb37492a624",
+        "ConfigValues_EN.png": "28afece889b5b8d9c5dff6bde9a05ac90d282eeb8104fcb7149039741697d9b2",
+        "Runtime.log": "06c29cd75a80e1ee06ca841ca559a3b930709a74be0859a9b584ce001cb3352c",
+        "Summary.log": "6b2ca5391091ccab841f7f9e709bab2d1948425a58d15945de0e6317b3d475e8"
+      }
+    },
+    "profiles": {
+      "scenario": "profiles",
+      "fresh_images": 8,
+      "sha256": {
+        "Dive.json": "fcfcced4b5435699cdda7c9f29988c4ed84855ecc1b2e68b8b7f591692efbc9a",
+        "DiveSmoke_0_profiles.png": "766f4eb6864f4d2ca1417b278e98d4ef05eb522c8d3c6ab3c5826e3e4e6f19ca",
+        "DiveUnderwater_0_profiles.png": "135106a47d21674a63fdc6e14a3a11091e015cb956c037b713c302b05d3a073e",
+        "ProfileDuplicate.png": "67b51961588a8635fa0d5087a38c207ba1d48c7c3ed78788f938d15d8e3db501",
+        "ProfileName.png": "153f867087381e247b65b2d0bd9525a119ee0413f72ab929dcf076664da309c7",
+        "Profiles_DE.png": "53e0655bf8b358c27ab5b115da0028e991f955a2e3a0789cc6cabbe6227e6ebd",
+        "Profiles_EN.png": "7507b0ecc0255835a78a979ba812da353029e6c68fcf355903abd8f911802a1a",
+        "ProfilesActive.png": "81f5277b0c57a31244ed12723fb115729f4ed9feb0641fceaba042f5fe27737b",
+        "ProfilesArchive.png": "6ee696c442c336c101c988690737fb1c13a25dfe1c39ff270ff4ed55d7ca82c9",
+        "Runtime.log": "f8c1ce34561cdd9d0c3bd51874fe3b3f917448a9e9fcd9b0f33f4378ffd62246",
+        "Summary.log": "192583402510b0fe9b5c2ae6f216fe5d48b66da6300212015d1bf07f36046b62"
+      }
+    },
+    "surface": {
+      "scenario": "surface-calm",
+      "fresh_images": 3,
+      "sha256": {
+        "Dive.json": "b928a524b817bb45a95973c908f06f08064473e885d7963e22e14aef8148108f",
+        "DiveSmoke_1_surface-calm.png": "513225698d1aecefad3aa01797246f15c7254a17db42e83137233b17570178af",
+        "DiveUnderwater_1_surface-calm.png": "a2bb214ea0b4ee34d598afd87f766762ad1490b96c5d9e2370604ee474767d95",
+        "Runtime.log": "e1034955bcf67207f48c7941c06f10faee7daca9e15653526730392621cd4719",
+        "Summary.log": "f22ee4f04dcea433448d67c3652e20b5a6b71ddfcc528235ffc2e6fdb1681b23",
+        "SurfaceAir_1_surface-calm.png": "4f179ba0400707729a0988609e94fa12dddea1decdc0e0e8c6571573187b59f8"
+      }
+    },
+    "storm": {
+      "scenario": "surface-storm",
+      "fresh_images": 3,
+      "sha256": {
+        "Dive.json": "beb82906e9d3f7f216da08c51b4c67e491f6c01e03f1601d34309e02d518f02b",
+        "DiveSmoke_1_surface-storm.png": "79a4d554e1293d4a938c651797a04a6c63c4c9d723bbc176340f9cf322c8ddf1",
+        "DiveUnderwater_1_surface-storm.png": "3dc61d53c2c00090b1c9712711b85533e87103dd01894da648432d8b7f35ab72",
+        "Runtime.log": "168e13873ed8b1251a3ca868f2d61102b501b4a37e1ffe76c2ca07b732c695d9",
+        "Summary.log": "30bf8a8f4dea257b92d9723d2215bfdb723bd4b0a85a4cc9e86c463fb1db65d7",
+        "SurfaceAir_1_surface-storm.png": "3a0cc3a22958a2aecc25d463b70b0a492b6f007b7c42b6270b72abe9a724e00e"
+      }
+    }
+  },
+  "artifact_directory": "O:\\games\\dive game\\artifacts\\torch-validation-20261125-143944",
+  "limits": "Authored game presets; pixel checks are not photometry. Visual review required.",
+  "source_snapshot_matches_project": true,
+  "source_config_manifest_sha256": "f15bfbbf75121bcfc86fca83018692d504b4c3b4eaeac1ff3d0820b28376e895",
+  "core_tests": "PASS: deterministic C++ model, 15 Python tests, 3 Unreal profile tests",
+  "benchmark": {
+    "metadata": {
+      "scenario": "perf-underwater",
+      "csv": "O:/games/dive game/Builds/WindowsTorch/divingsim/Saved/Performance/perf-underwater_4A0D2837/Capture.csv",
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+      "engine": "5.8.4-58902052+++UE5+Release-5.8",
+      "width": 1920,
+      "height": 1080,
+      "quality": 2,
+      "warmup_seconds": 15,
+      "requested_capture_seconds": 60,
+      "simulation_seconds": 75.05999832227826,
+      "distance_m": 9.31562026696589,
+      "depth_m": 5.24643321251929,
+      "walking": false,
+      "r.ScreenPercentage": 100,
+      "r.SecondaryScreenPercentage.GameViewport": 100,
+      "r.DynamicRes.OperationMode": 0,
+      "r.VSync": 0,
+      "t.MaxFPS": 0,
+      "sg.ViewDistanceQuality": 2,
+      "sg.AntiAliasingQuality": 2,
+      "sg.ShadowQuality": 2,
+      "sg.GlobalIlluminationQuality": 2,
+      "sg.ReflectionQuality": 2,
+      "sg.PostProcessQuality": 2,
+      "sg.TextureQuality": 2,
+      "sg.EffectsQuality": 2,
+      "sg.FoliageQuality": 2
+    },
+    "host": {
+      "started_utc": "2026-11-25T13:47:50.5498166Z",
+      "editor": false,
+      "background_processes": [],
+      "gpu_before": [
+        "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+        "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2166 MiB, 26 %"
+      ]
+    },
+    "frames": 5328,
+    "discarded_boundary_frames": 2,
+    "measured_seconds": 59.9774448,
+    "average_fps": 88.8333942495663,
+    "one_percent_low_fps": 69.5851987643215,
+    "frame": {
+      "mean_ms": 11.257027927927927,
+      "p50_ms": 11.1237,
+      "p95_ms": 13.013,
+      "p99_ms": 13.6532,
+      "max_ms": 33.6067
+    },
+    "game_thread": {
+      "mean_ms": 2.0843047484984987,
+      "p50_ms": 2.0819,
+      "p95_ms": 2.4656,
+      "p99_ms": 2.8269,
+      "max_ms": 5.5821
+    },
+    "render_thread": {
+      "mean_ms": 11.249779542042042,
+      "p50_ms": 11.1118,
+      "p95_ms": 12.9964,
+      "p99_ms": 13.6257,
+      "max_ms": 34.2123
+    },
+    "rhi_thread": {
+      "mean_ms": 2.5755528903903904,
+      "p50_ms": 2.5456,
+      "p95_ms": 3.0159,
+      "p99_ms": 3.5582,
+      "max_ms": 4.5262
+    },
+    "gpu": {
+      "mean_ms": 10.70563765015015,
+      "p50_ms": 10.5877,
+      "p95_ms": 12.2961,
+      "p99_ms": 12.8039,
+      "max_ms": 13.9074
+    },
+    "frames_over_16_67_ms": 1,
+    "frames_over_33_33_ms": 1,
+    "frames_over_100_ms": 0,
+    "all_frames_within_30fps_budget": false,
+    "memory_mb": {
+      "start": 2421.8594,
+      "end": 2395.8008,
+      "max": 2440.1445
+    },
+    "terrain_chunks": {
+      "min": 9.0,
+      "max": 9.0,
+      "frames_below_nine": 0
+    },
+    "distance_m": 4.9940999999999995,
+    "top_gpu_passes_ms_not_additive": [
+      {
+        "name": "GPU/ShadowDepths",
+        "mean_ms": 2.3835479917417417
+      },
+      {
+        "name": "GPU/VolumetricCloudShadow",
+        "mean_ms": 1.1636667417417417
+      },
+      {
+        "name": "GPU/Unaccounted",
+        "mean_ms": 0.7522097785285285
+      },
+      {
+        "name": "GPU/TemporalSuperResolution",
+        "mean_ms": 0.693692774024024
+      },
+      {
+        "name": "GPU/LumenReflections",
+        "mean_ms": 0.6258336148648649
+      },
+      {
+        "name": "GPU/Basepass",
+        "mean_ms": 0.5450617117117117
+      },
+      {
+        "name": "GPU/ShadowProjection",
+        "mean_ms": 0.5132831268768768
+      },
+      {
+        "name": "GPU/NaniteVisBuffer",
+        "mean_ms": 0.45133798798798797
+      },
+      {
+        "name": "GPU/GlobalDistanceFieldUpdate",
+        "mean_ms": 0.44460208333333334
+      },
+      {
+        "name": "GPU/LumenSceneUpdate",
+        "mean_ms": 0.3198238363363363
+      },
+      {
+        "name": "GPU/Postprocessing",
+        "mean_ms": 0.28379816066066066
+      },
+      {
+        "name": "GPU/Lights",
+        "mean_ms": 0.24868230105105105
+      }
+    ]
+  },
+  "benchmark_artifacts": "artifacts/perf-underwater-1080p-q2-20261125-144750-544",
+  "root_launcher": {
+    "child_id": 54852,
+    "status": "PASS",
+    "child": "O:\\games\\dive game\\Builds\\WindowsTorch\\divingsim\\Binaries\\Win64\\divingsim-Torch.exe",
+    "started_utc": "2026-11-25T13:49:12.2743935Z",
+    "log_sha256": "B47DE9AF8634222219A9C0180D63AA81EB1F757CA8641BCF174B7E88FC416AD6",
+    "exit_code": 0,
+    "finished_utc": "2026-11-25T13:49:38.4381687Z"
+  }
+}

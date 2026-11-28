@@ -1,0 +1,318 @@
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "DiveTerrain.h"
+#include "DiveVegetation.h"
+#include "Simulation/DiveModel.h"
+#include "Simulation/WaterSurface.h"
+#include "Simulation/VisualMedium.h"
+#include "Simulation/EnvironmentLight.h"
+#include "Simulation/Sediment.h"
+#include "Simulation/FishMotion.h"
+#include "Simulation/FishSteering.h"
+#include "Simulation/RockIndex.h"
+#include "DiveWorld.generated.h"
+
+class UInstancedStaticMeshComponent;
+class UStaticMeshComponent;
+class UProceduralMeshComponent;
+class UMaterialInterface;
+class UMaterialInstanceDynamic;
+class ADirectionalLight;
+class AExponentialHeightFog;
+class ADivePawn;
+
+struct FDiveBubble
+{
+    FVector Position;
+    float Age=0, StartPressure=1, RadiusMetres=.006f, Phase=0, Side=1;
+};
+struct FDiveFish
+{
+    FVector Position=FVector::ZeroVector, Velocity=FVector::ZeroVector, Home=FVector::ZeroVector;
+    float Phase=0, Scale=1;
+    Dive::FishMotion Motion;
+    Dive::FishSteering::State Steering;
+    int32 Species=0, Instance=0;
+    bool Active=false;
+};
+struct FDiveRock { FVector Position; float Radius=0; int32 Variant=0; bool Rubble=false; };
+struct FDiveRockLayout
+{
+    TArray<FTransform> Transforms;
+    TArray<FDiveRock> States;
+};
+USTRUCT()
+struct FDivePopulationCell
+{
+    GENERATED_BODY()
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Components;
+};
+struct FDiveGravelBuild
+{
+    FIntPoint Key;
+    FRandomStream Random;
+    TArray<FTransform> Instances[3];
+    TArray<FDiveRock> Nearby[16];
+    int Next=0,Candidates=0;
+    bool Active=false,Aprons=true;
+    double GenerationMs=0,SetupMs=0,AddMs=0,RegisterMs=0;
+};
+struct FDiveFootCell
+{
+    TArray<FDiveRock> Rocks;
+    TArray<float> Bearings;
+    TMap<FIntPoint,TArray<int32>> Bins;
+};
+struct FDiveDepositVertices
+{
+    TMap<FIntPoint,float> Heights;
+};
+struct FDiveSilt
+{
+    FVector Origin,Position;
+    Dive::Sediment::Puff Model;
+    int32 Side=1;
+};
+struct FDiveAccess
+{
+    FVector Origin=FVector::ZeroVector,Forward=FVector::ForwardVector;
+    double Landing=0,Length=0,Drop=0;
+    int32 Steps=0;
+};
+
+UCLASS()
+class DIVESIM_API ADiveWorld : public AActor
+{
+    GENERATED_BODY()
+public:
+    ADiveWorld();
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaSeconds) override;
+    float GroundZ(double X,double Y) const;
+    bool TestFootDeposits(FString& Detail) const;
+    FDiveTerrain Terrain;
+    bool bTerrainReady=false;
+    void SetEntry(int32 Index,bool Shore=false);
+    bool SupportZ(double X,double Y,float& Z,double MaxAccessZ=TNumericLimits<double>::Max()) const;
+    FVector ShoreStart(int32 Index) const;
+    TArray<FDiveAccess> Accesses;
+    int32 TerrainChunkCount() const { return Chunks.Num(); }
+    bool ValidateEcology(FString& Error) const;
+    double TraceFishPath(int32 Species,float Scale,const FVector& Start,const FVector& End,bool FullScan=false) const;
+    bool SetFishInspection(int32 Species,int32 View,float Cycle,FVector& Eye,FRotator& Rotation,bool FinOnly=false);
+    bool SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotator& Rotation);
+    bool FindDiscoveryTestView(bool Plant,FVector& Eye,FRotator& View,FString& Species);
+    TArray<FString> PhotographSpecies(const FVector& Eye,const FVector& Forward) const;
+    bool TestPopulationStreaming(FString& Detail);
+    bool ValidateGravel(FString& Error) const;
+    bool TestGravelStreaming(FString& Detail);
+    bool ValidateImagery(FString& Error) const;
+    bool ValidateLandscape(FString& Error) const;
+    bool ValidateBuildings(FString& Error) const;
+    bool ValidateVegetation(FString& Error) const;
+    bool SaveVegetationAnchorProbe(const FString& Directory) const;
+    bool TestVegetationStreaming(FString& Detail);
+    void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
+    void Configure(const Dive::Config& Config);
+    Dive::ScenarioClock::Moment CurrentMoment() const;
+    double CurrentHour() const;
+    void UpdateDaylight();
+    void RefreshInspectionMedium();
+    bool InspectionChecksReady() const;
+    bool ValidateCelestial(FString& Error) const;
+    double WaterAmbientAt(const FVector& Eye) const;
+    double CameraScatteringAmbientAt(const FVector& Eye) const;
+    bool NativeWaterScattering() const;
+    bool WaterInterfaceEnabled() const {return bWaterInterface;}
+    bool BoundedWaterEnabled() const {return bBoundedWater;}
+    bool WaterPreviewEnabled() const {return bWaterPreview;}
+    double ExposureBiasAt(const FVector& Eye) const;
+    double SurfaceZ(double X,double Y,double Seconds=-1) const;
+    double PressureDepth(const FVector& Position,double Seconds) const;
+    FVector WaveVelocity(const FVector& Position,double Seconds) const;
+    bool ValidateWater(FString& Error) const;
+    bool ValidateCaustics(FString& Error) const;
+    void SetCausticsTestStrength(float Value);
+    void ConfigureCausticsProbe(const Dive::Config& Settings,float Height);
+    bool ValidateStorm(FString& Error) const;
+    bool ValidateShoreline(FString& Error) const;
+    bool ValidateParticles(FString& Detail) const;
+    void DisturbSediment(int32 Fin,const FVector& Position,double Speed,double Step);
+    void StepSediment(double Step);
+    bool ValidateSediment(FString& Detail) const;
+    int32 SedimentBorn() const { return SiltBorn; }
+    int32 SedimentLive() const { return Silt.Num(); }
+    FVector SedimentCenter() const;
+    void HideSedimentForTest(bool Hidden);
+    UPROPERTY() TObjectPtr<ADivePawn> Diver;
+private:
+    TMap<FIntPoint,TArray<FDiveTree>> TreeSources;
+    UPROPERTY() TMap<FIntPoint,FDiveTreeCell> TreeCells;
+    UPROPERTY() TArray<TObjectPtr<class UStaticMesh>> TreeModels;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> TreeMaterials;
+    TMap<UMaterialInterface*,UMaterialInstanceDynamic*> TreeMaterialLookup;
+    FIntPoint TreeCenter=FIntPoint(MAX_int32,MAX_int32);
+    bool bVegetationChecked=false;
+    void CreateVegetation();
+    void CreateTreeCell(FIntPoint Key);
+    void StreamVegetation(const FVector& Player,bool Immediate=false);
+    UPROPERTY() TObjectPtr<UProceduralMeshComponent> Ground;
+    UMaterialInterface* RockSurfaceMaterial(int32 Variant) const;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> LandscapeMeshes;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CoastMeshes;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuildingMeshes;
+    UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> ShoreMeshes;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> ImageryMaterials;
+    UPROPERTY() TArray<TObjectPtr<UProceduralMeshComponent>> AccessRamps;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> AccessParts;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> AccessRails;
+    UPROPERTY() TMap<FIntPoint,TObjectPtr<UProceduralMeshComponent>> Chunks;
+    UPROPERTY() TObjectPtr<UProceduralMeshComponent> Water;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterUnderMaterial;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> WaterVolume;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> WaterVolumeMaterial;
+    void CreateWaterVolume();
+    void UpdateWaterVolume(const FVector& Eye);
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> CloudMaterial;
+    UPROPERTY() TObjectPtr<UMaterialInterface> StarMaterial;
+    UPROPERTY() TObjectPtr<class UVolumetricCloudComponent> Clouds;
+    UPROPERTY() TObjectPtr<class USkyLightComponent> Sky;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Rain;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> Buoys;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> BuoyLines;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Rocks;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Gravel;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Plants;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> Fish;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Bubbles;
+    UPROPERTY() TObjectPtr<UInstancedStaticMeshComponent> Particles;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> ParticleMaterial;
+    TArray<int32> RenderedBubbleIndices;
+    FVector ParticleAnchor=FVector::ZeroVector;
+    FVector LastParticleViewer=FVector::ZeroVector;
+    float LastParticleTime=0,LastParticleWaterTime=0;
+    bool bParticleUniformsReady=false;
+    float ParticleScale=1;
+    double ParticleSimulationSeconds=0;
+    bool bNoBubbles=false;
+    int32 BubblesBorn=0,BubblesSurfaced=0;
+    int32 ParticleCellMoves=0;
+    UPROPERTY() TObjectPtr<class UDirectionalLightComponent> Sun;
+    UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> SolarWater;
+    float CausticsStrength=1;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CausticsProbe;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> ReflectionShadowOccluder;
+    UPROPERTY() TObjectPtr<class UDirectionalLightComponent> ReflectionShadowDuplicate;
+    int32 ReflectionShadowLastView=-1;
+    bool ConfigureReflectionShadowProbe(const FString& Kind,int32 View,FVector& Eye,FRotator& Rotation);
+    void UpdateCaustics();
+    UPROPERTY() TObjectPtr<class UExponentialHeightFogComponent> Fog;
+    TArray<FDiveBubble> BubbleState;
+    TArray<FDiveSilt> Silt;
+    UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> SiltVolumes;
+    UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> SiltMaterials;
+    bool bSiltTestHidden=false;
+    double SiltCredit[2]={0,0};
+    int32 SiltBorn=0;
+    float SiltRenderClock=0;
+    void ResetSediment();
+    void RenderSediment(float Dt);
+    TArray<FDiveFish> FishState;
+    TArray<FDiveRock> RockState;
+    Dive::RockIndex RockSearch;
+    bool TestRockSearch(FString& Detail) const;
+    // Deterministic geometry only; no UObject ownership. The visible 3x3
+    // population window plus its planting halo needs at most 5x5 layouts.
+    mutable TMap<FIntPoint,FDiveRockLayout> RockLayouts;
+    mutable TMap<FIntPoint,FDiveFootCell> FootCells;
+    mutable TMap<FIntPoint,FDiveDepositVertices> DepositVertices;
+    float FootDepositHeight(double X,double Y,float Bed) const;
+    float ComputeFootDeposit(double X,double Y,float Bed) const;
+    const FDiveFootCell& FootCell(FIntPoint Key) const;
+    UPROPERTY() TMap<FIntPoint,FDivePopulationCell> PopulationCells;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredPopulation;
+    UPROPERTY() FDivePopulationCell PendingPopulation;
+    TArray<TArray<FTransform>> PendingPopulationTransforms;
+    FDiveRockLayout PendingPopulationLayout;
+    TArray<FDiveRock> PendingPopulationNearby;
+    int PopulationPrepareNeighbour=-1,PopulationPrepareRockRow=0,PopulationPreparePlantRow=0;
+    int PopulationBatchRows=0;
+    FIntPoint PendingPopulationKey;
+    bool bPopulationBuilding=false;
+    int PopulationBatchComponents=0;
+    UPROPERTY() TMap<FIntPoint,FDivePopulationCell> GravelCells;
+    UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> RetiredGravel;
+    FDiveGravelBuild GravelBuild;
+    UPROPERTY() FDivePopulationCell PendingGravel;
+    int GravelBatchCandidates=0,GravelBatchComponents=0;
+    FIntPoint GravelCell=FIntPoint(MAX_int32,MAX_int32);
+    FIntPoint PopulationCell=FIntPoint(MAX_int32,MAX_int32);
+    double LastFishRefill=-1;
+    bool bPopulationChecked=false;
+    FRandomStream Random{1948};
+    float Flow=.08f, VisibleDistance=14, WorldTime=0;
+    double DayHour=12;
+    FVector PopulationOrigin=FVector::ZeroVector;
+    FVector PopulationForward=FVector::ForwardVector;
+    Dive::WaterSurface Waves;
+    Dive::Config WeatherSettings;
+    Dive::VisualMedium OpticalMedium;
+    Dive::EnvironmentLight Lighting;
+    double WaterAmbient=0;
+    float FogScatteringGain=1,ViewScatteringGain=1;
+    bool bNativeWaterScattering=false;
+    bool bWaterInterface=false;
+    bool bBoundedWater=false;
+    UPROPERTY() TObjectPtr<class UTexture2D> LakeFootprint;
+    FVector4f LakeFootprintMap=FVector4f(0,0,0,0);
+    TSharedPtr<const TArray<FVector4f>,ESPMode::ThreadSafe> LakeFootprintProbes;
+    void LoadLakeFootprint();
+    bool bWaterPreview=false;
+    float WaterVolumeGain=1;
+    bool bOpticsSmoke=false;
+    uint8 ObservedOpticalMedia=0;
+    UPROPERTY() TObjectPtr<class ACelestialVaultDaySequenceActor> Celestial;
+    double LastSkyUTC=-1,LastMoonPhaseUTC=-1;
+    float MoonPhaseAge=0;
+    void CreateSky();
+    void ValidateCelestialReferences();
+    void UpdateAtmosphere();
+    void CreateWater();
+    void UpdateWater(const FVector& Player);
+    void StreamTerrain(const FVector& Position,bool Immediate=false);
+    void CreateChunk(FIntPoint Key);
+    void CreateLandscape();
+    void CreateCoast();
+    void CreateBuildings();
+    void CreateShoreline();
+    void CreateShoreStones();
+    void CreateLawn();
+    UPROPERTY() TObjectPtr<class UHierarchicalInstancedStaticMeshComponent> LawnGrass;
+    UPROPERTY() TArray<TObjectPtr<class UHierarchicalInstancedStaticMeshComponent>> ShoreStones;
+    void CreateAccess();
+    UMaterialInstanceDynamic* ImageryMaterial(const TCHAR* Base,const FString& TexturePath);
+    void Populate();
+    void StreamPopulation(const FVector& Player,bool Initial=false);
+    void GenerateRocks(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States) const;
+    void BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TArray<FDiveRock>& States,bool MeasuredOnly=false,int FirstRow=0,int RowCount=14) const;
+    void BeginPopulationCell(FIntPoint Key);
+    bool PreparePopulationCell(bool Complete);
+    bool AdvancePopulationCell(bool Complete);
+    void CancelPopulationCell();
+    int32 PlantCullDistance() const;
+    void BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& Nearby,TArray<TArray<FTransform>>& Instances,int FirstRow=0,int RowCount=26) const;
+    bool TestPlantBeds(FString& Detail) const;
+    void BeginGravelCell(FIntPoint Key);
+    bool AdvanceGravelCell(bool Complete);
+    void CancelGravelCell();
+    void StreamGravel(const FVector& Player,bool Immediate=false);
+    void RefillFish(const FVector& Player,bool Initial);
+    void TickFish(float Dt,const FVector& Player);
+    void InitializeParticles();
+    void UpdateParticles(float Dt,const FVector& Player);
+    void UpdateParticleField(const FVector& Player);
+    UStaticMeshComponent* Prop(const FString& Name,const FString& MeshPath,
+        const FVector& Location,const FVector& Scale,const FString& MaterialPath, bool Collision=true);
+};

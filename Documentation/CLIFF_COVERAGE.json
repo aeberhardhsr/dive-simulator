@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "status": "DECODED_COVERAGE_VALIDATED",
+  "crs": "EPSG:2056",
+  "bounds": [
+    2723000,
+    1215000,
+    2745000,
+    1228000
+  ],
+  "north_up": true,
+  "width": 4096,
+  "height": 4096,
+  "channels": {
+    "R": {
+      "source_class": "Fels",
+      "source_bit": 1,
+      "nonzero_pixels": 645471
+    },
+    "G": {
+      "source_class": "Fels locker",
+      "source_bit": 2,
+      "nonzero_pixels": 156648
+    }
+  },
+  "constant_channels": {
+    "B": 0,
+    "A": 255
+  },
+  "source_manifest": {
+    "file": "Documentation/SURFACE_COVER_MASK.json",
+    "sha256": "50fc9b955a17aad709933eed3b5d6108d5302bb361d0e1cdf2289406a407894e"
+  },
+  "source": {
+    "file": "Art/GroundMaterials/SurfaceCoverMask.png",
+    "sha256": "a076e76cb963b63ed531efc18de0e5363feabe4120529f231f919c917a75ecb9",
+    "bytes": 384520
+  },
+  "output": {
+    "file": "Art/GroundMaterials/CliffCoverage.png",
+    "sha256": "982b93f6cfea1a1ed03fb2ef46b3b3561c34ab0766a7a748a26a5d91dbe3f399"
+  },
+  "runtime_contract": "Linear uncompressed RGBA8; bilinear/trilinear filtering and average mipmaps operate on decoded coverage, never categorical bit values.",
+  "limits": "Mapped footprint, not surveyed rock colour or three-dimensional cliff extent. Loose rock coverage strength is authored. Zero remains unclassified; other cover classes are not reclassified as rock."
+}

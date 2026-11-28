@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "independent_polygon_checks": [
+    {
+      "category": "Fels",
+      "points": 30000,
+      "mismatches": 0,
+      "inside_points": 1126
+    },
+    {
+      "category": "Fels locker",
+      "points": 30000,
+      "mismatches": 0,
+      "inside_points": 265
+    }
+  ],
+  "uv_registration": "PASS",
+  "coverage_sha256": "982b93f6cfea1a1ed03fb2ef46b3b3561c34ab0766a7a748a26a5d91dbe3f399",
+  "source_geojson_sha256": "887a4363bbc2f7349648c058eafb9dc2b2213d4504edf5b9926d1e6d0ddd33ca",
+  "limits": "Checks decoded offline pixels and declared shader registration; not a GPU texture readback or 3D rock-shape survey."
+}

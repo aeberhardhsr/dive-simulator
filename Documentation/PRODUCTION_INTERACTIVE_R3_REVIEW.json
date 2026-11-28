@@ -1,0 +1,96 @@
+{
+  "status": "PARTIAL_REAL_INPUT_CHECK_USER_FEEDBACK_RECEIVED_MEASUREMENTS_RESUMED",
+  "recorded_utc": "2026-11-28T06:32:26.509092+00:00",
+  "package_identity": {
+    "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+    "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+  },
+  "launch": {
+    "file": "artifacts/underwater-package-20261128/InteractiveStartR3.json",
+    "sha256": "289aa1c544b64058b99c01d5ce2f609b264f95bef6d82f2b739319e7703db812"
+  },
+  "runtime_snapshot": {
+    "file": "artifacts/underwater-package-20261128/interactive-r3/RuntimeSnapshot.log",
+    "sha256": "180ebd0339c7b8db192f14110baf90ef8f9d28a4e438c38fd9248c4de2ff1271"
+  },
+  "snapshot_scope": "Read-only snapshot of the still-open normal session; not a process-completion or full-session stability claim.",
+  "observed_ui_checks": [
+    "Security dialog absent before starting the normal launcher without extra arguments.",
+    "Main menu displayed at ultrawide desktop size; Alt+Return switched to a 1280x720 client window.",
+    "Actual mouse menu selection and shore start worked for Weesen/Strandbad, Murg/West and Mols/Lediwracks.",
+    "T changed the Weesen HUD from ambient air to regulator active.",
+    "C raised the wrist computer; R changed from dive data to vital signs after the arm animation settled.",
+    "Escape opened the pause menu; the recorded Weesen duration stayed at 01:50 through the following menu/debrief sequence.",
+    "The end-dive button produced an aborted record; the logbook displayed that record and its gas/time graphs.",
+    "Next dive planning and map selection changed the entry; M opened the live Murg depth map."
+  ],
+  "recorded_short_sessions": [
+    {
+      "evidence": {
+        "file": "artifacts/underwater-package-20261128/interactive-r3/20261128_072531_007B3BEA.json",
+        "sha256": "852a72229caa09b20ba3dfab26377a2c80b3c3b536afc06fa0295b588eae7106"
+      },
+      "location": "Weesen / Strandbad",
+      "status": "aborted",
+      "is_test": false,
+      "start_on_shore": true,
+      "duration_seconds": 110.65999752655625,
+      "maximum_depth_m": 0,
+      "distance_m": 0,
+      "samples": 111
+    },
+    {
+      "evidence": {
+        "file": "artifacts/underwater-package-20261128/interactive-r3/20261128_072832_50B2D970.json",
+        "sha256": "462c32c1eb315c8b9c21eed2348cab6ae8bb09d44ae4c72f7ea5509da3d7b046"
+      },
+      "location": "Murg / West",
+      "status": "aborted",
+      "is_test": false,
+      "start_on_shore": true,
+      "duration_seconds": 21.639999516308308,
+      "maximum_depth_m": 0,
+      "distance_m": 0,
+      "samples": 22
+    }
+  ],
+  "limitations": [
+    "The isolated W press did not establish a complete walking/swimming route. No shore-to-water-to-shore route is marked passed.",
+    "L was sent in daylight; this did not supply a reliable visual lamp-on/off comparison. Existing native night checks remain separate evidence.",
+    "The debrief still displays the raw English outcome \"aborted\"; the logbook translates it correctly as \"Abgebrochen\". Deferred UI text issue, not a new rendering change.",
+    "No screenshot payloads from the desktop interaction were archived. Visual observations are from this conversation; the copied native logs bind launch and short-session facts."
+  ],
+  "handoff": {
+    "reason": "Computer Use reported a physical Escape stop during the Mols pause attempt; outcome of that last injected action is unknown.",
+    "user_choice": "Ich teste selbst weiter",
+    "last_verified_scene": "Mols / Lediwracks shore start",
+    "agent_commitment": "Historical commitment during manual testing: no desktop input, termination, parallel GPU test or package replacement. User subsequently finished testing and authorized measurements.",
+    "status": "Ended by explicit user authorization to resume measurements and tests."
+  },
+  "remaining": [
+    "Unverified portions of the full shore/water/return and instrument sequence, especially Mols; preserve positive user feedback for Murg/Weesen.",
+    "Targeted visible terrain continuity during cell transitions; no explicit user report about holes.",
+    "Two-hour soak completed; private-memory trend and visible background transition remain open findings."
+  ],
+  "updated_utc": "2026-11-28T06:38:50.892243+00:00",
+  "runtime_final": {
+    "file": "artifacts/underwater-package-20261128/interactive-r3/RuntimeFinal.log",
+    "sha256": "2343c4f4d3da8528059ab4ebf5547ea66a39eb5d2699baa42e88d4e875397021"
+  },
+  "shutdown": "Normal runtime log ends with orderly engine shutdown and LogExit: Exiting; subsequent CIM check found no running game/editor before soak launch.",
+  "user_feedback": {
+    "source": "Direct user reply in this conversation, 2026-11-28",
+    "verbatim": "ich habe murg und weesen getestet. aufblitzer oder bedienprobleme sind keine aufgetreten",
+    "tested_locations": [
+      "Murg",
+      "Weesen"
+    ],
+    "reported_flashes": false,
+    "reported_control_issues": false,
+    "scope": "Positive firsthand gameplay feedback. Exact route, full shore return/logbook sequence, lamp comparison and visible terrain across cell boundaries were not explicitly detailed. Mols was not included in this user report."
+  },
+  "soak_review": {
+    "file": "Documentation/UNDERWATER_FINISH_SOAK_R3.json",
+    "sha256": "ac47ce20c086950a1293b350440cc8928e701704ed63e88d9c00311bb1b2da63"
+  }
+}

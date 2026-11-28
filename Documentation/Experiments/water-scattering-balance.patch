@@ -1,0 +1,147 @@
+diff --git a/Tools/SmokeTest.ps1 b/Tools/SmokeTest.ps1
+index 8fee8fc..c161e64 100644
+--- a/Tools/SmokeTest.ps1
++++ b/Tools/SmokeTest.ps1
+@@ -8,7 +8,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
+     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
+     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants,
+     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
+-    [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
++    [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics, [switch]$WaterScatterStudy,
+     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
+     [ValidateSet('default','cache','front','hit')][string]$WaterReflection='default',
+     [ValidateRange(0,1)][double]$WaterVolumeGain=1,
+@@ -87,6 +87,7 @@ if($NativeScattering) {$arguments+=' -DiveNativeScattering'}
+ if($WaterInterface) {$arguments+=' -DiveWaterInterface'}
+ if($BoundedWater) {$arguments+=' -DiveBoundedWater'}
+ if($WaterPreview) {$arguments+=' -DiveWaterPreview'}
++if($WaterScatterStudy) {$arguments+=' -DiveWaterScatterStudy'}
+ if($DisableRayTracing) {$arguments+=' -noraytracing'}
+ if($PSBoundParameters.ContainsKey('WaterVolumeGain')) {$arguments+=' -DiveWaterVolumeGain='+$WaterVolumeGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
+ if($HabitatSunView) {
+diff --git a/Tools/build_water_volume_content.py b/Tools/build_water_volume_content.py
+index 5972ecb..f176755 100644
+--- a/Tools/build_water_volume_content.py
++++ b/Tools/build_water_volume_content.py
+@@ -12,8 +12,9 @@ def build_water_volume(wave_code):
+     m.set_editor_property('material_domain',u.MaterialDomain.MD_VOLUME)
+     m.set_editor_property('blend_mode',u.BlendMode.BLEND_ADDITIVE)
+     m.set_editor_property('shading_model',u.MaterialShadingModel.MSM_DEFAULT_LIT)
+-    albedo=lib.create_material_expression(m,u.MaterialExpressionConstant3Vector)
+-    albedo.set_editor_property('constant',u.LinearColor(.07,.24,.16,1))
++    albedo=lib.create_material_expression(m,u.MaterialExpressionVectorParameter)
++    albedo.set_editor_property('parameter_name','WaterAlbedo')
++    albedo.set_editor_property('default_value',u.LinearColor(.07,.24,.16,1))
+     lib.connect_material_property(albedo,'',u.MaterialProperty.MP_BASE_COLOR)
+     nodes={'P':lib.create_material_expression(m,u.MaterialExpressionWorldPosition)}
+     for name,param,value in [('T','WaveTime',0),('Visibility','VisibilityMetres',14),('DensityGain','DensityGain',1)]:
+diff --git a/divingsim/Source/DiveSim/DiveWater.cpp b/divingsim/Source/DiveSim/DiveWater.cpp
+index 1201378..a1a0808 100644
+--- a/divingsim/Source/DiveSim/DiveWater.cpp
++++ b/divingsim/Source/DiveSim/DiveWater.cpp
+@@ -153,6 +153,13 @@ bool ADiveWorld::ValidateWater(FString& Error) const
+         for(const FName name:{FName(TEXT("Viewer")),FName(TEXT("Wave0")),FName(TEXT("Wave1")),FName(TEXT("Wave2")),FName(TEXT("Wave3")),FName(TEXT("WavePhase"))})
+             if(!WaterVolumeMaterial->K2_GetVectorParameterValue(name).Equals(WaterMaterial->K2_GetVectorParameterValue(name),1.e-5f))
+             {Error=TEXT("Water volume surface does not follow shared waves");return false;}
++        const auto waterAlbedo=WaterVolumeMaterial->K2_GetVectorParameterValue(TEXT("WaterAlbedo"));
++        const float phase=bWaterScatterStudy?FMath::Lerp(.55f,.75f,water):.55f;
++        if(!waterAlbedo.Equals(bWaterScatterStudy?FLinearColor(.09,.32,.30):FLinearColor(.07,.24,.16),1.e-5f)||
++            FMath::Abs(fog->VolumetricFogScatteringDistribution-phase)>1.e-5f)
++        {Error=TEXT("Water scattering study parameters differ");return false;}
++        UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_SCATTER study=%d albedo=%.3f,%.3f,%.3f phase=%.3f"),
++            bWaterScatterStudy?1:0,waterAlbedo.R,waterAlbedo.G,waterAlbedo.B,phase);
+         UE_LOG(LogTemp,Display,TEXT("DIVE_BOUNDED_WATER_PASS native=%d air_density=%.6f visibility=%.3f gain=%.3f"),
+             NativeWaterScattering()?1:0,fog->FogDensity,VisibleDistance,WaterVolumeGain);
+     }
+diff --git a/divingsim/Source/DiveSim/DiveWaterVolume.cpp b/divingsim/Source/DiveSim/DiveWaterVolume.cpp
+index d15d5c7..d5f86a9 100644
+--- a/divingsim/Source/DiveSim/DiveWaterVolume.cpp
++++ b/divingsim/Source/DiveSim/DiveWaterVolume.cpp
+@@ -37,4 +37,6 @@ void ADiveWorld::UpdateWaterVolume(const FVector& Eye)
+     WaterVolumeMaterial->SetScalarParameterValue(TEXT("WaveTime"),WaterMaterial->K2_GetScalarParameterValue(TEXT("WaveTime")));
+     WaterVolumeMaterial->SetScalarParameterValue(TEXT("VisibilityMetres"),VisibleDistance);
+     WaterVolumeMaterial->SetScalarParameterValue(TEXT("DensityGain"),WaterVolumeGain);
++    WaterVolumeMaterial->SetVectorParameterValue(TEXT("WaterAlbedo"),
++        bWaterScatterStudy?FLinearColor(.09,.32,.30):FLinearColor(.07,.24,.16));
+ }
+diff --git a/divingsim/Source/DiveSim/DiveWorld.cpp b/divingsim/Source/DiveSim/DiveWorld.cpp
+index f28c28c..e98d412 100644
+--- a/divingsim/Source/DiveSim/DiveWorld.cpp
++++ b/divingsim/Source/DiveSim/DiveWorld.cpp
+@@ -204,6 +204,7 @@ void ADiveWorld::BeginPlay()
+         bNativeWaterScattering=FParse::Param(FCommandLine::Get(),TEXT("DiveNativeScattering"));
+         bWaterInterface=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterInterface"));
+         bBoundedWater=FParse::Param(FCommandLine::Get(),TEXT("DiveBoundedWater"));
++        bWaterScatterStudy=FParse::Param(FCommandLine::Get(),TEXT("DiveWaterScatterStudy"));
+         bNativeWaterScattering|=bBoundedWater;
+         FParse::Value(FCommandLine::Get(),TEXT("DiveWaterVolumeGain="),WaterVolumeGain);
+         WaterVolumeGain=FMath::IsFinite(WaterVolumeGain)?FMath::Clamp(WaterVolumeGain,0.f,1.f):1.f;
+@@ -365,6 +366,9 @@ void ADiveWorld::UpdateAtmosphere()
+     OpticalMedium=Dive::VisualMedium::At((SurfaceZ(eye.X,eye.Y)-eye.Z)/100,WeatherSettings.Weather,VisibleDistance);
+     WaterAmbient=WaterAmbientAt(eye);
+     const float water=static_cast<float>(OpticalMedium.Water);
++    // Diagnostic only: UE exposes one phase distribution for the whole fog
++    // grid, so this camera blend is not a spatially varying water/air phase.
++    Fog->SetVolumetricFogScatteringDistribution(bBoundedWater&&bWaterScatterStudy?FMath::Lerp(.55f,.75f,water):.55f);
+     // Single Layer Water integrates the medium behind the surface. From below
+     // that is air: retaining lake absorption incorrectly darkens even the sun.
+     // The camera post-process still attenuates the submerged path to the surface.
+diff --git a/divingsim/Source/DiveSim/DiveWorld.h b/divingsim/Source/DiveSim/DiveWorld.h
+index 9b1724a..bd72943 100644
+--- a/divingsim/Source/DiveSim/DiveWorld.h
++++ b/divingsim/Source/DiveSim/DiveWorld.h
+@@ -224,6 +224,7 @@ private:
+     bool bBoundedWater=false;
+     bool bWaterPreview=false;
+     float WaterVolumeGain=1;
++    bool bWaterScatterStudy=false;
+     bool bOpticsSmoke=false;
+     uint8 ObservedOpticalMedia=0;
+     UPROPERTY() TObjectPtr<class ACelestialVaultDaySequenceActor> Celestial;
+diff --git a/Tools/TestWaterScatteringBalance.ps1 b/Tools/TestWaterScatteringBalance.ps1
+new file mode 100644
+--- /dev/null
++++ b/Tools/TestWaterScatteringBalance.ps1
+@@ -0,0 +1,42 @@
++param([switch]$Preview)
++$ErrorActionPreference='Stop'
++$repo=Split-Path $PSScriptRoot -Parent
++if(Get-Process | Where-Object {$_.ProcessName -like 'UnrealEditor*' -or $_.ProcessName -like 'divingsim*'}) {throw 'An Unreal/game process is already running.'}
++$runtime=Join-Path $repo 'Builds/EditorSandbox/divingsim'
++$root=Join-Path $repo ('artifacts/water-scattering-balance-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
++New-Item -ItemType Directory -Force $root | Out-Null
++$files=@(Get-ChildItem (Join-Path $repo 'divingsim/Source/DiveSim') -File -Recurse)
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Materials') -Filter '*.uasset'
++foreach($f in @('Tools/SmokeTest.ps1','Tools/TestWaterScatteringBalance.ps1','Tools/build_water_volume_content.py','divingsim/Config/DefaultEngine.ini')) {$files+=Get-Item (Join-Path $repo $f)}
++$files+=Get-Item (Join-Path $runtime 'Binaries/Win64/UnrealEditor-DiveSim.dll')
++$inputs=@($files | Sort-Object FullName -Unique | ForEach-Object {
++    @{file=$_.FullName.Substring($repo.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}
++})
++@{preview=[bool]$Preview;source_head=(& git -C $repo rev-parse HEAD);files=$inputs} | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
++$cases=@(@{name='bed';hour=12},@{name='sun';hour=12;sun=$true},@{name='morning';hour=7.5})
++if(-not $Preview) {$cases+=@(@{name='clear';hour=12;visibility=40},@{name='turbid';hour=12;visibility=3},@{name='surface';hour=12;surface=$true},@{name='night-off';hour=1.5;torch=$true;off=$true},@{name='night-on';hour=1.5;torch=$true},@{name='fallback';hour=12;fallback=$true})}
++$completed=@()
++foreach($case in $cases) { foreach($study in @($false,$true)) {
++    $name=$case.name+$(if($study){'-study'}else{'-baseline'})
++    $folder=Join-Path $root $name;New-Item -ItemType Directory -Force $folder | Out-Null
++    $opts=@{EditorSandbox=$true;Scenario='rocks';Entry=0;Hour=$case.hour;Date='2026-06-21';MaxFPS=30;WaterPreview=$true;WaterScatterStudy=$study;RuntimeLog=(Join-Path $folder 'Runtime.log')}
++    if($case.visibility) {$opts.Visibility=$case.visibility}
++    if($case.torch) {$opts.Scenario='torch';$opts.LampOff=[bool]$case.off}
++    elseif($case.surface) {$opts.WaterView=$true;$opts.WaterStart=1;$opts.WaterEnd=1}
++    else {$opts.HabitatView=$true;if($case.sun){$opts.HabitatSunView=$true}else{$opts.HabitatLowView=$true}}
++    if($case.fallback) {$opts.DisableVolumetrics=$true}
++    $started=[DateTime]::UtcNow
++    & (Join-Path $PSScriptRoot 'SmokeTest.ps1') @opts *> (Join-Path $folder 'Summary.log')
++    $log=Get-Content $opts.RuntimeLog -Raw
++    if($log -match 'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:') {throw "Rendering failed: $name"}
++    if($log -notmatch ('DIVE_WATER_SCATTER study='+[int]$study)) {throw "Missing study marker: $name"}
++    $images=@(Get-ChildItem (Join-Path $runtime 'Saved/Screenshots') -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
++    $expected=if($case.torch){2}else{3}
++    if($images.Count -ne $expected) {throw "Missing captures $name : $($images.Count)/$expected"}
++    $images | Copy-Item -Destination $folder
++    $completed+=@{name=$name;study=$study;options=$opts;status='PASS';images=@($images.Name)}
++    $completed | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $root 'Cases.json') -Encoding utf8
++    Write-Output "PASS $name"
++} }
++foreach($input in $inputs) {if((Get-FileHash -LiteralPath (Join-Path $repo $input.file)).Hash.ToLowerInvariant() -ne $input.sha256) {throw "Input changed during tests: $($input.file)"}}
++Write-Output "WATER_SCATTERING_BALANCE=$root"

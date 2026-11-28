@@ -1,0 +1,96 @@
+# Separater Unreal-Quellcode-Build für die Wasserbeleuchtung
+
+Der Zugriff auf `EpicGames/UnrealEngine` funktioniert nach der vom Nutzer abgeschlossenen Kontoverknüpfung. Die Engine liegt ausschliesslich im ignorierten Arbeitsordner `Builds/UE584`. Sie wird nicht in das öffentliche Spiel-Repository übernommen. Die installierte Engine unter `C:/Program Files/Epic Games/UE_5.8` bleibt separat.
+
+## Verifizierter Ausgangspunkt
+
+- Offizieller Tag: `5.8.4-release`.
+- Aufgelöster Commit: `f45729c0b6f097038e72b52d366a62baeca3275b`.
+- `LightRendering.cpp` und `VolumetricFog.cpp` stimmen vor dem Patch bytegenau mit den geprüften installierten 5.8.4-Dateien überein.
+- Die beiden kopierten Engine-Shader werden von `PrepareSolarShaderStudy.py` ebenfalls gegen ihre festgelegten Prüfsummen geprüft.
+- GitDependencies hat die benötigten Abhängigkeiten erfolgreich geladen: 128.576 Dateien, 23.192,1 MiB Download laut Abschlussprotokoll.
+- Build-Toolchain: MSVC 14.44.35230 und Windows SDK 10.0.22621.0. UnrealBuildTool wurde aus diesem Quellstand erfolgreich erzeugt.
+- `ShaderCompileWorker` wurde erfolgreich gebaut: 289 Aktionen, 477,96 Sekunden Gesamtlaufzeit. Die EXE liegt im separaten Engine-Baum.
+
+**Status: Shader-Compiler, vollständiger Editor-/Renderer-Build und Nachbau der aktuellen Spielquellen erfolgreich. Drei native UI-Läufe, der erste Wellenlicht-Tageslauf, zehn paarweise Wellenlicht-Vergleiche mit 40 gesichteten Bildern und alle 35 nativen Spielfunktionstests sind bestanden.** Der fortgesetzte Engine-Build endete mit `Result: Succeeded` und Exitcode 0 nach 2.029 weiteren Aktionen (3.625,46 Sekunden für diesen fortgesetzten Abschnitt). Das Abschlussprotokoll, Editor-EXE, Kommandozeilen-EXE und Renderer-DLL sind im [Zwischenbericht](SOURCE_ENGINE_RESULTS.json) mit Prüfsummen erfasst. Die bestehende Vorschau und die [fehlgeschlagene erste Wellenprobe](WAVE_TRANSPORT_STUDY.md) werden dadurch nicht rückwirkend geändert. Die Protokolle liegen unter `artifacts/source-engine-20261127/`. Die [UI-Prüfung](UI_UX_TARGET.md) dokumentiert die Bildsichtung und verbleibenden Einschränkungen; erfolgreiche Testmarker allein sind keine vollständige Grafikabnahme.
+
+Der anschliessende Nachbau synchronisierte die während des Erstbuilds entstandenen Menü-, HUD-, Kamera- und Textänderungen. Der Compiler meldete dabei zwei verdeckte lokale Layoutvariablen in `DiveMenuHUD.cpp`; die Wetterseite verwendet jetzt eine eigene Feldbreite ohne doppelte Deklaration. Der erneute Nachbau endete erfolgreich. Alle Quelldateien des Hauptprojekts wurden bytegenau mit der kompilierten Sandbox verglichen. Das Fehlerprotokoll des ersten Versuchs, das erfolgreiche Folgeprotokoll und die neue Projekt-DLL sind im Zwischenbericht erfasst. Der erste native UI-Test verwendet `SmokeTest.ps1 -Scenario ui -TimeoutSeconds 1200`; der neue Zeitparameter belässt den bisherigen Standard bei 180 Sekunden und beendet bei Überschreitung keinen laufenden Prozess.
+
+Der erste Zwischenstand belegte die erfolgreiche Kompilierung der geänderten Übersetzungseinheiten `LightRendering.cpp` und `VolumetricFog.cpp` sowie die Erzeugung von `UnrealEditor-Renderer.lib`. Die zwei Objektdateien, die Importbibliothek und ein unveränderlicher Ausschnitt des damaligen Build-Protokolls sind im Zwischenbericht mit Prüfsummen erfasst. Zu jenem Prüfzeitpunkt existierte die Renderer-DLL noch nicht. Dies belegte die C++-Kompilierbarkeit der Änderung, noch nicht ihre Shader-Bindung oder Bildwirkung.
+
+Ein späterer Prüfpunkt bestätigte auch den erfolgreichen Link von `UnrealEditor-Renderer.dll` bei Aktion 1.546 des ursprünglichen Builds. Die 36.422.144 Byte grosse DLL ist im Zwischenbericht mit SHA-256 `8fa1503831f0876e7176c3ef68a0bac1526885103b0ab893a93d5aae19e8253b` erfasst. Die zwei geänderten Renderer-Quelldateien stimmten weiterhin mit den vorgesehenen Prüfsummen überein. Die späteren nativen Shader- und Bildprüfungen sind im aktuellen Status und in der Wellenlicht-Prüfung erfasst; der DLL-Link allein belegte diese noch nicht.
+
+Bei der anschliessenden Quellprüfung wurde der Aufruf in `FSceneRenderer::ComputeVolumetricFog` auf die dort vorhandene Memberfunktion `GetSceneUniformBufferRef(GraphBuilder)` korrigiert. Die ursprüngliche Variante mit zwei Argumenten wäre durch diese Memberfunktion verdeckt und damit nicht auflösbar. Die Korrektur ist vor dem Kompilieren dieser Datei in den laufenden Quellbaum übernommen worden; der Build wurde nicht neu gestartet. Die aktuelle Vorbereitung unter `renderer-patch-v2` stimmt bytegenau mit den zwei geänderten Quelldateien überein. Der frühere Patch bleibt als unkompilierter Zwischenstand erhalten.
+
+## Getrennte Projekt-Binaries
+
+`-EditorSandbox -SandboxName SourceEditorSandbox` richtet `Builds/SourceEditorSandbox/divingsim` ein. Source, Config und Shaders werden wie in der bestehenden Sandbox kopiert; Content verweist über eine geprüfte Junction auf die vorhandenen Spielinhalte. Binaries, Intermediate und Saved bleiben getrennt von `Builds/EditorSandbox/divingsim`. Ein Sandbox-Name darf keine Pfadtrenner oder Punktsegmente enthalten. Ohne den neuen Parameter bleibt das bisherige Verhalten erhalten.
+
+`TestCaustics.ps1` kann mit `-TimeoutSeconds` längere erste Shader-Kompilierungen beobachten. Ein Zeitlimit beendet den Prozess weiterhin nicht automatisch. Vor jedem erneuten Start ist der konkrete laufende Prozess zu prüfen. Im Testmanifest wird zusätzlich die Prüfsumme der tatsächlich ausgewählten Engine-Renderer-DLL erfasst; die EXE allein identifiziert diese Änderung nicht.
+
+## Einrichtung und Build
+
+Die folgenden Befehle gelten für dieses Windows-Arbeitsverzeichnis. Quellcodezugriff muss vorher bestehen. Der Clone-Schritt ist nur bei noch nicht vorhandenem Ziel auszuführen.
+
+```powershell
+git -c core.longpaths=true clone --depth 1 --single-branch --branch 5.8.4-release https://github.com/EpicGames/UnrealEngine.git Builds/UE584
+
+$sourceEngineRoot = Join-Path $PWD 'Builds/UE584'
+& "$sourceEngineRoot/Engine/Binaries/DotNET/GitDependencies/win-x64/GitDependencies.exe" `
+    "--root=$sourceEngineRoot" --threads=8 `
+    --exclude=Mac --exclude=Linux --exclude=LinuxArm64 --exclude=Android --exclude=TVOS
+
+./Tools/.geodata-env/Scripts/python.exe Tools/PrepareWaveRendererPatch.py `
+    --engine Builds/UE584 --output artifacts/source-engine-20261127/renderer-patch
+# Nur im separaten, noch unveränderten Quellbaum anwenden:
+git -C Builds/UE584 apply --check "$PWD/artifacts/source-engine-20261127/renderer-patch/renderer-scene-binding.patch"
+git -C Builds/UE584 apply "$PWD/artifacts/source-engine-20261127/renderer-patch/renderer-scene-binding.patch"
+
+& "$sourceEngineRoot/Engine/Build/BatchFiles/Build.bat" ShaderCompileWorker Win64 Development `
+    -WaitMutex -NoHotReloadFromIDE -NoUBA -MaxParallelActions=2
+./Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4
+```
+
+Die vorhandenen VC++-/GameInput-Laufzeitkomponenten bleiben erhalten. Es werden keine Dateizuordnungen auf die neue Engine umgestellt. Für diesen Windows-Prüfstand ausgelassene Plattformabhängigkeiten sind vor einem entsprechenden anderen Plattform-Build nachzuladen; dies ist kein macOS-Buildnachweis.
+
+**Korrektur für die Paketierung:** Der ursprüngliche Setup-Aufruf schloss zusätzlich `IOS` aus. Dadurch scheiterte der erste Source-Package-Aufruf vor dem Cook mit `MSB3554`: Das auch für Windows gestartete AutomationTool baut sein iOS-Modul und benötigt dessen `GreenCheck.png` und `GreyCheck.png`. Zusätzlich fehlte die referenzierte `Engine/Binaries/ThirdParty/IOS/BouncyCastle.Crypto.dll`. Der obige Setup-Aufruf lässt deshalb iOS-Abhängigkeiten zu. Im bereits gebauten Arbeitsbaum wurden gezielt die drei Originaldateien wiederhergestellt und gegen `Commit.gitdeps.xml` geprüft: beide PNGs aus der installierten Engine, die DLL aus dem lokalen GitDependencies-Pack-Cache. Die DLL der installierten Engine hat eine andere Prüfsumme und wurde ausdrücklich nicht übernommen. Der [Wiederherstellungsnachweis](SOURCE_AUTOMATION_DEPENDENCIES.json) dokumentiert Herkunft und Hashes; weder Engine-Quellen noch diese Binärdateien werden ins öffentliche Spiel-Repository übernommen.
+
+**Korrektur des gekochten Sternenmaterials:** Die erste vollständige Source-Paketierung bestand, ihr normaler Start meldete jedoch einen fehlenden Konstruktor-Verweis in `CelestialVaultDaySequenceActor`. Die alte Assetdatei ist ein Editor-Redirector auf das bereits verwendete kanonische Sternenmaterial und wird beim Cook entfernt. `PrepareCelestialPackagePatch.py` prüft die SHA-256 des originalen 5.8.4-Plugin-Quelltexts und bereitet genau diesen Verweiswechsel vor. Der [Nachweis](CELESTIAL_PACKAGE_FIX.json) enthält die native Asset-Inspektion und den absichtlich zurückgewiesenen ersten Pakettest. Der installierte Engine-Baum bleibt unverändert. Die folgenden Befehle gelten nur vor Anwendung der Korrektur; einen bereits korrigierten Baum nicht nochmals patchen:
+
+```powershell
+./Tools/.geodata-env/Scripts/python.exe Tools/PrepareCelestialPackagePatch.py --engine Builds/UE584 --output artifacts/celestial-package-patch
+git -C Builds/UE584 apply --check "$PWD/artifacts/celestial-package-patch/celestial-cooked-star.patch"
+git -C Builds/UE584 apply "$PWD/artifacts/celestial-package-patch/celestial-cooked-star.patch"
+./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4
+```
+
+Auf Wunsch des Nutzers wurde der Erstbuild am 27. November nach 2.014 von 4.043 abgeschlossenen Aktionen kontrolliert angehalten und mit `-MaxParallelActions=4` statt `2` inkrementell fortgesetzt. Das neue Protokoll `artifacts/source-engine-20261127/editor-build-parallel4.log` bestätigt 2.029 verbleibende Aktionen; die abgeschlossenen Ergebnisse wurden übernommen. Drei gleichzeitig aktive Compilerprozesse wurden beobachtet. Der Rechner besitzt 16 physische Kerne und 32 logische Prozessoren bei 31,08 GiB nutzbarem RAM. Die ersten Messungen nach Wiederanlauf zeigten rund 8–9 GiB freien RAM; das ist eine Momentaufnahme, keine Speicherzusage für alle Module. Kompilierung, Linken und Abhängigkeiten führen zu wechselnder Parallelität. Aus unterschiedlichen Modulabschnitten lässt sich keine belastbare Beschleunigungsrate ableiten.
+
+`Tools/Build.ps1` reicht den neuen Parameter `-MaxParallelActions` sowohl an direkte Editor-/Game-Builds als auch an den BuildCookRun-Kompilierschritt weiter. Ohne Angabe bleibt der bisherige Wert `2` erhalten. Der Parameter ändert keinen bereits laufenden Prozess. Eine weitere Erhöhung erfordert erneut eine Prüfung von physischem und zugesichertem Speicher; die Anzahl freier CPU-Kerne allein genügt nicht. Während des Wiederanlaufs wurden keine Projektquellen synchronisiert, damit der nachfolgend beschriebene Projekt-Nachbau weiterhin getrennt erfolgt.
+
+Während dieses Erstbuilds hat der Nutzer die Menü-/HUD-Arbeit ausdrücklich vorgezogen. Änderungen im Hauptprojekt dürfen die laufende Sandbox-Kompilierung nicht nachträglich verändern. Nach Abschluss dieses Builds ist deshalb zuerst `Tools/Build.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox -Target Editor -MaxParallelActions 4` erneut auszuführen: Dieser kurze Projekt-Nachbau synchronisiert die neuen UI-Quellen und erzeugt dazu passende Projektmodule. `TestCaustics.ps1` allein synchronisiert zwar Dateien, kompiliert sie aber nicht und darf diesen Schritt nicht ersetzen.
+
+Erst nach erfolgreichen Builds folgen die Shader-Vorbereitung und **ein einzelner** nativer Tageslauf:
+
+```powershell
+./Tools/.geodata-env/Scripts/python.exe Tools/PrepareSolarShaderStudy.py `
+    --engine Builds/UE584 --project Builds/SourceEditorSandbox/divingsim --volume --waves
+./Tools/TestCaustics.ps1 -EngineRoot $sourceEngineRoot -EditorSandbox -SandboxName SourceEditorSandbox `
+    -WaterPreview -SolarShaderStudy -SolarVolumeStudy -WaveTransportStudy -Case day -TimeoutSeconds 1200
+```
+
+Habitatansichten, Seegrenzen, längere Laufzeitstabilität und Performance bleiben Teil der [Wellenlicht-Prüfung](WAVE_TRANSPORT_STUDY.md). Erfolgreiches Kompilieren allein ist keine Grafikabnahme.
+
+## Native Spielfunktionen nach dem Engine-Wechsel
+
+Alle 35 Tests der `DiveSim`-Automation bestanden im separaten Quellcode-Editor mit Null-RHI, ohne Warnungen innerhalb der Tests. Der erste Lauf hatte zwei fehlgeschlagene Kamera-Assertions im selben Test: Der isolierte Testcontroller besass keinen lokalen Spieler. Unreal aktualisiert die Kamera aus der Pawn-Blickrichtung nur für einen lokalen Controller. Der Test erzeugt jetzt einen echten `ULocalPlayer` mit dem vorgeschriebenen Engine-Outer und verknüpft beide Seiten. Ein Zwischenversuch mit dem falschen Outer und die ursprünglichen Fehler sind im [Prüfnachweis](SOURCE_NATIVE_TEST_RESULTS.json) erhalten.
+
+Die Assertions für Körperkollision, begrenzte Kopfbewegung, Kamera zwischen Physikschritten, Pause und Freigabe der blockierten Drehung bleiben bestehen. Für diese Korrektur wurde keine produktive Kameralogik verändert. Der erfolgreiche Nachbau brauchte nur vier Projektaktionen; kein vollständiger Engine-Neubau war nötig. Null-RHI prüft Logik, nicht Bildqualität oder Mausgefühl.
+
+```powershell
+./Tools/TestDecompressionNative.ps1 -EngineRoot $sourceEngineRoot `
+    -EditorSandbox -SandboxName SourceEditorSandbox `
+    -ResultDirectory artifacts/source-engine-20261127/native-suite-local-player-final -TimeoutSeconds 600
+```
+
+`TestDecompressionNative.ps1` unterstützt jetzt getrennte Sandbox-Namen, Ergebnisordner und Beobachtungszeiten. Die Standardwerte bleiben erhalten. Ein Zeitlimit lässt den Prozess weiterlaufen und nennt Prozess-ID sowie Protokoll; vor einem neuen Lauf ist dieser Zustand zu prüfen.

@@ -1,0 +1,132 @@
+# Menüführung, HUD und FPV: Designanforderung
+
+## Auftrag und Reihenfolge
+
+Der Nutzer hat am 26. November 2026 fünf eigene Designentwürfe bereitgestellt. Gewünscht ist eine Anpassung an deren Gestaltungsidee, keine 1:1-Umsetzung. Seine Bewertung des aktuellen Layouts ist ausdrücklich festgehalten: zu chaotisch, unpassende Texte, unsaubere Umlaute und verwirrende Menüführung.
+
+**Status: Menü/HUD und FPV-Korrekturen sind im [spielbaren Windows-Paket](PLAYABLE_CURRENT.md); drei Auflösungen und automatisierte Abläufe sind geprüft. Reale Mausbedienung und vollständige Designabnahme bleiben offen.** Der Nutzer hat die Reihenfolge am 27. November ausdrücklich angepasst: Menü/HUD/FPV darf während des laufenden Unreal-Erstbuilds vorgezogen und parallel vorbereitet werden. Die ursprünglich vereinbarte Reihenfolge war:
+
+1. Spielgrafik und Umgebung unter Wasser optimieren.
+2. Spielgrafik über Wasser – insbesondere Berge, Wiesen, Wald, Gelände und Ufer – auf vergleichbares Realitätsniveau bringen.
+3. Anschließend Menüführung, HUD und FPV nach dieser Designrichtung überarbeiten.
+
+Die neue Priorisierung erlaubt jetzt die UI-Arbeit im Hauptprojekt. Der bereits laufende Engine-Build verwendet seine getrennte Quellkopie und wird nicht neu gestartet. Nach seinem Abschluss müssen die geänderten Projektmodule ausdrücklich neu gebaut werden, bevor UI- oder Grafiktests mit dem synchronisierten Projekt starten. Die grafischen Qualitätsziele bleiben vollständig bestehen.
+
+Dieser Nachtrag ergänzt die bestehenden 236 Anforderungen und das [visuelle Qualitätsziel](VISUAL_TARGET.md). Bestehende Funktionen, Spielmodi, Instrumente, Lokalisierungs- und Bedienanforderungen bleiben Teil des Gesamtziels. Einzelne Ansichten dürfen später sinnvoll zusammengefasst oder anders angeordnet werden, wenn der Ablauf dadurch verständlicher wird.
+
+## Gestalterische Leitlinie
+
+Ruhige, dunkle und leicht transparente Flächen, zurückhaltende türkisgrüne Akzente, klare Abstände und eine erkennbare Schriftgrößenhierarchie verbinden Menü und Spielansicht. Der Tauchort bleibt sichtbar und prägt die Atmosphäre. Informationen erhalten feste, nachvollziehbare Plätze; Warnungen müssen sich klar vom normalen Status abheben. Der Blick auf die Spielwelt bleibt frei.
+
+Die eingebetteten Zahlen, Tasten, Überschriften und Zähler sind Entwurfsinhalte. Sie werden nicht ungeprüft als Simulationswerte, Standardkonfiguration oder Tastenbelegung übernommen. Beispielsweise müssen Gasdruck, Atemreserve und Sauerstoffsättigung eindeutig getrennt und Einheiten konsistent bleiben. Die Live-Test-Regler sowie eventuell sichtbare Zeichen-/Entwurfswerkzeuge sind keine automatische Vorgabe für Bedienelemente im ausgelieferten Spiel.
+
+## Anforderungen und Abnahme
+
+| ID | Anforderung | Nachweis bei der späteren Umsetzung |
+| --- | --- | --- |
+| UX-REF-01 | Menüinhalte werden in verständliche Themen gegliedert, orientiert an Tauchplan, Wetter/Wasser und Ausrüstung/Tarierung. | Vollständiger Weg von Einstieg/Modus über Konfiguration bis zum Tauchstart im Spiel; jede Einstellung ist auffindbar. |
+| UX-REF-02 | Stabile Navigation, klarer aktiver Bereich, eindeutige Hauptaktion sowie vorhersehbares Zurück-/Pause-Verhalten ersetzen verschachtelte oder widersprüchliche Abläufe. | Bedienprüfung mit Maus und Tastatur, sichtbarer Fokus, keine Sackgassen; Rückkehr aus Logbuch, Profilen, Arten/Fotos und Einstellungen. |
+| UX-REF-03 | Layout, Textmenge und Schriftgröße passen zusammen. Inhalte überlappen nicht, verschwinden nicht hinter Nachbarfeldern und werden nicht auf unlesbare Größe verkleinert. | Prüfung aller Ansichten mit langen realen Inhalten, verschiedenen unterstützten Auflösungen/Seitenverhältnissen und UI-Skalierungen; gezielter Umbruch bzw. Scrollbereich bei Platzmangel. |
+| UX-REF-04 | Deutsche Umlaute und Sonderzeichen werden durchgängig korrekt gespeichert und dargestellt. | Sichtprüfung von ä, ö, ü, Ä, Ö, Ü, ß, ° und verwendeten Einheiten in Menüs, HUD, Hinweisen, Logbuch und exportierten Texten; passende Schriftzeichen statt Ersatzkästchen oder verstümmelter Zeichen. |
+| UX-REF-05 | Beschriftungen sind kurz, verständlich und konsistent; vorhandene Sprachvarianten bleiben vollständig bedienbar. | Deutsch/Englisch mit tatsächlich längeren Texten prüfen; keine unübersetzten Platzhalter, widersprüchlichen Begriffe oder abgeschnittenen Einheiten. |
+| UX-REF-06 | HUD und FPV besitzen eine klare Informationshierarchie und halten die zentrale Sicht auf Umgebung und Handlung frei. | In Bewegung und mit Ausrüstung prüfen: kompakter Orts-/Zustandsbereich, nachvollziehbare Navigation/Kompass, gruppierte Tauchwerte und sparsame Bedienhinweise. Positionen aus dem Entwurf sind Orientierung, keine festen Pixelvorgaben. |
+| UX-REF-07 | Hinweise, Tutorial, Warnungen und geöffnete Instrumente sind aufeinander abgestimmt. Relevante Warnungen bleiben erkennbar, ohne sich gegenseitig oder wichtige Werte zu verdecken. | Gleichzeitige Meldungen, aktives Tutorial, Handgelenk, Karte, Lampe und Pause kombinieren; Priorität, Lesbarkeit, Ausblenden und Wiederaufruf prüfen. |
+| UX-REF-08 | Die Gestaltung unterstützt eine übersichtliche Standardansicht und eine reduzierte Darstellung. Umfang und Bedienung der Varianten werden bei der Umsetzung festgelegt. | Standard/kompakte/minimale Zustände anhand der Referenzidee vergleichen; erforderliche Warnungen und modusspezifische Instrumentregeln bleiben wirksam. |
+| UX-REF-09 | Tabellen, Diagramme und Ausrüstungsvorschau erklären die tatsächlichen Spielwerte. Bearbeiten derselben Einstellung an mehreren Stellen darf keine abweichenden Zustände erzeugen. | Ausrüstung/Tarierung, Wetter/Wasserprofil und Tauchkonfiguration mit Änderungen und Rücknavigation prüfen; Zahlen stimmen mit dem Simulationszustand überein. |
+| UX-REF-10 | Der Gesamteindruck muss die dokumentierten Probleme sichtbar beheben und zur weiterentwickelten Spielgrafik passen. | Vergleichbare echte Aufnahmen und durchgespielte Abläufe im fertigen Unreal-Paket; ein statischer Entwurf oder technische Layouttests allein gelten nicht als Designabnahme. |
+
+## Zusätzlicher FPV-Prüfbefund
+
+Am 27. November zeigt das Abschlussbild der Walenstadt-Leistungsmessung im Paket `WindowsStreamBuild` den eigenen Kopf/Körper gross im Sichtfeld. Die Vergleichsmessung derselben EXE blickt in eine andere Richtung. Ursache und Reproduzierbarkeit dieses Kamerazustands sind noch ungeklärt. Bei der FPV-Überarbeitung sind Eigenkörper-Verdeckung, Kopf-/Kameraabstand und Körperausrichtung während Drehungen, Bodenkontakt und Schwimmen gezielt zu prüfen. Die [gebundenen Messaufnahmen](STREAMING_BUILD_RESULTS.json) bleiben als Befund erhalten. Die aktuelle Priorisierung steht im Abschnitt „Auftrag und Reihenfolge“.
+
+## Umsetzungsstand während des Engine-Builds
+
+Während des Engine-Builds vorbereitet; inzwischen nativ kompiliert und bei 1600 × 900 geprüft (Nachweise unten). **Die vollständige Designabnahme bleibt offen**:
+
+- Drei feste Hauptbereiche mit gemeinsamer Navigation und Hauptaktion; getrennte Pause mit Übersicht aller aktiven Warnungen. Konfiguration bleibt während des laufenden Tauchgangs gesperrt.
+- Gemessener Textumbruch, begrenzte Textflächen, sichtbarer Tastaturfokus, Tab/Pfeiltasten und Enter/Leertaste sowie vorhersehbare Esc-Rückkehr. Deutsche HUD-/Menübeschriftungen wurden korrigiert.
+- Standard-, Kompakt- und Minimal-HUD mit gespeicherter Auswahl. Ortsstatus links, Kompass oben, gruppierte Instrumente unten, priorisierte Warnungen und einklappbares Tutorial rechts. Die Spielkarte lässt diese Bereiche frei.
+- Ausrüstungstabelle und vorhandene 3D-Vorschau im neuen Raster; Werte stammen weiterhin aus der tatsächlichen Konfiguration beziehungsweise dem pausierten Simulationszustand.
+- Wetter-/Wasserseite mit Temperatur-Tiefen-Kurve aus `Dive::Model::Temperature`, passender geplanter Tiefe und manuell gesetzter Sprungschicht. Die Tiefenachse umfasst je nach Plan 40–60 m, die Temperaturachse bleibt zum Vergleichen bei 0–30 °C. Automatische Profile verwenden dieselbe saisonale Interpolation wie die Simulation; es sind keine Live-Messwerte. Die Temperaturkurve ist im nativen Menütest bei 1600 × 900 gesichtet; weitere Auflösungen bleiben offen.
+- Anzeigen und Eingabehinweise verwenden ° und °C; das portable Speicher-/Eingabeschema bleibt unverändert. Weitere deutsche Spielhinweise wurden auf korrekte Umlaute geprüft und berichtigt.
+
+`DiveUISmoke.cpp` und `Tools/SmokeTest.ps1 -Scenario ui` bereiten einen nativen Test mit 14 Zuständen vor. Aufbau und Bildschirmaufnahme erfolgen in getrennten Schritten. Der Ablauf prüft Tastatureingaben über den PlayerController, vorhandene Hitboxen, Zurück-Navigation, Dezimalkomma-Eingabe und Speicherung der HUD-Auswahl. Er erstellt DE-/EN-Aufnahmen für Menü, Dialog, Steuerung und HUD einschließlich Karte, Tutorial und 13 künstlich gleichzeitig gesetzter Warnungen. Die Simulation wird nur in diesem expliziten UI-Test eingefroren. Die Warnungsfixture ist kein Nachweis für Tauchphysik oder medizinische Modellgüte.
+
+Prüfstand nach Ende des Engine-Builds:
+
+1. Erledigt: aktuelle Projektquellen in `SourceEditorSandbox` synchronisiert und erfolgreich neu gebaut.
+2. Drei Läufe mit `SmokeTest.ps1 -Scenario ui -EditorSandbox -SandboxName SourceEditorSandbox -EngineRoot Builds/UE584 -Viewport 1600x900` bestanden; 1920x1080 und 1280x1024 bleiben offen. Nur frische Bilder und vollständige Phasenprotokolle gelten. Erkannte Kürzung der Fixture-Texte lässt den Test fehlschlagen.
+3. Bei 1600 × 900 erledigt, bei weiteren Auflösungen noch offen: Bilder tatsächlich ansehen; insbesondere Warnung/Tutorial/Karte, vollständige Einheiten, Sonderzeichen, Credits und den Textdialog prüfen. Der automatische Test erkennt keine allgemeine grafische Überlappung und ersetzt diese Prüfung nicht.
+4. Bestehende Konfigurations-, Ausrüstungs-, Karten-, Logbuch-, Profil-, Entdeckungs-, Steuerungs- und Tutorialtests wiederholen; echte Mausbedienung sowie lange Nutzernamen prüfen. Danach FPV-Kopf-/Körperverdeckung mit vorhandenen Avatar-Tests und Bewegung reproduzieren und korrigieren.
+
+Bisher geprüft: Die selbst gebaute Engine 5.8.4 und die aktuellen Projektmodule wurden erfolgreich kompiliert. Am 27. November liefen drei native UI-Prüfungen bei 1600 × 900 erfolgreich durch: jeweils 28 Eingabe-/Zustandsschritte, 14 frische Aufnahmen und kein gemeldeter Textüberlauf. Protokolle: `artifacts/source-engine-20261127/ui-runtime-first.log`, `ui-runtime-warm.log` und `ui-runtime-notice.log`. Alle 14 Bilder des ersten Laufs wurden betrachtet: Menü, Temperaturprofil, Ausrüstungstabelle, Eingabedialog und Warnungsübersicht bleiben innerhalb ihrer Flächen; Umlaute und Einheiten sind lesbar.
+
+Der Kaltstart zeigte noch einen vorübergehenden Shader-Hinweis. Scheinbare Textlücken in der verkleinerten Bildvorschau wurden an vergrößerten Originalausschnitten und identischen Vordergrundmasken von fünf Textregionen überprüft: Die Originalaufnahmen enthalten die vollständigen Texte. Daraus ergab sich kein erforderlicher Eingriff in das Text-Rendering. Ein bereits auf Deutsch erzeugter kurzzeitiger Hinweis blieb nach dem synthetischen Sprachwechsel bestehen; die geprüfte Korrektur blendet Hinweise aus, deren Sprache nicht mehr aktiv ist. Die getrennt erzeugten aktuellen Warnungen bleiben sichtbar. Weitere Auflösungen, echte Mausbedienung, lange Namen und FPV-Bewegung bleiben zu prüfen. Das zuletzt spielbare Paket wurde nicht ersetzt. Der reproduzierbare Prüfstand mit Protokoll- und Bildprüfsummen steht im [UI-Ergebnisbericht](UI_NATIVE_RESULTS.json).
+
+### FPV-Korrektur kompiliert und Kameralogik nativ geprüft
+
+Das tatsächlich betrachtete Fehlerbild liegt unter `artifacts/perf-underwater-1080p-q2-20261127-094553-953/Frame.png`. Im zugehörigen `Runtime.log` springt die Blickanforderung bei einer blockierten Körperdrehung wiederholt zwischen den Halsgrenzen. Zwei im Quellcode nachvollziehbare Probleme wurden eingegrenzt:
+
+- Die Kamera verwendet `APawn::GetViewRotation()` und bisher damit direkt die Controller-Rotation. Neue Eingaben können auf einem Renderframe eintreffen, bevor der nächste feste 20-ms-Kollisionsschritt die Kopfhaltung freigibt. Dann stimmen Kamerablick und gerenderter Körper nicht überein. Das Projekt überschreibt nun `GetViewRotation()` während des Tauchgangs mit `PhysicalPose.Gaze`; auch Kamerakomponente und HUD-Kompass verwenden diese akzeptierte Richtung. Der erweiterte Test `DiveSim.Contacts.BlockedBodyAllowsHeadTurn` prüft ausdrücklich einen solchen Zwischenframe und die Pause.
+- Der Leistungstest schrieb pro Frame eine absolute Umlauf-Richtung, obwohl die Behandlung blockierter Drehungen weitere Eingaben als Differenz zur zuletzt akzeptierten Richtung aufnimmt. Er speiste dadurch dieselbe blockierte Anforderung mehrfach ein. Der Umlauftest gibt nun inkrementelle Drehung mit 6 Grad pro simulierter Sekunde ein; seine Anfangsneigung wird einmalig gesetzt. Streaming- und Soak-Steuerung bleiben separat. Neue Performance-Metadaten enthalten Kamera-, Controller- und physische Blickrichtung, Augenposition und blockierte Haltungsschritte.
+
+Diese Änderungen sind inzwischen **nativ kompiliert**. Der UI-Lauf zeigt eine feste Spieleransicht, prüft aber keine blockierten Körperdrehungen. Er beweist deshalb nicht, dass jede Ursache der sichtbaren Verdeckung beseitigt ist. Der Kontakttest ist inzwischen mit einem korrekt angelegten lokalen Testspieler bestanden, ebenso alle übrigen 34 nativen Spielfunktionstests; der [Prüfnachweis](SOURCE_NATIVE_TEST_RESULTS.json) enthält die vorherigen Fixture-Fehler. Eine neue Weesen- und Walenstadt-Wiederholung liegt nun vor (siehe unten). Avatar-Blicktests und schnelle reale Mausdrehungen bleiben erforderlich. Frühere Bildratenmessungen mit anderer Blickführung dürfen nicht als Vergleich derselben sichtbaren Szene verwendet werden.
+
+
+### Native FPV-Wiederholung: Restfehler bei blockierter Haltung
+
+Zwei 60-sekündige Unterwasser-Umläufe im Quellcode-Editor wurden mit der gewöhnlichen Wasservorschau bei 1920 × 1080, Qualitätsstufe 2 und 100 % Auflösung aufgezeichnet. Die experimentelle Wellenbeleuchtung war ausgeschaltet. Beide Original-Abschlussbilder wurden betrachtet; die Kamerarotation stimmt jeweils bis auf Rundung mit `PhysicalPose.Gaze` überein.
+
+- Weesen: zentrale Sicht frei; Hände und Handgelenkcomputer am unteren Rand. 46 blockierte Haltungsschritte, Kopf am Endpunkt wieder gerade. Durchschnittlich 68,60 FPS, 1-%-Low 53,75 FPS, maximal 47,89 ms; ein Frame über 33,33 ms.
+- Walenstadt: zentrale Sicht frei, aber eine grosse graue Körper-/Ausrüstungsfläche verdeckt weiterhin den unteren Bildbereich. Kopf am 65°-Limit, 1.354 blockierte Haltungsschritte. Das genaue Mesh ist aus dem Bild allein noch nicht bestimmt. **FPV-Bildabnahme nicht bestanden.** Durchschnittlich 74,61 FPS, 1-%-Low 50,52 FPS, maximal 35,36 ms; ein Frame über 33,33 ms.
+
+Der [Prüfnachweis](SOURCE_FPV_PERFORMANCE_RESULTS.json) bindet Bilder, Logs, CSV, Quellen-/DLL-Kennungen und Kameraposen. Die 60-FPS-Grenze wurde nicht in jedem Frame eingehalten. Unterschiedliche Kamerawege, Profile und Editor-/Paketstände erlauben keinen direkten Geschwindigkeitsvergleich mit älteren Messungen. Je ein Abschlussbild beweist nicht den gesamten Bewegungspfad. Nächster FPV-Schritt: die konkrete verdeckende Geometrie bei blockierter Körperdrehung identifizieren und die Haltung beziehungsweise Sichtgeometrie gezielt korrigieren; die akzeptierte Kopfrotation und Körperkollision bleiben massgeblich.
+
+
+### Verdeckung eingegrenzt und entspannte Armhaltung korrigiert
+
+Die anschliessende explizite Editor-Diagnose hält den Endpunkt des Walenstadt-Umlaufs fest und erstellt drei Aufnahmen: vollständig, ohne Anzugmesh und mit wiederhergestelltem Mesh. Zusätzlich exportiert sie dessen tatsächlich verformte LOD0-Geometrie in Kamerakoordinaten. Die Fläche verschwindet nur in der Aufnahme ohne Anzug. Strahlabfragen auf die sichtbare Fläche ordnen die betreffenden Dreiecke dem Unterarm (`lower_l`, importierte Bone-Bezeichnung) und am rechten Rand dem Oberarm zu. Sie liegen etwa 33–40 cm vor der Kamera. Damit ist diese konkrete Verdeckung als Arm identifiziert; sie war kein Kopf- oder Flaschenmesh.
+
+Die entspannten Handziele liegen jetzt zehn Zentimeter tiefer: rechts −30 statt −20 cm, links −28 statt −18 cm. Ablesestellung und Gelenklängen bleiben erhalten. Dieselben Ziele treiben sichtbare Arme und Kontaktgeometrie; die Kollision wird nicht umgangen. Die neue native Walenstadt-Aufnahme erreicht weiterhin die 65°-Kopfgrenze, zeigt aber keine grosse Armfläche mehr oberhalb der Instrumente. Keine der neun festgelegten Stichproben trifft nun das Anzugmesh; vorher waren es fünf, davon mehrere oberhalb des HUD. Diese Stichproben sind keine vollständige Prüfung aller Bildpixel oder Haltungen. Weltposition und absoluter Kurs unterscheiden sich durch den geänderten Kontaktverlauf; die Aufnahmen sind kein identischer Landschafts-/Lichtvergleich.
+
+Zusätzlich dekodiert `M_DiverSuit` die sRGB-kodierten FBX-Vertexfarben in lineare Reflexionsfarben. Die im nativen Buffer gemessenen Grundwerte 46/54/58 entsprechen nach Dekodierung 0,0273/0,0369/0,0423 und damit den in Blender angelegten 0,028/0,037/0,043 innerhalb der 8-Bit-Quantisierung. Die vorher direkte Auswertung stellte den Anzug zu hell dar. Alpha, Hautgeometrie und Hautgewichte werden nicht verändert. Die Farbbehandlung weiterer Ausrüstungsteile gehört zur verbleibenden Materialprüfung.
+
+Die beiden Originalaufnahmen sind [vorher](Images/FPV_BlockedArm_Before.png) und [mit entspannter Armhaltung](Images/FPV_RelaxedArms.png) erhalten. Die Nachweise sind im [FPV-Ergebnisbericht](FPV_ARM_CLEARANCE_RESULTS.json) gebunden. Alle 35 nativen Tests mit der neuen Armhaltung sind bestanden. Ebenso bestanden sind sechs Ausrüstungsvarianten mit je 25 Testphasen und elf Aufnahmen (150 Phasen, 66 Bilder). Alle sechs Kontaktbögen und ausgewählte Originalbilder wurden betrachtet; echte Mausbewegungen, weitere Kopfstellungen, Bewegungspfade und das aktualisierte Spielpaket bleiben eigene Prüfungen.
+
+Beim nativen Ablesen verdeckte der kurzzeitige F1-/Esc-Hinweis die unterste Zeile des Handgelenkcomputers. Während der Computer angehoben ist, werden Hinweise und die Abschlussaktion deshalb unter der linken Statusanzeige angeordnet. Die Höhe der Hinweisbox folgt dem gemessenen Textumbruch. Die zusätzliche HUD-Änderung wurde nach der vollständigen Arm-/Ausrüstungsmatrix separat gebaut; der erneute native UI-Lauf besteht alle 28 Schritte mit 14 frischen Bildern ohne gemeldeten Textüberlauf. Die [Originalaufnahme beim Ablesen](Images/FPV_WristComputer_Clear.png) zeigt die unterste Computerzeile vollständig und die kompakte Hinweisbox links. Der separate Avatar-Lauf prüft zusätzlich 25 Phasen der ersten Ausrüstungsvariante. Weitere Auflösungen und lange Hinweise sind damit noch nicht vollständig visuell geprüft.
+
+Reproduktion der gezielten Diagnose:
+
+```powershell
+./Tools/Benchmark.ps1 -EngineRoot Builds/UE584 -EditorSandbox -SandboxName SourceEditorSandbox `
+    -WaterPreview -FPVProbe -Scenario underwater -Entry 2 -Resolution 1080p -Quality 2 -Seconds 60
+./Tools/.geodata-env/Scripts/python.exe Tools/ReportFPVProbe.py <Ergebnisordner>
+```
+
+Die Sichtbarkeitsumschaltung läuft ausschliesslich nach dem Messintervall im ausdrücklich angeforderten Editor-Probe-Modus. Der normale Spielablauf blendet den Anzug nicht aus. Der Bericht klassifiziert zweisichtig getestete CPU-Dreiecke von LOD0; tatsächliche Render-LOD, andere verdeckende Objekte und temporale Effekte begrenzen seine Aussage. Drei portable Tests prüfen bekannte Strahltreffer, Near-Plane/negative Tiefe und Auflösungsumrechnung.
+
+## Spielpaket nach Abschluss des Engine-Builds
+
+Der [aktuelle Paketbericht](PLAYABLE_CURRENT.md) ergänzt die oben dokumentierten historischen Editorstände: drei Bildschirmformate, sechs Ausrüstungsvarianten, eine gezielte Wiederholung nach den Winkeltextkorrekturen sowie fünf Funktionsabläufe und vier Leistungsmessungen. Die Quellen und Bilder sind an die jeweils tatsächlich geprüfte EXE gebunden. Die normale Haupt-EXE startet; die reale Mausprüfung blieb an einer darüberliegenden Windows-Auswahloberfläche hängen. Die noch offenen Temperaturkürzel in Archivansichten, langen Nutzernamen, weiteren Skalierungen und Bewegungssituationen sind ausdrücklich keine bestandene Designabnahme. Ein wiederholbarer Nachladeruckler ist als nächster Leistungsschritt eingegrenzt.
+
+## Originalreferenzen
+
+Alle fünf Originalbilder liegen unverändert unter `References/`; Dateigrößen und SHA-256-Prüfsummen sind in [UI_REFERENCE_MANIFEST.json](References/UI_REFERENCE_MANIFEST.json) festgehalten. Die Bilder sind Nutzerentwürfe, keine bereits erreichten Spielaufnahmen. Ihre Hintergründe ersetzen keine tatsächliche Spielwelt.
+
+### HUD und FPV
+
+![HUD-Grundansicht als Designreferenz](References/HUD_QualityTarget.png)
+
+![HUD-Zustände und Testansicht als Designreferenz](References/HUD_States_QualityTarget.png)
+
+### Tauchplan und Menüstruktur
+
+![Tauchplan als Designreferenz](References/Menu_DivePlan_QualityTarget.png)
+
+### Wetter und Wasser
+
+![Wetter- und Wasserkonfiguration als Designreferenz](References/Menu_Environment_QualityTarget.png)
+
+### Ausrüstung und Tarierung
+
+![Ausrüstung und Tarierung als Designreferenz](References/Menu_Equipment_QualityTarget.png)

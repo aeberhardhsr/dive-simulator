@@ -1,0 +1,559 @@
+{
+  "status": "source_engine_paired_capture_integrity_passed_receivers_reviewed_release_pending",
+  "base_commit": "21a0eb185189c8f138ca00586a41dae2a72cba8f",
+  "failed_wave_probe": {
+    "path": "artifacts/caustics-day-validation-20261127-123212/Runtime.log",
+    "sha256": "09cc6268b9a47edb57c267354dfba3241c42c41eea84aec5b5a2a7010d00a7db"
+  },
+  "expected_unsupported_engine_rejection": {
+    "path": "artifacts/caustics-day-validation-20261127-125105/Runtime.log",
+    "sha256": "de9747f668172ca65afa3a2f7797a44d070ba79d1de40b141eabefb9b31f2a0f"
+  },
+  "default_regression": {
+    "status": "passed",
+    "log": {
+      "path": "artifacts/caustics-day-validation-20261127-124922/Runtime.log",
+      "sha256": "4e31044960503b9545188e4465d4a2e21dfa11a4b22415467ffb0a570283c18e"
+    },
+    "images": [
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_00.png",
+        "sha256": "95ed546f7e5cdcbcfadc39a092bdc0389e4c45534e5a33f8f95ab3e041368243"
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_01.png",
+        "sha256": "63d86b2d257f5e98505a57de31e25ca3479f5114f879dd2d2a4e45cd3efcbb76"
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_02.png",
+        "sha256": "3df6d9fc3aac1a71e756571808798f1ea06e96ed960a6d931ddd2cf5235e01ac"
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-124922/Caustics_03.png",
+        "sha256": "ea1f6106d8b3ff0196aec2bfae2e7c77c55a7ef5ff9108154ea054adcac2274b"
+      }
+    ],
+    "known_startup_diagnostics": [
+      "AutomationTest Condition failed",
+      "ToolsetRegistry PythonTestRunner unavailable"
+    ]
+  },
+  "project_editor_build": {
+    "status": "passed",
+    "log": {
+      "path": "artifacts/wave-transport-study-20261127/editor-build-guarded.log",
+      "sha256": "3f67f62afabd043cb1abd0fe11d3c314876addf091cfc4a4c4ce48da67487da7"
+    }
+  },
+  "renderer_patch": {
+    "status": "prepared_not_compiled",
+    "dry_apply_check": "passed",
+    "deterministic_output": "passed",
+    "changed_revision_rejected_before_output": true,
+    "output_inside_engine_rejected": true,
+    "manifest": {
+      "status": "prepared_not_compiled",
+      "engine": "C:\\Program Files\\Epic Games\\UE_5.8",
+      "binding_revision": 1,
+      "installed_engine_modified": false,
+      "files": [
+        {
+          "path": "Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+          "original_sha256": "d4280790d78f8350826c3b34f619a6e7fc3987f9ed49736e5be9d07e9f08f9f9",
+          "prepared_sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+        },
+        {
+          "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+          "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
+          "prepared_sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+        }
+      ]
+    }
+  },
+  "playable_executable_unchanged": {
+    "path": "Builds/WindowsPlantColor/divingsim/Binaries/Win64/divingsim-PlantColor.exe",
+    "sha256": "21b24680279b3762d283fe6c5ae00646b4500d22dacf47c4462f8526d94c5b53"
+  },
+  "engine_inputs_unchanged": true,
+  "source_engine_day_probe": {
+    "runtime_status": "PASS",
+    "exit_code": 0,
+    "case": "day",
+    "source_head": "a34822f381659d1e12cb03afb1f66db3f0e89715",
+    "host": {
+      "path": "artifacts/caustics-day-validation-20261127-172402/Host.json",
+      "sha256": "a5977c452d2c1b42e7f86ee6318ad9afb596f0b7549242399c96e7fb20b2bd0c",
+      "bytes": 775
+    },
+    "log": {
+      "path": "artifacts/caustics-day-validation-20261127-172402/Runtime.log",
+      "sha256": "e59999fa26c5275b7ad7cd4149e04036025f9f56641c19db6e52a040d13ab1d6",
+      "bytes": 239229
+    },
+    "images": [
+      {
+        "path": "artifacts/caustics-day-validation-20261127-172402/Caustics_00.png",
+        "sha256": "f6f7efe56d8100d6a42d481f5510e773b6af735c091e72caa9264e31de71e8be",
+        "bytes": 1637914
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-172402/Caustics_01.png",
+        "sha256": "fa04084b590d40a10c3927857b124cd05f5316310ed744dbca617d03171361f3",
+        "bytes": 1365136
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-172402/Caustics_02.png",
+        "sha256": "4fd1c5f20e50a3931a0faf8bff3efe8fa4fa6dd855ba67dbd3b71af882e27a4e",
+        "bytes": 1646272
+      },
+      {
+        "path": "artifacts/caustics-day-validation-20261127-172402/Caustics_03.png",
+        "sha256": "ed08e6a1fe4f818ad428d3dbbec65361afd52151b63386dcadcc26b4c7c935cc",
+        "bytes": 1651654
+      }
+    ],
+    "images_reviewed": 4,
+    "visual_scope": "Diagnostic receivers only; caustic pattern appears on lit floor, sphere and vertical face; strength zero removes the pattern. No habitat, shoreline, performance or package acceptance.",
+    "metrics": {
+      "enabled_vs_disabled": {
+        "lit": {
+          "mean_absolute_rgb8": 4.138871212121212,
+          "mean_signed_rgb8": [
+            -0.4419090909090909,
+            -0.38042424242424244,
+            -0.30387878787878786
+          ]
+        },
+        "shadow": {
+          "mean_absolute_rgb8": 0.4171666666666667,
+          "mean_signed_rgb8": [
+            0.006944444444444444,
+            0.06872222222222223,
+            0.04816666666666667
+          ]
+        },
+        "sphere": {
+          "mean_absolute_rgb8": 3.19921568627451,
+          "mean_signed_rgb8": [
+            1.3745098039215686,
+            1.2017647058823528,
+            0.8833333333333333
+          ]
+        },
+        "full": {
+          "mean_absolute_rgb8": 3.0334958333333333,
+          "mean_signed_rgb8": [
+            -0.04504791666666667,
+            -0.02713125,
+            -0.007447222222222222
+          ]
+        }
+      },
+      "time_change": {
+        "lit": {
+          "mean_absolute_rgb8": 5.902525252525253,
+          "mean_signed_rgb8": [
+            -2.340231060606061,
+            -1.2474204545454546,
+            -1.0462348484848485
+          ]
+        },
+        "shadow": {
+          "mean_absolute_rgb8": 0.42657407407407405,
+          "mean_signed_rgb8": [
+            -0.017666666666666667,
+            0.12538888888888888,
+            0.07255555555555555
+          ]
+        },
+        "sphere": {
+          "mean_absolute_rgb8": 3.5983006535947712,
+          "mean_signed_rgb8": [
+            -2.331372549019608,
+            -1.1218627450980392,
+            -0.9293137254901961
+          ]
+        },
+        "full": {
+          "mean_absolute_rgb8": 4.439074074074074,
+          "mean_signed_rgb8": [
+            -1.4872277777777778,
+            -0.6386111111111111,
+            -0.5367569444444444
+          ]
+        }
+      },
+      "frozen_repeat": {
+        "lit": {
+          "mean_absolute_rgb8": 0.389040404040404,
+          "mean_signed_rgb8": [
+            -0.004791666666666666,
+            -0.002068181818181818,
+            -0.012473484848484848
+          ]
+        },
+        "shadow": {
+          "mean_absolute_rgb8": 0.40344444444444444,
+          "mean_signed_rgb8": [
+            -0.026166666666666668,
+            -0.021388888888888888,
+            -0.03166666666666667
+          ]
+        },
+        "sphere": {
+          "mean_absolute_rgb8": 0.40238562091503266,
+          "mean_signed_rgb8": [
+            -0.03068627450980392,
+            -0.00196078431372549,
+            -0.015294117647058824
+          ]
+        },
+        "full": {
+          "mean_absolute_rgb8": 0.4112402777777778,
+          "mean_signed_rgb8": [
+            -0.003876388888888889,
+            -0.0017270833333333333,
+            -0.006654861111111111
+          ]
+        }
+      }
+    },
+    "renderer": {
+      "sha256": "8FA1503831F0876E7176C3EF68A0BAC1526885103B0AB893A93D5AAE19E8253B",
+      "path": "O:\\games\\dive game\\Builds\\UE584\\Engine\\Binaries\\Win64\\UnrealEditor-Renderer.dll"
+    },
+    "engine_build_results": "Documentation/SOURCE_ENGINE_RESULTS.json",
+    "compiled_renderer_sources": [
+      {
+        "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+        "sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e",
+        "bytes": 196688
+      },
+      {
+        "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+        "sha256": "f72140569bbbb6a4d2956feafd59b5b20ae53f5fd38552dc3777cc36259993e7",
+        "bytes": 103888
+      }
+    ]
+  },
+  "source_engine_paired_comparison": {
+    "status": "CAPTURE_INTEGRITY_CHECKED",
+    "source_head": "a34822f381659d1e12cb03afb1f66db3f0e89715",
+    "scope": "Fixed receiver comparisons only; not habitat, physical lighting or release acceptance",
+    "historical_inputs_verified_before_camera_fixture_edit": true,
+    "report": {
+      "path": "artifacts/wave-transport-source-20261127/Report.json",
+      "sha256": "f63c56573a58ceb0cece2fa6d3a89b382724bc3e515a1fcd4dc480b21f633ac3"
+    },
+    "host": {
+      "path": "artifacts/wave-transport-source-20261127/Host.json",
+      "sha256": "009a6a8b015c589bbf1c342f9a17d2b41f1d736e585fc37210b2b9c1024a1f02"
+    },
+    "cases_manifest": {
+      "path": "artifacts/wave-transport-source-20261127/Cases.json",
+      "sha256": "169c326b48bfcaf5bf1808e12009ad7141cb8ee5117efd697c6bbde6fdd1aed0"
+    },
+    "wrapper_log": {
+      "path": "artifacts/source-engine-20261127/wave-paired.log",
+      "sha256": "55099702384bcf8b1710714dd9f5e4d5b37eabb2fc66e899c9b0e42da931f275"
+    },
+    "case_count": 10,
+    "image_count": 40,
+    "image_dimensions": [
+      1600,
+      900
+    ],
+    "manual_visual_review": {
+      "status": "REVIEWED_LIMITED_RECEIVER_SCOPE",
+      "coverage": "All 40 images in 10 contact sheets; selected day, deep and air originals also reviewed",
+      "observations": [
+        "Daylight patterns move on floor, sphere and vertical face; depth attenuates them.",
+        "Calm and air changes are near frozen-repeat noise; night without a lamp has no artificial glow.",
+        "Night images are nearly black and cannot establish torch or scene visibility quality.",
+        "Deep fixture retains shadows of world rocks above it in both variants.",
+        "Regular four-wave pattern remains; variant changes include colour and brightness."
+      ],
+      "visual_target_complete": false
+    },
+    "known_startup_diagnostics": [
+      "AutomationTest Condition failed",
+      "ToolsetRegistry PythonTestRunner AttributeError"
+    ],
+    "new_shader_binding_or_compile_failures": false,
+    "default_enabled": false,
+    "cases": {
+      "day-projection": {
+        "log_sha256": "6c158de0b8dc84672394c2be4e05de3288adb63c6e5854aeb45716539b0b92de",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "7467d59eb22e3ffe5bd8b5fedab0a780b6287b45e97756a7c4006dc528efc7ec"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "84fd482628d28d856709021951016dcbd95fc49d507d411472e85d650f450e1b"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "2c8d22da0498d4450b60eb5d731b45f7344b52a11e6cf6a2a4b6e01923c904ae"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "a03d1ae1066e2f8b8fb28169e510186214591a75742610ddbe4f911bfd1ea14c"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 4.128271464646464,
+          "clock_20_vs_22": 5.850218434343434,
+          "frozen_clock_repeat": 0.397665404040404
+        }
+      },
+      "day-wave": {
+        "log_sha256": "fd50a5ef615b43e7338a79651b884cfafe1699ee7a510c22310be9aceed10a7d",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "858f6732d3db6640659a0aee5a8bc4ff617a578a36a996bededce6606efd4c98"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "19921c54b196784fef81f2a30737b0ae69aa19e00c4da4c6479e391870dcc82a"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "2b58ca6aa153871dbaba17006fa29c5e52e5fbb4937208b2cd448ae66bdce265"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "0117c310740d35d6eeac80c897e02a5a0371ef7092f8073a2897d1081bd0662a"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 4.1398952020202024,
+          "clock_20_vs_22": 5.902897727272728,
+          "frozen_clock_repeat": 0.38769949494949496
+        }
+      },
+      "calm-projection": {
+        "log_sha256": "2e8f5b99146145533050bc4c1f1faefc155bde063d61d82438f76e80ad878d46",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "f1d64aca04b08ec00a884fc6e4468f8c1a330adb88dddb53f616e9a960c44e50"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "645eeb40d6a87f1e7da505c7e7dd3a01e8e31af66539bfbc74dc1ca1a3fda4c7"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "64f526be85b591097c5b12f687610e6697c6e9883ff2a9359637f9fab3fa0434"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "c3fabee65132b9a765b8cc879168f82d30ea7361dec4881a71160cd48ee5a0af"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 0.3583737373737374,
+          "clock_20_vs_22": 0.3627171717171717,
+          "frozen_clock_repeat": 0.358364898989899
+        }
+      },
+      "calm-wave": {
+        "log_sha256": "21e139332b3c47572f2a924ee94c7c8a7258509b64f82803de2adf71275632c3",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "f5ea45f01c5d812f35c3495a64a99559bb80d53c1882dd350a253036b35ba002"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "ad3e0096f8b60fb6ce67647dd5ee0e968c670df27f92e054041b3f4bb2293a46"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "81ad84ba9e26dd5df74a5c8134b87353ab41a58fc742dea569a8eb3788005474"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "99b6ab6d75fb984a329d21d57dd378e0edb1ba17482a3d2dcdb948a09e8f7316"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 0.3596540404040404,
+          "clock_20_vs_22": 0.3627739898989899,
+          "frozen_clock_repeat": 0.3621969696969697
+        }
+      },
+      "deep-projection": {
+        "log_sha256": "93a5a086df22da8d448dae90dc1c11694abe3d3e847d25e9622cedcd97408cd7",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "6adafb819d7ab2cef62916525c4f8c1769501bc785c89a59cd5a25233d7a4baa"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "ff516bce158f6f8bdb2d2b6ace3e836ca1ee803b9128414d0feed56b377ca31a"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "a4b4b48e080fc468933efebc33b5b5eaa0016edab2860101d1c1a638b4be4229"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "7a22955d4e3282012dad6bdf81d167d1219955b21fbf0598a1c4c3e7176593df"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 1.167496212121212,
+          "clock_20_vs_22": 1.6357815656565657,
+          "frozen_clock_repeat": 0.41091666666666665
+        }
+      },
+      "deep-wave": {
+        "log_sha256": "15cfa40f11a91bf8b75d803ce803fa46dbdfcf709e35e4517320a21c1a278707",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "789770ddf910d2600b8677a54d7eca3a8c1dc0e210b5369d9429f090ed55733f"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "77437fabb33f20ce23f7ed7d96ae5e4315ebf8748457bc363f7ec7a51056587c"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "c6fa9971a47e44a05ca09603f9c20462e65318f77a780ae52a3a6918237ebc26"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "6958e3aa747e2ac1f40dacee11ac19a9cc600f57fea732f4d191d929e83c458d"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 1.1571224747474746,
+          "clock_20_vs_22": 1.6232954545454545,
+          "frozen_clock_repeat": 0.46042676767676766
+        }
+      },
+      "air-projection": {
+        "log_sha256": "afd6b1460b73c9bac299956e7e56685a8cdd28d8a656e7a304e2597760b45e29",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "49217edc4ed81c2f2695903487caa51fb39bc387dbb55f158fb245a46f8ac903"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "9e7e05d0b6f011dbd8d57796c9a2d8a856e99ddce588e1849deea488463e2d9c"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "85899410693225c83f210942618db435edca227440593c712b13410210f1a5fc"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "503f8142e075b12d8489fad17b1f82c80ae6ff74dd1a3d6ca7169ec218718d78"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 0.3281578282828283,
+          "clock_20_vs_22": 0.33057828282828283,
+          "frozen_clock_repeat": 0.330854797979798
+        }
+      },
+      "air-wave": {
+        "log_sha256": "48b37581270bddedb58a30578cf74f6ae3fa28faeb3eca82389ce00fe2b9f464",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "319717a8f3a9fe5be52ffb56bc405252f201371475ab2a5ab6a022f38891c706"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "1620d217fd1e3a9076a65fa79b83fe886b7c928039eaee8098dc86b3a1383798"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "4d64411600c2f218f12d4b97595a30f332908515ab8338965347b7e9739c786b"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "7353c7ad91ecdad938325a4ec665ba3a0f385ecb992dedbcadf3461bfd849326"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 0.3303042929292929,
+          "clock_20_vs_22": 0.33130176767676767,
+          "frozen_clock_repeat": 0.33190909090909093
+        }
+      },
+      "night-projection": {
+        "log_sha256": "c0f38b2396dbe034fe23a94b2604b1e5a881ad7c3e7d70090405d7e66b0a83c7",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 0.0,
+          "clock_20_vs_22": 0.0,
+          "frozen_clock_repeat": 0.0
+        }
+      },
+      "night-wave": {
+        "log_sha256": "7d6dc74241266b7b829e75bf0ae21bca223b3d4499b56ca3af860bd1b0a6bec7",
+        "images": [
+          {
+            "file": "Caustics_00.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          },
+          {
+            "file": "Caustics_01.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          },
+          {
+            "file": "Caustics_02.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          },
+          {
+            "file": "Caustics_03.png",
+            "sha256": "0c0d6c93eefbd6c95f75f07c94168bbc31fa35a36e6ab568f44ed7f72e67f0d1"
+          }
+        ],
+        "lit_mean_absolute_rgb8": {
+          "strength_on_vs_off": 0.0,
+          "clock_20_vs_22": 0.0,
+          "frozen_clock_repeat": 0.0
+        }
+      }
+    },
+    "limits": [
+      "RGB8 differences are not radiometric validation",
+      "No horizontal lake mask yet",
+      "Habitat, moving camera, long temporal stability, torch, shore, performance and package validation remain"
+    ],
+    "projection_to_wave_phase0_lit_mean_absolute_rgb8": {
+      "day": 2.81652398989899,
+      "calm": 2.6379027777777777,
+      "deep": 7.658349747474747,
+      "air": 0.17773611111111112,
+      "night": 0.0
+    }
+  }
+}

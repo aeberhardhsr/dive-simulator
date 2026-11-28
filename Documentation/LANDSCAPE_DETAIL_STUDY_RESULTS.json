@@ -1,0 +1,258 @@
+{
+  "status": "ISOLATED_2M_GEOMETRY_BUILT_AND_VISUALLY_COMPARED_NOT_RELEASED",
+  "sources": [
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/Tools/audit_landscape_resolution.py",
+      "sha256": "93fce4ef590ff02eeeaf9a1476784002b783a62009af1f2fd2ff429833bd7a6b",
+      "project_file": "Tools/audit_landscape_resolution.py"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/Tools/prepare_landscape_detail.py",
+      "sha256": "291c1a6ac44aab9f8dd86b90647ab872f86070c4d78bfee2f5f8ae5ed8f5817c",
+      "project_file": "Tools/prepare_landscape_detail.py"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/Tests/test_landscape_resolution.py",
+      "sha256": "6977f3a2f4e9ff427c33b3cd13a5b362010b6d0e1ce746d05af89a2f741022e7",
+      "project_file": "Tests/test_landscape_resolution.py"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/Tools/Build.ps1",
+      "sha256": "08c285c6ecf504f876031b0445476ea1f15b2c7d7e7f64aca11551b5f5d02bc9",
+      "project_file": "Tools/Build.ps1"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/Tools/SmokeTest.ps1",
+      "sha256": "5155aa69d780f1e97ef81210c7b2e825ca42b41b7408c87430e62ef6621f14c1",
+      "project_file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "sha256": "e1053fddcb2968f6669f2b0fd3dcf995e5583fd0ede2c30308eb550d6f2605fd",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "sha256": "c6f1e7ec8fdef819c4f02ddd2c75b9e93be8252c9b2de00068f14d626c09f5d9",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeDetail.cpp",
+      "sha256": "2f50dd9cb2af8f178ddd5ebaa8ef065d900325aaaa8bf225ce4fcb534becfc8a",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeDetail.cpp"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeDetail.h",
+      "sha256": "ee8577c8e92eb5c3f68aa020c599b4fb64f2ac58ff8a3b2806f2a1a9b4214244",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeDetail.h"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Content/Diving/Geodata/LandscapeStudy/detail_study.json",
+      "sha256": "4d17bff723aacd4c07a6ef65797a9b363e3a568ecfb80c38ea82f0cad76c0d9b",
+      "project_file": "divingsim/Content/Diving/Geodata/LandscapeStudy/detail_study.json"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Content/Diving/Geodata/LandscapeStudy/detail_05_02.f32",
+      "sha256": "e313d4dc7d3627dde630cb3f9ba08df21bc328f3bf8f055cc4cb8fe8a6341e04",
+      "project_file": "divingsim/Content/Diving/Geodata/LandscapeStudy/detail_05_02.f32"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/Snapshot/divingsim/Content/Diving/LandscapeStudy/SM_LandDetail_05_02.uasset",
+      "sha256": "7230b5dbec006a4f0b4961dd43c40768e9c33c2d63bf9088d72bde314e5a492a",
+      "project_file": "divingsim/Content/Diving/LandscapeStudy/SM_LandDetail_05_02.uasset"
+    }
+  ],
+  "game_module": {
+    "file": "artifacts/above-water-terrain-20261128/Snapshot/Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+    "sha256": "6f5617c514b939c99352bd71b9fa0c87afff1008fff212ba8b580e2c29a6e177",
+    "project_file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+  },
+  "renderer_module": {
+    "file": "artifacts/above-water-terrain-20261128/Snapshot/Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+    "sha256": "09b9c4e2b1a29d913926ac865062bfebb3d05ec4104c820a8c91edc10f77c5f5",
+    "project_file": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll"
+  },
+  "resolution_audit": {
+    "file": "Documentation/LANDSCAPE_RESOLUTION_AUDIT.json",
+    "sha256": "dcb953d1ea070bf97df7b566d5d0f8c11e5bfa513fc8110f12ac3f55cf187026"
+  },
+  "analytic_tests": {
+    "file": "artifacts/above-water-terrain-20261128/AnalyticTests.log",
+    "sha256": "94b862391d85c78235affd8b662eabe777a4df4078a78f68c27ac384d5466a33"
+  },
+  "successful_builds": [
+    {
+      "file": "artifacts/above-water-terrain-20261128/EditorBuild-r5.log",
+      "sha256": "157cf6fa9a5dfb683c5e18ff2ebf4e0939164f3ae5cf9e9d0835f4777a926c80"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/DetailBuild-r2-native.log",
+      "sha256": "e5ad2648dbcd70ea0f013e35b3c4757f77a45346c9bd3f5c77736f813fba17c7"
+    },
+    {
+      "file": "artifacts/above-water-terrain-20261128/DetailCheck-native.log",
+      "sha256": "9d7e1c9fb8cbcc527e6de18b49019e98de5460732eca53c7bf09fdd9d6718a25"
+    }
+  ],
+  "native_mesh_check": {
+    "vertices": 1050625,
+    "triangles": 2097152,
+    "maximum_boundary_error_cm": 0.013916,
+    "maximum_source_error_cm": 0.007812,
+    "source_vertices_uvs_normals_checked": true,
+    "saved_asset_reloaded_and_rechecked": true
+  },
+  "cases": [
+    {
+      "name": "Murg_Mapped8m",
+      "detail_geometry": false,
+      "mapped_material": true,
+      "entry": 1,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "runtime": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Mapped8m/Runtime.log",
+        "sha256": "7e2f180137e59210a8b33c9355a877c82865a3d5cd776da918cf4eb59b07455b"
+      },
+      "image": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Mapped8m/Shore_1.png",
+        "sha256": "9d42889d9852f8e05e11a353e8b33b15787ea7b730148ff945399218d684afd5"
+      },
+      "published_image": {
+        "file": "Documentation/Images/Terrain_Murg_Mapped8m.png",
+        "sha256": "9d42889d9852f8e05e11a353e8b33b15787ea7b730148ff945399218d684afd5"
+      },
+      "visual_review": "REVIEWED_WITH_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Mapped2m",
+      "detail_geometry": true,
+      "mapped_material": true,
+      "entry": 1,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "runtime": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Mapped2m/Runtime.log",
+        "sha256": "bcadd647b31c4cf3192fc109c7c5f1b108c9c910828eefb7f23d4be72af87d9e"
+      },
+      "image": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Mapped2m/Shore_1.png",
+        "sha256": "cff8b61da8b398d7568845ecda76ab0778352b80faca69e2fa846ff0edae0a47"
+      },
+      "published_image": {
+        "file": "Documentation/Images/Terrain_Murg_Mapped2m.png",
+        "sha256": "cff8b61da8b398d7568845ecda76ab0778352b80faca69e2fa846ff0edae0a47"
+      },
+      "visual_review": "REVIEWED_WITH_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Photo8m",
+      "detail_geometry": false,
+      "mapped_material": false,
+      "entry": 1,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "runtime": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Photo8m/Runtime.log",
+        "sha256": "be58a2cdf118d98d8b83827019c4f9b37ee5cccedff92d37093c3f42fa8f2e55"
+      },
+      "image": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Photo8m/Shore_1.png",
+        "sha256": "2f28e41297ad2d642c021d23e03156f7e07e2016ea5fe733357e7a5b4b07e359"
+      },
+      "published_image": {
+        "file": "Documentation/Images/Terrain_Murg_Photo8m.png",
+        "sha256": "2f28e41297ad2d642c021d23e03156f7e07e2016ea5fe733357e7a5b4b07e359"
+      },
+      "visual_review": "REVIEWED_WITH_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Photo2m",
+      "detail_geometry": true,
+      "mapped_material": false,
+      "entry": 1,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "runtime": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Photo2m/Runtime.log",
+        "sha256": "82d366a5224bd6e31c2de424118f333d9eb35c0cd7d73fac5a0232a51c907bfe"
+      },
+      "image": {
+        "file": "artifacts/above-water-terrain-20261128/Murg_Photo2m/Shore_1.png",
+        "sha256": "be4f163afb2f7115577f9369891f56e7fdfc96aaef6dc79af8ba6958bb767cb1"
+      },
+      "published_image": {
+        "file": "Documentation/Images/Terrain_Murg_Photo2m.png",
+        "sha256": "be4f163afb2f7115577f9369891f56e7fdfc96aaef6dc79af8ba6958bb767cb1"
+      },
+      "visual_review": "REVIEWED_WITH_LIMITATIONS"
+    }
+  ],
+  "original_assets": {
+    "count": 121,
+    "manifest": {
+      "file": "artifacts/above-water-terrain-20261128/PreservedAssets.json",
+      "sha256": "7d91fe0b93fbe508f36bd88b41c6cea248a58a7d82d285a4f00c64063af5e597"
+    },
+    "all_hashes_match_commit": "b7868e81427fe735cc1c5cf9aadad6882d8f5c6d"
+  },
+  "preserved_r3": {
+    "files": 53,
+    "all_hashes_match": true,
+    "identity": {
+      "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+      "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+    }
+  },
+  "observations": [
+    "Finer cliff edges and grooves visible inside the selected tile in the noon Murg pairs.",
+    "Aerial-photo vertical stretching persists with higher-resolution geometry; independent material work remains necessary.",
+    "Mapped material still has hard brightness boundaries; forests and nearshore shapes are not changed."
+  ],
+  "limits": [
+    "One fully inland 2048m square tile only; the 2m source is resampled to aligned vertices, with a 32m transition to the old edge.",
+    "Heightfield geometry does not add surveyed overhangs. Global audit reports vertical differences, not perpendicular or screen-space errors.",
+    "Normal player terrain/collision sampling remains 8m: display-only study must not be adopted without corresponding physical-ground integration.",
+    "No new performance measurement, movement review, other sun angle or packaged acceptance. Prior CPU/GC hitches remain open.",
+    "Offline SHA256 pins and native SHA1 staleness guards are different checks; the Windows generic SHA256 API was unavailable."
+  ],
+  "corrected_failed_attempts": [
+    {
+      "log": {
+        "file": "artifacts/above-water-terrain-20261128/EditorBuild.log",
+        "sha256": "86f7283986d9b9c2030fb3c6745fa991e29d40bb49056268ce8fe702003ebd28"
+      },
+      "reason": "UBT cached source list omitted the new cpp; explicit RefreshSources/-gather added."
+    },
+    {
+      "log": {
+        "file": "artifacts/above-water-terrain-20261128/EditorBuild-r2.log",
+        "sha256": "f1e6838ab6fa867de50791d7b28b7dc2f54470214728aa1421ff21737c2db701"
+      },
+      "reason": "Global N identifier triggered engine-template shadow warning; study constants renamed."
+    },
+    {
+      "log": {
+        "file": "artifacts/above-water-terrain-20261128/EditorBuild-r3.log",
+        "sha256": "5c9b31eea3907a0b45330e6a587be74dd64f936ed58c58d710ebd6b0011fbcdf"
+      },
+      "reason": "Renaming also changed an include filename; corrected."
+    },
+    {
+      "log": {
+        "file": "artifacts/above-water-terrain-20261128/DetailBuild-rejected-native.log",
+        "sha256": "1ea2dc8aa0882293fb1d67f4fd8e1219cbb9c626c01aef238c9b66b023ebe35b"
+      },
+      "reason": "Generic Windows SHA256 platform function asserted; replaced with Core SHA1 guards while retaining offline SHA256 identity."
+    }
+  ],
+  "next": [
+    "Refine rock/vegetation material transitions using the clearer geometry.",
+    "Integrate matched physical-ground sampling before any playable terrain replacement.",
+    "Resolve/profile CPU/GC stalls, then measure geometry cost and review movement before extending coverage or packaging."
+  ]
+}

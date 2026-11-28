@@ -1,0 +1,113 @@
+// World-aligned PBR surfaces. Centimetre coordinates; no deformation of survey data.
+// Normal maps are DirectX/BC5: decode RG and reconstruct positive tangent Z.
+struct BedSurface
+{
+    uint PatchHash(int2 p)
+    {
+        uint h=uint(p.x)*0x8da6b343u^uint(p.y)*0xd8163841u;
+        h^=h>>16;h*=0x7feb352du;h^=h>>15;h*=0x846ca68bu;h^=h>>16;return h;
+    }
+    float PatchNoise(float2 p)
+    {
+        int2 i=int2(floor(p));float2 f=frac(p);f=f*f*(3-2*f);
+        float a=(PatchHash(i)&0x00ffffffu)/16777216.0;
+        float b=(PatchHash(i+int2(1,0))&0x00ffffffu)/16777216.0;
+        float c=(PatchHash(i+int2(0,1))&0x00ffffffu)/16777216.0;
+        float d=(PatchHash(i+1)&0x00ffffffu)/16777216.0;
+        return lerp(lerp(a,b,f.x),lerp(c,d,f.x),f.y);
+    }
+    float Noise(float2 p)
+    {
+        float2 i=floor(p), f=frac(p); f=f*f*(3-2*f);
+        float a=frac(sin(dot(i,float2(127.1,311.7)))*43758.5453);
+        float b=frac(sin(dot(i+float2(1,0),float2(127.1,311.7)))*43758.5453);
+        float c=frac(sin(dot(i+float2(0,1),float2(127.1,311.7)))*43758.5453);
+        float d=frac(sin(dot(i+1,float2(127.1,311.7)))*43758.5453);
+        return lerp(lerp(a,b,f.x),lerp(c,d,f.x),f.y);
+    }
+    float3 Decode(float2 rg,float strength)
+    {
+        float2 xy=(rg*2-1)*strength;
+        return float3(xy,sqrt(saturate(1-dot(xy,xy))));
+    }
+    float3 Layer(Texture2D colorTex,SamplerState colorSampler,
+        Texture2D normalTex,SamplerState normalSampler,Texture2D armTex,SamplerState armSampler,
+        float3 p,float3 n,float scale,float strength,out float3 surfaceNormal,out float2 ar)
+    {
+        float3 weights=pow(abs(n),4); weights/=max(dot(weights,1),.0001);
+        float3 signs=step(0,n)*2-1;
+        float2 ux=p.yz/scale*float2(signs.x,1);
+        float2 uy=p.zx/scale*float2(signs.y,1);
+        float2 uz=p.xy/scale*float2(signs.z,1);
+        float3 cx=Texture2DSample(colorTex,colorSampler,ux).rgb;
+        float3 cy=Texture2DSample(colorTex,colorSampler,uy).rgb;
+        float3 cz=Texture2DSample(colorTex,colorSampler,uz).rgb;
+        float3 nx=Decode(Texture2DSample(normalTex,normalSampler,ux).rg,strength);
+        float3 ny=Decode(Texture2DSample(normalTex,normalSampler,uy).rg,strength);
+        float3 nz=Decode(Texture2DSample(normalTex,normalSampler,uz).rg,strength);
+        // Whiteout reorientation: a flat normal map reproduces the mesh normal,
+        // including sloped faces and negative projection axes.
+        nx=float3(n.x*nx.z,n.y+nx.x*signs.x,n.z+nx.y);
+        ny=float3(n.x+ny.y,n.y*ny.z,n.z+ny.x*signs.y);
+        nz=float3(n.x+nz.x*signs.z,n.y+nz.y,n.z*nz.z);
+        surfaceNormal=normalize(nx*weights.x+ny*weights.y+nz*weights.z);
+        float2 ax=Texture2DSample(armTex,armSampler,ux).rg;
+        float2 ay=Texture2DSample(armTex,armSampler,uy).rg;
+        float2 az=Texture2DSample(armTex,armSampler,uz).rg;
+        ar=ax*weights.x+ay*weights.y+az*weights.z;
+        return cx*weights.x+cy*weights.y+cz*weights.z;
+    }
+};
+BedSurface bed;
+float3 n=normalize(N);
+float3 rn; float2 ra;
+float3 rock=bed.Layer(RockColor,RockColorSampler,RockNormal,RockNormalSampler,RockARM,RockARMSampler,
+    P,n,180,.65,rn,ra);
+float3 color=rock;
+SurfaceNormal=rn; Roughness=ra.y; Occlusion=ra.x;
+if(IsRock<.5)
+{
+    float patch=bed.PatchNoise(P.xy/850)+.3*bed.PatchNoise(P.xy/270);
+    float depth=max(0,-P.z*.01);
+    float rockWeight=1-smoothstep(.58,.88,n.z);
+    float gravelWeight=smoothstep(.35,.95,patch)*(1-smoothstep(12,55,depth));
+    float3 sn,gn; float2 sa,ga;
+    float3 sand=bed.Layer(SandColor,SandColorSampler,SandNormal,SandNormalSampler,SandARM,SandARMSampler,
+        P,n,250,.35,sn,sa);
+    float3 gravel=bed.Layer(GravelColor,GravelColorSampler,GravelNormal,GravelNormalSampler,GravelARM,GravelARMSampler,
+        P,n,290,.65,gn,ga);
+    // Fine sediment is less saturated than the dry source photograph.
+    sand=lerp(dot(sand,float3(.2126,.7152,.0722)).xxx,sand,.45);
+    color=lerp(lerp(sand,gravel,gravelWeight),rock,rockWeight);
+    SurfaceNormal=normalize(lerp(normalize(lerp(sn,gn,gravelWeight)),rn,rockWeight));
+    Roughness=lerp(lerp(sa.y,ga.y,gravelWeight),ra.y,rockWeight);
+    Occlusion=lerp(lerp(sa.x,ga.x,gravelWeight),ra.x,rockWeight);
+}
+float wet=1-smoothstep(-35,35,P.z);
+// One continuous benthic coating field across terrain, boulders and small stones.
+// Authored colour/roughness variation, not surveyed biological coverage. The
+// coarse patches break repetition; the centimetre-scale flecks preserve the
+// scanned relief. Depth and orientation limit exposed, upward-facing growth.
+float depth=max(0,-P.z*.01);
+float exposure=smoothstep(-.15,.75,n.z);
+float livingDepth=1-smoothstep(14,38,depth);
+float patch=bed.PatchNoise(P.xy/175+float2(P.z/310,-P.z/430));
+float fleck=bed.PatchNoise(P.xy/9+float2(P.z/13,P.z/17));
+float crevice=saturate(1-Occlusion);
+float film=wet*livingDepth*exposure*smoothstep(.32,.72,patch+.16*(fleck-.5));
+// Muted olive/brown periphyton; avoid painting a uniform green tint over sand.
+float3 coating=lerp(float3(.26,.23,.105),float3(.19,.27,.085),fleck);
+float luminance=dot(color,float3(.2126,.7152,.0722));
+float3 coated=coating*(.25+1.65*luminance);
+float coverage=film*lerp(.42,.78,saturate(IsRock));
+color=lerp(color,coated,coverage);
+// Fine deposits settle chiefly on upper rock faces and in existing crevices.
+float deposit=wet*exposure*saturate(IsRock)*smoothstep(.42,.75,1-patch)*(.12+.3*crevice);
+color=lerp(color,float3(.32,.285,.21)*(.4+luminance),deposit);
+Roughness=lerp(Roughness,.93,saturate(coverage+deposit));
+color*=lerp(1,.76,wet)*lerp(.86,1.12,bed.PatchNoise(P.xy/1600));
+Roughness=clamp(Roughness-.12*wet,.55,.98);
+Occlusion=lerp(1,Occlusion,.45);
+float3 result=color;
+// BED_FINAL_OUTPUT
+return result;

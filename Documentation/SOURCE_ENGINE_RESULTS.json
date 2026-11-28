@@ -1,0 +1,219 @@
+{
+  "status": "source_editor_ui_wave_receiver_comparisons_and_35_native_tests_passed",
+  "source_tag": "5.8.4-release",
+  "source_commit": "f45729c0b6f097038e72b52d366a62baeca3275b",
+  "dependencies": {
+    "path": "artifacts/source-engine-20261127/dependencies.log",
+    "sha256": "94cf0d4ab60e1eeff941dcb01c098a38f0a56312d1a60c8077854f7b6a2541da"
+  },
+  "shader_worker_build": {
+    "path": "artifacts/source-engine-20261127/shader-worker-build.log",
+    "sha256": "887ce01c7c55f9206aa341f12f0cd673e0df3ce1a235ac407455e70e7e8a8d06"
+  },
+  "shader_worker_binary": {
+    "path": "Builds/UE584/Engine/Binaries/Win64/ShaderCompileWorker.exe",
+    "sha256": "ecef946e17d6c6f3d490db7bb84673b4ea2d91041c86bd140089e22dc83f8036"
+  },
+  "renderer_patch_manifest": {
+    "status": "prepared_not_compiled",
+    "engine": "C:\\Program Files\\Epic Games\\UE_5.8",
+    "binding_revision": 1,
+    "installed_engine_modified": false,
+    "files": [
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+        "original_sha256": "d4280790d78f8350826c3b34f619a6e7fc3987f9ed49736e5be9d07e9f08f9f9",
+        "prepared_sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+      },
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+        "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
+        "prepared_sha256": "f72140569bbbb6a4d2956feafd59b5b20ae53f5fd38552dc3777cc36259993e7"
+      }
+    ]
+  },
+  "patched_renderer_sources": [
+    {
+      "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+      "sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+    },
+    {
+      "path": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+      "sha256": "f72140569bbbb6a4d2956feafd59b5b20ae53f5fd38552dc3777cc36259993e7"
+    }
+  ],
+  "shader_manifest": {
+    "engine_file": "Builds\\UE584\\Engine\\Shaders\\Private\\DeferredLightPixelShaders.usf",
+    "original_sha256": "2be1df4a8ddbd6d33005e58c7cc924dcb777f3dcc4fcce14f9b9c6292706eb57",
+    "patched_sha256": "2b524f88cf025b8525a65b8f86be575805b991f3455936cf69f5ea7ecbbde295",
+    "mapping": "/Engine/Private",
+    "destination": "O:\\games\\dive game\\Builds\\SourceEditorSandbox\\divingsim\\Intermediate\\DiveWaveStudy\\Private",
+    "shader_include_sha256": "7db5deddb4a64266c101bd3b2f796c3be27c6a3c430edbe32ba653a36cbda5ac",
+    "common_include_sha256": "351a299e85b8679a54e94bb8b29fe53e64fe5ba5877de8218e6f9161673a2e47",
+    "volume_enabled": true,
+    "scope": "Shared scene waves and extinction; spatial directional attenuation/focusing and refracted shading/phase directions; original shadow rays, no GI or lake footprint.",
+    "waves_enabled": true,
+    "optics_sha256": "31eaf9809a80c970ac982b269bb4d2cc8c1b9dc17dacb62c3a6e1d938de8cb22",
+    "wave_medium_sha256": "42193fb4db97df1986bfc954621c8ca430ff35f242c14a0c91d8f76a4ff06c4c",
+    "wave_surface_sha256": "119b98e3e427b35ac0297d87aa3a045e3be09d26cba00bdf5638e1a4d36e2c0b",
+    "volume": {
+      "engine_file": "Builds\\UE584\\Engine\\Shaders\\Private\\VolumetricFog.usf",
+      "original_sha256": "e81073e5f622d73a08af916789df0fabd992cfa9fb9407df585c449dedf2dda9",
+      "patched_sha256": "529b8c4bf87abbc494c734faf391da05242b7f455c0d879428534e8fb07f5ff2"
+    }
+  },
+  "project_sandbox": "Builds/SourceEditorSandbox/divingsim",
+  "sandbox_script_parse": "passed",
+  "sandbox_path_traversal_rejection": "passed",
+  "installed_renderer_originals_unchanged": true,
+  "previous_prepared_patch_manifest": {
+    "status": "prepared_not_compiled",
+    "engine": "O:\\games\\dive game\\Builds\\UE584",
+    "binding_revision": 1,
+    "installed_engine_modified": false,
+    "files": [
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/LightRendering.cpp",
+        "original_sha256": "d4280790d78f8350826c3b34f619a6e7fc3987f9ed49736e5be9d07e9f08f9f9",
+        "prepared_sha256": "7b30e0272ae99eabaf9b8e3475cd5059bea2af3b8e8f561df8f3815c3143f36e"
+      },
+      {
+        "path": "Engine/Source/Runtime/Renderer/Private/VolumetricFog.cpp",
+        "original_sha256": "6b5c3a886405560f37f567f678f66de33338565ed9c88d4a3904ebdfd2220d51",
+        "prepared_sha256": "2359ed0ef1eb4b8f55c96752cb32a3f6cc1604739d44d79ba630154a0bbb4571"
+      }
+    ]
+  },
+  "renderer_patch_correction": "Use the one-argument FSceneRenderer member inside ComputeVolumetricFog; applied before its pending compile action, without restarting the build.",
+  "current_patch_dry_apply_check": "passed against unchanged installed originals",
+  "renderer_object_checkpoint": {
+    "status": "two_changed_translation_units_compiled_import_library_created",
+    "log": {
+      "path": "artifacts/source-engine-20261127/renderer-object-checkpoint.log",
+      "sha256": "1acb96386ed572eb973b9c9a8ca822058df3963aafbf26ab7815faaa690ca063",
+      "bytes": 35392
+    },
+    "outputs": [
+      {
+        "path": "Builds/UE584/Engine/Intermediate/Build/Win64/x64/UnrealEditor/Development/Renderer/LightRendering.cpp.obj",
+        "sha256": "53a3b684c2382df19d98119c61e8af90392ca8df1edefb7c2aae516af29cc77d",
+        "bytes": 16125148
+      },
+      {
+        "path": "Builds/UE584/Engine/Intermediate/Build/Win64/x64/UnrealEditor/Development/Renderer/VolumetricFog.cpp.obj",
+        "sha256": "183cb37d21c7dee80659529dc5103440302376436f35a97a3b79add43b0ac94a",
+        "bytes": 14811649
+      },
+      {
+        "path": "Builds/UE584/Engine/Intermediate/Build/Win64/x64/UnrealEditor/Development/Renderer/UnrealEditor-Renderer.lib",
+        "sha256": "98c55db42290bfcb1b434722f4d9c74ed034e8bc717a453a4212cc57a204ba4e",
+        "bytes": 407828
+      }
+    ],
+    "renderer_dll_exists": false,
+    "full_editor_build_complete": false,
+    "native_shader_binding_validated": false
+  },
+  "renderer_dll_checkpoint": {
+    "status": "linked_not_runtime_validated",
+    "binary": {
+      "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+      "sha256": "8fa1503831f0876e7176c3ef68a0bac1526885103b0ab893a93d5aae19e8253b",
+      "bytes": 36422144
+    },
+    "completed_build_segment_log": {
+      "path": "artifacts/source-engine-20261127/editor-build.log",
+      "sha256": "59aa1fe6998a230113c2749f6982873d9dd4cdfc6e32eceeefb236b98d6bae67",
+      "bytes": 128127
+    },
+    "link_marker": "[1546/4043] Link [x64] UnrealEditor-Renderer.dll [NoUba]",
+    "resume_log": "artifacts/source-engine-20261127/editor-build-parallel4.log",
+    "resume_max_parallel_actions": 4,
+    "remaining_actions_at_resume": 2029,
+    "project_sources_still_require_sync_and_build": true,
+    "limitations": "The original segment was deliberately interrupted after 2014 actions to increase parallelism. This checkpoint proves linking, not shader binding, runtime stability or visual quality."
+  },
+  "source_editor_build": {
+    "status": "passed",
+    "exit_code": 0,
+    "resumed_actions": 2029,
+    "resumed_execution_seconds": 3625.46,
+    "log": {
+      "path": "artifacts/source-engine-20261127/editor-build-parallel4.log",
+      "sha256": "0a4e172c2a2118f4c0a9c7c45e794f14eb6a054c93abddc760077d80658c26bf",
+      "bytes": 160241
+    },
+    "binaries": [
+      {
+        "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor.exe",
+        "sha256": "f9e8a64d606410d3fb649d19584f87c4c9378594bc9df620d565451a8a81fb56",
+        "bytes": 502784
+      },
+      {
+        "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Cmd.exe",
+        "sha256": "7264f1e8eb9c109b64e78110b0f8d66f3ec64a466b51663851ce9e215dd5d38b",
+        "bytes": 502784
+      },
+      {
+        "path": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+        "sha256": "8fa1503831f0876e7176c3ef68a0bac1526885103b0ab893a93d5aae19e8253b",
+        "bytes": 36422144
+      }
+    ],
+    "current_project_followup_log": "artifacts/source-engine-20261127/project-ui-build.log",
+    "current_project_followup_status": "passed_after_fixing_menu_local_variable_shadowing",
+    "runtime_validation": "native_ui_28_steps_14_captures_passed_at_1600x900",
+    "current_project_followup_initial_log": {
+      "path": "artifacts/source-engine-20261127/project-ui-build.log",
+      "sha256": "6f470103544348494bd6a23adb4eae516b96b61a93859c8b330473ced5c52f31",
+      "bytes": 53769
+    },
+    "current_project_followup_fixed_log": {
+      "path": "artifacts/source-engine-20261127/project-ui-build-fixed.log",
+      "sha256": "bf1740b8afd3245aca823004933fc48b25136171b895f46e4a949361e06d2042",
+      "bytes": 12394
+    },
+    "current_project_binary": {
+      "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "sha256": "5dc90a857ea3a3f38e2ab4e116b202d74415045f11e3923ab82f3be4bc6242b7",
+      "bytes": 2681344
+    },
+    "source_files_compared_equal": 149,
+    "latest_project_build_log": {
+      "path": "artifacts/source-engine-20261127/project-ui-final-build.log",
+      "sha256": "a35d83b48c807167030ebeb21479d5afdd6d06283be4709f259971687a625928",
+      "bytes": 2054
+    }
+  },
+  "native_ui_results": "Documentation/UI_NATIVE_RESULTS.json",
+  "wave_day_runtime_validation": {
+    "status": "PASS",
+    "results": "Documentation/WAVE_TRANSPORT_RESULTS.json",
+    "log": {
+      "path": "artifacts/caustics-day-validation-20261127-172402/Runtime.log",
+      "sha256": "e59999fa26c5275b7ad7cd4149e04036025f9f56641c19db6e52a040d13ab1d6",
+      "bytes": 239229
+    },
+    "images_reviewed": 4
+  },
+  "wave_paired_runtime_validation": {
+    "results": "Documentation/WAVE_TRANSPORT_RESULTS.json",
+    "report": {
+      "path": "artifacts/wave-transport-source-20261127/Report.json",
+      "sha256": "f63c56573a58ceb0cece2fa6d3a89b382724bc3e515a1fcd4dc480b21f633ac3"
+    },
+    "cases": 10,
+    "images": 40,
+    "visual_target_complete": false,
+    "default_enabled": false
+  },
+  "native_suite": {
+    "results": "Documentation/SOURCE_NATIVE_TEST_RESULTS.json",
+    "succeeded": 35,
+    "failed": 0,
+    "report": {
+      "path": "artifacts/source-engine-20261127/native-suite-local-player-final/Report/index.json",
+      "sha256": "671f0a0822dc361372812898dacbb7e5f7f380b7ab0bec1f79c9975b54f76b9c"
+    }
+  }
+}

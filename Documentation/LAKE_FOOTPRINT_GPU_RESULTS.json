@@ -1,0 +1,653 @@
+{
+  "status": "OPTIONAL_GPU_LAKE_CLASSIFICATION_AND_CUTAWAY_VALIDATED_NOT_RELEASE_ACCEPTANCE",
+  "base_commit": "d0220b11e13464bcdd7b53d0d5035b541ceba5d9",
+  "engine": "source Unreal 5.8.4",
+  "gpu": {
+    "status": "GPU_SAMPLING_VALIDATED_NOT_FULL_SHORELINE_ACCEPTANCE",
+    "summary": {
+      "count": 42793,
+      "max_distance_error_m": 0.0078125,
+      "p99_distance_error_m": 0.003985827983786586,
+      "max_wet_weight_error": 0.005253936790161118,
+      "wrong_sign_outside_uncertainty": 0
+    },
+    "groups": {
+      "pixel_centres": {
+        "count": 5000,
+        "max_distance_error_m": 0.0078125,
+        "p99_distance_error_m": 0.0,
+        "max_wet_weight_error": 0.0033502271094513203,
+        "wrong_sign_outside_uncertainty": 0
+      },
+      "shore_0": {
+        "count": 35098,
+        "max_distance_error_m": 0.006081586115722626,
+        "p99_distance_error_m": 0.004071026393417375,
+        "max_wet_weight_error": 0.005253936790161118,
+        "wrong_sign_outside_uncertainty": 0
+      },
+      "shore_1": {
+        "count": 896,
+        "max_distance_error_m": 0.005072351520385765,
+        "p99_distance_error_m": 0.0033378085882415625,
+        "max_wet_weight_error": 0.0049105322976684684,
+        "wrong_sign_outside_uncertainty": 0
+      },
+      "shore_2": {
+        "count": 896,
+        "max_distance_error_m": 0.004849027732658238,
+        "p99_distance_error_m": 0.003719870746135711,
+        "max_wet_weight_error": 0.00484895475234981,
+        "wrong_sign_outside_uncertainty": 0
+      },
+      "shore_3": {
+        "count": 896,
+        "max_distance_error_m": 0.0043287885768127365,
+        "p99_distance_error_m": 0.003632518482967386,
+        "max_wet_weight_error": 0.004059317359771719,
+        "wrong_sign_outside_uncertainty": 0
+      },
+      "island_interiors": {
+        "count": 3,
+        "max_distance_error_m": 0.0026438211236572418,
+        "p99_distance_error_m": 0.002617051435595719,
+        "max_wet_weight_error": 0.0,
+        "wrong_sign_outside_uncertainty": 0
+      },
+      "outside_grid": {
+        "count": 4,
+        "max_distance_error_m": 0.0,
+        "p99_distance_error_m": 0.0,
+        "max_wet_weight_error": 0.0,
+        "wrong_sign_outside_uncertainty": 0
+      }
+    },
+    "probe_manifest": {
+      "raster_sha256": "8dcfa5bc8561669a08819d7b6325623e6218ee616e119368978fdf2a3dc7769d",
+      "probe_sha256": "89a6bfd61b9e355a7acb4c0bcc00f1486e44ce2e3deeddf952586fc19387dfe6",
+      "count": 42793,
+      "groups": {
+        "pixel_centres": {
+          "start": 0,
+          "count": 5000
+        },
+        "shore_0": {
+          "start": 5000,
+          "count": 35098
+        },
+        "shore_1": {
+          "start": 40098,
+          "count": 896
+        },
+        "shore_2": {
+          "start": 40994,
+          "count": 896
+        },
+        "shore_3": {
+          "start": 41890,
+          "count": 896
+        },
+        "island_interiors": {
+          "start": 42786,
+          "count": 3
+        },
+        "outside_grid": {
+          "start": 42789,
+          "count": 4
+        }
+      },
+      "format": "float32 little endian rows: local north metres, local east metres, CPU bilinear distance metres, wet weight",
+      "gpu_distance_tolerance_m": 0.025,
+      "gpu_wet_tolerance": 0.025,
+      "grid": {
+        "schema": 1,
+        "status": "offline_prototype_not_runtime_integrated",
+        "west": 2725871.0,
+        "north": 1222350.0,
+        "spacing_m": 1.0,
+        "columns": 15586,
+        "rows": 3003,
+        "distance_limit_m": 32.0,
+        "encoding": "IEEE754 float16 little endian",
+        "positive": "water",
+        "negative": "land including islands",
+        "row_order": "north to south",
+        "column_order": "west to east",
+        "sampling": "cell centres; bilinear reference",
+        "horizontal_crs": "EPSG:2056",
+        "attribution": "© swisstopo",
+        "licence": "https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste",
+        "source_sha256": "c47616b4a0f763efaab2f04befa578c8e01fa7a4fe5c85949d70f4c900b450d9",
+        "source_edition": "swissTLM3D 2026-02",
+        "islands": 3,
+        "world_origin_east": 2726000,
+        "world_origin_north": 1219000,
+        "world_origin_manifest_sha256": "537697f0a84cb2117489ab35ace6a9eb6dffd1e929aeacdce7088c792cc2a147",
+        "world_mapping": "Unreal X=north, Y=east; coordinates in centimetres",
+        "file": "walensee-distance.f16",
+        "bytes": 93609516,
+        "sha256": "8dcfa5bc8561669a08819d7b6325623e6218ee616e119368978fdf2a3dc7769d"
+      },
+      "tool_sha256": "a30bec7a582a87d9c54fe854294ed351b51d2ad5370ab0492a02698b21138a6d",
+      "sampling_tool_sha256": "8c611a85f1c2b077d9bf4b499d2a829a2f822032e496f2950a5bd028a4fbea9c"
+    },
+    "capture_directory": "O:\\games\\dive game\\artifacts\\caustics-day-validation-20261127-184356",
+    "readback_sha256": "47b7cba34327e0c794f23c43eb30a011a712c5ba7ca866d220fe30cca5e07468",
+    "runtime_log_sha256": "62044e38bb00bd251c4f822167f109ba25ddd7a9fa754736fbc692e7c01f5fe6",
+    "reporter_sha256": "3d2e8fc6abaa94b823983c5d4b465e1ffa4373e575653ca3f9f7c7270bea18fa",
+    "limits": [
+      "Compute readback checks the actual Scene texture/sampler/mapping and shared lake shader.",
+      "It does not prove all rendered surface/volume samples, shoreline light paths, performance or package readiness."
+    ]
+  },
+  "gpu_report": {
+    "path": "artifacts/caustics-day-validation-20261127-184356/FootprintReport.json",
+    "sha256": "f7694d02d4ae274da9e56dc3094cf8c533e84b6cf9452158234b22015bc872dd",
+    "bytes": 5067
+  },
+  "compiled_inputs_before_shore_fixture": {
+    "path": "artifacts/lake-footprint-gpu/compiled-inputs.json",
+    "sha256": "0bbaa92a6989f7984a430b019be41ccca215238c3d3676db92e9b5acc640abd6",
+    "bytes": 30746
+  },
+  "raster_memory_bytes_without_driver_overhead": 93609516,
+  "mapping": {
+    "world_x": "north centimetres",
+    "world_y": "east centimetres",
+    "origin_east": 2726000,
+    "origin_north": 1219000,
+    "local_west_m": -129,
+    "local_north_m": 3350,
+    "columns": 15586,
+    "rows": 3003,
+    "format": "R16F linear, one mip, bilinear, clamp; out of grid explicitly dry"
+  },
+  "runs": {
+    "gpu_day": {
+      "artifacts": [
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/Host.json",
+          "sha256": "fa0e790284685c3a5ba9ce8dc10849011869e4fe9290ba3c6057a5f3cf070e23",
+          "bytes": 901
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/Runtime.log",
+          "sha256": "62044e38bb00bd251c4f822167f109ba25ddd7a9fa754736fbc692e7c01f5fe6",
+          "bytes": 324203
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/Caustics_00.png",
+          "sha256": "e61e796fcfa3ce0977f9f3542cccc360812c33f8b0b62e49a9a9452a4b8ccd68",
+          "bytes": 1709581
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/Caustics_01.png",
+          "sha256": "c74ad06395736a75d9b342248b1d945ffa24afa1fb24d52c376070095e71afce",
+          "bytes": 1436180
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/Caustics_02.png",
+          "sha256": "826c1f577a140138448e02f31b98afa0870017f1e04a8f70ce1dbf5597ea13ff",
+          "bytes": 1717923
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/Caustics_03.png",
+          "sha256": "7b1de58f22847f7e58124287b8ae471b76cd90475d98231569ad1b1539030214",
+          "bytes": 1720205
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/LakeFootprintGPU.csv",
+          "sha256": "47b7cba34327e0c794f23c43eb30a011a712c5ba7ca866d220fe30cca5e07468",
+          "bytes": 3134261
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-184356/FootprintReport.json",
+          "sha256": "f7694d02d4ae274da9e56dc3094cf8c533e84b6cf9452158234b22015bc872dd",
+          "bytes": 5067
+        }
+      ],
+      "camera_positions": [
+        "X=267220.000 Y=8650.000 Z=-85.000",
+        "X=267220.000 Y=8650.000 Z=-85.000",
+        "X=267220.000 Y=8650.000 Z=-85.000",
+        "X=267220.000 Y=8650.000 Z=-85.000"
+      ],
+      "known_startup_error_lines": [
+        "[2026.11.27-17.54.06:676][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.06:677][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.54.38:404][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.27-17.54.38:404][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-17.54.38:404][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-17.54.38:404][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-17.54.38:404][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ],
+      "wave_transport": true,
+      "lake_footprint": true
+    },
+    "shore_masked": {
+      "artifacts": [
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185633/Host.json",
+          "sha256": "82c9606cbac6f0ebb9bcceddba0d4c4dda3db11fc9283e796162a8fa7e2c5406",
+          "bytes": 839
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185633/Runtime.log",
+          "sha256": "a01cf952509892178e2d73094678da79df3cfee6aa591f8f3a0eeca63581e1e5",
+          "bytes": 261489
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185633/Caustics_00.png",
+          "sha256": "58c2fc52087ebbe577854236a82764cca76af7d7774083211984bff8f317b987",
+          "bytes": 1639490
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185633/Caustics_01.png",
+          "sha256": "7d895f758372029976b2a9d868be3118c431a023eaba3e983b968723ce58a04f",
+          "bytes": 1451606
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185633/Caustics_02.png",
+          "sha256": "ae51b6e9b1c63e537ca93a2f502d1c4738cb18e701993290aa3a9b5b532ce9b7",
+          "bytes": 1626948
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185633/Caustics_03.png",
+          "sha256": "103bc0636c6b88e08329121f515ff49de3cdd2cf58703ee918b69c12b85370a6",
+          "bytes": 1625647
+        }
+      ],
+      "camera_positions": [
+        "X=272842.800 Y=25493.800 Z=-85.000",
+        "X=272842.800 Y=25493.800 Z=-85.000",
+        "X=272842.800 Y=25493.800 Z=-85.000",
+        "X=272842.800 Y=25493.800 Z=-85.000"
+      ],
+      "known_startup_error_lines": [
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.56.50:594][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.57.11:199][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.27-17.57.11:199][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-17.57.11:199][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-17.57.11:199][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-17.57.11:199][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ],
+      "wave_transport": true,
+      "lake_footprint": true
+    },
+    "shore_unmasked": {
+      "artifacts": [
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185801/Host.json",
+          "sha256": "829024dc168a4c01883de77fcd7d413bc6d9be26089fd07a4a2776ab831a80e4",
+          "bytes": 840
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185801/Runtime.log",
+          "sha256": "4573da88966213e065d3eb026c18083c791349a64d1c30819e73f067bbe98fa8",
+          "bytes": 253080
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185801/Caustics_00.png",
+          "sha256": "1847dc6fe7becc5e19a48cbaf72b0af897b0a774a75f1a6ed2d82a1be7cf3df2",
+          "bytes": 1701192
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185801/Caustics_01.png",
+          "sha256": "78acd327ba08bac913870e93e56c7c5be6de6c3c6c81921f813677c03dfeee27",
+          "bytes": 1462467
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185801/Caustics_02.png",
+          "sha256": "126d34b07ad94c6d8ca1820315f607dede3b86bd1e7cd5d2689e71cf238fb39f",
+          "bytes": 1688898
+        },
+        {
+          "path": "artifacts/caustics-shore-validation-20261127-185801/Caustics_03.png",
+          "sha256": "8ac030cb7562539a313937bfe1044fb52cfc8539e2a5224418fa4a7463d835b5",
+          "bytes": 1687471
+        }
+      ],
+      "camera_positions": [
+        "X=272842.800 Y=25493.800 Z=-85.000",
+        "X=272842.800 Y=25493.800 Z=-85.000",
+        "X=272842.800 Y=25493.800 Z=-85.000",
+        "X=272842.800 Y=25493.800 Z=-85.000"
+      ],
+      "known_startup_error_lines": [
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:479][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.19:480][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-17.58.39:962][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.27-17.58.39:962][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-17.58.39:962][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-17.58.39:962][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-17.58.39:962][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ],
+      "wave_transport": true,
+      "lake_footprint": false
+    },
+    "normal_preview": {
+      "artifacts": [
+        {
+          "path": "artifacts/caustics-day-validation-20261127-185958/Host.json",
+          "sha256": "ef6040b5688f8d06823294f5bb99726229a48cc09cc1c8c826327e075e797eb4",
+          "bytes": 841
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-185958/Runtime.log",
+          "sha256": "a39a8f18ef3bbaeb8e99a1f37831091b066904abe9dfce9d9116788838ecf8e7",
+          "bytes": 249964
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-185958/Caustics_00.png",
+          "sha256": "216c4d52e07738e7b92b291bfb0c90567f01546dc0a274134baad7ccf8f7c937",
+          "bytes": 1714613
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-185958/Caustics_01.png",
+          "sha256": "e8a3aa38c599c6839ee17c6d1f1c98974aceeea7ea541efd2c2d1bf30f514fa9",
+          "bytes": 1443041
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-185958/Caustics_02.png",
+          "sha256": "b78bef31a3d0b72e84a676863da7f1efbb80cc2d973ca6ab226dc579010d03de",
+          "bytes": 1730483
+        },
+        {
+          "path": "artifacts/caustics-day-validation-20261127-185958/Caustics_03.png",
+          "sha256": "6d2d92ebbcac39e08080ceeff53ea667908199f08cb643cea753d9221d88d67f",
+          "bytes": 1731482
+        }
+      ],
+      "camera_positions": [
+        "X=267220.000 Y=8650.000 Z=-85.000",
+        "X=267220.000 Y=8650.000 Z=-85.000",
+        "X=267220.000 Y=8650.000 Z=-85.000",
+        "X=267220.000 Y=8650.000 Z=-85.000"
+      ],
+      "known_startup_error_lines": [
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.17:109][  0]LogAutomationTest: Error: Condition failed",
+        "[2026.11.27-18.00.37:063][  0]LogPython: Error: Traceback (most recent call last):",
+        "[2026.11.27-18.00.37:063][  0]LogPython: Error:   File \"O:/games/dive game/Builds/UE584/Engine/Plugins/Experimental/ToolsetRegistry/Content/Python/init_unreal.py\", line 7, in <module>",
+        "[2026.11.27-18.00.37:063][  0]LogPython: Error:     tests._toolset_registry_test_runner = unreal.PythonTestRunner.create(",
+        "[2026.11.27-18.00.37:063][  0]LogPython: Error:                                           ^^^^^^^^^^^^^^^^^^^^^^^",
+        "[2026.11.27-18.00.37:063][  0]LogPython: Error: AttributeError: module 'unreal' has no attribute 'PythonTestRunner'"
+      ],
+      "wave_transport": false,
+      "lake_footprint": false
+    }
+  },
+  "shore_pixel_metrics": {
+    "scope": "Descriptive LDR RGB8 differences in image regions selected after visual inspection, not radiometric or performance acceptance.",
+    "rois_xyxy": {
+      "dry_floor": [
+        180,
+        30,
+        240,
+        80
+      ],
+      "water_floor": [
+        250,
+        650,
+        900,
+        850
+      ]
+    },
+    "shore_masked": {
+      "dry_floor": {
+        "strength_on_off": 0.2713333333333333,
+        "time_20_22": 0.271,
+        "frozen_repeat": 0.27166666666666667
+      },
+      "water_floor": {
+        "strength_on_off": 3.9776051282051283,
+        "time_20_22": 5.45811282051282,
+        "frozen_repeat": 0.4115076923076923
+      }
+    },
+    "shore_unmasked": {
+      "dry_floor": {
+        "strength_on_off": 2.875,
+        "time_20_22": 4.301333333333333,
+        "frozen_repeat": 0.4167777777777778
+      },
+      "water_floor": {
+        "strength_on_off": 3.975651282051282,
+        "time_20_22": 5.45515641025641,
+        "frozen_repeat": 0.4099307692307692
+      }
+    }
+  },
+  "final_sources_and_assets": [
+    {
+      "path": "Tools/StageLakeFootprint.py",
+      "sha256": "a30bec7a582a87d9c54fe854294ed351b51d2ad5370ab0492a02698b21138a6d",
+      "bytes": 4406
+    },
+    {
+      "path": "Tools/ReportLakeFootprintGPU.py",
+      "sha256": "3d2e8fc6abaa94b823983c5d4b465e1ffa4373e575653ca3f9f7c7270bea18fa",
+      "bytes": 3526
+    },
+    {
+      "path": "Tests/test_lake_footprint_gpu.py",
+      "sha256": "2999d75e4e853e25bd9cd6d006d3f49dd955c8d1eefa035ef0aa570230533710",
+      "bytes": 1169
+    },
+    {
+      "path": "Tools/TestCaustics.ps1",
+      "sha256": "7c2463675eba586c7198191e15766f661e01c2ca5cfe1c5c618748ba7ad479f8",
+      "bytes": 6221
+    },
+    {
+      "path": "Tools/PrepareSolarShaderStudy.py",
+      "sha256": "fb74224c49bf92db0e1c3f760140b7f001591b99ec78bf76b3fc01c11f5db67c",
+      "bytes": 7271
+    },
+    {
+      "path": "Tools/build_water_volume_content.py",
+      "sha256": "c73cbd8e7dc3b768520ba196528dfe4c82b6faad347e1ff1260f1f140f1b3ccc",
+      "bytes": 3295
+    },
+    {
+      "path": "Tools/build_unreal_content.py",
+      "sha256": "5b08dbf692cbd483378f0abc53d1c0a03654679bc8e2534eb4d7e8debe966d88",
+      "bytes": 16964
+    },
+    {
+      "path": "Tools/Build.ps1",
+      "sha256": "86ab158f9c77c4ad165e9a702144a5e86cf73d0121d587399a4b0d5734617a6b",
+      "bytes": 8605
+    },
+    {
+      "path": "Tools/Shaders/WaterVolume.ush",
+      "sha256": "38aebc7a73f7e51c7b1d40241d283a90f889520bd4fdbdf56cea06ceaaf99a2a",
+      "bytes": 405
+    },
+    {
+      "path": "Tools/Shaders/WaterWaveDisplacement.ush",
+      "sha256": "0086ef67e3ee5ebc4764b7f5245bc2443f518a089207442d68c2a8053cebe485",
+      "bytes": 424
+    },
+    {
+      "path": "divingsim/Shaders/LakeFootprint.ush",
+      "sha256": "d9df6bd6e0e16b9c530ef90a6f3235d499f034aca1d6a4b7675e4c6cfdf6bd80",
+      "bytes": 792
+    },
+    {
+      "path": "divingsim/Shaders/LakeFootprintProbe.usf",
+      "sha256": "65642ef473ac499c5fd8526d4073606ad9dd18fc874e9b41921c80bcee65382a",
+      "bytes": 538
+    },
+    {
+      "path": "divingsim/Shaders/WaveSolarMedium.ush",
+      "sha256": "86a9bbeb47b72e1a30ec83ee2e2c82119150e592ca98f4c1df58516a52f43749",
+      "bytes": 3138
+    },
+    {
+      "path": "divingsim/Source/DiveRendering/DiveWaterScene.cpp",
+      "sha256": "9eb62e2697821315f9a37caab1e6c8f29539de626d926e8579dd148d769d0881",
+      "bytes": 9645
+    },
+    {
+      "path": "divingsim/Source/DiveRendering/Public/DiveWaterScene.h",
+      "sha256": "2eb3a6b13cfe7f5bfc39f500d96a12b6a4f6484433f3f82b2b57d96341ebd7b1",
+      "bytes": 742
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveLakeFootprint.cpp",
+      "sha256": "612eb00fb2cee3e8122cec24a58f7001ab93f93ea0ed980271b990b1f52637cd",
+      "bytes": 2809
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWaterVolume.cpp",
+      "sha256": "f570d298c435092365810242d8aaebcc4c0994264e23659990496b35642d22de",
+      "bytes": 3114
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveWorld.h",
+      "sha256": "8a978df944c50a17816e21c83a044304f1bc8445255afa7da1ec2be36a227eb7",
+      "bytes": 13547
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCaustics.cpp",
+      "sha256": "36948dc7cfa1cefae218ce4e859700cdbf73b39d0096679d9adadadc0fbe6930",
+      "bytes": 7361
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp",
+      "sha256": "d9eef0958b92d9fa908d3ab7824454c707a91b4a6e51b52a1f637d8b5e831856",
+      "bytes": 2846
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveCausticsFixture.h",
+      "sha256": "d1945dab61ea2ad6f678f9ab966d0bd9b2f9718afc6b95acdf26c36552938034",
+      "bytes": 629
+    },
+    {
+      "path": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset",
+      "sha256": "f36354a83f46e107e37eefa53a6aefd439bc3c3f65d56cd0361f49b4263ea72b",
+      "bytes": 17166
+    },
+    {
+      "path": "divingsim/Content/Diving/Geodata/walensee-distance.f16",
+      "sha256": "8dcfa5bc8561669a08819d7b6325623e6218ee616e119368978fdf2a3dc7769d",
+      "bytes": 93609516
+    },
+    {
+      "path": "divingsim/Content/Diving/Geodata/water_footprint.json",
+      "sha256": "e7bc786e8f71f3d0608ef5ac38c4f33a71098dee5a9679ecb952781ee3efd566",
+      "bytes": 1153
+    },
+    {
+      "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "sha256": "91e760cddbfe34f765fe2fb07f7b852c2dae099a2c5450646b4e5ecd1ef6a5f5",
+      "bytes": 2701824
+    },
+    {
+      "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveRendering.dll",
+      "sha256": "8a2d8efbbd05a2f3a9ecaa7f4110f06cbfc2e53f1f8807dd455749c0fd83968b",
+      "bytes": 203776
+    },
+    {
+      "path": "artifacts/lake-footprint-gpu/project-build.log",
+      "sha256": "cbfd8f6f4a3f61538d8274ec33715b9c7dd9a05102f8e15113bc4f20b2f4724e",
+      "bytes": 45944
+    },
+    {
+      "path": "artifacts/lake-footprint-gpu/project-gather-build.log",
+      "sha256": "cffd8b6a3f941d3debb6251a377a17a3e91b4828d1c25505c66a2908006b47ef",
+      "bytes": 2139
+    },
+    {
+      "path": "artifacts/lake-footprint-gpu/shore-fixture-build.log",
+      "sha256": "b65b6d5e7ef8e9fde5ca4d6a6b00ac799b94933c424094a7aeaf2e3b32e76e3f",
+      "bytes": 3400
+    },
+    {
+      "path": "artifacts/lake-footprint-gpu/volume-material-runtime.log",
+      "sha256": "62560bad85fa971a3ad48b4105aaf6643d9a2820cd4dd1f37a3c7b84cb39712b",
+      "bytes": 237261
+    },
+    {
+      "path": "Documentation/Images/LakeFootprint_Shore_Masked.png",
+      "sha256": "58c2fc52087ebbe577854236a82764cca76af7d7774083211984bff8f317b987",
+      "bytes": 1639490
+    },
+    {
+      "path": "Documentation/Images/LakeFootprint_Shore_Unmasked.png",
+      "sha256": "1847dc6fe7becc5e19a48cbaf72b0af897b0a774a75f1a6ed2d82a1be7cf3df2",
+      "bytes": 1701192
+    }
+  ],
+  "visual_review": "All 16 captures inspected in four contact sheets; both shore phase-0 originals also inspected at full size. Land-side focus disappears with footprint; water-side focus remains.",
+  "limits": [
+    "Explicit optional study only; default preview remains unchanged and no new package is delivered.",
+    "The shore fixture hides world primitive geometry and the visible water surface to expose a receiver below the surveyed contour; it is not a normal shoreline scene.",
+    "The 0.75 m blend band represents raster uncertainty. GPU interpolation error is additional numerical error, not survey accuracy.",
+    "Receiver classification does not integrate all water-filled ray segments crossing shores or islands.",
+    "Visible water mesh clipping, wave run-up, dynamic level, refracted shadow paths, GI and energy-normalized focusing remain open.",
+    "No performance acceptance, full habitat visual acceptance or independent isolation of volume versus surface effects."
+  ]
+}

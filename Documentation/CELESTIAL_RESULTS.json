@@ -1,0 +1,938 @@
+{
+  "package": {
+    "started_utc": "2026-11-25T12:55:01.3394257Z",
+    "completed": true,
+    "executable": "O:\\games\\dive game\\Builds\\WindowsCelestial\\divingsim\\Binaries\\Win64\\divingsim-Celestial.exe",
+    "executable_sha256": "9EA1159DD8DD1AF471B9F87D2838E5B053B4138F71D924909017672DEA9224B5",
+    "source_head": "991301ddf46cb79e8f0c97948928038b052cabde",
+    "source_dirty": true,
+    "background_processes": [
+      {
+        "Id": 23600,
+        "ProcessName": "UnrealEditor",
+        "StartTime": "2026-11-24T23:53:12.9220509+01:00"
+      }
+    ],
+    "cases": [
+      {
+        "finished_utc": "2026-11-25T12:55:46.4540051Z",
+        "name": "summer-noon",
+        "passed": true,
+        "options": {
+          "Hour": 13,
+          "CelestialReferences": true,
+          "Entry": 1,
+          "Scenario": "surface-calm",
+          "Date": "2026-06-21",
+          "LampOff": true
+        },
+        "started_utc": "2026-11-25T12:55:02.1921138Z"
+      },
+      {
+        "finished_utc": "2026-11-25T12:56:28.5508961Z",
+        "name": "winter-noon",
+        "passed": true,
+        "options": {
+          "Hour": 13,
+          "Scenario": "surface-calm",
+          "Entry": 1,
+          "Date": "2026-12-21",
+          "LampOff": true
+        },
+        "started_utc": "2026-11-25T12:55:46.4792239Z"
+      },
+      {
+        "finished_utc": "2026-11-25T12:57:10.7475101Z",
+        "name": "summer-dusk",
+        "passed": true,
+        "options": {
+          "Hour": 21.333333333333332,
+          "Scenario": "surface-calm",
+          "Entry": 1,
+          "Date": "2026-06-21",
+          "LampOff": true
+        },
+        "started_utc": "2026-11-25T12:56:28.5525079Z"
+      },
+      {
+        "finished_utc": "2026-11-25T12:57:52.8518867Z",
+        "name": "winter-night",
+        "passed": true,
+        "options": {
+          "Hour": 23,
+          "Scenario": "surface-calm",
+          "Entry": 1,
+          "Date": "2026-12-23",
+          "SkyView": true,
+          "LampOff": true
+        },
+        "started_utc": "2026-11-25T12:57:10.7490951Z"
+      },
+      {
+        "finished_utc": "2026-11-25T12:58:35.0093842Z",
+        "name": "summer-night",
+        "passed": true,
+        "options": {
+          "SkyView": true,
+          "Date": "2026-06-21",
+          "Hour": 23.5,
+          "SkyYaw": 245,
+          "Entry": 1,
+          "SkyPitch": 20,
+          "LampOff": true,
+          "Scenario": "surface-calm"
+        },
+        "started_utc": "2026-11-25T12:57:52.8529628Z"
+      },
+      {
+        "finished_utc": "2026-11-25T12:58:55.1700463Z",
+        "name": "config",
+        "passed": true,
+        "options": {
+          "Scenario": "config"
+        },
+        "started_utc": "2026-11-25T12:58:35.0105673Z"
+      },
+      {
+        "finished_utc": "2026-11-25T12:59:29.1784038Z",
+        "name": "profiles",
+        "passed": true,
+        "options": {
+          "Scenario": "profiles"
+        },
+        "started_utc": "2026-11-25T12:58:55.1720094Z"
+      },
+      {
+        "finished_utc": "2026-11-25T13:01:07.2921067Z",
+        "name": "spring-clock",
+        "passed": true,
+        "options": {
+          "Scenario": "daycycle",
+          "Hour": 1.9833333333333334,
+          "LampOff": true,
+          "Date": "2026-03-29"
+        },
+        "started_utc": "2026-11-25T12:59:29.1794025Z"
+      },
+      {
+        "finished_utc": "2026-11-25T13:02:45.3937019Z",
+        "name": "autumn-clock",
+        "passed": true,
+        "options": {
+          "Scenario": "daycycle",
+          "Hour": 2.9833333333333334,
+          "LampOff": true,
+          "Date": "2026-10-25"
+        },
+        "started_utc": "2026-11-25T13:01:07.2932176Z"
+      },
+      {
+        "finished_utc": "2026-11-25T13:04:23.5678576Z",
+        "name": "utc-midnight",
+        "passed": true,
+        "options": {
+          "Scenario": "daycycle",
+          "Hour": 1.9833333333333334,
+          "LampOff": true,
+          "Date": "2026-06-21"
+        },
+        "started_utc": "2026-11-25T13:02:45.3950516Z"
+      },
+      {
+        "finished_utc": "2026-11-25T13:06:01.7862837Z",
+        "name": "local-midnight",
+        "passed": true,
+        "options": {
+          "Scenario": "daycycle",
+          "Hour": 23.983333333333334,
+          "LampOff": true,
+          "Date": "2026-12-21"
+        },
+        "started_utc": "2026-11-25T13:04:23.5693087Z"
+      },
+      {
+        "finished_utc": "2026-11-25T13:06:27.9864714Z",
+        "name": "night-torch",
+        "passed": true,
+        "options": {
+          "Scenario": "wrist-night",
+          "Entry": 1,
+          "Date": "2026-12-23"
+        },
+        "started_utc": "2026-11-25T13:06:01.7871953Z"
+      },
+      {
+        "finished_utc": "2026-11-25T13:07:10.2397514Z",
+        "name": "storm",
+        "passed": true,
+        "options": {
+          "Scenario": "surface-storm",
+          "Hour": 13,
+          "Entry": 1,
+          "Date": "2026-06-21"
+        },
+        "started_utc": "2026-11-25T13:06:27.9878633Z"
+      }
+    ],
+    "finished_utc": "2026-11-25T13:07:10.9975731Z"
+  },
+  "clock_oracle": {
+    "implementation": "Python zoneinfo",
+    "zone": "Europe/Zurich",
+    "tzdata": "2025.3"
+  },
+  "cases": [
+    {
+      "name": "summer-noon",
+      "options": {
+        "Hour": 13,
+        "CelestialReferences": true,
+        "Entry": 1,
+        "Scenario": "surface-calm",
+        "Date": "2026-06-21",
+        "LampOff": true
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\summer-noon\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_CELESTIAL_REFERENCE PASS date=2026-03-29 hour=1.983333 sun_error_deg=0.002006 moon_error_deg=0.007254 phase_error_percentage_points=0.006022 elevation=-35.791660 reason=",
+        "Display: DIVE_CELESTIAL_REFERENCE PASS date=2026-03-29 hour=3.016667 sun_error_deg=0.002006 moon_error_deg=0.007247 phase_error_percentage_points=0.006028 elevation=-35.628457 reason=",
+        "Display: DIVE_CELESTIAL_REFERENCE PASS date=2026-06-21 hour=13.000000 sun_error_deg=0.001875 moon_error_deg=0.015383 phase_error_percentage_points=0.000662 elevation=65.785146 reason=",
+        "Display: DIVE_CELESTIAL_REFERENCE PASS date=2026-06-21 hour=21.000000 sun_error_deg=0.001958 moon_error_deg=0.014109 phase_error_percentage_points=0.000421 elevation=2.356064 reason=",
+        "Display: DIVE_CELESTIAL_REFERENCE PASS date=2026-06-22 hour=0.000000 sun_error_deg=0.001989 moon_error_deg=0.018362 phase_error_percentage_points=0.000366 elevation=-16.864069 reason=",
+        "Display: DIVE_CELESTIAL_REFERENCE PASS date=2026-12-21 hour=13.000000 sun_error_deg=0.001868 moon_error_deg=0.037320 phase_error_percentage_points=0.005294 elevation=18.922437 reason=",
+        "Display: DIVE_CELESTIAL_PASS references=6",
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=-4.340",
+        "Display: DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_135534_86B0A05D.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\summer-noon\\20261125_135534_86B0A05D.json",
+          "scenario_start": "2026-06-21T13:00:00+02:00",
+          "scenario_end": "2026-06-21T13:00:38.019999+02:00",
+          "duration_seconds": 38.01999915018678,
+          "samples": 39
+        }
+      ],
+      "sha256": {
+        "20261125_135534_86B0A05D.json": "f5535000ac86ade247cabea1446275b39c78f25ed187ed801b19559fefd0af62",
+        "DiveSmoke_1_surface-calm.png": "70702666536e734d6ed736543aa9934550c25844411e840f0d221c0ed98d33c8",
+        "DiveUnderwater_1_surface-calm.png": "1c685140b1465a68e61d36bd08fda2da93f7976c44dd9fabb160dbea0cf4afae",
+        "Result.log": "8e221f9c3ee0317da1b74c63c0202fc7e15282db1b50b076a2268ad1e23adee0",
+        "Runtime.log": "cf461ca61fe33d71c96bf56de8dd243b08e4b4c41bbd7b3420368404d0937de8",
+        "SurfaceAir_1_surface-calm.png": "43303acaa714f52fa540f42578463cd305215a5eeddde5ff0fe195a784826547"
+      },
+      "png_count": 3
+    },
+    {
+      "name": "winter-noon",
+      "options": {
+        "Hour": 13,
+        "Scenario": "surface-calm",
+        "Entry": 1,
+        "Date": "2026-12-21",
+        "LampOff": true
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\winter-noon\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=-3.456",
+        "Display: DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_135618_C8C0DCC3.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\winter-noon\\20261125_135618_C8C0DCC3.json",
+          "scenario_start": "2026-12-21T13:00:00+01:00",
+          "scenario_end": "2026-12-21T13:00:38.019999+01:00",
+          "duration_seconds": 38.01999915018678,
+          "samples": 39
+        }
+      ],
+      "sha256": {
+        "20261125_135618_C8C0DCC3.json": "8994d102501aeb5127da7ffbed837a7b1f83822da1afbe42d0c0726f5cc04a1f",
+        "DiveSmoke_1_surface-calm.png": "71f528d1e3ddbb266a08e33691b7e4181d7cd19b7c890f270d8876637437d5ec",
+        "DiveUnderwater_1_surface-calm.png": "c6cf155337cb9500412ef00b33a0de9e1463753d8e953bac29d2af00b88fb8bb",
+        "Result.log": "c2b116afad6310890399bbfbb5e34c1917f8e3d3d88eb309da788a51e480e1fe",
+        "Runtime.log": "ebbbbe58160ba96da6414c7d4548b754e8aab3ac8cf41cc0a6a6a1fa75af7cf5",
+        "SurfaceAir_1_surface-calm.png": "18e5a068f6840b89db3c9f9ddddcea350ead9f9a7390d81f4954799ab9d5d908"
+      },
+      "png_count": 3
+    },
+    {
+      "name": "summer-dusk",
+      "options": {
+        "Hour": 21.333333333333332,
+        "Scenario": "surface-calm",
+        "Entry": 1,
+        "Date": "2026-06-21",
+        "LampOff": true
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\summer-dusk\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=0.250",
+        "Display: DIVE_SMOKE_PASS depth=11.45 distance=29.34 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_135700_6EE5B078.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\summer-dusk\\20261125_135700_6EE5B078.json",
+          "scenario_start": "2026-06-21T21:20:00+02:00",
+          "scenario_end": "2026-06-21T21:20:38.039999+02:00",
+          "duration_seconds": 38.03999914973974,
+          "samples": 39
+        }
+      ],
+      "sha256": {
+        "20261125_135700_6EE5B078.json": "eb6721d73b6600df217043ce929cb4c14f1aab7d5dce103b177a9b5c1a9aa367",
+        "DiveSmoke_1_surface-calm.png": "12328549e45fb0d281dc87b7827ff963166efd455b4012f4accd25eb1e6acc44",
+        "DiveUnderwater_1_surface-calm.png": "c0fa3d4c4eb2924718bf3e436074f5f1b9fe5610dd11678a40e72e7bae6b59e4",
+        "Result.log": "79545999c5feea7ea52b62700f14ad673e1ca8543f52e658f1517c3c62064de2",
+        "Runtime.log": "cb8debdf461257a605e81ad519a6c44122127b035186d788a90d99818085d102",
+        "SurfaceAir_1_surface-calm.png": "aceab026cef8647678184559fc05032619e85c08a8803fa26f20b9974bd8e3e5"
+      },
+      "png_count": 3
+    },
+    {
+      "name": "winter-night",
+      "options": {
+        "Hour": 23,
+        "Scenario": "surface-calm",
+        "Entry": 1,
+        "Date": "2026-12-23",
+        "SkyView": true,
+        "LampOff": true
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\winter-night\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=10.986",
+        "Display: DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_135743_4ECA1BAC.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\winter-night\\20261125_135743_4ECA1BAC.json",
+          "scenario_start": "2026-12-23T23:00:00+01:00",
+          "scenario_end": "2026-12-23T23:00:38.019999+01:00",
+          "duration_seconds": 38.01999915018678,
+          "samples": 39
+        }
+      ],
+      "sha256": {
+        "20261125_135743_4ECA1BAC.json": "64d0acfbd7d17f2cc92f3648ee86bc4c5ea898d3f5bc98bab04f85b555c92925",
+        "DiveSmoke_1_surface-calm.png": "3c02d93125d62704e8b3fe71c5340e0e09fb28fa712fcd2dc15098629876ab93",
+        "DiveUnderwater_1_surface-calm.png": "e2891140e67dac8ef833a386c5f399ea7eabd91c2d53bd31462fa20592585039",
+        "Result.log": "5cce70308a31587815e81f52e68c316266d3f8f2d1eda171066ba1d0e7ecce56",
+        "Runtime.log": "61c812fab0feb743930e2488ab1039581575c4c6776b12a6f5c4c73e7f8da94c",
+        "SurfaceAir_1_surface-calm.png": "891f08907ad8fe60f43f0419dce8a4f48839d4ed51c6e41cc7df794b8ea02bf0"
+      },
+      "png_count": 3
+    },
+    {
+      "name": "summer-night",
+      "options": {
+        "SkyView": true,
+        "Date": "2026-06-21",
+        "Hour": 23.5,
+        "SkyYaw": 245,
+        "Entry": 1,
+        "SkyPitch": 20,
+        "LampOff": true,
+        "Scenario": "surface-calm"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\summer-night\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=10.135",
+        "Display: DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_135825_06B65598.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\summer-night\\20261125_135825_06B65598.json",
+          "scenario_start": "2026-06-21T23:30:00+02:00",
+          "scenario_end": "2026-06-21T23:30:38.019999+02:00",
+          "duration_seconds": 38.01999915018678,
+          "samples": 39
+        }
+      ],
+      "sha256": {
+        "20261125_135825_06B65598.json": "2c669c35ece491110ae73f6932db67d4d6c6916e865aca7a40a82d91ec4d8744",
+        "DiveSmoke_1_surface-calm.png": "8bd70f715d04e111fa4298ae2d3f507e359beb64711ddbbe8d1ea9050917db18",
+        "DiveUnderwater_1_surface-calm.png": "15164e81c012a1ba68ea31c9aaf323e2ff370ba7769de432907251ba31fc2d61",
+        "Result.log": "434697d008569056f2dae1d146a76174b7ed82b6d6a6b79bf203a39ec0446cea",
+        "Runtime.log": "03c6bf32a6f4bc6d32ecd9a71809c90439878fa718d27563e3b89fe2c7a62e97",
+        "SurfaceAir_1_surface-calm.png": "db8ed42917ce38049b92ad416910a46059142f4b954454231945784f8cb22d73"
+      },
+      "png_count": 3
+    },
+    {
+      "name": "config",
+      "options": {
+        "Scenario": "config"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\config\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_CONFIG_PASS calendar=1 dst_gap=1 numeric=1 minute_clock=1 validation=1 persistence=1 cancel=1 active_guard=1",
+        "Display: DIVE_SMOKE_PASS config=1"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\config\\20261125_135852_09905125.json",
+          "scenario_start": "2024-02-29T07:05:00+01:00",
+          "scenario_end": "2024-02-29T07:05:00+01:00",
+          "duration_seconds": 0,
+          "samples": 1
+        }
+      ],
+      "sha256": {
+        "20261125_135852_09905125.json": "cead42b1874b96ce6ff13f4ff9487be7c93c67a4aedc06ff54a93ebca538b2ca",
+        "ConfigAir_EN.png": "fa0be869d06baa07b0f2d72422126c4df8ad602a6eb8777a6a3e545c6e8645fa",
+        "ConfigDate_EN.png": "8eeecc5079a8caf197d8841e6f203c7ba2ce14fc355f13d0d995d43babafc5ef",
+        "ConfigDateValues_EN.png": "c837e67f5f783b08ffdcf1612bddf6fcb04350b74b177b5ccc1b0be78efe4f21",
+        "ConfigPressure_DE.png": "0438887bc0e46407b2e4207ae4ea5e7feb2c4da28c5771cd6ede9ffaca306cce",
+        "ConfigRange_DE.png": "8d9fe9280d08ec73744b72e9307b2cb4904385621643bdec7cdb23d6e54d72d2",
+        "ConfigSpringGap_EN.png": "4e2bd2179c530265f536b2895015b6e42f1c7df1d8d15b33eab42011eba45687",
+        "ConfigTime_DE.png": "b13808fa405f2b65a3e4515df8d956c72c8f1f9cce5946491aada34244d2cdac",
+        "ConfigValues_DE.png": "bddfa37260b679a536b0ba4bf983caf13dff3cd577909ca1b543d32803879405",
+        "ConfigValues_EN.png": "01e163c0f359b63af67987d38b443cadef4d38e00907ffb4be1a04db3db81a9e",
+        "Result.log": "38b880b8843eed03d820cd7a236b45ca817172002fb9482de64ae8ea8ef079a8",
+        "Runtime.log": "cabb77afdf67b3e6bdcd3ec2da6a6e75c4dfa7e87b924bf6ddf87a830d4c804e"
+      },
+      "png_count": 9
+    },
+    {
+      "name": "profiles",
+      "options": {
+        "Scenario": "profiles"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\profiles\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_PROFILES_PASS persistence=1 undo=1 archive=1 active_guard=1",
+        "Display: DIVE_TORCH_PASS on=1 lumens=1000.0 exposure=-4.442",
+        "Display: DIVE_SMOKE_PASS depth=5.67 distance=18.78 pressure=197.98 samples=23 log=../../../divingsim/Saved/DiveLogs/20261125_135927_EAC47AF9.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\profiles\\20261125_135927_EAC47AF9.json",
+          "scenario_start": "2026-06-21T13:00:00+02:00",
+          "scenario_end": "2026-06-21T13:00:22.039999+02:00",
+          "duration_seconds": 22.03999950736761,
+          "samples": 23
+        }
+      ],
+      "sha256": {
+        "20261125_135927_EAC47AF9.json": "a225309dddae1c26a778d0914d72e98ae7bc85c6d73ee5ff9a2860867de3693d",
+        "DiveSmoke_0_profiles.png": "986e97754ff15129bafb3116c4f4f9b25e70a336da2f8763e7e96d01ce13b253",
+        "DiveUnderwater_0_profiles.png": "d72e405f9c610b24c67a9c1718855cdfdd28e3b3071c3c01a9d5e6d1ba2b7e7e",
+        "ProfileDuplicate.png": "15fada29adc3c883b347e76dd8ae54f27fb5876dc0fd9bca1d1fa81d76a4909a",
+        "ProfileName.png": "b985b45c2ae3572b93fdf3f656bc18e3efb7a89c6538419146c080747aa939c9",
+        "Profiles_DE.png": "41550111926e56d1851386cd2826c12eef363b962378848f99f7ba34f843b872",
+        "Profiles_EN.png": "c1bdaa113d75e3bd0dd85b5c5f1e26214ed4a4d4ff3f3eb1ed7acd523e5119ee",
+        "ProfilesActive.png": "3a68fb1bb64b8651541f62659909c8401e2196ce318e1755b35cc9fb90588965",
+        "ProfilesArchive.png": "84f76c65a0439c153b6c683e3844c6bc286f60dbc8dc8d5ae909b9208d9801df",
+        "Result.log": "960461081b2673039889fba911ca4dd7e35a8b0a71c90f7a7bc99b05ed76ab93",
+        "Runtime.log": "333843afc5ead135618e330314e345b6d1390a0354d1a5c815a130118eba062b"
+      },
+      "png_count": 8
+    },
+    {
+      "name": "spring-clock",
+      "options": {
+        "Scenario": "daycycle",
+        "Hour": 1.9833333333333334,
+        "LampOff": true,
+        "Date": "2026-03-29"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\spring-clock\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=11.100",
+        "Display: DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.020 hour=1.986116667",
+        "Display: DIVE_DAYCYCLE_PASS elapsed=88.020 start=1.983333333 current=3.007783333 paused_wall=4.000 solar_source=1.000000000 date=2026-03-29 offset_minutes=120",
+        "Display: DIVE_SMOKE_PASS depth=5.67 distance=26.36 pressure=195.51 samples=91 log=../../../divingsim/Saved/DiveLogs/20261125_140005_FACCCDBC.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\spring-clock\\20261125_140005_FACCCDBC.json",
+          "scenario_start": "2026-03-29T01:59:00+01:00",
+          "scenario_end": "2026-03-29T03:00:30.019998+02:00",
+          "duration_seconds": 90.0199979878962,
+          "samples": 91
+        }
+      ],
+      "clock_boundary": {
+        "native_local_date": "2026-03-29",
+        "native_local_hour": 3.007783333,
+        "native_offset_minutes": 120,
+        "independent_iana_local": "2026-03-29T03:00:28.020000+02:00",
+        "pause_wall_seconds": 4.0
+      },
+      "sha256": {
+        "20261125_140005_FACCCDBC.json": "22a4a9f2fa1a37875b610a28df5567a0c4a814a232668b23f7a5ad5ae8419c43",
+        "DayCycle_After_01.png": "e2a6a5fa5eef672142dba0c2970c8bb35a5563267305862dc67f65f7861beb78",
+        "DayCycle_Before_01.png": "286273b06cb04006025b4fb0bf93596c4ac5adb5da89fdee432defff85d991ab",
+        "DiveSmoke_0_daycycle.png": "7abc182f6ef6cc87c8d31c97132c97ff5e77f185f4fd2e25b0dea902042bde79",
+        "DiveUnderwater_0_daycycle.png": "1ce69dae470983cef3ab5d3e248f560880b98073d1a647f85616d2648d61a6e2",
+        "Result.log": "4e498fe431ead67bf6f7543f90cd84069cb9d3d322adf206611f400881526a29",
+        "Runtime.log": "95cf88a8b4a34c224cd0d65eed4bb51234f9e5040ffe1cd49d59cde2bd819d9f"
+      },
+      "png_count": 4
+    },
+    {
+      "name": "autumn-clock",
+      "options": {
+        "Scenario": "daycycle",
+        "Hour": 2.9833333333333334,
+        "LampOff": true,
+        "Date": "2026-10-25"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\autumn-clock\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=11.035",
+        "Display: DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.040 hour=2.986122222",
+        "Display: DIVE_DAYCYCLE_PASS elapsed=88.020 start=2.983333333 current=2.007783333 paused_wall=4.000 solar_source=1.000000000 date=2026-10-25 offset_minutes=60",
+        "Display: DIVE_SMOKE_PASS depth=5.67 distance=26.36 pressure=195.51 samples=91 log=../../../divingsim/Saved/DiveLogs/20261125_140143_ECBC2B53.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\autumn-clock\\20261125_140143_ECBC2B53.json",
+          "scenario_start": "2026-10-25T02:59:00+02:00",
+          "scenario_end": "2026-10-25T02:00:30.019998+01:00",
+          "duration_seconds": 90.0199979878962,
+          "samples": 91
+        }
+      ],
+      "clock_boundary": {
+        "native_local_date": "2026-10-25",
+        "native_local_hour": 2.007783333,
+        "native_offset_minutes": 60,
+        "independent_iana_local": "2026-10-25T02:00:28.020000+01:00",
+        "pause_wall_seconds": 4.0
+      },
+      "sha256": {
+        "20261125_140143_ECBC2B53.json": "e6972e5ac1a09ab7e9cc3a9d26e65ae79530a5cfd18494cc84422556ce990a6b",
+        "DayCycle_After_02.png": "35d6dee6f8195557e266d939c3ed2ec308b5f037a892ce2ee029f993937f1138",
+        "DayCycle_Before_02.png": "c77fdf5b3a86d2c084ac418cc414d401518539b05bf1db7645a3c724eb6167c2",
+        "DiveSmoke_0_daycycle.png": "c58ab50b87415786b0c68acec46a9b6a271d5d5fd8b0992829415c400d096f07",
+        "DiveUnderwater_0_daycycle.png": "4c0080c33d175bc35598c935b1dc904aa89549aa8da1e86898a3bb4cc7445cd2",
+        "Result.log": "34e9188bc8f28f932692b4b0cc4b57c340d0b4f96d55f0226364ba3fa7231fca",
+        "Runtime.log": "5055030cc87477806a889234e900460b2337e739ff97bf1dce680d3a5571ac4b"
+      },
+      "png_count": 4
+    },
+    {
+      "name": "utc-midnight",
+      "options": {
+        "Scenario": "daycycle",
+        "Hour": 1.9833333333333334,
+        "LampOff": true,
+        "Date": "2026-06-21"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\utc-midnight\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=11.315",
+        "Display: DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.040 hour=1.986122222",
+        "Display: DIVE_DAYCYCLE_PASS elapsed=88.040 start=1.983333333 current=2.007788888 paused_wall=4.000 solar_source=1.000000000 date=2026-06-21 offset_minutes=120",
+        "Display: DIVE_SMOKE_PASS depth=5.67 distance=26.37 pressure=195.51 samples=91 log=../../../divingsim/Saved/DiveLogs/20261125_140321_731D5D85.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\utc-midnight\\20261125_140321_731D5D85.json",
+          "scenario_start": "2026-06-21T01:59:00+02:00",
+          "scenario_end": "2026-06-21T02:00:30.039998+02:00",
+          "duration_seconds": 90.03999798744917,
+          "samples": 91
+        }
+      ],
+      "clock_boundary": {
+        "native_local_date": "2026-06-21",
+        "native_local_hour": 2.007788888,
+        "native_offset_minutes": 120,
+        "independent_iana_local": "2026-06-21T02:00:28.040000+02:00",
+        "pause_wall_seconds": 4.0
+      },
+      "sha256": {
+        "20261125_140321_731D5D85.json": "5ea182389b48f8cb1a2d34867a22c45fb17da01b6b6123ecdf3b54df9bf1e202",
+        "DayCycle_After_01.png": "9e53842c798ba1281747208e4e417b6f0cbbb1acc5380bef950106062c3c1b8d",
+        "DayCycle_Before_01.png": "600214a8fc76ca27d3df01e8dbd26de29be27262bbafd5ef5cc4ad4896b733c8",
+        "DiveSmoke_0_daycycle.png": "6b85f84736465db041ea64680b3911b975824d647050489f9f1c3d98cb4b87bf",
+        "DiveUnderwater_0_daycycle.png": "60b7af48687ad576682410ed5db17cf5ad56d2dce9a159d14938fbe52c30c0bb",
+        "Result.log": "643ebf722705460a782b4215acce9640bc0c2b02d5af129c28958998929a5bca",
+        "Runtime.log": "7bfc08da4880dccbc27bc059fc0f8eb0c8e95038406fa11bc32b3e5ada1d3272"
+      },
+      "png_count": 4
+    },
+    {
+      "name": "local-midnight",
+      "options": {
+        "Scenario": "daycycle",
+        "Hour": 23.983333333333334,
+        "LampOff": true,
+        "Date": "2026-12-21"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\local-midnight\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=0 lumens=1000.0 exposure=10.987",
+        "Display: DIVE_DAYCYCLE_PAUSE_PASS wall=4.000 sim=10.020 hour=23.986116667",
+        "Display: DIVE_DAYCYCLE_PASS elapsed=88.020 start=23.983333333 current=0.007783333 paused_wall=4.000 solar_source=1.000000000 date=2026-12-22 offset_minutes=60",
+        "Display: DIVE_SMOKE_PASS depth=5.67 distance=26.36 pressure=195.51 samples=91 log=../../../divingsim/Saved/DiveLogs/20261125_140500_498CDF69.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\local-midnight\\20261125_140500_498CDF69.json",
+          "scenario_start": "2026-12-21T23:59:00+01:00",
+          "scenario_end": "2026-12-22T00:00:30.019998+01:00",
+          "duration_seconds": 90.0199979878962,
+          "samples": 91
+        }
+      ],
+      "clock_boundary": {
+        "native_local_date": "2026-12-22",
+        "native_local_hour": 0.007783333,
+        "native_offset_minutes": 60,
+        "independent_iana_local": "2026-12-22T00:00:28.020000+01:00",
+        "pause_wall_seconds": 4.0
+      },
+      "sha256": {
+        "20261125_140500_498CDF69.json": "111278c71d8e09b7f2415f97c29e9da4690db56fd67aa238c261065cde4d7a8f",
+        "DayCycle_After_23.png": "ac97464fa717be689f9cc4cd1064505dd12b2e249be556f016c890118c9336fa",
+        "DayCycle_Before_23.png": "05657324bcaef420fe864862f531679d8a058c0118ae90ea89869cff906adb74",
+        "DiveSmoke_0_daycycle.png": "19d4f7c17ddbf361a3d54b7d117ab1c5aa2978c78f157b378b41a8c314964234",
+        "DiveUnderwater_0_daycycle.png": "d3e8ae8df9f49df82ca51180f26546b1ff7c6c22f9ab0c39aaf491ab06ec602c",
+        "Result.log": "b68298824a7be58739e2fcdec3942c72105a3190523421cd9cbd426bd993f024",
+        "Runtime.log": "40179b81df239e74413cf674cb35ce0ed1c41507f37732e82861565d66d40dfa"
+      },
+      "png_count": 4
+    },
+    {
+      "name": "night-torch",
+      "options": {
+        "Scenario": "wrist-night",
+        "Entry": 1,
+        "Date": "2026-12-23"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\night-torch\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=1 lumens=1000.0 exposure=5.420",
+        "Display: DIVE_SMOKE_PASS depth=11.45 distance=23.12 pressure=197.37 samples=23 log=../../../divingsim/Saved/DiveLogs/20261125_140626_C6E7B6E3.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\night-torch\\20261125_140626_C6E7B6E3.json",
+          "scenario_start": "2026-12-23T23:00:00+01:00",
+          "scenario_end": "2026-12-23T23:00:22.039999+01:00",
+          "duration_seconds": 22.03999950736761,
+          "samples": 23
+        }
+      ],
+      "sha256": {
+        "20261125_140626_C6E7B6E3.json": "1cd39d88c50d9a02a4ad838b74362f6ebd0cd719963774e868b0406510f968f4",
+        "DiveSmoke_1_wrist-night.png": "c13a8d41dd6a7dceee04704f03990a209da94cb47fb92a2692b16bad7e542323",
+        "DiveUnderwater_1_wrist-night.png": "98fabf6aa5d765ef4e0e5a44490bb1fa34a13d3227b6c54586a6ddaa9a76ffe7",
+        "Result.log": "1bfbe55b0d046f3210bc570d317be91e4f36c01397a4478c605f153a424130e6",
+        "Runtime.log": "b4ff53214100f777c7052343ae59cc02c15e3c42f61364055a416af0d42540bd",
+        "WristTexture_wrist-night.png": "556dcad802b0eaf64853c4829376d9cc547961042053ab74710a906f718bb3bc",
+        "WristVitals_wrist-night.png": "5c6116c103bbc2dc981f1c4decc4ce5dd4c75da09510b64fa77148dcae481e48"
+      },
+      "png_count": 4
+    },
+    {
+      "name": "storm",
+      "options": {
+        "Scenario": "surface-storm",
+        "Hour": 13,
+        "Entry": 1,
+        "Date": "2026-06-21"
+      },
+      "runtime_log": "artifacts\\celestial-validation-20261125-135501\\storm\\Runtime.log",
+      "known_upstream_startup_diagnostic": true,
+      "markers": [
+        "Display: DIVE_TORCH_PASS on=1 lumens=1000.0 exposure=-3.078",
+        "Display: DIVE_WEATHER_PASS kind=3 wind=22.0 rain_instances=2021 wave_envelope_m=2.269 cloud_coverage=0.90 cloud_density=0.018 sun_lux=9600.0",
+        "Display: DIVE_SMOKE_PASS depth=11.49 distance=44.78 pressure=196.71 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_140700_49A3C632.json"
+      ],
+      "dive_logs": [
+        {
+          "path": "artifacts\\celestial-validation-20261125-135501\\storm\\20261125_140700_49A3C632.json",
+          "scenario_start": "2026-06-21T13:00:00+02:00",
+          "scenario_end": "2026-06-21T13:00:38.019999+02:00",
+          "duration_seconds": 38.01999915018678,
+          "samples": 39
+        }
+      ],
+      "sha256": {
+        "20261125_140700_49A3C632.json": "94b90f70600445fd1dc59146970b9d20ca282c54c096a377c97e5128e89f1ad3",
+        "DiveSmoke_1_surface-storm.png": "be2193cb0a4545c376c1caa696d8de7b61c9ecc5d49539fd866f141254566542",
+        "DiveUnderwater_1_surface-storm.png": "5575197fc2f83bdb20d8e73bbb658c7069819985901bd7545943352269b25703",
+        "Result.log": "f47290b04c7e6bb8bdea3e56f5fa2423343cf2a2cbfba35399b2d9e2f120804d",
+        "Runtime.log": "e6f1a83e17022f5620b074b5c596111df559831cf174bf758a8ba115ebb49a71",
+        "SurfaceAir_1_surface-storm.png": "97166ba1d2a0362d462f6f7b1430d67a25b58665632761a6e3630a374f27c0aa"
+      },
+      "png_count": 3
+    }
+  ],
+  "reference_maxima": {
+    "sun_error_deg": 0.002006,
+    "moon_error_deg": 0.03732,
+    "phase_error_percentage_points": 0.006028
+  },
+  "tested_source_sha256": {
+    "divingsim/Config/DefaultEngine.ini": "374f5efca557ae5106148aaa4d6e321fb9420efa8b3c2377a173cb34ceaa9681",
+    "divingsim/Config/DefaultGame.ini": "5c9f7ba4749fcae61a6e89e82b09302bcdca7d4a131261cfd38c728645938a68",
+    "divingsim/divingsim.uproject": "d0940b90e6b567c4326a357c94826e2400d0a2695d000830d0e16e079415b3c4",
+    "divingsim/Source/DiveSim/DiveAccess.cpp": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a",
+    "divingsim/Source/DiveSim/DiveAudio.cpp": "c1460facd6421879ee96b94e419e7f13290946b4944617da34ab82586f6072bc",
+    "divingsim/Source/DiveSim/DiveAudio.h": "75531533fefa118a7e6c3d944248006eece6a14062b288e2f48ab7832d34d31f",
+    "divingsim/Source/DiveSim/DiveConfigHUD.cpp": "a587d1ff3ca2ef0f7f511e5e983a537d998a4fa57fa92b9fea00d138501ff3da",
+    "divingsim/Source/DiveSim/DiveConfigIO.cpp": "a6029f3a09e14fe14816c9dacafc7570b5e565bd7215639d5d14a62de49e26d5",
+    "divingsim/Source/DiveSim/DiveConfigIO.h": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3",
+    "divingsim/Source/DiveSim/DiveControls.cpp": "958bcfacd5b7395d5a1e160b98304cc0bec867b9b0bf4072d5efc470cd64980b",
+    "divingsim/Source/DiveSim/DiveControls.h": "06049ef780793a31df78b2eac4395de2baec7e6aca399fb83a67186281db4bb1",
+    "divingsim/Source/DiveSim/DiveControlsHUD.cpp": "1e7aa6af86cfa0aa0259674ea787e664a6742c80add82eaa52741128706baee0",
+    "divingsim/Source/DiveSim/DiveControlsTests.cpp": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa",
+    "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057",
+    "divingsim/Source/DiveSim/DiveEcology.cpp": "148e136710ff7adc18c9ebde26f8b2c9b271ba327c6aff57edca843566067127",
+    "divingsim/Source/DiveSim/DiveEquipment.cpp": "fa21ff7eee5b809d8d87ff8c09318a3a0e9c28cd0b21a611bd254405775bf8b2",
+    "divingsim/Source/DiveSim/DiveEquipment.h": "f93e90d810295433451a2de67596fdaa02be69566c8333e1bda435105fd0f8c6",
+    "divingsim/Source/DiveSim/DiveGameMode.cpp": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04",
+    "divingsim/Source/DiveSim/DiveGameMode.h": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b",
+    "divingsim/Source/DiveSim/DiveHUD.cpp": "dd39f8070b9dd148c5291ab388b46b39e174c22894869f799a0f7828157385fe",
+    "divingsim/Source/DiveSim/DiveHUD.h": "983cd63416b6e57f82c6c9a56939d245a2368a64fecd863826bd7a05e77cef17",
+    "divingsim/Source/DiveSim/DiveImagery.cpp": "9d5bb517b2663f470f5631db4ccf70d154684bce7ea1704482623b8eeacc7ef4",
+    "divingsim/Source/DiveSim/DiveInputSmoke.cpp": "330f91bb9e1a6fde7cdcf9fbf05fc611a0ea0f37d39b10b52db321f759700453",
+    "divingsim/Source/DiveSim/DiveLandscape.cpp": "8ef845c78fa718222d1310955ee92cf4150a6e52f0492fd4352664aacabcc776",
+    "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp": "d2101fe3e3639b43631b7c13dcf8d35bc88bcd9e2848bfe2e889c0da96c87cf5",
+    "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12",
+    "divingsim/Source/DiveSim/DiveLogbook.cpp": "0cd0af13a7a53457d256161020db625a5bf94c05d6f5a6d17e75f770850cef93",
+    "divingsim/Source/DiveSim/DiveLogbook.h": "f4f833e2dbfbbc7720dae0fc50fa12b388d19c2a7e20871b00418cdeda7b6b37",
+    "divingsim/Source/DiveSim/DiveLogbookHUD.cpp": "bb8d49d8970fcc0aa4653db4e0fc9ea5c7bf464d39db38dcd7c5c314df3da907",
+    "divingsim/Source/DiveSim/DiveLogbookTests.cpp": "ae69986540087ab484efdc44c58de27212fe38200502cbb7ecdc1be09fcaaa80",
+    "divingsim/Source/DiveSim/DivePawn.cpp": "c293a4f209070ed91db98a5d4a6554b275e660f6da5928ad55e434edccb1c391",
+    "divingsim/Source/DiveSim/DivePawn.h": "bbd9fecb677e0d30940683b87ab752b1de9c9a29050d31f1411e5d841201c41e",
+    "divingsim/Source/DiveSim/DivePerformance.cpp": "79b62e1dfbb40160e94e3fb70ab2543d37ca5a5ea7da1c557ffd1b24018b201f",
+    "divingsim/Source/DiveSim/DivePlayerController.cpp": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88",
+    "divingsim/Source/DiveSim/DivePlayerController.h": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a",
+    "divingsim/Source/DiveSim/DiveProfiles.cpp": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8",
+    "divingsim/Source/DiveSim/DiveProfiles.h": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447",
+    "divingsim/Source/DiveSim/DiveProfilesHUD.cpp": "12043cab6b8f89cf6af1122860ac2ee29e680c7c59bd9333b360197594e7b7c0",
+    "divingsim/Source/DiveSim/DiveProfilesTests.cpp": "53abadf1e2ee74bb2b23bea765083c0167d95fbf53ba4599e4083bb54ecf4dbe",
+    "divingsim/Source/DiveSim/DiveRecording.cpp": "7ae361000042d1f7896d45e3aff33feec0b8cdbe1d2871c5a71d2b349b922835",
+    "divingsim/Source/DiveSim/DiveRecording.h": "3d9fb1624aed8dfd0d0dae6f40f67cca6a039bb2df9f512a42430635f45faf5f",
+    "divingsim/Source/DiveSim/DiveShoreline.cpp": "2ac0a378da19c8add8256da22c13509e0df029e426699e6772fe4a7b12bdd528",
+    "divingsim/Source/DiveSim/DiveShoreMovement.cpp": "31fcb087d940379bd70e40030912d23b9c7514d43025060a6ba9e197e8412f0f",
+    "divingsim/Source/DiveSim/DiveSim.Build.cs": "b7e7428ef210c4b10a611469bd91ca80de3035fa85c112e961942bdb5d93a985",
+    "divingsim/Source/DiveSim/DiveSim.cpp": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac",
+    "divingsim/Source/DiveSim/DiveSky.cpp": "50a927e08cc655d6a4b093936adbc1f5462c98fc1c8873f9330e8dcd8b246498",
+    "divingsim/Source/DiveSim/DiveSoak.cpp": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819",
+    "divingsim/Source/DiveSim/DiveTerrain.cpp": "70603178bd219b227d24cb30e4317f16dcc07c81d7a7e53f7bae968b4d413fb5",
+    "divingsim/Source/DiveSim/DiveTerrain.h": "f686048d6710319efa9f25dc225ba6935af0d4743c01c0eafee3e626b6ed3bfe",
+    "divingsim/Source/DiveSim/DiveTextDialog.h": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6",
+    "divingsim/Source/DiveSim/DiveWater.cpp": "b20a92eda04ac7fe743862f8be325750997a12896f38442a1dcc0bbc2714f900",
+    "divingsim/Source/DiveSim/DiveWorld.cpp": "b41f6c42f3a6936c2819db2e012c5cc20a1314407cd4795023cae44fa1a86122",
+    "divingsim/Source/DiveSim/DiveWorld.h": "6b08e5f9d5e5e03b7dcaf863b4ed8ed74722aada694c36ab149e40a88e927887",
+    "divingsim/Source/DiveSim/Simulation/AudioModel.h": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14",
+    "divingsim/Source/DiveSim/Simulation/ConfigInput.h": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b",
+    "divingsim/Source/DiveSim/Simulation/DiveModel.h": "2877ca45b514d66a8f6f2a126b6fb3165250bdf6e02f89cc3e92030c34d535ec",
+    "divingsim/Source/DiveSim/Simulation/Ecology.h": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7",
+    "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f",
+    "divingsim/Source/DiveSim/Simulation/HeightGrid.h": "d019178efbfa14459341ee2717ed863963e9a4bd62a7561b4c36590e978e4b1e",
+    "divingsim/Source/DiveSim/Simulation/ScenarioClock.h": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147",
+    "divingsim/Source/DiveSim/Simulation/ShoreMovement.h": "f9cfca1cb9c0350c79cb29b32d7562ad95f2be6467bd270133e895e4b4393bfa",
+    "divingsim/Source/DiveSim/Simulation/SoakMetrics.h": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700",
+    "divingsim/Source/DiveSim/Simulation/Tutorial.h": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd",
+    "divingsim/Source/DiveSim/Simulation/VisualMedium.h": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab",
+    "divingsim/Source/DiveSim/Simulation/WaterSurface.h": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68",
+    "divingsim/Source/DiveSim/Simulation/Weather.h": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf",
+    "Tests/DiveModelTests.cpp": "28086e60269d0c49745a7003ad92d9881fce105ff0655b80f2d6f18454243029",
+    "Tools/ReportCelestial.py": "9c96ef2750b0a415b9a6c43a95a45a051ae698fccb5fd7267851213e75e7cd39",
+    "Tools/SmokeTest.ps1": "33402f87caa69ce223dabd8c1a0d08e30f06b68f2a68141289f337a914548df9",
+    "Tools/TestCelestial.ps1": "604ca3d8af4cd565f31603ad36d711699a0f7eb5b4c05d8053457ffaa47caec1"
+  },
+  "scope": "Rendered packaged gameplay and sampled astronomical/calendar validation. Frame rate capped at 30; background processes are recorded in package.background_processes. Not an isolated performance benchmark, winter biome or full visual acceptance.",
+  "bootstrap": {
+    "started_utc": "2026-11-25T13:08:45.0117723Z",
+    "finished_utc": "2026-11-25T13:09:10.4673547Z",
+    "timestamp_source": "Fresh runtime log creation and last write",
+    "passed": true,
+    "launcher": "O:\\games\\dive game\\Builds\\WindowsCelestial\\divingsim.exe",
+    "launcher_sha256": "D0ADA99B5152ADD2D955CA177992F21843B16677A067AF966B23DAD7D9D98B54",
+    "child": "divingsim-Celestial.exe",
+    "log": "O:\\games\\dive game\\artifacts\\celestial-bootstrap.log",
+    "log_sha256": "87CAB104E7BCE67B09C2CF4CC66E14248D766A23DEE630AF3422EE4044D9DCE5",
+    "dive_log": "O:\\games\\dive game\\Builds\\WindowsCelestial\\divingsim\\Saved_celestialbootstrap\\DiveLogs\\20261125_140909_DE39552D.json",
+    "dive_sha256": "087DFAA89905038A24491B4B05E11B29A4602CEF374C77BDB5902825AB87DC82",
+    "duration_seconds": 22.019999507814646,
+    "samples": 23,
+    "original_project_executable_sha256": "C8904BBA4D9A4B40BA2EA1B4AF9A94FBC7FAED9C032FB5C3D2248C79B455B263",
+    "collection_note": "Engine removed the hyphen from Saved directory suffix; successful runtime and fresh dive verified after correcting collector path."
+  },
+  "performance": {
+    "path": "artifacts\\perf-underwater-1080p-q2-20261125-140722-970",
+    "result": {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsCelestial/divingsim/Saved/Performance/perf-underwater_BAD5F453/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 75.0399983227253,
+        "distance_m": 9.31383239945197,
+        "depth_m": 5.247203719338429,
+        "walking": false,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-25T13:07:22.9763320Z",
+        "editor": false,
+        "background_processes": [
+          {
+            "Id": 15260,
+            "ProcessName": "UnrealEditor",
+            "StartTime": "2026-11-25T14:05:30.1260684+01:00",
+            "WorkingSet64": 4387446784
+          }
+        ],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 4741 MiB, 38 %"
+        ]
+      },
+      "frames": 5379,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9813257,
+      "average_fps": 89.67791120361983,
+      "one_percent_low_fps": 52.746979673756016,
+      "frame": {
+        "mean_ms": 11.151017977319205,
+        "p50_ms": 10.963,
+        "p95_ms": 12.9987,
+        "p99_ms": 14.5962,
+        "max_ms": 22.5877
+      },
+      "game_thread": {
+        "mean_ms": 1.8768215095742704,
+        "p50_ms": 1.8669,
+        "p95_ms": 2.3087,
+        "p99_ms": 2.5781,
+        "max_ms": 5.3665
+      },
+      "render_thread": {
+        "mean_ms": 11.143782134225692,
+        "p50_ms": 10.9614,
+        "p95_ms": 12.9977,
+        "p99_ms": 14.5239,
+        "max_ms": 22.597
+      },
+      "rhi_thread": {
+        "mean_ms": 2.484660624651422,
+        "p50_ms": 2.4588,
+        "p95_ms": 2.9487,
+        "p99_ms": 3.3805,
+        "max_ms": 4.8219
+      },
+      "gpu": {
+        "mean_ms": 10.597185164528723,
+        "p50_ms": 10.4024,
+        "p95_ms": 12.2674,
+        "p99_ms": 13.6794,
+        "max_ms": 22.7189
+      },
+      "frames_over_16_67_ms": 44,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 2443.6016,
+        "end": 2387.5742,
+        "max": 2452.1016
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 4.9923,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 2.385540788250604
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 1.1682779327012456
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.7730699200594906
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7023259713701432
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.6471299683956125
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.5403633389105782
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.4874844580777096
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.4561145008365867
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.3140675590258412
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.30939791782859266
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.2844296523517382
+        },
+        {
+          "name": "GPU/RenderDeferredLighting",
+          "mean_ms": 0.276832608291504
+        }
+      ]
+    },
+    "sha256": {
+      "Capture.csv": "777ad1f16b6989a13cb8d4cfa3fd0c6dcd169d931fdf7d72f993896c521c7e3c",
+      "Frame.png": "d559507ead46c94cb739ee5b64c121363abcda841883349ce0950b47d6ac3741",
+      "Host.json": "20c7406b1675fa6c082f73f10c320c9422b078cb565e56fb7cc11d73d75db5c1",
+      "Metadata.json": "76da3fe8c816343a1b6c1a9fab4321c2526dc5bd84ee431dc6c4a8bcb2131e03",
+      "Runtime.log": "0618690246e56e40aa5e1fe93a4ccbffba5a705184c48176560860cbfffa22e5",
+      "Summary.json": "f261b20dc8c44901b46abd098bacd2eba2aae5ee0809182a1d1c3e9dafa2754d"
+    }
+  }
+}

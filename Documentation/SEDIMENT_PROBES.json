@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "directory": "O:\\games\\dive game\\artifacts\\sediment-probe-final-outside",
+      "roi": [
+        700,
+        300,
+        900,
+        420
+      ],
+      "fraction_changed_over_15": 1.0,
+      "evidence": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-probe-final-outside\\Runtime.log",
+          "sha256": "0a9b83ab3056a1683d67774d75df70357a621e39b24f5937e557a28860f12f95"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-probe-final-outside\\Sediment_0_Visible.png",
+          "sha256": "b962b5d0bc32b1f543645354b01fc894f1ab4c2322ed8562eb1296020ce6fdd4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-probe-final-outside\\Sediment_0_Hidden.png",
+          "sha256": "f4fd7677890066397fa611256fe252216f90f4346ee5a99a0cd1c1b94df1b528"
+        }
+      ]
+    },
+    {
+      "directory": "O:\\games\\dive game\\artifacts\\sediment-probe-final-inside",
+      "roi": [
+        700,
+        300,
+        900,
+        420
+      ],
+      "fraction_changed_over_15": 1.0,
+      "evidence": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-probe-final-inside\\Runtime.log",
+          "sha256": "75662aff6f8eba7beaa4b92ad266d0fef36bf2f73f0c79ff835a44dec8703134"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-probe-final-inside\\Sediment_0_Visible.png",
+          "sha256": "49b0cd877998063e684a91a9718c38236364ef05d07e28089a1d87b1550162f6"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-probe-final-inside\\Sediment_0_Hidden.png",
+          "sha256": "81f42d3dd1a3612102963971363837cb566275f34cb37b714865da4a03f35b8c"
+        }
+      ]
+    }
+  ],
+  "limits": "Magenta diagnostic volumes test composition and camera-inside visibility, not normal sediment colour or realism."
+}

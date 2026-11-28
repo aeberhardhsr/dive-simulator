@@ -1,0 +1,47 @@
+asset,source,rights,status
+SM_Beech,https://tevy.dev/models/european-beech,CC0-1.0,Version 1; three native LODs; authored local species distribution; see VEGETATION_BEECH_SOURCE.json
+SM_FirA / SM_FirB / SM_FirC,https://polyhaven.com/a/fir_tree_01,CC0-1.0,Three variants with two source LODs plus two reduced far LODs and Nanite; source hashes in VEGETATION_ASSETS.json
+SM_LeafTree,https://polyhaven.com/a/tree_small_02,CC0-1.0,Small tree with two source LODs plus two reduced far LODs and Nanite; source hashes in VEGETATION_ASSETS.json
+vegetation.trees,swissTLM3D 2.4 2026-02 and swissALTI3D,swisstopo open geodata with attribution,Measured tree tops plus authored woodland candidates; see VEGETATION.md
+MI_Cloud,/Engine/EngineSky/VolumetricClouds/m_SimpleVolumetricCloud_Inst,Unreal Engine bundled content under applicable Unreal license,Game-local instance copy; engine parent and textures remain engine dependencies
+M_Water / M_Rain,Tools/build_unreal_content.py,Original procedural project materials,Linear wave displacement and rain streak prototypes
+SM_Rock,Tools/create_blender_assets.py,Original procedural project asset,Prototype limestone
+SM_Perch,Tools/create_ecology_assets.py,Original procedural project asset,Prototype perch; anatomical and photorealistic review pending
+SM_Roach,Tools/create_ecology_assets.py,Original procedural project asset,Roach with red iris; prototype
+SM_Pike,Tools/create_ecology_assets.py,Original procedural project asset,Elongated spotted pike; prototype
+SM_Whitefish,Tools/create_ecology_assets.py,Original procedural project asset,Generic Coregonus group with adipose fin; prototype
+SM_Burbot,Tools/create_ecology_assets.py,Original procedural project asset,Burbot with chin barbel; prototype
+SM_Stonewort,Tools/create_ecology_assets.py,Original procedural project asset,Generic whorled stonewort; prototype
+SM_Milfoil,Tools/create_ecology_assets.py,Original procedural project asset,Generic feathery milfoil; prototype
+SM_Pondweed,Tools/create_blender_assets.py,Original procedural project asset,Prototype freshwater plant
+SM_LeftSleeve / SM_RightSleeve,Tools/create_equipment_assets.py,Original procedural project assets,First-person suit sleeves; wet/dry appearance controlled by runtime
+SM_LeftGlove / SM_RightGlove,Tools/create_equipment_assets.py,Original procedural project assets,First-person neoprene glove prototypes
+SM_WristComputer,Tools/create_equipment_assets.py,Original procedural project asset,Generic wrist housing and straps; live render target display
+SM_DiveTorch,Tools/create_equipment_assets.py,Original procedural project asset,Generic handheld torch; light originates at lens
+DivingAssets.blend,Tools/create_blender_assets.py,Original procedural project asset,Reproducible source
+A_Breath,Original prototype generator,Original synthesized project audio,Legacy unused placeholder
+A_Ambience,Original prototype generator,Original synthesized project audio,Legacy unused placeholder
+A_Inhale / A_Exhale,Tools/create_audio.py,Original synthesized project audio,48 kHz mono regulator inhale and exhale
+A_Bubbles,Tools/create_audio.py,Original synthesized project audio,48 kHz mono damped bubble oscillations; spatial runtime source
+A_Inflate / A_Vent,Tools/create_audio.py,Original synthesized project audio,Looped valve noise driven by actual local BCD gas flow
+A_Heart,Tools/create_audio.py,Original synthesized project audio,Double pulse triggered at simulated heart rate
+A_Underwater / A_Surface / A_Wind / A_Rain,Tools/create_audio.py,Original synthesized project audio,Stereo 12-second ambience loops with overlap crossfades
+A_Warning,Tools/create_audio.py,Original synthesized project audio,Computer beep
+Engine basic shapes,Installed Unreal Engine,Unreal Engine distribution terms,Runtime primitives
+Existing DemoTemplate assets,User-provided Unreal project,Existing project rights unchanged,Not evaluated for independent distribution
+Walensee bathymetry,https://www.swisstopo.admin.ch/de/hoehenmodell-swissbathy3d,Open government data with attribution © swisstopo; full download (not restricted sample),SHA256 verified; 46 tiles integrated at 1 m spacing; water reference 419 m LN02
+Bed sand PBR maps,https://polyhaven.com/a/gravelly_sand,CC0-1.0; Dario Barresi,2K diffuse DX normal ARM; 2.5 m tile; artistic sediment representative not a Walensee survey
+Bed gravel PBR maps,https://polyhaven.com/a/river_small_rocks,CC0-1.0; Rob Tuytel and Rico Cilliers,2K diffuse DX normal ARM; 2.9 m tile; artistic river gravel representative
+Bed rock PBR maps,https://polyhaven.com/a/rock_boulder_dry,CC0-1.0; Dimitrios Savva and Rico Cilliers,2K diffuse DX normal ARM; 1.8 m tile; world-aligned projection with wet shading
+Walensee surrounding terrain,https://www.swisstopo.admin.ch/en/height-model-swissalti3d,Open government data with attribution © swisstopo; full tiles,286 source tiles edition 2026; SHA256 verified; 2 m data averaged to 8 m; 77 Nanite background meshes with registered SWISSIMAGE imagery
+Walensee coastal supplements,https://www.swisstopo.admin.ch/de/landschaftsmodell-swisstlm3d,Open government data with attribution © swisstopo,75 lake-outline features from edition 2026-02; original bathymetry and native 2 m ALTI; 771759 modeled gap cells; 644 source tiles and 496 Nanite meshes with full collision fallback
+Articulated diver and 18 companion variants/parts,Tools/create_avatar_assets.py,Original procedural project assets; no external model source,Two suits; six cylinders; three BCDs; head and scuba parts; analytic pose; anatomical and photorealistic review pending
+
+Ground grass PBR maps,https://polyhaven.com/a/grass_ground,CC0-1.0; Charlotte Baglioni,2K diffuse DX normal ARM; 2.51 m tile; authored ground approximation
+Ground forest PBR maps,https://polyhaven.com/a/forest_ground_04,CC0-1.0; Rob Tuytel and Rico Cilliers,2K diffuse DX normal ARM; 3.15 m tile; authored ground approximation
+Woodland ground mask,swissTLM3D 2.4 2026-02,swisstopo open geodata with attribution,4096x4096 raster of 4013 verified woodland polygons; 20000 independent pixel center checks; see GROUND_MASK.json
+Underwater rock form 1,https://polyhaven.com/a/boulder_01,CC0-1.0; Rico Cilliers,Closed geometry and matching 2K scan maps with wet coating; authored placement; not a Walensee scan; see ROCK_ASSETS.json and ROCK_SURFACES.json
+Underwater rock form 2,https://polyhaven.com/a/namaqualand_boulder_05,CC0-1.0; Dario Barresi and Jenelle van Heerden,Closed geometry and matching 2K scan maps with wet coating; authored rescaling and placement; not local geology
+Underwater rock form 3,https://polyhaven.com/a/namaqualand_boulder_06,CC0-1.0; Greg Zaal and Jenelle van Heerden,Closed geometry and matching 2K scan maps with wet coating; authored rescaling and placement; not local geology
+Underwater outcrop core 4,https://polyhaven.com/a/namaqualand_boulder_03,CC0-1.0; Dario Barresi and Jenelle van Heerden,Closed geometry and matching 4K scan maps with wet coating; large formation cores only; not local geology; see ROCK_FORMATION_ASSETS.json
+Underwater outcrop core 5,https://polyhaven.com/a/namaqualand_boulder_04,CC0-1.0; Jenelle van Heerden,Closed geometry and matching 4K scan maps with wet coating; large formation cores only; not local geology; see ROCK_FORMATION_ASSETS.json

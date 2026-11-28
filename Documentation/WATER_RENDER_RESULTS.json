@@ -1,0 +1,77 @@
+{
+  "captured_utc": "2026-11-25T10:33:12.298342+00:00",
+  "source_parent": "0f5359c440018f68bd3d52592c603f5f0315518d",
+  "source_dirty": true,
+  "package": "Builds/WindowsWater",
+  "resolution": [
+    1600,
+    900
+  ],
+  "frame_cap": 30,
+  "change": "Replace four repeating micro-normal sinusoids with three advected quintic value-noise gradients; enable native water reflection denoising.",
+  "diagnostics": [
+    "Reflection 0 removes reflected bands, but loses environment reflections.",
+    "Reflection 2 (cubemaps/sky) retains bands, so scene tracing alone is not responsible.",
+    "Zero micro normals smooth comb-like edge while macro waves remain.",
+    "Noise gradients plus reflection denoising reduce the repetitive micro pattern and reflected pixel grain; broad bands remain."
+  ],
+  "cases": [
+    {
+      "scenario": "surface-storm",
+      "result": "DIVE_SMOKE_PASS depth=11.49 distance=44.78 pressure=196.71 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_113103_EBDF824E.json",
+      "reflection_denoising_from_config": true,
+      "medium_phases": [
+        "air",
+        "water",
+        "transition"
+      ]
+    },
+    {
+      "scenario": "surface-calm",
+      "result": "DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_113145_2CF60EF4.json",
+      "reflection_denoising_from_config": true,
+      "medium_phases": [
+        "air",
+        "water",
+        "transition"
+      ]
+    },
+    {
+      "scenario": "night",
+      "result": "DIVE_SMOKE_PASS depth=11.45 distance=29.33 pressure=196.74 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_113228_948869E6.json",
+      "reflection_denoising_from_config": true,
+      "medium_phases": [
+        "air",
+        "water",
+        "transition"
+      ]
+    }
+  ],
+  "build_note": "Initial regular package relink failed because user launched workspace executable through Explorer. Content/config-only repack used UAT -skipbuild after executable SHA256 matched tested WindowsStorm exactly. User process was left open.",
+  "limitations": [
+    "Grazing-angle dark bands remain; complete water visual acceptance is open.",
+    "No video-based temporal stability acceptance, isolated performance measurement or minimum-hardware test.",
+    "Noise gradients are authored visual detail, not additional geometric/pressure waves or a measured lake spectrum.",
+    "Tests ran beside independent two-hour WindowsSoak and user-opened application; additional development load logged. Two-hour run still ongoing."
+  ],
+  "sha256": {
+    "divingsim/Content/Diving/Materials/M_Water.uasset": "416565bd2657b8041de44db4279129f490e44b0e3b6485ce7d77fad5b5a57321",
+    "Builds/WindowsWater/divingsim/Binaries/Win64/divingsim.exe": "c8904bba4d9a4b40ba2ea1b4af9a94fbc7faed9c032fb5c3d2248c79b455b263",
+    "artifacts/water-reflection-0.log": "397ac569f2b23e138204bcea09e27d429fc923e1f4c0db037d1c5577d05f72b9",
+    "artifacts/water-reflection-2.log": "58d0d2b0b5a46e0e429aa8af81866dd716d23659480811f5704ba2cf052f8bf3",
+    "artifacts/water-normal-isolation-full.log": "5a9f5b98d3d7afc6b6e0535ff924d09692d739b63f15b889eafdf21a0b2ea6e5",
+    "artifacts/water-zero-micro-surface.png": "9b6cc78ff8f0f1f298ffe1e21939097a816c813f95a2325f6550a03d2b56e7a5",
+    "artifacts/water-noise-full.log": "90de92319e5e8f5eb0c65d62e650ca21f686a8db4113b99dcfe96a0d38af75d3",
+    "artifacts/water-noise-unfiltered-reflections.png": "67b3c43d967f7eadb637570073ce662daa1ea510ad8845e302b8170bf24bf972",
+    "artifacts/water-denoise.log": "2c1562802265a6fe7a5d4c37e091a56e61e6741a96c2aceaa97a51a642b1b0d2",
+    "artifacts/water-final-content.log": "058b78f7ef18d0e357bf0e7b2f903e7f9e25f3c19544e8fe5f9f38747d0939b2",
+    "artifacts/water-final-package.log": "2efc9b4ae3b8bced70f2cb3aa9812a8e84e69580b20d1a030039fdc8a6f5ce26",
+    "artifacts/water-final-repackage.log": "abea6b7e342439e853acb3733c0823c2f3b618f6217279c87410de9d5cf34b86",
+    "Documentation/Images/WaterReflections_Storm.png": "0d2789cd5f7266718f411ea1928e2f9d34e63c2aa082e501753c53ebd40745ca",
+    "Documentation/Images/WaterReflections_Calm.png": "325485227e602059367b3e7afe15246164a02130f17b51764c1e10ba26fdaace",
+    "Builds/WindowsWater/divingsim/Saved/Screenshots/SurfaceAir_1_surface-calm.png": "96bb7e53eab038dac69a2ce248e261f2d565a7df701e1b53ef321a47e725d727",
+    "artifacts/water-final-surface-storm-full.log": "fa94bdb91c3a9a41a3720fcef4efde5a7722e8a6faafa475d52ee31ec200742e",
+    "artifacts/water-final-surface-calm-full.log": "f6fec949ddb1ab0ddee65dc327916e8d4067f4dfccd96cdf8b41e0fb4352765b",
+    "artifacts/water-final-night-full.log": "57b3775b423a1f0c58ec1a59e999f21ed056c9cbd68196010e849c0caf4cc85e"
+  }
+}

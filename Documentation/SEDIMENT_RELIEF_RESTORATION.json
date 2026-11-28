@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "decision": "Sediment-relief prototype rejected and removed from active source; existing RockPose package retained",
+  "baseline": {
+    "file": "Documentation/ROCK_POSE_RESULTS.json",
+    "sha256": "fa9c4778b2b03e9bd5f7d3b736afdd6651895d972252f4f7c56f42d2d022bfbf",
+    "bytes": 80261
+  },
+  "verified_baseline_inputs": 207,
+  "package": "O:\\games\\dive game\\Builds\\WindowsRockPose\\divingsim\\Binaries\\Win64\\divingsim-RockPose.exe",
+  "package_sha256": "39dcee269215e875a3c62b7006caf2d119104671bd799a18526a04739c0786c3",
+  "package_containers": [
+    {
+      "bytes": 105898051,
+      "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+      "file": "divingsim-Windows.pak"
+    },
+    {
+      "bytes": 1457973520,
+      "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+      "file": "divingsim-Windows.ucas"
+    },
+    {
+      "bytes": 1187020,
+      "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+      "file": "divingsim-Windows.utoc"
+    },
+    {
+      "bytes": 3245920,
+      "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+      "file": "global.ucas"
+    },
+    {
+      "bytes": 794,
+      "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+      "file": "global.utoc"
+    }
+  ],
+  "build": {
+    "file": "artifacts/sediment-relief-restored-build.log",
+    "sha256": "25d22a6a58658eb362fafa7fb336dfe136315a5d6d29c58866092bd66325d9b9",
+    "bytes": 28562
+  },
+  "runtime": {
+    "file": "artifacts/sediment-relief-restored-runtime.log",
+    "sha256": "a98e27c4edb6cc7334049f2ae37a0db3015d582e96ce2f49502ab86a8fb18752",
+    "bytes": 298254
+  },
+  "images": [
+    {
+      "file": "artifacts/sediment-relief-restored/Habitat_0_0.png",
+      "sha256": "ea08a9c7760ac3e695ae430460c53c4adc2869a47aaaa1d141c932439cf21fb2",
+      "bytes": 2173484
+    },
+    {
+      "file": "artifacts/sediment-relief-restored/Habitat_0_1.png",
+      "sha256": "340034954b49f5b486b1f59f4e3e401b610b0a6872430257ee664b250305d3e0",
+      "bytes": 2141963
+    },
+    {
+      "file": "artifacts/sediment-relief-restored/Habitat_0_2.png",
+      "sha256": "565cd7e7efd8651935e60c6d202a77e7326ea867d080a30543d9bed915b5543d",
+      "bytes": 2101872
+    }
+  ],
+  "camera_poses": [
+    "view=0 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=10.000000 R=0.000000",
+    "view=1 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=60.000000 R=0.000000",
+    "view=2 eye=X=268450.000 Y=10382.051 Z=-428.641 rotation=P=-12.000000 Y=110.000000 R=0.000000"
+  ],
+  "rock_state_hashes": [
+    "8EE28B1583AF21BCF722E31C8E7E6AC953FC8559"
+  ],
+  "native_dll": {
+    "file": "Builds/EditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+    "sha256": "d323750f5dff707595e0521d5af804100cda5d14a5359c49374833827da2949d",
+    "bytes": 2574336
+  },
+  "limitations": [
+    "Restoration is a native three-view test plus file-hash validation of the previously tested package",
+    "No new manual playthrough or long-duration test"
+  ]
+}

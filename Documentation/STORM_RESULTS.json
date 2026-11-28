@@ -1,0 +1,50 @@
+{
+  "captured_utc": "2026-11-25T10:16:57.494679+00:00",
+  "source_parent": "5da75fc4d53797fdd5bb293f86840d222ca2593a",
+  "source_dirty": true,
+  "package": "Builds/WindowsStorm",
+  "requirement": "CONF-004",
+  "frame_limit": 30,
+  "native_profile_tests": 3,
+  "configuration_runtime_phases": 7,
+  "python_tests": 15,
+  "weather_presets_wind_mps": [
+    3,
+    5,
+    8,
+    22
+  ],
+  "manual_wind_range_mps": [
+    0,
+    24
+  ],
+  "storm_observation": "DIVE_WEATHER_PASS kind=3 wind=22.0 rain_instances=2021 wave_envelope_m=2.269 cloud_coverage=0.90 cloud_density=0.018 sun_lux=9272.9",
+  "storm_result": "DIVE_SMOKE_PASS depth=11.49 distance=44.78 pressure=196.71 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_111523_B25C95F8.json",
+  "rain_regression": "DIVE_SMOKE_PASS depth=11.46 distance=37.00 pressure=196.73 samples=39 log=../../../divingsim/Saved/DiveLogs/20261125_111606_4FF25C12.json",
+  "limitations": [
+    "Qualitative wave growth, not measured Walensee storm spectrum; no wave breaking, foam, spray, lightning or thunder.",
+    "Pixel-footprint filtering of micro normals does not eliminate broad visible water bands; visual acceptance remains open.",
+    "Storm audio parameters are core-tested; dedicated exported mix and listening acceptance remain open.",
+    "Configured time does not advance during a dive.",
+    "Independent WindowsSoak two-hour run is still active; development load is logged and no pass is claimed."
+  ],
+  "sha256": {
+    "Builds/WindowsStorm/divingsim/Binaries/Win64/divingsim.exe": "c8904bba4d9a4b40ba2ea1b4af9a94fbc7faed9c032fb5c3d2248c79b455b263",
+    "divingsim/Content/Diving/Materials/M_Water.uasset": "0a1e5447239dcdcfcbf09fde6160281f8ffd87f7c95ccb505d4e18be26ce3016",
+    "artifacts/core-storm.log": "18d84d691b31f61574376289afc66bf36b8f5f8304f7dad66f5046901d5f6cc8",
+    "artifacts/build-storm-editor.log": "f183fcd4ba2d652f3671f9cb97db16e9c05adf5cca65800cb6ab2bb00b88879d",
+    "artifacts/test-storm-profiles.log": "c05d35ac835f2adef113f9141d23321bd917557f21b40d48fe87cc6f0c88fab6",
+    "artifacts/package-storm.log": "4a2ca0575f9ef9f3273a50da12bc40fc7c2f18705cb20264481accdfa81fc825",
+    "artifacts/storm-config-full.log": "a2a97e5f3696770101c2717d4837aae926b92cd3ea140bcf5fd6e48f395febfa",
+    "artifacts/build-water-filter-content.log": "55a1a1ed1bc3f63c742fb9979f8843357d6ca31ae2ecbfb17e6834a68a89e27a",
+    "artifacts/package-storm-filtered.log": "5ca8c098ff2c8a365e10fd8c109b7e957d8079b6598f029c18440a04b65f6699",
+    "artifacts/storm-filtered-full.log": "100f63bdfcada94a896ea7b59cedd9969532ac3da7398109318876414eba0060",
+    "artifacts/storm-rain-regression-full.log": "5ded259dddbfc292f2afb46ff0a201d0d8a41a4b615bdf3bc1c358e058b7ff96",
+    "artifacts/storm-surface-unfiltered.png": "93c8db97065e6d5bc928367bbf0e65d0b827701fdc76f88fcbeccd701d490be2",
+    "Documentation/Images/Storm_Surface.png": "0cbe9e4136a08a68396304700cc63f3e74e511776b092b8efe2ca806c94a6ea8",
+    "Documentation/Images/Storm_Menu.png": "87545865a2758e145259e26f8cc9e948b803f179ad8580228b8d4f6e8d8ee919",
+    "Builds/WindowsStorm/divingsim/Saved/Screenshots/DiveUnderwater_1_surface-storm.png": "6e78d9c3191b1f12a880478fdc57e5936b3436b59beea7e7eff8ce6bea423d60",
+    "Builds/WindowsStorm/divingsim/Saved/Screenshots/SurfaceAir_1_surface-storm.png": "0cbe9e4136a08a68396304700cc63f3e74e511776b092b8efe2ca806c94a6ea8",
+    "Builds/WindowsStorm/divingsim/Saved/Screenshots/DiveSmoke_1_surface-storm.png": "0b7130498ee44c1ac412b5f777e70ea4c4f889a89c396f0d3469baeb12300daf"
+  }
+}

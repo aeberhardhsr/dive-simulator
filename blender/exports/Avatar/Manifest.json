@@ -1,0 +1,290 @@
+{
+  "assets": [
+    {
+      "name": "SK_DiverSuit",
+      "vertices": 24638,
+      "triangles": 49272,
+      "skeletal": true
+    },
+    {
+      "name": "SK_DiverWet",
+      "vertices": 24638,
+      "triangles": 49272,
+      "skeletal": true
+    },
+    {
+      "name": "SM_DiverHood",
+      "vertices": 1252,
+      "triangles": 2492,
+      "skeletal": false
+    },
+    {
+      "name": "SM_DiveMask",
+      "vertices": 1938,
+      "triangles": 3856,
+      "skeletal": false
+    },
+    {
+      "name": "SM_SecondStage",
+      "vertices": 802,
+      "triangles": 1588,
+      "skeletal": false
+    },
+    {
+      "name": "SM_DiveBoot",
+      "vertices": 738,
+      "triangles": 1464,
+      "skeletal": false
+    },
+    {
+      "name": "SM_DiveFin",
+      "vertices": 2126,
+      "triangles": 4188,
+      "skeletal": false
+    },
+    {
+      "name": "SM_CylinderSteel10",
+      "vertices": 1522,
+      "triangles": 3016,
+      "skeletal": false
+    },
+    {
+      "name": "SM_CylinderSteel12",
+      "vertices": 1522,
+      "triangles": 3016,
+      "skeletal": false
+    },
+    {
+      "name": "SM_CylinderSteel15",
+      "vertices": 1522,
+      "triangles": 3016,
+      "skeletal": false
+    },
+    {
+      "name": "SM_CylinderAluminium10",
+      "vertices": 1522,
+      "triangles": 3016,
+      "skeletal": false
+    },
+    {
+      "name": "SM_CylinderAluminium12",
+      "vertices": 1522,
+      "triangles": 3016,
+      "skeletal": false
+    },
+    {
+      "name": "SM_CylinderAluminium15",
+      "vertices": 1522,
+      "triangles": 3016,
+      "skeletal": false
+    },
+    {
+      "name": "SM_BCDJacket",
+      "vertices": 13086,
+      "triangles": 26052,
+      "skeletal": false
+    },
+    {
+      "name": "SM_BCDTravel",
+      "vertices": 12894,
+      "triangles": 25676,
+      "skeletal": false
+    },
+    {
+      "name": "SM_BCDWing",
+      "vertices": 14094,
+      "triangles": 28068,
+      "skeletal": false
+    },
+    {
+      "name": "SM_WeightPockets",
+      "vertices": 576,
+      "triangles": 1128,
+      "skeletal": false
+    },
+    {
+      "name": "SM_RegulatorHose",
+      "vertices": 820,
+      "triangles": 1636,
+      "skeletal": false
+    },
+    {
+      "name": "SM_DiveCompass",
+      "vertices": 1316,
+      "triangles": 2620,
+      "skeletal": false
+    }
+  ],
+  "bones": [
+    [
+      "root",
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2
+      ],
+      null
+    ],
+    [
+      "pelvis",
+      [
+        0,
+        0,
+        0.98
+      ],
+      [
+        0,
+        0,
+        1.12
+      ],
+      "root"
+    ],
+    [
+      "spine",
+      [
+        0,
+        0,
+        1.12
+      ],
+      [
+        0,
+        0,
+        1.32
+      ],
+      "pelvis"
+    ],
+    [
+      "chest",
+      [
+        0,
+        0,
+        1.32
+      ],
+      [
+        0,
+        0,
+        1.48
+      ],
+      "spine"
+    ],
+    [
+      "upper_l",
+      [
+        0,
+        -0.235,
+        1.43
+      ],
+      [
+        0,
+        -0.28,
+        1.113
+      ],
+      "chest"
+    ],
+    [
+      "lower_l",
+      [
+        0,
+        -0.28,
+        1.113
+      ],
+      [
+        0,
+        -0.3,
+        0.804
+      ],
+      "upper_l"
+    ],
+    [
+      "thigh_l",
+      [
+        0,
+        -0.105,
+        0.98
+      ],
+      [
+        0,
+        -0.11,
+        0.52
+      ],
+      "pelvis"
+    ],
+    [
+      "shin_l",
+      [
+        0,
+        -0.11,
+        0.52
+      ],
+      [
+        0,
+        -0.11,
+        0.1
+      ],
+      "thigh_l"
+    ],
+    [
+      "upper_r",
+      [
+        0,
+        0.235,
+        1.43
+      ],
+      [
+        0,
+        0.28,
+        1.113
+      ],
+      "chest"
+    ],
+    [
+      "lower_r",
+      [
+        0,
+        0.28,
+        1.113
+      ],
+      [
+        0,
+        0.3,
+        0.804
+      ],
+      "upper_r"
+    ],
+    [
+      "thigh_r",
+      [
+        0,
+        0.105,
+        0.98
+      ],
+      [
+        0,
+        0.11,
+        0.52
+      ],
+      "pelvis"
+    ],
+    [
+      "shin_r",
+      [
+        0,
+        0.11,
+        0.52
+      ],
+      [
+        0,
+        0.11,
+        0.1
+      ],
+      "thigh_r"
+    ]
+  ],
+  "coordinate_system": "metres, +X forward, +Y right, +Z up",
+  "license": "Original project-authored geometry; same license as repository"
+}

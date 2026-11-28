@@ -1,0 +1,16 @@
+#ifndef DIVE_SOLAR_MEDIUM
+#define DIVE_SOLAR_MEDIUM
+// Authored extra RGB absorption on the source-to-receiver water leg. Shared by
+// surface and volume receivers; native scalar extinction/shadowing is retained.
+// Diagnostic mean plane only: waves and the horizontal lake mask are pending.
+float3 DiveDirectionalWaterTransmission(float3 TranslatedWorldPosition, float3 ToLight)
+{
+    float3 world=DFFastSubtractDemote(TranslatedWorldPosition,PrimaryView.PreViewTranslation);
+    float depth=max(0,-world.z*.01);
+    float solarCosine=saturate(ToLight.z);
+    if(depth<=0 || solarCosine<=0) return 1;
+    float submergedCosine=sqrt(1-(1-solarCosine*solarCosine)/(1.333*1.333));
+    float path=depth/max(.1,submergedCosine);
+    return lerp(1,exp(-float3(.12,.015,.035)*path),smoothstep(0,.2,depth));
+}
+#endif

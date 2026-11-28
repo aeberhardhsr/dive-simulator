@@ -1,0 +1,117 @@
+{
+  "source": "NASA/JPL Horizons DE441",
+  "documentation": "https://ssd-api.jpl.nasa.gov/doc/horizons.html",
+  "retrieved_utc": "2026-11-25",
+  "query_endpoint": "https://ssd.jpl.nasa.gov/api/horizons.api",
+  "parameters": {
+    "format": "text",
+    "OBJ_DATA": "'NO'",
+    "MAKE_EPHEM": "'YES'",
+    "EPHEM_TYPE": "'OBSERVER'",
+    "CENTER": "'coord@399'",
+    "COORD_TYPE": "'GEODETIC'",
+    "SITE_COORD": "'9.098818483859683,47.11000249573725,0'",
+    "TLIST": "'2026-06-21 11:00' '2026-12-21 12:00' '2026-06-21 19:00' '2026-06-21 22:00' '2026-03-29 00:59' '2026-03-29 01:01'",
+    "TLIST_TYPE": "'CAL'",
+    "QUANTITIES": "'4,10'",
+    "APPARENT": "'AIRLESS'",
+    "CSV_FORMAT": "'YES'"
+  },
+  "commands": {
+    "sun": "10",
+    "moon": "301"
+  },
+  "coordinate_note": "WGS84 origin from EPSG:2056 E2726000 N1219000; zero ellipsoid altitude matches the native vault tangent frame. Terrain elevation 419 m LN02 is not an ellipsoid height.",
+  "grid_north_true_azimuth_degrees": 1.2124710174696076,
+  "native_comparison_tolerance_degrees": {
+    "sun": 0.05,
+    "moon": 0.15
+  },
+  "moon_limit": "Native 380000 km rendering vault gives approximate topocentric lunar parallax. These are sampled validation limits, not an ephemeris-wide error bound.",
+  "references": [
+    {
+      "utc": "2026-Mar-29 00:59:00.000",
+      "sun": {
+        "azimuth_true_north_degrees": 28.266442,
+        "airless_elevation_degrees": -35.791002,
+        "illuminated_percent": 100.0
+      },
+      "moon": {
+        "azimuth_true_north_degrees": 265.273757,
+        "airless_elevation_degrees": 26.31388,
+        "illuminated_percent": 82.82843
+      }
+    },
+    {
+      "utc": "2026-Mar-29 01:01:00.000",
+      "sun": {
+        "azimuth_true_north_degrees": 28.847516,
+        "airless_elevation_degrees": -35.627787,
+        "illuminated_percent": 100.0
+      },
+      "moon": {
+        "azimuth_true_north_degrees": 265.635379,
+        "airless_elevation_degrees": 25.978151,
+        "illuminated_percent": 82.83887
+      }
+    },
+    {
+      "utc": "2026-Jun-21 11:00:00.000",
+      "sun": {
+        "azimuth_true_north_degrees": 165.667994,
+        "airless_elevation_degrees": 65.785494,
+        "illuminated_percent": 100.0
+      },
+      "moon": {
+        "azimuth_true_north_degrees": 89.370258,
+        "airless_elevation_degrees": -1.11333,
+        "illuminated_percent": 46.15572
+      }
+    },
+    {
+      "utc": "2026-Jun-21 19:00:00.000",
+      "sun": {
+        "azimuth_true_north_degrees": 302.723791,
+        "airless_elevation_degrees": 2.354863,
+        "illuminated_percent": 100.0
+      },
+      "moon": {
+        "azimuth_true_north_degrees": 212.792399,
+        "airless_elevation_degrees": 35.370038,
+        "illuminated_percent": 48.88827
+      }
+    },
+    {
+      "utc": "2026-Jun-21 22:00:00.000",
+      "sun": {
+        "azimuth_true_north_degrees": 339.545009,
+        "airless_elevation_degrees": -16.864573,
+        "illuminated_percent": 100.0
+      },
+      "moon": {
+        "azimuth_true_north_degrees": 253.143837,
+        "airless_elevation_degrees": 10.895865,
+        "illuminated_percent": 49.9198
+      }
+    },
+    {
+      "utc": "2026-Dec-21 12:00:00.000",
+      "sun": {
+        "azimuth_true_north_degrees": 189.29148,
+        "airless_elevation_degrees": 18.922209,
+        "illuminated_percent": 100.0
+      },
+      "moon": {
+        "azimuth_true_north_degrees": 44.43067,
+        "airless_elevation_degrees": -7.459107,
+        "illuminated_percent": 90.49632
+      }
+    }
+  ],
+  "raw_sha256": {
+    "sun": "3974fdf285ad24ffb5d72819a49358f903dd2990b93eb123bbad771476a39668",
+    "moon": "a6d7da5363123b9b73340aab7689ec81c31731e26c7886eb8ab2c79fff4f0b7d"
+  },
+  "native_comparison_tolerance_percentage_points": 0.2,
+  "phase_model": "Sun-Moon-observer triangle using native geocentric ephemerides and actual distances; replaces UE 5.8.4 mean-synodic-period phase."
+}

@@ -1,0 +1,327 @@
+{
+  "status": "BOUNDED_VISUAL_REVIEW_COMPLETE_WITH_STATIC_COLOUR_LINE_REMAINING",
+  "reviewed_utc": "2026-11-28T09:17:51.397330+00:00",
+  "package_identity": {
+    "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+    "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+  },
+  "identity_recheck": {
+    "runtime_files": 53,
+    "original_project_inputs": 174,
+    "all_recorded_hashes_match": true,
+    "compiled_commit": "6facc185f48d8975296b1f09acc169d7919eb429",
+    "note": "The later opt-in editor memory diagnostic is an additional source file and is not part of R3."
+  },
+  "stationary_cases": [
+    {
+      "name": "terrain-transition-still",
+      "status": "REVIEWED_LINE_PERSISTS",
+      "runtime": {
+        "file": "artifacts/underwater-package-20261128/terrain-transition-still/Runtime.log",
+        "sha256": "9d1a3af5510853a3c7f66c906dacf676ee0040fbd0a2b5291a11688895f4f18f"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-still/Habitat_0_0.png",
+          "sha256": "78f40aa97e732d6c8a593eb082aa16643ab87818c6b3edbdeddf439023e778f6"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-still/Habitat_0_1.png",
+          "sha256": "06e587569d83ba53d0f2b814b70091a5667a3104a8aa34776729226ffbd8802e"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-still/Habitat_0_2.png",
+          "sha256": "679e33335aa5ccde3eacd9a9f7332a12f826c3c882bfec45ca664f0a3756f334"
+        }
+      ],
+      "images_reviewed": true
+    },
+    {
+      "name": "terrain-transition-no-shadows",
+      "status": "REVIEWED_LINE_PERSISTS_SHADOW_PATCH_REMOVED",
+      "runtime": {
+        "file": "artifacts/underwater-package-20261128/terrain-transition-no-shadows/Runtime.log",
+        "sha256": "d3e884c24b273dee032634871e9a9ee43d65be2701201b770a653ca4fcdb4522"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-no-shadows/Habitat_0_0.png",
+          "sha256": "7cb4b5691e371be6f8f7418cb9afee6e5196d7d1edb5810f61120090cfc6ef97"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-no-shadows/Habitat_0_1.png",
+          "sha256": "a6cb2019cc29408c5ff6ccd4934c905179353f7e4e6113166307dfbe871a1444"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-no-shadows/Habitat_0_2.png",
+          "sha256": "4fc9570d366fcbcab512ccfa767a8003493d0ec5409836efad741b1a6c2f250a"
+        }
+      ],
+      "images_reviewed": true
+    },
+    {
+      "name": "terrain-transition-depth",
+      "status": "REJECTED_BUFFER_MODE_NOT_CONFIRMED",
+      "runtime": {
+        "file": "artifacts/underwater-package-20261128/terrain-transition-depth/Runtime.log",
+        "sha256": "84af188dbe7f7b502d7bdaa61ad79cca41c57635ff1fa1e897d9200d6be00fad"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-depth/Habitat_0_0.png",
+          "sha256": "da4209cdc36f232ad42aaf30096cd9083837dfd8b46197019160026d56a32b9a"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-depth/Habitat_0_1.png",
+          "sha256": "c9431b8730b671fd260fdb1ed72969c72e6dfce706f4dbccb2e3376cd35fa3c9"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-depth/Habitat_0_2.png",
+          "sha256": "c0444b38b0b69bc9c8b0fd71445cf9a8bcd8b0511b7a620120dd51db70df75af"
+        }
+      ],
+      "images_reviewed": false
+    },
+    {
+      "name": "terrain-transition-depth-editor",
+      "status": "REVIEWED_NO_LARGE_DEPTH_HOLE_VISIBLE",
+      "runtime": {
+        "file": "artifacts/underwater-package-20261128/terrain-transition-depth-editor/Runtime.log",
+        "sha256": "8027291ec805c09e0d25aeae225f5b2a848ec712498e381468e17d9ccc717c07"
+      },
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-depth-editor/Habitat_0_0.png",
+          "sha256": "407fa3dd949791058febf7b8dd3f1531d7e74f11e92d145457ac44c4efcb8b48"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-depth-editor/Habitat_0_1.png",
+          "sha256": "e5b33b175ea03acd6dea29c0ccb8a919fd30b4d549666701712f84836aac7c9e"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/terrain-transition-depth-editor/Habitat_0_2.png",
+          "sha256": "8adb4e4d6abace91c4926a05bb431d5768778c72aa2a10c0d5dc753987e3fa8e"
+        }
+      ],
+      "images_reviewed": true
+    }
+  ],
+  "stationary_pose": {
+    "eye_cm": [
+      267448.8439,
+      31980,
+      -670
+    ],
+    "yaw_degrees": [
+      55,
+      90,
+      125
+    ],
+    "pitch_degrees": 0,
+    "scene_date": "2026-06-21",
+    "hour": 13.8373,
+    "resolution": [
+      1600,
+      900
+    ],
+    "measured_bed_cm": -893.985,
+    "camera_clearance_cm": 223.985,
+    "scope": "Approximate reconstruction of soak minute 50; different FOV and frozen simulation, not a pixel-identical replay."
+  },
+  "stationary_conclusion": "Thin blue/dark line remains with fully loaded local terrain and disabled dynamic shadows. Editor depth images show no obvious large hole. Exact cause unproven, not claimed harmless or fixed.",
+  "moving_case": {
+    "host": {
+      "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Host.json",
+      "sha256": "7f38fc75e74fe63dd47c30078f628b74c6034912ba2191fca477382343ae1ec4"
+    },
+    "runtime": {
+      "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Runtime.log",
+      "sha256": "02df25869e7d99a13cda7262c21cf748ba3f449e37deaeca08a4ba5f3783a997"
+    },
+    "logbook": {
+      "file": "artifacts/underwater-package-20261128/murg-coast-continuous/DiveLog.json",
+      "sha256": "80a3d1f1a837ee257fe85105ab52101c7e08a9971778b5f9441ef81c36dde434"
+    },
+    "capture_script": {
+      "file": "artifacts/underwater-package-20261128/capture_murg_coast.ps1",
+      "sha256": "64343511388ab5f2e6980c7c0976ceb4330739da56371cacf387c8c0ab8659f2"
+    },
+    "contact_sheet_script": {
+      "file": "artifacts/underwater-package-20261128/review_murg_frames.py",
+      "sha256": "75862271d54188e3e3e1e8f5b699dccfc40e9ea5a6a755381600d7fbdaf578ed"
+    },
+    "frame_manifest": {
+      "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames.json",
+      "sha256": "af799025c4e28e2998f0344968669fbc3cb0326afbc40c176c4ca91c38c9d8a3"
+    },
+    "frame_count": 216,
+    "numbered_frames": 215,
+    "all_retained_frames_reviewed": true,
+    "review_method": "All 215 numbered frames on 18 labelled sheets; six boundary-near frames at full resolution; final unnumbered image separately at full resolution.",
+    "sheets": [
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_00.png",
+        "sha256": "9c4006019ac190e0aebb16fece241a3bc7b3ba54ba2c65f4d2607cbb670ba97d"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_01.png",
+        "sha256": "c3ec5865cb51e5b1e85463da195b2125707359c87bedea2366518c8bf0419b93"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_02.png",
+        "sha256": "a312d046bb5cf0de84e92c95d3bbfb5e096117529ca36632ec81d56a99a57dec"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_03.png",
+        "sha256": "638fba68c850f713c1a0948113381d2623c0fed065051192485e532503353e3b"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_04.png",
+        "sha256": "486b62b964b3f8e19f04644ab351e3a63d9697b4ebcbce12678fe6e72c8c64db"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_05.png",
+        "sha256": "01f171097113da3f3c2fa8a658f27a74c7e1b6306acc60bfdff116dd418ff894"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_06.png",
+        "sha256": "97d802830031f597c8426d996e9785f841e17a6969117d8fd39d157fd6d9f61b"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_07.png",
+        "sha256": "1a259f9c72a755f851a7c6ffb757c54f7fddff24c5d2cadde12f0a8b5c4751f1"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_08.png",
+        "sha256": "5e01ae4af23f94ca64e0985cb09b5c75a8cc12c2d8352b33ade8aa4bed571891"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_09.png",
+        "sha256": "7101b6528db66ac6aaf75b4fd0ac85a4c5689d8b5711929d35b8a11f9bc300e3"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_10.png",
+        "sha256": "7e524104b74e7535297909d7f625919b15be3586ed4ef3c4f41db9c210c258e2"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_11.png",
+        "sha256": "40d285da02e44feb09f72c02709dc0c3f9d89392cf67ccb964500fa8500c5c1a"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_12.png",
+        "sha256": "9fd457a9c6ef9f4821cbf54c261de998ab3487713d4316ab1aea3d44b6a12c1b"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_13.png",
+        "sha256": "c1ef76598e6f9d2f25e7eaf1c3414f187a8d93fad4747fae47618cd89400e19e"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_14.png",
+        "sha256": "91e71e26a19fa603a64e563ef7531d1a8f74bc90a45612e76a781992aefee6bf"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_15.png",
+        "sha256": "2567e818c11a44626618901a04f55395fa38a0a6309e1e5457ef6079befdc08b"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_16.png",
+        "sha256": "6e7207daf8ad7e8069a699299403af2c2b835cd43992f4495c2aaea08dfb2443"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Review/Sheet_17.png",
+        "sha256": "2f4c69a0a659ea5d099ff335f4fe389d36ccba15543ec62daa195a265178c3ad"
+      }
+    ],
+    "full_resolution_boundary_near_frames": [
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame00090.png",
+        "sha256": "83d9b4be95c6ce256ae58642af82d41c0a6fa07e7b42d0e39d2ca3656d1286db"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame00091.png",
+        "sha256": "03881190c5140614dc6a654735960cdffa96e235c726b03193897ac5de9aa113"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame00092.png",
+        "sha256": "482949ffa655e5990d02c8a12fb27ca64ccf9806c7d6f77c6468c063a3ff9971"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame00140.png",
+        "sha256": "0b634fa9b8f2605e6aaca17184177238d27d15603fc4649754608fd9c0ef41cc"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame00141.png",
+        "sha256": "4bd57f552ac147307433117fd8e7a598d0e23d542a6be3717e584587b2fed1ab"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame00142.png",
+        "sha256": "08773607e53dbbb4d70753cc0004fdb255777e570e06fddebf794c2331c27df8"
+      }
+    ],
+    "unnumbered_frame": {
+      "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Frames/MovieFrame.png",
+      "sha256": "cee93363731a727a7e956ada08d0c805de8acbc7800dc533987216e9a035da10"
+    },
+    "video": {
+      "file": "artifacts/underwater-package-20261128/murg-coast-continuous/Murg-Diagnose-5fps.mp4",
+      "sha256": "c4e745a57f01f93c0e7563b01ee4db0ce4ccdc52b10b0c301d26dfb93dd5c26a"
+    },
+    "video_playback_fps": 5,
+    "simulation_seconds": 41.579999070614576,
+    "distance_m": 52.074421582734594,
+    "crossings": [
+      {
+        "from_cell": [
+          13,
+          138
+        ],
+        "to_cell": [
+          12,
+          138
+        ],
+        "simulation_interval_seconds": [
+          17.019999619573355,
+          18.019999597221613
+        ],
+        "from_world_metres": [
+          832.2653480310137,
+          8890.50000049242
+        ],
+        "to_world_metres": [
+          830.6842340174422,
+          8890.500000530896
+        ]
+      },
+      {
+        "from_cell": [
+          12,
+          138
+        ],
+        "to_cell": [
+          13,
+          138
+        ],
+        "simulation_interval_seconds": [
+          27.019999396055937,
+          28.019999373704195
+        ],
+        "from_world_metres": [
+          831.9571709485126,
+          8890.500000657104
+        ],
+        "to_world_metres": [
+          833.5382354276318,
+          8890.500000657177
+        ]
+      }
+    ],
+    "observation": "Visible bed continuous in reviewed frames around both cell crossings; no observed terrain hole or flash on this route.",
+    "limits": [
+      "Screenshot IO slows simulation/rendering; this is not a benchmark and does not replace the six 1080p runs.",
+      "Native coast fixture places its start and changes view direction at defined phases; those jumps are not user-input tests.",
+      "Three explicit fixture screenshots use the same unnumbered MovieFrame.png. Only the last survives; the two earlier stills at route waypoints are absent. Do not claim every rendered frame was retained.",
+      "One local route and two cell crossings, no exhaustive lake-wide continuity guarantee."
+    ]
+  },
+  "rest_point": "UW-LATER-10: static thin distant colour line; exact cause unresolved; no new underwater art round."
+}

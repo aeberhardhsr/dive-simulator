@@ -1,0 +1,377 @@
+{
+  "status": "PASS",
+  "host": {
+    "executable": "O:\\games\\dive game\\Builds\\WindowsPopulation\\divingsim\\Binaries\\Win64\\divingsim-Population.exe",
+    "source_head": "2310712cdfb1f8504b1c0d342106cbc26a6a508e",
+    "executable_sha256": "D09DAA75A08B66493FD03882C42CCB8CAC2BC657F286809D7E85D4C81871DF6C",
+    "source_dirty": true,
+    "started_utc": "2026-11-25T23:33:56.1871616Z"
+  },
+  "cases": [
+    {
+      "scenario": "stream",
+      "name": "stream0",
+      "entry": 0,
+      "screenshots": 2,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:33:56.7524340Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream0\\Runtime.log",
+        "sha256": "a4bbc64128d4234e19f7fb5c7eddf44365c2d41079dbda678c1eca008c9a3ffa"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream0\\DiveSmoke_0_stream.png",
+          "sha256": "9e1cf67e9bbf0ec16e6ab6d8ac519f4120cb641a05a57b463437beb73361b291"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream0\\DiveUnderwater_0_stream.png",
+          "sha256": "69ad14ac0e78515b807d1e4e2ea9975750e79267211fc57b27bc582b53abb822"
+        }
+      ],
+      "unchanged_near_fish": 59,
+      "distant_spawns": 75,
+      "ordinary_cell_transitions": [
+        {
+          "x": 27,
+          "y": 1,
+          "loaded": 3,
+          "unloaded": 3,
+          "rocks": 607,
+          "milliseconds": 3.184
+        },
+        {
+          "x": 26,
+          "y": 1,
+          "loaded": 3,
+          "unloaded": 3,
+          "rocks": 642,
+          "milliseconds": 1.616
+        }
+      ],
+      "displacement_metres": 109.46
+    },
+    {
+      "scenario": "stream",
+      "name": "stream1",
+      "entry": 1,
+      "screenshots": 2,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:35:31.9678221Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream1\\Runtime.log",
+        "sha256": "ad9374ad33ddd53e4c1ffc8c895a7473b55030d5e57225af67ba162c42edc02d"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream1\\DiveSmoke_1_stream.png",
+          "sha256": "4193f6a132939bdfc63ea9040ba80d2a26f5682b9535ef725f3e7f82bc9d6fe6"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream1\\DiveUnderwater_1_stream.png",
+          "sha256": "f220e55912b92230f65aa3b3db9ade05b1ded2af74fc3365541a1b3f64ba76d9"
+        }
+      ],
+      "unchanged_near_fish": 77,
+      "distant_spawns": 77,
+      "ordinary_cell_transitions": [
+        {
+          "x": 9,
+          "y": 92,
+          "loaded": 3,
+          "unloaded": 3,
+          "rocks": 519,
+          "milliseconds": 2.51
+        },
+        {
+          "x": 9,
+          "y": 93,
+          "loaded": 3,
+          "unloaded": 3,
+          "rocks": 434,
+          "milliseconds": 3.397
+        }
+      ],
+      "displacement_metres": 110.85
+    },
+    {
+      "scenario": "stream",
+      "name": "stream2",
+      "entry": 2,
+      "screenshots": 2,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:37:05.9621491Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream2\\Runtime.log",
+        "sha256": "eae5d0c09423ff732c6f7fd5100e596ea299e1bc7699411a0d33a1d3b804fca3"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream2\\DiveSmoke_2_stream.png",
+          "sha256": "f40223e1f07e9eb49085935f0f579b9b9736b68639cda3c80b207e540137f0ec"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\stream2\\DiveUnderwater_2_stream.png",
+          "sha256": "b7a1255c1e748224c9cb7ab44cf2d0496ed5cd3a7878eb8cff44796741af4fb1"
+        }
+      ],
+      "unchanged_near_fish": 77,
+      "distant_spawns": 77,
+      "ordinary_cell_transitions": [
+        {
+          "x": 16,
+          "y": 156,
+          "loaded": 3,
+          "unloaded": 3,
+          "rocks": 865,
+          "milliseconds": 7.451
+        }
+      ],
+      "displacement_metres": 91.3
+    },
+    {
+      "scenario": "shore",
+      "name": "shore0",
+      "entry": 0,
+      "screenshots": 9,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:38:40.0122179Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\Runtime.log",
+        "sha256": "5a3b3a474365b5a43382ff525e6e30af52481133268e564b9efad01ddab21974"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\DiveSmoke_0_shore.png",
+          "sha256": "08400c11be906477b3ba0936c533cf6420c2fd547834a46c9baae024d754d0b4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\DiveUnderwater_0_shore.png",
+          "sha256": "6a5f997581d9f9298ecc847fa0811242bc99a1a5ddf9cedffb5b6b2ea4f97a41"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreComplete_0.png",
+          "sha256": "1fea33ccb056bce8125cfc0763984864f933babbc0c0c472983cb50dbcd5b1df"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreDive_0.png",
+          "sha256": "0a9025381c01f8a2b02832fb47deeb8cdc01792aca75bf1a1ff476e9dc001d82"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreMenu_0.png",
+          "sha256": "518459b99af3f2499abb6298a710117afe9a2d642752cf65a345347c1dc66a94"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreReturn_0.png",
+          "sha256": "0b93a6f9e843993c6cdcf88eae66d4b0a58b3ed89ce853cd14d48b04ba80c976"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreStart_0.png",
+          "sha256": "66ce41a50486e5d42802059a33f756c3830af8767c734cff0e6caa0b14242431"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreSurface_0.png",
+          "sha256": "c532d0c3045d4981c1bff7f0e456f54fe061888ab6d07a15f31d7dee67e19fde"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore0\\ShoreWater_0.png",
+          "sha256": "3764c0b5dbf8895c2d588917f1b20e1ddef80ab485afeebb483db1be83f758d1"
+        }
+      ]
+    },
+    {
+      "scenario": "shore",
+      "name": "shore1",
+      "entry": 1,
+      "screenshots": 9,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:39:34.9486669Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\Runtime.log",
+        "sha256": "b9aa7710cf1b465232f0198d9c3d89b8685a922487bcf95bd01b64e279f240d8"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\DiveSmoke_1_shore.png",
+          "sha256": "fad5e7993d25428da5bd3a0bd21af23f6181a16ae3fe894c9c364b0e43ded760"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\DiveUnderwater_1_shore.png",
+          "sha256": "d8573f642f4c742a6e99c231e940bf1b404bd0fef891a3411a6f1c86c44a48ba"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreComplete_1.png",
+          "sha256": "2069b4724c9f2f93adea333a3ac7b407d91a319f867569a5662c1aaf16e91a1f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreDive_1.png",
+          "sha256": "f0175cde0a55d5a41218f55b2ee37e03e9b013504ef013d88e771bcfe6e01ca3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreMenu_1.png",
+          "sha256": "abc4cfbcd7bd380bbb14d5823f1e05e80b2b9e4d50a4234f56f41be634ef717f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreReturn_1.png",
+          "sha256": "fd632565c55ede3a185f32e4215bc789c029ea91a53068b72b6a650ea30727f5"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreStart_1.png",
+          "sha256": "8670bcb375e1cff085319cf774efba036f6e3e9728b90d883aac19cb84b266be"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreSurface_1.png",
+          "sha256": "3e3efda1d36ea464cce75a949224fa08ef20c149bc3bf7e1008e9d96b5bc0065"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore1\\ShoreWater_1.png",
+          "sha256": "407fced5b9cd99856b31c93a3b08c09edfebd9f8212267a110c6d045b28a57ca"
+        }
+      ]
+    },
+    {
+      "scenario": "shore",
+      "name": "shore2",
+      "entry": 2,
+      "screenshots": 9,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:40:30.9551412Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\Runtime.log",
+        "sha256": "bb508b5db42ae67e59a297042682c9406e43aa72229c6cebd0b878ffa54dc6f5"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\DiveSmoke_2_shore.png",
+          "sha256": "3c9b82ce0d6e72b12410dd4c41542e9019d24b5e1b8825cc126c5e0345e98bf0"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\DiveUnderwater_2_shore.png",
+          "sha256": "7a37426239de2c42a158c3544723ab5692ed57a4d5bb38d23d93c5ac786c041b"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreComplete_2.png",
+          "sha256": "328e429db933b974fee2b27c86675358792ee2599d6ee7f2c3f8310602a966a8"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreDive_2.png",
+          "sha256": "f714506512c9ae0f992be75094936c86dbefcc259250c64aed636cedfd67f69f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreMenu_2.png",
+          "sha256": "f31caa8f2e18ce11325365f1ec6b2728a78d89a2a4e9c41cae5d43c4dd15bb3c"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreReturn_2.png",
+          "sha256": "29a0ca8396c2dcb04a57ce04ee718abc2c56223cd3b57d0093267834a94d1a33"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreStart_2.png",
+          "sha256": "d82e41a534a0a891ca9f4a232a92f07791f5d4239f9c33757cde3cb6763e3285"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreSurface_2.png",
+          "sha256": "7b27ed78f8931c4520839fac9f9abdb6ddbe4d89ffdffee720cb7c0c2d531f13"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\shore2\\ShoreWater_2.png",
+          "sha256": "ba5a70dd611cf54e1bff9233720b5551fd8f9a3a7acf49b4b96bba0cb737738c"
+        }
+      ]
+    },
+    {
+      "scenario": "sediment",
+      "name": "sediment",
+      "entry": 0,
+      "screenshots": 7,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:41:32.9311866Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Runtime.log",
+        "sha256": "a9b9db66b8a49b6d69f503f7a2eb4e15443c6e9af3ca3ee0ddf58f93fc99614a"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\DiveUnderwater_0_sediment.png",
+          "sha256": "e15f747675053c5d31c4bc39160481716ce784a7d4082e45791f4a29d779749a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Sediment_0_Clear.png",
+          "sha256": "0b35e4f1a551d178a56cce7a6c76614766ed8ace546a9386186ae9515d59ed31"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Sediment_0_Cloud.png",
+          "sha256": "b5ae0bdcccc347bc389b351e89e8333ee37bcbd9de56bc260684f0266bfa81b0"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Sediment_0_Hidden.png",
+          "sha256": "103ad862639280dedbf77b30febebae083513969b0f4c1f4148ebe3bf06634ca"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Sediment_0_Settling.png",
+          "sha256": "2d07e0d3c3e524397bed958b6e945d669290e284edd25da00250282d84233acd"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Sediment_0_Start.png",
+          "sha256": "e29be33fb725882c6fc7eec10fc9acc92621d8d9ede3e39e56237becd12028a3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\sediment\\Sediment_0_Visible.png",
+          "sha256": "f55bdf7c58df4404ee883afa4d67b452095ae5619a188d4ff3e95631c7ed6b6c"
+        }
+      ]
+    },
+    {
+      "scenario": "navigation",
+      "name": "navigation",
+      "entry": 2,
+      "screenshots": 8,
+      "status": "PASS",
+      "started_utc": "2026-11-25T23:42:50.9422026Z",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Runtime.log",
+        "sha256": "04a16a5d99a589fe01ea006f383b49d46e39f1fcd6ea50505b46f59857a2157d"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Controls.png",
+          "sha256": "56c53b4a9f1bde8d18e0ff3edbe4c448d1f1c8f6f1bb42cb5af178ad0cdaa030"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_DiveMap.png",
+          "sha256": "edde7fe93b889d04443c78b6b62abac93beb8b64a6ccd005491e24450b5f20d6"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Locked.png",
+          "sha256": "ff96b439385d6eb5e361f071d64029b05057da69b7a744ce30d021e843a4153a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Preview_DE.png",
+          "sha256": "5cf9536ce0e3e5b91331e39b16eae263e24b9e961892c731bdd4a3ccc827e443"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Resumed.png",
+          "sha256": "ba2c0032fabd0165d14fd4ff5083bb2d752c47dc988bbcae329decb2dbd86025"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Shore_DE.png",
+          "sha256": "1cd18ca13ef1c38f25135bd1352167bf897328961c73b3afa8307c7d03109ef2"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Started.png",
+          "sha256": "09cbbb0763695fdb1f0b5e96fb77a7f36d04d9a9f85e744acf3fb87ccdfb0837"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\population-validation-20261126-003356\\navigation\\Navigation_2_Water_EN.png",
+          "sha256": "a5e801768f3bbfeeb395b27e4c952f5b2fef81a5f62b927c5ed24ff118621a44"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "The identity/reload/refill fixture changes the streaming query within one frame, then restores gameplay state; it is not a rendered traversal.",
+    "The separate ordinary stream scenarios drive the pawn through real gameplay and log actual cell crossings.",
+    "Static dressing is deterministic per cell and dive configuration, not a surveyed habitat map. Distant fish slots are recycled, not persisted as a lake-wide population.",
+    "These capped Windows scenarios are not performance or native macOS evidence."
+  ]
+}

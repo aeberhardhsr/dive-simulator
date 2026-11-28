@@ -1,0 +1,14 @@
+// Diagnostic source-to-receiver RGB absorption, applied to directional direct
+// lighting before BRDF/SSS evaluation. Local lamps are deliberately excluded.
+// Existing scalar water attenuation and shadowing remain in the light function.
+// Fixed mean water level (world Z=0), not a wave-resolved boundary. Coefficients
+// match the separate camera-path study; they are authored, not lake measurements.
+#include "/DiveRendering/SolarMedium.ush"
+float3 DiveSunWaterTransmission(float3 TranslatedWorldPosition)
+{
+#if LIGHT_SOURCE_SHAPE == 0
+    return DiveDirectionalWaterTransmission(TranslatedWorldPosition,DeferredLightUniforms.Direction);
+#else
+    return 1;
+#endif
+}

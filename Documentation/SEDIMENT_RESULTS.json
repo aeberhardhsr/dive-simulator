@@ -1,0 +1,421 @@
+{
+  "status": "PASS",
+  "host": {
+    "executable_sha256": "1C500D0AC231719CF75057557D73994F238269F0CC1BA11E020E7143A3AC7705",
+    "source_head": "836dd345127fcfe4bb5c8cf95b1b9b51c4061eef",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsSediment\\divingsim\\Binaries\\Win64\\divingsim-Sediment.exe",
+    "source_dirty": true,
+    "started_utc": "2026-11-25T22:22:10.3179739Z"
+  },
+  "cases": [
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:22:11.1870339Z",
+      "screenshots": 7,
+      "name": "sediment0",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Runtime.log",
+        "sha256": "b6f8172a03924cd06938c61975f42fa509fe60e5c10559abc81d9880229b2bb6"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\DiveUnderwater_0_sediment.png",
+          "sha256": "ff31bda6aab9f038d3716e8c625b75bab046c372735438003cca0ca262268026"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Sediment_0_Clear.png",
+          "sha256": "49ee35a9aaf4646e214a5babbbafe0a90fea04bad7b2093a448f18fec6b52fcb"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Sediment_0_Cloud.png",
+          "sha256": "8c85fc6a0519d78d8b82ddf7b6d23197a85ac28885252f22f3fb81e2f097a54c"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Sediment_0_Hidden.png",
+          "sha256": "a8b975aed2080bbb8410367045e92506afe015752241fb57161d28fa0e4c7504"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Sediment_0_Settling.png",
+          "sha256": "126e98089b1df80595269cfe46fa7617ed2ef32e77c7d578c125027b4c2e4466"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Sediment_0_Start.png",
+          "sha256": "ab49cc2de83e3bc99749276c58904d71422bd0200d1b838e9c98f24f23f12d6c"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment0\\Sediment_0_Visible.png",
+          "sha256": "1828b18fc34ead59f9028a8c0bd2e92b9f3446f5c1be4ee78a8ed25cd074bfac"
+        }
+      ],
+      "born": 9,
+      "pool_size": 9,
+      "comparison": {
+        "roi": [
+          590,
+          377,
+          990,
+          777
+        ],
+        "mean_max_channel_difference": 2.8476874828338623,
+        "pixels_over_5": 13757,
+        "pixels_over_15": 9422
+      }
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:23:29.6404233Z",
+      "screenshots": 7,
+      "name": "sediment1",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Runtime.log",
+        "sha256": "150cbaff855e751b2be5ec6c318d8c0bc95bcb9d350c0f9b7214e70d19a137ad"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\DiveUnderwater_1_sediment.png",
+          "sha256": "03f4b39884ea443a5c11c5ae55d7754233f63b566a01a08669ed11426ebe1e96"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Sediment_1_Clear.png",
+          "sha256": "bddeddead6cf7e40e1945decd1b6d3bb6cf938cdc153f78e210b500293d45bbc"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Sediment_1_Cloud.png",
+          "sha256": "4e6b107d1754945b1f6bee25ad60850f07a9faf86e0d296a87d2b7d0aa5b9d4d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Sediment_1_Hidden.png",
+          "sha256": "91181412047277aa39b885b8ab1bf31613e980da8a165d4ac1e4e3aa4604deac"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Sediment_1_Settling.png",
+          "sha256": "711c3f2930da8d0cfe2b2c7b54f3bf6300ef1af843b9ddb991996995cd699a0d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Sediment_1_Start.png",
+          "sha256": "7ca1f4975ac27ac882603d6053265a79948a119f1cefa840d2bc86def8df4983"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment1\\Sediment_1_Visible.png",
+          "sha256": "1ed60fee86a8c553f598b9670d9b0c5d37f791c86828d076543607cd2c5f6b36"
+        }
+      ],
+      "born": 8,
+      "pool_size": 8,
+      "comparison": {
+        "roi": [
+          596,
+          166,
+          996,
+          566
+        ],
+        "mean_max_channel_difference": 2.7872061729431152,
+        "pixels_over_5": 6659,
+        "pixels_over_15": 4981
+      }
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:24:47.9979420Z",
+      "screenshots": 7,
+      "name": "sediment2",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Runtime.log",
+        "sha256": "edf4c7c5503ee45799ca675a220df4e270741d8aec9575dd1cda36a395b21c39"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\DiveUnderwater_2_sediment.png",
+          "sha256": "5fa59c34151dd41f8aee559a803034009840c508017016f319acdd2b5bc94672"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Sediment_2_Clear.png",
+          "sha256": "27e5c2fa9d77be65b6cb52e1122d4f111d27b59c31ac61900c6ce00480d7659d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Sediment_2_Cloud.png",
+          "sha256": "3425683dc9496de8c491cd39462b67cc3a3dedb4127fea3c0f881873af72100a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Sediment_2_Hidden.png",
+          "sha256": "a69d75c0132c0d56db046af8e4ca10ee6238c7afa23d0a79f3d4b5199977d53e"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Sediment_2_Settling.png",
+          "sha256": "7204bd57f8203c88f0ae29140e15d235d802ed0b318ffb667f2adb003924506d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Sediment_2_Start.png",
+          "sha256": "3be5ac700727f35dbf4802cc8b949cdb0666b2ebd231f67c7541e65e1b96db79"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment2\\Sediment_2_Visible.png",
+          "sha256": "faec642e8dc480f3b96f69c420743cb4219d148a8f64e4cc558c52eb60da28e6"
+        }
+      ],
+      "born": 8,
+      "pool_size": 8,
+      "comparison": {
+        "roi": [
+          562,
+          247,
+          962,
+          647
+        ],
+        "mean_max_channel_difference": 1.4760124683380127,
+        "pixels_over_5": 9001,
+        "pixels_over_15": 2845
+      }
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:26:06.3104271Z",
+      "screenshots": 7,
+      "name": "sediment-night",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Runtime.log",
+        "sha256": "1fe6e9254efa471ab1f51d9b8de1ebb7c11c18146944a744cb769bb0ec196f7c"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\DiveUnderwater_0_sediment.png",
+          "sha256": "3126f3a68dc3ecb6886919845f4baad8e3a90872760ba2cbc33af71f7f84d4a3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Sediment_0_Clear.png",
+          "sha256": "20a6e06fd5ff3c5755b28155edcbfec90848800fb4d71585893a2f81f8b1a9bb"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Sediment_0_Cloud.png",
+          "sha256": "0f7e99535f36269023e9760be3e97f83fba4f8e58772d16a2e710f5bafaab4f5"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Sediment_0_Hidden.png",
+          "sha256": "805636ddd6a261546676f7d2a6c21a0b8fd3d82c31185ab1f5b2938b54a394b4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Sediment_0_Settling.png",
+          "sha256": "2403a873b8f54826802904d0ecfb441e033e8e63f6128d108590cebfa76d5084"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Sediment_0_Start.png",
+          "sha256": "e561f0c5ecd8cec9f2e4e654d3a92210432e844558ba7b20c4e57e19fe84ce53"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\sediment-night\\Sediment_0_Visible.png",
+          "sha256": "8d26124d0a07e47f159bb74edfd0c04210696f18082a94d6c432ed9a5f573301"
+        }
+      ],
+      "born": 9,
+      "pool_size": 9,
+      "comparison": {
+        "roi": [
+          590,
+          377,
+          990,
+          777
+        ],
+        "mean_max_channel_difference": 0.6444249749183655,
+        "pixels_over_5": 2588,
+        "pixels_over_15": 2
+      }
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:27:24.6102836Z",
+      "screenshots": 9,
+      "name": "shore0",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\Runtime.log",
+        "sha256": "420f01481a636995ded4b3576a479fd96c9bf0bb999eb6e2d8d5810449a21bdf"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\DiveSmoke_0_shore.png",
+          "sha256": "f3e272e35b834162ebc3dd6bac2fc67d9ea5e22a690524e081f9966df7b57288"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\DiveUnderwater_0_shore.png",
+          "sha256": "a97d0367a8450dc9b6c93bae0a669221f13dd11ea2247fe197beea4538da4754"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreComplete_0.png",
+          "sha256": "46754fb666f4fb8d0e2e146e81abfba1cb5557609b619fb4313a2bad8da86e63"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreDive_0.png",
+          "sha256": "f542f71f11841e02ce6b1591978be9e2ea3a102ad91f96176ffef2c8303fce5d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreMenu_0.png",
+          "sha256": "fd10c7e60f1c1148357c2a39bb9b9b84cd39c02466b95e190bf517bb13bc9a0f"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreReturn_0.png",
+          "sha256": "59a07b8e4a1461054169a1178e2ed86b2a696ea192581e824d3bb0d0f71672b2"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreStart_0.png",
+          "sha256": "8dba6786e497158e1b5d3c19884909030659b4f5521bb22ffe8f1e03280b4611"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreSurface_0.png",
+          "sha256": "885f468ee5a3f7c9b9fa82d49716919ee41e595cf172d84a387fe172d53043a7"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore0\\ShoreWater_0.png",
+          "sha256": "7a079fc16d79037037e3707d300b7bde5adbc4c6f6d4b96a94b5b4bc2cb697bc"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:28:19.9397584Z",
+      "screenshots": 9,
+      "name": "shore1",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\Runtime.log",
+        "sha256": "b6a54d5100e271aa5aa1d399d6411b051bc12ca30d1d1f34fd810ba5aae453e4"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\DiveSmoke_1_shore.png",
+          "sha256": "c4bf54295fd62fd0bae41b87540474310ec0d894eeab9bac7261c619610d60c9"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\DiveUnderwater_1_shore.png",
+          "sha256": "0cd4e7c0a0e2a2b3f69903b13e278c2b45200bf4c55232019db1710694cb1f69"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreComplete_1.png",
+          "sha256": "9779ba93951fabfdd99846c6a88289fc037ba65d36e0b9d70421e15b8850566d"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreDive_1.png",
+          "sha256": "7efb7b6110283635cbe4d6b798f76be0800ac123a3b15ed8a4b2d734c7d75066"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreMenu_1.png",
+          "sha256": "6cd523d1c7409f75c2a95b36b626013fe56411cfae097016c93e2d7d78542f9a"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreReturn_1.png",
+          "sha256": "58870825e9fc598c2881e2a42895be49e5e559f00a38649b224d8d6de5de78ed"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreStart_1.png",
+          "sha256": "cecc45d15d701422b26329924c9aa4fe844c929b3c83f680efcd7587f9c98f18"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreSurface_1.png",
+          "sha256": "4395272171571afb9db3180e7d2b6d4289710eddc266c4fd65ab28960a922477"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore1\\ShoreWater_1.png",
+          "sha256": "37f0be2a3879f1ee1b1f63a5097c9a38448ccad34edcf9daa8e6e74224f11f2c"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:29:16.1091640Z",
+      "screenshots": 9,
+      "name": "shore2",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\Runtime.log",
+        "sha256": "849a483bb28e7b0952346ee68b7e8d9f030717cc62502a0aa2a6b1d3cab894b5"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\DiveSmoke_2_shore.png",
+          "sha256": "995bd395e5591ce9da8804e378e7cb4ace535e91a9b067977541a3a1970e1239"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\DiveUnderwater_2_shore.png",
+          "sha256": "9e90129ec52ba431a9188819dc03c4babc9109b75c4ed30ef5b55a7164b6dcb2"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreComplete_2.png",
+          "sha256": "fe44928f29f66a2ec836fe4d2d998333953ed31e7e04bda8993a59b182d51bb3"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreDive_2.png",
+          "sha256": "8c25504c8e3803f14c2280eb2c9c23ccacb95114e558645c2961679eb8338ed5"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreMenu_2.png",
+          "sha256": "64269b6bf4acb29d77dee9a95ddd95c3517222b9becb5835143bd176d0894370"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreReturn_2.png",
+          "sha256": "61aebbb026f62108ca90cb460f04ab757296f7ba0176ad5923a369c1e8ffcd33"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreStart_2.png",
+          "sha256": "1d306a71855ca80a5d2af701056bb4545763588549e9c6980e9997a2f4c07267"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreSurface_2.png",
+          "sha256": "7ea6d88cd11ef3d3b976456db966498684d1a6557d7714d87d7b97000e3b74c6"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\shore2\\ShoreWater_2.png",
+          "sha256": "adb8adfaa339e77b95cc24a5d103f58d56266105a43124fd685880344be71b55"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:30:17.1897585Z",
+      "screenshots": 4,
+      "name": "breathing",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\breathing\\Runtime.log",
+        "sha256": "acaa6b4b5dd20e928a1ef45b74eb003e06397a4dba718984f30f0febbf9ace94"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\breathing\\Breathing_Air.png",
+          "sha256": "2fc75c169ee7166bec70c3f140eaa23e3026044889e2885a385a2e9c2447d8d7"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\breathing\\Breathing_NoSupply.png",
+          "sha256": "01c3c9e8e0e2a529717144b19deaf324397ba166b285e1125f88fb9d957a71d4"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\breathing\\DiveSmoke_0_breathing.png",
+          "sha256": "39e97313f9c583e3c31c207559bd1d38f0d8eef674590b967329f1837013c544"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\breathing\\DiveUnderwater_0_breathing.png",
+          "sha256": "c3aa4bef7cdcf8ebe76060ae9f4c4e9ba57b345774e3de2171c90500061d8731"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "started_utc": "2026-11-25T22:30:50.1634142Z",
+      "screenshots": 2,
+      "name": "stream",
+      "log": {
+        "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\stream\\Runtime.log",
+        "sha256": "6dacbbef473c5eebc76e7d801c527b35cd023022fd3b07c788d7dc3671dcfce6"
+      },
+      "images": [
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\stream\\DiveSmoke_0_stream.png",
+          "sha256": "090786b5764b5bc29956c8581b148b95e30f5015bf762e52fb022d2b424dd4ad"
+        },
+        {
+          "path": "O:\\games\\dive game\\artifacts\\sediment-validation-20261125-232210\\stream\\DiveUnderwater_0_stream.png",
+          "sha256": "471c3def18e3495ed5d61cd7064c6826f86866933a625db9e2d18e52940d1e71"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Pixel differences include residual temporal shading; manually inspect the image pairs.",
+    "Authored sediment response and approximate scattering, not measured local transport.",
+    "These Windows scenarios do not establish native macOS or full visual acceptance."
+  ]
+}

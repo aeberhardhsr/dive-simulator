@@ -1,0 +1,15 @@
+// Vertex-stage analytic particle motion, in Unreal centimetres.
+// Seed buffers stay immutable; only the view/cell and environmental uniforms change.
+float3 seed=float3(S0,S1,S2);
+float3 drift=float3(2,FlowCm,0)*FieldTime;
+float3 relative=frac((seed+drift-Viewer+400)/800)*800-400;
+float3 target=Viewer+relative;
+float4 waves[4]={Wave0,Wave1,Wave2,Wave3};
+float height=0;
+for(int i=0;i<4;++i)
+    height+=100*waves[i].w*sin(dot(waves[i].xy,target.xy*.01)-waves[i].z*WaterTime+WavePhase[i]);
+float edge=max(abs(relative.x),max(abs(relative.y),abs(relative.z)));
+float fade=saturate((400-edge)/50)*saturate((length(relative)-20)/15);
+float visible=target.z<height?1:0;
+float3 original=Anchor+seed;
+return target-original+(visible*fade*GrainScale*lerp(.001,.003,frac(abs(S0)*.618))-1)*(Position-original);

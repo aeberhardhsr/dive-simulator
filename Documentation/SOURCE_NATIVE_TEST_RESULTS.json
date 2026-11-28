@@ -1,0 +1,194 @@
+{
+  "status": "PASS",
+  "engine_tag": "5.8.4-release",
+  "nullrhi": true,
+  "succeeded": 35,
+  "failed": 0,
+  "not_run": 0,
+  "succeeded_with_warnings": 0,
+  "total_test_duration_seconds": 6.845773220062256,
+  "report": {
+    "path": "artifacts/source-engine-20261127/native-suite-local-player-final/Report/index.json",
+    "sha256": "671f0a0822dc361372812898dacbb7e5f7f380b7ab0bec1f79c9975b54f76b9c"
+  },
+  "runtime_log": {
+    "path": "artifacts/source-engine-20261127/native-suite-local-player-final/Runtime.log",
+    "sha256": "588b42cb9edc9a6c3a1c87bd209356340c2127ffbb91d28edf63b566b71f81d1"
+  },
+  "project_build_log": {
+    "path": "artifacts/source-engine-20261127/project-camera-fixture-final-build.log",
+    "sha256": "b9f67b4047041b6ea2b2030bdce3eafca713089efebfd1b8d52d26d8b36b030f"
+  },
+  "project_binary": {
+    "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+    "sha256": "6fb64420465bbd7b73b01097087f85d1c474391b10ec447b22597dfc3af5bd20"
+  },
+  "test_source": {
+    "path": "divingsim/Source/DiveSim/DiveContactsTests.cpp",
+    "sha256": "7a91509d8e4facdb6981a5b3bfc9bc02cb900947ee54ffcab431a9cd80fa0ffb"
+  },
+  "test_runner": {
+    "path": "Tools/TestDecompressionNative.ps1",
+    "sha256": "d003547eef31d398c2818d99d23558c38edb268a53950f1a69aa0769c7362b00"
+  },
+  "tests": [
+    {
+      "name": "DiveSim.Body.EyesNeckAndGaze",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Body.MouthWaterline",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Body.RegulatorEndpoints",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Body.SceneComponentNearVertical",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Body.SidewaysHeadAndLimits",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.BlockedBodyAllowsHeadTurn",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.EquipmentWinsFirstContact",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.GrazingSlopeAtLakeCoordinates",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.HorizontalClearance",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.ImportedCylinderFinAndHand",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.ImportedCylinderOrbit",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.ImportedRigMatchesContactJoints",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.RotationSweepsIntermediatePose",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.SeparateWithoutMissingNextObstacle",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.SidewaysMaskCannotCrossObstacle",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.StoppedKick",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.SweptTranslationAndSlide",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Contacts.ThinObstacleAndCorner",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Controls.BindingPersistence",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Controls.InvalidAndLegacySettings",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Discoveries.CameraAndCatalog",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Discoveries.LogAssociation",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Discoveries.PhotographValidation",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Logbook.BackgroundWriter",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Logbook.CheckpointRecovery",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Logbook.DiskIndex",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Logbook.InvalidData",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Logbook.LongCheckpointCost",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Logbook.ReadAndHistory",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Navigation.SurveyAndCompass",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Profiles.Configuration",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Profiles.FileProtectionAndLimits",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Profiles.PersistenceAndRecovery",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Waypoints.PersistenceAndConflict",
+      "state": "Success"
+    },
+    {
+      "name": "DiveSim.Waypoints.SchemaBoundsAndLegacyBinding",
+      "state": "Success"
+    }
+  ],
+  "fixture_correction": "A genuine ULocalPlayer with GEngine outer and two-way controller link makes the isolated camera fixture local. Original collision, accepted-gaze, between-step camera and pause assertions remain unchanged. No production camera code changed.",
+  "prior_attempts": [
+    {
+      "report": {
+        "path": "artifacts/source-engine-20261127/native-suite/Report/index.json",
+        "sha256": "ed18564bbefe105c30f3a87eb6beff7adaae20c6b326eda9014469f702b58a46"
+      },
+      "reason": "34 passed; camera-component and pause assertions failed because the fixture had no local player"
+    },
+    {
+      "report": {
+        "path": "artifacts/source-engine-20261127/native-suite-local-player/Report/index.json",
+        "sha256": "fb76f60dc2ba8cfce469a0703268d9509fc2fb3da074bfa0484617dc0f3007a1"
+      },
+      "reason": "34 passed; added LocalPlayer had an invalid default Outer; corrected to required GEngine Outer"
+    }
+  ],
+  "limits": "Null-RHI automation verifies logic, not rendered FPV quality or real mouse feel."
+}

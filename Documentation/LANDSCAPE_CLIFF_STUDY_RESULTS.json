@@ -1,0 +1,370 @@
+{
+  "status": "EDITOR_STUDY_VISUALLY_IMPROVES_SOME_CLIFFS_NOT_READY_FOR_NORMAL_PACKAGE",
+  "sources": [
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/Tools/Build.ps1",
+      "sha256": "ffea7d1e609511780eb7543d030d5d8a62e7ee7ecca8535ecc4435d8dbd73eec",
+      "project_file": "Tools/Build.ps1"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/Tools/SmokeTest.ps1",
+      "sha256": "7be624dee65d3b2e905bb5431bc3516093f697917ad8be86fa09f8e8645108a3",
+      "project_file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/Tools/Benchmark.ps1",
+      "sha256": "675bd7d52d1e5759af37447478d02ace40d841dca4a6a28dfecb809153d375dc",
+      "project_file": "Tools/Benchmark.ps1"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/Tools/build_landscape_cliff_study.py",
+      "sha256": "2e2d31ebbca66a1ff6d64df2861e76ea90d9a5fcededb99545845b9a5f76116c",
+      "project_file": "Tools/build_landscape_cliff_study.py"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/Tools/Shaders/LandscapeCliffs.ush",
+      "sha256": "66c018d6ef2e0135502fdcd9b35fc760efb2b426f54b2a97da7958c2f58f7577",
+      "project_file": "Tools/Shaders/LandscapeCliffs.ush"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "sha256": "1a3bf1b5b3f1121295ef6d881e5f2e089f13ecfd9aeca97792fdf7c523fd8cd1",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/divingsim/Source/DiveSim/DivePawn.cpp",
+      "sha256": "eed147461b6c2f2690fb9a7fbac8eb2ea181594b50c445ad234539b553cc841c",
+      "project_file": "divingsim/Source/DiveSim/DivePawn.cpp"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/Snapshot/divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset",
+      "sha256": "51dfa489879a00573e553714ec389c21f04bb70c77299dfc04a8d744b4629e82",
+      "project_file": "divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset"
+    }
+  ],
+  "twelve_second_game_module": {
+    "file": "artifacts/above-water-cliffs-20261128/Snapshot/Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+    "sha256": "b73a2964d98b277fe99504108be486aaf05753228804978f98ca56ddd67a31cc",
+    "project_file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+  },
+  "renderer_module": {
+    "file": "artifacts/above-water-cliffs-20261128/Snapshot/Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+    "sha256": "09b9c4e2b1a29d913926ac865062bfebb3d05ec4104c820a8c91edc10f77c5f5",
+    "project_file": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll"
+  },
+  "published_comparison_images": [
+    {
+      "file": "Documentation/Images/Cliffs_Murg_Before.png",
+      "sha256": "7c4d5949123756bbf4a8cfdec9404f8fdb7372a1affd5a483e5d713459b97b1b"
+    },
+    {
+      "file": "Documentation/Images/Cliffs_Murg_Study.png",
+      "sha256": "113b0ce901dafbcffde9056c40f38e45f8fb65dcf0cef47aa3f2f0b6491d6c5a"
+    }
+  ],
+  "builds": [
+    {
+      "file": "artifacts/above-water-cliffs-20261128/EditorBuild.log",
+      "sha256": "547f3e550fc49ddb670ca06f7bdcfeb09fd4e65410b41dcda97bd3273980fe20"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/EditorBuild-warmup.log",
+      "sha256": "6da7e5138e92d00e03858447dcd34d031dad1f56fb25e661b28811d2fdd5392e"
+    },
+    {
+      "file": "artifacts/above-water-cliffs-20261128/ContentBuild-r03-native.log",
+      "sha256": "82037f0b2c69705bfa3af81bcbc0d6f6b391d9350c4f05338b9d10c74a9f9d32"
+    }
+  ],
+  "cases": [
+    {
+      "name": "Murg_Control",
+      "entry": 1,
+      "hour": 12,
+      "warmup_seconds": 3,
+      "study": false,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Control/Runtime.log",
+        "sha256": "a19167b856d1c0067fd230dcd7e0a852adc6ce6df29468e49a1246da2f4e04be"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Control/Shore_1.png",
+        "sha256": "c1ae072399b91e5ded3b0700957798a5aa0c4975fdaf637224d321e3967077bb"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_StudyR2",
+      "entry": 1,
+      "hour": 12,
+      "warmup_seconds": 3,
+      "study": true,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_StudyR2/Runtime.log",
+        "sha256": "80a4d6ca1c36a9f866071c51bcf4aab87ac64c9c5e4cc88b1debb91c1a822b65"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_StudyR2/Shore_1.png",
+        "sha256": "5337a0ef45c5fd4079b7b731a21fc9b0cffc0a3f828f41092d5e507faad5233d"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "EARLY_START_LIMITATION"
+    },
+    {
+      "name": "Murg_Control_12s",
+      "entry": 1,
+      "hour": 12,
+      "warmup_seconds": 12,
+      "study": false,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Control_12s/Runtime.log",
+        "sha256": "f9f3735bc5ab5361f9638cd512c787008544336a39af9d87c9efcc5fc467b7ca"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Control_12s/Shore_1.png",
+        "sha256": "7c4d5949123756bbf4a8cfdec9404f8fdb7372a1affd5a483e5d713459b97b1b"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Study_12s",
+      "entry": 1,
+      "hour": 12,
+      "warmup_seconds": 12,
+      "study": true,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Study_12s/Runtime.log",
+        "sha256": "f53c68a1f3a1f976929382a74d8a4b891e44a86de2bb9c626fda8f84afb54c50"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Study_12s/Shore_1.png",
+        "sha256": "113b0ce901dafbcffde9056c40f38e45f8fb65dcf0cef47aa3f2f0b6491d6c5a"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Weesen_Study_12s",
+      "entry": 0,
+      "hour": 12,
+      "warmup_seconds": 12,
+      "study": true,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Weesen_Study_12s/Runtime.log",
+        "sha256": "0f0fa23aadb6144ab7bd53e3ca1dfca09866a6d57aac3ebe0d2a8a14b6029450"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Weesen_Study_12s/Shore_0.png",
+        "sha256": "ac5db0ce95565d839dddc4dfb5c1637cda0b9b4109ee7a8429edce75af3fd812"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Mols_Study_12s",
+      "entry": 2,
+      "hour": 12,
+      "warmup_seconds": 12,
+      "study": true,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Mols_Study_12s/Runtime.log",
+        "sha256": "43b8e032f39dfa96be2b495a02aba1155425c1f74d28c13759974c97e94738ed"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Mols_Study_12s/Shore_2.png",
+        "sha256": "faa21dd9535cb17109dec25f3571277ad96ac4e9f7fc20dbe012cc0956c1818d"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Evening_Control_12s",
+      "entry": 1,
+      "hour": 17,
+      "warmup_seconds": 12,
+      "study": false,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Evening_Control_12s/Runtime.log",
+        "sha256": "38f2a8c09589792a959a8cd1ff3651de78c4e60df5b69c4a344e1d0991b7d04b"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Evening_Control_12s/Shore_1.png",
+        "sha256": "9a506344a822f696b87d72e90afceda1944347166031e5752e9c798ce0dc254f"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Evening_Study_12s",
+      "entry": 1,
+      "hour": 17,
+      "warmup_seconds": 12,
+      "study": true,
+      "runtime": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Evening_Study_12s/Runtime.log",
+        "sha256": "e5a2af12045320932afd12cdb108f42272f219f54e439a03f917574a8c8f8676"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Evening_Study_12s/Shore_1.png",
+        "sha256": "e2fde4865ca33e75a6ce315150f4335cc40073ab385c030e22015f92b8038576"
+      },
+      "visual_review": "REVIEWED",
+      "comparison_status": "REVIEWED_WITH_ART_LIMITATIONS"
+    }
+  ],
+  "rejected_attempts": [
+    {
+      "file": {
+        "file": "artifacts/above-water-cliffs-20261128/ContentBuild.log",
+        "sha256": "44be9b6aac3211d43cf7ac86926a75c4c5e79155478a62442e3033f8bac3cd1a"
+      },
+      "reason": "Python CustomInput requires get_editor_property; corrected."
+    },
+    {
+      "file": {
+        "file": "artifacts/above-water-cliffs-20261128/Murg_Study/Runtime.log",
+        "sha256": "d8295e3458e4d1f59915baff37d91a8f40237604e6fb65e7f281c0dacd44e9cf"
+      },
+      "reason": "Saved source material lacked PatchNoise; runtime shader fallback rejected. Corrected to existing Noise function."
+    }
+  ],
+  "preserved_materials": {
+    "count": 43,
+    "manifest": {
+      "file": "artifacts/above-water-cliffs-20261128/OriginalMaterials.json",
+      "sha256": "7160f319d72251cd48746469d0f8c0c67edb3cacad63b94978c92a775ea37d0f"
+    },
+    "all_hashes_match": true
+  },
+  "preserved_r3": {
+    "identity": {
+      "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+      "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+    },
+    "runtime_files": 53,
+    "all_hashes_match": true
+  },
+  "observations": [
+    "Murg noon and evening matched editor pairs show spatial stone structure and weaker bright vertical streaks.",
+    "Weesen exposes coarse terrain facets and hard material transitions; Mols retains vertically stretched green areas.",
+    "Dark water in the first 3-second study image does not persist in 12-second noon/evening study comparisons. Timing/startup contribution supported, exact renderer cause not isolated.",
+    "No claim of target realism, whole-lake visual acceptance, or release integration.",
+    "Weesen/Mols comparison uses earlier package context, not a new matched editor control pair."
+  ],
+  "next_required": [
+    "Refine geographic rock/vegetation selection and transition before normal integration.",
+    "Inspect terrain shape contribution; material alone cannot add missing geometry.",
+    "Moving-view image review and eventual package validation remain required."
+  ],
+  "benchmarks": [
+    {
+      "variant": "control",
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104303-511/Capture.csv",
+          "sha256": "c02aaca892f5491d3d4607df3c52ff38fba509f66bba4d6fb0201b43ca5016e9"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104303-511/Summary.json",
+          "sha256": "9844f77e1fabeff5edbc7bd7f9bcaaba47f5e4e19c4822207229098bf139d8af"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104303-511/Host.json",
+          "sha256": "0d8e68b085798b128648f57a75427d69624562f63868831a07f5ee1e79cc1401"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104303-511/Metadata.json",
+          "sha256": "67a4dfa478783ccf88d3c21e5a948480f6aa40f2210ecf21449dd1eb64ea4e1c"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104303-511/Runtime.log",
+          "sha256": "bb79b646b031e677fb090cebaa236df130d3b0bfd2d37d3af7fe03e0fa6c53c8"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104303-511/Frame.png",
+          "sha256": "4a51d0924db4b42f4caa6c6a7eb185f7a7c4598536b9141fcee42ca2ec814b94"
+        }
+      ],
+      "frame_reviewed": true,
+      "average_fps": 74.4979777942437,
+      "one_percent_low_fps": 53.21939494515091,
+      "frame_ms": {
+        "mean_ms": 13.423183146821843,
+        "p50_ms": 13.2495,
+        "p95_ms": 15.7088,
+        "p99_ms": 16.6313,
+        "max_ms": 62.104
+      },
+      "gpu_ms": {
+        "mean_ms": 12.766728849597134,
+        "p50_ms": 12.5384,
+        "p95_ms": 14.7712,
+        "p99_ms": 15.3186,
+        "max_ms": 17.4038
+      },
+      "frames_over_33_33_ms": 1,
+      "camera_rotation_degrees": {
+        "pitch": -5.000000000000003,
+        "yaw": 80.40673828125,
+        "roll": 0
+      },
+      "blocked_pose_steps": 0
+    },
+    {
+      "variant": "study",
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104506-053/Capture.csv",
+          "sha256": "28484c09a2e7782191d634ba89abd724fff80d34a15eacae3c064a1e4f3cf7e1"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104506-053/Summary.json",
+          "sha256": "34b7c60f2a6bf4c55da33d269e12c50398a288203e65f294b969363713383eb5"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104506-053/Host.json",
+          "sha256": "fd448b0fab88b4ab4cdb304de5cbb2e6d7fa88234fe9d51b9a88883582fccb2f"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104506-053/Metadata.json",
+          "sha256": "b1d517d7a5c3e6ed00d3fc77fe4f1a6660f74a0f7fd0a0803e30ba249a058355"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104506-053/Runtime.log",
+          "sha256": "cd41b2e398c2ea5b305ed13b1e43d7293eddc3c9e3b0458fadc74c32afb24093"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-104506-053/Frame.png",
+          "sha256": "1abd846c383a8d131bf2c61e57b7e53e04b82a12baf0e1138e36e0ba66ae9da0"
+        }
+      ],
+      "frame_reviewed": true,
+      "average_fps": 74.33397558243954,
+      "one_percent_low_fps": 57.46986248483594,
+      "frame_ms": {
+        "mean_ms": 13.452798564378645,
+        "p50_ms": 13.3424,
+        "p95_ms": 15.6739,
+        "p99_ms": 16.4968,
+        "max_ms": 36.0045
+      },
+      "gpu_ms": {
+        "mean_ms": 12.8030844773441,
+        "p50_ms": 12.6006,
+        "p95_ms": 14.7035,
+        "p99_ms": 15.2661,
+        "max_ms": 15.7488
+      },
+      "frames_over_33_33_ms": 1,
+      "camera_rotation_degrees": {
+        "pitch": -5.000000000000002,
+        "yaw": 80.33663940429686,
+        "roll": -3.9908798545555505e-16
+      },
+      "blocked_pose_steps": 0
+    }
+  ],
+  "performance_scope": "One 60-second editor shore orbit per variant after 15s warmup; similar means do not establish zero cost, statistical equivalence, continuous 60FPS, or packaged performance. Endpoint screenshots reviewed, no continuous moving-image review."
+}

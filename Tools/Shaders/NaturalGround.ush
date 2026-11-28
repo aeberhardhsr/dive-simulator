@@ -1,0 +1,59 @@
+// Above-water material treatment. Same shoreline fade and surveyed geometry.
+// Grass remains an authored photo heuristic; woodland retains its mapped mask.
+float groundLand=smoothstep(0,120,P.z);
+float groundNear=(1-smoothstep(6500,26000,distance(P,Camera)))*saturate(DetailStrength);
+float3 groundColor=GroundPhoto;
+float3 groundNormal=n;
+float groundRough=.92,groundAO=1;
+[branch] if(groundLand*groundNear>.0001)
+{
+    float2 groundUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
+    float forest=saturate(Texture2DSample(Woodland,WoodlandSampler,groundUV).r);
+    float green=smoothstep(1.0,1.30,GroundPhoto.g/max(GroundPhoto.r,.008))
+               *smoothstep(1.0,1.48,GroundPhoto.g/max(GroundPhoto.b,.008));
+    // World-space variation softens slope contours without moving the mesh.
+    float broad=bed.Noise(P.xy/1700+float2(P.z/2900,-P.z/3300));
+    float edge=bed.Noise(P.xy/210+float2(P.z/310,-P.z/430));
+    float slope=abs(n.z)+(broad-.5)*.10+(edge-.5)*.055;
+    float cliff=1-smoothstep(.40,.82,slope);
+    float3 fn,gn,rnGround;float2 fa,ga,raGround;
+    float3 foliage=bed.Layer(ForestColor,View.MaterialTextureBilinearWrapedSampler,
+        ForestNormal,View.MaterialTextureBilinearWrapedSampler,ForestARM,View.MaterialTextureBilinearWrapedSampler,
+        P,n,315,.48,fn,fa);
+    float3 grass=bed.Layer(GrassColor,View.MaterialTextureBilinearWrapedSampler,
+        GrassNormal,View.MaterialTextureBilinearWrapedSampler,GrassARM,View.MaterialTextureBilinearWrapedSampler,
+        P,n,251,.42,gn,ga);
+    float3 stone=bed.Layer(RockColor,RockColorSampler,RockNormal,RockNormalSampler,RockARM,RockARMSampler,
+        P,n,240,.58,rnGround,raGround);
+    // Aerial photographs contain baked light and tree shadows. Use a restrained
+    // chromatic hint rather than reproducing their saturation in ground albedo.
+    float3 tint=clamp(GroundPhoto/max(dot(GroundPhoto,float3(.2126,.7152,.0722)),.02),.82,1.18);
+    grass*=float3(.74,1.02,.72)*lerp(float3(1,1,1),tint,.30)*lerp(.86,1.06,broad);
+    foliage*=lerp(.90,1.06,broad);
+    stone*=lerp(.80,1.12,broad);
+    float groundWeight=max(green,forest);
+    float3 natural=lerp(grass,foliage,forest);
+    float3 naturalNormal=normalize(lerp(gn,fn,forest));
+    float2 naturalAR=lerp(ga,fa,forest);
+    // Neutral paths keep their photographed colour/layout, but gain fine
+    // surface relief instead of remaining a smooth magnified photo pixel.
+    float micro=lerp(.84,1.16,saturate(dot(stone,float3(.2126,.7152,.0722))*4));
+    float3 neutral=GroundPhoto*micro;
+    float3 neutralNormal=normalize(lerp(n,rnGround,.22));
+    groundColor=lerp(neutral,natural,groundWeight);
+    groundNormal=normalize(lerp(neutralNormal,naturalNormal,groundWeight));
+    groundRough=lerp(.92,clamp(naturalAR.y,.70,.98),groundWeight);
+    groundAO=lerp(1,naturalAR.x,.25*groundWeight);
+    groundColor=lerp(groundColor,stone,cliff);
+    groundNormal=normalize(lerp(groundNormal,rnGround,cliff));
+    groundRough=lerp(groundRough,clamp(raGround.y,.70,.98),cliff);
+    groundAO=lerp(groundAO,lerp(1,raGround.x,.25),cliff);
+    groundColor=lerp(GroundPhoto,groundColor,groundNear);
+    groundNormal=normalize(lerp(n,groundNormal,groundNear));
+    groundRough=lerp(.92,groundRough,groundNear);
+    groundAO=lerp(1,groundAO,groundNear);
+}
+result=lerp(result,groundColor,groundLand);
+SurfaceNormal=normalize(lerp(SurfaceNormal,groundNormal,groundLand));
+Roughness=lerp(Roughness,groundRough,groundLand);
+Occlusion=lerp(Occlusion,groundAO,groundLand);

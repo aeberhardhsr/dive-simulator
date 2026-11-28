@@ -1,0 +1,507 @@
+{
+  "status": "NUMERICAL_CRITERIA_MET_VISUAL_STREAMING_AND_INTERACTIVE_GATES_OPEN",
+  "package": {
+    "Builds/WindowsUnderwaterFinalCandidateR3/divingsim/Binaries/Win64/divingsim.exe": "53c431588db0243cd5e2420ad8dbd89018352e49879858232a7eb2fed077a35e",
+    "Builds/WindowsUnderwaterFinalCandidateR3/divingsim/Content/Paks/divingsim-Windows.pak": "2704d1220aa8d121643b6fb58e05ce7da4322e11e3c2bf1fd80b5d6b0926efa8",
+    "Builds/WindowsUnderwaterFinalCandidateR3/divingsim/Content/Paks/divingsim-Windows.ucas": "8602df0e1821c2d9c7879add63d03605539b0238cffff729e0f18e365380fda3",
+    "Builds/WindowsUnderwaterFinalCandidateR3/divingsim/Content/Paks/divingsim-Windows.utoc": "841b61303f810070708cafb3a7a9ca81fb503a742c7fbc743fdac93b91fc0f79",
+    "Builds/WindowsUnderwaterFinalCandidateR3/divingsim/Content/Paks/global.ucas": "9c303afe7d40274632dd189664cea812492d52819f8db98a251fc6bf751002d9",
+    "Builds/WindowsUnderwaterFinalCandidateR3/divingsim/Content/Paks/global.utoc": "3c680b0bac6a3bf1df2dc58f33fa75c34a6d8034d9a87797a9096e4b12f37294"
+  },
+  "configuration": "RTX 3090 / Ryzen 9950X3D; 1920x1080; quality 2; scale 100%; production water; 15 s warmup",
+  "passes": [
+    {
+      "pass": "baseline",
+      "source": {
+        "file": "artifacts/underwater-finish-performance-baseline-20261128-044618/Results.json",
+        "sha256": "32b458de65f374059f957548b3164ce6f6de3d76b5184eff098a03cfe48df697"
+      },
+      "routes": [
+        {
+          "route": "weesen-water-underside",
+          "directory": "artifacts/perf-underwater-1080p-q2-20261128-044620-470",
+          "average_fps": 64.38624151300203,
+          "one_percent_low_fps": 54.12328535003402,
+          "frame": {
+            "mean_ms": 15.531268427868428,
+            "p50_ms": 15.2044,
+            "p95_ms": 17.5118,
+            "p99_ms": 18.2071,
+            "max_ms": 19.3912
+          },
+          "game_thread": {
+            "mean_ms": 6.223357316757316,
+            "p50_ms": 6.1659,
+            "p95_ms": 7.0661,
+            "p99_ms": 8.1871,
+            "max_ms": 10.0105
+          },
+          "render_thread": {
+            "mean_ms": 15.525016394716395,
+            "p50_ms": 15.199,
+            "p95_ms": 17.5079,
+            "p99_ms": 18.1842,
+            "max_ms": 19.4065
+          },
+          "rhi_thread": {
+            "mean_ms": 3.7650459725459724,
+            "p50_ms": 3.7349,
+            "p95_ms": 4.4027,
+            "p99_ms": 4.7504,
+            "max_ms": 6.0746
+          },
+          "gpu": {
+            "mean_ms": 14.921765371665371,
+            "p50_ms": 14.5047,
+            "p95_ms": 16.7679,
+            "p99_ms": 17.2081,
+            "max_ms": 18.2527
+          },
+          "frames": 3861,
+          "frames_over_16_67_ms": 855,
+          "frames_over_33_33_ms": 0,
+          "frames_over_100_ms": 0,
+          "terrain_chunks": {
+            "min": 9.0,
+            "max": 9.0,
+            "frames_below_nine": 0
+          },
+          "frames_with_reduced_chunk_count": [],
+          "distance_m": 5.7825,
+          "camera": {
+            "pitch": 35.000000000000014,
+            "yaw": -99.65646362304696,
+            "roll": 0
+          },
+          "eye_world_cm": {
+            "x": 267431.43904603506,
+            "y": 9373.715433268393,
+            "z": -358.0551796750363
+          },
+          "blocked_pose_steps": 43,
+          "depth_m": 3.5755240376957778,
+          "image": {
+            "file": "artifacts/perf-underwater-1080p-q2-20261128-044620-470/Frame.png",
+            "sha256": "14e7f2722ba588e51989fc4a0070bc80f2efac1856184781b1454f7c79aed30e"
+          },
+          "numerical_status": "NUMERICAL_PASS"
+        },
+        {
+          "route": "walenstadt-bed",
+          "directory": "artifacts/perf-underwater-1080p-q2-20261128-044752-533",
+          "average_fps": 71.72235423876872,
+          "one_percent_low_fps": 53.70554858875245,
+          "frame": {
+            "mean_ms": 13.942654429202511,
+            "p50_ms": 13.9459,
+            "p95_ms": 15.482,
+            "p99_ms": 16.141,
+            "max_ms": 38.1777
+          },
+          "game_thread": {
+            "mean_ms": 9.268943594512905,
+            "p50_ms": 8.5072,
+            "p95_ms": 12.2936,
+            "p99_ms": 13.9572,
+            "max_ms": 37.7925
+          },
+          "render_thread": {
+            "mean_ms": 13.883504836084631,
+            "p50_ms": 13.9302,
+            "p95_ms": 15.4334,
+            "p99_ms": 15.9903,
+            "max_ms": 17.7329
+          },
+          "rhi_thread": {
+            "mean_ms": 3.6773554057196,
+            "p50_ms": 3.6292,
+            "p95_ms": 4.3252,
+            "p99_ms": 4.8083,
+            "max_ms": 7.873
+          },
+          "gpu": {
+            "mean_ms": 13.308922831899558,
+            "p50_ms": 13.342,
+            "p95_ms": 14.6871,
+            "p99_ms": 15.1331,
+            "max_ms": 15.882
+          },
+          "frames": 4301,
+          "frames_over_16_67_ms": 22,
+          "frames_over_33_33_ms": 1,
+          "frames_over_100_ms": 0,
+          "terrain_chunks": {
+            "min": 9.0,
+            "max": 9.0,
+            "frames_below_nine": 0
+          },
+          "frames_with_reduced_chunk_count": [],
+          "distance_m": 4.7334000000000005,
+          "camera": {
+            "pitch": -12.000000000000002,
+            "yaw": -154.28109741210938,
+            "roll": 0
+          },
+          "eye_world_cm": {
+            "x": 161594.46282438468,
+            "y": 1511501.1888831065,
+            "z": -506.4525405267337
+          },
+          "blocked_pose_steps": 1384,
+          "depth_m": 5.063710289271776,
+          "image": {
+            "file": "artifacts/perf-underwater-1080p-q2-20261128-044752-533/Frame.png",
+            "sha256": "da7ce239b560e0fddd65ae7860e00d4bc3d55e1c16e8e307fc61bd5a28046748"
+          },
+          "numerical_status": "NUMERICAL_PASS"
+        },
+        {
+          "route": "murg-streaming",
+          "directory": "artifacts/perf-stream-1080p-q2-20261128-044923-711",
+          "average_fps": 94.73699262591656,
+          "one_percent_low_fps": 71.59383783512888,
+          "frame": {
+            "mean_ms": 10.555538784608165,
+            "p50_ms": 10.5234,
+            "p95_ms": 11.3185,
+            "p99_ms": 11.8527,
+            "max_ms": 26.3042
+          },
+          "game_thread": {
+            "mean_ms": 5.745534584702018,
+            "p50_ms": 5.7504,
+            "p95_ms": 6.7507,
+            "p99_ms": 7.9786,
+            "max_ms": 26.3164
+          },
+          "render_thread": {
+            "mean_ms": 10.516860839981229,
+            "p50_ms": 10.5135,
+            "p95_ms": 11.295,
+            "p99_ms": 11.7603,
+            "max_ms": 14.181
+          },
+          "rhi_thread": {
+            "mean_ms": 3.430429188174566,
+            "p50_ms": 3.3686,
+            "p95_ms": 4.1157,
+            "p99_ms": 4.5392,
+            "max_ms": 10.4082
+          },
+          "gpu": {
+            "mean_ms": 9.947134971844205,
+            "p50_ms": 9.9284,
+            "p95_ms": 10.5414,
+            "p99_ms": 10.8024,
+            "max_ms": 11.5333
+          },
+          "frames": 8524,
+          "frames_over_16_67_ms": 13,
+          "frames_over_33_33_ms": 0,
+          "frames_over_100_ms": 0,
+          "terrain_chunks": {
+            "min": 7.0,
+            "max": 9.0,
+            "frames_below_nine": 4
+          },
+          "frames_with_reduced_chunk_count": [
+            {
+              "frame": 1655,
+              "chunks": 7.0,
+              "frame_ms": 20.1317
+            },
+            {
+              "frame": 1656,
+              "chunks": 8.0,
+              "frame_ms": 23.9805
+            },
+            {
+              "frame": 5770,
+              "chunks": 7.0,
+              "frame_ms": 22.7006
+            },
+            {
+              "frame": 5771,
+              "chunks": 8.0,
+              "frame_ms": 21.0718
+            }
+          ],
+          "distance_m": 144.8648,
+          "camera": {
+            "pitch": -7.999999999999997,
+            "yaw": 19.974254608154293,
+            "roll": 4.0147647665562874e-16
+          },
+          "eye_world_cm": {
+            "x": 100251.27458253277,
+            "y": 895438.243535903,
+            "z": -2464.1807349462133
+          },
+          "blocked_pose_steps": 0,
+          "depth_m": 24.641802994537066,
+          "image": {
+            "file": "artifacts/perf-stream-1080p-q2-20261128-044923-711/Frame.png",
+            "sha256": "31c3695940f4b69009c9ade26c90bb834380bf5d9028d679eb446c2c267f9cca"
+          },
+          "numerical_status": "NUMERICAL_PASS"
+        }
+      ]
+    },
+    {
+      "pass": "confirmation",
+      "source": {
+        "file": "artifacts/underwater-finish-performance-confirmation-20261128-045227/Results.json",
+        "sha256": "d06bd83135164cd4c81e0d6b9eee7363a1e2ba95d4185e0fc586db0284dbe6c9"
+      },
+      "routes": [
+        {
+          "route": "weesen-water-underside",
+          "directory": "artifacts/perf-underwater-1080p-q2-20261128-045229-305",
+          "average_fps": 65.24709813072516,
+          "one_percent_low_fps": 55.65697493209849,
+          "frame": {
+            "mean_ms": 15.32635210835676,
+            "p50_ms": 15.118,
+            "p95_ms": 17.1567,
+            "p99_ms": 17.7033,
+            "max_ms": 18.59
+          },
+          "game_thread": {
+            "mean_ms": 6.26884324048045,
+            "p50_ms": 6.2341,
+            "p95_ms": 6.9247,
+            "p99_ms": 8.0459,
+            "max_ms": 12.7091
+          },
+          "render_thread": {
+            "mean_ms": 15.320046664962945,
+            "p50_ms": 15.1164,
+            "p95_ms": 17.1425,
+            "p99_ms": 17.7095,
+            "max_ms": 18.5936
+          },
+          "rhi_thread": {
+            "mean_ms": 3.694711040122668,
+            "p50_ms": 3.6644,
+            "p95_ms": 4.2348,
+            "p99_ms": 4.6037,
+            "max_ms": 7.8509
+          },
+          "gpu": {
+            "mean_ms": 14.720088959877332,
+            "p50_ms": 14.4453,
+            "p95_ms": 16.4138,
+            "p99_ms": 16.8365,
+            "max_ms": 17.3299
+          },
+          "frames": 3913,
+          "frames_over_16_67_ms": 533,
+          "frames_over_33_33_ms": 0,
+          "frames_over_100_ms": 0,
+          "terrain_chunks": {
+            "min": 9.0,
+            "max": 9.0,
+            "frames_below_nine": 0
+          },
+          "frames_with_reduced_chunk_count": [],
+          "distance_m": 5.7799,
+          "camera": {
+            "pitch": 35.00000000000002,
+            "yaw": -99.53961181640629,
+            "roll": 3.882740333296949e-15
+          },
+          "eye_world_cm": {
+            "x": 267431.6005536409,
+            "y": 9373.550208391469,
+            "z": -358.14863679042645
+          },
+          "blocked_pose_steps": 43,
+          "depth_m": 3.5762331647342465,
+          "image": {
+            "file": "artifacts/perf-underwater-1080p-q2-20261128-045229-305/Frame.png",
+            "sha256": "31c236df898e8e75496bdc588e7057c095051de4aaad0df74e4121a9e782d430"
+          },
+          "numerical_status": "NUMERICAL_PASS"
+        },
+        {
+          "route": "walenstadt-bed",
+          "directory": "artifacts/perf-underwater-1080p-q2-20261128-045359-862",
+          "average_fps": 73.95821127545805,
+          "one_percent_low_fps": 49.824948348136886,
+          "frame": {
+            "mean_ms": 13.521149075327019,
+            "p50_ms": 13.4851,
+            "p95_ms": 15.2104,
+            "p99_ms": 16.5067,
+            "max_ms": 31.8914
+          },
+          "game_thread": {
+            "mean_ms": 8.65233953540821,
+            "p50_ms": 8.3754,
+            "p95_ms": 10.4608,
+            "p99_ms": 14.8043,
+            "max_ms": 31.3545
+          },
+          "render_thread": {
+            "mean_ms": 13.384477424447452,
+            "p50_ms": 13.4544,
+            "p95_ms": 15.1262,
+            "p99_ms": 15.5686,
+            "max_ms": 16.6114
+          },
+          "rhi_thread": {
+            "mean_ms": 3.593188565629229,
+            "p50_ms": 3.558,
+            "p95_ms": 4.1574,
+            "p99_ms": 4.5396,
+            "max_ms": 6.538
+          },
+          "gpu": {
+            "mean_ms": 12.833613915200722,
+            "p50_ms": 12.8198,
+            "p95_ms": 14.3032,
+            "p99_ms": 14.6824,
+            "max_ms": 15.4922
+          },
+          "frames": 4434,
+          "frames_over_16_67_ms": 43,
+          "frames_over_33_33_ms": 0,
+          "frames_over_100_ms": 0,
+          "terrain_chunks": {
+            "min": 9.0,
+            "max": 9.0,
+            "frames_below_nine": 0
+          },
+          "frames_with_reduced_chunk_count": [],
+          "distance_m": 4.855599999999999,
+          "camera": {
+            "pitch": -11.999999999999995,
+            "yaw": 51.425338745117195,
+            "roll": 0
+          },
+          "eye_world_cm": {
+            "x": 161596.45560327376,
+            "y": 1511496.8982047597,
+            "z": -550.8700190159454
+          },
+          "blocked_pose_steps": 1582,
+          "depth_m": 5.5083694016657985,
+          "image": {
+            "file": "artifacts/perf-underwater-1080p-q2-20261128-045359-862/Frame.png",
+            "sha256": "f608453153acc3cf8258f414f20a3a5331c04e678531a7339fb568f10ada7ca7"
+          },
+          "numerical_status": "NUMERICAL_PASS"
+        },
+        {
+          "route": "murg-streaming",
+          "directory": "artifacts/perf-stream-1080p-q2-20261128-045531-169",
+          "average_fps": 94.91847820201149,
+          "one_percent_low_fps": 70.67230730291466,
+          "frame": {
+            "mean_ms": 10.535356433672872,
+            "p50_ms": 10.4933,
+            "p95_ms": 11.3046,
+            "p99_ms": 11.8945,
+            "max_ms": 27.6452
+          },
+          "game_thread": {
+            "mean_ms": 5.89085865823674,
+            "p50_ms": 5.8826,
+            "p95_ms": 6.906,
+            "p99_ms": 8.0779,
+            "max_ms": 27.6434
+          },
+          "render_thread": {
+            "mean_ms": 10.495797236857511,
+            "p50_ms": 10.4849,
+            "p95_ms": 11.2769,
+            "p99_ms": 11.7603,
+            "max_ms": 13.7627
+          },
+          "rhi_thread": {
+            "mean_ms": 3.5063524879990635,
+            "p50_ms": 3.4366,
+            "p95_ms": 4.24,
+            "p99_ms": 4.6852,
+            "max_ms": 8.2429
+          },
+          "gpu": {
+            "mean_ms": 9.926870471841704,
+            "p50_ms": 9.9049,
+            "p95_ms": 10.5346,
+            "p99_ms": 10.8328,
+            "max_ms": 11.5297
+          },
+          "frames": 8541,
+          "frames_over_16_67_ms": 14,
+          "frames_over_33_33_ms": 0,
+          "frames_over_100_ms": 0,
+          "terrain_chunks": {
+            "min": 7.0,
+            "max": 9.0,
+            "frames_below_nine": 4
+          },
+          "frames_with_reduced_chunk_count": [
+            {
+              "frame": 1656,
+              "chunks": 7.0,
+              "frame_ms": 20.9982
+            },
+            {
+              "frame": 1657,
+              "chunks": 8.0,
+              "frame_ms": 24.068
+            },
+            {
+              "frame": 5786,
+              "chunks": 7.0,
+              "frame_ms": 26.1908
+            },
+            {
+              "frame": 5787,
+              "chunks": 8.0,
+              "frame_ms": 20.9104
+            }
+          ],
+          "distance_m": 144.8332,
+          "camera": {
+            "pitch": -7.999999999999997,
+            "yaw": 19.974254608154293,
+            "roll": 4.0147647665562874e-16
+          },
+          "eye_world_cm": {
+            "x": 100233.60815880384,
+            "y": 895430.8625973762,
+            "z": -2461.721406370316
+          },
+          "blocked_pose_steps": 0,
+          "depth_m": 24.617208108584084,
+          "image": {
+            "file": "artifacts/perf-stream-1080p-q2-20261128-045531-169/Frame.png",
+            "sha256": "826a89f69157ec923eac9219c87e532198f1567a75722ce82e302f9f1792f6cf"
+          },
+          "numerical_status": "NUMERICAL_PASS"
+        }
+      ]
+    }
+  ],
+  "visual_review": {
+    "baseline_images_reviewed": 3,
+    "confirmation_images_reviewed": 3,
+    "weesen": "Water underside visible, including reflected landscape and buoy.",
+    "walenstadt": "Baseline: bed, rocks and vegetation visible. Confirmation: close rock/bed view; physical collision blocks turning (1582 rejected pose steps), so the final heading is 51 degrees rather than baseline 206 degrees. Same requested controls and quality, not an identical camera trace or a before/after speed comparison.",
+    "murg": "Both final frames are mainly open water at 24.6 m depth. They cannot demonstrate visible terrain continuity during cell transitions.",
+    "streaming_limit": "A positive terrain-chunk count does not prove absence of visible holes. Brief counts below nine are reported, not hidden or automatically classified as a graphics defect.",
+    "streaming_source_review": "DiveWorld.cpp StreamTerrain retires obsolete cells, then builds one missing 64 m cell per tick. This explains transient reduced counts; code inspection is not a visual continuity test."
+  },
+  "remaining": [
+    "Targeted visible terrain continuity during cell transitions, bound to this package.",
+    "Unverified full route sequence portions, especially Mols; user reports Murg/Weesen tested without flashes or control problems.",
+    "Two-hour R3 soak completed with 55.76 FPS on its distinct route. Positive private-memory trend and background transition remain open; short-route numerical passes are not a full-scene performance guarantee."
+  ],
+  "scope": "No rendering or quality changes between baseline and confirmation. No before/after speed-up claim. No global 60 FPS guarantee. Round 4 is not accepted by this report.",
+  "soak_review": {
+    "file": "Documentation/UNDERWATER_FINISH_SOAK_R3.json",
+    "sha256": "ac47ce20c086950a1293b350440cc8928e701704ed63e88d9c00311bb1b2da63"
+  }
+}

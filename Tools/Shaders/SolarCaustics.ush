@@ -1,0 +1,68 @@
+// Single ray-bundle approximation. Shadowing still comes from the sun light.
+// Limited to an attenuating light function: no extra emissive energy.
+// WATER_OPTICS_INCLUDE
+DiveWaterOptics optical;
+// UE's directional volumetric light function is a 2D projection, not a
+// per-froxel material evaluation. Use a representative submerged depth slice
+// instead of evaluating the water function at that arbitrary shadow plane.
+// The native volume still supplies light-specific scattering and shadows.
+// This does not model 3D caustic convergence or the refracted beam direction.
+if(SunRay.z>=0) return 1;
+int samples=1;
+#if defined(LIGHT_TYPE) && LIGHT_TYPE == 3
+if(VolumeWaterWeight>0) samples=2;
+#endif
+float values[2]={1,1};
+[loop] for(int sampleIndex=0;sampleIndex<samples;++sampleIndex)
+{
+float3 p=P*.01;
+if(sampleIndex==1)
+{
+    float3 volumeIncident=normalize(SunRay.xyz);
+    p-=volumeIncident*((p.z+VolumeDepth)/min(-.1,volumeIncident.z));
+}
+float2 dx=ddx(p.xy),dy=ddy(p.xy);
+float4 waves[4]={Wave0,Wave1,Wave2,Wave3};
+float h;float2 slope;float3 curve;
+optical.Surface(p.xy,Clock,waves,WavePhase,WindStrength,dx,dy,h,slope,curve);
+float wet=smoothstep(0,.15,h-p.z);
+if(wet<=0) continue;
+float3 incident=normalize(SunRay.xyz);
+float3 ray=optical.Refract(incident,float2(0,0));
+float2 uv=p.xy-ray.xy*((p.z-h)/min(-.1,ray.z));
+// Two bounded fixed-point refinements locate the approximate surface footprint.
+[unroll] for(int k=0;k<2;++k)
+{
+    optical.Surface(uv,Clock,waves,WavePhase,WindStrength,dx,dy,h,slope,curve);
+    ray=optical.Refract(incident,slope);
+    uv=p.xy-ray.xy*((p.z-h)/min(-.1,ray.z));
+}
+optical.Surface(uv,Clock,waves,WavePhase,WindStrength,dx,dy,h,slope,curve);
+float3 normal=normalize(float3(-slope,1));
+float cosine=-dot(incident,normal),eta=1./1.333;
+float root=sqrt(max(.001,1-eta*eta*(1-cosine*cosine)));
+float a=eta*cosine-root;
+ray=eta*incident+a*normal;
+float path=max(0,(p.z-h)/min(-.1,ray.z));
+float normalLength=sqrt(1+dot(slope,slope));
+float3 nx=float3(-curve.x,-curve.y,0),ny=float3(-curve.y,-curve.z,0);
+nx=(nx-normal*dot(normal,nx))/normalLength;
+ny=(ny-normal*dot(normal,ny))/normalLength;
+float3 rx=a*nx+(eta-eta*eta*cosine/root)*(-dot(incident,nx))*normal;
+float3 ry=a*ny+(eta-eta*eta*cosine/root)*(-dot(incident,ny))*normal;
+float2 jx=float2(1,0)+rx.xy*path+ray.xy*((-slope.x-path*rx.z)/min(-.1,ray.z));
+float2 jy=float2(0,1)+ry.xy*path+ray.xy*((-slope.y-path*ry.z)/min(-.1,ray.z));
+float determinant=jx.x*jy.y-jx.y*jy.x;
+// Finite focus cap and depth blur prevent singular spikes and distant shimmer.
+float gain=clamp(1/max(.25,abs(determinant)),.25,4);
+// Scattering also destroys the directional coherence needed to form a focus.
+// Authored visibility-linked loss, separate from mean beam attenuation below.
+float contrast=CausticStrength*exp(-path*(1./18+Extinction))*smoothstep(0,.35,path);
+gain=lerp(1,gain,contrast);
+float transmission=exp(-Extinction*path);
+float fresnel=.02+.98*pow(1-saturate(cosine),5);
+values[sampleIndex]=lerp(1,saturate((1-fresnel)*transmission*gain),wet);
+}
+// Preserve the original projection exactly when the experimental mode is off;
+// fade from that result, not from white, while crossing the surface.
+return samples==2?lerp(values[0],values[1],saturate(VolumeWaterWeight)):values[0];

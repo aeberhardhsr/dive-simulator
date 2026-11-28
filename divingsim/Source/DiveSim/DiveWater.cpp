@@ -1,0 +1,226 @@
+#include "DiveWorld.h"
+#include "DivePawn.h"
+#include "ProceduralMeshComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/InstancedStaticMeshComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/ExponentialHeightFog.h"
+#include "Components/ExponentialHeightFogComponent.h"
+
+void ADiveWorld::CreateWater()
+{
+    constexpr int N=257;
+    TArray<FVector> vertices,normals;
+    TArray<int32> indices,boundary;
+    TArray<FVector2D> uv;
+    TArray<FLinearColor> colors;
+    TArray<FProcMeshTangent> tangents;
+    auto vertex=[&](double x,double y)
+    {
+        const int index=vertices.Add(FVector(x,y,0)); normals.Add(FVector::UpVector);
+        uv.Add(FVector2D(x/100,y/100)); colors.Add(FLinearColor::White);
+        tangents.Add(FProcMeshTangent(1,0,0)); return index;
+    };
+    // Half-metre geometry around the viewer; the outer rings carry flat water.
+    for(int y=0;y<N;++y) for(int x=0;x<N;++x) vertex((x-128)*50.,(y-128)*50.);
+    for(int y=0;y<N-1;++y) for(int x=0;x<N-1;++x)
+    { const int a=y*N+x; indices.Append({a,a+N,a+1,a+1,a+N,a+N+1}); }
+    for(int i=0;i<N-1;++i) boundary.Add(i);
+    for(int i=0;i<N-1;++i) boundary.Add(i*N+N-1);
+    for(int i=N-1;i>0;--i) boundary.Add((N-1)*N+i);
+    for(int i=N-1;i>0;--i) boundary.Add(i*N);
+    for(double radius=12800;radius<=1638400;radius*=2)
+    {
+        TArray<int32> outer;
+        for(const int index:boundary)
+        { const FVector p=vertices[index]; const double s=radius/FMath::Max(FMath::Abs(p.X),FMath::Abs(p.Y)); outer.Add(vertex(p.X*s,p.Y*s)); }
+        for(int i=0;i<boundary.Num();++i)
+        { const int j=(i+1)%boundary.Num(); indices.Append({boundary[i],boundary[j],outer[i],boundary[j],outer[j],outer[i]}); }
+        boundary=MoveTemp(outer);
+    }
+    Water->CreateMeshSection_LinearColor(0,vertices,indices,normals,uv,colors,tangents,false);
+    // CPU vertices are flat; include the full supported shader displacement.
+    const double displacement=Dive::WaterSurface::MaximumDisplacement*100+20;
+    Water->GetProcMeshSection(0)->SectionLocalBox=Water->GetProcMeshSection(0)->SectionLocalBox.ExpandBy(FVector(0,0,displacement));
+    const FProcMeshSection expanded=*Water->GetProcMeshSection(0);
+    Water->SetProcMeshSection(0,expanded);
+    if(bWaterInterface)
+    {
+        TArray<int32> underside=indices;
+        for(int32 i=0;i<underside.Num();i+=3) Swap(underside[i+1],underside[i+2]);
+        for(auto& normal:normals) normal=-normal;
+        Water->CreateMeshSection_LinearColor(1,vertices,underside,normals,uv,colors,tangents,false);
+        Water->GetProcMeshSection(1)->SectionLocalBox=expanded.SectionLocalBox;
+        const FProcMeshSection underExpanded=*Water->GetProcMeshSection(1);
+        Water->SetProcMeshSection(1,underExpanded);
+    }
+    UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_MESH vertices=%d triangles=%d"),vertices.Num(),indices.Num()/3);
+}
+
+double ADiveWorld::SurfaceZ(double X,double Y,double Seconds) const
+{
+    if(Seconds<0) Seconds=Diver?Diver->Simulation.Data.ElapsedSeconds:0;
+    const FVector player=Diver?Diver->GetActorLocation():PopulationOrigin;
+    const double d=FVector2D(X-player.X,Y-player.Y).Size()/100;
+    const double f=FMath::Clamp((d-32)/16,0.,1.);
+    return Waves.Sample(X/100,Y/100,Seconds).Height*100*(1-f*f*(3-2*f));
+}
+
+double ADiveWorld::PressureDepth(const FVector& Position,double Seconds) const
+{
+    // Pressure uses the physical wave field, without the distant rendering fade.
+    return Waves.PressureDepth(Position.X/100,Position.Y/100,Position.Z/100,Seconds);
+}
+
+FVector ADiveWorld::WaveVelocity(const FVector& Position,double Seconds) const
+{
+    const auto v=Waves.Velocity(Position.X/100,Position.Y/100,Position.Z/100,Seconds);
+    return FVector(v.X,v.Y,v.Z);
+}
+
+void ADiveWorld::UpdateWater(const FVector& Player)
+{
+    const double t=Diver?Diver->Simulation.Data.ElapsedSeconds:0;
+    Water->SetWorldLocation(FVector(FMath::GridSnap(Player.X,3200.),FMath::GridSnap(Player.Y,3200.),0));
+    for(auto* material:{WaterMaterial.Get(),WaterUnderMaterial.Get()}) if(material)
+    {
+        material->SetScalarParameterValue(TEXT("WaveTime"),t);
+        material->SetVectorParameterValue(TEXT("Viewer"),FLinearColor(Player.X/100,Player.Y/100,0,0));
+    }
+    for(int i=0;i<Buoys.Num();++i)
+    {
+        const FVector p=Buoys[i]->GetComponentLocation();
+        const double z=SurfaceZ(p.X,p.Y,t);
+        const FVector normal(-(SurfaceZ(p.X+10,p.Y,t)-SurfaceZ(p.X-10,p.Y,t))/20,
+            -(SurfaceZ(p.X,p.Y+10,t)-SurfaceZ(p.X,p.Y-10,t))/20,1);
+        Buoys[i]->SetWorldLocation(FVector(p.X,p.Y,z+15));
+        Buoys[i]->SetWorldRotation(FQuat::FindBetweenNormals(FVector::UpVector,normal.GetSafeNormal()));
+        const double bottom=GroundZ(p.X,p.Y);
+        BuoyLines[i]->SetWorldLocation(FVector(p.X,p.Y,(bottom+z)*.5));
+        BuoyLines[i]->SetWorldScale3D(FVector(.025,.025,(z-bottom)/100));
+    }
+    Rain->ClearInstances();
+    const FVector eye=Diver?Diver->GetPawnViewLocation():Player;
+    const auto scenario=Dive::WeatherScenario::At(WeatherSettings.Weather);
+    if(scenario.RainDrops>0&&eye.Z>SurfaceZ(eye.X,eye.Y)-150)
+    {
+        const double direction=FMath::DegreesToRadians(WeatherSettings.WindDirectionDegrees);
+        const FVector velocity(WeatherSettings.WindMetresPerSecond*50*FMath::Cos(direction),
+            WeatherSettings.WindMetresPerSecond*50*FMath::Sin(direction),-900);
+        const FQuat rotation=FQuat::FindBetweenNormals(FVector::UpVector,velocity.GetSafeNormal());
+        for(int i=0;i<scenario.RainDrops;++i)
+        {
+            const FVector p(eye.X+FMath::Fmod(i*137.51+t*velocity.X+1.e8,1200.)-600,
+                eye.Y+FMath::Fmod(i*273.17+t*velocity.Y+1.e8,1200.)-600,
+                eye.Z+FMath::Fmod(i*91.37+t*velocity.Z+1.e8,1200.)-200);
+            if(p.Z>SurfaceZ(p.X,p.Y,t)+10) Rain->AddInstance(FTransform(rotation,p,FVector(.003,.003,.16)));
+        }
+    }
+}
+
+bool ADiveWorld::ValidateWater(FString& Error) const
+{
+    if(!ValidateCaustics(Error)) return false;
+    if(Buoys.Num()!=Terrain.Entries.Num()||BuoyLines.Num()!=Buoys.Num())
+    { Error=TEXT("Entry buoy/rope count differs from dive entries");return false; }
+    for(int i=0;i<Buoys.Num();++i)
+    {
+        const FVector marker=Buoys[i]->GetComponentLocation(),rope=BuoyLines[i]->GetComponentLocation();
+        float bed=0;
+        if(FVector::Dist2D(marker,Terrain.Entries[i].Position)<150||
+            FVector::Dist2D(marker,rope)>.01||!Terrain.Sample(marker.X,marker.Y,bed)||bed>=-100)
+        { Error=TEXT("Entry marker obstructs the spawn or has no submerged anchor");return false; }
+    }
+    const auto* fog=Fog.Get();
+    const float water=static_cast<float>(OpticalMedium.Water);
+    const float fogWater=bBoundedWater?0:water;
+    const auto albedo=FMath::Lerp(FLinearColor::White,FLinearColor(FColor(75,135,110)),fogWater).ToFColorSRGB();
+    if(!fog||FMath::Abs(fog->FogDensity-(bBoundedWater?Dive::WeatherScenario::At(WeatherSettings.Weather).AirFog:OpticalMedium.Density))>1.e-6||
+        FMath::Abs(fog->VolumetricFogExtinctionScale-(!bBoundedWater&&NativeWaterScattering()?FMath::Lerp(1.f,1.45f/(.35f*14.f*.05f),water):1.f))>1.e-5||
+        FMath::Abs(fog->FogHeightFalloff-(bBoundedWater?.2f:OpticalMedium.HeightFalloff))>1.e-6||
+        !fog->FogInscatteringLuminance.Equals(bBoundedWater?FLinearColor::Black:FLinearColor(280,1150,950)*(fogWater*WaterAmbient*FogScatteringGain),.001f)||
+        !fog->SkyAtmosphereAmbientContributionColorScale.Equals(FLinearColor(1-fogWater,1-fogWater,1-fogWater),1.e-5f)||
+        fog->VolumetricFogAlbedo!=albedo)
+    { Error=TEXT("Air/water fog parameters do not match camera medium"); return false; }
+    if(bBoundedWater)
+    {
+        if(!WaterVolume||!WaterVolumeMaterial||WaterVolume->GetMaterial(0)!=WaterVolumeMaterial||
+            !WaterVolume->IsRegistered()||WaterVolume->GetCollisionEnabled()!=ECollisionEnabled::NoCollision||
+            FMath::Abs(WaterVolumeMaterial->K2_GetScalarParameterValue(TEXT("VisibilityMetres"))-VisibleDistance)>1.e-5||
+            FMath::Abs(WaterVolumeMaterial->K2_GetScalarParameterValue(TEXT("DensityGain"))-WaterVolumeGain)>1.e-5||
+            FMath::Abs(WaterVolumeMaterial->K2_GetScalarParameterValue(TEXT("WaveTime"))-WaterMaterial->K2_GetScalarParameterValue(TEXT("WaveTime")))>1.e-5)
+        {Error=TEXT("Bounded water volume is missing or has stale visibility");return false;}
+        for(const FName name:{FName(TEXT("Viewer")),FName(TEXT("Wave0")),FName(TEXT("Wave1")),FName(TEXT("Wave2")),FName(TEXT("Wave3")),FName(TEXT("WavePhase"))})
+            if(!WaterVolumeMaterial->K2_GetVectorParameterValue(name).Equals(WaterMaterial->K2_GetVectorParameterValue(name),1.e-5f))
+            {Error=TEXT("Water volume surface does not follow shared waves");return false;}
+        UE_LOG(LogTemp,Display,TEXT("DIVE_BOUNDED_WATER_PASS native=%d air_density=%.6f visibility=%.3f gain=%.3f"),
+            NativeWaterScattering()?1:0,fog->FogDensity,VisibleDistance,WaterVolumeGain);
+    }
+    const auto* section=Water?Water->GetProcMeshSection(0):nullptr;
+    if(!section||section->ProcVertexBuffer.Num()<66000||!WaterMaterial||!CloudMaterial||!Rain->GetMaterial(0))
+    { Error=TEXT("Missing water geometry or environment materials"); return false; }
+    if(bWaterInterface)
+    {
+        const auto* under=Water->GetProcMeshSection(1);
+        if(!under||!WaterUnderMaterial||Water->GetMaterial(1)!=WaterUnderMaterial||Water->bVisibleInRayTracing||
+            WaterMaterial->IsTwoSided()||WaterUnderMaterial->IsTwoSided()||
+            WaterUnderMaterial->GetBlendMode()!=BLEND_Translucent||
+            under->ProcVertexBuffer.Num()!=section->ProcVertexBuffer.Num()||
+            under->ProcIndexBuffer.Num()!=section->ProcIndexBuffer.Num())
+        {Error=TEXT("Water interface layers or material modes are invalid");return false;}
+        for(int32 i=0;i<under->ProcVertexBuffer.Num();++i)
+            if(!under->ProcVertexBuffer[i].Position.Equals(section->ProcVertexBuffer[i].Position)||
+                !under->ProcVertexBuffer[i].Normal.Equals(-section->ProcVertexBuffer[i].Normal))
+            {Error=TEXT("Water interface geometry is not coincident with opposite normals");return false;}
+        for(int32 i=0;i<under->ProcIndexBuffer.Num();i+=3)
+            if(under->ProcIndexBuffer[i]!=section->ProcIndexBuffer[i]||
+                under->ProcIndexBuffer[i+1]!=section->ProcIndexBuffer[i+2]||
+                under->ProcIndexBuffer[i+2]!=section->ProcIndexBuffer[i+1])
+            {Error=TEXT("Water underside triangle winding is not reversed");return false;}
+        for(const FName name:{FName(TEXT("WaveTime")),FName(TEXT("WindStrength"))})
+            if(FMath::Abs(WaterMaterial->K2_GetScalarParameterValue(name)-WaterUnderMaterial->K2_GetScalarParameterValue(name))>1.e-5)
+            {Error=TEXT("Water interface clocks or wind differ");return false;}
+        for(const FName name:{FName(TEXT("Viewer")),FName(TEXT("Wave0")),FName(TEXT("Wave1")),FName(TEXT("Wave2")),FName(TEXT("Wave3")),FName(TEXT("WavePhase"))})
+            if(!WaterMaterial->K2_GetVectorParameterValue(name).Equals(WaterUnderMaterial->K2_GetVectorParameterValue(name),1.e-5f))
+            {Error=TEXT("Water interface wave parameters differ");return false;}
+        UE_LOG(LogTemp,Display,TEXT("DIVE_WATER_INTERFACE_PASS layers=2 vertices=%d triangles=%d shared_waves=1 ray_surface=0"),
+            under->ProcVertexBuffer.Num(),under->ProcIndexBuffer.Num()/3);
+    }
+    if(Diver&&Diver->bDiveActive)
+    {
+        const auto& config=Diver->Simulation.Settings;
+        if(FMath::Abs(VisibleDistance-config.VisibilityMetres)>1.e-5||FMath::Abs(Flow-config.CurrentMetresPerSecond)>1.e-6||
+            FMath::Abs(WaterMaterial->K2_GetScalarParameterValue(TEXT("OpticalScale"))-14/config.VisibilityMetres*(1-water))>1.e-5)
+        { Error=TEXT("Resolved dive visibility/current disagree with world and water material");return false; }
+    }
+    const double displacement=Waves.AmplitudeBound()*100+1;
+    if(section->SectionLocalBox.Min.Z>-displacement||section->SectionLocalBox.Max.Z<displacement)
+    { Error=TEXT("Wave displacement outside culling bounds"); return false; }
+    const auto scenario=Dive::WeatherScenario::At(WeatherSettings.Weather);
+    if(FMath::Abs(CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalCoverage"))-scenario.CloudCoverage)>1.e-5||
+        FMath::Abs(CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalDensity"))-scenario.CloudDensity)>1.e-5||
+        Rain->GetInstanceCount()>scenario.RainDrops)
+    { Error=TEXT("Weather cloud parameters or rain bound mismatch"); return false; }
+    for(int i=0;i<4;++i)
+    {
+        const auto& w=Waves.Waves[i];
+        const FLinearColor value=WaterMaterial->K2_GetVectorParameterValue(FName(*FString::Printf(TEXT("Wave%d"),i)));
+        if(FMath::Abs(value.R-w.Kx)>1.e-5||FMath::Abs(value.G-w.Ky)>1.e-5||FMath::Abs(value.B-w.Omega)>1.e-5||FMath::Abs(value.A-w.Amplitude)>1.e-5)
+        { Error=TEXT("CPU and material wave coefficients differ"); return false; }
+    }
+    return true;
+}
+
+bool ADiveWorld::ValidateStorm(FString& Error) const
+{
+    if(!ValidateWater(Error)) return false;
+    const auto storm=Dive::WeatherScenario::At(3);
+    if(WeatherSettings.Weather!=3||WeatherSettings.WindMetresPerSecond!=storm.Wind||
+        Rain->GetInstanceCount()<100||Waves.AmplitudeBound()<2||!Sun)
+    { Error=TEXT("Storm surface observation lacks preset wind, waves or visible rain"); return false; }
+    UE_LOG(LogTemp,Display,TEXT("DIVE_WEATHER_PASS kind=3 wind=%.1f rain_instances=%d wave_envelope_m=%.3f cloud_coverage=%.2f cloud_density=%.3f sun_lux=%.1f"),
+        WeatherSettings.WindMetresPerSecond,Rain->GetInstanceCount(),Waves.AmplitudeBound(),
+        CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalCoverage")),CloudMaterial->K2_GetScalarParameterValue(TEXT("Cloud_GlobalDensity")),
+        Lighting.SolarSource*Dive::EnvironmentLight::SunLux);
+    return true;
+}

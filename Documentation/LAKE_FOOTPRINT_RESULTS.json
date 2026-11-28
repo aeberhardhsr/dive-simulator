@@ -1,0 +1,68 @@
+{
+  "status": "offline_distance_validation_passed_not_runtime_integrated",
+  "manifest": {
+    "schema": 1,
+    "status": "offline_prototype_not_runtime_integrated",
+    "west": 2725871.0,
+    "north": 1222350.0,
+    "spacing_m": 1.0,
+    "columns": 15586,
+    "rows": 3003,
+    "distance_limit_m": 32.0,
+    "encoding": "IEEE754 float16 little endian",
+    "positive": "water",
+    "negative": "land including islands",
+    "row_order": "north to south",
+    "column_order": "west to east",
+    "sampling": "cell centres; bilinear reference",
+    "horizontal_crs": "EPSG:2056",
+    "attribution": "\u00a9 swisstopo",
+    "licence": "https://www.swisstopo.admin.ch/de/nutzungsbedingungen-kostenlose-geodaten-und-geodienste",
+    "source_sha256": "c47616b4a0f763efaab2f04befa578c8e01fa7a4fe5c85949d70f4c900b450d9",
+    "source_edition": "swissTLM3D 2026-02",
+    "islands": 3,
+    "world_origin_east": 2726000,
+    "world_origin_north": 1219000,
+    "world_origin_manifest_sha256": "537697f0a84cb2117489ab35ace6a9eb6dffd1e929aeacdce7088c792cc2a147",
+    "world_mapping": "Unreal X=north, Y=east; coordinates in centimetres",
+    "file": "walensee-distance.f16",
+    "bytes": 93609516,
+    "sha256": "8dcfa5bc8561669a08819d7b6325623e6218ee616e119368978fdf2a3dc7769d"
+  },
+  "generator_sha256": "9b2b208138e7828047fec0b4fb88374c9c78061785697a00634589a5ba83bffe",
+  "algorithm_sha256": "8c611a85f1c2b077d9bf4b499d2a829a2f822032e496f2950a5bd028a4fbea9c",
+  "reporter_sha256": "ce35431986a8e8b404244fe2b2cf23575b1ede8aba670044acabce4216c27fbe",
+  "full_raster_finite_and_bounded": true,
+  "water_cells": 24106100,
+  "raster_water_area_m2": 24106100.0,
+  "survey_water_area_m2": 24106087.352613218,
+  "centre_samples": 5000,
+  "centre_max_error_m": 0.007780816731806084,
+  "near_shore_samples": 37786,
+  "near_shore_max_error_m": 0.4327905183437539,
+  "near_shore_p99_error_m": 0.12672086681171132,
+  "declared_near_shore_uncertainty_m": 0.75,
+  "wrong_sign_outside_uncertainty": 0,
+  "island_probes": [
+    {
+      "east": 2736854.0298710503,
+      "north": 1219569.9900000002,
+      "sampled_distance_m": -1.0334661107426655
+    },
+    {
+      "east": 2738270.7456306424,
+      "north": 1219954.6214999985,
+      "sampled_distance_m": -3.0226365905978745
+    },
+    {
+      "east": 2740320.7611676967,
+      "north": 1220257.3255000003,
+      "sampled_distance_m": -2.7824171290488344
+    }
+  ],
+  "limits": [
+    "Fixed horizontal outline, not a dynamic shoreline or flooding model.",
+    "No GPU upload, runtime image comparison, or GPU memory/performance validation yet.",
+    "Full-resolution uncompressed texture would occupy about 89.3 MiB before driver overhead."
+  ]
+}

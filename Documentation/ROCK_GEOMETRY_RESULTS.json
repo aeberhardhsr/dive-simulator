@@ -1,0 +1,1317 @@
+{
+  "status": "PASS",
+  "scope": "Packaged rendering and gameplay regression; performance and endurance acceptance pending",
+  "executable": {
+    "executable": "O:\\games\\dive game\\Builds\\WindowsRockDetail\\divingsim\\Binaries\\Win64\\divingsim-Rocks.exe",
+    "background_processes": [
+      {
+        "Id": 25516,
+        "ProcessName": "divingsim-FishSteering",
+        "StartTime": "2026-11-26T11:05:18.6666794+01:00"
+      }
+    ],
+    "packaged": true,
+    "started_utc": "2026-11-26T10:50:30.9687015Z",
+    "package_containers": [
+      {
+        "sha256": "bc0455a5efcb0fedda5ed1a39c7f82526caa5f67008671c828e03704b715f08e",
+        "bytes": 105893955,
+        "file": "divingsim-Windows.pak"
+      },
+      {
+        "sha256": "29bb42c79fec9646de095f2d84b15037b64914714d1916e7f27679820730dd25",
+        "bytes": 1189270960,
+        "file": "divingsim-Windows.ucas"
+      },
+      {
+        "sha256": "0d298fe545fed7f8600cd44e615d8addbe82a659cea447f82bbed1678f419d5b",
+        "bytes": 1067755,
+        "file": "divingsim-Windows.utoc"
+      },
+      {
+        "sha256": "366b5b32dcd68db374ef515dc97778376ebb195ad1fade4af4d4dc515975cb25",
+        "bytes": 3245616,
+        "file": "global.ucas"
+      },
+      {
+        "sha256": "d6fa13262c1d67c30b8ab0bd0db19c019e143b80fb48519f1509bef70ce9d76f",
+        "bytes": 794,
+        "file": "global.utoc"
+      }
+    ],
+    "source_head": "3fe78bfd8c6aba5629055251dcae5845da4319ff",
+    "sha256": "30CC3414297648E864415898197F7AF4E469954DF5D1132243BC85931F755984"
+  },
+  "cases": [
+    {
+      "scenario": "rocks",
+      "name": "forms",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 8,
+      "entry": 0,
+      "log_sha256": "a65eb2a78c24c8470de9c540fcb85f260197c90078dcda0776711e21dd080254",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_0_0.png",
+          "sha256": "4c42c42923e283608bed7a26c110ded77f6b8f937a4a92d5288cbd6d7ada9b2e"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_0_1.png",
+          "sha256": "d7be6746a436b929bebcb88bd271975e8bb60e1f8642b71faec1abe1b384bd82"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_1_0.png",
+          "sha256": "9efc66723821f2ff2485d73dbffbdb16dc56959857202d7d50ab25ec20bbcddc"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_1_1.png",
+          "sha256": "1e149d5861b1380fae6bcf1b3bd80331add9d0e40d7c951909b04320e06d8cf8"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_2_0.png",
+          "sha256": "6ef2055070c67f8929afcbf4bd9f06953194276bed93e17e06abaaf99d30b4c4"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_2_1.png",
+          "sha256": "518f2f83d0d696590d661adee7fdced215d8f246fc1d8df3b427af88e376876c"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_3_0.png",
+          "sha256": "beefd74c8eafe6a3706bd46a3e0dbba54f6eee3b07da6d0f9a4dad97d270c2da"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms/Rock_3_1.png",
+          "sha256": "3c4fd5e51851140137eb3825b23421ea3d8d11129e9bf97513b02a2a995e6258"
+        }
+      ]
+    },
+    {
+      "scenario": "rocks",
+      "name": "forms-raster",
+      "status": "PASS",
+      "raster": true,
+      "screenshots": 8,
+      "entry": 0,
+      "log_sha256": "22e8fe341c46cf51bed1578ccbc6160d3fde3102f90e06e4d2c14be1ebd6013c",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_0_0.png",
+          "sha256": "6cc4cb61367bfc3e8a023190f1e91762e916b95603c3f0818eda49c9c9653482"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_0_1.png",
+          "sha256": "a092c8b1cdeea5391e83510fdbc3d3968add8e41cdb6592cf02540df16a2498b"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_1_0.png",
+          "sha256": "05b115261a22a0f82ac246cd2dab88c3ce934054e90a4ca7b81326978ec0f804"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_1_1.png",
+          "sha256": "23c95d71115e5ec264178c7e10ba2810c4f3a3246f8ec80f3effe8e381302227"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_2_0.png",
+          "sha256": "5114088412a83cd44e45f4edf20c4ac116e3c41540b77989ba3b7c1dd98c1ea1"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_2_1.png",
+          "sha256": "05400489ba25bab99d689817744d4d79cd2a84cda30f994390daf2fb847bff0a"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_3_0.png",
+          "sha256": "721943c34eaf7cf5da9e730578c34df796a7407458068d94b5671e00d9f39421"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/forms-raster/Rock_3_1.png",
+          "sha256": "2e671517a7e87676abd10a66a950bcc3bd368f80ac75d014261ee2491ffafa8e"
+        }
+      ]
+    },
+    {
+      "scenario": "stream",
+      "name": "stream0",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 2,
+      "entry": 0,
+      "log_sha256": "92bc73ef801408ee81f8bd2749a225be2fc7254f6083c68e07e2f7e0bb2bbe89",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/stream0/DiveSmoke_0_stream.png",
+          "sha256": "b6db6e6b148864438dd27dcb2b27e07a9d1a2e0a3255e63d2b4a007dd4bed04d"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/stream0/DiveUnderwater_0_stream.png",
+          "sha256": "c5639dbfeac1206e4b4179df8776cf66b5149e4a1190ade0804f799a0f41bc25"
+        }
+      ]
+    },
+    {
+      "scenario": "stream",
+      "name": "stream1",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 2,
+      "entry": 1,
+      "log_sha256": "f1cc16a4ccec6ee23c251690dc22b47be86056f94dc4378774c03d9272521f35",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/stream1/DiveSmoke_1_stream.png",
+          "sha256": "363949cbc8d942393acf0629d82a57243b802aadc86cbe0a68e3b58e3a1fb751"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/stream1/DiveUnderwater_1_stream.png",
+          "sha256": "51eb71bc763fea38e5cbfa967260b3d00687f34d9695b81ab9ae06b53ed7f75f"
+        }
+      ]
+    },
+    {
+      "scenario": "stream",
+      "name": "stream2",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 2,
+      "entry": 2,
+      "log_sha256": "b1e309e0296e861d8f97458d66e1ac34048ba496b439fac0256b77043518947a",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/stream2/DiveSmoke_2_stream.png",
+          "sha256": "f5d8fcdd73a3cf34de533fc14a1fd827014eefc065cd8ecc9c3a0033d863ab49"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/stream2/DiveUnderwater_2_stream.png",
+          "sha256": "9c72caf051d962985c3cff221c3a5a07fa5a25cc4f4f12a42b492548f6ef7906"
+        }
+      ]
+    },
+    {
+      "scenario": "shore",
+      "name": "shore0",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 9,
+      "entry": 0,
+      "log_sha256": "9ee5d7030d8e7de33c793ecdf19f7babbce796a9839c775eeefb1d3cd0a0d427",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/DiveSmoke_0_shore.png",
+          "sha256": "26aeb86c3f74590e853232f1d56911f01d58739c766ccddc21a6490c393c69a2"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/DiveUnderwater_0_shore.png",
+          "sha256": "54c0ffa534a89f812df348291023e00f63803ad4c139bbd7a22c979fcd0e60b8"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreComplete_0.png",
+          "sha256": "45c7989d17af8e38ef8f0d7fdf845a4ff928b45c52a6d45e1bdc82899616afa2"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreDive_0.png",
+          "sha256": "0b96de90d709122e6ae3bfc4db5ad80b25bb18ec77f222bb1937448a303edd21"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreMenu_0.png",
+          "sha256": "e5f6a31653d55881d0f6e1fc3589d437ea9657bcc68f4b97378aa664a8621904"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreReturn_0.png",
+          "sha256": "6933d7c6ca3112e3729d50eca324b6861ee439987e3b036f6ac5e0340e4aaa84"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreStart_0.png",
+          "sha256": "cf72eac6255caadae88449256744184e705a60312d0d1c77efe2b8e2571dc1f6"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreSurface_0.png",
+          "sha256": "bb2f4cad731dd3ef7bf9deb153ce6191666e7a6ca9ca74b26dd4b5a12e6b3393"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore0/ShoreWater_0.png",
+          "sha256": "20ff481f08b2c28e760022bfe97376199929aaab8fd91492e87eeccd7bfdef1b"
+        }
+      ]
+    },
+    {
+      "scenario": "shore",
+      "name": "shore1",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 9,
+      "entry": 1,
+      "log_sha256": "8f1396e02e87a6c18c4c03ebfce9affb6bce26268be851f81b7b3051c6f361e6",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/DiveSmoke_1_shore.png",
+          "sha256": "4ed47c1025a5ad0042356d4c0a7b68b322daa981d62a9bb454045083407bc087"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/DiveUnderwater_1_shore.png",
+          "sha256": "76ca39b84b42d9182133c8d83c2ecf70f9d65029cbdf7dd00cbe75128fb3960d"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreComplete_1.png",
+          "sha256": "1d72007f7e65d5f0108c0c9a867936d7c164038093f32210ab7360903d03f3a6"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreDive_1.png",
+          "sha256": "47eea46c9549cfa698a59979d7fe72653f4cba71e52f381283674d0cc99dbccb"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreMenu_1.png",
+          "sha256": "70f87e66eb49152aae069db53c4d52241d37dafb7fe2d011f5440bf5698b3c5d"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreReturn_1.png",
+          "sha256": "5c95d05e33ab8aaa655fdc826157a5a06f51fafc44783f90f234c05b55e9e256"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreStart_1.png",
+          "sha256": "d797bdf7f16fe304cfaebf41cbb67b1ae794346e6ff6246fbfba1694c556640b"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreSurface_1.png",
+          "sha256": "63ba6a2d9012601d265639a22a4c525f36ca1e4642a0f098508a18d897d7b3ab"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore1/ShoreWater_1.png",
+          "sha256": "ddd912f77df6507b38071d9f547523646b249e71515361d1b38d09453b721957"
+        }
+      ]
+    },
+    {
+      "scenario": "shore",
+      "name": "shore2",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 9,
+      "entry": 2,
+      "log_sha256": "c6c33ee577b9f50d5a66181156596cf7635a23bdbc7d92b7166f545c71cdb58a",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/DiveSmoke_2_shore.png",
+          "sha256": "ed6db66f8ec373ccb1b7968e9e9699c45d8531a98a71c9c8e9abd9b8f6833425"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/DiveUnderwater_2_shore.png",
+          "sha256": "b372d68caa13299b91544c02026717db974430eebcaf6a9ac95e288dc755d540"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreComplete_2.png",
+          "sha256": "b62bd51bcbb67cc033f0550ec2a70df46b6f6fd9d5fab5fb34708923f1fee67b"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreDive_2.png",
+          "sha256": "5b59340a6c5c9c7ee611f9b92bff575cbc09436a903b21e989fbcd89f07b0bae"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreMenu_2.png",
+          "sha256": "54ba8d6eef613e1d9688749d5312186f571f4d798d82a04d9c6cc3f2fc662c71"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreReturn_2.png",
+          "sha256": "de0338b4781a7990bcd4279733f95bb7216d68b7d57ab0ed09b302e629ffc936"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreStart_2.png",
+          "sha256": "ae0170ef4e2ca75a35f3b60e4e6edf4500327c266a282543562ee7d9098fab6e"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreSurface_2.png",
+          "sha256": "68cf2308394fe342d8c9c6809c467f39d4952a30d9e4f8175a862b14d737c183"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/shore2/ShoreWater_2.png",
+          "sha256": "19e3f3bdd5cda0f8ba6be0f3f9bb413d92c82f7dda00f37cf11fa0a3c367cb0f"
+        }
+      ]
+    },
+    {
+      "scenario": "discoveries",
+      "name": "discoveries",
+      "status": "PASS",
+      "raster": false,
+      "screenshots": 5,
+      "entry": 0,
+      "log_sha256": "12913e3fd2f3e36708772e172a914e5ea5b221054cb98be236f2691d69c4bade",
+      "images": [
+        {
+          "file": "artifacts/rock-validation-20261126-115029/discoveries/Discoveries_0_Gallery_DE.png",
+          "sha256": "4bfa454da7fc0f3e2d1fa0517185a76c514c1bf651c387cdacb57a64225f19c0"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/discoveries/Discoveries_0_Logbook.png",
+          "sha256": "36adf381dc962cc971c3d73f53d621850d61014b945f6a841f884f7e7b624702"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/discoveries/Discoveries_0_Plant_EN.png",
+          "sha256": "faba31848447b719d0746aaf979eaf77ebd413699f8d7842f2aad6bc821311db"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/discoveries/Discoveries_0_Species_DE.png",
+          "sha256": "0273b8a7142026f52f5aee8dbb27fc3fd0fee5549243f137cce930a56f6e89a4"
+        },
+        {
+          "file": "artifacts/rock-validation-20261126-115029/discoveries/Discoveries_0_Species_EN.png",
+          "sha256": "5d81a8cb64cc24e9f94b13ab37b92cac3dac8e51f9994e0160cdec816d462edf"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "file": "Source/DiveSim/DiveAccess.cpp",
+      "canonical_lf_sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a"
+    },
+    {
+      "file": "Source/DiveSim/DiveAudio.cpp",
+      "canonical_lf_sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482"
+    },
+    {
+      "file": "Source/DiveSim/DiveAudio.h",
+      "canonical_lf_sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatar.cpp",
+      "canonical_lf_sha256": "9cc4e47cc8e3959067335965e04799705d37ebb6a09c533745321e826bce5f60"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatar.h",
+      "canonical_lf_sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatarInspection.cpp",
+      "canonical_lf_sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352"
+    },
+    {
+      "file": "Source/DiveSim/DiveAvatarSmoke.cpp",
+      "canonical_lf_sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f"
+    },
+    {
+      "file": "Source/DiveSim/DiveBodyFrame.h",
+      "canonical_lf_sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834"
+    },
+    {
+      "file": "Source/DiveSim/DiveBodyFrameTests.cpp",
+      "canonical_lf_sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildings.cpp",
+      "canonical_lf_sha256": "7b4ba0e71dd5977088f985ff3c8ccb829456698ec86434a16d21dd5e7a3180c4"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildings.h",
+      "canonical_lf_sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildingsBakeCommandlet.cpp",
+      "canonical_lf_sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a"
+    },
+    {
+      "file": "Source/DiveSim/DiveBuildingsBakeCommandlet.h",
+      "canonical_lf_sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f"
+    },
+    {
+      "file": "Source/DiveSim/DiveCaustics.cpp",
+      "canonical_lf_sha256": "53539f013bf803cd2cb77df4f3b2491380bb8f54cc9a82df4728ab8754ef7223"
+    },
+    {
+      "file": "Source/DiveSim/DiveCausticsSmoke.cpp",
+      "canonical_lf_sha256": "8b17c9b33cc9c574c8f911c88faac6010babe3d87b1f045e642425dccd8992ec"
+    },
+    {
+      "file": "Source/DiveSim/DiveCelestialActor.cpp",
+      "canonical_lf_sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1"
+    },
+    {
+      "file": "Source/DiveSim/DiveCelestialActor.h",
+      "canonical_lf_sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoast.cpp",
+      "canonical_lf_sha256": "827cc0f004b5449181ad887de1c366049ecb87d90ebd3ed51ce259cf13db92e8"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoastBakeCommandlet.cpp",
+      "canonical_lf_sha256": "af08eac3ac52f8bb6e3cd5f7194f2cd3b7c072544d501962bd695d45c3f58b28"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoastBakeCommandlet.h",
+      "canonical_lf_sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29"
+    },
+    {
+      "file": "Source/DiveSim/DiveCoastTerrain.cpp",
+      "canonical_lf_sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d"
+    },
+    {
+      "file": "Source/DiveSim/DiveConfigHUD.cpp",
+      "canonical_lf_sha256": "8d930abd1b94795ee1b3154515851a36065291386c3d0f82215c7fd0002d8ae3"
+    },
+    {
+      "file": "Source/DiveSim/DiveConfigIO.cpp",
+      "canonical_lf_sha256": "30eb07afffbe4eb49c048d1e8b50f55fc89c0fea1276030cca26bb2406ace3f0"
+    },
+    {
+      "file": "Source/DiveSim/DiveConfigIO.h",
+      "canonical_lf_sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3"
+    },
+    {
+      "file": "Source/DiveSim/DiveContacts.cpp",
+      "canonical_lf_sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f"
+    },
+    {
+      "file": "Source/DiveSim/DiveContacts.h",
+      "canonical_lf_sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a"
+    },
+    {
+      "file": "Source/DiveSim/DiveContactsTests.cpp",
+      "canonical_lf_sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74"
+    },
+    {
+      "file": "Source/DiveSim/DiveControls.cpp",
+      "canonical_lf_sha256": "ee90738914ae0496486493c182a3652da3fce6fde731147e1a85f7428e97a0bb"
+    },
+    {
+      "file": "Source/DiveSim/DiveControls.h",
+      "canonical_lf_sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e"
+    },
+    {
+      "file": "Source/DiveSim/DiveControlsHUD.cpp",
+      "canonical_lf_sha256": "251a1b4fe2caa5ad231b0b6e5e3d6109534bedbe96a5accc8f78f58150b3a2d1"
+    },
+    {
+      "file": "Source/DiveSim/DiveControlsTests.cpp",
+      "canonical_lf_sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa"
+    },
+    {
+      "file": "Source/DiveSim/DiveDayCycleSmoke.cpp",
+      "canonical_lf_sha256": "56533293d5c874cbd5ca3628bdae965283c58deeaa58517c18cde53956dbe589"
+    },
+    {
+      "file": "Source/DiveSim/DiveDecompressionSmoke.cpp",
+      "canonical_lf_sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveries.cpp",
+      "canonical_lf_sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveries.h",
+      "canonical_lf_sha256": "efcb071d53a3885267224f97a59736fd9f5eed8d88033d13609b6629aef5104b"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveriesHUD.cpp",
+      "canonical_lf_sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveriesSmoke.cpp",
+      "canonical_lf_sha256": "c5597b50f0a66c595bbf9a95527117c28038be3beb4f817a02d507a8c6111bdf"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveriesTests.cpp",
+      "canonical_lf_sha256": "9bd9c408b12945fa368d434a71bdd65b90aef23c1187deb7c69ff3b598ee8d06"
+    },
+    {
+      "file": "Source/DiveSim/DiveDiscoveryObservation.cpp",
+      "canonical_lf_sha256": "1da9d21a61a2d5f0b05501697712dac762f911665a3d65e8cbe9c74ef50ea84c"
+    },
+    {
+      "file": "Source/DiveSim/DiveEcology.cpp",
+      "canonical_lf_sha256": "7ca0f638248821d467e0c17c3bdae7028221daee37c762f30d2d392743659441"
+    },
+    {
+      "file": "Source/DiveSim/DiveEnvironmentSmoke.cpp",
+      "canonical_lf_sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724"
+    },
+    {
+      "file": "Source/DiveSim/DiveEquipment.cpp",
+      "canonical_lf_sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac"
+    },
+    {
+      "file": "Source/DiveSim/DiveEquipment.h",
+      "canonical_lf_sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a"
+    },
+    {
+      "file": "Source/DiveSim/DiveFishInspection.cpp",
+      "canonical_lf_sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd"
+    },
+    {
+      "file": "Source/DiveSim/DiveFishSteering.cpp",
+      "canonical_lf_sha256": "ec79da991a2d1380accb3c092925ea829d9af32ebf93ce4116f0601bc10bb06c"
+    },
+    {
+      "file": "Source/DiveSim/DiveGameMode.cpp",
+      "canonical_lf_sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04"
+    },
+    {
+      "file": "Source/DiveSim/DiveGameMode.h",
+      "canonical_lf_sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b"
+    },
+    {
+      "file": "Source/DiveSim/DiveHUD.cpp",
+      "canonical_lf_sha256": "f9158f4be2eac500ba61de09bfca73d14a8a83488a5261526b3b5bd3df00d792"
+    },
+    {
+      "file": "Source/DiveSim/DiveHUD.h",
+      "canonical_lf_sha256": "ae94eb44e6013ec5946551592eec11d44f711f76a871853113ba3035f4fc5d05"
+    },
+    {
+      "file": "Source/DiveSim/DiveImagery.cpp",
+      "canonical_lf_sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72"
+    },
+    {
+      "file": "Source/DiveSim/DiveInputSmoke.cpp",
+      "canonical_lf_sha256": "abc6ce1532ab017e809769e0b6f25bfcc76807ae365760fe929eadf56a52b52c"
+    },
+    {
+      "file": "Source/DiveSim/DiveLandscape.cpp",
+      "canonical_lf_sha256": "8ef845c78fa718222d1310955ee92cf4150a6e52f0492fd4352664aacabcc776"
+    },
+    {
+      "file": "Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "canonical_lf_sha256": "9ff6b4892c515d063ec8cd6c6f6dda76d652207e05b727b54b4e110664952275"
+    },
+    {
+      "file": "Source/DiveSim/DiveLandscapeBakeCommandlet.h",
+      "canonical_lf_sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12"
+    },
+    {
+      "file": "Source/DiveSim/DiveLoadoutHUD.cpp",
+      "canonical_lf_sha256": "d44bb0380bf94a84e730191d67cfea56ee20a81dde8a255dc979065c2cae6ba8"
+    },
+    {
+      "file": "Source/DiveSim/DiveLoadoutSmoke.cpp",
+      "canonical_lf_sha256": "f6db1ce9a974170a6ae982cd0a1e472507d2d076de74da9bc86490a0f4c5c573"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbook.cpp",
+      "canonical_lf_sha256": "506639bd54ce8879173be2b414763a6e817796c5d3f0b6caa4298e8caecdec7b"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbook.h",
+      "canonical_lf_sha256": "5bfcbe91bb22d6998522ee88f4214272b87f8c235ab27b345f033f4320b2580c"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbookHUD.cpp",
+      "canonical_lf_sha256": "94e7ec83337816e0cfc846e2131f4777335668fb0d342b4435c307028c8c686c"
+    },
+    {
+      "file": "Source/DiveSim/DiveLogbookTests.cpp",
+      "canonical_lf_sha256": "02866804e9d1d94b2e30d0ea9304c882da184d9f363b7448426e920c8ce5ee19"
+    },
+    {
+      "file": "Source/DiveSim/DiveMapHUD.cpp",
+      "canonical_lf_sha256": "4b90506404dde20d722a0015f68ed54db472718320e000b59d40218fb1d56703"
+    },
+    {
+      "file": "Source/DiveSim/DiveModeSmoke.cpp",
+      "canonical_lf_sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d"
+    },
+    {
+      "file": "Source/DiveSim/DiveNavigationSmoke.cpp",
+      "canonical_lf_sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6"
+    },
+    {
+      "file": "Source/DiveSim/DiveNavigationTests.cpp",
+      "canonical_lf_sha256": "7e54c7ec0bd809a9f08e113e2193503e6d455effb3260c7caa6865f51a3c5f89"
+    },
+    {
+      "file": "Source/DiveSim/DiveParticles.cpp",
+      "canonical_lf_sha256": "81d9293de9ebf0a29656c5c71348f59d1294803819495b53aa997c8cbd93b96a"
+    },
+    {
+      "file": "Source/DiveSim/DivePawn.cpp",
+      "canonical_lf_sha256": "4ff6ea79ec7c0c6a140a5f61bdac013ff7e7b6a36a8847c2533d44361a6950c5"
+    },
+    {
+      "file": "Source/DiveSim/DivePawn.h",
+      "canonical_lf_sha256": "515670aa8dff1f70472aae95cbb8c6ca98e20c69c907c757cc9322f4cebf66c0"
+    },
+    {
+      "file": "Source/DiveSim/DivePawnContacts.cpp",
+      "canonical_lf_sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4"
+    },
+    {
+      "file": "Source/DiveSim/DivePerformance.cpp",
+      "canonical_lf_sha256": "4327caf4ce19e8934fb4397696dd8187c53c44efeba7ad3067a8dfb8a9c7fdff"
+    },
+    {
+      "file": "Source/DiveSim/DivePhotograph.cpp",
+      "canonical_lf_sha256": "9159bf392d6d93e5121607d212fadd8f5b29e714b4db029c32db7e51d4b5cdb5"
+    },
+    {
+      "file": "Source/DiveSim/DivePlayerController.cpp",
+      "canonical_lf_sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88"
+    },
+    {
+      "file": "Source/DiveSim/DivePlayerController.h",
+      "canonical_lf_sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a"
+    },
+    {
+      "file": "Source/DiveSim/DivePopulation.cpp",
+      "canonical_lf_sha256": "9e4ee382ae2d0e7de0ea0b38174dc149e6754e1856c9d5a680f8f81f1f7a38f9"
+    },
+    {
+      "file": "Source/DiveSim/DivePopulationTests.cpp",
+      "canonical_lf_sha256": "bcc4a46677af6239b830189c9f601738f8108d8170d8a485489c3160c7850af6"
+    },
+    {
+      "file": "Source/DiveSim/DivePose.h",
+      "canonical_lf_sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfiles.cpp",
+      "canonical_lf_sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfiles.h",
+      "canonical_lf_sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfilesHUD.cpp",
+      "canonical_lf_sha256": "aa35d4a85360b3b5b4cfcb9b5be59f00017a9bea50402c9865776dba983f15d7"
+    },
+    {
+      "file": "Source/DiveSim/DiveProfilesTests.cpp",
+      "canonical_lf_sha256": "1d2874ed3e2f9070c4e71e900fdfb62e2cca5538fd1e4933befe903cdd6f75bf"
+    },
+    {
+      "file": "Source/DiveSim/DiveRecording.cpp",
+      "canonical_lf_sha256": "fb933620688ccbf4fe2df0c287963e84dc1932d63f9c4a6e900ec889e2865a92"
+    },
+    {
+      "file": "Source/DiveSim/DiveRecording.h",
+      "canonical_lf_sha256": "c5c3f2cda31276efef6fe612971fd495d5b0eea3ac1c52c79d5848a6a91e421b"
+    },
+    {
+      "file": "Source/DiveSim/DiveRockInspection.cpp",
+      "canonical_lf_sha256": "5fb1e188d3ae1e6f92316ad1f340050a2bce3c27b851f4ff09df46ba66ef3693"
+    },
+    {
+      "file": "Source/DiveSim/DiveSediment.cpp",
+      "canonical_lf_sha256": "20839104bf706865ae0e57c37d5bc6c3117a5cf16bb508e8c7df2edefc9a2067"
+    },
+    {
+      "file": "Source/DiveSim/DiveSedimentSmoke.cpp",
+      "canonical_lf_sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d"
+    },
+    {
+      "file": "Source/DiveSim/DiveShoreline.cpp",
+      "canonical_lf_sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9"
+    },
+    {
+      "file": "Source/DiveSim/DiveShoreMovement.cpp",
+      "canonical_lf_sha256": "ba83514e33f3bd2ed8ae50821688e9edc05014922211700ac0450ce498e5c9a9"
+    },
+    {
+      "file": "Source/DiveSim/DiveSim.Build.cs",
+      "canonical_lf_sha256": "7fd2ff06162cfb3e8715269a95886f81d149f629775ab5c523dd8f4f8b6d27ad"
+    },
+    {
+      "file": "Source/DiveSim/DiveSim.cpp",
+      "canonical_lf_sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac"
+    },
+    {
+      "file": "Source/DiveSim/DiveSky.cpp",
+      "canonical_lf_sha256": "3c04d3976724f433eac4e0477561bdd5feeae34d7bb7f65df0dc85262c5b2dac"
+    },
+    {
+      "file": "Source/DiveSim/DiveSoak.cpp",
+      "canonical_lf_sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819"
+    },
+    {
+      "file": "Source/DiveSim/DiveTerrain.cpp",
+      "canonical_lf_sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb"
+    },
+    {
+      "file": "Source/DiveSim/DiveTerrain.h",
+      "canonical_lf_sha256": "59a55f61dcc2becfdef355fbee22f678a94f798d82cb5b2bc0f612dfe54407b9"
+    },
+    {
+      "file": "Source/DiveSim/DiveTextDialog.h",
+      "canonical_lf_sha256": "9cda96423136338044352c21647f3f9b4bb8c2a6c7fa82629c42caa85ae413df"
+    },
+    {
+      "file": "Source/DiveSim/DiveTorch.cpp",
+      "canonical_lf_sha256": "653a66049972cd7424f3a97d88171ebc042c3ea3071049c7560bb4423b2e2ddd"
+    },
+    {
+      "file": "Source/DiveSim/DiveVegetation.cpp",
+      "canonical_lf_sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d"
+    },
+    {
+      "file": "Source/DiveSim/DiveVegetation.h",
+      "canonical_lf_sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515"
+    },
+    {
+      "file": "Source/DiveSim/DiveWater.cpp",
+      "canonical_lf_sha256": "9a49996fe9749934986f5c809533d0877c16f132e69ac86c7bae5e777fc1f116"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypoints.cpp",
+      "canonical_lf_sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypoints.h",
+      "canonical_lf_sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypointsHUD.cpp",
+      "canonical_lf_sha256": "0704ec2d444cb84cf3a8ad488cb2c0395621d7b2fd84cd86a3303ffb12fdf15b"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypointsSmoke.cpp",
+      "canonical_lf_sha256": "962ca8fc9da283cda6b3c51f5d7512598e247f4bd29c940492f7e4db8195c33c"
+    },
+    {
+      "file": "Source/DiveSim/DiveWaypointsTests.cpp",
+      "canonical_lf_sha256": "6ce3b978f6c3edccbb21388dacc2b79252b7ed5caafaefefce219a50aacb64c1"
+    },
+    {
+      "file": "Source/DiveSim/DiveWorld.cpp",
+      "canonical_lf_sha256": "20f7bd62a350ae4cf3b25ef4a1704040fcc564d795289fec8b79b5c7a24eb726"
+    },
+    {
+      "file": "Source/DiveSim/DiveWorld.h",
+      "canonical_lf_sha256": "882542f9ba48618d10abb310f53902f724bd9b6d01011d388951a66d9cd22e9c"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/AudioModel.h",
+      "canonical_lf_sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Bubbles.h",
+      "canonical_lf_sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/CoastGrid.h",
+      "canonical_lf_sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ConfigInput.h",
+      "canonical_lf_sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Decompression.h",
+      "canonical_lf_sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/DiveModel.h",
+      "canonical_lf_sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Ecology.h",
+      "canonical_lf_sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/EnvironmentLight.h",
+      "canonical_lf_sha256": "a28d77368048b73cc392845f8bf9f0f9d1ad23481817888211bddf1ab1859a5d"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/EnvironmentScenario.h",
+      "canonical_lf_sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/FishMotion.h",
+      "canonical_lf_sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/FishSteering.h",
+      "canonical_lf_sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/HeightGrid.h",
+      "canonical_lf_sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Loadout.h",
+      "canonical_lf_sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ModeRules.h",
+      "canonical_lf_sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Navigation.h",
+      "canonical_lf_sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ScenarioClock.h",
+      "canonical_lf_sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Sediment.h",
+      "canonical_lf_sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ShoreMovement.h",
+      "canonical_lf_sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/ShoreTransition.h",
+      "canonical_lf_sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/SoakMetrics.h",
+      "canonical_lf_sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Torch.h",
+      "canonical_lf_sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Tutorial.h",
+      "canonical_lf_sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/VisualMedium.h",
+      "canonical_lf_sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/WalenseeTemperatureData.h",
+      "canonical_lf_sha256": "6c6d4ce7765211d0a4b200bceda8571694c6bb13f6fe8c6ae98b20abde1ce0f9"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/WaterSurface.h",
+      "canonical_lf_sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68"
+    },
+    {
+      "file": "Source/DiveSim/Simulation/Weather.h",
+      "canonical_lf_sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf"
+    },
+    {
+      "file": "Source/divingsim.Target.cs",
+      "canonical_lf_sha256": "32db049a5630ebf6eecdba35cc0f641254c27028dbfb47145d3fd230ae6bdb47"
+    },
+    {
+      "file": "Source/divingsimEditor.Target.cs",
+      "canonical_lf_sha256": "cca3119d115b2c39690c250545bfc837c9c50a9e994d29205fe1cbacddb86dcf"
+    },
+    {
+      "file": "Config/DefaultEditor.ini",
+      "canonical_lf_sha256": "a4ff0fbcc4dff2c12ccf6421b09dfb1d428a57088247bee76831e1099456057f"
+    },
+    {
+      "file": "Config/DefaultEditorPerProjectUserSettings.ini",
+      "canonical_lf_sha256": "42d2ec4f935f2985f9c0cb9c94653cb438ce2931e4ad51d726b227f02d35a97d"
+    },
+    {
+      "file": "Config/DefaultEngine.ini",
+      "canonical_lf_sha256": "955232c66051a6bf0507f5c9c7cc76d2c7a76b3c17bca43f623b170f85728da7"
+    },
+    {
+      "file": "Config/DefaultGame.ini",
+      "canonical_lf_sha256": "e0ed9777a8e2aff0d6c66d5babd7ae52e6d5abd5d4452269836bd42ff7d4fb73"
+    },
+    {
+      "file": "Config/DefaultInput.ini",
+      "canonical_lf_sha256": "d75df96d5079f8458f77ea5e7cfec30c0e6f7e3d9e7034a73666daf22d56be5f"
+    },
+    {
+      "file": "Config/Localization/Game_Compile.ini",
+      "canonical_lf_sha256": "997da9295d215b9c7a27d01769f3701dc7d4788d842c06a3d64f53c65638938b"
+    },
+    {
+      "file": "Config/Localization/Game_Export.ini",
+      "canonical_lf_sha256": "0b014f570b7b552c22e3da7c5b8bc395e8f100959ca69b79a52b3f5fd41f49d1"
+    },
+    {
+      "file": "Config/Localization/Game_ExportDialogueScript.ini",
+      "canonical_lf_sha256": "fe7cc625b6564a7a0fcb7469e9a1cc39c23ec7eb0459d5f8222f08937275be8e"
+    },
+    {
+      "file": "Config/Localization/Game_Gather.ini",
+      "canonical_lf_sha256": "38421ea9f477aaae00eb0201649b248e8bc3fcd75e0c86fa182e7bfbbbec6455"
+    },
+    {
+      "file": "Config/Localization/Game_GenerateReports.ini",
+      "canonical_lf_sha256": "d75fe4f7a8a156be2be7313cded14672c3f8a404e0dfb4493bdf2f46cc89c78f"
+    },
+    {
+      "file": "Config/Localization/Game_Import.ini",
+      "canonical_lf_sha256": "b582476cb7c5bcb95bdb1aaa95336ed96897a1b8a12aff93bacd92485689fe64"
+    },
+    {
+      "file": "Config/Localization/Game_ImportDialogue.ini",
+      "canonical_lf_sha256": "b9224764ca31193607c30c28d541f4c61463b0bf1bf3d56a77b5b263ed9e5893"
+    },
+    {
+      "file": "Config/Localization/Game_ImportDialogueScript.ini",
+      "canonical_lf_sha256": "1294c496ff7eee2539fdc7fbd150815091792b3777432d3a8e698ba160d9fe4c"
+    }
+  ],
+  "geometry": {
+    "schema": 1,
+    "units": "metres",
+    "radius_metres": 1,
+    "local_geology_claim": false,
+    "assets": [
+      {
+        "name": "SM_LakeRock1",
+        "source": "boulder_01",
+        "source_sha256": "13d651c28c309476cd89bbf8fbc722327b8a8597a467a70fc1f7c46454a38a04",
+        "source_bounds_metres": [
+          [
+            -0.7481597065925598,
+            -0.8818937540054321,
+            -0.07364296913146973
+          ],
+          [
+            0.5239759087562561,
+            0.9484404921531677,
+            0.9301872253417969
+          ]
+        ],
+        "source_radius_metres": 1.0255543001424414,
+        "triangles": 66122,
+        "vertices": 33063,
+        "closed_source_boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "maximum_radius": 1.0000000151339916,
+        "file": "blender/exports/Rocks/SM_LakeRock1.fbx",
+        "sha256": "bc26a0172dc5af80d82999659f3759c6649d2d69e50686bd74b0918ab238f6d4"
+      },
+      {
+        "name": "SM_LakeRock2",
+        "source": "namaqualand_boulder_05",
+        "source_sha256": "6daad711caaa07907bdb97377589cd9c7c47058f6c0fd9540d6257653b42ebe9",
+        "source_bounds_metres": [
+          [
+            -0.6350750923156738,
+            -0.35002079606056213,
+            -0.00982174277305603
+          ],
+          [
+            0.7289556264877319,
+            0.39795854687690735,
+            0.528499960899353
+          ]
+        ],
+        "source_radius_metres": 0.6953940773767966,
+        "triangles": 89618,
+        "vertices": 44811,
+        "closed_source_boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "maximum_radius": 0.9999999642313917,
+        "file": "blender/exports/Rocks/SM_LakeRock2.fbx",
+        "sha256": "356e87fef718c63a69429c9d677ccd08ceea5767f34703b32e742a2fb3f09980"
+      },
+      {
+        "name": "SM_LakeRock3",
+        "source": "namaqualand_boulder_06",
+        "source_sha256": "c197a94b0000c0bc6b6a50bbc8ec9cbbc7aa1411bb7e451d9eaaab9ce1f3890a",
+        "source_bounds_metres": [
+          [
+            -0.32072713971138,
+            -0.551062285900116,
+            -0.018452346324920654
+          ],
+          [
+            0.3542558550834656,
+            0.6608133912086487,
+            0.6331791281700134
+          ]
+        ],
+        "source_radius_metres": 0.6392886641048776,
+        "triangles": 109114,
+        "vertices": 54559,
+        "closed_source_boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "maximum_radius": 0.9999999393185116,
+        "file": "blender/exports/Rocks/SM_LakeRock3.fbx",
+        "sha256": "ceb6269db63e6a0d6c7b3996a09f6fbde96c5cb9cc52c521f4eca221169f124b"
+      }
+    ]
+  },
+  "content_build": [
+    {
+      "name": "SM_LakeRock1",
+      "path": "/Game/Diving/Rocks/SM_LakeRock1.SM_LakeRock1",
+      "lods": 4,
+      "collision_hulls": 5,
+      "nanite": true,
+      "material": "/Game/Diving/Materials/M_RockSurface.M_RockSurface",
+      "source_sha256": "bc26a0172dc5af80d82999659f3759c6649d2d69e50686bd74b0918ab238f6d4",
+      "raster_lod_targets": [
+        {
+          "triangle_fraction": 1.0,
+          "screen_size": 1.0
+        },
+        {
+          "triangle_fraction": 0.35,
+          "screen_size": 0.2
+        },
+        {
+          "triangle_fraction": 0.1,
+          "screen_size": 0.07
+        },
+        {
+          "triangle_fraction": 0.025,
+          "screen_size": 0.02
+        }
+      ],
+      "raster_lod_screen_sizes": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raster_lod_vertices": [
+        37393,
+        14746,
+        4986,
+        1654
+      ],
+      "fallback_target": "<NaniteFallbackTarget.PERCENT_TRIANGLES: 1>"
+    },
+    {
+      "name": "SM_LakeRock2",
+      "path": "/Game/Diving/Rocks/SM_LakeRock2.SM_LakeRock2",
+      "lods": 4,
+      "collision_hulls": 1,
+      "nanite": true,
+      "material": "/Game/Diving/Materials/M_RockSurface.M_RockSurface",
+      "source_sha256": "356e87fef718c63a69429c9d677ccd08ceea5767f34703b32e742a2fb3f09980",
+      "raster_lod_targets": [
+        {
+          "triangle_fraction": 1.0,
+          "screen_size": 1.0
+        },
+        {
+          "triangle_fraction": 0.35,
+          "screen_size": 0.2
+        },
+        {
+          "triangle_fraction": 0.1,
+          "screen_size": 0.07
+        },
+        {
+          "triangle_fraction": 0.025,
+          "screen_size": 0.02
+        }
+      ],
+      "raster_lod_screen_sizes": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raster_lod_vertices": [
+        46197,
+        16910,
+        5163,
+        1455
+      ],
+      "fallback_target": "<NaniteFallbackTarget.PERCENT_TRIANGLES: 1>"
+    },
+    {
+      "name": "SM_LakeRock3",
+      "path": "/Game/Diving/Rocks/SM_LakeRock3.SM_LakeRock3",
+      "lods": 4,
+      "collision_hulls": 1,
+      "nanite": true,
+      "material": "/Game/Diving/Materials/M_RockSurface.M_RockSurface",
+      "source_sha256": "ceb6269db63e6a0d6c7b3996a09f6fbde96c5cb9cc52c521f4eca221169f124b",
+      "raster_lod_targets": [
+        {
+          "triangle_fraction": 1.0,
+          "screen_size": 1.0
+        },
+        {
+          "triangle_fraction": 0.35,
+          "screen_size": 0.2
+        },
+        {
+          "triangle_fraction": 0.1,
+          "screen_size": 0.07
+        },
+        {
+          "triangle_fraction": 0.025,
+          "screen_size": 0.02
+        }
+      ],
+      "raster_lod_screen_sizes": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raster_lod_vertices": [
+        56521,
+        20716,
+        6328,
+        1791
+      ],
+      "fallback_target": "<NaniteFallbackTarget.PERCENT_TRIANGLES: 1>"
+    }
+  ],
+  "render_data_audit": [
+    {
+      "name": "SM_LakeRock1",
+      "triangles": [
+        66122,
+        23142,
+        6612,
+        1654
+      ],
+      "screen_sizes": [
+        1.0,
+        0.20000000298023224,
+        0.07000000029802322,
+        0.019999999552965164
+      ],
+      "fallback_target": "<NaniteFallbackTarget.PERCENT_TRIANGLES: 1>"
+    },
+    {
+      "name": "SM_LakeRock2",
+      "triangles": [
+        89618,
+        31366,
+        8962,
+        2240
+      ],
+      "screen_sizes": [
+        1.0,
+        0.20000000298023224,
+        0.07000000029802322,
+        0.019999999552965164
+      ],
+      "fallback_target": "<NaniteFallbackTarget.PERCENT_TRIANGLES: 1>"
+    },
+    {
+      "name": "SM_LakeRock3",
+      "triangles": [
+        109114,
+        38190,
+        10912,
+        2728
+      ],
+      "screen_sizes": [
+        1.0,
+        0.20000000298023224,
+        0.07000000029802322,
+        0.019999999552965164
+      ],
+      "fallback_target": "<NaniteFallbackTarget.PERCENT_TRIANGLES: 1>"
+    }
+  ],
+  "assets": [
+    {
+      "file": "divingsim/Content/Diving/Materials/M_RockSurface.uasset",
+      "sha256": "241097219d9ae0f14b4dbe5f3f33ff41de0f209b3554ab20a7a5285241a4f43f"
+    },
+    {
+      "file": "divingsim/Content/Diving/Rocks/SM_LakeRock1.uasset",
+      "sha256": "fcd7b10317c52d85756a0d5d4ce8d80bc1234a53bc022bb401b66b9f26e711e1"
+    },
+    {
+      "file": "divingsim/Content/Diving/Rocks/SM_LakeRock2.uasset",
+      "sha256": "e6d2018436438abf6ea87fd1df3933754f9837de9938cd2be7598d917ab7e119"
+    },
+    {
+      "file": "divingsim/Content/Diving/Rocks/SM_LakeRock3.uasset",
+      "sha256": "3101d485de3c9841a68ff5dd2f86570d88bfb6688bc688c70492b10a6fd6cf63"
+    }
+  ],
+  "logs": {
+    "rock-content-full.log": "4bc9febe1465e0c162ad9da4cc5652689c6324254bb86428d449768678982490",
+    "rock-editor-inspection.log": "f6e35574fef35f87488e2ab0d624ffdaa49cc725807ca38c7adb0526ef36e9a5",
+    "rock-editor-stream.log": "281d4c10d6df7cc12ddf1ba4bc0792c6628458ef28470b7f353ab09acc0d4ea5",
+    "rock-render-audit.log": "41d2f49d19154e44479aa37ffc021388d27f01b00dfffdaa194038896ea07349",
+    "rock-editor-raster-full.log": "b71f577bb0cb006d8555350808c6e6fb19555bd7eabf1645d6eb5b931de71c22",
+    "rock-package.log": "5b1b0aae118e4bbb329ff94ed80dacb8bfd2b73ceafd03783e313a1220240ade"
+  },
+  "editor_startup_issues": [
+    {
+      "log": "rock-editor-inspection.log",
+      "error": "AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+      "source": "Installed engine ToolsetRegistry init_unreal.py:7"
+    },
+    {
+      "log": "rock-editor-stream.log",
+      "error": "AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+      "source": "Installed engine ToolsetRegistry init_unreal.py:7"
+    },
+    {
+      "log": "rock-editor-raster-full.log",
+      "error": "AttributeError: module 'unreal' has no attribute 'PythonTestRunner'",
+      "source": "Installed engine ToolsetRegistry init_unreal.py:7"
+    }
+  ],
+  "root_launcher": {
+    "launcher_parent_name": "explorer.exe",
+    "launcher_id": 20640,
+    "launcher": "O:\\games\\dive game\\Builds\\WindowsRockDetail\\divingsim.exe",
+    "child_id": 52420,
+    "launcher_sha256": "054EBDE22B3CD7966C28A75BED0013D46A45091D1678F6E5398B69DCAFA6E2B7",
+    "launcher_started_utc": "2026-11-26T11:00:15.7533210Z",
+    "child": "O:\\games\\dive game\\Builds\\WindowsRockDetail\\divingsim\\Binaries\\Win64\\divingsim-Rocks.exe",
+    "child_parent_id": 20640,
+    "scope": "User started the root launcher through Explorer; actual running child verified read-only. No automated launcher playthrough or exit is claimed. Separate nine-case suite covers gameplay.",
+    "status": "OBSERVED_RUNNING",
+    "observed_utc": "2026-11-26T11:02:21.4628530Z",
+    "launcher_parent_id": 15072,
+    "executable_sha256": "30CC3414297648E864415898197F7AF4E469954DF5D1132243BC85931F755984"
+  },
+  "preserved_baseline": {
+    "executable": "O:\\games\\dive game\\Builds\\WindowsFishSteering\\divingsim\\Binaries\\Win64\\divingsim-FishSteering.exe",
+    "package_containers": [
+      {
+        "bytes": 105893955,
+        "file": "divingsim-Windows.pak",
+        "sha256": "5c32b40f042202336f045c65b7d14552bedc4adcda3680480fe836551602fb37"
+      },
+      {
+        "bytes": 1173900624,
+        "file": "divingsim-Windows.ucas",
+        "sha256": "5f8d744b066c62dd1f5efbae29498ac1f09a24c9322693fe42980b785a75fb73"
+      },
+      {
+        "bytes": 1062308,
+        "file": "divingsim-Windows.utoc",
+        "sha256": "10277bae02f01a55ac3cc2b940e9a018b3fe958d8e4cb3040a911c21c9c3cb66"
+      },
+      {
+        "bytes": 3245520,
+        "file": "global.ucas",
+        "sha256": "b65f8471a3f07a2e50fbd526ddb6b5bf51694e98084d053edc4e1c41ce257a59"
+      },
+      {
+        "bytes": 794,
+        "file": "global.utoc",
+        "sha256": "21dda7816912cfdd30e42cf5f865cb61b0280402116ba251bd9b1cbdd63b6a07"
+      }
+    ],
+    "packaged": true,
+    "started_utc": "2026-11-26T09:46:37.8448474Z",
+    "sha256": "77160DE878C1C3A74FF55664E955000133D60A9C12833A695A8722BA2BF4370B"
+  },
+  "source_ci": {
+    "source_commit": "3fe78bfd8c6aba5629055251dcae5845da4319ff",
+    "run_id": 45804553697,
+    "url": "https://github.com/aeberhardhsr/dive-simulator/actions/runs/45804553697",
+    "jobs": [
+      {
+        "id": 139856226769,
+        "name": "simulation (windows-latest)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 139856226715,
+        "name": "simulation (macos-latest)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 139856226675,
+        "name": "simulation (ubuntu-latest)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "scope": "Portable simulation and Python checks; does not certify native macOS rendering."
+  },
+  "limits": "Three rescaled CC0 forms with authored placement and shared lake-rock material, not local geology scans. Convex diver collision and conservative fish exclusion. Fixed-camera Nanite/raster comparisons do not establish every LOD transition or overall photorealism. Concurrent baseline soak is recorded in Host.json; these capped runs are not performance measurements."
+}

@@ -1,0 +1,83 @@
+{
+  "status": "CORRECTED_PACKAGE_CAMERA_TEST_PASSED_FULL_ACCEPTANCE_PENDING",
+  "engine": "O:\\games\\dive game\\Builds\\UE584",
+  "file": "Engine/Plugins/Runtime/CelestialVault/Source/CelestialVault/Private/CelestialVaultDaySequenceActor.cpp",
+  "original_sha256": "a8b1bb7357502d03199772a99e4572b80edbb6780ce653c77a7783d6d0ca9e84",
+  "prepared_sha256": "11b7401270465235d5e50226b7ade9dddcb9899cd8051ae5e0ff0d03d72cd0f8",
+  "old_object": "/CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative",
+  "canonical_object": "/CelestialVault/Materials/MI_Stars_EnergyConservative.MI_Stars_EnergyConservative",
+  "inspection": [
+    {
+      "requested": "/CelestialVault/Materials/MI_StarsStar_EnergyConservative",
+      "registry_class": "<Struct 'TopLevelAssetPath' (0x000001F114D6EFBC) {package_name: \"/Script/CoreUObject\", asset_name: \"ObjectRedirector\"}>",
+      "loaded": "/CelestialVault/Materials/MI_Stars_EnergyConservative.MI_Stars_EnergyConservative",
+      "loaded_class": "MaterialInstanceConstant"
+    },
+    {
+      "requested": "/CelestialVault/Materials/MI_Stars_EnergyConservative",
+      "registry_class": "<Struct 'TopLevelAssetPath' (0x000001F114D6EBBC) {package_name: \"/Script/Engine\", asset_name: \"MaterialInstanceConstant\"}>",
+      "loaded": "/CelestialVault/Materials/MI_Stars_EnergyConservative.MI_Stars_EnergyConservative",
+      "loaded_class": "MaterialInstanceConstant"
+    }
+  ],
+  "before_test": {
+    "tool_exit_code": 1,
+    "sha256": "7cdf5c4e04a5aa323d17d579ed37579177a63a029e05a42ee8706f736376c8e5",
+    "images_visually_reviewed": true,
+    "reason": "Default object references a missing or uncooked asset",
+    "native_marker": "DIVE_SMOKE_PASS rocks=1",
+    "log": "artifacts/underwater-package-20261128/celestial-gate-before.log",
+    "images": [
+      {
+        "file": "artifacts/underwater-package-20261128/first-package-native/near-normal/Water_0_0.png",
+        "sha256": "717dd32a544b151264ebdd2bb7e4ff89ab9a3f4991d7d2c4608c566fc09118fd"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/first-package-native/near-normal/Water_0_1.png",
+        "sha256": "e9d07fc52ef315eef414abc0b5c36d29e9cdfec34cc91f216ec6fc692bb49aa7"
+      },
+      {
+        "file": "artifacts/underwater-package-20261128/first-package-native/near-normal/Water_0_2.png",
+        "sha256": "71b48465f4d2eaed05d4edefd6db6f3eec92d9af81505d85e18857441b2d604e"
+      }
+    ]
+  },
+  "editor_build": {
+    "seconds": 21.84,
+    "files": [
+      {
+        "file": "artifacts/underwater-package-20261128/celestial-editor-build.log",
+        "sha256": "135642d9f3e6fe175691709c537e665a113b5b7b00758e25724863ceb151e558"
+      },
+      {
+        "file": "Builds/UE584/Engine/Plugins/Runtime/CelestialVault/Binaries/Win64/UnrealEditor-CelestialVault.dll",
+        "sha256": "4a54c93f6eb8039a3e232e64452042870cf86ed8865207497155cad4e7a25d32"
+      }
+    ],
+    "exit_code": 0
+  },
+  "after_test": {
+    "review": "Same three daytime inspection views as before: underwater reflected bed, Sun window, and surface buoy/shore. No new visible difference attributable to the reference correction. Night and full package matrix remain separate.",
+    "log": "artifacts/underwater-package-20261128/celestial-gate-after.log",
+    "sha256": "348792e7c4b6d44e52b878af30dd4f6f3c3c3d30e5c05162d3bbebde5d5debaf",
+    "missing_constructor_asset": false,
+    "tool_exit_code": 0,
+    "images_visually_reviewed": true,
+    "images": [
+      {
+        "sha256": "3529c5649a03f0b614fc7a96049165cf3249967451d73ff9cee9f4872f1af222",
+        "file": "artifacts/underwater-package-20261128/corrected-package-native/near-normal/Water_0_0.png"
+      },
+      {
+        "sha256": "2f2d30d13a5736369f54fcd3c813c22deea07cf6122f02e8a9665ea715c01b1f",
+        "file": "artifacts/underwater-package-20261128/corrected-package-native/near-normal/Water_0_1.png"
+      },
+      {
+        "sha256": "882957a794d742d57f0562414445f7be7b9a010a36edc3ee065fab478a8e338e",
+        "file": "artifacts/underwater-package-20261128/corrected-package-native/near-normal/Water_0_2.png"
+      }
+    ],
+    "package": "Builds/WindowsUnderwaterFinalCandidateR2",
+    "native_marker": "DIVE_SMOKE_PASS rocks=1"
+  }
+}

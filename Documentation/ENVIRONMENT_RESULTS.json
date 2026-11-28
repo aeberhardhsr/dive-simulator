@@ -1,0 +1,221 @@
+{
+  "status": "PASS",
+  "host": {
+    "started_utc": "2026-11-25T15:48:03.4568258Z",
+    "source_head": "b7654877c92dbc7b5039948557c0bd8e8c7ef51a",
+    "source_dirty": true,
+    "executable_sha256": "4212AC8674D9DDD82AAC94D864D5C4366A10AD1D93BCC18D0E90420E81F0A122",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsEnvironment\\divingsim\\Binaries\\Win64\\divingsim-Environment.exe",
+    "background_processes": []
+  },
+  "cases": {
+    "environment": {
+      "fresh_images": 8,
+      "sha256": {
+        "Dive.json": "8dcf04044ea12f2b48204c65a46ee30b76e6bd7d5d2557ca6145ff118d659222",
+        "DiveUnderwater_0_environment.png": "acf87271cda7976c132c08cf6467cc74f40b8b81a2c1f78852565a7482c9ab9e",
+        "EnvironmentDive_EN.png": "5004d723fd864a7a0a65f2106a7504af5db982be451a7ba9774b8a1c52ea2fca",
+        "EnvironmentLocked_EN.png": "015e9280d86fceee773feccb95f330b7bc112ac9297699b9c1a68a634dd8b2b3",
+        "EnvironmentManual_EN.png": "54ac2dc01fda97309c64db1948426026da94aec73ffb382d4d786e60fc428feb",
+        "EnvironmentRain_EN.png": "3b5de05e7db110e42c1cba9bd127fbc19192313d2fde10b8a6bfed329e4917fc",
+        "EnvironmentSummer_EN.png": "dfbe3e6dd96a393d5447e39fbf480b494e324eb6bbf182df505788f36a8dcc96",
+        "EnvironmentWinter_DE.png": "1690dad323b96bcdbb30ac37b514df3ead6c176a532d000935306ec892c3ef19",
+        "EnvironmentWinterFirstFrame_DE.png": "fb3a2d3ef9cd56f07f23b4819fdb887c15b9244dce9b2d7bd6c12454462f7da7",
+        "Runtime.log": "d8a7758aa0ef7e1ba2ec83f97a0bf818d8c37ea0709db48ef8fb863a8da0cd61",
+        "Summary.log": "b29d1a593721dbaac2de572fea5205b0425fa7bb66543ecd390ba486b325ddae"
+      },
+      "temperature_model": "thermdis_walensee_v1",
+      "visibility_m": 6.3999999999999995,
+      "current_mps": 0.112,
+      "samples": 9,
+      "water_range_c": [
+        16.47583831332482,
+        16.574820901052046
+      ],
+      "max_temperature_error_c": 0.0,
+      "first_frame_text": {
+        "wind": {
+          "first_frame_white_pixels": 220,
+          "difference_from_settled": 0
+        },
+        "direction": {
+          "first_frame_white_pixels": 336,
+          "difference_from_settled": 0
+        },
+        "current": {
+          "first_frame_white_pixels": 355,
+          "difference_from_settled": 0
+        },
+        "clock": {
+          "first_frame_white_pixels": 245,
+          "difference_from_settled": 0
+        },
+        "date": {
+          "first_frame_white_pixels": 455,
+          "difference_from_settled": 0
+        }
+      }
+    },
+    "winter": {
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "f57cc794ad4b3f10ccc7c51842fcf5a6da90eab6c9614ee5830270a0af6c74a2",
+        "DiveSmoke_0_dive.png": "cd701d99b34c83243f8a85de8ec3c23fc149c1514ba6c26041161da99c00fe83",
+        "DiveUnderwater_0_dive.png": "070fafe73af84b9eeff88bd1ecd0ca375e4678599cb3c7133be4250b0d33b0cc",
+        "Runtime.log": "cd2db8a287224ffb8f4b9833e54e0f629e951a8fb1a643a7b57236a4157baf4b",
+        "Summary.log": "3543ae1db974ce56a4ecc193e23f0a92724467151503ca4ad8c002c8f13dd034"
+      },
+      "temperature_model": "thermdis_walensee_v1",
+      "visibility_m": 18,
+      "current_mps": 0.052000000000000005,
+      "samples": 23,
+      "water_range_c": [
+        5.823201370753145,
+        5.838356945048692
+      ],
+      "max_temperature_error_c": 0.0
+    },
+    "summer": {
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "b144447aca9ba626afe8662dfedda7c715d287ca91c144233e0f1d218cc4d390",
+        "DiveSmoke_0_dive.png": "80164d301bf84fd7736bb64ea20cf142e45f7a18d9a942870ebc99ea2937ec60",
+        "DiveUnderwater_0_dive.png": "621d73ee26f1e5f90129865242102bef87065771ddc53ea28ca8224bf0482c66",
+        "Runtime.log": "17aa30a6ba7621b81585921641afc9125edb3701b7c9f8c877c808228008a76d",
+        "Summary.log": "71b3ee84073df94475b7b9555ae75884729d39d9aba228eb5c01497529be0ca4"
+      },
+      "temperature_model": "thermdis_walensee_v1",
+      "visibility_m": 12,
+      "current_mps": 0.072,
+      "samples": 23,
+      "water_range_c": [
+        14.969007134133344,
+        17.085
+      ],
+      "max_temperature_error_c": 1.7763568394002505e-15
+    },
+    "manual": {
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "82eefc2991871e7c5bc110b1ca33a4a35a607c7c534e9ce031575a1cfa3d4f4e",
+        "DiveSmoke_0_dive.png": "54176d24f9e34b20141585d397c917dd1484d84c432b056a8d95ad328b556725",
+        "DiveUnderwater_0_dive.png": "87de5c701173209c227e52d88f2510b6071541d45b17c6c1e7e1bc46ab5c0894",
+        "Runtime.log": "eac1b179f16c467f21876c6b806da90503cfa75bd821d894522ee201668080a5",
+        "Summary.log": "07bad25e8bb9ae14cb0ecdb4550918a4b812295cb6c0d59c49b7ad8bf3f46e41"
+      },
+      "temperature_model": "manual_thermocline_v1",
+      "visibility_m": 14,
+      "current_mps": 0.08,
+      "samples": 23,
+      "water_range_c": [
+        16.764421984599903,
+        17.91968578890858
+      ],
+      "max_temperature_error_c": 0.0
+    },
+    "config": {
+      "fresh_images": 10,
+      "sha256": {
+        "ConfigAir_EN.png": "0b23ef7824337ba8884eab250c2a6408e10abf4055ba7d7bccc841a420708b6e",
+        "ConfigDate_EN.png": "4370b6cc5bf8823b688dd5e0c25549edaa1ca754983dd5807c4ee02306094281",
+        "ConfigDateValues_EN.png": "6359df43b2fb14dfd44617e43ddb329f73b5d03de1c1fefa32b11a45ad1685d9",
+        "ConfigPressure_DE.png": "0cdb2f1c9d660579fb084a1b9d7251ec7007d07e855258198dcc84e5449cd6a4",
+        "ConfigRange_DE.png": "a2bbec0fbeda3c768fc16f6f700a7605533a4d84def2af586e5b49b37c3e6dce",
+        "ConfigSpringGap_EN.png": "a6441bf89e9ba5677fc74723935f5f48536fba8f0d05378c67eacd72efcd88e0",
+        "ConfigTime_DE.png": "3c861bc4de4cf65c079eb4f5e2de41de2a3687495088e28e5e6ad41d34a0cf0c",
+        "ConfigTorch_EN.png": "2334f4ef7146b99907679682f1e12236cc8e23e16cef2134435d2470617665ee",
+        "ConfigValues_DE.png": "ad3a5ce25df111af5efd9a62ac8ef6b949bc54daef6771919529494da507c6fe",
+        "ConfigValues_EN.png": "457282a1d8b93fd861ab04ff28873160bb76a5008b688ee2b1059ce55275e90f",
+        "Runtime.log": "6aa85686445856ab20594417418414c9ff00300bb92eaaa1b4482c8e27689e43",
+        "Summary.log": "2b451d41213e6324da153234d9d26b66503aa7a9b478d7e436003203cd68e6ce"
+      }
+    },
+    "profiles": {
+      "fresh_images": 8,
+      "sha256": {
+        "Dive.json": "2866e2893d16f97fba415cfb71d5c80b89671de14739162f8a30c14ff381ee5b",
+        "DiveSmoke_0_profiles.png": "cb106e859fb76c4fdab18d36cb60fff6b305dae55cceb3f2ef2313256e2b3374",
+        "DiveUnderwater_0_profiles.png": "2fdfbe473b3064370c2032f04a3bac66091bbbcaf10a02b9898ba6a4406f6a56",
+        "ProfileDuplicate.png": "5ab0df654f0319bd867c027c0e4640942c0245098914ab15f48cdacc823b645e",
+        "ProfileName.png": "b36d3157735879addbd695c3fe8825538e2e00af413aed700d3e83f7cc9774c4",
+        "Profiles_DE.png": "6027f4dcfe875b7c20362054f1659c51d031125634ee9a6bc77efec9f6729b73",
+        "Profiles_EN.png": "7da6e20afffd7e23ac986a41cdcf0ef05eec59532c248ee3679574c516c894f8",
+        "ProfilesActive.png": "7ade677e8f7904e798094476d07001eb58f088f69bdbb0f6cdc7fdab250113a4",
+        "ProfilesArchive.png": "afdf14314e0962d8f49e235abd7abe5d1e39663118bdef0f6288089ff511d53e",
+        "Runtime.log": "d36792ade6ce6ed4724865918ab28dc630d9935eb9196c8892a527d7a2243ebf",
+        "Summary.log": "a89780f01b2ee7539604263b68e952792a2b85a3b2a0e44de2ce3e52594bfc6f"
+      }
+    },
+    "shore": {
+      "fresh_images": 8,
+      "sha256": {
+        "DiveSmoke_0_shore.png": "df68f552e2d658b2e50809f4ad15671b23c68152fb3c35c14b4d4708d1d35562",
+        "DiveUnderwater_0_shore.png": "b48ca9fb958c5fa760c367f2d564ad5ba3f2bb25c3e3ebeb84435e7c785ec01d",
+        "Runtime.log": "f8b8f6453130b8a67b7228b5612f867365e34149a712e203f6621428665c2c61",
+        "ShoreComplete_0.png": "c6e22e438b701db8d5d7e0f691fc08370ffc69fe5d22cf2e492152f4fd1d9bf2",
+        "ShoreDive_0.png": "69923b55cfc7278b88d124be362c0667897fc5709d2a8e308734df62c8eb37e5",
+        "ShoreMenu_0.png": "5d6fddca1995397cae241d0faf15828d99b22edaf79ab8c24ab226e6fcbb4027",
+        "ShoreReturn_0.png": "f7dd5fed42b81faf3e1d146b11a3e9d1ee8d34d888514363d0b871180366c198",
+        "ShoreStart_0.png": "2f9ac927a3bd418ca79a13636e206c1c0d630d6b175035a836780096922c059f",
+        "ShoreWater_0.png": "d3469bd07f2be6f39e3ed1bea900fcacf6e0699522efa0b74857f5f2299c2e94",
+        "Summary.log": "1527ca00dc8ec18a84d7604fc54d9822266393c17cb860af6df15a060f8e653d"
+      }
+    },
+    "torch": {
+      "fresh_images": 2,
+      "sha256": {
+        "Dive.json": "94411f2e2aa01924a3caf6249bb0f9076a4bcce5cb24f3379b5387e378d6613d",
+        "DiveSmoke_1_torch.png": "cbe62836ace2b45f6ebd6705f45cecf8af03def0d070ef5c1b694cb8455e0c68",
+        "DiveUnderwater_1_torch.png": "b78dd249fb7fc64fd1ec09b351f2d5790a3a0124e55366c7efe10b2371119996",
+        "Runtime.log": "9e83a403dcd3e2ce0564d9b5eb2fa778eb1243ea783d402e53fe8c076d91eea7",
+        "Summary.log": "ad808d0fdc3d1621133301662e943b7fbc6d0e9c68f3e645c60e35d7478c77c2"
+      },
+      "temperature_model": "manual_thermocline_v1",
+      "visibility_m": 14,
+      "current_mps": 0,
+      "samples": 23,
+      "water_range_c": [
+        17.382266025081528,
+        17.536492360820304
+      ],
+      "max_temperature_error_c": 0.0
+    }
+  },
+  "artifact_directory": "O:\\games\\dive game\\artifacts\\environment-validation-20261125-164803",
+  "temperature_source": "https://www.thermdis.eawag.ch/static/templates/json/Lakes.json",
+  "temperature_source_sha256": "c10541ccb7556b62f7771eec4fce0ec95c5772be673cd411bb58e9c3fbd8d084",
+  "limits": "Seasonal means with authored calendar interpolation; visibility/current are scenario values. No live weather, spatial hydrodynamics or native macOS graphics validation.",
+  "implementation_commit": "faa84b514419e751061eb18b3e2e87bfe9a3ff73",
+  "source_snapshot_matching_files": 85,
+  "core_tests": "PASS; zero failures",
+  "python_tests": {
+    "passed": 15,
+    "failed": 0
+  },
+  "native_profile_tests": [
+    "DiveSim.Profiles.Configuration",
+    "DiveSim.Profiles.FileProtectionAndLimits",
+    "DiveSim.Profiles.PersistenceAndRecovery"
+  ],
+  "native_profile_result": "3 succeeded, 0 failed; includes 20 environment choice combinations",
+  "ci": {
+    "url": "https://github.com/aeberhardhsr/dive-simulator/actions/runs/45649367326",
+    "platforms": [
+      "Windows",
+      "macOS",
+      "Ubuntu"
+    ],
+    "status": "success",
+    "scope": "Portable C++ and Python; not native Unreal macOS graphics"
+  },
+  "root_launcher": {
+    "finished_utc": "2026-11-25T15:54:51.4199704Z",
+    "exit_code": 0,
+    "log_sha256": "FF43B7027CE58FAA0AC5811A22C1E3454C8443F7B0BD9C96AFBD80022795A279",
+    "started_utc": "2026-11-25T15:54:25.3095418Z",
+    "executable_sha256": "4212AC8674D9DDD82AAC94D864D5C4366A10AD1D93BCC18D0E90420E81F0A122",
+    "child_id": 52540,
+    "child": "O:\\games\\dive game\\Builds\\WindowsEnvironment\\divingsim\\Binaries\\Win64\\divingsim-Environment.exe",
+    "status": "PASS"
+  }
+}

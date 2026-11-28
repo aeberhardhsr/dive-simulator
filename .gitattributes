@@ -1,0 +1,64 @@
+* text=auto
+*.cpp text eol=lf
+*.h text eol=lf
+*.cs text eol=lf
+*.py text eol=lf
+*.ush text eol=lf
+*.usf text eol=lf
+*.hlsl text eol=lf
+*.sh text eol=lf
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.i16 filter=lfs diff=lfs merge=lfs -text
+*.f32 filter=lfs diff=lfs merge=lfs -text
+*.f16 filter=lfs diff=lfs merge=lfs -text
+*.u8 filter=lfs diff=lfs merge=lfs -text
+*.bmesh filter=lfs diff=lfs merge=lfs -text
+*.trees filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.glb filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.bin filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.exr filter=lfs diff=lfs merge=lfs -text
+Art/Vegetation/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+Geodata/VegetationSource/*.geojson filter=lfs diff=lfs merge=lfs -text
+Geodata/SurfaceCoverSource/*.geojson filter=lfs diff=lfs merge=lfs -text
+Documentation/WALENSEE_VEGETATION_SOURCE.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_BEECH_SOURCE.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_ASSETS.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_SOURCE_AUDIT.json -text whitespace=cr-at-eol
+Documentation/VEGETATION_PLACEMENT_AUDIT.json -text whitespace=cr-at-eol
+blender/exports/Vegetation/Manifest.json -text whitespace=cr-at-eol
+# Keep the pinned catalogue byte checksum identical on every checkout platform.
+divingsim/Content/Diving/Geodata/buildings_sources.json text eol=crlf
+divingsim/Content/Diving/Geodata/shore_stones.json text eol=crlf
+divingsim/Content/Diving/Geodata/lawn.json text eol=crlf
+blender/exports/Lawn/Manifest.json text eol=crlf
+divingsim/Content/Diving/Geodata/buildings.json text eol=lf
+# Small report previews are stored directly with the report.
+Documentation/Images/Environment_Winter.png -filter -diff -merge -text
+Documentation/Images/Environment_Summer.png -filter -diff -merge -text
+Documentation/Images/Loadout_EN.png -filter -diff -merge -text
+Documentation/Images/Avatar_Equipment.png -filter -diff -merge -text
+Documentation/Images/Avatar_Swimming.png -filter -diff -merge -text
+Documentation/Images/Body_Swimming.png -filter -diff -merge -text
+Documentation/Images/Sediment_Visible.png -filter -diff -merge -text
+Documentation/Images/Sediment_Hidden.png -filter -diff -merge -text
+Documentation/Images/Navigation_Entry.png -filter -diff -merge -text
+Documentation/Images/Navigation_DiveMap.png -filter -diff -merge -text
+Documentation/Images/Buildings_Murg.png -filter -diff -merge -text
+Documentation/Images/Shore_Before.png -filter -diff -merge -text
+Documentation/Images/Shore_After.png -filter -diff -merge -text
+Documentation/Images/Caustics_On.png -filter -diff -merge -text
+Documentation/Images/Caustics_Off.png -filter -diff -merge -text
+Documentation/Images/Waypoints_Map.png -filter -diff -merge -text
+Documentation/Images/Waypoints_Bearing.png -filter -diff -merge -text
+
+Documentation/Images/Discoveries_Collection.png -filter -diff -merge -text
+Documentation/Images/Discoveries_Boundary.png -filter -diff -merge -text
+Documentation/Images/Coast_Model.png -filter -diff -merge -text
+Documentation/Images/Coast_ClosedGround.png -filter -diff -merge -text

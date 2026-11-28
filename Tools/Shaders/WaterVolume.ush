@@ -1,0 +1,10 @@
+// Full density below the moving surface, zero above. The 20 cm boundary
+// regularizes voxel sampling; it does not move the rendered water surface.
+float immersion=h*fade-P.z*.01;
+float wet=smoothstep(-.1,.1,immersion);
+if(LakeEnabled>.5)
+{
+    FDiveLakeFootprint lake;
+    wet*=lake.Wet(lake.Distance(LakeGrid,LakeGridSampler,P.xy*.01,LakeMap));
+}
+return (wet*DensityGain*1.45/max(1.5,Visibility)).xxx;

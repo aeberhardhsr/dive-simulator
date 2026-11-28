@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "decision": "Experimental bed relief rejected; previous runtime and assets restored",
+  "baseline": {
+    "file": "Documentation/POPULATION_RETIREMENT_RESULTS.json",
+    "sha256": "1b87cad27e122e1422a61958c4e04e437aaae459e55c31625e7f6e05c2cf439c",
+    "bytes": 178403
+  },
+  "verified_baseline_inputs": 207,
+  "package": "O:\\games\\dive game\\Builds\\WindowsPopulationRetire\\divingsim\\Binaries\\Win64\\divingsim-PopulationRetire.exe",
+  "package_sha256": "3305deae4abb882937ef3c25621a507567ebc3278a0155219d6bada0527d5d42",
+  "runtime": {
+    "file": "artifacts/bed-relief-restored-runtime.log",
+    "sha256": "0fece079686bae8827f07699610eb94a7aca0b10e268e047e4df033aa94a3c45",
+    "bytes": 241841
+  },
+  "build": {
+    "file": "artifacts/bed-relief-baseline-editor-build.log",
+    "sha256": "f9a3dd3bf10fef415f8930d94d1e9dfd10d5dbc14e0fb64827a4d58f9ce25cac",
+    "bytes": 1833
+  },
+  "images": [
+    {
+      "file": "artifacts/bed-relief-restored/Habitat_0_0.png",
+      "sha256": "e984aba07db7038a35c3c18ff6507c4cb803ee5065b5644812795610649346bc",
+      "bytes": 1936493
+    },
+    {
+      "file": "artifacts/bed-relief-restored/Habitat_0_1.png",
+      "sha256": "96b56c1430d6471b5cf029bd5818dcb82805937a9fc4601803c2f860f0dd9bf1",
+      "bytes": 2014342
+    },
+    {
+      "file": "artifacts/bed-relief-restored/Habitat_0_2.png",
+      "sha256": "13c122ef5dd00397a04a857838aa761356b97fa1af05c96af435178fa7c75552",
+      "bytes": 2051940
+    }
+  ],
+  "experiment_patch": {
+    "file": "Documentation/Experiments/bed-relief.patch",
+    "sha256": "608ed89cbf41d3be2f26b98f37244bea9ca79a081eabe296074b4603671aa1d7",
+    "bytes": 29799
+  }
+}

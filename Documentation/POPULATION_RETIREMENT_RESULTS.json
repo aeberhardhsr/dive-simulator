@@ -1,0 +1,6403 @@
+{
+  "status": "PASS",
+  "scope": "Staged rock/plant-component retirement, nearby collision preservation, bounded lifetime and same-executable performance control; not full performance acceptance",
+  "retirement_enabled": true,
+  "population_retirement_enabled": true,
+  "host": {
+    "package_containers": [
+      {
+        "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+        "bytes": 105898051,
+        "file": "divingsim-Windows.pak"
+      },
+      {
+        "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+        "bytes": 1457973520,
+        "file": "divingsim-Windows.ucas"
+      },
+      {
+        "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+        "bytes": 1187020,
+        "file": "divingsim-Windows.utoc"
+      },
+      {
+        "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+        "bytes": 3245920,
+        "file": "global.ucas"
+      },
+      {
+        "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+        "bytes": 794,
+        "file": "global.utoc"
+      }
+    ],
+    "source_head": "61f1024fade5e7ba77c58987015ec1b4cc3b6430",
+    "packaged": true,
+    "executable": "O:\\games\\dive game\\Builds\\WindowsPopulationRetire\\divingsim\\Binaries\\Win64\\divingsim-PopulationRetire.exe",
+    "started_utc": "2026-11-27T02:26:41.4358684Z",
+    "preview": false,
+    "sha256": "3305deae4abb882937ef3c25621a507567ebc3278a0155219d6bada0527d5d42",
+    "files": [
+      {
+        "sha256": "c68ab50cf9ef0b292575beb33146a0b1477a5a6fece1c3060500da6cdd0ab46e",
+        "file": "divingsim/Config/DefaultEngine.ini"
+      },
+      {
+        "sha256": "4223f01cf7661c7dd65848fe50f12aabdff6e4dc0de456e7859965fac7872675",
+        "file": "divingsim/Content/Diving/Gravel/SM_Gravel1.uasset"
+      },
+      {
+        "sha256": "66c53b87c37baa5f013066daff4f6439862e3bef22c6e15fa2deda6f61dcee04",
+        "file": "divingsim/Content/Diving/Gravel/SM_Gravel2.uasset"
+      },
+      {
+        "sha256": "638b6fd633f801fb27241f8490093fc4c7656a1ec4dac57d6e177430074b3cae",
+        "file": "divingsim/Content/Diving/Gravel/SM_Gravel3.uasset"
+      },
+      {
+        "sha256": "8a7c360c879e5e36be9b9d3ee02ccf1dfcf79af22f674f9b2d6f10e80868a18d",
+        "file": "divingsim/Content/Diving/Materials/M_AirBubble.uasset"
+      },
+      {
+        "sha256": "828e4abd31e145ad8d92b893ebdc6d596a9f07f13f2949988495465c19681e65",
+        "file": "divingsim/Content/Diving/Materials/M_AquaticPlant.uasset"
+      },
+      {
+        "sha256": "46a9fa2547fd2e3784152346b29f5be681d8155639b043e7848407932beb70da",
+        "file": "divingsim/Content/Diving/Materials/M_Bubble.uasset"
+      },
+      {
+        "sha256": "290d48cd5e4cf2885c327929adfafdd0b19cd1de5099b9e4b7a722032a9e39ad",
+        "file": "divingsim/Content/Diving/Materials/M_Buildings.uasset"
+      },
+      {
+        "sha256": "de5ba961920237cd1f0f4ebc2d76c9de4b3a93c7d1d302dc1b162cd8ef116ded",
+        "file": "divingsim/Content/Diving/Materials/M_Buoy.uasset"
+      },
+      {
+        "sha256": "b78795401bcaa95d04c02573cd9b9ab699a0ecb1b36134340160d5db7255a29a",
+        "file": "divingsim/Content/Diving/Materials/M_CausticsProbe.uasset"
+      },
+      {
+        "sha256": "c809443cbba151987b9149a439918b2aaeac7e514071b37b4aafa2992a92ff23",
+        "file": "divingsim/Content/Diving/Materials/M_ComputerScreen.uasset"
+      },
+      {
+        "sha256": "d7c5d9cdf81c215e66cbb701c64d0667530eb9d879791fc73867d4d8ac00b7d6",
+        "file": "divingsim/Content/Diving/Materials/M_Equipment.uasset"
+      },
+      {
+        "sha256": "dbca7f757d4e4d1d10bbecd9dcbb8ce75d30507e3b43db4d9a7a58beb0d1242c",
+        "file": "divingsim/Content/Diving/Materials/M_FinSediment.uasset"
+      },
+      {
+        "sha256": "27af114bb65769c82aca54621353a5400a6176a4292da037d6d8fd0a87910636",
+        "file": "divingsim/Content/Diving/Materials/M_Fish.uasset"
+      },
+      {
+        "sha256": "f5a39fcd65fe6f4d134f07d77596cc30fe9899af164d903230c52cc315c4bfb1",
+        "file": "divingsim/Content/Diving/Materials/M_GravelSurface.uasset"
+      },
+      {
+        "sha256": "2fb2a55936372ee8c6e6d82c35348194356e6592de4e98206ba96437624181c7",
+        "file": "divingsim/Content/Diving/Materials/M_Lakebed.uasset"
+      },
+      {
+        "sha256": "d7f572c3a76dd534cf67fef40367f20ab4ea69fd35df98ca99e12c1b6c98dde3",
+        "file": "divingsim/Content/Diving/Materials/M_Landscape.uasset"
+      },
+      {
+        "sha256": "b7357870dc1e70e1005cb48edad5afe28b8687ea186b1c14d7a740ccdc65ccc1",
+        "file": "divingsim/Content/Diving/Materials/M_LandscapePhoto.uasset"
+      },
+      {
+        "sha256": "62965c29ccdb813ccfe05c76c838d4ab4dc56fa1c8331bcb4a9e999fa4f90f8e",
+        "file": "divingsim/Content/Diving/Materials/M_Particle.uasset"
+      },
+      {
+        "sha256": "1c7abb7070ae1674e9f7504bf7cb2511f23b3c17f06a415ee7278f7c72c5502e",
+        "file": "divingsim/Content/Diving/Materials/M_Plant.uasset"
+      },
+      {
+        "sha256": "5d5a2f2168fed51f1ef81c5db203c4a6161175785ea61a8290a2881943a42508",
+        "file": "divingsim/Content/Diving/Materials/M_Rain.uasset"
+      },
+      {
+        "sha256": "1ec21e618e956def7e4e0a33ef0eaf7be246174c187eafc153ea08c890c022b7",
+        "file": "divingsim/Content/Diving/Materials/M_Rock.uasset"
+      },
+      {
+        "sha256": "ce29d5218c13cab0146102e634f97d7ad17cf123df47a9793fe581aea0346c08",
+        "file": "divingsim/Content/Diving/Materials/M_RockScan1.uasset"
+      },
+      {
+        "sha256": "69f0bdb555bb3bead3c3f48863af278166e4250b1a6ebcedb13c49621d3791fa",
+        "file": "divingsim/Content/Diving/Materials/M_RockScan2.uasset"
+      },
+      {
+        "sha256": "a19b0eee86243133901805671cd5597376f5d371452cdc7dd7f3bc608398b0b8",
+        "file": "divingsim/Content/Diving/Materials/M_RockScan3.uasset"
+      },
+      {
+        "sha256": "ae1be790b5c9c55bf3fddfcb6f5313de5e71b7d53c415da8c4ae75c14a438328",
+        "file": "divingsim/Content/Diving/Materials/M_RockSurface.uasset"
+      },
+      {
+        "sha256": "aea3f6f4c0cb618014730e373b3f22b5b4dcbca10681c6aa8020d2566255c217",
+        "file": "divingsim/Content/Diving/Materials/M_Rope.uasset"
+      },
+      {
+        "sha256": "c65a7e2c4563d4ce5f68c93f58e83c7087a7fbf48c5662ed859dd4891d33810d",
+        "file": "divingsim/Content/Diving/Materials/M_Shore.uasset"
+      },
+      {
+        "sha256": "8910c91b20064397d6c7faf8b42ea251531ec1e7e4033393dcb7fed540e93aac",
+        "file": "divingsim/Content/Diving/Materials/M_ShorePhoto.uasset"
+      },
+      {
+        "sha256": "1da912c8eb089c1250dde4ac9060c6a5f08697b3f41c88318ccb3e47323df1ee",
+        "file": "divingsim/Content/Diving/Materials/M_SolarWater.uasset"
+      },
+      {
+        "sha256": "a2e9f16e327e9907868b13506704d98fa97a123b87bb32faf9d91b1f64d3aa2b",
+        "file": "divingsim/Content/Diving/Materials/M_Suit.uasset"
+      },
+      {
+        "sha256": "5e36f150607f6d788c3d16c91ffb85eeff87225da8ff976e1562991cfe8bd575",
+        "file": "divingsim/Content/Diving/Materials/M_SuspendedWater.uasset"
+      },
+      {
+        "sha256": "49cfaa9df9883d18453536f640deb277c9d9bd77e76656a13655f1da2ae8e7c6",
+        "file": "divingsim/Content/Diving/Materials/M_TorchWater.uasset"
+      },
+      {
+        "sha256": "6e65cd5a85876f24604eb589c021f8789d3ee0edff0173606f1a3cbbd18bc14e",
+        "file": "divingsim/Content/Diving/Materials/M_Underwater.uasset"
+      },
+      {
+        "sha256": "764a534b0df3b56357bb150498b9ae7c11fb74966ce1f9e2f51565e737112e6e",
+        "file": "divingsim/Content/Diving/Materials/M_Water.uasset"
+      },
+      {
+        "sha256": "a1ff42d0c89191b7fcf65b609c314ab0a62737839027c05996ef4bfe42917b83",
+        "file": "divingsim/Content/Diving/Materials/M_WaterTop.uasset"
+      },
+      {
+        "sha256": "d09980f1864551047fc6828d5e966a8ca23990be87812d123b2473fa7daef86d",
+        "file": "divingsim/Content/Diving/Materials/M_WaterUnder.uasset"
+      },
+      {
+        "sha256": "f89df9e863d9e329b4ac417ec35a89536f532cfdb486c363dc0bc9a263cac936",
+        "file": "divingsim/Content/Diving/Materials/M_WaterVolume.uasset"
+      },
+      {
+        "sha256": "8036e7f6ac1829780a1d0f95d79e827a8da721b961b31a891f1821c4b1fe48c5",
+        "file": "divingsim/Content/Diving/Materials/M_Wood.uasset"
+      },
+      {
+        "sha256": "13b3075d09f4f63b4edda643412f12cf15c4eb05aea7c1575514dfc66b7931b2",
+        "file": "divingsim/Content/Diving/Materials/MI_Cloud.uasset"
+      },
+      {
+        "sha256": "b17c471a55b6d7ba855a37dc7999230354116cbf72ab7e020529dc3b13d93c1c",
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Burbot.uasset"
+      },
+      {
+        "sha256": "7a4048bf4ea35dfc0f89bfda5651d4a19b5bbeb32845d1b13d0a3bf07c01c40a",
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Perch.uasset"
+      },
+      {
+        "sha256": "dc239e00b65e7da6dcaf0d6bd68fcba8ccbdbf9336b0e4d2c352062b713bb153",
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Pike.uasset"
+      },
+      {
+        "sha256": "36c147422567a9283d40b2ac621a632649380da1d5886224a0e10e8b736efc71",
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Roach.uasset"
+      },
+      {
+        "sha256": "f94a8d09215abecfbacd5f931f81e5ae0e7e303afd446b9b22132341a5fa117e",
+        "file": "divingsim/Content/Diving/Materials/MI_Fish_Whitefish.uasset"
+      },
+      {
+        "sha256": "40336aafe593e2e6d229969c8952c09d6a961daaf164a80971560ea63ecc3c0c",
+        "file": "divingsim/Content/Diving/Rocks/SM_LakeRock1.uasset"
+      },
+      {
+        "sha256": "632513928327799ff67958598934db24b764c21ee71b6f34ca7454b192cde712",
+        "file": "divingsim/Content/Diving/Rocks/SM_LakeRock2.uasset"
+      },
+      {
+        "sha256": "30e3072ae09b1081b65769affa689480ccd4c7dbd89d317158930fb20af1fe6a",
+        "file": "divingsim/Content/Diving/Rocks/SM_LakeRock3.uasset"
+      },
+      {
+        "sha256": "93d4814687dde7f1abed201cf9154b715d3909f0b9094c5ba5483746e6e6f6a6",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_GravelARM.uasset"
+      },
+      {
+        "sha256": "2d40a22cd8aec26b5272d806b6d4b028b4a8f18f7dff23f1d218f291a4f0c66e",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_GravelColor.uasset"
+      },
+      {
+        "sha256": "6575646b824215e6d7113e1294e0e78035a641bd62b545ff2f24758f4cefbf7b",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_GravelNormal.uasset"
+      },
+      {
+        "sha256": "475a5cb9482548e045fdbea94f0f617d335c8e219947d8e7c0c84c9fdffb78bd",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_RockARM.uasset"
+      },
+      {
+        "sha256": "4b6c3de71a0215e8a390664663d8551bf77f9864611ccab7fcd48d86c32caa78",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_RockColor.uasset"
+      },
+      {
+        "sha256": "920af2ffe169e191685b89fc6290db6e7bdbe050f0f2722620f1206b39597fb9",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_RockNormal.uasset"
+      },
+      {
+        "sha256": "ccd5727a61f5c8fd5760e6b127ccd07533305bd59dff54f07810904485314f17",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_SandARM.uasset"
+      },
+      {
+        "sha256": "ac306617e37b27316b3d8b27a43d2026a74a993e8d92b4ba32219fa47bce8e3f",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_SandColor.uasset"
+      },
+      {
+        "sha256": "3d9608c345208134cb0c6abb4823e5e4e936afd3942ddbd8a64fb527e7449237",
+        "file": "divingsim/Content/Diving/Textures/T_Bed_SandNormal.uasset"
+      },
+      {
+        "sha256": "27f8965ff59379a79cc00aae506c49f08365917a19ebe1c4d69dc87fbb4b1e09",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan1_ARM.uasset"
+      },
+      {
+        "sha256": "026d0c86ceef5af3a145441858e9b44a1e4ec087a28a5fadd8eb74ff1b29a5a2",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan1_Color.uasset"
+      },
+      {
+        "sha256": "2f25d7cbcdc56affac2398aa8ebcaffd23565ed8239a7b4aab8d55789214a3be",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan1_ScanNormal.uasset"
+      },
+      {
+        "sha256": "ae7e8097ff8168913a361d2c54e3d93a9248c40a0af6bd16533e4c2ca80e6d17",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan2_ARM.uasset"
+      },
+      {
+        "sha256": "af0776ce976150e7a8d46e762aa4da7a407f023203a08854386be4847e779b63",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan2_Color.uasset"
+      },
+      {
+        "sha256": "9efb5bbeed5113c604c33d05336efae66fc4a865a71d84636f3242a00e8a678a",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan2_ScanNormal.uasset"
+      },
+      {
+        "sha256": "282f03f827078cda6171c0afa706469540c1d198dfe90cf1940e8dcc534c3108",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan3_ARM.uasset"
+      },
+      {
+        "sha256": "99a1ff9c384af17b8d5f915880190093c15574ef75b985f99e4086f6c0909262",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan3_Color.uasset"
+      },
+      {
+        "sha256": "5b3485eb75bb6c594d35786aacf3fed96a55e44158faa81165ddbb6a68360a7b",
+        "file": "divingsim/Content/Diving/Textures/T_RockScan3_ScanNormal.uasset"
+      },
+      {
+        "sha256": "c3fafec101cbb55abf22bba90913f8a3f4f5931af7fa27ed60973d8be83c4c5a",
+        "file": "divingsim/Source/DiveSim/DiveAccess.cpp"
+      },
+      {
+        "sha256": "297c9e861b8cc15f86d3223d7493de76293ad2fafd9f5ae65ef67d6800da2482",
+        "file": "divingsim/Source/DiveSim/DiveAudio.cpp"
+      },
+      {
+        "sha256": "75609b69931de048a65eab2e345c8be812cafdf2cb784113a82822517606afe4",
+        "file": "divingsim/Source/DiveSim/DiveAudio.h"
+      },
+      {
+        "sha256": "f687b4bdab06480a664b0517fe58c91a9388aa21474a7daef045a2e3461fc4e6",
+        "file": "divingsim/Source/DiveSim/DiveAvatar.cpp"
+      },
+      {
+        "sha256": "f26b38972e03ea4679e037d1d06a32c958c6dbc92583c9548bd347003b5a1159",
+        "file": "divingsim/Source/DiveSim/DiveAvatar.h"
+      },
+      {
+        "sha256": "9b09a8d982145e01151122bfd88d678dc96938123efd5c3457329b7d9c553352",
+        "file": "divingsim/Source/DiveSim/DiveAvatarInspection.cpp"
+      },
+      {
+        "sha256": "8ffa876985bed82ac25767eadc1ee5da8ec3cef8069223e66b404f697ac6f90f",
+        "file": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp"
+      },
+      {
+        "sha256": "c2099c1d723a31fea92a3b1c87c33e1d637fd55839452a4e84f64668cdf8f834",
+        "file": "divingsim/Source/DiveSim/DiveBodyFrame.h"
+      },
+      {
+        "sha256": "3eea56b8c59990a161ec7b3aa0bde33954e5af5620bd849930f2d9873b0a883a",
+        "file": "divingsim/Source/DiveSim/DiveBodyFrameTests.cpp"
+      },
+      {
+        "sha256": "94b297908782011fda8e4f8fa290780f5fa2973b9eb552a26cc08344c5c260c2",
+        "file": "divingsim/Source/DiveSim/DiveBuildings.cpp"
+      },
+      {
+        "sha256": "ab265409dce06e6e4b09b10076c2992faef4a9095bca2fabfa9edc47821f097e",
+        "file": "divingsim/Source/DiveSim/DiveBuildings.h"
+      },
+      {
+        "sha256": "b01e8d0ed54535b71cbdfb98866c439ff3e34acf5746a171b5eccbc3f863651a",
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "e44e0a59c5f3318764d993171ef2dae31fe70c045016dbc4ada08103cdcbcc6f",
+        "file": "divingsim/Source/DiveSim/DiveBuildingsBakeCommandlet.h"
+      },
+      {
+        "sha256": "6bc2c4cb8b709aee40ea1c527acb42d90a27b67e4eca5a45e607a971e99007fe",
+        "file": "divingsim/Source/DiveSim/DiveCaustics.cpp"
+      },
+      {
+        "sha256": "df0ed547ed3190a81d7e0a4b7cb342c2ccc4e8096c5c4d1ec3240f0e8525946f",
+        "file": "divingsim/Source/DiveSim/DiveCausticsSmoke.cpp"
+      },
+      {
+        "sha256": "e18c47d1ba8e01b0dd50c1737cf6bfd9edd0bf86f53264140ed4b1bff5a1acf1",
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.cpp"
+      },
+      {
+        "sha256": "715fbc0064a800bbbd22825c588b65ed11628b6e00399095bfd8a84a0ccf25a1",
+        "file": "divingsim/Source/DiveSim/DiveCelestialActor.h"
+      },
+      {
+        "sha256": "90fdbdd9655b101d757ac55abdf49cc3e4160893646bec4757e22002945eb49f",
+        "file": "divingsim/Source/DiveSim/DiveCoast.cpp"
+      },
+      {
+        "sha256": "75c97a2a5ab6fbe38bbebe81df4c1284f3af6c64d6586667662bd28a628cf819",
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "814a4b5bcd16be9d7a97070e6a5cd27bc0abd9e1c0e8feb481b9f0022f747a29",
+        "file": "divingsim/Source/DiveSim/DiveCoastBakeCommandlet.h"
+      },
+      {
+        "sha256": "49fcd98f31e1cea4712d5aabfd1be16207e4b5e574a245f1288e2cc282a2072d",
+        "file": "divingsim/Source/DiveSim/DiveCoastTerrain.cpp"
+      },
+      {
+        "sha256": "bd57ec69a2bf062f3665640692543dafdbca3125c9c1a128b25804136325a799",
+        "file": "divingsim/Source/DiveSim/DiveConfigHUD.cpp"
+      },
+      {
+        "sha256": "f1b4a92483dc18ee13aa3974e8c8bacc8d574d802a3ab7622b12711b389b924d",
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.cpp"
+      },
+      {
+        "sha256": "72b97f4a07f2355d292827ac5fc0a3f0ceb9bd130d5e76a1527250e965a9e6d3",
+        "file": "divingsim/Source/DiveSim/DiveConfigIO.h"
+      },
+      {
+        "sha256": "a38ce254e78a277c1184bdd864d2209143dbe0de3a7fb092941ca3c208d3979f",
+        "file": "divingsim/Source/DiveSim/DiveContacts.cpp"
+      },
+      {
+        "sha256": "eabbdca0e66fc48c18e743a702e577a7bb98741c222bfea8434608a01cb2142a",
+        "file": "divingsim/Source/DiveSim/DiveContacts.h"
+      },
+      {
+        "sha256": "ee8473f5aa0d0bd5dab739114d9f2c8813a23ec33aa8c288d173ce2350a87f74",
+        "file": "divingsim/Source/DiveSim/DiveContactsTests.cpp"
+      },
+      {
+        "sha256": "304643e2bb1f01f1cdc4592af0b4494af64a1cb968e7d888d707eceef653d068",
+        "file": "divingsim/Source/DiveSim/DiveControls.cpp"
+      },
+      {
+        "sha256": "ad20dcfc7f49624a93dece5803c2bd8dac613db3e8af7c4d961e182c4d0a876e",
+        "file": "divingsim/Source/DiveSim/DiveControls.h"
+      },
+      {
+        "sha256": "01848d7ff10435d7568679032a31250a7b958fa2d95e0f206867c1129157b1b9",
+        "file": "divingsim/Source/DiveSim/DiveControlsHUD.cpp"
+      },
+      {
+        "sha256": "b2226e4891ddb36306fcbe77484ad8fec71fb79c6d0ae69b1d79ebcaa84204fa",
+        "file": "divingsim/Source/DiveSim/DiveControlsTests.cpp"
+      },
+      {
+        "sha256": "e1eac56216d98e18c5e6289b7b1894c2693b56e35c357277307900e820adc057",
+        "file": "divingsim/Source/DiveSim/DiveDayCycleSmoke.cpp"
+      },
+      {
+        "sha256": "2c481a759966fc61322133c78d04dc056fc8cfe1775031993175917be4cd2982",
+        "file": "divingsim/Source/DiveSim/DiveDecompressionSmoke.cpp"
+      },
+      {
+        "sha256": "de00cab7b1ebb84603bcfdacdc192b5e11e0f456dce54a04fd35cf33acbf4006",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.cpp"
+      },
+      {
+        "sha256": "af4c92b8aba091385967322792fad0dfeb5ca0b2cc55aafb44bbcf5cc491094d",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveries.h"
+      },
+      {
+        "sha256": "789a1434f9283d7599d0e8a50cfa140e131a31f59c10a76029946d03c2a77da2",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesHUD.cpp"
+      },
+      {
+        "sha256": "0441ebea155c9c733a2b38c162c9e088c398da77fd7b6de7c5bedfe6a4aeef63",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesSmoke.cpp"
+      },
+      {
+        "sha256": "f2606f7720d050624d7186a3ac7bac7fb910f34528f65a856535e4e03872f7fe",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveriesTests.cpp"
+      },
+      {
+        "sha256": "1060ceabbe7b9d8e973a8eebd1be4ab9e1d7f97492d5ee15fad68afa9b995f69",
+        "file": "divingsim/Source/DiveSim/DiveDiscoveryObservation.cpp"
+      },
+      {
+        "sha256": "a4c059fd59b84d0480899242b20da3c77745f011280c736b2deb63a9aedcdfdc",
+        "file": "divingsim/Source/DiveSim/DiveEcology.cpp"
+      },
+      {
+        "sha256": "029ba8e9dd19f315e0ae423bd52f3d3589ef8ba176725385e16578b2efa04724",
+        "file": "divingsim/Source/DiveSim/DiveEnvironmentSmoke.cpp"
+      },
+      {
+        "sha256": "4a342ed74ed4baca6153650f11dce7b67a663bc685091e398054bc8e3c4fb8ac",
+        "file": "divingsim/Source/DiveSim/DiveEquipment.cpp"
+      },
+      {
+        "sha256": "5fac1c0692f34211e75bdebaaf02b597b3badc8b6a88563d5963c866eed1e26a",
+        "file": "divingsim/Source/DiveSim/DiveEquipment.h"
+      },
+      {
+        "sha256": "6d477a17225e5103edba471cd705ebf6bfb327a7cf41924a92b0933edd9169cd",
+        "file": "divingsim/Source/DiveSim/DiveFishInspection.cpp"
+      },
+      {
+        "sha256": "6d60bd17cf6f025f4d1a0f02d42f66798de2a720b2a6a35b9d827c11f6579f68",
+        "file": "divingsim/Source/DiveSim/DiveFishSteering.cpp"
+      },
+      {
+        "sha256": "4012d8013832aa0cdc8af115e7fc47fd8aaa49248b959b0bc28d755207fe9a04",
+        "file": "divingsim/Source/DiveSim/DiveGameMode.cpp"
+      },
+      {
+        "sha256": "2bdc624eda6c5d7161545c41e4fdb732b6362adc698a8ef3ebf88cf51109ec1b",
+        "file": "divingsim/Source/DiveSim/DiveGameMode.h"
+      },
+      {
+        "sha256": "fd4fa9c2f0dbf9a46e32fd2607b1b5a3178c279856b86e797de4731e91d5f6ca",
+        "file": "divingsim/Source/DiveSim/DiveGravel.cpp"
+      },
+      {
+        "sha256": "98d497a8c649030b96888329c4b7bafe88d1e27a06f81a92a8e2904f025f94af",
+        "file": "divingsim/Source/DiveSim/DiveHUD.cpp"
+      },
+      {
+        "sha256": "4b7f8d5523a96e9374c9d4e6561011ce01e0d8154640586b51926407c874df17",
+        "file": "divingsim/Source/DiveSim/DiveHUD.h"
+      },
+      {
+        "sha256": "350a4e678c5f91a83836c6384b9061705425191ceef19326676b223089c98c72",
+        "file": "divingsim/Source/DiveSim/DiveImagery.cpp"
+      },
+      {
+        "sha256": "31f7c60239fa146ac1edfa8f7b3438e2172b3a3eb14a0fd64924d98540fde7a0",
+        "file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp"
+      },
+      {
+        "sha256": "eb607f0a1d9674846388ba38296696fe1896c82d0b1889a38dfd378593be21d8",
+        "file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+      },
+      {
+        "sha256": "7a85fd583a418e0c7c38c0c6cbdb8fc3ba7ec1085723de0f4fa3147edee941ef",
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp"
+      },
+      {
+        "sha256": "475acf63e86ddfee60cb9cf07aba7428c26e3e46c4237d609bd471f645d26d12",
+        "file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.h"
+      },
+      {
+        "sha256": "9231e4d197a13c0065208960352e9f65e3b21f3740efb1bbb109ea429a12b664",
+        "file": "divingsim/Source/DiveSim/DiveLoadoutHUD.cpp"
+      },
+      {
+        "sha256": "235bd4a9cce55d05021da61df4b6fd8b81a0dcc214f39900da7f47eba44a9a04",
+        "file": "divingsim/Source/DiveSim/DiveLoadoutSmoke.cpp"
+      },
+      {
+        "sha256": "7da179ae1787fc480664f54446077c49a33c8823ab6602a5952c75af198efde2",
+        "file": "divingsim/Source/DiveSim/DiveLogbook.cpp"
+      },
+      {
+        "sha256": "e5a2a5e6a6173476987ff0feeb552753f8c7f52ef4ec1d5a8f5160cd18d2d67b",
+        "file": "divingsim/Source/DiveSim/DiveLogbook.h"
+      },
+      {
+        "sha256": "cc7fc43130b594f5b0759d6d14eebdc3ea1879144cf2d4c4d813e312db33c522",
+        "file": "divingsim/Source/DiveSim/DiveLogbookHUD.cpp"
+      },
+      {
+        "sha256": "e7319798d93f70e1832fec22426a99874ec689a855f555b77d5123a1b7d736f9",
+        "file": "divingsim/Source/DiveSim/DiveLogbookTests.cpp"
+      },
+      {
+        "sha256": "20cb2da3ef6fdb2ef6e482ad52dd8bd746cb6cc33ce8d9663307e2c3de6de7ee",
+        "file": "divingsim/Source/DiveSim/DiveMapHUD.cpp"
+      },
+      {
+        "sha256": "0680746050de760e6ba7ab848d8fbe1f4b02e7ea7a16255bc77a61c3c458194d",
+        "file": "divingsim/Source/DiveSim/DiveModeSmoke.cpp"
+      },
+      {
+        "sha256": "a74c4c08eba42e8269de684b0ada74963ae69edc1e2b34b7a7d61fc3d75d26d6",
+        "file": "divingsim/Source/DiveSim/DiveNavigationSmoke.cpp"
+      },
+      {
+        "sha256": "d198d82dde63cb64315b0860bc3b15eeac342ff24734248ca26407174ea431cb",
+        "file": "divingsim/Source/DiveSim/DiveNavigationTests.cpp"
+      },
+      {
+        "sha256": "14ec58f1b4733beb3fd6db66ae2676e854c0a675b97b5eb7c6be793223fd3c93",
+        "file": "divingsim/Source/DiveSim/DiveParticles.cpp"
+      },
+      {
+        "sha256": "e20ba29308f1d754e44517c9cdaf5868dbc7d1be14895476d7b87fab53d80ae0",
+        "file": "divingsim/Source/DiveSim/DivePawn.cpp"
+      },
+      {
+        "sha256": "b0d6af6fc530eb4408b353d72385ad50e48f205475c3da9ec10edb37a7d5976a",
+        "file": "divingsim/Source/DiveSim/DivePawn.h"
+      },
+      {
+        "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4",
+        "file": "divingsim/Source/DiveSim/DivePawnContacts.cpp"
+      },
+      {
+        "sha256": "45fa10a9e404c4e16ca53f1971bcbe5fc47e0a1d85fd5c85aea4f658eebd1714",
+        "file": "divingsim/Source/DiveSim/DivePerformance.cpp"
+      },
+      {
+        "sha256": "80c6b5e89696c52c63f99b18ba1cad5c9c3a2a95c26e6f5d3c60ad2058395475",
+        "file": "divingsim/Source/DiveSim/DivePhotograph.cpp"
+      },
+      {
+        "sha256": "9daec5ad3a5208066ddf6a43f4454d7d837cbcfcf1723be7e0620d156a937af1",
+        "file": "divingsim/Source/DiveSim/DivePlantBedsTests.cpp"
+      },
+      {
+        "sha256": "565b71ff80159ea57ae2b9046be6adbc08084fe71c2102d7a1db0c02660f8d88",
+        "file": "divingsim/Source/DiveSim/DivePlayerController.cpp"
+      },
+      {
+        "sha256": "1986a603ad1f2413ec706bd0c3804dccbf2eb3b7b6522d19da22dd7b2de7a95a",
+        "file": "divingsim/Source/DiveSim/DivePlayerController.h"
+      },
+      {
+        "sha256": "e72f620daa4a5e5c0f492171f2d0d7d0f07a3592363a19602c21cf0cd7a2bc68",
+        "file": "divingsim/Source/DiveSim/DivePopulation.cpp"
+      },
+      {
+        "sha256": "62554a91c937c4b5f5aa7f90b131d45f2f5e38f6bc1de459c15f9ccfb60a4f0f",
+        "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp"
+      },
+      {
+        "sha256": "7c71ddbdb0562c8d8a8450e8ea5d6fd515a05bec6d5eb514f152db7ce7a5362f",
+        "file": "divingsim/Source/DiveSim/DivePose.h"
+      },
+      {
+        "sha256": "e882a22c0902e9c4366d290bf8424ef1b226957061aa06ae2ff31729a77789d8",
+        "file": "divingsim/Source/DiveSim/DiveProfiles.cpp"
+      },
+      {
+        "sha256": "095ae4517069f3cfdb651dbce98fcbe3e7d452a2c6b6a4dc90efba648209e447",
+        "file": "divingsim/Source/DiveSim/DiveProfiles.h"
+      },
+      {
+        "sha256": "f0a5293ef4fc16ff66f96779972697173bceb63258fd17fa4975f6f72f118a58",
+        "file": "divingsim/Source/DiveSim/DiveProfilesHUD.cpp"
+      },
+      {
+        "sha256": "c3e287f6f8dfc944d4ca63e41544d54d9d9fbaa1dc28b0a350ba896dc9239bc0",
+        "file": "divingsim/Source/DiveSim/DiveProfilesTests.cpp"
+      },
+      {
+        "sha256": "fca8445ee3f4a89aaf51c77905a9668a3583c4d32a460de0a2557a9a3fece43b",
+        "file": "divingsim/Source/DiveSim/DiveRecording.cpp"
+      },
+      {
+        "sha256": "5b1bbde573c7a2d047c2dc6916ec1db377feaa09b1952e1d2f576f89c94cd08f",
+        "file": "divingsim/Source/DiveSim/DiveRecording.h"
+      },
+      {
+        "sha256": "2926ea4adf986db7c28d0a02b942478b2c077056eda17e0b508f1ec3032b41dc",
+        "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp"
+      },
+      {
+        "sha256": "0395297ff23d7ceaf8b69ee9c0f824862b1ea21c76590876ad8d648a3fe8fe14",
+        "file": "divingsim/Source/DiveSim/DiveRockSearchTests.cpp"
+      },
+      {
+        "sha256": "f3c08475bb83a5d85b79e2c19e37d0f85269a5086d5f2a8e953a365ceaf5edec",
+        "file": "divingsim/Source/DiveSim/DiveSediment.cpp"
+      },
+      {
+        "sha256": "496830f5125a3e0718ce91a63382f1ebbe890e09f024412125c408bca20a2a9d",
+        "file": "divingsim/Source/DiveSim/DiveSedimentSmoke.cpp"
+      },
+      {
+        "sha256": "216a6c53504d8ee221fbecceea4af38c2edd598cee511c3eeba6a358423b1fb9",
+        "file": "divingsim/Source/DiveSim/DiveShoreline.cpp"
+      },
+      {
+        "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea",
+        "file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp"
+      },
+      {
+        "sha256": "67733768979fa23e231ac9ff645bebfb73f2d19036e7fd29936426978d53ef7b",
+        "file": "divingsim/Source/DiveSim/DiveSim.Build.cs"
+      },
+      {
+        "sha256": "257016e4b4eaa39c145368f984ec3b84a6411ccda4c8d836f307b7a2092330ac",
+        "file": "divingsim/Source/DiveSim/DiveSim.cpp"
+      },
+      {
+        "sha256": "b01b6b36c16e9e04c2a71911e5997bc052956cbf1ceb242d6c997af8bd1ee519",
+        "file": "divingsim/Source/DiveSim/DiveSky.cpp"
+      },
+      {
+        "sha256": "dee24f6b2c37e7d6093e63f488e61e9fe4e47c12ed3fc58d30670234766d0819",
+        "file": "divingsim/Source/DiveSim/DiveSoak.cpp"
+      },
+      {
+        "sha256": "29006adac7d099d14f62a9b42a7425e50523ef70acf7cf6aa5ef2d62fd12d8fb",
+        "file": "divingsim/Source/DiveSim/DiveTerrain.cpp"
+      },
+      {
+        "sha256": "68def7d5e0a9340e4e9199f1f54af0014d1edd7c1d341065f80871c26ab41b57",
+        "file": "divingsim/Source/DiveSim/DiveTerrain.h"
+      },
+      {
+        "sha256": "104891755f22dbd9528c96f156aa90cf07ee72272326ad6446b1372b2f24e7d6",
+        "file": "divingsim/Source/DiveSim/DiveTextDialog.h"
+      },
+      {
+        "sha256": "c5135287c9e73fdb2ebe02cd95cfd66457be04941cd953f797e04211f4b9e0d7",
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.cpp"
+      },
+      {
+        "sha256": "f9ac559cdd3b88525004915a9ecd528f76b6336fcce4c4d2f0c4f43176cb1d31",
+        "file": "divingsim/Source/DiveSim/DiveTextureAuditCommandlet.h"
+      },
+      {
+        "sha256": "3b91f1a38a8457d15a89fe48a6caf1cb38bd3af9e5de7c047e83c18113bacb9b",
+        "file": "divingsim/Source/DiveSim/DiveTorch.cpp"
+      },
+      {
+        "sha256": "c2d9fa1be021654a2a9f8d7b3048802af3d64245528a6707986cd47b9685ac7d",
+        "file": "divingsim/Source/DiveSim/DiveVegetation.cpp"
+      },
+      {
+        "sha256": "6eef5cf0074f363d04fcb8d2c27f1fd435dc2761896fb02a20557abac2499515",
+        "file": "divingsim/Source/DiveSim/DiveVegetation.h"
+      },
+      {
+        "sha256": "61664c2799b066c5ffdfa945a54688de13ec4de184977d09729cf2fe423d639b",
+        "file": "divingsim/Source/DiveSim/DiveWater.cpp"
+      },
+      {
+        "sha256": "cdaa25b66b35a7f6d5a48eb0fe3b01bbfbca5be773ed4554cf91b5b4bddc2683",
+        "file": "divingsim/Source/DiveSim/DiveWaterVolume.cpp"
+      },
+      {
+        "sha256": "f93a98e118f1b82c5563678360e64b871aa391f7a5dd3b53d7c427f21f24cb1b",
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.cpp"
+      },
+      {
+        "sha256": "59ff377f6495563eedd66623a8184b639183b002680c1ad02a91581f7ea647f1",
+        "file": "divingsim/Source/DiveSim/DiveWaypoints.h"
+      },
+      {
+        "sha256": "411bc3c1781f8be75bb579a27628fd4dd7e0f8bbbcd909299a1236f2bc45fcbd",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsHUD.cpp"
+      },
+      {
+        "sha256": "6f426e28003e35600653e525840fe31c88d71a0ee64c841b16b72b23ce0bd104",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsSmoke.cpp"
+      },
+      {
+        "sha256": "7e79f43d95a3b81d0a69ae71cf8e3c13f10ba2b6d391065ef3a101924d02c613",
+        "file": "divingsim/Source/DiveSim/DiveWaypointsTests.cpp"
+      },
+      {
+        "sha256": "ce7ecff3b3fa8a5e25272fcfa848ccc7551f4c5d9eaed46ac922bc9d99b29bfe",
+        "file": "divingsim/Source/DiveSim/DiveWorld.cpp"
+      },
+      {
+        "sha256": "cd90d8ccf001a1d2a5e5ec219e3bdfc4579e1b86a1feed752c895310897d9db4",
+        "file": "divingsim/Source/DiveSim/DiveWorld.h"
+      },
+      {
+        "sha256": "0649e7b857e0f8ac6f631e39664eeef3c1dc3b9bf6925dc550b87629d7f01d14",
+        "file": "divingsim/Source/DiveSim/Simulation/AudioModel.h"
+      },
+      {
+        "sha256": "7c6db5c705c037ddd4b6de5289a9370c2d6c17b7bc8c9edf6dc8be89eeb65898",
+        "file": "divingsim/Source/DiveSim/Simulation/BedDistribution.h"
+      },
+      {
+        "sha256": "db2ee6a3d9f8af8589fc1346fb719438bf337622c433738f153ed16ac681fb10",
+        "file": "divingsim/Source/DiveSim/Simulation/Bubbles.h"
+      },
+      {
+        "sha256": "77ec4a163d1ebb61f2da016674a34867effc647817872f1192fa27aec1752271",
+        "file": "divingsim/Source/DiveSim/Simulation/CoastGrid.h"
+      },
+      {
+        "sha256": "d191ebe33afb29b84a7680bc555a50ba18dfa2a66948269c32c236ac0690b47b",
+        "file": "divingsim/Source/DiveSim/Simulation/ConfigInput.h"
+      },
+      {
+        "sha256": "0112bcb88846defb9d353f49a8885ca9242d17c6a4139c264e438b1c08e763db",
+        "file": "divingsim/Source/DiveSim/Simulation/Decompression.h"
+      },
+      {
+        "sha256": "b87ab3a5265d362f0cbd3f5873277d69c27c7da2f810490cccab99b09b8cf291",
+        "file": "divingsim/Source/DiveSim/Simulation/DiveModel.h"
+      },
+      {
+        "sha256": "aa7011c3b1f5f1eb02b76cedddefa7922be3ffc706fc94986a04e4dfea97efa7",
+        "file": "divingsim/Source/DiveSim/Simulation/Ecology.h"
+      },
+      {
+        "sha256": "6f8609723df472f48c87521db73c3918a78b461fd5cc5f981ecd904915d5b71f",
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentLight.h"
+      },
+      {
+        "sha256": "d65535816d02f0cdffe069f16d76d7da0a5b85edaa6088189b8321c54922ee0a",
+        "file": "divingsim/Source/DiveSim/Simulation/EnvironmentScenario.h"
+      },
+      {
+        "sha256": "6458a379aed42b5e3282df9b421a8dbb0e6d95966c907b61f6c31ffcaef15669",
+        "file": "divingsim/Source/DiveSim/Simulation/FishMotion.h"
+      },
+      {
+        "sha256": "ae48f8b62441e1602654949725d254601d918bb1ed3219450609e0c4c68dc500",
+        "file": "divingsim/Source/DiveSim/Simulation/FishSteering.h"
+      },
+      {
+        "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93",
+        "file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h"
+      },
+      {
+        "sha256": "54414a8cc421d05141aefa9b99dae07bfdb6aeeb04df5f50687e079a7755c99a",
+        "file": "divingsim/Source/DiveSim/Simulation/Loadout.h"
+      },
+      {
+        "sha256": "ddff94e0b6adb277cc34defdc8113659187ad80f2065d55d084086050f3af599",
+        "file": "divingsim/Source/DiveSim/Simulation/ModeRules.h"
+      },
+      {
+        "sha256": "015337fba369c140dd648e00de6d9539c296a7f6d155ea1f025d41ccc6a3b75d",
+        "file": "divingsim/Source/DiveSim/Simulation/Navigation.h"
+      },
+      {
+        "sha256": "6eac3be8b7d8f3ba7b35fe2f7f77d1a66929df60a2ffcae9c98a3b2b4f51b805",
+        "file": "divingsim/Source/DiveSim/Simulation/RockIndex.h"
+      },
+      {
+        "sha256": "18a9c9886a55f3feaff8bd0d69f6b4781a36a3053cd332d02c844038521d0147",
+        "file": "divingsim/Source/DiveSim/Simulation/ScenarioClock.h"
+      },
+      {
+        "sha256": "835fa06fac6e0d612b7e650b7e4e33d8194ea3dad1434a94e8b214cb8a509633",
+        "file": "divingsim/Source/DiveSim/Simulation/Sediment.h"
+      },
+      {
+        "sha256": "ab04b197d8aac45de9fc0bde8d2821eac1619806a8d8afd9dcc99834fa8ebdbe",
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreMovement.h"
+      },
+      {
+        "sha256": "72b3796a84ed30c52d348f3ade8bcb4b1984f0d218a129f458b1dc67aa76f62b",
+        "file": "divingsim/Source/DiveSim/Simulation/ShoreTransition.h"
+      },
+      {
+        "sha256": "01083039c789fbd4a969f75adf8e185e285fb6e3cf7e4ae85ebcf71a94c18700",
+        "file": "divingsim/Source/DiveSim/Simulation/SoakMetrics.h"
+      },
+      {
+        "sha256": "cad159088612bc2bde330b0c697aae6415c5865a4ee78bad25c1ccec516598dc",
+        "file": "divingsim/Source/DiveSim/Simulation/Torch.h"
+      },
+      {
+        "sha256": "de7ada9667d34d3554bc2c9796ff8b08d5e3aff4f6379331b143e1f321c75cdd",
+        "file": "divingsim/Source/DiveSim/Simulation/Tutorial.h"
+      },
+      {
+        "sha256": "0d01a8d064e55040ee2e7a1043ea3967333e88b0a1c8effede0cefe3a7f970ab",
+        "file": "divingsim/Source/DiveSim/Simulation/VisualMedium.h"
+      },
+      {
+        "sha256": "7102e0e7625aa8a1a8268a910b51e8899b48d53e7551c9c9152fccdd486ac725",
+        "file": "divingsim/Source/DiveSim/Simulation/WalenseeTemperatureData.h"
+      },
+      {
+        "sha256": "2fbface3cb809442c0316697d6d9b3db6632d3cef00352aae8f6d57feea7db68",
+        "file": "divingsim/Source/DiveSim/Simulation/WaterSurface.h"
+      },
+      {
+        "sha256": "afd1763ed7c9de0d550a79c85c598f429293beb33e17162d9c01c34a65f928cf",
+        "file": "divingsim/Source/DiveSim/Simulation/Weather.h"
+      },
+      {
+        "sha256": "8f6bb5c7e7744fa2d3a6b220dd42fa964335c7492c9820e9f06a81ca77addb05",
+        "file": "Tools/Shaders/Lakebed.ush"
+      },
+      {
+        "sha256": "d242372474bd9b024d8af05f9d03d825530c6bb1f1cb0b66bbc508494bb18274",
+        "file": "Tools/SmokeTest.ps1"
+      },
+      {
+        "sha256": "24bd8c1920553da43dfa0fd32b09bbadd8ebbbea8167ae4e1f7ec4ec5b341ef1",
+        "file": "Tools/TestGravelRelief.ps1"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "disabled": true,
+      "status": "PASS",
+      "screenshots": 3,
+      "name": "close-before",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 2526,
+          "contacts": 210,
+          "edge_stones": 407
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 1904,
+          "milliseconds": 12.455
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2526,
+          "milliseconds": 18.502
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2526,
+          "milliseconds": 18.471
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.433
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 2383,
+          "milliseconds": 1.383
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2779,
+          "milliseconds": 2.625
+        },
+        {
+          "x": 113,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 2643,
+          "milliseconds": 22.24
+        },
+        {
+          "x": 126,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 401,
+          "milliseconds": 11.123
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 2526,
+          "milliseconds": 18.209
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.738
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.901
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.713
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.723
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.952
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.873
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.999
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.967
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 3.157
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 3.321
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 3.343
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.988
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 3.2
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 3.838
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 3.178
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 3.086
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 3.229
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 3.222
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 3.117
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.997
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 2291,
+          "milliseconds": 0.891
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2526,
+          "milliseconds": 1.912
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.881
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 2383,
+          "milliseconds": 1.173
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2779,
+          "milliseconds": 2.795
+        },
+        {
+          "x": 106,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 3527,
+          "milliseconds": 26.217
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 2526,
+          "milliseconds": 20.413
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.488
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.525
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.485
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.738
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.697
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.82
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.747
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.84
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.727
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.719
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.653
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.949
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.621
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.656
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.608
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.909
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.829
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.869
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2237,
+          "milliseconds": 2.845
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 2273,
+          "milliseconds": 2.948
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 2291,
+          "milliseconds": 0.753
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2526,
+          "milliseconds": 1.801
+        },
+        {
+          "x": 99,
+          "y": 943,
+          "loaded": 7,
+          "unloaded": 7,
+          "active": 9,
+          "stones": 2394,
+          "milliseconds": 14.798
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-before/Runtime.log",
+        "sha256": "c286e0fdb3b5d08aed2dca720dc63094f12703aa5285489cc0ddce43212abca1",
+        "bytes": 182231
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/close-before/Habitat_0_0.png",
+          "sha256": "a793775dd6ab5f1b506e662f84624f287e7d2d601bf7df843750d88c46c9a7b6",
+          "bytes": 2181088
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/close-before/Habitat_0_1.png",
+          "sha256": "bcce9b4866cd180105329335e84d7fd5bd54c21850099b87d426531c6e185211",
+          "bytes": 2198568
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/close-before/Habitat_0_2.png",
+          "sha256": "d272f040e8817eb7e902e742cc20600847c68df04c1f401ca1c4a39a33a09ede",
+          "bytes": 2225028
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.26.44:945][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "name": "close-after",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 20201,
+          "contacts": 216,
+          "edge_stones": 3378
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 122.968
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 157.868
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 157.137
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 18.273
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 19116,
+          "milliseconds": 8.419
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22241,
+          "milliseconds": 21.234
+        },
+        {
+          "x": 113,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 21546,
+          "milliseconds": 181.705
+        },
+        {
+          "x": 126,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 3138,
+          "milliseconds": 85.129
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 143.599
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.813
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.611
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.994
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.991
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.237
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.968
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.612
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.856
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 29.64
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.587
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 25.635
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 27.083
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 25.098
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.577
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.469
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 25.917
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.853
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.89
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 25.297
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 25.584
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 18511,
+          "milliseconds": 6.016
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 17.284
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.661
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 19116,
+          "milliseconds": 9.011
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22241,
+          "milliseconds": 23.031
+        },
+        {
+          "x": 106,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 28284,
+          "milliseconds": 251.665
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 192.47
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.105
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.716
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.993
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.119
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.999
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 25.123
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.28
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.137
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.232
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.842
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.434
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.579
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.377
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 30.53
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.503
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.901
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.047
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.327
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 25.084
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 25.67
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 18511,
+          "milliseconds": 4.97
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 16.339
+        },
+        {
+          "x": 99,
+          "y": 943,
+          "loaded": 7,
+          "unloaded": 7,
+          "active": 9,
+          "stones": 18911,
+          "milliseconds": 120.6
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-after/Runtime.log",
+        "sha256": "141bcd4f1a42d1555a5670e464b8e4931b45c663be66c87954b88fc48f2ff3f2",
+        "bytes": 182256
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/close-after/Habitat_0_0.png",
+          "sha256": "61746182ff11733b08712e2b29817583b15f77c89d20e0676301664c9335dece",
+          "bytes": 2184153
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/close-after/Habitat_0_1.png",
+          "sha256": "ade90a028153bf3fcff095d0893b7906ef2ccce51dc3bce76247838133aff669",
+          "bytes": 2218606
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/close-after/Habitat_0_2.png",
+          "sha256": "62d94e17eba3623f763ba8f61a19323cc720c832e5c4ef6b0230df1133262215",
+          "bytes": 2264108
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.27.10:469][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "name": "weesen",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 15220,
+          "contacts": 192,
+          "edge_stones": 5385
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 94.701
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 105.458
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 100.605
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 30707,
+          "milliseconds": 171.865
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 17.664
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 27559,
+          "milliseconds": 15.665
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 31153,
+          "milliseconds": 20.24
+        },
+        {
+          "x": 173,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 47.796
+        },
+        {
+          "x": 186,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 5.637
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 30707,
+          "milliseconds": 176.072
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 19.579
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 19.109
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 19.017
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 17.543
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 19.499
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 18.435
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 20.915
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 18.641
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 19.393
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 18.442
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 20.017
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 19.429
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 19.699
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 18.868
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 20.278
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 18.976
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 20.262
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 19.603
+        },
+        {
+          "x": 162,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 24984,
+          "milliseconds": 20.178
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 25010,
+          "milliseconds": 19.308
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 26606,
+          "milliseconds": 12.252
+        },
+        {
+          "x": 161,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 30707,
+          "milliseconds": 26.768
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 126.983
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 2.56
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 8142,
+          "milliseconds": 2.793
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 8142,
+          "milliseconds": 3.492
+        },
+        {
+          "x": 172,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 19.319
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 83.629
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 2.818
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 18.304
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 2.001
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 18.368
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 1.958
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 15.637
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 3.055
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 17.142
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 0.754
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 17.28
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 2.405
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 15.401
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 3.003
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 16.465
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 0.765
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 17.38
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 1.903
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 15.515
+        },
+        {
+          "x": 168,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 8142,
+          "milliseconds": 3.275
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 10792,
+          "milliseconds": 16.749
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 12570,
+          "milliseconds": 9.864
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 16.674
+        },
+        {
+          "x": 167,
+          "y": 6,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 15121,
+          "milliseconds": 18.674
+        },
+        {
+          "x": 167,
+          "y": 6,
+          "loaded": 2,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20169,
+          "milliseconds": 32.32
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/weesen/Runtime.log",
+        "sha256": "455a4487ee745e8f4f37f68f948a4c4eaba3e533b5e71afd15d4d4cbd5372faa",
+        "bytes": 187150
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/weesen/Habitat_0_0.png",
+          "sha256": "2732e1980a2ae2aaa3d96e97552e3139b1bbc230c3829bcdc6205d3b1af58fab",
+          "bytes": 1934008
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/weesen/Habitat_0_1.png",
+          "sha256": "6cf5b1d966e9706771e6eccb54257b83fafd7eeab400287b8b28944522b002b1",
+          "bytes": 1990005
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/weesen/Habitat_0_2.png",
+          "sha256": "8bd49cccb794f67233503922c52524d5d413a6fbe3a198b1fbed6abb8148fdc3",
+          "bytes": 2034633
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.27.42:026][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "name": "murg",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 25477,
+          "contacts": 216,
+          "edge_stones": 8037
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 94.35
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 190.499
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 183.785
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 6,
+          "unloaded": 6,
+          "active": 9,
+          "stones": 23135,
+          "milliseconds": 99.221
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 4.932
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 17570,
+          "milliseconds": 14.22
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 17655,
+          "milliseconds": 4.442
+        },
+        {
+          "x": 65,
+          "y": 557,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 33.849
+        },
+        {
+          "x": 78,
+          "y": 557,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 11.7
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 23135,
+          "milliseconds": 143.765
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 7.685
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 22.045
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.234
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 22.333
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 4.864
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.077
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.315
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 19.874
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 3.574
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 21.44
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 5.695
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.802
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 7.028
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.184
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 3.622
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 21.418
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 5.111
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 19.878
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.582
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.591
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 20515,
+          "milliseconds": 14.129
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 23135,
+          "milliseconds": 21.493
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 6,
+          "unloaded": 6,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 125.449
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.592
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 22832,
+          "milliseconds": 15.333
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 24125,
+          "milliseconds": 11.412
+        },
+        {
+          "x": 58,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 46.365
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 158.373
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.966
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.765
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.972
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 9.903
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.959
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 11.187
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.383
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.223
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.547
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 9.723
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.901
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.744
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.886
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 11.054
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.446
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 9.981
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.207
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.935
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.349
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.913
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 22267,
+          "milliseconds": 16.313
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 21.349
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/murg/Runtime.log",
+        "sha256": "2b199ce11a0fba2239a51b2afc6280a4075591f73496b5bff6fa3339f2ecc6e1",
+        "bytes": 182617
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/murg/Habitat_0_0.png",
+          "sha256": "93d346c36dad1539fc40d106084cb6d321f2664d53c263dfd5de34595a0106ab",
+          "bytes": 2051683
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/murg/Habitat_0_1.png",
+          "sha256": "6038a30c5428be93d57bf2f0fe924af7c6e663ef65b34bcae944e9417c526441",
+          "bytes": 1890490
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/murg/Habitat_0_2.png",
+          "sha256": "c8ffa4feeaba9b52628cb13d2559360627248ed31baffb7cddca878cdbaa26d6",
+          "bytes": 1863941
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.28.09:482][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "name": "ledi-wide",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 20201,
+          "contacts": 216,
+          "edge_stones": 3378
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 98.203
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 156.224
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 158.236
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 18.118
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 19116,
+          "milliseconds": 8.345
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22241,
+          "milliseconds": 21.186
+        },
+        {
+          "x": 113,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 21546,
+          "milliseconds": 184.705
+        },
+        {
+          "x": 126,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 3138,
+          "milliseconds": 77.939
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 143.254
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 19.925
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.844
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.376
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.983
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.717
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.33
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.196
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.588
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 25.355
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.802
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.417
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.594
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.987
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.314
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.632
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 25.863
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 27.545
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.3
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 26.427
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.303
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 18511,
+          "milliseconds": 6.037
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 17.033
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.437
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 19116,
+          "milliseconds": 9.227
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22241,
+          "milliseconds": 24.001
+        },
+        {
+          "x": 106,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 28284,
+          "milliseconds": 239.891
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 177.352
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.501
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.297
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.414
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.894
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.381
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.198
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.73
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.217
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.638
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.991
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.531
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.01
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.432
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 30.464
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.559
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 25.662
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.923
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.903
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 26.581
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 26.706
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 18511,
+          "milliseconds": 5.27
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 16.88
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/ledi-wide/Runtime.log",
+        "sha256": "91f74a7d3bf920cf998d1c03445b3d6ed37051f1e025fa8f2ee4bdb116ab7e4b",
+        "bytes": 181206
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/ledi-wide/Habitat_0_0.png",
+          "sha256": "b3d9b3b485c152ef40d31cf6decc372336fb64dbf7f4fcaf17830820c9279a66",
+          "bytes": 2063746
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/ledi-wide/Habitat_0_1.png",
+          "sha256": "c70f6ed30ef71e3e9181ce3cacb501acd2765e3c5894f28018205854fe5b1bd2",
+          "bytes": 1937981
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/ledi-wide/Habitat_0_2.png",
+          "sha256": "3b7309d39a10853013287e4324a5772a2c0fdba70262d5f2b46c4fcf3ec9de1e",
+          "bytes": 1936701
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.28.36:978][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 3,
+      "name": "raster",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 20201,
+          "contacts": 216,
+          "edge_stones": 3378
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 96.674
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 177.067
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 156.92
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 17.397
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 19116,
+          "milliseconds": 7.783
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22241,
+          "milliseconds": 19.836
+        },
+        {
+          "x": 113,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 21546,
+          "milliseconds": 172.213
+        },
+        {
+          "x": 126,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 3138,
+          "milliseconds": 74.258
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 135.986
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 18.701
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 21.872
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 19.401
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.309
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.41
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.041
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.235
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.493
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 24.438
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.785
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.365
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.879
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.953
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.281
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.087
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 24.68
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.898
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.606
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.141
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.364
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 18511,
+          "milliseconds": 5.172
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 15.014
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 19.372
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 19116,
+          "milliseconds": 7.949
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22241,
+          "milliseconds": 20.764
+        },
+        {
+          "x": 106,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 28284,
+          "milliseconds": 224.358
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 165.302
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 18.446
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 21.896
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 19.954
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 21.831
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.223
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.533
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 20.923
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 21.607
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.21
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.339
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 21.41
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 22.189
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.465
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 30.142
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 22.651
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.518
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.588
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.259
+        },
+        {
+          "x": 102,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18084,
+          "milliseconds": 23.209
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18392,
+          "milliseconds": 23.477
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 18511,
+          "milliseconds": 4.602
+        },
+        {
+          "x": 101,
+          "y": 944,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 20201,
+          "milliseconds": 15.119
+        },
+        {
+          "x": 99,
+          "y": 943,
+          "loaded": 7,
+          "unloaded": 7,
+          "active": 9,
+          "stones": 18911,
+          "milliseconds": 118.984
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/raster/Runtime.log",
+        "sha256": "c3a269e3a084560206fd4c3a5f39a5982c98af5a142b0f5c47539f6951926779",
+        "bytes": 182513
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/raster/Habitat_0_0.png",
+          "sha256": "78efb3e183b3ec0518c1db99d892fd5b492b591723be040ae7a6a853e46811b2",
+          "bytes": 2180594
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/raster/Habitat_0_1.png",
+          "sha256": "8ca3be079963262fe2e7bf6d5ba1569097ec45719a497176af89b7703bcd863e",
+          "bytes": 2210919
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/raster/Habitat_0_2.png",
+          "sha256": "ab68661fd0e3bbe36c6464248c0b4099305fc2a7263da80c36d373911d744acf",
+          "bytes": 2262720
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.29.07:513][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 2,
+      "name": "stream",
+      "checks": [
+        {
+          "retained": 6,
+          "reloaded": 9,
+          "cells": 9,
+          "stones": 25477,
+          "contacts": 216,
+          "edge_stones": 8037
+        }
+      ],
+      "retirement_maximum_pending": [
+        26
+      ],
+      "population_retirement_maximum_pending": [
+        54
+      ],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 97.677
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 189.685
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 184.241
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 6,
+          "unloaded": 6,
+          "active": 9,
+          "stones": 23135,
+          "milliseconds": 96.994
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 4.788
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 17570,
+          "milliseconds": 13.477
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 17655,
+          "milliseconds": 4.373
+        },
+        {
+          "x": 65,
+          "y": 557,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 32.981
+        },
+        {
+          "x": 78,
+          "y": 557,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 11.002
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 23135,
+          "milliseconds": 143.117
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 5.162
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 22.308
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.741
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 22.888
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 5.596
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 21.238
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.644
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.839
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 3.705
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 21.799
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 5.015
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 19.886
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.593
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.29
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 3.642
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 21.34
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 5.103
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 19.558
+        },
+        {
+          "x": 54,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 15699,
+          "milliseconds": 6.285
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 18322,
+          "milliseconds": 20.787
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 20515,
+          "milliseconds": 13.842
+        },
+        {
+          "x": 53,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 23135,
+          "milliseconds": 21.441
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 6,
+          "unloaded": 6,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 124.705
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.038
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 22832,
+          "milliseconds": 14.649
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 24125,
+          "milliseconds": 10.983
+        },
+        {
+          "x": 58,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 47.584
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 9,
+          "unloaded": 9,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 158.072
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.028
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.589
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.437
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 9.612
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 17.136
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.394
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.423
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.152
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.066
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 9.848
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.11
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.666
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.678
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.913
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.471
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.024
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 16.276
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.776
+        },
+        {
+          "x": 54,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20961,
+          "milliseconds": 15.948
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 1,
+          "active": 7,
+          "stones": 20074,
+          "milliseconds": 10.759
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 22267,
+          "milliseconds": 16.713
+        },
+        {
+          "x": 53,
+          "y": 555,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 25477,
+          "milliseconds": 21.512
+        },
+        {
+          "x": 53,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 19585,
+          "milliseconds": 18.112
+        },
+        {
+          "x": 53,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 21179,
+          "milliseconds": 12.62
+        },
+        {
+          "x": 53,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 24081,
+          "milliseconds": 19.091
+        },
+        {
+          "x": 54,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 19545,
+          "milliseconds": 13.584
+        },
+        {
+          "x": 54,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 21744,
+          "milliseconds": 15.786
+        },
+        {
+          "x": 54,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 22023,
+          "milliseconds": 6.083
+        },
+        {
+          "x": 55,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 13066,
+          "milliseconds": 6.356
+        },
+        {
+          "x": 55,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 13301,
+          "milliseconds": 5.112
+        },
+        {
+          "x": 55,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 13392,
+          "milliseconds": 4.18
+        },
+        {
+          "x": 56,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 5147,
+          "milliseconds": 4.112
+        },
+        {
+          "x": 56,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 5147,
+          "milliseconds": 3.88
+        },
+        {
+          "x": 56,
+          "y": 556,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 5147,
+          "milliseconds": 3.012
+        },
+        {
+          "x": 56,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 2713,
+          "milliseconds": 1.425
+        },
+        {
+          "x": 56,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 2798,
+          "milliseconds": 3.015
+        },
+        {
+          "x": 56,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 2798,
+          "milliseconds": 2.983
+        },
+        {
+          "x": 57,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 563,
+          "milliseconds": 1.712
+        },
+        {
+          "x": 57,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 563,
+          "milliseconds": 1.61
+        },
+        {
+          "x": 57,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 563,
+          "milliseconds": 1.533
+        },
+        {
+          "x": 58,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 0,
+          "milliseconds": 1.49
+        },
+        {
+          "x": 58,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 0,
+          "milliseconds": 1.467
+        },
+        {
+          "x": 58,
+          "y": 557,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 1.466
+        },
+        {
+          "x": 58,
+          "y": 558,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 0,
+          "milliseconds": 1.19
+        },
+        {
+          "x": 58,
+          "y": 558,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 0,
+          "milliseconds": 1.262
+        },
+        {
+          "x": 58,
+          "y": 558,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 1.367
+        },
+        {
+          "x": 59,
+          "y": 558,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 0,
+          "milliseconds": 1.351
+        },
+        {
+          "x": 59,
+          "y": 558,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 0,
+          "milliseconds": 1.348
+        },
+        {
+          "x": 59,
+          "y": 558,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 0,
+          "milliseconds": 1.35
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/stream/Runtime.log",
+        "sha256": "a3db121fc3415ea124448559dc13377a078059554537b75d5345892d1c7c6907",
+        "bytes": 952764
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/stream/DiveSmoke_1_stream.png",
+          "sha256": "43910da01a2649304f95f912fcc9f5ee7384ec63e00319bde380aa381e658377",
+          "bytes": 399748
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/stream/DiveUnderwater_1_stream.png",
+          "sha256": "6f80c445909431bfc91ef082c12444bbabbc98678080ddd901ab7ba0100680a0",
+          "bytes": 1275929
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.29.39:018][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 9,
+      "name": "shore",
+      "checks": [],
+      "retirement_maximum_pending": [],
+      "population_retirement_maximum_pending": [],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 98.192
+        },
+        {
+          "x": 206,
+          "y": 107,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 5517,
+          "milliseconds": 39.098
+        },
+        {
+          "x": 206,
+          "y": 107,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 5517,
+          "milliseconds": 41.153
+        },
+        {
+          "x": 205,
+          "y": 107,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 9021,
+          "milliseconds": 18.589
+        },
+        {
+          "x": 205,
+          "y": 107,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 11492,
+          "milliseconds": 14.361
+        },
+        {
+          "x": 205,
+          "y": 107,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15801,
+          "milliseconds": 24.654
+        },
+        {
+          "x": 206,
+          "y": 107,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 5517,
+          "milliseconds": 4.057
+        },
+        {
+          "x": 206,
+          "y": 107,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 5517,
+          "milliseconds": 3.382
+        },
+        {
+          "x": 206,
+          "y": 107,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 5517,
+          "milliseconds": 2.707
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/shore/Runtime.log",
+        "sha256": "5e3f8d4a94dd137b74429d261a82e1a481e711e2283c624cfe82b81c54ae44de",
+        "bytes": 533019
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/DiveSmoke_0_shore.png",
+          "sha256": "7a83f9aa9f82b662f960be0d823ce48c588efe4c8bf5115200c3b308873cc514",
+          "bytes": 1298742
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/DiveUnderwater_0_shore.png",
+          "sha256": "570fffc2b1a034d2f5dbfeaa60912adfefddd8f17bdca48663748f962a88aeb0",
+          "bytes": 1533728
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreComplete_0.png",
+          "sha256": "4c67dc23fc13c06db55d29dbad046157601d1f179bc60caa1a67bf2d37202641",
+          "bytes": 1310013
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreDive_0.png",
+          "sha256": "bf5597e3cd18401c6af504fc6295ad96b74e5647ab22bd4f1566baa80fc1d8fa",
+          "bytes": 2041563
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreMenu_0.png",
+          "sha256": "e886e93af2c9a5e5bf760171848c03c26ccba3aa5e4d4d09ef4ed41cb816623d",
+          "bytes": 1648639
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreReturn_0.png",
+          "sha256": "556a3936cb6d4a437878cad30242b01afc87fb7055f42897b5ad3c271c8f79e8",
+          "bytes": 2053686
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreStart_0.png",
+          "sha256": "995bffefcc98921a6bd47d1a7c588dfdcb6eb83a1ee13dd219975296817a6f94",
+          "bytes": 1812759
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreSurface_0.png",
+          "sha256": "df036ab8e813d3429801d197cf143eb26c6082cc033ebbd1d13742a8a2b0b9c3",
+          "bytes": 2134317
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/shore/ShoreWater_0.png",
+          "sha256": "991a9cb4b79a1b1ca972ad1a9ee307aeab3d460308cd402a5c002293559af231",
+          "bytes": 1046374
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.31.20:477][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "disabled": false,
+      "status": "PASS",
+      "screenshots": 7,
+      "name": "sediment",
+      "checks": [],
+      "retirement_maximum_pending": [],
+      "population_retirement_maximum_pending": [],
+      "loads": [
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 98.333
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 101.665
+        },
+        {
+          "x": 167,
+          "y": 5,
+          "loaded": 9,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 15220,
+          "milliseconds": 100.765
+        },
+        {
+          "x": 166,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 3,
+          "active": 7,
+          "stones": 17398,
+          "milliseconds": 20.883
+        },
+        {
+          "x": 166,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 8,
+          "stones": 20614,
+          "milliseconds": 18.295
+        },
+        {
+          "x": 166,
+          "y": 5,
+          "loaded": 1,
+          "unloaded": 0,
+          "active": 9,
+          "stones": 23090,
+          "milliseconds": 14.937
+        }
+      ],
+      "runtime": {
+        "file": "artifacts/gravel-relief-20261127-032641/sediment/Runtime.log",
+        "sha256": "5398715f7852711e9c48b565c76079ce524916b0b40b90a13002dccec5903a2d",
+        "bytes": 742645
+      },
+      "images": [
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/DiveUnderwater_0_sediment.png",
+          "sha256": "6278f154c657a83145b53204f0f4677c9f2fbb1790ee588fa40b1242deb4299d",
+          "bytes": 1661816
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/Sediment_0_Clear.png",
+          "sha256": "39633030ae3e41811835a188eefa4dad5e612e73fe4fd91c020ec53f0fa05320",
+          "bytes": 545785
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/Sediment_0_Cloud.png",
+          "sha256": "dc9562c976809fe88e791b21023abf70e106d4d811fb16c9f3ffbbbff82832f2",
+          "bytes": 1707366
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/Sediment_0_Hidden.png",
+          "sha256": "c1c761a1d35ab6352de16e97f116955c226533c14803f84a78f969546dc54673",
+          "bytes": 2025529
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/Sediment_0_Settling.png",
+          "sha256": "be44029a1cb5864127600853ae488b995eb0ac9fe2308cc35b72ef0fedb93f2a",
+          "bytes": 1941666
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/Sediment_0_Start.png",
+          "sha256": "a3b2f4f547c9be2fbe27a34df1b1dee1c52cf247d9202d6a5fd0fd7389af2430",
+          "bytes": 1408711
+        },
+        {
+          "file": "artifacts/gravel-relief-20261127-032641/sediment/Sediment_0_Visible.png",
+          "sha256": "4078bcae04a9e95a627215a0338f024e74849aea899540eace317370ca6a794c",
+          "bytes": 1989256
+        }
+      ],
+      "engine_errors": [
+        "[2026.11.27-02.32.19:849][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "screenshot_count": 36,
+  "comparison_poses": [
+    "view=0 eye=X=159954.730 Y=1510397.181 Z=-887.474 rotation=P=-4.813554 Y=-150.000000 R=0.000000",
+    "view=1 eye=X=158780.017 Y=1510014.855 Z=-526.674 rotation=P=-36.218528 Y=-30.000000 R=0.000000",
+    "view=2 eye=X=159265.788 Y=1509173.476 Z=-914.183 rotation=P=-1.643903 Y=90.000000 R=0.000000"
+  ],
+  "comparisons": [
+    {
+      "before": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-before/Habitat_0_0.png",
+        "sha256": "a793775dd6ab5f1b506e662f84624f287e7d2d601bf7df843750d88c46c9a7b6",
+        "bytes": 2181088
+      },
+      "after": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-after/Habitat_0_0.png",
+        "sha256": "61746182ff11733b08712e2b29817583b15f77c89d20e0676301664c9335dece",
+        "bytes": 2184153
+      },
+      "mean_absolute_rgb_difference": 1.4864722222222222
+    },
+    {
+      "before": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-before/Habitat_0_1.png",
+        "sha256": "bcce9b4866cd180105329335e84d7fd5bd54c21850099b87d426531c6e185211",
+        "bytes": 2198568
+      },
+      "after": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-after/Habitat_0_1.png",
+        "sha256": "ade90a028153bf3fcff095d0893b7906ef2ccce51dc3bce76247838133aff669",
+        "bytes": 2218606
+      },
+      "mean_absolute_rgb_difference": 0.7464157407407407
+    },
+    {
+      "before": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-before/Habitat_0_2.png",
+        "sha256": "d272f040e8817eb7e902e742cc20600847c68df04c1f401ca1c4a39a33a09ede",
+        "bytes": 2225028
+      },
+      "after": {
+        "file": "artifacts/gravel-relief-20261127-032641/close-after/Habitat_0_2.png",
+        "sha256": "62d94e17eba3623f763ba8f61a19323cc720c832e5c4ef6b0230df1133262215",
+        "bytes": 2264108
+      },
+      "mean_absolute_rgb_difference": 2.1018622685185187
+    }
+  ],
+  "launcher": {
+    "finished_utc": "2026-11-27T02:34:19.1419576Z",
+    "exit_code": 0,
+    "child": "O:\\games\\dive game\\Builds\\WindowsPopulationRetire\\divingsim\\Binaries\\Win64\\divingsim-PopulationRetire.exe",
+    "child_id": 27264,
+    "executable_sha256": "3305DEAE4ABB882937EF3C25621A507567EBC3278A0155219D6BADA0527D5D42",
+    "started_utc": "2026-11-27T02:33:48.5937069Z",
+    "log_sha256": "B3491899ED0CA6C40108B55C20ECC426DD5978B9C8F62810C4A38479725390A3",
+    "status": "PASS"
+  },
+  "benchmarks": [
+    {
+      "result": {
+        "metadata": {
+          "scenario": "perf-underwater",
+          "csv": "O:/games/dive game/Builds/WindowsPopulationRetire/divingsim/Saved/Performance/perf-underwater_FA2EF785/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-58902052+++UE5+Release-5.8",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 60,
+          "simulation_seconds": 74.9199983254075,
+          "distance_m": 9.30625935898442,
+          "depth_m": 5.2705257919247925,
+          "walking": false,
+          "water_preview": true,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-27T02:34:23.8695756Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "background_processes": [],
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3170 MiB, 16 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsPopulationRetire\\divingsim\\Binaries\\Win64\\divingsim-PopulationRetire.exe",
+          "executable_sha256": "3305deae4abb882937ef3c25621a507567ebc3278a0155219d6bada0527d5d42",
+          "package_containers": [
+            {
+              "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+              "file": "divingsim-Windows.pak",
+              "bytes": 105898051
+            },
+            {
+              "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+              "file": "divingsim-Windows.ucas",
+              "bytes": 1457973520
+            },
+            {
+              "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+              "file": "divingsim-Windows.utoc",
+              "bytes": 1187020
+            },
+            {
+              "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+              "file": "global.ucas",
+              "bytes": 3245920
+            },
+            {
+              "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+              "file": "global.utoc",
+              "bytes": 794
+            }
+          ]
+        },
+        "frames": 4117,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 59.976804300000005,
+        "average_fps": 68.64320378603432,
+        "one_percent_low_fps": 59.41534452199719,
+        "frame": {
+          "mean_ms": 14.568084600437212,
+          "p50_ms": 14.5276,
+          "p95_ms": 15.9661,
+          "p99_ms": 16.4364,
+          "max_ms": 19.9548
+        },
+        "game_thread": {
+          "mean_ms": 4.466756035948507,
+          "p50_ms": 4.4206,
+          "p95_ms": 5.0706,
+          "p99_ms": 5.5581,
+          "max_ms": 8.7281
+        },
+        "render_thread": {
+          "mean_ms": 14.56136293417537,
+          "p50_ms": 14.5231,
+          "p95_ms": 15.9531,
+          "p99_ms": 16.4497,
+          "max_ms": 19.9969
+        },
+        "rhi_thread": {
+          "mean_ms": 3.52412224921059,
+          "p50_ms": 3.465,
+          "p95_ms": 4.1406,
+          "p99_ms": 4.6122,
+          "max_ms": 6.5023
+        },
+        "gpu": {
+          "mean_ms": 13.92281282487248,
+          "p50_ms": 13.8872,
+          "p95_ms": 15.1365,
+          "p99_ms": 15.6441,
+          "max_ms": 16.4216
+        },
+        "frames_over_16_67_ms": 19,
+        "frames_over_33_33_ms": 0,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": true,
+        "memory_mb": {
+          "start": 4744.1523,
+          "end": 4737.9727,
+          "max": 4768.2617
+        },
+        "terrain_chunks": {
+          "min": 9.0,
+          "max": 9.0,
+          "frames_below_nine": 0
+        },
+        "distance_m": 4.896100000000001,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 3.253373184357542
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 1.208766431867865
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 1.18837835802769
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.9380155695895069
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 0.917138838960408
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.7035546028661647
+          },
+          {
+            "name": "GPU/Basepass",
+            "mean_ms": 0.5413839931989313
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.5412376487733787
+          },
+          {
+            "name": "GPU/Lights",
+            "mean_ms": 0.38124342968180713
+          },
+          {
+            "name": "GPU/RayTracingScene",
+            "mean_ms": 0.3730446198688365
+          },
+          {
+            "name": "GPU/NaniteBasePass",
+            "mean_ms": 0.36551765848919116
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.32504080641243627
+          }
+        ]
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-033423-863/Capture.csv",
+          "sha256": "c93de37bda2b2d9aa34c9cb9965ea0cea846c8d35ad96b6c28359755d10e3806",
+          "bytes": 9598858
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-033423-863/Metadata.json",
+          "sha256": "9e0dad1527107546722d64b6e4ff60e4979a4567c02da4ee619aea7604906850",
+          "bytes": 1574
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-033423-863/Host.json",
+          "sha256": "92100fce91377bca07c21933f285a409330a26bf8a9bb796caa0ea38837e0840",
+          "bytes": 1487
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-033423-863/Frame.png",
+          "sha256": "9de5701a301356c5c8eaf4dcb097adbc68eb431f4b47329362badb1d7dbfe1fe",
+          "bytes": 2539873
+        },
+        {
+          "file": "artifacts/perf-underwater-1080p-q2-20261127-033423-863/Runtime.log",
+          "sha256": "f87f986774eb799839991b1b0e16bf90dfc26946000eaabee49e2dab52b239d5",
+          "bytes": 1579528
+        }
+      ]
+    },
+    {
+      "result": {
+        "metadata": {
+          "scenario": "perf-stream",
+          "csv": "O:/games/dive game/Builds/WindowsPopulationRetire/divingsim/Saved/Performance/perf-stream_C9D3D769/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-58902052+++UE5+Release-5.8",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 90,
+          "simulation_seconds": 104.53999766334891,
+          "distance_m": 167.35277535484283,
+          "depth_m": 24.63767620952716,
+          "walking": false,
+          "water_preview": true,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-27T02:24:35.1332281Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "background_processes": [],
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3180 MiB, 22 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsPopulationRetire\\divingsim\\Binaries\\Win64\\divingsim-PopulationRetire.exe",
+          "executable_sha256": "3305deae4abb882937ef3c25621a507567ebc3278a0155219d6bada0527d5d42",
+          "package_containers": [
+            {
+              "file": "divingsim-Windows.pak",
+              "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+              "bytes": 105898051
+            },
+            {
+              "file": "divingsim-Windows.ucas",
+              "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+              "bytes": 1457973520
+            },
+            {
+              "file": "divingsim-Windows.utoc",
+              "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+              "bytes": 1187020
+            },
+            {
+              "file": "global.ucas",
+              "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+              "bytes": 3245920
+            },
+            {
+              "file": "global.utoc",
+              "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+              "bytes": 794
+            }
+          ]
+        },
+        "frames": 8743,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 89.9783321,
+        "average_fps": 97.16783803330802,
+        "one_percent_low_fps": 75.58408893086478,
+        "frame": {
+          "mean_ms": 10.291471131190667,
+          "p50_ms": 10.2562,
+          "p95_ms": 11.2164,
+          "p99_ms": 11.6309,
+          "max_ms": 25.7394
+        },
+        "game_thread": {
+          "mean_ms": 4.151137229783827,
+          "p50_ms": 4.1266,
+          "p95_ms": 4.8327,
+          "p99_ms": 5.4221,
+          "max_ms": 25.2673
+        },
+        "render_thread": {
+          "mean_ms": 10.262497815395173,
+          "p50_ms": 10.2451,
+          "p95_ms": 11.202,
+          "p99_ms": 11.5703,
+          "max_ms": 13.507
+        },
+        "rhi_thread": {
+          "mean_ms": 3.4131611346219835,
+          "p50_ms": 3.3415,
+          "p95_ms": 4.0943,
+          "p99_ms": 4.4775,
+          "max_ms": 9.6418
+        },
+        "gpu": {
+          "mean_ms": 9.656696419993137,
+          "p50_ms": 9.6387,
+          "p95_ms": 10.337,
+          "p99_ms": 10.5999,
+          "max_ms": 11.2027
+        },
+        "frames_over_16_67_ms": 11,
+        "frames_over_33_33_ms": 0,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": true,
+        "memory_mb": {
+          "start": 4698.8945,
+          "end": 4602.8086,
+          "max": 4708.3164
+        },
+        "terrain_chunks": {
+          "min": 7.0,
+          "max": 9.0,
+          "frames_below_nine": 4
+        },
+        "distance_m": 144.83259999999999,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 1.2786637081093446
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 1.1818034427542035
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.8776962026764269
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.6810095161843761
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 0.6692141255861832
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 0.5196043692096535
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.3099187693011552
+          },
+          {
+            "name": "GPU/Translucency",
+            "mean_ms": 0.30157293835068055
+          },
+          {
+            "name": "GPU/Lights",
+            "mean_ms": 0.28025697129131877
+          },
+          {
+            "name": "GPU/Postprocessing",
+            "mean_ms": 0.2709769758664074
+          },
+          {
+            "name": "GPU/NaniteBasePass",
+            "mean_ms": 0.2584240535285371
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.25182023332952075
+          }
+        ]
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-032435-127/Capture.csv",
+          "sha256": "e73897a29d5d91418187ba5cb2bf3cdf34cbf906c02037084bfb6b527ab9b85e",
+          "bytes": 20511995
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-032435-127/Metadata.json",
+          "sha256": "43267e8c309d47384a52156896ee141d65f12a58424fabdee95e9baacc298288",
+          "bytes": 1566
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-032435-127/Host.json",
+          "sha256": "bafab95eeef7d19a4b7b7b6126a549a60e06a516e7a55b5d9f143648ff8ce7d2",
+          "bytes": 1487
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-032435-127/Frame.png",
+          "sha256": "86c4f9731155191ee09849ba5f3f4a430ed0733d7a03b8795cb247e995cb00c0",
+          "bytes": 1605485
+        },
+        {
+          "file": "artifacts/perf-stream-1080p-q2-20261127-032435-127/Runtime.log",
+          "sha256": "a56ea4f8d55fa032054ef98f954cb095e431a32387dcf68d739a30c2fa052e3e",
+          "bytes": 2995339
+        }
+      ]
+    }
+  ],
+  "published": [
+    {
+      "file": "Documentation/Images/PopulationRetirement_Before.png",
+      "sha256": "a793775dd6ab5f1b506e662f84624f287e7d2d601bf7df843750d88c46c9a7b6",
+      "bytes": 2181088
+    },
+    {
+      "file": "Documentation/Images/PopulationRetirement_After.png",
+      "sha256": "61746182ff11733b08712e2b29817583b15f77c89d20e0676301664c9335dece",
+      "bytes": 2184153
+    }
+  ],
+  "build": {
+    "file": "artifacts/population-retirement-package-build.log",
+    "sha256": "76a50bbbeeeec35289113beeb2a9e27acfb61978d861f2ce16a9c584aa7d048a",
+    "bytes": 296380
+  },
+  "retirement": {
+    "control": {
+      "metadata": {
+        "scenario": "perf-stream",
+        "csv": "O:/games/dive game/Builds/WindowsPopulationRetire/divingsim/Saved/Performance/perf-stream_6234FD86/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 90,
+        "simulation_seconds": 103.43999768793583,
+        "distance_m": 165.58293634972478,
+        "depth_m": 24.40287281166082,
+        "walking": false,
+        "water_preview": true,
+        "gravel_immediate_retirement": false,
+        "population_immediate_retirement": true,
+        "water_interface": true,
+        "bounded_water": true,
+        "native_scattering": true,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2,
+        "r.Lumen.HardwareRayTracing": 1,
+        "r.Lumen.HardwareRayTracing.LightingMode": 2,
+        "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+        "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+        "r.Lumen.Reflections.ScreenTraces": 1,
+        "r.VolumetricFog": 1,
+        "r.VolumetricFog.DepthDistributionScale": 8,
+        "r.VolumetricFog.GridSizeZ": 64,
+        "r.VolumetricFog.GridPixelSize": 16
+      },
+      "host": {
+        "started_utc": "2026-11-27T02:22:20.9546607Z",
+        "editor": false,
+        "disable_nanite": false,
+        "water_preview": true,
+        "gravel_immediate_retirement": false,
+        "population_immediate_retirement": true,
+        "background_processes": [],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 3141 MiB, 28 %"
+        ],
+        "executable": "O:\\games\\dive game\\Builds\\WindowsPopulationRetire\\divingsim\\Binaries\\Win64\\divingsim-PopulationRetire.exe",
+        "executable_sha256": "3305deae4abb882937ef3c25621a507567ebc3278a0155219d6bada0527d5d42",
+        "package_containers": [
+          {
+            "bytes": 105898051,
+            "sha256": "fe7511391662e45ca67e5d4599ae3caea0a3431671056c432f636bdfcfdcdd1f",
+            "file": "divingsim-Windows.pak"
+          },
+          {
+            "bytes": 1457973520,
+            "sha256": "b67a617e95632fe6de0275f3a2adce5435a79cb779ec81cb34a0cd72be187693",
+            "file": "divingsim-Windows.ucas"
+          },
+          {
+            "bytes": 1187020,
+            "sha256": "02a9aa9db2f6ac28df0c8925570754422c4b642d5da299b010ce2bc178e0e430",
+            "file": "divingsim-Windows.utoc"
+          },
+          {
+            "bytes": 3245920,
+            "sha256": "2670ae339f10d0de34b84eb595ad8d7aebe98ca87cad064788fd6af29030973d",
+            "file": "global.ucas"
+          },
+          {
+            "bytes": 794,
+            "sha256": "4b5d570921987be867c76d8526333ba204836142cf6c98c819f72b11f8d837cc",
+            "file": "global.utoc"
+          }
+        ]
+      },
+      "frames": 8737,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 89.98187709999999,
+      "average_fps": 97.09732983554308,
+      "one_percent_low_fps": 70.48066371000283,
+      "frame": {
+        "mean_ms": 10.298944385944832,
+        "p50_ms": 10.2513,
+        "p95_ms": 11.1778,
+        "p99_ms": 11.6388,
+        "max_ms": 45.4706
+      },
+      "game_thread": {
+        "mean_ms": 4.331962801877075,
+        "p50_ms": 4.2744,
+        "p95_ms": 5.2036,
+        "p99_ms": 5.8619,
+        "max_ms": 44.8863
+      },
+      "render_thread": {
+        "mean_ms": 10.266168776467895,
+        "p50_ms": 10.241,
+        "p95_ms": 11.1568,
+        "p99_ms": 11.564,
+        "max_ms": 18.9531
+      },
+      "rhi_thread": {
+        "mean_ms": 3.538717637633055,
+        "p50_ms": 3.453,
+        "p95_ms": 4.3045,
+        "p99_ms": 4.6977,
+        "max_ms": 8.8222
+      },
+      "gpu": {
+        "mean_ms": 9.65986078745565,
+        "p50_ms": 9.6427,
+        "p95_ms": 10.3326,
+        "p99_ms": 10.6077,
+        "max_ms": 18.9035
+      },
+      "frames_over_16_67_ms": 12,
+      "frames_over_33_33_ms": 3,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": false,
+      "memory_mb": {
+        "start": 5205.1914,
+        "end": 5074.0312,
+        "max": 5207.0977
+      },
+      "terrain_chunks": {
+        "min": 7.0,
+        "max": 9.0,
+        "frames_below_nine": 4
+      },
+      "distance_m": 144.8688,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.2733194689252605
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 1.1730999313265422
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.87715064667506
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.6803887032162069
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.6690574796841021
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.5193607760100721
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.3136044065468696
+        },
+        {
+          "name": "GPU/Translucency",
+          "mean_ms": 0.30271468467437335
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.28539859219411695
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.2708817214146732
+        },
+        {
+          "name": "GPU/NaniteBasePass",
+          "mean_ms": 0.2548107588417077
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.24809935904772806
+        }
+      ]
+    },
+    "control_phases": {
+      "DiveGravel/GameThread/Stream": {
+        "mean_ms": 0.009590832093395903,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 11.0789,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/BuildCell": {
+        "mean_ms": 0.006591175460684446,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 5.8081,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/Register": {
+        "mean_ms": 0.0008845828087444204,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 3.2541,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/AddInstances": {
+        "mean_ms": 1.2750371981229254e-05,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 0.0466,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/Retire": {
+        "mean_ms": 0.0048936591507382395,
+        "p50_ms": 0.0001,
+        "p95_ms": 0.0002,
+        "p99_ms": 0.0004,
+        "max_ms": 5.2595,
+        "nonzero_frames": 7175
+      },
+      "DivePopulation/GameThread/Stream": {
+        "mean_ms": 0.0039372210140780585,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 11.512,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/BuildCell": {
+        "mean_ms": 0.0023056770058372438,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 11.4804,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/Register": {
+        "mean_ms": 0.0010740414329861508,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 8.862,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/AddInstances": {
+        "mean_ms": 2.028156117660524e-05,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 0.1609,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/Retire": {
+        "mean_ms": 0.0016848575025752545,
+        "p50_ms": 0.0002,
+        "p95_ms": 0.0004,
+        "p99_ms": 0.0006,
+        "max_ms": 8.7007,
+        "nonzero_frames": 8686
+      },
+      "Exclusive/GameThread/EventWait/EndPhysics": {
+        "mean_ms": 0.17423995650681012,
+        "p50_ms": 0.1272,
+        "p95_ms": 0.2754,
+        "p99_ms": 0.3448,
+        "max_ms": 22.2005,
+        "nonzero_frames": 8735
+      }
+    },
+    "staged_phases": {
+      "DiveGravel/GameThread/Stream": {
+        "mean_ms": 0.008878474207937779,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 8.0168,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/BuildCell": {
+        "mean_ms": 0.0063362690152121695,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 4.4127,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/Register": {
+        "mean_ms": 0.0007213313507949216,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 2.3565,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/AddInstances": {
+        "mean_ms": 9.481871211254719e-06,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 0.028,
+        "nonzero_frames": 33
+      },
+      "DiveGravel/GameThread/Retire": {
+        "mean_ms": 0.004172034770673682,
+        "p50_ms": 0.0001,
+        "p95_ms": 0.0002,
+        "p99_ms": 0.0004,
+        "max_ms": 3.5946,
+        "nonzero_frames": 7169
+      },
+      "DivePopulation/GameThread/Stream": {
+        "mean_ms": 0.0028356513782454534,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 11.2631,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/BuildCell": {
+        "mean_ms": 0.0022546608715543863,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 11.2173,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/Register": {
+        "mean_ms": 0.0010543634907926342,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 8.7634,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/AddInstances": {
+        "mean_ms": 7.2972663845362e-06,
+        "p50_ms": 0.0,
+        "p95_ms": 0.0,
+        "p99_ms": 0.0,
+        "max_ms": 0.0514,
+        "nonzero_frames": 6
+      },
+      "DivePopulation/GameThread/Retire": {
+        "mean_ms": 0.0016614205650234473,
+        "p50_ms": 0.0002,
+        "p95_ms": 0.0003,
+        "p99_ms": 0.0005,
+        "max_ms": 2.6289,
+        "nonzero_frames": 8668
+      },
+      "Exclusive/GameThread/EventWait/EndPhysics": {
+        "mean_ms": 0.1695736474894201,
+        "p50_ms": 0.1249,
+        "p95_ms": 0.2601,
+        "p99_ms": 0.3288,
+        "max_ms": 12.1165,
+        "nonzero_frames": 8740
+      }
+    },
+    "files": [
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261127-032220-949/Capture.csv",
+        "sha256": "1031f8952c2b17722d0c7cc419a7c9d6e9a3938d03af7dc7e0ffb626631da25f",
+        "bytes": 20483293
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261127-032220-949/Metadata.json",
+        "sha256": "b2a9ecaaf993331a73b09dfe08b9092a7f99329950fa052cff80a46f9b186639",
+        "bytes": 1565
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261127-032220-949/Host.json",
+        "sha256": "cc6804690ff606dc7e06b65c6faa53f204979a40a01e7cb5f1cddfb86600e0b9",
+        "bytes": 1486
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261127-032220-949/Frame.png",
+        "sha256": "3e01cb384612d53f5c3eef2692e64d6356eefaaeadfdce5efc29ca886d7141b5",
+        "bytes": 1604725
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261127-032220-949/Runtime.log",
+        "sha256": "750e8192c2b543c318fce28cf101d21a2cf7360b064c0dba81ee3ecfeba70fd3",
+        "bytes": 2953845
+      }
+    ],
+    "interpretation": "Single-run same-executable control; compare CPU waits and complete frame-time distributions, not just mean FPS"
+  },
+  "limitations": [
+    "Sparse comparison uses the new 16 m cell grid at the old candidate density, not the exact old 32 m layout",
+    "Gravel is authored placement, not surveyed individual stones",
+    "Collision probes are samples, not exhaustive contact coverage",
+    "Short measurements do not prove sustained performance or endurance",
+    "Overall environment fidelity and later menu/HUD redesign remain unfinished"
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "host": {
+    "executable_sha256": "6D2B1E76915718D231CFD785011D0F3DA152FC7DF3CFFCB8449241C6351BC23A",
+    "source_head": "fdcfdf58d707ad1b54f6079b1e5c43e66ea15813",
+    "source_dirty": true,
+    "started_utc": "2026-11-25T17:18:47.0412652Z",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsLoadout\\divingsim\\Binaries\\Win64\\divingsim-Loadout.exe"
+  },
+  "cases": [
+    {
+      "name": "exploration",
+      "mode": 0,
+      "status": "PASS",
+      "samples": 22,
+      "seconds": 21.079999528825283,
+      "distance_m": 29.495708095243103,
+      "max_depth_m": 6.085455322265625,
+      "final_gas_bar": 300,
+      "minimum_capacity": 1,
+      "maximum_visual_impairment": 0,
+      "minimum_spo2": 98,
+      "first_fault_seconds": null,
+      "lost_litres": 0,
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\exploration\\Mode_exploration_Baseline.png",
+          "sha256": "d068ac3ff1f349410befd111ba6fc8ad895b75e8489941319c379b7c533d17e5",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\exploration\\Mode_exploration_Effects.png",
+          "sha256": "cc4bf0efc7932ebbd85a88197d5fe24c3d922449303ca3333fc3508bd54f7d15",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\exploration\\Mode_exploration_Menu.png",
+          "sha256": "1c01c6c00f0724f7ed2d3631eef13c1e5badd3af8bea7b2fbcf4b7f4bac907f6",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "manual",
+      "mode": 0,
+      "status": "PASS",
+      "samples": 22,
+      "seconds": 21.059999529272318,
+      "distance_m": 19.95376023461271,
+      "max_depth_m": 5.876365356445312,
+      "final_gas_bar": 300,
+      "minimum_capacity": 1,
+      "maximum_visual_impairment": 0,
+      "minimum_spo2": 98,
+      "first_fault_seconds": null,
+      "lost_litres": 0,
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\manual\\Mode_manual_Baseline.png",
+          "sha256": "e0720b941a887bfb6d72f01d7fe7bc5e2dae995d7c8cc5a68ece7b6f6900905e",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\manual\\Mode_manual_Effects.png",
+          "sha256": "5c651cc819703ac78845a8b372c31435851021f16b7ef4eb7ed684c549594b64",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\manual\\Mode_manual_Menu.png",
+          "sha256": "bb721c360e1a2d5fe445a4ad7218b08374f7ed8b9fdda4f6cd67565190c132ae",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "simulation",
+      "mode": 1,
+      "status": "PASS",
+      "samples": 69,
+      "seconds": 68.03999847918749,
+      "distance_m": 85.54806835188597,
+      "max_depth_m": 6.609371948242187,
+      "final_gas_bar": 297.3903099328947,
+      "minimum_capacity": 0.9663524481096155,
+      "maximum_visual_impairment": 0,
+      "minimum_spo2": 98,
+      "first_fault_seconds": null,
+      "lost_litres": 0,
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\simulation\\Mode_simulation_Baseline.png",
+          "sha256": "ee76a0303ad458509bdb51e2f6e79a130fbd37a2b39200e081408fd834290de7",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\simulation\\Mode_simulation_Effects.png",
+          "sha256": "1e3eb72ae9b7a02903e97bf1f546b42c60768fdfbfd7a761c7c1c09f90479d78",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\simulation\\Mode_simulation_Menu.png",
+          "sha256": "e1977a453988badef7e1b641a1ac2171cc5d49a27eb2cbe98480fba69cea7bee",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "hardcore",
+      "mode": 2,
+      "status": "PASS",
+      "samples": 61,
+      "seconds": 60.99999863654375,
+      "distance_m": 75.61206527934277,
+      "max_depth_m": 6.609453735351563,
+      "final_gas_bar": 293.32481335717284,
+      "minimum_capacity": 0.9697027839682053,
+      "maximum_visual_impairment": 0,
+      "minimum_spo2": 98,
+      "first_fault_seconds": 48.01999892666936,
+      "lost_litres": 129.52881568810494,
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\hardcore\\Mode_hardcore_Baseline.png",
+          "sha256": "c7105cbd2b8c73797611c4cbc84997a73d27c8bd6265a6dfbe6e9d2d6a9e58ea",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\hardcore\\Mode_hardcore_Effects.png",
+          "sha256": "977daa98255224a5febf6b63bcd398f8b18cabd86a8d0323f1983ef3aeeaec17",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\hardcore\\Mode_hardcore_Menu.png",
+          "sha256": "88484f74bdbfc8178d7bb1260dc070290d0b8b716cc4b099feeb5a576e4b7e0e",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "warm",
+      "mode": 2,
+      "status": "PASS",
+      "samples": 69,
+      "seconds": 68.05999847874045,
+      "distance_m": 86.37002930637823,
+      "max_depth_m": 6.609349365234375,
+      "final_gas_bar": 297.38929478238094,
+      "minimum_capacity": 0.9916626501863538,
+      "maximum_visual_impairment": 0,
+      "minimum_spo2": 98,
+      "first_fault_seconds": null,
+      "lost_litres": 0,
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\warm\\Mode_warm_Baseline.png",
+          "sha256": "53dc03966f922aa47c94172236f0d3037df8a7436af8509832e34f995cc2fdde",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\warm\\Mode_warm_Effects.png",
+          "sha256": "b42cd256aa994a2e48529bdfef984a8376557596a77af71a3d7d0921a821b872",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\warm\\Mode_warm_Menu.png",
+          "sha256": "d12e2cc52a943c496bd5e795c05e016147af37ea48a35aff9030a3abf737a48e",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "name": "hypoxia",
+      "mode": 1,
+      "status": "PASS",
+      "samples": 45,
+      "seconds": 44.29999900981784,
+      "distance_m": 48.191340824387254,
+      "max_depth_m": 6.379228515625,
+      "final_gas_bar": 299.6576865577428,
+      "minimum_capacity": 0.568320396660897,
+      "maximum_visual_impairment": 0.5203773458659102,
+      "minimum_spo2": 83.66301510954715,
+      "first_fault_seconds": null,
+      "lost_litres": 0,
+      "screenshots": [
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\hypoxia\\Mode_hypoxia_Baseline.png",
+          "sha256": "f06a16cf30f0d81a0342085a4c8b1ea1190e091e4c6379ff74f2c32059e2fa71",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\hypoxia\\Mode_hypoxia_Effects.png",
+          "sha256": "45babeaa39f607d4a2aa5b08d0393ff9bde59ff56073901530baf503c9449f65",
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "file": "O:\\games\\dive game\\artifacts\\mode-validation-20261125-181847\\hypoxia\\Mode_hypoxia_Menu.png",
+          "sha256": "d8fea2c7413d2a7476953a5972a012d3b288201b0b4f0422d50ac96e7a9177ab",
+          "width": 1600,
+          "height": 900
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "limits": [
+    "Short native scenarios on one Windows machine; no two-hour or macOS acceptance.",
+    "Narcosis/decompression recovery and thermal comparisons have portable-core coverage; no separate native deep-dive scenario in this matrix.",
+    "Authored physiological and equipment parameters remain unvalidated for real diving."
+  ]
+}

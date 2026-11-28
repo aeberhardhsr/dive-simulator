@@ -1,0 +1,5 @@
+-r requirements-coast-model.txt
+shapely==2.1.2
+pyshp==2.3.1
+# Rasterio is only needed for generation from the existing GeoTIFF sources.
+rasterio==1.5.2

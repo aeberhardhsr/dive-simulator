@@ -1,0 +1,345 @@
+{
+  "status": "PASS",
+  "executable": {
+    "packaged": true,
+    "executable": "O:\\games\\dive game\\Builds\\WindowsCoast\\divingsim\\Binaries\\Win64\\divingsim-Coast.exe",
+    "started_utc": "2026-11-26T04:45:31.2741520Z",
+    "sha256": "8BE183006EBC405E7CFFFF0EC8529F31E798D24FDAB2C9743AFB3F909F7C6932"
+  },
+  "cases": [
+    {
+      "status": "PASS",
+      "name": "weesen-crossing",
+      "entry": 0,
+      "fallback": false,
+      "viewport": "1600x900",
+      "scenario": "coast",
+      "screenshots": 5,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-crossing/Coast_0_Crossed.png",
+          "sha256": "25aeee812fc74a2644a8d60faa9019157b54a68955d5720805b76f88ec7cdfd1"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-crossing/Coast_0_Returned.png",
+          "sha256": "90d4f8d2ab397b739b74253030a0539f23d9c0f9caba75ce33ef38eb42413a48"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-crossing/Coast_0_Start.png",
+          "sha256": "bb389943c7915e40810b6b546a7166e721861736a883400a6fbced7ed736ba4a"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-crossing/DiveSmoke_0_coast.png",
+          "sha256": "2cf6d57bbd7255534553934c91e3966736c7bf580b59af14425dd0775dd7c557"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-crossing/DiveUnderwater_0_coast.png",
+          "sha256": "a109d7ba5f325db146c966269585cb64c7eca14dbf6a7599c3a584c4e7f282ce"
+        }
+      ],
+      "runtime_sha256": "a29b513d391ed13d2064216f87120989cb25950ff33c66f70680201243766601"
+    },
+    {
+      "status": "PASS",
+      "name": "murg-crossing",
+      "entry": 1,
+      "fallback": false,
+      "viewport": "1920x1080",
+      "scenario": "coast",
+      "screenshots": 5,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-crossing/Coast_1_Crossed.png",
+          "sha256": "8c6a98a516d50e989e343148d8f350dbeabf4f7c43c5d9971af83123821e9eea"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-crossing/Coast_1_Returned.png",
+          "sha256": "3be1526467fa7cbf0ddf5f4d19f9f00ce4edb50d81e0711e5f27a25324a36217"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-crossing/Coast_1_Start.png",
+          "sha256": "c0d702fc138316409a77c2222a2d24864c8c38d207934f0c7144f6b8d7573e7a"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-crossing/DiveSmoke_1_coast.png",
+          "sha256": "693c017599ef6a1f4b13d1c8a41ad9c23e42035a8113525c30cbc44151e63547"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-crossing/DiveUnderwater_1_coast.png",
+          "sha256": "e151b42dc8e3f5ac3e17dfe3f25dee66014d6280661991f3dd4aa54197d6dc79"
+        }
+      ],
+      "runtime_sha256": "e54aa0d1e1d432f50b0744c43ace4f8be63f76945c8ab924c44a4535da54d91d"
+    },
+    {
+      "status": "PASS",
+      "name": "walenstadt-4k",
+      "entry": 2,
+      "fallback": false,
+      "viewport": "3840x2160",
+      "scenario": "coast",
+      "screenshots": 5,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-4k/Coast_2_Crossed.png",
+          "sha256": "7f3b6e0f8a95821bbca72363692008d0f4bdb2b0a9f0afaea193eaad8deb472f"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-4k/Coast_2_Returned.png",
+          "sha256": "afb04673dfe23490c4c3c5655b8acd7c5e0ca70f09a77bcfc6279b9a4fec2f63"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-4k/Coast_2_Start.png",
+          "sha256": "755955450f823db7a811523e6e8ff2d53874a38d7ecc735502533e97783666e2"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-4k/DiveSmoke_2_coast.png",
+          "sha256": "10b85f7760021f859fe009abb23abdc69d26ae6794bf8b70cd71cb437f5789e2"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-4k/DiveUnderwater_2_coast.png",
+          "sha256": "9311f4af4af1ee06756d2fc6f7bd9433b08a31ec3cdd3252eb3f4df03fdcba77"
+        }
+      ],
+      "runtime_sha256": "f4d1ade652908f9a0912d85880f9360c7074fce3971a96e225ebec3e6f50d11b"
+    },
+    {
+      "status": "PASS",
+      "name": "walenstadt-fallback",
+      "entry": 2,
+      "fallback": true,
+      "viewport": "1280x1024",
+      "scenario": "coast",
+      "screenshots": 5,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-fallback/Coast_2_Crossed.png",
+          "sha256": "2fe6f83dce688832a0f64fb3979d991b957da9e5293a3f5e2b5a25cb31abf41c"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-fallback/Coast_2_Returned.png",
+          "sha256": "45f06b95543e5b53ee07c8ab7cf3cf4d86b228a7f124a0d70e964fbe79c95c98"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-fallback/Coast_2_Start.png",
+          "sha256": "d05ad22c58f9b03fffce6c2875c800c3c0b12e497d0e8781b0137c8bf1a8a387"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-fallback/DiveSmoke_2_coast.png",
+          "sha256": "6a0a2a3d274efe7730c47ccd68891c1ee4d06b4d253cc925f3f6e62f57a4dc3f"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/walenstadt-fallback/DiveUnderwater_2_coast.png",
+          "sha256": "ad9766af31f02a5e6907f22491ac585b86fee2dfb25a0c9b78e766217c8bdafe"
+        }
+      ],
+      "runtime_sha256": "3041c1bcd284c31ebbcf338df2e317615bb0618628fc29a90c097037582dca8f"
+    },
+    {
+      "status": "PASS",
+      "name": "weesen-shore",
+      "entry": 0,
+      "fallback": false,
+      "viewport": "1600x900",
+      "scenario": "shore",
+      "screenshots": 9,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/DiveSmoke_0_shore.png",
+          "sha256": "4bf95f3c04416e0e95b97d252daa3d3958ffd58503e89dc8fd964f40d0e709dc"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/DiveUnderwater_0_shore.png",
+          "sha256": "2eed5e05b2c7f0b67bf8dffee8c2f7cbef933a5834cd3535b087fd2335c65c94"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreComplete_0.png",
+          "sha256": "c1c5b0fb8a30556d47a3a8e8e346b7427942c06e3e131c4697b5ad727cdffdc5"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreDive_0.png",
+          "sha256": "3420a04d4036f0225eec582bab9a776dba9696642362e4680306ac8c1e368cbd"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreMenu_0.png",
+          "sha256": "f86c541e43c30a2a8193c1ce6b334c7cf377e01cb13528c62861b52cc3f69011"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreReturn_0.png",
+          "sha256": "72461f0b71e79464cc07bf25a4f24600cae3bf85170f77ec4a6e4bae61ee7fa7"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreStart_0.png",
+          "sha256": "117425f1cc8253343e39ef762a8a166537dda4632f4d74aa5ceb6d9da140d305"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreSurface_0.png",
+          "sha256": "5c8db66a0e1d4bb8c1195076363666f255768a83e6009f3543a5270d0fd5f565"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/weesen-shore/ShoreWater_0.png",
+          "sha256": "fcce10078a83549d3fe0623e835ae4e19be7e719fd57c2dac9f89acd48bbb2dc"
+        }
+      ],
+      "runtime_sha256": "7b9f5a065b861464bb68f30baf0bd3ded3d782eb795dd3416d6b0e47bbaf8402"
+    },
+    {
+      "status": "PASS",
+      "name": "murg-shore",
+      "entry": 1,
+      "fallback": false,
+      "viewport": "1600x900",
+      "scenario": "shore",
+      "screenshots": 9,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/DiveSmoke_1_shore.png",
+          "sha256": "63d86df7db87c21940d4d5e6017ee3e0b1d38402ce6e2f679b34288461579384"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/DiveUnderwater_1_shore.png",
+          "sha256": "13d27d9831bfbd61ee6e4f7757e3f558ad7ed3fa3892fde217721e23bc48566b"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreComplete_1.png",
+          "sha256": "4d0ca9c0ba4c64802892e72369c14083dae4e29f254f7ddde469dd563868abe3"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreDive_1.png",
+          "sha256": "b252bc0a0de357e60798f4ea786c2b01423ebe2d352ab0199668c31d2ca699fd"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreMenu_1.png",
+          "sha256": "14c31306051e6cd8103e35129078eae940810f4a4252325282c22d24c3b8b02b"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreReturn_1.png",
+          "sha256": "fc7cab2cd0e733124dd6d080bc479ad3e67ff68cd355bf4dd392116fd8c986bf"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreStart_1.png",
+          "sha256": "cf2d6a8b328602f267cdc5a151e88ddc78269e2231cc72c3c468836219588cbc"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreSurface_1.png",
+          "sha256": "3a21ed0a52476dc3295829cbdbe0292234116cb6387d139c5fbe98c5d8be040b"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/murg-shore/ShoreWater_1.png",
+          "sha256": "d33332dd25b226a96e17b977645c0818c768a0a3848dae1f4396c95fa9256ae6"
+        }
+      ],
+      "runtime_sha256": "3b0d5032df3e2acd4a53e7eb081e0d1dad3f314e3b3bb281a13ff66424cc6e6b"
+    },
+    {
+      "status": "PASS",
+      "name": "mols-shore",
+      "entry": 2,
+      "fallback": false,
+      "viewport": "1600x900",
+      "scenario": "shore",
+      "screenshots": 9,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/DiveSmoke_2_shore.png",
+          "sha256": "5c2e8958dce7c15e480791dbd1973bcc8e977bf8b9660699016e19b2e3de8c90"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/DiveUnderwater_2_shore.png",
+          "sha256": "2a1ef72c8a79384d3703a061796273dee5069316c048e6b346e59b3df085a875"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreComplete_2.png",
+          "sha256": "72a42fabd7fff8840680f7dd5ed2e3274367b40d7971376549a2561e32f02159"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreDive_2.png",
+          "sha256": "141eba1cb624f366d4974ae40d5efe87de976167296e4c645d6cee21b60853cb"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreMenu_2.png",
+          "sha256": "d93966788928b6f63078c8908234ef23f0171c1b3fc6a95b251bf506039aedbd"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreReturn_2.png",
+          "sha256": "3347faaffcf26d05c6d3c6520d539f1620f07f0a850709ef0582c3198e3741cf"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreStart_2.png",
+          "sha256": "2e10ce12ffd8a3b97c77130012ac4cbb2d9bd34f18e9dd98e16fc44f0c0138fb"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreSurface_2.png",
+          "sha256": "51f7b4c660444df2e0a54f7a3a73206616b2e1c484aa402dd8d0cf2e105990c9"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/mols-shore/ShoreWater_2.png",
+          "sha256": "a513ae0181945b81eacfdb3787930e23be9d36703a79a8efef2ede92d0478377"
+        }
+      ],
+      "runtime_sha256": "fa6c32aa9c4257d61cd5bf412162ff0ca4d014458d42b769e073d644f07eed4d"
+    },
+    {
+      "status": "PASS",
+      "name": "discoveries",
+      "entry": 2,
+      "fallback": false,
+      "viewport": "1600x900",
+      "scenario": "discoveries",
+      "screenshots": 5,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/discoveries/Discoveries_2_Gallery_DE.png",
+          "sha256": "c9321b2adba71a0bb88205160cad49ed99018817dedcd368fbdc1ecc6321166a"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/discoveries/Discoveries_2_Logbook.png",
+          "sha256": "3d2291c2b7411a17488b0a7172bcde338b12fa8348ec8573d73a6f27a9f52a75"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/discoveries/Discoveries_2_Plant_EN.png",
+          "sha256": "9b78b06c2d3db617bc679ac7485186d887c78bb4a37e588081ddab6daed0aeed"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/discoveries/Discoveries_2_Species_DE.png",
+          "sha256": "a68c77c05b65290bd3585695bd10c9c191fd29c747d02b0ac43314987745313f"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/discoveries/Discoveries_2_Species_EN.png",
+          "sha256": "08dd601d1ee8f0b9ea80be400e36684493a33bb32b43491e1c6f2d8aecc14b42"
+        }
+      ],
+      "runtime_sha256": "dd8b6bf4ce0a893471cac070b8cb4e88c28713cf36ac97716a41b11af105b3f3"
+    },
+    {
+      "status": "PASS",
+      "name": "controls",
+      "entry": 0,
+      "fallback": false,
+      "viewport": "1600x900",
+      "scenario": "controls",
+      "screenshots": 4,
+      "images": [
+        {
+          "file": "artifacts/coast-validation-20261126-054531/controls/Controls_DE.png",
+          "sha256": "b956ca3e7361dd2481e8b1d2dbcef4e107a207766b920aad0a6c7a69efac2baf"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/controls/Controls_EN.png",
+          "sha256": "50b6da1cee7f83796ee79d3764cb330eaedf54cb369c0a7506478f5246c1d4fd"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/controls/DiveSmoke_0_controls.png",
+          "sha256": "d878f2489263d395f90cb0a059a63c51d4ab71e3be7b7a089b536b49c61e98aa"
+        },
+        {
+          "file": "artifacts/coast-validation-20261126-054531/controls/DiveUnderwater_0_controls.png",
+          "sha256": "10521e81086cc122aa7eacba39da2c34e33a7ce5acd66ff784dd38f82cc0e198"
+        }
+      ],
+      "runtime_sha256": "7b3f9b319eb5386c49257051111aa3b8f0a3933d98f426ffb1c27416e7595767"
+    }
+  ],
+  "scope": "Packaged crossings and returns at three original survey boundaries, cooked collision probes for every coast mesh, three existing shore routes, photo and control regressions.",
+  "limits": "Scripted input with one initial placement per route. No physical keyboard acceptance, whole-shore navigation, long-session, minimum-hardware or macOS game certification."
+}

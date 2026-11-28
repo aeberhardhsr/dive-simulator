@@ -1,0 +1,543 @@
+{
+  "status": "EDITOR_GEOGRAPHIC_COVERAGE_VALIDATED_ART_TRANSITIONS_NOT_RELEASE_READY",
+  "sources": [
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/prepare_cliff_coverage.py",
+      "sha256": "6969d9b3a194630b2c3dd1b762fa169a2f4dd321d417db1c72c4c5a56e41b4e4",
+      "project_file": "Tools/prepare_cliff_coverage.py"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/validate_cliff_coverage.py",
+      "sha256": "ab9aa52b5d5e2cc80b8499b621d1a2ad1001e0af4b14106d1f581a10b3ea0186",
+      "project_file": "Tools/validate_cliff_coverage.py"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/build_landscape_cliff_study.py",
+      "sha256": "4b2e2fe9d8cab6d19c8d1928d47d05dd18ff6a09b4dee9ad1907c965d121d374",
+      "project_file": "Tools/build_landscape_cliff_study.py"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/Shaders/LandscapeCliffs.ush",
+      "sha256": "ecac53359f613a64d6dcec134e7e3766e33558cc24c45f67730a6d6886ceba46",
+      "project_file": "Tools/Shaders/LandscapeCliffs.ush"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/Build.ps1",
+      "sha256": "ffea7d1e609511780eb7543d030d5d8a62e7ee7ecca8535ecc4435d8dbd73eec",
+      "project_file": "Tools/Build.ps1"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/SmokeTest.ps1",
+      "sha256": "8b5ddf3b0767bde5b2d848c6922a32b1e8e375f0f5d378cb411d155206b9dcde",
+      "project_file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Tools/Benchmark.ps1",
+      "sha256": "beb349f545ad894332c6c6f39d92a48528a790c2b769915afec6604e5b95456b",
+      "project_file": "Tools/Benchmark.ps1"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "sha256": "16c6d4c21862cf5cb5080b66234f52a750013ab6fa0ba8e8e0e32dea4fc043db",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/divingsim/Source/DiveSim/DivePawn.cpp",
+      "sha256": "eed147461b6c2f2690fb9a7fbac8eb2ea181594b50c445ad234539b553cc841c",
+      "project_file": "divingsim/Source/DiveSim/DivePawn.cpp"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset",
+      "sha256": "4e2b71f52fa7d3cc6bdeef6493fb8366e65852c04b5b046170552515aade5898",
+      "project_file": "divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/divingsim/Content/Diving/Textures/T_CliffCoverage.uasset",
+      "sha256": "e3ad11caecdd50d9b9bf892876d868f23f36f8436a1fdef1fcd2cbc5fcaab154",
+      "project_file": "divingsim/Content/Diving/Textures/T_CliffCoverage.uasset"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Art/GroundMaterials/CliffCoverage.png",
+      "sha256": "982b93f6cfea1a1ed03fb2ef46b3b3561c34ab0766a7a748a26a5d91dbe3f399",
+      "project_file": "Art/GroundMaterials/CliffCoverage.png"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Documentation/CLIFF_COVERAGE.json",
+      "sha256": "ca492e8756e5b8c8cc10407ae9c7186d57d8ff44bc11299a6744e41dc96b686b",
+      "project_file": "Documentation/CLIFF_COVERAGE.json"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Documentation/CLIFF_COVERAGE_AUDIT.json",
+      "sha256": "c4fdb40441509646ec4ae39cb0bb5e763d6af67a24eddcc9995464def00a1d8d",
+      "project_file": "Documentation/CLIFF_COVERAGE_AUDIT.json"
+    }
+  ],
+  "game_module": {
+    "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+    "sha256": "873a3369be030677cddff399c33c743e892fe7d9ab775b6250fb2080f24c26ce",
+    "project_file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+  },
+  "renderer_module": {
+    "file": "artifacts/above-water-cliff-coverage-20261128/Snapshot/Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+    "sha256": "09b9c4e2b1a29d913926ac865062bfebb3d05ec4104c820a8c91edc10f77c5f5",
+    "project_file": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll"
+  },
+  "builds": [
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/EditorBuild.log",
+      "sha256": "b78ae6a06b087b90827c07627225d7bedde8c90535e52580605d508dab1eb685"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/ContentBuild.log",
+      "sha256": "778d9b748f3c772e551e44f31f7373d222d35b1a2f614f0048327947e3227327"
+    },
+    {
+      "file": "artifacts/above-water-cliff-coverage-20261128/ContentBuild-native.log",
+      "sha256": "dfb6a5f147cf4b74f703fbe98c6bda5dd450640e906bcdee2df9e9648de41982"
+    }
+  ],
+  "cases": [
+    {
+      "name": "Murg_Control",
+      "entry": 1,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Control",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Control/Runtime.log",
+        "sha256": "9f788b3078bb93b0cc1440d280388fb7c88b0e900bf8d2b2049e2c90c3ad9a3b"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Control/Shore_1.png",
+        "sha256": "ae338af0102a5a8723d92049e526f9ac4b7710fee11910d361c547813f3d8756"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Mapped",
+      "entry": 1,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Mapped",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Mapped/Runtime.log",
+        "sha256": "68f458e9228d4bf6d7460d4fd22a96954349a6143043a336d6ba01c57953517a"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Mapped/Shore_1.png",
+        "sha256": "76d0b0778e351e9ca1adacb37e62c084c401d8927473846795252114e6bc9307"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Weesen_Control",
+      "entry": 0,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Control",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Weesen_Control/Runtime.log",
+        "sha256": "10577f2bec56797d5fef698e74f6495c78845610938d94c4f7e81346658e16ee"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Weesen_Control/Shore_0.png",
+        "sha256": "0270516bc5c5aa8353ee7eabf5bf056e5c863e067e0757b9366273d7bd0ebe8f"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Weesen_Mapped",
+      "entry": 0,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Mapped",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Weesen_Mapped/Runtime.log",
+        "sha256": "1c695c3f5adf0fa20e910e7d330758dbb448cf7acbf65431d25c117e76f619cb"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Weesen_Mapped/Shore_0.png",
+        "sha256": "d2aeea009efa28459c0235fc24bfb08de205b0cf0d0b94673c478b5f58693a79"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Mols_Control",
+      "entry": 2,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Control",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Mols_Control/Runtime.log",
+        "sha256": "eb3864ffc97b443327b3252b86c9660e0e32d163482a0da8b11f21a051f6b8b9"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Mols_Control/Shore_2.png",
+        "sha256": "4515555cd922f84aa9e4821638cfa29f913b0ec315b36e0ae10952b162bd244b"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Mols_Mapped",
+      "entry": 2,
+      "hour": 12,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Mapped",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Mols_Mapped/Runtime.log",
+        "sha256": "0c78c30125409f806ea4bec33cbaacabc631bb8596913a348ba4c8312aec3594"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Mols_Mapped/Shore_2.png",
+        "sha256": "b8edb285cc394dc97435cb09ef5c54e098c49b56fbae4e6f6c0eddcda7a3c27b"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Evening_Control",
+      "entry": 1,
+      "hour": 17,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Control",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Evening_Control/Runtime.log",
+        "sha256": "e3c52c0295df6497f748bcde710b4bfb1c91dfc0d35fea6465e54daaba407ade"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Evening_Control/Shore_1.png",
+        "sha256": "5ba92c60062e6e775d63ccd5ffc7caf53647788a40eeb84eb3d0ec9b66003ce4"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    },
+    {
+      "name": "Murg_Evening_Mapped",
+      "entry": 1,
+      "hour": 17,
+      "date": "2026-06-21",
+      "warmup_seconds": 12,
+      "variant": "Mapped",
+      "runtime": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Evening_Mapped/Runtime.log",
+        "sha256": "dcbc47962c947fa07fa926428105417dde87057c5925646574f98e6319a4ad9f"
+      },
+      "image": {
+        "file": "artifacts/above-water-cliff-coverage-20261128/Murg_Evening_Mapped/Shore_1.png",
+        "sha256": "2345e0c31d85fcc70350b5e30ec38bf663774099a594ff837ff83073f440d861"
+      },
+      "visual_review": "REVIEWED_WITH_ART_LIMITATIONS"
+    }
+  ],
+  "published_images": [
+    {
+      "file": "Documentation/Images/CliffCoverage_Murg_Control.png",
+      "sha256": "ae338af0102a5a8723d92049e526f9ac4b7710fee11910d361c547813f3d8756"
+    },
+    {
+      "file": "Documentation/Images/CliffCoverage_Murg_Mapped.png",
+      "sha256": "76d0b0778e351e9ca1adacb37e62c084c401d8927473846795252114e6bc9307"
+    },
+    {
+      "file": "Documentation/Images/CliffCoverage_Weesen_Control.png",
+      "sha256": "0270516bc5c5aa8353ee7eabf5bf056e5c863e067e0757b9366273d7bd0ebe8f"
+    },
+    {
+      "file": "Documentation/Images/CliffCoverage_Weesen_Mapped.png",
+      "sha256": "d2aeea009efa28459c0235fc24bfb08de205b0cf0d0b94673c478b5f58693a79"
+    }
+  ],
+  "independent_mask_audit": {
+    "status": "PASS",
+    "independent_polygon_checks": [
+      {
+        "category": "Fels",
+        "points": 30000,
+        "mismatches": 0,
+        "inside_points": 1126
+      },
+      {
+        "category": "Fels locker",
+        "points": 30000,
+        "mismatches": 0,
+        "inside_points": 265
+      }
+    ],
+    "uv_registration": "PASS",
+    "coverage_sha256": "982b93f6cfea1a1ed03fb2ef46b3b3561c34ab0766a7a748a26a5d91dbe3f399",
+    "source_geojson_sha256": "887a4363bbc2f7349648c058eafb9dc2b2213d4504edf5b9926d1e6d0ddd33ca",
+    "limits": "Checks decoded offline pixels and declared shader registration; not a GPU texture readback or 3D rock-shape survey."
+  },
+  "runtime_texture": {
+    "dimensions": [
+      4096,
+      4096
+    ],
+    "resident_mips": 13,
+    "linear": true,
+    "bytes": 89522176,
+    "encoding": "uncompressed RGBA8",
+    "filter": "trilinear",
+    "mip_generation": "simple average of already decoded R/G coverage"
+  },
+  "preserved_materials": {
+    "count": 43,
+    "all_hashes_match": true,
+    "manifest": {
+      "file": "artifacts/above-water-cliffs-20261128/OriginalMaterials.json",
+      "sha256": "7160f319d72251cd48746469d0f8c0c67edb3cacad63b94978c92a775ea37d0f"
+    }
+  },
+  "preserved_r3": {
+    "runtime_files": 53,
+    "all_hashes_match": true,
+    "identity": {
+      "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+      "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+    }
+  },
+  "limits": [
+    "No normal-game integration or new playable package.",
+    "Mapped horizontal coverage is not a measured 3D cliff extent or rock colour.",
+    "Offline polygon/UV validation plus native import/residency checks are not a GPU texel readback.",
+    "Coarse terrain forms, flat distant forests and hard bright material boundaries remain.",
+    "No continuous moving-image inspection in this test series; benchmark endpoints only."
+  ],
+  "observations": [
+    "Murg noon and evening show spatial stone on large mapped bands and weaker bright vertical photo streaks.",
+    "Weesen shows conspicuous bright boundaries against dark aerial-photo areas; geographic registration alone does not solve the transition.",
+    "Mols upper bands improve, while portions of the lower steep wall remain stretched.",
+    "Some regular-looking texture pattern remains; distant forest volume and nearshore terrain shapes are unchanged."
+  ],
+  "next_required": [
+    "Investigate transition brightness and narrow mapped footprints on steep faces.",
+    "Trace repeated CPU/garbage-collection-associated stalls before performance acceptance.",
+    "Diagnose terrain geometry against available native 2m height data before changing shapes.",
+    "After visual improvement, moving-view review and packaged validation before normal integration."
+  ],
+  "benchmarks": [
+    {
+      "variant": "Control",
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110409-323/Capture.csv",
+          "sha256": "a85eb71fc9c0dddb4fe803607109a62ba05c801c1ce1cf2680abc261f83312c5"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110409-323/Summary.json",
+          "sha256": "0097f12c0bbafc5809bde69ec0d528faf10870ede16bdc5fe7179bbc502e3e7b"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110409-323/Host.json",
+          "sha256": "1488a74a852c30454468e3e49edd8b64b132cc1c5efa845695fca718cbfeade2"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110409-323/Metadata.json",
+          "sha256": "aae8fb5efa6f27d47969b353c4e2b9b16472d989f6c11ccbd478bae3dbdeb980"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110409-323/Runtime.log",
+          "sha256": "1cb049f10fb88cc7b3f1f79fe72e991a79ddb0153d4ed7091fc2c26e8c661738"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110409-323/Frame.png",
+          "sha256": "ef48a889b58779282ad093c5252af01fbb8e632f067d99d4331987bd99d1019c"
+        }
+      ],
+      "frame_reviewed": true,
+      "average_fps": 70.71542304944086,
+      "one_percent_low_fps": 52.12821941761626,
+      "frame_ms": {
+        "mean_ms": 14.141186701249705,
+        "p50_ms": 14.0073,
+        "p95_ms": 16.5813,
+        "p99_ms": 17.679,
+        "max_ms": 42.0774
+      },
+      "gpu_ms": {
+        "mean_ms": 13.444073685451544,
+        "p50_ms": 13.3044,
+        "p95_ms": 15.5797,
+        "p99_ms": 16.1562,
+        "max_ms": 17.2829
+      },
+      "frames_over_33_33_ms": 1,
+      "camera_rotation_degrees": {
+        "pitch": -5.000000000000002,
+        "yaw": 79.71832275390625,
+        "roll": 0
+      },
+      "blocked_pose_steps": 0
+    },
+    {
+      "variant": "Mapped",
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110608-958/Capture.csv",
+          "sha256": "66f56238a1589027e95fc76bab69702179001a0db8cb15f48adc65b181a2c38a"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110608-958/Summary.json",
+          "sha256": "6a04ae8079f2e27c1e4a2a42f28102b83a4293afaad01e3faf71ca8cf6a90f3a"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110608-958/Host.json",
+          "sha256": "802dc9cb28e466c3eb1c2bfa6373ef6eb6bf5904116b5bad0423a6f62dd85a78"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110608-958/Metadata.json",
+          "sha256": "febeaf24677b0615ce9f226b0aae9844203b13251e499ae33ef21e8407905ec7"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110608-958/Runtime.log",
+          "sha256": "2169b5a8f2a1c038f80bc73523d8d3ed871db5e71ae5d564e94dd959bface126"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110608-958/Frame.png",
+          "sha256": "81f0e5204900f58f906dcece8f660746a75c6aaea9f5fbc7c2b87d9fda037819"
+        }
+      ],
+      "frame_reviewed": true,
+      "average_fps": 69.70525003284027,
+      "one_percent_low_fps": 38.65187772202398,
+      "frame_ms": {
+        "mean_ms": 14.346121698564593,
+        "p50_ms": 14.1378,
+        "p95_ms": 17.0811,
+        "p99_ms": 18.6118,
+        "max_ms": 230.561
+      },
+      "gpu_ms": {
+        "mean_ms": 13.579027033492823,
+        "p50_ms": 13.4007,
+        "p95_ms": 15.8684,
+        "p99_ms": 16.4531,
+        "max_ms": 17.8779
+      },
+      "frames_over_33_33_ms": 2,
+      "camera_rotation_degrees": {
+        "pitch": -5.000000000000002,
+        "yaw": 77.18756103515628,
+        "roll": 0
+      },
+      "blocked_pose_steps": 0
+    },
+    {
+      "variant": "MappedRepeat",
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110947-294/Capture.csv",
+          "sha256": "2a7ab86db726be9ae39878e2801abe7c92da24763c38efb69cff62501046df9c"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110947-294/Summary.json",
+          "sha256": "b04835617d27dfb31ebe06f80d68a910a2e7c31cb245e6bb64d2787921e924ed"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110947-294/Host.json",
+          "sha256": "2eb940b3cd0ee70f97f43c84ec985b5bbe450caec4667c64eba929615a44c59f"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110947-294/Metadata.json",
+          "sha256": "a77dab71693649f0dad92855d2be7dd54edc8916f5ac498f54430dfffcf4721a"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110947-294/Runtime.log",
+          "sha256": "a08740c51ee99e07e3df1756c667b59db9de49e1cb38666a501187da8f73bd5f"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-110947-294/Frame.png",
+          "sha256": "ebf96aa5c5d5ff35160d574c2ff05d3e26737ac41d0063bb23f9e8f9de0c6bdd"
+        }
+      ],
+      "frame_reviewed": true,
+      "average_fps": 74.43620167450338,
+      "one_percent_low_fps": 39.257160309754696,
+      "frame_ms": {
+        "mean_ms": 13.434323319892473,
+        "p50_ms": 13.1694,
+        "p95_ms": 15.4651,
+        "p99_ms": 16.4339,
+        "max_ms": 375.8885
+      },
+      "gpu_ms": {
+        "mean_ms": 12.708908848566308,
+        "p50_ms": 12.5255,
+        "p95_ms": 14.6259,
+        "p99_ms": 15.3078,
+        "max_ms": 17.2774
+      },
+      "frames_over_33_33_ms": 1,
+      "camera_rotation_degrees": {
+        "pitch": -5.000000000000002,
+        "yaw": 74.08486938476562,
+        "roll": 0
+      },
+      "blocked_pose_steps": 0
+    },
+    {
+      "variant": "ControlRepeat",
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-111200-219/Capture.csv",
+          "sha256": "6a077b57c348397e8126a87418e86cae770d3bffd884af646c35da38f39c52b4"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-111200-219/Summary.json",
+          "sha256": "af66dfbb7ada68b8bbc6a316eefcface6ad11dedf3f3a07feff459257b80988f"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-111200-219/Host.json",
+          "sha256": "938696855d14b7f7b4eefc945c1128b1ec9f4620803a675c8b6de3f4ab1a87cf"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-111200-219/Metadata.json",
+          "sha256": "02f8f210f6f56b730bfa14bd55b9ff77a75ef0fff71646e6dc3198f7db15fd41"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-111200-219/Runtime.log",
+          "sha256": "12fd4a896a06f1889330a0658bc06a21ef4c47acf94dc714d5978b84c96fdde8"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-111200-219/Frame.png",
+          "sha256": "fa3ed5ecf9667c66e55cea6bffd432b2cb6a74e13707b6f9c177605e54eaba73"
+        }
+      ],
+      "frame_reviewed": true,
+      "average_fps": 76.96213086616352,
+      "one_percent_low_fps": 42.83429616325007,
+      "frame_ms": {
+        "mean_ms": 12.993403232805381,
+        "p50_ms": 12.7169,
+        "p95_ms": 15.0298,
+        "p99_ms": 15.8558,
+        "max_ms": 132.9832
+      },
+      "gpu_ms": {
+        "mean_ms": 12.298082664352354,
+        "p50_ms": 12.0415,
+        "p95_ms": 14.2146,
+        "p99_ms": 14.8639,
+        "max_ms": 15.8535
+      },
+      "frames_over_33_33_ms": 6,
+      "camera_rotation_degrees": {
+        "pitch": -5.000000000000003,
+        "yaw": 76.83959960937499,
+        "roll": -3.9908798545555505e-16
+      },
+      "blocked_pose_steps": 0
+    }
+  ],
+  "hitch_inspection": {
+    "file": "artifacts/above-water-cliff-coverage-20261128/HitchInspection.json",
+    "sha256": "0902f979bf74f3703eacd35ccc1c13d6cb4aa2c666c0b03f4dca0dec398628b5"
+  },
+  "performance_acceptance": "NOT_ACCEPTED: mapped runs contain 230.561ms and 375.8885ms frames, each next to a long game-thread/garbage-collection sample. Complete causal attribution is not established.",
+  "performance_scope": "Two 60-second editor shore orbits per variant after 15-second warmup, second pair in reversed order because of a 230.56ms hitch. Endpoints reviewed. Not statistical equivalence, continuous 60FPS or package acceptance; all stalls retained."
+}

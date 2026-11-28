@@ -1,0 +1,139 @@
+{
+  "status": "BASELINE_CAPTURED_AND_REVIEWED_NOT_TARGET_QUALITY_ACCEPTANCE",
+  "date": "2026-11-28",
+  "package_identity": {
+    "file": "Documentation/PRODUCTION_PACKAGE_R3_EVIDENCE.json",
+    "sha256": "350580549aa8a43deff0f98c426c8eb367556298532bfaf878a212551ac649ec"
+  },
+  "runtime_files_rehashed": 53,
+  "settings": {
+    "scenario": "shore-preview",
+    "date": "2026-06-21",
+    "hour": 12,
+    "viewport": [
+      1600,
+      900
+    ],
+    "max_fps": 30,
+    "production_water": true,
+    "camera": "Existing native shore-preview fixture; lake pitch -12; land pitch 0 and yaw +180."
+  },
+  "cases": [
+    {
+      "entry": 0,
+      "shore_location": "Weesen / Strandbad",
+      "view": "Lake",
+      "runtime": {
+        "file": "artifacts/above-water-baseline-20261128/Entry0_Lake/Runtime.log",
+        "sha256": "ae508a5ca4f6c17cbddce8c9748ba1bd4ae5931744178f267627825f10e2e2cd"
+      },
+      "image": {
+        "file": "artifacts/above-water-baseline-20261128/Entry0_Lake/Shore_0.png",
+        "sha256": "2ca62e700583772034885f36c83c8ef61e634b21af695b77fd6b9de67e2ddee7"
+      },
+      "visually_reviewed": true,
+      "native_status": "PASS",
+      "normal_renderer_confirmed": true
+    },
+    {
+      "entry": 0,
+      "shore_location": "Weesen / Strandbad",
+      "view": "Land",
+      "runtime": {
+        "file": "artifacts/above-water-baseline-20261128/Entry0_Land/Runtime.log",
+        "sha256": "9149adebfce870436fc373de96f66f458c1ae990d390b2258570932c5fc304c8"
+      },
+      "image": {
+        "file": "artifacts/above-water-baseline-20261128/Entry0_Land/Shore_0_Land.png",
+        "sha256": "82e8228e3b0c64d52fe56c7e6a3a76926a52cfa6a0de1a8e97164d9a01d09781"
+      },
+      "visually_reviewed": true,
+      "native_status": "PASS",
+      "normal_renderer_confirmed": true
+    },
+    {
+      "entry": 1,
+      "shore_location": "Murg / West",
+      "view": "Lake",
+      "runtime": {
+        "file": "artifacts/above-water-baseline-20261128/Entry1_Lake/Runtime.log",
+        "sha256": "fc7e0e4c2c5dc65709cc764460b9bf3e58036cd251273cb950c77bac580e6fb4"
+      },
+      "image": {
+        "file": "artifacts/above-water-baseline-20261128/Entry1_Lake/Shore_1.png",
+        "sha256": "4cdfa291566587218f214abdb4c2f77cad3ca626f28bbd430ceae7433456f0d9"
+      },
+      "visually_reviewed": true,
+      "native_status": "PASS",
+      "normal_renderer_confirmed": true
+    },
+    {
+      "entry": 1,
+      "shore_location": "Murg / West",
+      "view": "Land",
+      "runtime": {
+        "file": "artifacts/above-water-baseline-20261128/Entry1_Land/Runtime.log",
+        "sha256": "bde130b7e179ab3ff04ee37fe9f687cca8dde255ecc2599ce11b584573a63461"
+      },
+      "image": {
+        "file": "artifacts/above-water-baseline-20261128/Entry1_Land/Shore_1_Land.png",
+        "sha256": "73c229e38edcf3269f7cf305c6adeb7d5c01977cec4ad956dc7a8e6724c76488"
+      },
+      "visually_reviewed": true,
+      "native_status": "PASS",
+      "normal_renderer_confirmed": true
+    },
+    {
+      "entry": 2,
+      "shore_location": "Mols / Lediwracks",
+      "view": "Lake",
+      "runtime": {
+        "file": "artifacts/above-water-baseline-20261128/Entry2_Lake/Runtime.log",
+        "sha256": "83fd9ef96dc766515bcae679291e5f8c975ca63efc7c00d2f27467ad04c02c49"
+      },
+      "image": {
+        "file": "artifacts/above-water-baseline-20261128/Entry2_Lake/Shore_2.png",
+        "sha256": "b7f43a886ff9d62418dd5674303f483647f617699cfbf8dcf8a5c4262a4796f3"
+      },
+      "visually_reviewed": true,
+      "native_status": "PASS",
+      "normal_renderer_confirmed": true
+    },
+    {
+      "entry": 2,
+      "shore_location": "Mols / Lediwracks",
+      "view": "Land",
+      "runtime": {
+        "file": "artifacts/above-water-baseline-20261128/Entry2_Land/Runtime.log",
+        "sha256": "ea6edd56e283746fc8bc22f6d3dd9dbf7a2b3f151b6ac2eeaf3d331dbaa90bf6"
+      },
+      "image": {
+        "file": "artifacts/above-water-baseline-20261128/Entry2_Land/Shore_2_Land.png",
+        "sha256": "63c147814be90abf05663597daccf35e0e40b14167fadd15e54be11ab76e3ada"
+      },
+      "visually_reviewed": true,
+      "native_status": "PASS",
+      "normal_renderer_confirmed": true
+    }
+  ],
+  "launch_note": "The first native Weesen lake case passed. Its ad-hoc outer loop incorrectly inspected LASTEXITCODE after a PowerShell script (no native shell exit assignment) and stopped before copying. The fresh image was then copied; the other five cases ran sequentially using SmokeTest.ps1 own process-exit and content validation. No case was rerun or hidden.",
+  "source_findings": [
+    {
+      "file": "Tools/Shaders/GroundDetail.ush",
+      "finding": "groundNear fades spatial detail between 25m and 120m; beyond 120m the distant ground remains GroundPhoto."
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "finding": "77 geographic terrain tiles use M_LandscapePhoto; source spacing is 8m."
+    },
+    {
+      "file": "Documentation/VEGETATION.md",
+      "finding": "Tree rendering is local to roughly 1.15km; distant forest remains in the aerial photo."
+    }
+  ],
+  "limits": [
+    "Six fixed daytime views, no movement or performance acceptance.",
+    "No production source, terrain or material changed for this baseline.",
+    "Image defects are observations; individual geometric causes are not yet isolated."
+  ]
+}

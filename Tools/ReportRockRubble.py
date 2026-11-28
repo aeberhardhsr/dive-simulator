@@ -1,0 +1,177 @@
+"""Verify rubble rendering, stable comparison cameras, collision and package evidence."""
+import argparse
+import json
+import re
+from pathlib import Path
+import numpy as np
+from ReportNativeWaterLighting import ROOT, pixels, record, sha
+from ReportRocks import package_check
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('run',type=Path);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--performance',type=Path,nargs='*',default=[])
+    p.add_argument('--repeat-underwater',type=Path)
+    p.add_argument('--prior-run',type=Path);p.add_argument('--prior-driver',type=Path)
+    p.add_argument('--rock-search',action='store_true')
+    p.add_argument('--baseline-run',type=Path)
+    p.add_argument('--prior-performance',type=Path,nargs=2)
+    p.add_argument('--native-fix-log',type=Path)
+    p.add_argument('--rounding-failure-run',type=Path)
+    p.add_argument('--rounding-diagnostic-log',type=Path)
+    a=p.parse_args();run=a.run.resolve()
+    host=json.loads((run/'Host.json').read_text(encoding='utf-8-sig'))
+    for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
+    if host['packaged']:package_check(host)
+    assert not (host['packaged'] and host['preview'])
+    expected={'close-before':3,'close-after':3}
+    if not host['preview']:expected.update(weesen=3,murg=3,**{'ledi-wide':3,'raster':3,'stream':2,'shore':9})
+    cases=json.loads((run/'Cases.json').read_text(encoding='utf-8-sig'))
+    assert len(cases)==len(expected) and {c['name'] for c in cases}==set(expected)
+    evidence=[];logs={}
+    for case in cases:
+        folder=run/case['name'];log=(folder/'Runtime.log').read_text(encoding='utf-8-sig');logs[case['name']]=log
+        assert 'DIVE_SMOKE_PASS' in log
+        assert not re.search(r'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:',log)
+        checks=[]
+        search_checks=[]
+        search_diagnostics=[]
+        if case['name']!='shore':
+            checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_RUBBLE_PASS fragments=(\d+) disabled=(\d+) contacts=(\d+)',log)]
+            assert checks
+            assert all((n==0 and disabled==1 and contacts==0) if case['disabled'] else (n>0 and disabled==0 and contacts>0)
+                       for n,disabled,contacts in checks)
+            for marker in ['DIVE_POPULATION_PASS','DIVE_ROCK_LAYOUT_PASS','DIVE_STEERING_WORLD_PASS','DIVE_GRAVEL_PASS']:
+                assert marker in log,marker
+            if a.rock_search:
+                search_checks=[tuple(map(int,x)) for x in re.findall(r'DIVE_ROCK_SEARCH_PASS queries=(\d+) candidates=(\d+) exhaustive=(\d+) rocks=(\d+) force_tolerance=1e-12 exact_trace=1',log)]
+                assert len(search_checks)>=6
+                assert any(n>0 for q,c,e,n in search_checks)
+                assert all((q==2 and c==e==0) if n==0 else (q>0 and 0<c<e/3 and e==q*n) for q,c,e,n in search_checks)
+                diagnostics=re.findall(r'DIVE_ROCK_SEARCH_DIAGNOSTIC missing=(\d+) force_mismatch=(\d+) force_delta=([^ ]+) trace_mismatch=(\d+) trace_delta=([^\r\n]+)',log)
+                assert len(diagnostics)==len(search_checks)
+                assert all(int(m)==0 and float(d)<=1e-12 and int(t)==0 and float(td)==0 for m,f,d,t,td in diagnostics)
+                search_diagnostics=[dict(missing=int(m),force_bit_differences=int(f),maximum_force_delta=float(d),trace_differences=int(t),maximum_trace_delta=float(td)) for m,f,d,t,td in diagnostics]
+        if case['name']=='raster':assert 'r.Nanite = "0"' in log
+        images=sorted(folder.glob('*.png'));assert len(images)==case['screenshots']==expected[case['name']]
+        if case['name']=='shore':
+            assert {x.name for x in images}=={'DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png',
+                'ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png'}
+        for image in images:pixels(image)
+        evidence.append(dict(**case,rubble_checks=checks,search_checks=search_checks,search_diagnostics=search_diagnostics,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],
+            engine_error_lines=[s for s in log.splitlines() if ': Error:' in s]))
+    poses=[re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',logs[name]) for name in ['close-before','close-after']]
+    assert len(poses[0])==3 and poses[0]==poses[1]
+    comparisons=[]
+    for i in range(3):
+        name=f'Habitat_0_{i}.png';b=run/'close-before'/name;c=run/'close-after'/name
+        delta=float(np.abs(pixels(b)-pixels(c)).mean());assert delta>.1
+        comparisons.append(dict(before=record(b),after=record(c),mean_absolute_rgb_difference=delta))
+    launcher=None;published=[];performance=[]
+    if host['packaged']:
+        launcher=json.loads((run/'Launcher.json').read_text(encoding='utf-8-sig'))
+        assert launcher['status']=='PASS' and launcher['exit_code']==0
+        assert launcher['executable_sha256'].lower()==host['sha256'].lower()
+        assert launcher['log_sha256'].lower()==sha(run/'Launcher.log')
+        published_cases=[('close-after','RockSearch_Close.png')] if a.rock_search else [('close-before','RockRubble_Before.png'),('close-after','RockRubble_After.png')]
+        for case,name in published_cases:
+            image=ROOT/'Documentation/Images'/name
+            assert sha(image)==sha(run/case/'Habitat_0_0.png');published.append(record(image))
+        perf_folders=[(folder,'primary') for folder in a.performance]
+        if a.repeat_underwater:
+            assert len(a.performance)==2
+            perf_folders.append((a.repeat_underwater,'repeat-underwater'))
+        for folder,role in perf_folders:
+            folder=folder.resolve();summary=json.loads((folder/'Summary.json').read_text(encoding='utf-8-sig'))
+            h=summary['host'];m=summary['metadata']
+            assert not h['editor'] and not h['background_processes']
+            assert h['executable_sha256']==host['sha256'].lower()
+            assert sorted(h['package_containers'],key=lambda x:x['file'])==sorted(host['package_containers'],key=lambda x:x['file'])
+            assert m['width']==1920 and m['height']==1080 and m['quality']==2
+            assert m['r.ScreenPercentage']==100 and m['r.VSync']==0 and m['t.MaxFPS']==0
+            if role=='repeat-underwater':assert m['scenario']=='perf-underwater'
+            performance.append(dict(role=role,summary=summary,files=[record(folder/n) for n in ['Host.json','Metadata.json','Summary.json','Capture.csv','Frame.png','Runtime.log']]))
+        if a.performance:
+            primary=[x for x in performance if x['role']=='primary']
+            assert len(primary)==2 and {x['summary']['metadata']['scenario'] for x in primary}=={'perf-underwater','perf-stream'}
+    else:assert not a.performance and not a.repeat_underwater
+    prior=None
+    if a.prior_run or a.prior_driver:
+        assert host['packaged'] and a.prior_run and a.prior_driver
+        previous=a.prior_run.resolve();driver=a.prior_driver.resolve()
+        previous_host=json.loads((previous/'Host.json').read_text(encoding='utf-8-sig'))
+        previous_cases=json.loads((previous/'Cases.json').read_text(encoding='utf-8-sig'))
+        driver_text=driver.read_text(encoding='utf-8-sig')
+        assert 'ROCK_RUBBLE=' not in driver_text
+        if a.rock_search:
+            assert a.prior_performance and a.native_fix_log
+            assert len(previous_cases)==2 and {c['name'] for c in previous_cases}=={'close-before','close-after'}
+            assert set(re.findall(r'^PASS (\S+) ',driver_text,re.M))=={'close-before','close-after'}
+            failure=(previous/'weesen/Runtime.log').read_text(encoding='utf-8-sig')
+            assert 'DIVE_ROCK_SEARCH_FAIL queries=0 candidates=0 exhaustive=0 rocks=0' in failure
+            native=a.native_fix_log.resolve();fixed=native.read_text(encoding='utf-8-sig')
+            assert 'DIVE_SMOKE_PASS' in fixed and not re.search(r'DIVE_\w*FAIL|Fatal error:',fixed)
+            assert 'DIVE_ROCK_SEARCH_PASS queries=2 candidates=0 exhaustive=0 rocks=0' in fixed
+            native_host_path=native.with_name(native.stem+'-host.json')
+            native_host=json.loads(native_host_path.read_text(encoding='utf-8-sig'))
+            assert native_host['log_sha256']==sha(native)
+            # Historical fixture-fix binary; later diagnostic edits are tracked
+            # separately. The actual indexing implementation must still match.
+            indexed_file='divingsim/Source/DiveSim/Simulation/RockIndex.h'
+            assert next(x['sha256'] for x in native_host['files'] if x['file']==indexed_file)==sha(ROOT/indexed_file)
+            old_performance=[]
+            for folder in a.prior_performance:
+                folder=folder.resolve();summary=json.loads((folder/'Summary.json').read_text(encoding='utf-8-sig'))
+                assert summary['host']['executable_sha256']==previous_host['sha256']
+                assert summary['host']['package_containers']==previous_host['package_containers']
+                old_performance.append(dict(summary=summary,files=[record(folder/n) for n in ['Host.json','Metadata.json','Summary.json','Capture.csv','Frame.png','Runtime.log']]))
+            prior=dict(status='TEST_FIXTURE_FAILED',reason='The far Weesen teleport correctly produced an empty rock window; the first test wrongly required nonempty queries.',
+                host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
+                failure_runtime=record(previous/'weesen/Runtime.log'),native_fix=record(native),native_fix_host=record(native_host_path),performance=old_performance)
+        else:
+            assert previous_host['sha256']==host['sha256']
+            assert previous_host['package_containers']==host['package_containers']
+            assert len(previous_cases)==7 and {c['name'] for c in previous_cases}==set(expected)-{'shore'}
+            assert set(re.findall(r'^PASS (\S+) ',driver_text,re.M))==set(expected)-{'shore'}
+            assert 'DIVE_SMOKE_PASS shore=1' in (previous/'shore/Runtime.log').read_text(encoding='utf-8-sig')
+            prior=dict(status='COLLECTOR_FAILED',reason='The original collector expected six shore images; the actual scenario correctly produced nine.',
+                failure_message_capture='The terminating PowerShell error was returned to the shell session, not written to the redirected driver log; that log retains only seven completed cases.',
+                host=record(previous/'Host.json'),cases=record(previous/'Cases.json'),driver=record(driver),
+                shore_runtime=record(previous/'shore/Runtime.log'),shore_images=[record(x) for x in sorted((previous/'shore').glob('*.png'))])
+            assert len(prior['shore_images'])==9
+    baseline=None
+    if a.rock_search:
+        assert a.baseline_run
+        old=a.baseline_run.resolve();old_host=json.loads((old/'Host.json').read_text(encoding='utf-8-sig'))
+        assert old_host['packaged']==host['packaged']
+        before_log=(old/'close-after/Runtime.log').read_text(encoding='utf-8-sig')
+        assert re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',before_log)==poses[1]
+        old_assets={x['file']:x['sha256'] for x in old_host['files'] if '/Content/' in x['file']}
+        assets={x['file']:x['sha256'] for x in host['files'] if '/Content/' in x['file']}
+        assert old_assets and old_assets==assets
+        baseline=dict(host=record(old/'Host.json'),runtime=record(old/'close-after/Runtime.log'),same_cameras=True,same_rock_assets=True,
+            images=[record(old/'close-after'/f'Habitat_0_{i}.png') for i in range(3)])
+    else:assert not a.baseline_run
+    rounding=None
+    if a.rounding_failure_run or a.rounding_diagnostic_log:
+        assert a.rock_search and a.rounding_failure_run and a.rounding_diagnostic_log
+        failed=a.rounding_failure_run.resolve();diagnostic=a.rounding_diagnostic_log.resolve()
+        assert 'DIVE_ROCK_SEARCH_FAIL' in (failed/'close-before/Runtime.log').read_text(encoding='utf-8-sig')
+        rows=re.findall(r'DIVE_ROCK_SEARCH_DIAGNOSTIC missing=(\d+) force_mismatch=(\d+) force_delta=([^ ]+) trace_mismatch=(\d+) trace_delta=([^\r\n]+)',diagnostic.read_text(encoding='utf-8-sig'))
+        assert rows and all(int(m)==0 and int(f)>0 and 0<float(d)<1e-12 and int(t)==0 and float(td)==0 for m,f,d,t,td in rows)
+        rounding=dict(status='EXACT_FORCE_COMPARISON_FAILED',maximum_force_delta=max(float(x[2]) for x in rows),
+            host=record(failed/'Host.json'),runtime=record(failed/'close-before/Runtime.log'),diagnostic=record(diagnostic),
+            explanation='The game build rounds equivalent force accumulation loops by a few double ULPs; final tests retain exact candidate coverage and path fractions, with 1e-12 force tolerance.')
+    result=dict(status='PASS',scope='Conservative rock queries; not full environment acceptance' if a.rock_search else 'Authored rock-foot fragments; not full environment acceptance',host=host,prior_attempt=prior,rounding_attempt=rounding,baseline=baseline,
+        cases=evidence,screenshot_count=sum(expected.values()),comparisons=comparisons,launcher=launcher,published=published,performance=performance,
+        limitations=['Fragments are authored dressing, not surveyed Walensee geology',
+                    'Collision probes sample individual fragment bodies; not every contact direction',
+                    'Additional rock footprints also affect local plants, gravel and fish paths',
+                    'Short rendering and performance scenarios are not endurance acceptance',
+                    'Plant quality, sediment transitions and lighting still require work'])
+    a.output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+    print(f'PASS {len(cases)} cases / {sum(expected.values())} captures -> {a.output}')
+
+
+if __name__=='__main__':main()

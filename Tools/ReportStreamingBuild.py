@@ -1,0 +1,122 @@
+"""Bind staged gravel/population geometry, lifetime checks and complete timing captures to their inputs."""
+import argparse,csv,json,re
+from pathlib import Path
+from ReportNativeWaterLighting import ROOT,record,sha,pixels
+from ReportRocks import package_check
+from analyze_performance import analyze
+
+def read(path):return json.loads(path.read_text(encoding='utf-8-sig'))
+
+def work_stats(folder):
+    with (folder/'Capture.csv').open(encoding='utf-8-sig',newline='') as stream: rows=list(csv.reader(stream))
+    header=rows[-2];data=rows[2:-3] # Same two boundary frames as analyze().
+    stats={}
+    for name in ['DiveGravel/GameThread/BuildCell','DiveGravel/GameThread/Register','DiveGravel/GameThread/Stream',
+                 'DiveGravel/BuildCandidates','DiveGravel/BuildComponents','DivePopulation/GameThread/BuildCell',
+                 'DivePopulation/GameThread/PrepareCell','DivePopulation/GameThread/Stream','DivePopulation/BuildComponents',
+                 'Exclusive/GameThread/EventWait/EndPhysics']:
+        if name not in header:continue
+        index=header.index(name);values=[float(row[index]) if index<len(row) else 0 for row in data]
+        stats[name]=dict(maximum=max(values),active_frames=sum(v>0 for v in values))
+    return stats
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('run',type=Path);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--benchmark',action='append',type=Path,default=[])
+    p.add_argument('--control-benchmark',action='append',type=Path,default=[])
+    a=p.parse_args();run=a.run.resolve();host=read(run/'Host.json')
+    packaged=host.get('packaged',False)
+    for item in host['files']:assert sha(ROOT/item['file'])==item['sha256'],item['file']
+    if packaged:package_check(host)
+    baseline=read(ROOT/'Documentation/ROCK_FORMATIONS_RESULTS.json')
+    assets=[f for f in baseline['host']['files'] if f['file'].startswith('divingsim/Content/')]
+    for item in assets:assert sha(ROOT/item['file'])==item['sha256'],item['file']
+    expected={'before':3,'after':3}
+    if not host['preview']:expected.update(murg=3,walenstadt=3,shore=9,stream=2,sediment=7)
+    cases=read(run/'Cases.json');assert {c['name'] for c in cases}==set(expected) and len(cases)==len(expected)
+    logs={};evidence=[]
+    for case in cases:
+        name=case['name'];folder=run/name;log=(folder/'Runtime.log').read_text(encoding='utf-8-sig');logs[name]=log
+        assert case['status']=='PASS' and 'DIVE_SMOKE_PASS' in log
+        assert not re.search(r'DIVE_\w*FAIL|Fatal error:|Failed to compile Material|Default Material will be used',log)
+        assert ('-DiveImmediateGravelBuild' in log)==(name=='before')
+        assert ('-DiveImmediatePopulationBuild' in log)==(name=='before')
+        assert 'DIVE_FOOT_DEPOSITS_READY enabled=1 maximum_cm=70' in log
+        assert 'DIVE_WATER_PREVIEW_READY smoke=1 hardware=1 bounded=1 interface=1 lighting_mode=2' in log
+        entry=1 if name in {'murg','stream'} else 2 if name=='walenstadt' else 0
+        assert case['options']['Entry']==entry and re.search(r'-DiveEntry='+str(entry)+r'\b',log)
+        checks=re.findall(r'DIVE_FOOT_DEPOSIT_PASS ([^\r\n]+)',log)
+        if name not in {'shore','sediment'}:
+            assert checks
+            staged=re.findall(r'DIVE_GRAVEL_STAGING_PASS steps=(\d+) legacy=(\d+) restored=1',log)
+            assert staged and all(int(steps)==(3 if name=='before' else 33) and int(legacy)==int(name=='before') for steps,legacy in staged)
+            population=re.findall(r'DIVE_POPULATION_STAGED_PASS cells=7,8,9 steps=(\d+) legacy=(\d+)',log)
+            prepared='DIVE_POPULATION_PREPARE_EQUAL_PASS' in log
+            assert population
+            for steps,legacy in population:
+                assert int(legacy)==int(name=='before')
+                if name=='before':assert int(steps)==3
+                elif prepared:assert 27<int(steps)<600
+                else:assert int(steps)==27
+            if name!='before':assert 'DIVE_POPULATION_BUILD_CANCEL_PASS restored=1' in log
+            for check in checks:
+                fields=dict(re.findall(r'(\w+)=([\d.]+)',check))
+                assert int(fields['probes'])>100 and fields['probes']==fields['contacts']
+                assert int(fields['raised'])>0 and 0<float(fields['maximum_cm'])<=70.001
+                assert fields['rebuild_equal']=='1' and int(fields['source_cores'])>0
+            for marker in ['DIVE_POPULATION_PASS','DIVE_ROCK_LAYOUT_PASS','DIVE_GRAVEL_PASS','DIVE_STEERING_WORLD_PASS','DIVE_POPULATION_RETIREMENT_PASS','DIVE_POPULATION_NEAR_TELEPORT_PASS']:assert marker in log,marker
+        images=sorted(folder.glob('*.png'));assert len(images)==expected[name]
+        assert {x.name for x in images}==set(case['images'])
+        for image in images:pixels(image)
+        evidence.append(dict(name=name,checks=checks,runtime=record(folder/'Runtime.log'),images=[record(x) for x in images],engine_errors=[line for line in log.splitlines() if ': Error:' in line]))
+    cameras=[re.findall(r'DIVE_HABITAT_VIEW ([^\r\n]+)',logs[name]) for name in ['before','after']]
+    assert len(cameras[0])==3 and cameras[0]==cameras[1]
+    populations=[re.findall(r'DIVE_HABITAT_PASS ([^\r\n]+)',logs[name]) for name in ['before','after']]
+    assert populations[0] and populations[0]==populations[1]
+    published=[]
+    for case,label in [('before','Before'),('after','After')]:
+        target=ROOT/f'Documentation/Images/StreamingBuild_{label}.png'
+        target.write_bytes((run/case/'Habitat_0_1.png').read_bytes());published.append(record(target))
+    benchmarks=[];control=[];launcher=None;build=None
+    if packaged:
+        build=ROOT/'artifacts/stream-build-package-build.log'
+        assert 'BUILD SUCCESSFUL' in build.read_text(encoding='utf-8-sig')
+        build=record(build)
+        launcher=read(run/'launcher/Launcher.json')
+        assert launcher['status']=='PASS' and launcher['exit_code']==0 and launcher['executable_sha256'].lower()==host['sha256']
+        assert launcher['log_sha256'].lower()==sha(run/'launcher/Launcher.log')
+        assert 'DIVE_FOOT_DEPOSITS_READY enabled=1 maximum_cm=70' in (run/'launcher/Launcher.log').read_text(encoding='utf-8-sig')
+        assert a.benchmark and a.control_benchmark
+    if a.benchmark:
+        assert len(a.benchmark)==len(a.control_benchmark)==(3 if packaged else 2)
+        def benchmark(folder,enabled):
+            folder=folder.resolve();result=analyze(folder);h,m=result['host'],result['metadata']
+            assert h['editor']==(not packaged) and not h['background_processes']
+            if packaged:
+                assert h['executable_sha256']==host['sha256'] and h['package_containers']==host['package_containers']
+            else:assert h['editor_sandbox']
+            assert h['foot_deposits'] and m['foot_deposits'] and m['water_preview']
+            assert h['gravel_staged_build']==m['gravel_staged_build']==enabled
+            assert h['population_staged_build']==m['population_staged_build']==enabled
+            assert 'host_cpu_before' in h and 'host_cpu_after' in h
+            for key,value in {'width':1920,'height':1080,'quality':2,'r.ScreenPercentage':100,'r.VSync':0,'t.MaxFPS':0,'r.Lumen.HardwareRayTracing':1}.items():assert m[key]==value,(key,m[key])
+            log=(folder/'Runtime.log').read_text(encoding='utf-8-sig')
+            entry=int(re.search(r'-DiveEntry=(\d+)\b',log).group(1))
+            assert m['warmup_seconds']==15 and m['requested_capture_seconds']==(90 if m['scenario']=='perf-stream' else 60)
+            return dict(entry=entry,result=result,work=work_stats(folder),files=[record(folder/name) for name in ['Host.json','Metadata.json','Capture.csv','Frame.png','Runtime.log']])
+        benchmarks=[benchmark(folder,True) for folder in a.benchmark]
+        control=[benchmark(folder,False) for folder in a.control_benchmark]
+        assert {x['result']['metadata']['scenario'] for x in benchmarks}=={'perf-underwater','perf-stream'}
+        assert {x['result']['metadata']['scenario'] for x in control}=={'perf-underwater','perf-stream'}
+        sites={('perf-underwater',2),('perf-stream',1)}|({('perf-underwater',0)} if packaged else set())
+        assert {(x['result']['metadata']['scenario'],x['entry']) for x in control}==sites
+        assert {(x['result']['metadata']['scenario'],x['entry']) for x in benchmarks}==sites
+    report=dict(status='PASS',scope='Bounded gravel and population preparation with retained transforms and contacts; complete timing evidence, not full visual acceptance',host=host,asset_baseline=record(ROOT/'Documentation/ROCK_FORMATIONS_RESULTS.json'),checked_assets=assets,cases=evidence,equal_comparison_cameras=cameras[0],equal_populations=populations[0],published=published,build=build,launcher=launcher,benchmarks=benchmarks,control_benchmark=control,limitations=['Deposits are authored up to 70 cm, not surveyed or physically simulated transport','Only shore entry 0 checked; other shore sites and night remain unverified','Underlying metre-grid resolution remains; full reference quality is not achieved','Short single-run performance captures; no minimum-hardware or endurance claim','Frame-time improvement must be assessed from complete captures without dropping spikes'])
+    report['limitations'].extend(['Aggregate host CPU snapshots are not continuous measurements or attribution of individual spikes',
+        'Near missing cells and teleports intentionally bypass ordinary per-frame construction budgets',
+        'Population preparation yields between rows with a soft time budget' if 'DIVE_POPULATION_PREPARE_EQUAL_PASS' in logs['after'] else 'Population transform preparation remains a single synchronous phase'])
+    a.output.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+    print(f'STREAMING_BUILD_PASS cases={len(cases)} captures={sum(expected.values())}')
+
+if __name__=='__main__':main()

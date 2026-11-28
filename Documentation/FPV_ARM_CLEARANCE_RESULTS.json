@@ -1,0 +1,546 @@
+{
+  "status": "TARGETED_ARM_CLEARANCE_IMPROVED_FULL_FPV_ACCEPTANCE_PENDING",
+  "base_commit": "c1d6b12fe40d3f5f723898e242ba266b047f447d",
+  "diagnosis": {
+    "method": "Frozen endpoint, original/no-suit/restored screenshots, plus CPU-skinned LOD0 geometry in camera space",
+    "identified_mesh": "/Game/Diving/Avatar/SK_DiverSuit",
+    "identified_bones": [
+      "lower_l",
+      "upper_l"
+    ],
+    "depth_cm_range_at_sampled_hits": [
+      32.6,
+      40.2
+    ],
+    "note": "Bone labels use imported handedness; this is an arm, not the head or cylinder."
+  },
+  "changes": {
+    "relaxed_hand_targets_cm": {
+      "right_z": [
+        -20,
+        -30
+      ],
+      "left_z": [
+        -18,
+        -28
+      ]
+    },
+    "reading_target_changed": false,
+    "joint_lengths_changed": false,
+    "collision_bypassed": false,
+    "normal_game_suit_hidden": false,
+    "suit_material": "Decode imported sRGB vertex colours to linear base colour once; alpha is not decoded",
+    "menu_fixture": "Regulator inspection phases explicitly navigate Pause > Loadout > Avatar, matching the current menu"
+  },
+  "colour_check": [
+    {
+      "name": "black",
+      "native_rgb8": [
+        46,
+        54,
+        58
+      ],
+      "authored_linear": [
+        0.028,
+        0.037,
+        0.043
+      ],
+      "decoded_linear": [
+        0.027320891639074894,
+        0.03688945040110004,
+        0.042311410620809675
+      ],
+      "max_absolute_error": 0.0006885893791903214
+    },
+    {
+      "name": "panel",
+      "native_rgb8": [
+        72,
+        97,
+        104
+      ],
+      "authored_linear": [
+        0.065,
+        0.12,
+        0.14
+      ],
+      "decoded_linear": [
+        0.06480326669290577,
+        0.11953842798834562,
+        0.13843161503245183
+      ],
+      "max_absolute_error": 0.0015683849675481865
+    }
+  ],
+  "runs": {
+    "before": {
+      "artifacts": [
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Host.json",
+          "sha256": "8b76984075ffb8c44595c547a3e86604292ae98bfcaddaca8f797cc60b4517ef",
+          "bytes": 1656
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Metadata.json",
+          "sha256": "4ce2dfdc9a2e9692bba246d025856f73e2df71a4b4cdf7cc58530e03c051e9c1",
+          "bytes": 2373
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Runtime.log",
+          "sha256": "3536e800645efa655c478ced876b08863abedff5cd7af452f5ad885487bcd3a4",
+          "bytes": 1788147
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Capture.csv",
+          "sha256": "31ce9ee1d980d11afb09c955fe7fe3697199fdcf9b674808e8b091757914a318",
+          "bytes": 10510841
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Summary.json",
+          "sha256": "14b042d459fb02353f342141d9f4d81a97ca81c9a9aae1594cf030662e8c751f",
+          "bytes": 6786
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Frame.png",
+          "sha256": "e08d8096558b648d622ede325cee3eae735eb6e63e5dffa0af47ec83c2c2faec",
+          "bytes": 2405302
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Frame_NoSuit.png",
+          "sha256": "29b0dfd3346ba2ee0196abd3d12a462d8b0b9b1a1ddeebfae9bdb747bc2f454f",
+          "bytes": 2490657
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/Frame_Restored.png",
+          "sha256": "0bbb1576abc294bbbc51f631481b8c484824ae14e6ccb66ba20f61f4f7cc7752",
+          "bytes": 2436704
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/FPVGeometry.json",
+          "sha256": "e803fc890824f359265a86a7fc542427ee5790ae8898ab136f02f807bdf2b4c5",
+          "bytes": 4615007
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-180250-593/FPVRays.json",
+          "sha256": "b222f292fdafaa2a2a69bdb9e2cdffed4b8062eae01fb975a89f30a73fc5a8ad",
+          "bytes": 3171
+        }
+      ],
+      "camera_to_physical_gaze_error_degrees": {
+        "pitch": 0,
+        "yaw": 0.0,
+        "roll": 0.0
+      },
+      "head_yaw_degrees": 65,
+      "body_pitch_degrees": -80,
+      "sampled_suit_ray_hits": 5,
+      "visual_review": "All three original images inspected; arm obstruction confirmed by disappearance and restoration.",
+      "average_fps": 74.60634356361285,
+      "one_percent_low_fps": 50.041022518237725,
+      "maximum_frame_ms": 40.8599,
+      "frames_over_33_33_ms": 2,
+      "game_module_sha256": "fa24e395e7e97c8a96e4a965fbcca432edd2b7e273dd6db58624764180ada51c"
+    },
+    "after": {
+      "artifacts": [
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Host.json",
+          "sha256": "56704930b009c38a5c2a2fccbb8de3d7f127b2d3b75261170ee23727802a93f4",
+          "bytes": 1659
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Metadata.json",
+          "sha256": "5b47fe27bad314cb5f776d5430d6c191a57653e5210788aa906f7c7f27859f09",
+          "bytes": 2368
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Runtime.log",
+          "sha256": "73798280287bea172f618ce5d7a1bea58ffe60250411d96ac26eb9a1d694f74d",
+          "bytes": 1781131
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Capture.csv",
+          "sha256": "e1911f81a8ce4f73b7ee3afbb846b478d0cd35cd5c520c03ffe8cbe2719726a2",
+          "bytes": 10666662
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Summary.json",
+          "sha256": "a1bd7cafe25ee4f41e9ed17b388132d025baa1670a6e77d58439cdc4aea400f0",
+          "bytes": 6784
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Frame.png",
+          "sha256": "ca67e29385f223cdabc1ef32b0ad02639622f84899affc6ada8f543d33253571",
+          "bytes": 2533425
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Frame_NoSuit.png",
+          "sha256": "c13d823c220688d889a4bb80386a60b90a1d90e48ee123b2ea1a74e5a90c194a",
+          "bytes": 2614698
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/Frame_Restored.png",
+          "sha256": "a9fc5f0a672f406f3b3ef9dc103f1836ff56b5ac2007d88ffd7cb3e88075588d",
+          "bytes": 2619245
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/FPVGeometry.json",
+          "sha256": "decc205a39aca625ce761432bf08592331b658e8e4f2b22826769eb3ffffe35a",
+          "bytes": 4615002
+        },
+        {
+          "path": "artifacts/perf-underwater-1080p-q2-20261127-181032-191/FPVRays.json",
+          "sha256": "dfc4ea29131d33558683aba08c201a9666bbe18781e4fcc82eb80dd7f8d9b638",
+          "bytes": 1247
+        }
+      ],
+      "camera_to_physical_gaze_error_degrees": {
+        "pitch": 0.0,
+        "yaw": 0.0,
+        "roll": 0
+      },
+      "head_yaw_degrees": 65,
+      "body_pitch_degrees": -80,
+      "sampled_suit_ray_hits": 0,
+      "visual_review": "All three original images inspected; former broad arm area above HUD is clear with suit visible.",
+      "average_fps": 75.84148086594729,
+      "one_percent_low_fps": 59.42378563618589,
+      "maximum_frame_ms": 37.6413,
+      "frames_over_33_33_ms": 1,
+      "game_module_sha256": "70249d7092530bbb263807047f264bf1169f0adad7198d8cc722ed23e1489716"
+    }
+  },
+  "native_suite": {
+    "report": {
+      "path": "artifacts/source-engine-20261127/native-relaxed-arms/Report/index.json",
+      "sha256": "2ffaa389cdf2499448576e21111c15a2ec04f5e2375ab73d4a728d4f42668377",
+      "bytes": 14534
+    },
+    "log": {
+      "path": "artifacts/source-engine-20261127/native-relaxed-arms/Runtime.log",
+      "sha256": "7eeb5612e91db92ce3a1ee8bb8c4e85735441f13790ea784a8fb1d3bea30fe95",
+      "bytes": 302403
+    },
+    "passed": 35,
+    "failed": 0,
+    "succeeded_with_warnings": 0
+  },
+  "avatar_matrix": {
+    "report": {
+      "path": "artifacts/avatar-validation-20261127-181259/Report.json",
+      "sha256": "a9d7e6736bacf8c0f8eba33bb31cbc80fa11369a8b27311300260e6a4ce5326c",
+      "bytes": 19615
+    },
+    "case_count": 6,
+    "phases_per_case": 25,
+    "image_count": 66,
+    "visual_review": "All six contact sheets reviewed; selected original computer, gaze, inspection and shore frames inspected. Not full visual acceptance."
+  },
+  "source_and_build": [
+    {
+      "path": "divingsim/Source/DiveSim/DivePose.h",
+      "sha256": "cd12a7d621c6b2745b6e096cb4bb6f31bdac2997e7c928e34a39fb9c61333027",
+      "bytes": 4777
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveAvatarSmoke.cpp",
+      "sha256": "ace4014999aaad8248f22c2344daf542d7175ee40b0a4f34d359240cc8e872c8",
+      "bytes": 6428
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveHUD.cpp",
+      "sha256": "ac462cab64d999f9a1c81f7825f9acda29f9f95d2c108714f4b3211b29a24109",
+      "bytes": 18209
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DiveHUD.h",
+      "sha256": "4704f55ac43e1e023d54f3e6ed9581b32c0f9ddaa364881402dbe9bcf1fbf949",
+      "bytes": 6458
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePawn.cpp",
+      "sha256": "33122f8c64a88309e2912998de41f0a16e99ef104da91d844b4c515767d0c5d3",
+      "bytes": 65747
+    },
+    {
+      "path": "divingsim/Source/DiveSim/DivePerformance.cpp",
+      "sha256": "0340157116c211af86a57b8b7e6bc9dbf6dcd9bd924831797ddcf93003e74fd3",
+      "bytes": 16638
+    },
+    {
+      "path": "Tools/Benchmark.ps1",
+      "sha256": "cf0d5e5047a909154357be111db4097ca15faabe6addab5e2bb46d1f26aa11bb",
+      "bytes": 11053
+    },
+    {
+      "path": "Tools/TestAvatar.ps1",
+      "sha256": "cbf0abcc507bb1c3d6db35eb2a8f6ad6141acdec6b935f7967afa0e340061020",
+      "bytes": 2563
+    },
+    {
+      "path": "Tools/Build.ps1",
+      "sha256": "18604d4171109bbbe2fcd396639bbc7af02b1a0d598ec04b4f550d9f98142ff9",
+      "bytes": 8480
+    },
+    {
+      "path": "Tools/build_avatar_content.py",
+      "sha256": "00196ea71fd751b4102cc1d53095dcc3250682470835f859127809077ee02cee",
+      "bytes": 8969
+    },
+    {
+      "path": "Tools/ReportFPVProbe.py",
+      "sha256": "a8bfe7c5410f3a9b754c43e79c2976955ac2d0ce40380db3f8ce0ce792b2fdeb",
+      "bytes": 3550
+    },
+    {
+      "path": "Tests/test_fpv_probe.py",
+      "sha256": "4bb9d2b38e7852e66d51a1f64e5a9eb7a1f2bc8872f084b12da118f53cc0fd2e",
+      "bytes": 1329
+    },
+    {
+      "path": "divingsim/Content/Diving/Avatar/M_DiverSuit.uasset",
+      "sha256": "2a51c5a09abdad255a21687f12b8bcc296cdf3698b1fb35fa8771efccbe6450c",
+      "bytes": 7194
+    },
+    {
+      "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "sha256": "41080968773350d19e47f0e75b794a310111bbe43a4a125df210f27fee2029b5",
+      "bytes": 2694656
+    },
+    {
+      "path": "artifacts/source-engine-20261127/project-relaxed-arms-build.log",
+      "sha256": "41f29d96fe8b9c6d077eb73dd5c2b0a3e8c73ad6a0b49f1cf717dba37df33fc6",
+      "bytes": 52809
+    },
+    {
+      "path": "artifacts/source-engine-20261127/project-avatar-menu-test-build.log",
+      "sha256": "8374c94f69e30905d5b2f4fed99b46cdd03e2b7641679467dd58f2edabdb7e45",
+      "bytes": 2007
+    },
+    {
+      "path": "artifacts/source-engine-20261127/avatar-materials-runtime.log",
+      "sha256": "15759d52223197ffa7217a13b728ab9183ada88e5814aeebb71d7b592e259b9f",
+      "bytes": 237362
+    },
+    {
+      "path": "artifacts/source-engine-20261127/avatar-materials-before/M_DiverSuit.uasset",
+      "sha256": "858a3505ae7157abee54ef43e0d2cf5517def18b0811881d34e6c909638457b0",
+      "bytes": 6662
+    },
+    {
+      "path": "Documentation/Images/FPV_BlockedArm_Before.png",
+      "sha256": "e08d8096558b648d622ede325cee3eae735eb6e63e5dffa0af47ec83c2c2faec",
+      "bytes": 2405302
+    },
+    {
+      "path": "Documentation/Images/FPV_RelaxedArms.png",
+      "sha256": "ca67e29385f223cdabc1ef32b0ad02639622f84899affc6ada8f543d33253571",
+      "bytes": 2533425
+    },
+    {
+      "path": "Documentation/Images/FPV_WristComputer_Clear.png",
+      "sha256": "c5e3c1a14f42a493b8f6992c755731ad1a49270df70b51a9bb68d382f8948273",
+      "bytes": 1604938
+    }
+  ],
+  "source_and_build_scope": "Final working-tree inputs and HUD module; earlier native suite, arm probe and matrix module/source identities are retained in compiled_arm_test_inputs and per-run host records.",
+  "compiled_arm_test_inputs": {
+    "path": "artifacts/source-engine-20261127/relaxed-arms-compiled-host.json",
+    "sha256": "490d5c8ce17cc935f5626c9d4f19a9f494213347fd78151b063bd3c308fee650",
+    "bytes": 28774
+  },
+  "limits": [
+    "Not full-game visual acceptance or a new playable package.",
+    "Nine CPU LOD0 rays classify suit triangles; they do not establish all-pixel visibility or every pose.",
+    "Before/after absolute heading and world position differ because contact trajectories changed; no identical-background lighting or speed comparison.",
+    "Snapshots do not validate all intervening frames, fast physical mouse turns or all anatomical movements.",
+    "Other avatar material colour handling and model/detail quality remain open.",
+    "Experimental wave transport is disabled in these runs; habitat/above-water reference quality remains open."
+  ],
+  "hud_followup": {
+    "scope": "Later build with compact notices placed left of the raised wrist computer; separate from the six-case arm matrix",
+    "build": {
+      "path": "artifacts/source-engine-20261127/project-wrist-final-build.log",
+      "sha256": "8b1794868f1e4ddefdedb7d7a55e74f1d0f66c42a050c8ff48efc07387a34096",
+      "bytes": 11888
+    },
+    "final_module": {
+      "path": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "sha256": "41080968773350d19e47f0e75b794a310111bbe43a4a125df210f27fee2029b5",
+      "bytes": 2694656
+    },
+    "artifacts": [
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/avatar-runtime.log",
+        "sha256": "1127c7294f3f11047ef36de5158a837206e0056ad77e7b0588f18b57265d781e",
+        "bytes": 272695
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/avatar-summary.log",
+        "sha256": "23f800d78aec7efd34902e2e27b7ea4638464067fc398fbb6a8195b57f8dad4e",
+        "bytes": 461
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_Back.png",
+        "sha256": "b51504bfed62b96ab4fbfa75d459163fe348074882528bed125cdfa0fcf519c8",
+        "bytes": 975180
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_Computer.png",
+        "sha256": "c5e3c1a14f42a493b8f6992c755731ad1a49270df70b51a9bb68d382f8948273",
+        "bytes": 1604938
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_Detail.png",
+        "sha256": "313ddc078431293f3a276df805396d9d2a38bdd2882098fd03d380fb008b14e2",
+        "bytes": 990440
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_FirstPerson.png",
+        "sha256": "a28e37fac542219de7e3ffb7ee937dd59d4898d66d4b8b3c02f2ef3d0b74b5a3",
+        "bytes": 1363041
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_Front.png",
+        "sha256": "788a6059d9bb73c0ff639aa538b4005eedf2724a55b7f98ce2373a34311a5fc4",
+        "bytes": 965879
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_LookDown.png",
+        "sha256": "0928e03866ca68e512061ede9a1d9092729ef5be7aef2e96b0ba59192c30ebc5",
+        "bytes": 1949996
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_LookUp.png",
+        "sha256": "b8c91d5138f7d5623986656caacba0d4899c39a7eecd3feb62cb8a31eb372248",
+        "bytes": 1102719
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_Paused.png",
+        "sha256": "e9e4d1a7de125d6aea09a2f94c8aef7544ebaacff11d48a528f7760e61cfd3b8",
+        "bytes": 910936
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_RegulatorIn.png",
+        "sha256": "7d382d8eb95a145146450ecf44e6995868f6d1ae132fa8057fde3a85e2a5f983",
+        "bytes": 778500
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_RegulatorOut.png",
+        "sha256": "188eb22ff0e0c5d3af897fe3090e13720dcd74aa14a78dfb308d373fea605d36",
+        "bytes": 742157
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Avatar_0_Swimming.png",
+        "sha256": "6ddec6150b4a74216807c0f5a646e21051a940f46a1a3ee7f2c97d7623861826",
+        "bytes": 951824
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Review_UI_0.jpg",
+        "sha256": "43f2552516776ef46756c06661071967b121fe24f69dbb6a3923c4a5610900a6",
+        "bytes": 292596
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Review_UI_1.jpg",
+        "sha256": "5a2ce3075c751fc70cd6494a614fb0d2fefb4297e3c96832c735988c4956a65b",
+        "bytes": 323801
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Review_UI_2.jpg",
+        "sha256": "1aa52ebc3f99e6634359821ab4d3cd9d495a52472701b10af9f4453865178a07",
+        "bytes": 311671
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/Review_UI_3.jpg",
+        "sha256": "1977430ec618463083ad01c41fe879c7cb1430152b77c192ca961a15437e2870",
+        "bytes": 165605
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/ui-runtime.log",
+        "sha256": "b32a9d740b75fb4600ccae0483b17c1fc9bfdfee533ab8652cacf0d1d953eecf",
+        "bytes": 261124
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/ui-summary.log",
+        "sha256": "0fe709acc20a94605cf3404b7b1ee14760ee3dad2c3415c9a84ba7190adaefbf",
+        "bytes": 485
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Compact_EN.png",
+        "sha256": "d20efdeeca1368d3fd3b2d57c36f365a4fe83ab7669cb4c976753e5eecf63986",
+        "bytes": 1459484
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Config_DE.png",
+        "sha256": "69a7b6cf58d3ef38aa7e46c2803e2ee2ffc93b3833eb94c859a35916ce0f386f",
+        "bytes": 297112
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Controls_DE.png",
+        "sha256": "535899eb1f6e9bc0b424aca13d7c54b6c20a51ff66cfa0fef365ad478db94018",
+        "bytes": 1321021
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Environment_DE.png",
+        "sha256": "77893d35b95d48ec2f066ce0b89a9d82b5795d4a37fb900d65e34472cc391711",
+        "bytes": 846014
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Final_EN.png",
+        "sha256": "b7c93460dfd60dc647d589e6ac4314f0b6dcbe9f92690ca8ca5b14a63fcfbd6e",
+        "bytes": 1507073
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Loadout_DE.png",
+        "sha256": "edc55e5722bcdf19bf2217c0249df3adb8870d338ad3fec28b5cdc879c5ffa9b",
+        "bytes": 902116
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Loadout_EN.png",
+        "sha256": "94d0a8878ed5db3669ba52efd19040b5d25cedcf8e924b4be935176d48ab080d",
+        "bytes": 902099
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Minimal_EN.png",
+        "sha256": "cc9bdab6ef278531202cb2529c942e9512ac5a741d0e1cf51a175cbfcbdf6312",
+        "bytes": 1267408
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_PauseWarnings_EN.png",
+        "sha256": "151efbeaaa49e0c8a16c874d8d6b9f41bca48e384310f3ae8bf8ec752ea84e99",
+        "bytes": 665115
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Plan_DE.png",
+        "sha256": "3715d8f322297a56dbb2112fd6ae2dd4c0a431859fae5fcf3d418007e7e5b7be",
+        "bytes": 841389
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Plan_EN.png",
+        "sha256": "6ae6200ee2b46718205d33daa8f0d93940e0e30bd88283a1f2a21b038e973862",
+        "bytes": 857356
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Resumed_EN.png",
+        "sha256": "38960b0d5b013446dba6d5e2251c6a5b113f2c8a6e0331c805159b65ddb5c413",
+        "bytes": 1464141
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_Standard_DE.png",
+        "sha256": "4fbeeb9fea4d51b3e1329e207114dc151a205456b1e07dd00cd9438593d0b499",
+        "bytes": 1400437
+      },
+      {
+        "path": "artifacts/source-engine-20261127/wrist-compact/UI_WarningsMapTutorial_DE.png",
+        "sha256": "141d90b0a86a64cd2fb7fcc67ef2fb95731518d6914e1f21308c14199000940c",
+        "bytes": 1141724
+      }
+    ],
+    "ui_steps": 28,
+    "ui_images": 14,
+    "avatar_case": 0,
+    "avatar_phases": 25,
+    "avatar_images": 11,
+    "visual_review": "Original raised-computer frame reviewed; lower instrument line unobscured. All 14 UI states reviewed in contact sheets."
+  }
+}

@@ -1,0 +1,29 @@
+// Scene-linear view-path attenuation, before DOF/bloom/tonemapping.
+// The bounded medium already integrates extinction and in-scattering from
+// native lights, including the sky. Preserve that radiance: another homogeneous
+// ambient term adds unshadowed light, and scene-depth absorption would absorb
+// the accumulated foreground fog again. Scalar native extinction and coloured
+// albedo still do not provide full spectral transport.
+if(NativeScattering>1.5) return Scene.rgb;
+// Ray is WorldPosition - CameraPosition, subtracted in LWC material nodes.
+// Clip the path at the local water level when looking out into air. The wave
+// surface still handles refraction; this is a homogeneous-medium approximation.
+// Scale before length to keep sky-depth reconstruction finite (very long rays).
+float rayScale=max(1,max(abs(Ray.x),max(abs(Ray.y),abs(Ray.z))));
+float distanceCm=rayScale*length(Ray/rayScale);
+float wetFraction=Ray.z>0 ? saturate(max(0,EyeDepth)/max(.001,Ray.z)) : 1;
+float waterPath=distanceCm*wetFraction;
+float transmission=exp(-waterPath/max(150,Visibility)*1.45);
+float3 absorption=exp(-waterPath*float3(.00045,.00009,.00012));
+// Native volume integration already includes view-path extinction and shadowed
+// direct in-scattering. Do not attenuate that integrated result a second time.
+// Retain a smaller homogeneous diffuse-water term for unresolved ambient
+// illumination. It is not a substitute for the light-specific volume shadows.
+if(NativeScattering>.5) return lerp(Scene.rgb, Scene.rgb*absorption
+    + .3*float3(250,1050,900)*saturate(Ambient)*(1-transmission), saturate(Immersion));
+// No constant screen tint: nearby surfaces retain their material colour.
+// Incoming daylight is handled by lighting/fog, not applied to the torch here.
+// Fade the resulting radiance, not the categorical mode or physical uniforms.
+// The zero-immersion default is neutral even if this material is used alone.
+return lerp(Scene.rgb, Scene.rgb*absorption*transmission
+    + float3(250,1050,900)*saturate(Ambient)*(1-transmission), saturate(Immersion));

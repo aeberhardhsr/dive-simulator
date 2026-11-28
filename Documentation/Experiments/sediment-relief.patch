@@ -1,0 +1,486 @@
+diff --git a/Tests/BedDistributionTests.cpp b/Tests/BedDistributionTests.cpp
+index 176e3ac..9bff439 100644
+--- a/Tests/BedDistributionTests.cpp
++++ b/Tests/BedDistributionTests.cpp
+@@ -1,4 +1,5 @@
+ #include "../divingsim/Source/DiveSim/Simulation/BedDistribution.h"
++#include "../divingsim/Source/DiveSim/Simulation/BedRelief.h"
+ #include <iostream>
+ #include <limits>
+ 
+@@ -24,6 +25,19 @@ int main()
+     check(B::Gravel(std::numeric_limits<double>::quiet_NaN(),0,1)==0,"Invalid coordinates produce no dressing");
+     check(B::Gravel(0,0,std::numeric_limits<double>::infinity())==0,"Invalid depth produces no dressing");
+     check(std::isfinite(B::Noise(1e100,0)),"Unbounded coordinates cannot overflow hashing conversion");
++    double maxRelief=0;
++    for(int y=-100;y<100;++y) for(int x=-100;x<100;++x)
++    {
++        const double h=Dive::BedRelief::Height(x+.17,y+.43,8,.1);
++        maxRelief=std::max(maxRelief,h);
++        check(h>=0&&h<=.30,"Deposits stay within 30 cm above surveyed vertices");
++        check(Dive::BedRelief::Height(x,y,3,.1)==0,"No relief near entry/waterline");
++        check(Dive::BedRelief::Height(x,y,55,.1)==0,"Deep bed remains surveyed");
++        check(Dive::BedRelief::Height(x,y,8,.7)==0,"No deposits on steep walls");
++        check(std::abs(Dive::BedRelief::Height(x-1e-6,y,8,.1)-Dive::BedRelief::Height(x+1e-6,y,8,.1))<1e-5,"Relief continuous across world/cell boundaries");
++    }
++    check(maxRelief>.20,"Deposits produce meaningful spatial relief");
++    check(Dive::BedRelief::Height(0,0,std::numeric_limits<double>::quiet_NaN(),0)==0,"Invalid relief input suppressed");
+     std::cout<<"PASS: bed distribution ("<<failures<<" failures)\n";
+     return failures?1:0;
+ }
+diff --git a/Tools/SmokeTest.ps1 b/Tools/SmokeTest.ps1
+index 5c742c0..6a1a348 100644
+--- a/Tools/SmokeTest.ps1
++++ b/Tools/SmokeTest.ps1
+@@ -6,6 +6,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
+     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
+     [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
++    [switch]$SedimentRelief,
+     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
+     [switch]$NativeScattering, [switch]$HabitatSunView, [switch]$DisableVolumetrics,
+     [switch]$WaterInterface, [switch]$HardwareLumen, [switch]$BoundedWater, [switch]$WaterPreview, [switch]$DisableRayTracing,
+@@ -67,6 +68,7 @@ if($LampOff) { $arguments+=' -DiveLampOff' }
+ if($VegetationChecks) { $arguments+=' -DiveVegetationChecks' }
+ if($GroundOff) { $arguments+=' -DiveGroundOff' }
+ if($LegacyRockPose) { $arguments+=' -DiveLegacyRockPose' }
++if($SedimentRelief) { $arguments+=' -DiveSedimentRelief' }
+ if($HabitatView) {
+     if($Scenario -ne 'rocks' -or $GravelView -or $PlantView -or $WaterView) { throw 'HabitatView requires rocks without other comparison modes.' }
+     $arguments+=' -DiveHabitatView'
+diff --git a/divingsim/Source/DiveSim/DiveCoastTerrain.cpp b/divingsim/Source/DiveSim/DiveCoastTerrain.cpp
+index 4b3f9a1..3498ccd 100644
+--- a/divingsim/Source/DiveSim/DiveCoastTerrain.cpp
++++ b/divingsim/Source/DiveSim/DiveCoastTerrain.cpp
+@@ -77,7 +77,7 @@ bool FDiveTerrain::SampleCoast(double X,double Y,float& Z) const
+ }
+ 
+ bool FDiveTerrain::SampleVertex(double X,double Y,float& Z) const
+-{ return Sample(X,Y,Z)||SampleShore(X,Y,Z)||SampleCoast(X,Y,Z); }
++{ return SampleBedVertex(X,Y,Z)||SampleShore(X,Y,Z)||SampleCoast(X,Y,Z); }
+ 
+ FVector FDiveTerrain::SurfaceNormal(double X,double Y) const
+ {
+diff --git a/divingsim/Source/DiveSim/DiveEcology.cpp b/divingsim/Source/DiveSim/DiveEcology.cpp
+index 236a92b..c1c8160 100644
+--- a/divingsim/Source/DiveSim/DiveEcology.cpp
++++ b/divingsim/Source/DiveSim/DiveEcology.cpp
+@@ -72,7 +72,7 @@ bool ADiveWorld::ValidateEcology(FString& Error) const
+     {
+         if(!fish.Active) continue;
+         float ground;
+-        if(fish.Position.ContainsNaN()||fish.Velocity.ContainsNaN()||!Terrain.Sample(fish.Position.X,fish.Position.Y,ground))
++        if(fish.Position.ContainsNaN()||fish.Velocity.ContainsNaN()||!Terrain.SampleBed(fish.Position.X,fish.Position.Y,ground))
+         { Error=TEXT("Fish outside measured water"); return false; }
+         if(!FMath::IsFinite(fish.Steering.Yaw)||!FMath::IsFinite(fish.Steering.Pitch)||!FMath::IsFinite(fish.Steering.Speed)||
+             fish.Steering.Speed<0||FMath::Abs(fish.Steering.Pitch)>.55001)
+@@ -132,7 +132,7 @@ void ADiveWorld::TickFish(float Dt,const FVector& Player)
+         const auto oldFacing=fish.Steering.Facing();
+         const FVector ahead=fish.Position+FVector(oldFacing[0],oldFacing[1],oldFacing[2])*(bodyRadius+speed*.6);
+         float ground;
+-        if(Terrain.Sample(ahead.X,ahead.Y,ground))
++        if(Terrain.SampleBed(ahead.X,ahead.Y,ground))
+         {
+             const auto band=Dive::FishDepthBand(profile,-ground/100,fish.Scale);
+             if(band.Valid)
+diff --git a/divingsim/Source/DiveSim/DiveFishSteering.cpp b/divingsim/Source/DiveSim/DiveFishSteering.cpp
+index d8ce99d..c123203 100644
+--- a/divingsim/Source/DiveSim/DiveFishSteering.cpp
++++ b/divingsim/Source/DiveSim/DiveFishSteering.cpp
+@@ -24,7 +24,7 @@ double ADiveWorld::TraceFishPath(int32 Species,float Scale,const FVector& Start,
+     {
+         const double t=FMath::Min(double(i)/steps,fraction);const FVector p=Start+delta*t;
+         float ground=0;
+-        if(!Terrain.Sample(p.X,p.Y,ground)) return previous;
++        if(!Terrain.SampleBed(p.X,p.Y,ground)) return previous;
+         const auto band=Dive::FishDepthBand(profile,-ground/100,Scale);
+         if(!band.Valid||-p.Z/100<band.Shallow-.00001||-p.Z/100>band.Deep+.00001) return previous;
+         previous=t;if(t>=fraction) break;
+diff --git a/divingsim/Source/DiveSim/DiveGravel.cpp b/divingsim/Source/DiveSim/DiveGravel.cpp
+index 5913a08..f3880eb 100644
+--- a/divingsim/Source/DiveSim/DiveGravel.cpp
++++ b/divingsim/Source/DiveSim/DiveGravel.cpp
+@@ -3,6 +3,7 @@
+ #include "Simulation/BedDistribution.h"
+ #include "Components/InstancedStaticMeshComponent.h"
+ #include "Engine/StaticMesh.h"
++#include "ProceduralMeshComponent.h"
+ #include "ProfilingDebugging/CsvProfiler.h"
+ 
+ CSV_DEFINE_CATEGORY(DiveGravel,true);
+@@ -51,7 +52,7 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
+         const float yaw=random.FRand()*2*PI,aspect=random.FRandRange(.65f,1.f),height=random.FRandRange(.35f,.65f);
+         const int variant=random.RandRange(0,2);
+         float z,n,e;
+-        if(!Terrain.Sample(x,y,z)||z>-120||z<-4000) continue;
++        if(!Terrain.SampleBed(x,y,z)||z>-120||z<-4000) continue;
+         const double gravel=Dive::BedDistribution::Gravel(x*.01,y*.01,-z*.01);
+         bool blocked=false;double apron=0;
+         const int bx=FMath::Clamp(FMath::FloorToInt((x-Key.X*GravelWidth)/GravelBinWidth),0,GravelBins-1);
+@@ -78,7 +79,7 @@ void ADiveWorld::CreateGravelCell(FIntPoint Key)
+         const double broken=.2+.8*Dive::BedDistribution::Noise(x/230,y/230);
+         const double density=FMath::Max(gravel*gravel*.9,apron*broken*.85*(1-Dive::BedDistribution::Smooth(25,40,-z*.01)));
+         if(chance>density) continue;
+-        if(!Terrain.Sample(x+50,y,e)||!Terrain.Sample(x,y+50,n)) continue;
++        if(!Terrain.SampleBed(x+50,y,e)||!Terrain.SampleBed(x,y+50,n)) continue;
+         const FVector normal=FVector(-(e-z)/50,-(n-z)/50,1).GetSafeNormal();
+         if(normal.Z<.72) continue;
+         const FQuat rotation=FRotationMatrix::MakeFromZ(normal).ToQuat()*FQuat(FVector::UpVector,yaw);
+@@ -183,6 +184,41 @@ bool ADiveWorld::ValidateGravel(FString& Error) const
+ 
+ bool ADiveWorld::TestGravelStreaming(FString& Detail)
+ {
++    // Match actual cooked contacts to the same triangle planes used for plants,
++    // gravel and swimming. Survey heights remain available independently.
++    int reliefProbes=0,reliefContacts=0;double maxDeposit=0,maxContactError=0;
++    bool reliefValid=true;
++    for(const auto& chunk:Chunks)
++    {
++        const auto* section=chunk.Value->GetProcMeshSection(0);
++        if(!section) continue;
++        for(int i=0;i+2<section->ProcIndexBuffer.Num();i+=3*FMath::Max(1,section->ProcIndexBuffer.Num()/288))
++        {
++            FVector centre=FVector::ZeroVector;
++            for(int j=0;j<3;++j) centre+=chunk.Value->GetComponentTransform().TransformPosition(FVector(section->ProcVertexBuffer[section->ProcIndexBuffer[i+j]].Position))/3;
++            float surface=0,raw=0;
++            if(!Terrain.SampleBed(centre.X,centre.Y,surface)||!Terrain.Sample(centre.X,centre.Y,raw)) continue;
++            // The raw bilinear raster and its triangle interpolation can differ;
++            // the visible mesh must agree with the triangle sampler in relief mode.
++            if(Terrain.bSedimentRelief) reliefValid&=FMath::Abs(surface-centre.Z)<.1;
++            FHitResult hit;FCollisionQueryParams query;
++            ++reliefProbes;
++            if(chunk.Value->LineTraceComponent(hit,centre+FVector(0,0,100),centre-FVector(0,0,100),query))
++            {++reliefContacts;maxContactError=FMath::Max(maxContactError,FMath::Abs(hit.ImpactPoint.Z-centre.Z));}
++        }
++        for(const auto& vertex:section->ProcVertexBuffer)
++        {
++            const FVector p=chunk.Value->GetComponentTransform().TransformPosition(FVector(vertex.Position));
++            float raw=0;
++            if(!Terrain.Sample(p.X,p.Y,raw)) continue;
++            const double deposit=p.Z-raw;maxDeposit=FMath::Max(maxDeposit,deposit);
++            reliefValid&=deposit>=-.01&&deposit<=30.01;
++        }
++    }
++    reliefValid&=reliefProbes>0&&reliefContacts==reliefProbes&&maxContactError<.1;
++    UE_LOG(LogTemp,Display,TEXT("DIVE_BED_RELIEF_%s enabled=%d probes=%d contacts=%d max_deposit_cm=%.4f contact_error_cm=%.6f"),
++        reliefValid?TEXT("PASS"):TEXT("FAIL"),Terrain.bSedimentRelief,reliefProbes,reliefContacts,maxDeposit,maxContactError);
++    if(!reliefValid) {Detail=TEXT("Sediment surface/contact disagreement");return false;}
+     const FVector original=Diver?Diver->GetActorLocation():PopulationOrigin;
+     const auto centre=GravelKey(original);
+     const FVector before((centre.X+.5)*GravelWidth,(centre.Y+.5)*GravelWidth,original.Z);
+diff --git a/divingsim/Source/DiveSim/DivePlantBedsTests.cpp b/divingsim/Source/DiveSim/DivePlantBedsTests.cpp
+index edd6dbc..221098f 100644
+--- a/divingsim/Source/DiveSim/DivePlantBedsTests.cpp
++++ b/divingsim/Source/DiveSim/DivePlantBedsTests.cpp
+@@ -27,7 +27,7 @@ bool ADiveWorld::TestPlantBeds(FString& Detail) const
+                 const auto& wanted=generated[i];const FVector p=wanted.GetLocation(),scale=wanted.GetScale3D();
+                 valid&=!roots.Contains(p);roots.Add(p);
+                 valid&=FMath::FloorToInt(p.X/9600)==pair.Key.X&&FMath::FloorToInt(p.Y/9600)==pair.Key.Y;
+-                float bed,n,e;const bool sampled=Terrain.Sample(p.X,p.Y,bed)&&Terrain.Sample(p.X+100,p.Y,n)&&Terrain.Sample(p.X,p.Y+100,e);
++                float bed,n,e;const bool sampled=Terrain.SampleBed(p.X,p.Y,bed)&&Terrain.SampleBed(p.X+100,p.Y,n)&&Terrain.SampleBed(p.X,p.Y+100,e);
+                 valid&=sampled;if(!sampled) continue;
+                 valid&=FMath::Abs(p.Z-bed-2)<.001;
+                 valid&=Dive::PlantHabitat(Dive::PlantProfiles[species],-bed/100,FMath::Sqrt(FMath::Square(n-bed)+FMath::Square(e-bed))/100,VisibleDistance);
+diff --git a/divingsim/Source/DiveSim/DivePopulation.cpp b/divingsim/Source/DiveSim/DivePopulation.cpp
+index 21261b5..4a80722 100644
+--- a/divingsim/Source/DiveSim/DivePopulation.cpp
++++ b/divingsim/Source/DiveSim/DivePopulation.cpp
+@@ -45,7 +45,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
+         const bool outcrop=random.FRand()<.25+.6*exposure;
+         double bearing=PI*Dive::BedDistribution::Noise(anchor.X/6000+7,anchor.Y/6000-13)+random.FRandRange(-.2f,.2f);
+         float az,axz,ayz;
+-        if(Terrain.Sample(anchor.X,anchor.Y,az)&&Terrain.Sample(anchor.X+100,anchor.Y,axz)&&Terrain.Sample(anchor.X,anchor.Y+100,ayz)&&
++        if(Terrain.SampleBed(anchor.X,anchor.Y,az)&&Terrain.SampleBed(anchor.X+100,anchor.Y,axz)&&Terrain.SampleBed(anchor.X,anchor.Y+100,ayz)&&
+             FMath::Square(axz-az)+FMath::Square(ayz-az)>900)
+             bearing=FMath::Atan2(ayz-az,axz-az)+PI*.5+random.FRandRange(-.2f,.2f);
+         TArray<FVector> accepted;TArray<double> radii;
+@@ -65,7 +65,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
+             const float aspect=random.FRandRange(.72f,1.f),height=core?random.FRandRange(.5f,.85f):random.FRandRange(.55f,.8f);
+             const int32 variant=random.RandRange(0,Rocks.Num()-1);
+             float z,n,e;
+-            if(!Terrain.Sample(x,y,z)||z>-250||z<-6000) continue;
++            if(!Terrain.SampleBed(x,y,z)||z>-250||z<-6000) continue;
+             const FVector position(x,y,z+size*(core?18:10));bool blocked=false;
+             // Preserve entry and access routes for every size class.
+             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
+@@ -83,7 +83,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
+             if(blocked) continue;
+             // Rejected 2D candidates need no slope samples. Acceptance and the
+             // random sequence remain identical, including the ownership halo.
+-            if(!Terrain.Sample(x+100,y,e)||!Terrain.Sample(x,y+100,n)) continue;
++            if(!Terrain.SampleBed(x+100,y,e)||!Terrain.SampleBed(x,y+100,n)) continue;
+             accepted.Add(position);radii.Add(size*105);
+             if(CellAt(position)!=Key) continue;
+             const FVector normal=FVector(-(e-z)/100,-(n-z)/100,1).GetSafeNormal();
+@@ -123,7 +123,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
+             // Keep the original one-anchor halo valid, including rotated groups.
+             if(FMath::Abs(x-anchor.X)>600||FMath::Abs(y-anchor.Y)>600) continue;
+             float z,n,e;
+-            if(!Terrain.Sample(x,y,z)||z>-250||z<-4000) continue;
++            if(!Terrain.SampleBed(x,y,z)||z>-250||z<-4000) continue;
+             const FVector position(x,y,z+size*5);bool blocked=false;
+             for(bool shore:{false,true}) for(const auto& entry:Terrain.EntryList(shore))
+                 if(FVector::Dist2D(position,entry.Position)<350+size*105) blocked=true;
+@@ -140,7 +140,7 @@ void ADiveWorld::BuildRockLayout(FIntPoint Key,TArray<FTransform>& Transforms,TA
+                 if(FVector::DistSquared2D(position,accepted[j])<FMath::Square(separation)) blocked=true;
+             }
+             if(blocked) continue;
+-            if(!Terrain.Sample(x+50,y,e)||!Terrain.Sample(x,y+50,n)) continue;
++            if(!Terrain.SampleBed(x+50,y,e)||!Terrain.SampleBed(x,y+50,n)) continue;
+             const FVector normal=FVector(-(e-z)/50,-(n-z)/50,1).GetSafeNormal();
+             if(normal.Z<.72) continue;
+             accepted.Add(position);radii.Add(size*105);
+@@ -208,7 +208,7 @@ void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,
+             const double cover=Dive::BedDistribution::Smooth(.32,.76,patch);
+             if(random.FRand()>.95*cover) continue;
+             float bed,n,e;
+-            if(!Terrain.Sample(anchor.X,anchor.Y,bed)||!Terrain.Sample(anchor.X+100,anchor.Y,n)||!Terrain.Sample(anchor.X,anchor.Y+100,e)) continue;
++            if(!Terrain.SampleBed(anchor.X,anchor.Y,bed)||!Terrain.SampleBed(anchor.X+100,anchor.Y,n)||!Terrain.SampleBed(anchor.X,anchor.Y+100,e)) continue;
+             const double slope=FMath::Sqrt(FMath::Square(n-bed)+FMath::Square(e-bed))/100;
+             const int dominant=FMath::Min(Plants.Num()-1,int(Dive::BedDistribution::Noise(anchor.X/1700+31,anchor.Y/1700-19)*Plants.Num()));
+             double weights[3]={},total=0;
+@@ -239,7 +239,7 @@ void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,
+                 const float width=random.FRandRange(.65f,1.1f),height=random.FRandRange(.6f,1.1f)*(1-.42*reach/170)*(.65+.35*cover);
+                 const float yaw=random.FRandRange(0.f,360.f);
+                 float z,north,east;
+-                if(!Terrain.Sample(p.X,p.Y,z)||!Terrain.Sample(p.X+100,p.Y,north)||!Terrain.Sample(p.X,p.Y+100,east)) continue;
++                if(!Terrain.SampleBed(p.X,p.Y,z)||!Terrain.SampleBed(p.X+100,p.Y,north)||!Terrain.SampleBed(p.X,p.Y+100,east)) continue;
+                 const auto& profile=Dive::PlantProfiles[species];
+                 const float localSlope=FMath::Sqrt(FMath::Square(north-z)+FMath::Square(east-z))/100;
+                 if(!Dive::PlantHabitat(profile,-z/100,localSlope,VisibleDistance)||-z/100<profile.MaxHeight*height+.3) continue;
+@@ -263,7 +263,7 @@ void ADiveWorld::BuildPlantLayout(FIntPoint Key,const TArray<FDiveRock>& nearby,
+         const double x=(Key.X+random.FRand())*CellWidth,y=(Key.Y+random.FRand())*CellWidth;
+         const float size=random.FRandRange(.65f,1.2f),yaw=random.FRandRange(0.f,360.f),chance=random.FRand();
+         float z,n,e;
+-        if(!Terrain.Sample(x,y,z)||!Terrain.Sample(x+100,y,n)||!Terrain.Sample(x,y+100,e)) continue;
++        if(!Terrain.SampleBed(x,y,z)||!Terrain.SampleBed(x+100,y,n)||!Terrain.SampleBed(x,y+100,e)) continue;
+         // Continuous patches replace the old repeated sine bands. Nearby
+         // plants favour the same species, with scattered mixed growth at edges.
+         const double patch=Dive::BedDistribution::Noise(x/900,y/900)+.25*Dive::BedDistribution::Noise(x/230,y/230);
+@@ -303,7 +303,7 @@ void ADiveWorld::RefillFish(const FVector& Player,bool Initial)
+             const double radius=Random.FRandRange(6500.f,7500.f);
+             FVector position=Player+FVector(FMath::Cos(angle)*radius,FMath::Sin(angle)*radius,0);
+             if(Initial) position=Player+PopulationForward*1800+FVector(Random.FRandRange(-3500.f,3500.f),Random.FRandRange(-3500.f,3500.f),0);
+-            float ground;if(!Terrain.Sample(position.X,position.Y,ground)) continue;
++            float ground;if(!Terrain.SampleBed(position.X,position.Y,ground)) continue;
+             const auto band=Dive::FishDepthBand(profile,-ground/100,scale);
+             if(!band.Valid) continue;
+             position.Z=-100*Random.FRandRange(band.Shallow,band.Deep);
+diff --git a/divingsim/Source/DiveSim/DivePopulationTests.cpp b/divingsim/Source/DiveSim/DivePopulationTests.cpp
+index a1faf88..1db06e3 100644
+--- a/divingsim/Source/DiveSim/DivePopulationTests.cpp
++++ b/divingsim/Source/DiveSim/DivePopulationTests.cpp
+@@ -45,7 +45,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
+                 auto* body=component?component->GetBodyInstance(NAME_None,false,instance):nullptr;
+                 FHitResult upper,lower;
+                 const FVector above=rock.Position+FVector(0,0,400),below=rock.Position-FVector(0,0,400);
+-                if(body&&Terrain.Sample(rock.Position.X,rock.Position.Y,bed)&&
++                if(body&&Terrain.SampleBed(rock.Position.X,rock.Position.Y,bed)&&
+                     body->LineTrace(upper,above,below,false,false)&&body->LineTrace(lower,below,above,false,false))
+                 {
+                     ++poseContacts;
+@@ -56,7 +56,7 @@ bool ADiveWorld::TestPopulationStreaming(FString& Detail)
+             {
+                 ++rubble;
+                 float bed=0;
+-                valid&=rock.Radius>=21&&rock.Radius<=68.251&&Terrain.Sample(rock.Position.X,rock.Position.Y,bed);
++                valid&=rock.Radius>=21&&rock.Radius<=68.251&&Terrain.SampleBed(rock.Position.X,rock.Position.Y,bed);
+                 valid&=FMath::Abs(rock.Position.Z-bed-transforms[i].GetScale3D().X*5)<.01;
+                 valid&=transforms[i].GetScale3D().Z>=.1099&&transforms[i].GetScale3D().Z<=.5851;
+                 if(contactSamples++<12)
+diff --git a/divingsim/Source/DiveSim/DiveShoreline.cpp b/divingsim/Source/DiveSim/DiveShoreline.cpp
+index 4270acf..36750b8 100644
+--- a/divingsim/Source/DiveSim/DiveShoreline.cpp
++++ b/divingsim/Source/DiveSim/DiveShoreline.cpp
+@@ -88,7 +88,7 @@ bool ADiveWorld::ValidateShoreline(FString& Error) const
+             const double edge=FMath::Min(FMath::Min(FMath::Abs(survey.X-boundary.West),FMath::Abs(survey.X-boundary.East)),
+                 FMath::Min(FMath::Abs(survey.Y-boundary.South),FMath::Abs(survey.Y-boundary.North)));
+             float bed=0;double background=0,original=0;
+-            if(Terrain.Sample(p.X,p.Y,bed))
++            if(Terrain.SampleBedVertex(p.X,p.Y,bed))
+             { sourceError=FMath::Max(sourceError,FMath::Abs(p.Z-bed));++bedPoints;continue; }
+             if(edge>=Dive::ShoreTransition::BandMetres)
+             {
+diff --git a/divingsim/Source/DiveSim/DiveTerrain.cpp b/divingsim/Source/DiveSim/DiveTerrain.cpp
+index caa1295..9b1cf48 100644
+--- a/divingsim/Source/DiveSim/DiveTerrain.cpp
++++ b/divingsim/Source/DiveSim/DiveTerrain.cpp
+@@ -1,13 +1,17 @@
+ #include "DiveTerrain.h"
+ #include "Simulation/ShoreTransition.h"
++#include "Simulation/BedRelief.h"
+ #include "Misc/FileHelper.h"
+ #include "Misc/Paths.h"
++#include "Misc/CommandLine.h"
++#include "Misc/Parse.h"
+ #include "Dom/JsonObject.h"
+ #include "Serialization/JsonReader.h"
+ #include "Serialization/JsonSerializer.h"
+ 
+ bool FDiveTerrain::Load()
+ {
++    bSedimentRelief=FParse::Param(FCommandLine::Get(),TEXT("DiveSedimentRelief"));
+     Mosaic.Tiles.clear(); Entries.Reset(); Overview.Reset(); LoadedTiles=0; Error.Empty();
+     const FString folder=FPaths::ProjectContentDir()/TEXT("Diving/Geodata");
+     FString text;
+@@ -117,6 +121,32 @@ bool FDiveTerrain::Sample(double X,double Y,float& Z) const
+     Z=static_cast<float>(height*100); return true;
+ }
+ 
++bool FDiveTerrain::SampleBedVertex(double X,double Y,float& Z) const
++{
++    if(!Sample(X,Y,Z)) return false;
++    if(!bSedimentRelief||Z>=-300||Z<=-5500) return true;
++    float n=0,s=0,e=0,w=0;
++    // Missing survey neighbours suppress dressing at data boundaries.
++    if(!Sample(X+100,Y,n)||!Sample(X-100,Y,s)||!Sample(X,Y+100,e)||!Sample(X,Y-100,w)) return true;
++    float corner=0;
++    for(int dx:{-100,100}) for(int dy:{-100,100})
++        if(!Sample(X+dx,Y+dy,corner)) return true;
++    const double slope=FMath::Sqrt(FMath::Square((n-s)/200.)+FMath::Square((e-w)/200.));
++    Z+=static_cast<float>(100*Dive::BedRelief::Height(X*.01,Y*.01,-Z*.01,slope));
++    return true;
++}
++
++bool FDiveTerrain::SampleBed(double X,double Y,float& Z) const
++{
++    if(!bSedimentRelief) return Sample(X,Y,Z);
++    const double x=FMath::FloorToDouble(X/100)*100,y=FMath::FloorToDouble(Y/100)*100;
++    float a=0,b=0,c=0,d=0;
++    if(!SampleBedVertex(x,y,a)||!SampleBedVertex(x+100,y,b)||!SampleBedVertex(x,y+100,c)||!SampleBedVertex(x+100,y+100,d)) return false;
++    const double tx=(X-x)/100,ty=(Y-y)/100;
++    Z=static_cast<float>(tx+ty<=1?a+(b-a)*tx+(c-a)*ty:d+(c-d)*(1-tx)+(b-d)*(1-ty));
++    return true;
++}
++
+ bool FDiveTerrain::LoadShoreline()
+ {
+     Shores.Reset(); ShoreEntries.Reset();
+@@ -169,7 +199,7 @@ bool FDiveTerrain::SampleShore(double X,double Y,float& Z) const
+         const Dive::ShoreTransition transition(grid,Landscape);
+         if(!transition.Contains(east,north)) continue;
+         // The surveyed lakebed always wins, including in the outer LOD collar.
+-        if(Sample(X,Y,Z)) return true;
++        if(SampleBedVertex(X,Y,Z)) return true;
+         double height=0;
+         if(transition.Sample(grid,Landscape,east,north,height)) { Z=static_cast<float>(height*100); return true; }
+     }
+diff --git a/divingsim/Source/DiveSim/DiveTerrain.h b/divingsim/Source/DiveSim/DiveTerrain.h
+index 5dd6546..7168515 100644
+--- a/divingsim/Source/DiveSim/DiveTerrain.h
++++ b/divingsim/Source/DiveSim/DiveTerrain.h
+@@ -22,6 +22,10 @@ public:
+     double CoastWeight(double East,double North) const;
+     bool LoadImagery();
+     bool Sample(double X,double Y,float& Z) const;
++    // Experimental authored deposits; Sample and the overview stay measured.
++    bool bSedimentRelief=false;
++    bool SampleBedVertex(double X,double Y,float& Z) const;
++    bool SampleBed(double X,double Y,float& Z) const;
+     bool SampleShore(double X,double Y,float& Z) const;
+     bool SampleGround(double X,double Y,float& Z) const;
+     bool InShorePatch(double X,double Y,double MarginMetres=0) const;
+diff --git a/divingsim/Source/DiveSim/DiveWorld.cpp b/divingsim/Source/DiveSim/DiveWorld.cpp
+index 3d979e3..68b4153 100644
+--- a/divingsim/Source/DiveSim/DiveWorld.cpp
++++ b/divingsim/Source/DiveSim/DiveWorld.cpp
+@@ -110,7 +110,7 @@ void ADiveWorld::CreateChunk(FIntPoint Key)
+     {
+         const double px=origin.X+x*100, py=origin.Y+y*100;
+         float z=0;
+-        const bool measured=Terrain.Sample(px,py,z); valid.Add(measured);
++        const bool measured=Terrain.SampleBedVertex(px,py,z); valid.Add(measured);
+         vertices.Add(FVector(x*100,y*100,z)); uv.Add(FVector2D(px/300,py/300));
+         normals.Add(Terrain.SurfaceNormal(px,py));
+         tangents.Add(FProcMeshTangent(1,0,0)); colors.Add(FLinearColor::White);
+diff --git a/Tools/TestSedimentRelief.ps1 b/Tools/TestSedimentRelief.ps1
+new file mode 100644
+--- /dev/null
++++ b/Tools/TestSedimentRelief.ps1
+@@ -0,0 +1,60 @@
++param([switch]$Packaged,[switch]$Preview,[string]$PackageDirectory='Builds/WindowsSedimentRelief')
++$ErrorActionPreference='Stop'
++$repo=Split-Path $PSScriptRoot -Parent
++if($Packaged -and $Preview) {throw 'A packaged validation requires all cases.'}
++if(Get-Process | Where-Object {$_.ProcessName -like 'UnrealEditor*' -or $_.ProcessName -like 'divingsim*'}) {throw 'An Unreal/game process is already running.'}
++$root=Join-Path $repo ('artifacts/sediment-relief-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
++New-Item -ItemType Directory -Force $root | Out-Null
++$runtime=Join-Path $repo 'Builds/EditorSandbox/divingsim'
++$hostRecord=@{packaged=[bool]$Packaged;preview=[bool]$Preview;source_head=(& git -C $repo rev-parse HEAD);started_utc=[DateTime]::UtcNow.ToString('o')}
++if($Packaged) {
++    if(-not [IO.Path]::IsPathRooted($PackageDirectory)) {$PackageDirectory=Join-Path $repo $PackageDirectory}
++    . (Join-Path $PSScriptRoot 'PackageExecutable.ps1')
++    $exe=Resolve-DivePackageExecutable $PackageDirectory
++    $runtime=Join-Path $PackageDirectory 'divingsim'
++    $hostRecord.executable=$exe;$hostRecord.sha256=(Get-FileHash -LiteralPath $exe).Hash.ToLowerInvariant()
++    $hostRecord.package_containers=@(Get-ChildItem (Join-Path $runtime 'Content/Paks') -File | Sort-Object Name | ForEach-Object {
++        @{file=$_.Name;bytes=$_.Length;sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}
++    })
++}
++$files=@(Get-ChildItem (Join-Path $repo 'divingsim/Source/DiveSim') -File -Recurse)
++foreach($pattern in @('T_Bed_*.uasset','T_RockScan*.uasset')) {$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Textures') -Filter $pattern}
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Rocks') -Filter '*.uasset'
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Materials') -Filter '*.uasset'
++$files+=Get-ChildItem (Join-Path $repo 'divingsim/Content/Diving/Gravel') -Filter '*.uasset'
++foreach($f in @('Tools/TestSedimentRelief.ps1','Tools/SmokeTest.ps1','Tools/Shaders/Lakebed.ush','divingsim/Config/DefaultEngine.ini')) {$files+=Get-Item (Join-Path $repo $f)}
++if(-not $Packaged) {$files+=Get-Item (Join-Path $runtime 'Binaries/Win64/UnrealEditor-DiveSim.dll')}
++$hostRecord.files=@($files | Sort-Object FullName -Unique | ForEach-Object {
++    @{file=$_.FullName.Substring($repo.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}
++})
++$hostRecord | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $root 'Host.json') -Encoding utf8
++$cases=@(@{name='weesen-before';entry=0},@{name='weesen-after';entry=0;relief=$true})
++if(-not $Preview) {$cases+=@(@{name='ledi-before';entry=2},@{name='ledi-after';entry=2;relief=$true},@{name='murg';entry=1;relief=$true},@{name='shore';shore=$true;relief=$true},@{name='stream';stream=$true;relief=$true})}
++$completed=@()
++foreach($case in $cases) {
++    $folder=Join-Path $root $case.name;New-Item -ItemType Directory -Force $folder | Out-Null
++    $opts=@{Scenario='rocks';Hour=12;Date='2026-06-21';MaxFPS=30;RuntimeLog=(Join-Path $folder 'Runtime.log');SedimentRelief=[bool]$case.relief;WaterPreview=$true}
++    if($Packaged) {$opts.Packaged=$true;$opts.PackageDirectory=$PackageDirectory} else {$opts.EditorSandbox=$true}
++    if($case.sediment) {$opts.Scenario='sediment';$opts.Entry=0}
++    elseif($case.shore) {$opts.Scenario='shore';$opts.Entry=0}
++    elseif($case.stream) {$opts.Scenario='stream';$opts.Entry=1;$opts.PopulationChecks=$true}
++    else {$opts.HabitatView=$true;$opts.Entry=$case.entry;$opts.PopulationChecks=$true;$opts.HabitatLowView=$true;$opts.DisableNanite=[bool]$case.raster}
++    $started=[DateTime]::UtcNow
++    & (Join-Path $PSScriptRoot 'SmokeTest.ps1') @opts *> (Join-Path $folder 'Summary.log')
++    $log=Get-Content $opts.RuntimeLog -Raw
++    if($log -match 'DIVE_\w*FAIL|Failed to compile Material|Default Material will be used|Fatal error:') {throw "Rendering failed: $($case.name)"}
++    if(-not $case.shore -and -not $case.sediment -and $log -notmatch 'DIVE_GRAVEL_PASS') {throw "Missing gravel validation: $($case.name)"}
++    $images=@(Get-ChildItem (Join-Path $runtime 'Saved/Screenshots') -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
++    $expected=if($case.sediment){7}elseif($case.shore){9}elseif($case.stream){2}else{3}
++    if($case.shore) {
++        $names=@('DiveSmoke_0_shore.png','DiveUnderwater_0_shore.png','ShoreComplete_0.png','ShoreDive_0.png','ShoreMenu_0.png','ShoreReturn_0.png','ShoreStart_0.png','ShoreSurface_0.png','ShoreWater_0.png')
++        if(Compare-Object ($images.Name | Sort-Object) ($names | Sort-Object)) {throw 'Unexpected shore capture names.'}
++    }
++    if($images.Count -ne $expected) {throw "Missing captures $($case.name): $($images.Count)/$expected"}
++    $images | Copy-Item -Destination $folder
++    $completed+=@{name=$case.name;relief=[bool]$case.relief;status='PASS';screenshots=$expected}
++    $completed | ConvertTo-Json | Set-Content (Join-Path $root 'Cases.json') -Encoding utf8
++    Write-Output "PASS $($case.name) $folder"
++}
++foreach($input in $hostRecord.files) {if((Get-FileHash -LiteralPath (Join-Path $repo $input.file)).Hash.ToLowerInvariant() -ne $input.sha256) {throw "Input changed during tests: $($input.file)"}}
++Write-Output "SEDIMENT_RELIEF=$root"
+diff --git a/divingsim/Source/DiveSim/Simulation/BedRelief.h b/divingsim/Source/DiveSim/Simulation/BedRelief.h
+new file mode 100644
+--- /dev/null
++++ b/divingsim/Source/DiveSim/Simulation/BedRelief.h
+@@ -0,0 +1,21 @@
++#pragma once
++#include "BedDistribution.h"
++
++namespace Dive
++{
++// Authored deposits above the survey, never a replacement for measured depths.
++// Evaluated at shared metre-grid vertices; render and contact use the same planes.
++struct BedRelief
++{
++    static double Height(double x,double y,double depth,double slope)
++    {
++        if(!std::isfinite(x)||!std::isfinite(y)||!std::isfinite(depth)||!std::isfinite(slope)) return 0;
++        using B=BedDistribution;
++        const double habitat=B::Smooth(3,5,depth)*(1-B::Smooth(35,55,depth))*(1-B::Smooth(.3,.7,slope));
++        const double warpX=2*(B::Noise(x/13,y/13)-.5),warpY=2*(B::Noise(x/13+41,y/13-17)-.5);
++        const double banks=B::Smooth(.28,.82,B::Noise((x+warpX)/3.7,(y+warpY)/3.7));
++        const double broad=B::Noise(x/11+19,y/11-23);
++        return .30*habitat*banks*(.3+.7*broad);
++    }
++};
++}

@@ -1,0 +1,137 @@
+{
+  "status": "R3_INTEGRATED_SHADOW_CORRECTION_VERIFIED",
+  "scope": "Whole-frame image luminance, including direct view and reflections; not an isolated reflection-only metric. No performance conclusion.",
+  "engine_source_evidence": {
+    "file": "Builds/UE584/Engine/Source/Runtime/Renderer/Private/VirtualShadowMaps/VirtualShadowMapClipmap.cpp",
+    "default_mode": 2,
+    "mode_2": "Suppresses geometry-driven invalidation of coarse directional shadow pages",
+    "mode_1": "Keeps normal coarse-page invalidation"
+  },
+  "controls": [
+    {
+      "case": "editor_production",
+      "whole_image_luma_0_255": [
+        58.151297538472214,
+        9.774344156388889,
+        57.9119471575
+      ],
+      "blocked_drop": 48.25727819159722,
+      "restored_difference": 0.23935038097221195,
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/sun-production-editor/Water_0_0.png",
+          "sha256": "007d68faa153b3286e6a840460165ac11f79b6bd64261cb13569323dba956824"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-production-editor/Water_0_1.png",
+          "sha256": "70773cf5a6004c374407c5c41859f1e86773a982c593024d3ec2a1eead4fad51"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-production-editor/Water_0_2.png",
+          "sha256": "748d7d9daef8e33242303a323b8512ff171d309dc528b4d55b50e997ba248a88"
+        }
+      ]
+    },
+    {
+      "case": "r2_original",
+      "whole_image_luma_0_255": [
+        58.19841674972221,
+        53.51420031569444,
+        58.05171218555555
+      ],
+      "blocked_drop": 4.61086415194444,
+      "restored_difference": 0.14670456416666156,
+      "images": [
+        {
+          "file": "artifacts/production-water-20261128-040100/sun-shadow/Water_0_0.png",
+          "sha256": "ef06a2f403ba8c7c456060ef3a4441c8e6d9500aea2888374a84a807347639f2"
+        },
+        {
+          "file": "artifacts/production-water-20261128-040100/sun-shadow/Water_0_1.png",
+          "sha256": "c2feb230e7541d76e7c7c33dac9a3dc863c1ac2bb0e84d2245f35708b25ca1d6"
+        },
+        {
+          "file": "artifacts/production-water-20261128-040100/sun-shadow/Water_0_2.png",
+          "sha256": "84194dd77ea4945798117f3d71aa0e273ad6b68abb694cb0945068bd3d69a61c"
+        }
+      ]
+    },
+    {
+      "case": "r2_culling_disabled",
+      "whole_image_luma_0_255": [
+        58.173572201527776,
+        53.56719650958333,
+        58.07647991291667
+      ],
+      "blocked_drop": 4.557829547638889,
+      "restored_difference": 0.0970922886111083,
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-culling/Water_0_0.png",
+          "sha256": "2dc60b0868070fae9b9c3debb3e2d0aea3b51ef71efe4c7ec09554127968ee1e"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-culling/Water_0_1.png",
+          "sha256": "3e6c9efa5bddfd8cde7ca749168d0fb934e5f1651d749b95c6a561e148c29701"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-culling/Water_0_2.png",
+          "sha256": "9e7fcd55eb5bb05656d46d3453abb30bdaec857792483ea9243782cfaccedfd7"
+        }
+      ]
+    },
+    {
+      "case": "r2_quality2",
+      "whole_image_luma_0_255": [
+        58.14918082486112,
+        54.03020705027777,
+        57.902244337499994
+      ],
+      "blocked_drop": 3.99550553090279,
+      "restored_difference": 0.2469364873611255,
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-quality2/Water_0_0.png",
+          "sha256": "fe7ca3dbece6de60c007f72a0413debc552c59693151c01089eb58d453001f6a"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-quality2/Water_0_1.png",
+          "sha256": "123eb43411633d6227495e534f33ef36e403a2f9b460b1518eee1b051592f908"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-quality2/Water_0_2.png",
+          "sha256": "159b32b3a548b13d3131154e14b392c5fd271da01a9a403c1762da70033bed23"
+        }
+      ]
+    },
+    {
+      "case": "r2_coarse_dynamic_updates",
+      "whole_image_luma_0_255": [
+        58.13686834930556,
+        9.760958937083332,
+        57.94072457069444
+      ],
+      "blocked_drop": 48.27783752291667,
+      "restored_difference": 0.1961437786111162,
+      "images": [
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-coarse/Water_0_0.png",
+          "sha256": "863d14ab906591b3a49f673556d7cd4e0bda32c3509d64755dff058df1f90a41"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-coarse/Water_0_1.png",
+          "sha256": "067e1427e819278145764187881b7a4e801829c0452a9229c252e72aaf9b2b12"
+        },
+        {
+          "file": "artifacts/underwater-package-20261128/sun-cooked-coarse/Water_0_2.png",
+          "sha256": "18f8fbf7c1a2648403e03ce14364d16eaf44ee93f467d54235c6fcbfc6daf2ed"
+        }
+      ]
+    }
+  ],
+  "remaining": "Real menu/input check, performance and stability remain separate gates.",
+  "r3_evidence": {
+    "file": "Documentation/PRODUCTION_PACKAGE_R3_REVIEW.json",
+    "sha256": "66422220149cb54c3f951a5c6cfcc0604df3972056b777d819c340c69bad5dd5"
+  }
+}

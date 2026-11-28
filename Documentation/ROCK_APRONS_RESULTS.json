@@ -1,0 +1,1257 @@
+{
+  "status": "PASS",
+  "scope": "Rock-foot dressing, deterministic streaming, sediment and rendered comparisons",
+  "host": {
+    "packaged": true,
+    "started_utc": "2026-11-26T17:05:28.0203296Z",
+    "source_head": "5b5823966485475d1b5b5cea06d55c0602b35780",
+    "sha256": "E70538614375E50D4111CBE0F4F3950252FDB8E23C331570DE56DAC69557722D",
+    "executable": "O:\\games\\dive game\\Builds\\WindowsRockAprons\\divingsim\\Binaries\\Win64\\divingsim-RockAprons.exe",
+    "package_containers": [
+      {
+        "file": "divingsim-Windows.pak",
+        "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71",
+        "bytes": 105898051
+      },
+      {
+        "file": "divingsim-Windows.ucas",
+        "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89",
+        "bytes": 1426992896
+      },
+      {
+        "file": "divingsim-Windows.utoc",
+        "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024",
+        "bytes": 1176903
+      },
+      {
+        "file": "global.ucas",
+        "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+        "bytes": 3245776
+      },
+      {
+        "file": "global.utoc",
+        "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+        "bytes": 794
+      }
+    ]
+  },
+  "launcher": {
+    "executable_sha256": "E70538614375E50D4111CBE0F4F3950252FDB8E23C331570DE56DAC69557722D",
+    "finished_utc": "2026-11-26T17:09:52.6246683Z",
+    "exit_code": 0,
+    "child": "O:\\games\\dive game\\Builds\\WindowsRockAprons\\divingsim\\Binaries\\Win64\\divingsim-RockAprons.exe",
+    "status": "PASS",
+    "started_utc": "2026-11-26T17:09:22.2630637Z",
+    "log_sha256": "F2492F75CFBE83D77C08781A6B74AC7A33AC3BD3047CB173B2AE616F25B6A32A",
+    "child_id": 43628
+  },
+  "staged": true,
+  "build": {
+    "file": "artifacts/rock-aprons-package-build.log",
+    "sha256": "975a95613faaf5f6a71c6e0e2528e3a757029e98682871af60e2e1e4bd00c574",
+    "bytes": 308627
+  },
+  "source_files": [
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.h",
+      "sha256": "426a33e3dfd3c9d28cee46931d87da6c776264d18806edf3ade2404389811eec",
+      "bytes": 10792
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveWorld.cpp",
+      "sha256": "5c9f99bbb7eec204f1bddb109f4fc73bb621664091b667a598e4cae88b0f0437",
+      "bytes": 19932
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePopulation.cpp",
+      "sha256": "564682c472b14c288d69db81155633a0340cfc24ef66e3a93780c4a4f6b9fa5e",
+      "bytes": 14023
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DivePopulationTests.cpp",
+      "sha256": "619cd6f57bbdedc32a7407486f163742a90444cf8f8734a8c0680d532188b74c",
+      "bytes": 11550
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveEcology.cpp",
+      "sha256": "5ed81683d2cb14bd8c96fd582310477ca034ae248f32551ed3b150d31326d000",
+      "bytes": 10527
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveGravel.cpp",
+      "sha256": "6b3654dd9991eecb8991bf6d2e92ee83bca82f2078a3a5d6ab1b50c15cf56b45",
+      "bytes": 10699
+    },
+    {
+      "file": "divingsim/Source/DiveSim/DiveRockInspection.cpp",
+      "sha256": "08dfc3e803766cb3ec22923acb56fa48532a2eea4d593cf2b4287f0b09838b64",
+      "bytes": 15609
+    }
+  ],
+  "cases": [
+    {
+      "entry": 0,
+      "status": "PASS",
+      "screenshots": 3,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/entry0/Runtime.log",
+        "sha256": "5726fef54978382dd62ceeb952efd19e7cea10eb3e9821b9140997e35e2df8d9",
+        "bytes": 116076
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry0/Habitat_0_0.png",
+          "sha256": "c6e2cfe827ef0153da2d7623dafacb94124df50b11abfcd81b0ed6fb11f067cc",
+          "bytes": 1849778
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry0/Habitat_0_1.png",
+          "sha256": "8fb7b58b0ed658f40490272affc4cf884751b010aa4edfeb055ae585289a2c43",
+          "bytes": 1855649
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry0/Habitat_0_2.png",
+          "sha256": "802bc6080175463c98118cab8679307a3257368cfd091c95d88a2e53c21b8a68",
+          "bytes": 1899917
+        }
+      ],
+      "layout_counts": [
+        25,
+        25,
+        25,
+        23,
+        24,
+        25,
+        23,
+        24,
+        25,
+        25,
+        25,
+        25,
+        25,
+        23,
+        24,
+        25
+      ],
+      "gravel_markers": [
+        "DIVE_GRAVEL_PASS retained=6 reloaded=9 cells=9 stones=7829 contacts=192 staged=7,8,9 edge_stones=2808"
+      ],
+      "tested_active_species": 4,
+      "engine_error_lines": [
+        "[2026.11.26-17.05.30:472][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 1,
+      "status": "PASS",
+      "screenshots": 3,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/entry1/Runtime.log",
+        "sha256": "88d87e76747fd9d870a8e25f2120fee0fe7f41ea9395dd42830cf20fccd473e2",
+        "bytes": 113794
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry1/Habitat_0_0.png",
+          "sha256": "acf5e0826ad2786457fbddfc20002f48b5459a5cf1737e2487b5ee639e212b02",
+          "bytes": 1701201
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry1/Habitat_0_1.png",
+          "sha256": "aa3f8abddb073a423cdcf8ccb12082632b03385cacc2a453d16d0e98d8ace453",
+          "bytes": 1671668
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry1/Habitat_0_2.png",
+          "sha256": "a0616f136ae5ac4950bf9f060ec8da74e718d51bc498a54eddefe9372efb274f",
+          "bytes": 1667857
+        }
+      ],
+      "layout_counts": [
+        25,
+        25,
+        25,
+        23,
+        24,
+        25,
+        25,
+        25,
+        25
+      ],
+      "gravel_markers": [
+        "DIVE_GRAVEL_PASS retained=6 reloaded=9 cells=9 stones=8467 contacts=195 staged=7,8,9 edge_stones=2426"
+      ],
+      "tested_active_species": 5,
+      "engine_error_lines": [
+        "[2026.11.26-17.05.59:297][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "entry": 2,
+      "status": "PASS",
+      "screenshots": 3,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/entry2/Runtime.log",
+        "sha256": "c6510069d6e561d0997a83341f95f98701d4417b53ab615dee53f5c6affa3cea",
+        "bytes": 113673
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry2/Habitat_0_0.png",
+          "sha256": "f83ba107f46611f9938c9891ee62f0059de30c57b59144c4a8e96cc7724c4ff9",
+          "bytes": 1913737
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry2/Habitat_0_1.png",
+          "sha256": "a1ae3dee310275d026e4edb81a05d4c27db1d1d61183d00141282ad166972579",
+          "bytes": 1775923
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/entry2/Habitat_0_2.png",
+          "sha256": "f557149a0a362bebb1ed4ea9e956cf43b90f0a702f4d5b4d20b1ad71aca9d979",
+          "bytes": 1825676
+        }
+      ],
+      "layout_counts": [
+        25,
+        25,
+        25,
+        23,
+        24,
+        25,
+        25,
+        25,
+        25
+      ],
+      "gravel_markers": [
+        "DIVE_GRAVEL_PASS retained=6 reloaded=9 cells=9 stones=6196 contacts=144 staged=7,8,9 edge_stones=1712"
+      ],
+      "tested_active_species": 5,
+      "engine_error_lines": [
+        "[2026.11.26-17.06.23:579][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "extra_cases": [
+    {
+      "name": "close-before",
+      "status": "PASS",
+      "screenshots": 3,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/close-before/Runtime.log",
+        "sha256": "1b1ce7fa034f99133e442fe2eb06a50de2d99139d4157a6be19823cb0f85590b",
+        "bytes": 110137
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/close-before/Habitat_0_0.png",
+          "sha256": "4f17cbe135ed1f7e296143a75cf302bc69297337558722e5eea2766d77441f63",
+          "bytes": 2036925
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/close-before/Habitat_0_1.png",
+          "sha256": "a8ba65f5ea84204c98162642421ce26416f234483560774892d1e8175b3a9df0",
+          "bytes": 1992754
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/close-before/Habitat_0_2.png",
+          "sha256": "abc4c20516ab0cd68633efe6b9615bab38452a96fd747d94438a929292a51679",
+          "bytes": 2065585
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.06.47:893][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "close-after",
+      "status": "PASS",
+      "screenshots": 3,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/close-after/Runtime.log",
+        "sha256": "e64a0186f649f657c4e1bcc75a1aae0b25957c8f55132e47454a0bb74da8d1e4",
+        "bytes": 110098
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/close-after/Habitat_0_0.png",
+          "sha256": "bdcf9049c468018f8f52a8afaa44584d8d2abf3b1be6e9706b4d1bc77d437a9b",
+          "bytes": 2040563
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/close-after/Habitat_0_1.png",
+          "sha256": "97040f18a0be0515084b55160259a9b4acc2902276294713ee589b331c370347",
+          "bytes": 1996662
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/close-after/Habitat_0_2.png",
+          "sha256": "75fdb5a3569bcefde0acfd2c7e0e67c172d2f7a588c045110fe7ed02bdff8982",
+          "bytes": 2088082
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.07.12:254][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "raster",
+      "status": "PASS",
+      "screenshots": 3,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/raster/Runtime.log",
+        "sha256": "83d83a4f67850d3adbfbe39a827b2abccfeac949f9c07c7c75dbd47d8d4ac569",
+        "bytes": 110885
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/raster/Habitat_0_0.png",
+          "sha256": "9c5f9aecf4ba46ae39aeb9053fe00a44b9b73515f55f5a0bf768346b6db17bc0",
+          "bytes": 1952408
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/raster/Habitat_0_1.png",
+          "sha256": "3388ac46b6a705915cf8bef7d941a7805c95d463fb2d044cff1034806f31ca2e",
+          "bytes": 1818847
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/raster/Habitat_0_2.png",
+          "sha256": "6384f66a17293f73a5bd740614e8f322749a511a932860b7a0b4055fd342fd06",
+          "bytes": 1841036
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.07.36:532][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    },
+    {
+      "name": "sediment",
+      "status": "PASS",
+      "screenshots": 7,
+      "log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Runtime.log",
+        "sha256": "aeddfe5855cbe92dca11664fb5b6e8593aea42b04c9adcc6114a11193d29ea87",
+        "bytes": 116582
+      },
+      "images": [
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/DiveUnderwater_0_sediment.png",
+          "sha256": "98418efcfb347042db369931d8dee8f71af522c81b3265ba8673e4e861ae3601",
+          "bytes": 1528625
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Sediment_0_Clear.png",
+          "sha256": "ca8d8fc31db22057870672270102f349999b3829d6ac3d5bac5f28f27b6ddf9a",
+          "bytes": 527375
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Sediment_0_Cloud.png",
+          "sha256": "c3db5c4089ce6c43bb5b6af4dd48493ff66e64246a0bc16b088a42d7f2ffd368",
+          "bytes": 1730153
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Sediment_0_Hidden.png",
+          "sha256": "5081d06ca152a19fbeadcf442ec6cd0275be201713a70e052963af33948cd550",
+          "bytes": 2045320
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Sediment_0_Settling.png",
+          "sha256": "502d635d73b337d394fe2f5ae6bc11550df8907484e14d1de44b90c47f990e88",
+          "bytes": 2013963
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Sediment_0_Start.png",
+          "sha256": "4cbf950b6e1f18ff146a26fcbe2285f8cc18adef73d9e5d4f9bb736be9661df2",
+          "bytes": 1475454
+        },
+        {
+          "file": "artifacts/rock-aprons-validation-20261126-180526/sediment/Sediment_0_Visible.png",
+          "sha256": "8fb34d1fad8720ac707d1b43b372b800ac920db2443bb8430a5e70cc382a712e",
+          "bytes": 2014324
+        }
+      ],
+      "engine_error_lines": [
+        "[2026.11.26-17.08.00:815][  0]LogUObjectGlobals: Error: CDO Constructor (CelestialVaultDaySequenceActor): Failed to find /CelestialVault/Materials/MI_StarsStar_EnergyConservative.MI_StarsStar_EnergyConservative"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "entry": 0,
+      "baseline_host": {
+        "executable": "O:\\games\\dive game\\Builds\\WindowsFormationsFinal\\divingsim\\Binaries\\Win64\\divingsim-FormationsFinal.exe",
+        "package_containers": [
+          {
+            "file": "divingsim-Windows.pak",
+            "bytes": 105898051,
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71"
+          },
+          {
+            "file": "divingsim-Windows.ucas",
+            "bytes": 1426992896,
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89"
+          },
+          {
+            "file": "divingsim-Windows.utoc",
+            "bytes": 1176903,
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024"
+          },
+          {
+            "file": "global.ucas",
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5"
+          },
+          {
+            "file": "global.utoc",
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa"
+          }
+        ],
+        "started_utc": "2026-11-26T16:36:40.6990153Z",
+        "packaged": true,
+        "source_head": "9833ef4f86c9804d8c2ed2d9ef56b45fddbd4c7d",
+        "sha256": "B0D8104E6329C1C8C41D241224D608AA9BE962E116F7776543DDE8F8DA940306"
+      },
+      "before_log": {
+        "file": "artifacts/habitat-validation-20261126-173639/look0/Runtime.log",
+        "sha256": "6a3355c73fd06e55511ce97348c4d00a600c1d89ccd8e900bafc9ac5e00e0a87",
+        "bytes": 111217
+      },
+      "after_log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/entry0/Runtime.log",
+        "sha256": "5726fef54978382dd62ceeb952efd19e7cea10eb3e9821b9140997e35e2df8d9",
+        "bytes": 116076
+      },
+      "before_images": [
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look0/Habitat_0_0.png",
+          "sha256": "4563cdd86cd7474d061cadc1af41097ca70f858aecf0a365a702491d27f4e024",
+          "bytes": 1853135
+        },
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look0/Habitat_0_1.png",
+          "sha256": "cf5f20de72e6806878c0ddbd1723c2c4860acf8876c217fbf9875f621a2c6a29",
+          "bytes": 1837040
+        },
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look0/Habitat_0_2.png",
+          "sha256": "abe4adcba3343a5c857d11f848cfacafe76e42ad0a7114022660c963e58b94be",
+          "bytes": 1891306
+        }
+      ]
+    },
+    {
+      "entry": 1,
+      "baseline_host": {
+        "executable": "O:\\games\\dive game\\Builds\\WindowsFormationsFinal\\divingsim\\Binaries\\Win64\\divingsim-FormationsFinal.exe",
+        "package_containers": [
+          {
+            "file": "divingsim-Windows.pak",
+            "bytes": 105898051,
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71"
+          },
+          {
+            "file": "divingsim-Windows.ucas",
+            "bytes": 1426992896,
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89"
+          },
+          {
+            "file": "divingsim-Windows.utoc",
+            "bytes": 1176903,
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024"
+          },
+          {
+            "file": "global.ucas",
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5"
+          },
+          {
+            "file": "global.utoc",
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa"
+          }
+        ],
+        "started_utc": "2026-11-26T16:36:40.6990153Z",
+        "packaged": true,
+        "source_head": "9833ef4f86c9804d8c2ed2d9ef56b45fddbd4c7d",
+        "sha256": "B0D8104E6329C1C8C41D241224D608AA9BE962E116F7776543DDE8F8DA940306"
+      },
+      "before_log": {
+        "file": "artifacts/habitat-validation-20261126-173639/look1/Runtime.log",
+        "sha256": "d89853eb626f4912685f5263cd58b1e616034cfe8af15469bf0e77af4b94b9ca",
+        "bytes": 109689
+      },
+      "after_log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/entry1/Runtime.log",
+        "sha256": "88d87e76747fd9d870a8e25f2120fee0fe7f41ea9395dd42830cf20fccd473e2",
+        "bytes": 113794
+      },
+      "before_images": [
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look1/Habitat_0_0.png",
+          "sha256": "6f85bb646941029560248132793071b72295fd618819b0ac9ed0f22bff24234b",
+          "bytes": 1694272
+        },
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look1/Habitat_0_1.png",
+          "sha256": "63b1c0846eabb88f1d2182b2ab1d09f3b9d0ea8aa5b416334aeccbffc347c01b",
+          "bytes": 1664412
+        },
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look1/Habitat_0_2.png",
+          "sha256": "4ea20c9468b88dd9e25664b5e54bf6f4ee9342f2776bc1f2d78a9c63b37ca199",
+          "bytes": 1663093
+        }
+      ]
+    },
+    {
+      "entry": 2,
+      "baseline_host": {
+        "executable": "O:\\games\\dive game\\Builds\\WindowsFormationsFinal\\divingsim\\Binaries\\Win64\\divingsim-FormationsFinal.exe",
+        "package_containers": [
+          {
+            "file": "divingsim-Windows.pak",
+            "bytes": 105898051,
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71"
+          },
+          {
+            "file": "divingsim-Windows.ucas",
+            "bytes": 1426992896,
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89"
+          },
+          {
+            "file": "divingsim-Windows.utoc",
+            "bytes": 1176903,
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024"
+          },
+          {
+            "file": "global.ucas",
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5"
+          },
+          {
+            "file": "global.utoc",
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa"
+          }
+        ],
+        "started_utc": "2026-11-26T16:36:40.6990153Z",
+        "packaged": true,
+        "source_head": "9833ef4f86c9804d8c2ed2d9ef56b45fddbd4c7d",
+        "sha256": "B0D8104E6329C1C8C41D241224D608AA9BE962E116F7776543DDE8F8DA940306"
+      },
+      "before_log": {
+        "file": "artifacts/habitat-validation-20261126-173639/look2/Runtime.log",
+        "sha256": "48e1e8e02647278428302bbd008490ec2ea8f743be1f9f68e552b24edeb11ab0",
+        "bytes": 110030
+      },
+      "after_log": {
+        "file": "artifacts/rock-aprons-validation-20261126-180526/entry2/Runtime.log",
+        "sha256": "c6510069d6e561d0997a83341f95f98701d4417b53ab615dee53f5c6affa3cea",
+        "bytes": 113673
+      },
+      "before_images": [
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look2/Habitat_0_0.png",
+          "sha256": "cf3b367b827d5739911faf0cb3af1dfe474feb37e3b2a0869fd7515b439a4d35",
+          "bytes": 1904627
+        },
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look2/Habitat_0_1.png",
+          "sha256": "71bc3b3daf223f5a982229f8715fa8131a906f443802ee4e0afdf7d897dc278c",
+          "bytes": 1770982
+        },
+        {
+          "file": "artifacts/habitat-validation-20261126-173639/look2/Habitat_0_2.png",
+          "sha256": "4249a2a8af33f4667251eb7fb273af61e51e4f1757a923a00dfeba53fb34508a",
+          "bytes": 1824794
+        }
+      ]
+    }
+  ],
+  "published_images": [
+    {
+      "file": "Documentation/Images/RockAprons_Before.png",
+      "sha256": "a8ba65f5ea84204c98162642421ce26416f234483560774892d1e8175b3a9df0",
+      "bytes": 1992754
+    },
+    {
+      "file": "Documentation/Images/RockAprons_After.png",
+      "sha256": "97040f18a0be0515084b55160259a9b4acc2902276294713ee589b331c370347",
+      "bytes": 1996662
+    }
+  ],
+  "underwater_performance": {
+    "summary": {
+      "metadata": {
+        "scenario": "perf-underwater",
+        "csv": "O:/games/dive game/Builds/WindowsRockAprons/divingsim/Saved/Performance/perf-underwater_AB38B7C7/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 60,
+        "simulation_seconds": 75.05999832227826,
+        "distance_m": 10.386662199185448,
+        "depth_m": 5.223337451251361,
+        "walking": false,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-26T17:10:07.9588548Z",
+        "editor": false,
+        "disable_nanite": false,
+        "background_processes": [],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2547 MiB, 18 %"
+        ],
+        "executable": "O:\\games\\dive game\\Builds\\WindowsRockAprons\\divingsim\\Binaries\\Win64\\divingsim-RockAprons.exe",
+        "executable_sha256": "e70538614375e50d4111cbe0f4f3950252fdb8e23c331570de56dac69557722d",
+        "package_containers": [
+          {
+            "bytes": 105898051,
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71",
+            "file": "divingsim-Windows.pak"
+          },
+          {
+            "bytes": 1426992896,
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89",
+            "file": "divingsim-Windows.ucas"
+          },
+          {
+            "bytes": 1176903,
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024",
+            "file": "divingsim-Windows.utoc"
+          },
+          {
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+            "file": "global.ucas"
+          },
+          {
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+            "file": "global.utoc"
+          }
+        ]
+      },
+      "frames": 4383,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 59.9733284,
+      "average_fps": 73.08248711438867,
+      "one_percent_low_fps": 61.5587285660202,
+      "frame": {
+        "mean_ms": 13.683168697239333,
+        "p50_ms": 13.5826,
+        "p95_ms": 15.3406,
+        "p99_ms": 15.9517,
+        "max_ms": 17.3603
+      },
+      "game_thread": {
+        "mean_ms": 6.536075906913073,
+        "p50_ms": 6.5354,
+        "p95_ms": 7.0566,
+        "p99_ms": 7.3339,
+        "max_ms": 9.327
+      },
+      "render_thread": {
+        "mean_ms": 13.67657362537075,
+        "p50_ms": 13.5833,
+        "p95_ms": 15.3331,
+        "p99_ms": 15.9298,
+        "max_ms": 17.3167
+      },
+      "rhi_thread": {
+        "mean_ms": 2.527822404745608,
+        "p50_ms": 2.4993,
+        "p95_ms": 2.9935,
+        "p99_ms": 3.2344,
+        "max_ms": 5.0818
+      },
+      "gpu": {
+        "mean_ms": 13.069033127994524,
+        "p50_ms": 12.9413,
+        "p95_ms": 14.599,
+        "p99_ms": 15.1488,
+        "max_ms": 17.0498
+      },
+      "frames_over_16_67_ms": 4,
+      "frames_over_33_33_ms": 0,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": true,
+      "memory_mb": {
+        "start": 4495.1875,
+        "end": 4468.1289,
+        "max": 4500.3359
+      },
+      "terrain_chunks": {
+        "min": 9.0,
+        "max": 9.0,
+        "frames_below_nine": 0
+      },
+      "distance_m": 5.6701,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 3.5081937942048826
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 1.1810290212183436
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 0.9142059776408853
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8574425963951632
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.7003681953000228
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.6631200319415925
+        },
+        {
+          "name": "GPU/Basepass",
+          "mean_ms": 0.5908635865845312
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.5094736025553274
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.39619107916951857
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.3610871321013005
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.3342372119552818
+        },
+        {
+          "name": "GPU/NaniteBasePass",
+          "mean_ms": 0.3317754506046087
+        }
+      ]
+    },
+    "files": [
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-181007-953/Host.json",
+        "sha256": "9878d148b4bceae8723680295b650bdd8734f5a7eb5c93dfd9b381e384b4caf6",
+        "bytes": 1363
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-181007-953/Metadata.json",
+        "sha256": "131de94f8b067fd366130f33678fc7053d6af99b436d3ba73f2ce703930c1193",
+        "bytes": 997
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-181007-953/Summary.json",
+        "sha256": "8bdf3e69450766cb45b61e2f201da98b6a2683b7808fb49e6985684b6848bb83",
+        "bytes": 4955
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-181007-953/Capture.csv",
+        "sha256": "56a611e7e4e0060826ce6e4daf9a5d0d4b04a2ceb62e8085ac4b7d714efdf87f",
+        "bytes": 9931918
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-181007-953/Runtime.log",
+        "sha256": "c71161c2e4a3ecfd2d21e7e10b5733fd1c2e7e3503921bed5aa8017698796f9d",
+        "bytes": 125496
+      },
+      {
+        "file": "artifacts/perf-underwater-1080p-q2-20261126-181007-953/Frame.png",
+        "sha256": "237371d0671eb87c710fa6b84549db03f7ed2450ae1f8e2213370f7e25101441",
+        "bytes": 2375855
+      }
+    ],
+    "population_markers": [
+      "DIVE_POPULATION_CELL x=27 y=0 loaded=9 unloaded=0 active=9 rocks=3621 plants=2531 milliseconds=39.236 layouts=25",
+      "DIVE_POPULATION_CELL x=27 y=0 loaded=9 unloaded=0 active=9 rocks=3621 plants=2531 milliseconds=39.194 layouts=25",
+      "DIVE_POPULATION_CELL x=27 y=0 loaded=9 unloaded=0 active=9 rocks=3621 plants=2531 milliseconds=39.640 layouts=25"
+    ]
+  },
+  "performance_before": {
+    "summary": {
+      "metadata": {
+        "scenario": "perf-stream",
+        "csv": "O:/games/dive game/Builds/WindowsFormationsFinal/divingsim/Saved/Performance/perf-stream_388449C0/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 90,
+        "simulation_seconds": 104.95999765396118,
+        "distance_m": 168.02894513176932,
+        "depth_m": 24.727956742700044,
+        "walking": false,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-26T16:50:32.3405632Z",
+        "editor": false,
+        "disable_nanite": false,
+        "background_processes": [],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2510 MiB, 20 %"
+        ],
+        "executable": "O:\\games\\dive game\\Builds\\WindowsFormationsFinal\\divingsim\\Binaries\\Win64\\divingsim-FormationsFinal.exe",
+        "executable_sha256": "b0d8104e6329c1c8c41d241224d608aa9be962e116f7776543dde8f8da940306",
+        "package_containers": [
+          {
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71",
+            "bytes": 105898051,
+            "file": "divingsim-Windows.pak"
+          },
+          {
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89",
+            "bytes": 1426992896,
+            "file": "divingsim-Windows.ucas"
+          },
+          {
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024",
+            "bytes": 1176903,
+            "file": "divingsim-Windows.utoc"
+          },
+          {
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+            "bytes": 3245776,
+            "file": "global.ucas"
+          },
+          {
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+            "bytes": 794,
+            "file": "global.utoc"
+          }
+        ]
+      },
+      "frames": 9077,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 89.9799804,
+      "average_fps": 100.87799485673149,
+      "one_percent_low_fps": 81.55053556745955,
+      "frame": {
+        "mean_ms": 9.91296467996034,
+        "p50_ms": 9.9028,
+        "p95_ms": 10.8512,
+        "p99_ms": 11.2703,
+        "max_ms": 34.3591
+      },
+      "game_thread": {
+        "mean_ms": 4.676156428335353,
+        "p50_ms": 5.0106,
+        "p95_ms": 5.8875,
+        "p99_ms": 6.2758,
+        "max_ms": 33.9359
+      },
+      "render_thread": {
+        "mean_ms": 9.895481073041754,
+        "p50_ms": 9.8945,
+        "p95_ms": 10.8437,
+        "p99_ms": 11.2301,
+        "max_ms": 13.7278
+      },
+      "rhi_thread": {
+        "mean_ms": 2.4149171862950314,
+        "p50_ms": 2.3733,
+        "p95_ms": 2.9125,
+        "p99_ms": 3.426,
+        "max_ms": 7.815
+      },
+      "gpu": {
+        "mean_ms": 9.301840145422496,
+        "p50_ms": 9.2899,
+        "p95_ms": 10.0881,
+        "p99_ms": 10.3971,
+        "max_ms": 11.1594
+      },
+      "frames_over_16_67_ms": 4,
+      "frames_over_33_33_ms": 1,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": false,
+      "memory_mb": {
+        "start": 4421.2695,
+        "end": 4383.8594,
+        "max": 4427.2969
+      },
+      "terrain_chunks": {
+        "min": 7.0,
+        "max": 9.0,
+        "frames_below_nine": 4
+      },
+      "distance_m": 144.8633,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.484894612757519
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 1.1863234659028314
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8165346369946017
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.6925513275311226
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.5210112261760493
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.46369332378539163
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.31765501817781205
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.30953885645036905
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.27659633138702217
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.268509518563402
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.25097977305277075
+        },
+        {
+          "name": "GPU/NaniteBasePass",
+          "mean_ms": 0.24642024898094084
+        }
+      ]
+    },
+    "files": [
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-175032-336/Host.json",
+        "sha256": "620a1d06a17cd4eff78cb89229599f0649d53ae2789251189d809c650a6f59e0",
+        "bytes": 1373
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-175032-336/Metadata.json",
+        "sha256": "2c210d762a11d77ff5f71312723527a49facc01f22fdf00e9375fee60487a97c",
+        "bytes": 994
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-175032-336/Summary.json",
+        "sha256": "90c2a9bcf516671d720ea40ef3dcc8137d484c7a97979e0f5796d1ac9e589c40",
+        "bytes": 4974
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-175032-336/Capture.csv",
+        "sha256": "9a136803b09437475e163ac2a88a037b3bed3cbcff71354f6cda8236859f56e5",
+        "bytes": 20577977
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-175032-336/Runtime.log",
+        "sha256": "9fb7410798b02cbdcaa265e896d7fa53ee64e53b323c895f66486be94213d9be",
+        "bytes": 143826
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-175032-336/Frame.png",
+        "sha256": "09f60e23d021bc00e255501029ef7211a539207bebe02a565be2aef56cdebf05",
+        "bytes": 1867559
+      }
+    ],
+    "population_markers": [
+      "DIVE_POPULATION_CELL x=27 y=0 loaded=9 unloaded=0 active=9 rocks=3621 plants=2531 milliseconds=39.762 layouts=25",
+      "DIVE_POPULATION_CELL x=8 y=92 loaded=9 unloaded=0 active=9 rocks=5241 plants=72 milliseconds=71.327 layouts=25",
+      "DIVE_POPULATION_CELL x=8 y=92 loaded=9 unloaded=0 active=9 rocks=5241 plants=72 milliseconds=70.596 layouts=25",
+      "DIVE_POPULATION_CELL x=9 y=92 loaded=1 unloaded=3 active=7 rocks=5139 plants=68 milliseconds=4.476 layouts=23",
+      "DIVE_POPULATION_CELL x=9 y=92 loaded=1 unloaded=0 active=8 rocks=5139 plants=68 milliseconds=3.359 layouts=24",
+      "DIVE_POPULATION_CELL x=9 y=92 loaded=1 unloaded=0 active=9 rocks=5139 plants=68 milliseconds=3.017 layouts=25",
+      "DIVE_POPULATION_CELL x=9 y=93 loaded=1 unloaded=3 active=7 rocks=4250 plants=62 milliseconds=8.013 layouts=23",
+      "DIVE_POPULATION_CELL x=9 y=93 loaded=1 unloaded=0 active=8 rocks=4250 plants=62 milliseconds=3.288 layouts=24",
+      "DIVE_POPULATION_CELL x=9 y=93 loaded=1 unloaded=0 active=9 rocks=4250 plants=62 milliseconds=10.323 layouts=25",
+      "DIVE_POPULATION_CELL x=10 y=93 loaded=1 unloaded=3 active=7 rocks=1760 plants=0 milliseconds=10.271 layouts=23",
+      "DIVE_POPULATION_CELL x=10 y=93 loaded=1 unloaded=0 active=8 rocks=1760 plants=0 milliseconds=2.935 layouts=24",
+      "DIVE_POPULATION_CELL x=10 y=93 loaded=1 unloaded=0 active=9 rocks=1760 plants=0 milliseconds=3.344 layouts=25"
+    ]
+  },
+  "performance_after": {
+    "summary": {
+      "metadata": {
+        "scenario": "perf-stream",
+        "csv": "O:/games/dive game/Builds/WindowsRockAprons/divingsim/Saved/Performance/perf-stream_DA97D320/Capture.csv",
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+        "engine": "5.8.4-58902052+++UE5+Release-5.8",
+        "width": 1920,
+        "height": 1080,
+        "quality": 2,
+        "warmup_seconds": 15,
+        "requested_capture_seconds": 90,
+        "simulation_seconds": 104.93999765440822,
+        "distance_m": 167.99672425769663,
+        "depth_m": 24.723463243859825,
+        "walking": false,
+        "sediment_born": 0,
+        "sediment_live": 0,
+        "r.ScreenPercentage": 100,
+        "r.SecondaryScreenPercentage.GameViewport": 100,
+        "r.DynamicRes.OperationMode": 0,
+        "r.VSync": 0,
+        "t.MaxFPS": 0,
+        "sg.ViewDistanceQuality": 2,
+        "sg.AntiAliasingQuality": 2,
+        "sg.ShadowQuality": 2,
+        "sg.GlobalIlluminationQuality": 2,
+        "sg.ReflectionQuality": 2,
+        "sg.PostProcessQuality": 2,
+        "sg.TextureQuality": 2,
+        "sg.EffectsQuality": 2,
+        "sg.FoliageQuality": 2
+      },
+      "host": {
+        "started_utc": "2026-11-26T17:11:41.9676970Z",
+        "editor": false,
+        "disable_nanite": false,
+        "background_processes": [],
+        "gpu_before": [
+          "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+          "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2586 MiB, 27 %"
+        ],
+        "executable": "O:\\games\\dive game\\Builds\\WindowsRockAprons\\divingsim\\Binaries\\Win64\\divingsim-RockAprons.exe",
+        "executable_sha256": "e70538614375e50d4111cbe0f4f3950252fdb8e23c331570de56dac69557722d",
+        "package_containers": [
+          {
+            "bytes": 105898051,
+            "sha256": "2ba73e3e98e7afd84a4448970c438f16c7cca2c7899f047a66bd3ed662b60b71",
+            "file": "divingsim-Windows.pak"
+          },
+          {
+            "bytes": 1426992896,
+            "sha256": "b09db1c20242d447092238c675809ecb1675851c4d789715a47a187c64707d89",
+            "file": "divingsim-Windows.ucas"
+          },
+          {
+            "bytes": 1176903,
+            "sha256": "9127ae792e072d393a69031d73bfd1d76b961ff855c01f80c0ae7075dd05e024",
+            "file": "divingsim-Windows.utoc"
+          },
+          {
+            "bytes": 3245776,
+            "sha256": "5c90747cd607f02406f31180cc708eb3afcf32541f70e2d669dd7573549350f5",
+            "file": "global.ucas"
+          },
+          {
+            "bytes": 794,
+            "sha256": "7a6a850e6aa83aca7d93c55c84742b0ed2c132e36714fb053197cb8c9fa3b9aa",
+            "file": "global.utoc"
+          }
+        ]
+      },
+      "frames": 9066,
+      "discarded_boundary_frames": 2,
+      "measured_seconds": 89.9826489,
+      "average_fps": 100.75275745744355,
+      "one_percent_low_fps": 80.49422392024738,
+      "frame": {
+        "mean_ms": 9.925286664460621,
+        "p50_ms": 9.9064,
+        "p95_ms": 10.8532,
+        "p99_ms": 11.2873,
+        "max_ms": 37.0358
+      },
+      "game_thread": {
+        "mean_ms": 4.735520273549525,
+        "p50_ms": 5.0711,
+        "p95_ms": 5.9647,
+        "p99_ms": 6.3494,
+        "max_ms": 36.4652
+      },
+      "render_thread": {
+        "mean_ms": 9.906405724685639,
+        "p50_ms": 9.8991,
+        "p95_ms": 10.8434,
+        "p99_ms": 11.2589,
+        "max_ms": 12.2184
+      },
+      "rhi_thread": {
+        "mean_ms": 2.446713798808736,
+        "p50_ms": 2.3969,
+        "p95_ms": 3.0215,
+        "p99_ms": 3.5318,
+        "max_ms": 6.7828
+      },
+      "gpu": {
+        "mean_ms": 9.315636179130818,
+        "p50_ms": 9.304,
+        "p95_ms": 10.069,
+        "p99_ms": 10.3975,
+        "max_ms": 10.9992
+      },
+      "frames_over_16_67_ms": 5,
+      "frames_over_33_33_ms": 1,
+      "frames_over_100_ms": 0,
+      "all_frames_within_30fps_budget": false,
+      "memory_mb": {
+        "start": 4429.543,
+        "end": 4363.168,
+        "max": 4438.6797
+      },
+      "terrain_chunks": {
+        "min": 7.0,
+        "max": 9.0,
+        "frames_below_nine": 4
+      },
+      "distance_m": 144.8633,
+      "top_gpu_passes_ms_not_additive": [
+        {
+          "name": "GPU/ShadowDepths",
+          "mean_ms": 1.4756719832340612
+        },
+        {
+          "name": "GPU/VolumetricCloudShadow",
+          "mean_ms": 1.185152150893448
+        },
+        {
+          "name": "GPU/Unaccounted",
+          "mean_ms": 0.8090376351202294
+        },
+        {
+          "name": "GPU/TemporalSuperResolution",
+          "mean_ms": 0.6878588682991397
+        },
+        {
+          "name": "GPU/NaniteVisBuffer",
+          "mean_ms": 0.521784513567174
+        },
+        {
+          "name": "GPU/LumenReflections",
+          "mean_ms": 0.4696883079638209
+        },
+        {
+          "name": "GPU/ShadowProjection",
+          "mean_ms": 0.32044831237591
+        },
+        {
+          "name": "GPU/Lights",
+          "mean_ms": 0.31611768144716523
+        },
+        {
+          "name": "GPU/Postprocessing",
+          "mean_ms": 0.27789493712773
+        },
+        {
+          "name": "GPU/GlobalDistanceFieldUpdate",
+          "mean_ms": 0.2672217626296051
+        },
+        {
+          "name": "GPU/SingleLayerWater",
+          "mean_ms": 0.2663298146922568
+        },
+        {
+          "name": "GPU/LumenSceneUpdate",
+          "mean_ms": 0.2494839179351423
+        }
+      ]
+    },
+    "files": [
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-181141-963/Host.json",
+        "sha256": "dfa403543f9683f7be1fa64db4ead9772a7b9b5f918fb36816a9e6c98de9c745",
+        "bytes": 1363
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-181141-963/Metadata.json",
+        "sha256": "1251c4f072c4f304289b63c9d97cf0bc1956277abb98a10946e8116df7e7427c",
+        "bytes": 989
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-181141-963/Summary.json",
+        "sha256": "348212cce340426e0e46c41bd4c06586fd44cc7f014330c686bb885b3c36c320",
+        "bytes": 4950
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-181141-963/Capture.csv",
+        "sha256": "1feeee0ea82f88163b330d96d257133b2488a84d7d643c2d87d261dd2dfe17d4",
+        "bytes": 20527782
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-181141-963/Runtime.log",
+        "sha256": "12db6e7f06c2aed5f6478e668d98179000659e7387987c40970b4b924cd63df4",
+        "bytes": 143807
+      },
+      {
+        "file": "artifacts/perf-stream-1080p-q2-20261126-181141-963/Frame.png",
+        "sha256": "6bbecdde4778dba13e3d5dc43dd52027401b93a634143b64db35737e7b2293da",
+        "bytes": 1872344
+      }
+    ],
+    "population_markers": [
+      "DIVE_POPULATION_CELL x=27 y=0 loaded=9 unloaded=0 active=9 rocks=3621 plants=2531 milliseconds=40.972 layouts=25",
+      "DIVE_POPULATION_CELL x=8 y=92 loaded=9 unloaded=0 active=9 rocks=5241 plants=72 milliseconds=67.054 layouts=25",
+      "DIVE_POPULATION_CELL x=8 y=92 loaded=9 unloaded=0 active=9 rocks=5241 plants=72 milliseconds=68.369 layouts=25",
+      "DIVE_POPULATION_CELL x=9 y=92 loaded=1 unloaded=3 active=7 rocks=5139 plants=68 milliseconds=4.281 layouts=23",
+      "DIVE_POPULATION_CELL x=9 y=92 loaded=1 unloaded=0 active=8 rocks=5139 plants=68 milliseconds=2.973 layouts=24",
+      "DIVE_POPULATION_CELL x=9 y=92 loaded=1 unloaded=0 active=9 rocks=5139 plants=68 milliseconds=2.817 layouts=25",
+      "DIVE_POPULATION_CELL x=9 y=93 loaded=1 unloaded=3 active=7 rocks=4250 plants=62 milliseconds=7.437 layouts=23",
+      "DIVE_POPULATION_CELL x=9 y=93 loaded=1 unloaded=0 active=8 rocks=4250 plants=62 milliseconds=3.036 layouts=24",
+      "DIVE_POPULATION_CELL x=9 y=93 loaded=1 unloaded=0 active=9 rocks=4250 plants=62 milliseconds=10.094 layouts=25",
+      "DIVE_POPULATION_CELL x=10 y=93 loaded=1 unloaded=3 active=7 rocks=1760 plants=0 milliseconds=8.671 layouts=23",
+      "DIVE_POPULATION_CELL x=10 y=93 loaded=1 unloaded=0 active=8 rocks=1760 plants=0 milliseconds=2.977 layouts=24",
+      "DIVE_POPULATION_CELL x=10 y=93 loaded=1 unloaded=0 active=9 rocks=1760 plants=0 milliseconds=3.030 layouts=25"
+    ]
+  },
+  "limitations": [
+    "The route configuration is the same; frame timing and fish motion are not identical.",
+    "Short measurements do not establish long-term stability or guarantee hitch-free play everywhere.",
+    "Rock-foot dressing is authored, some pebbles remain hidden inside opaque rocks, and reference visual quality remains open."
+  ]
+}

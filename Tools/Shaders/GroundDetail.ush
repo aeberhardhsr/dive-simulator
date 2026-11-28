@@ -1,0 +1,51 @@
+// Shared by coast/entry and background terrain. World centimetres, LV95 origin
+// E2726000/N1219000, +X north, +Y east. No displacement of survey geometry.
+float groundLand=smoothstep(0,120,P.z);
+float groundNear=(1-smoothstep(2500,12000,distance(P,Camera)))*saturate(DetailStrength);
+float3 groundColor=GroundPhoto;
+float3 groundNormal=n;
+float groundRough=.92,groundAO=1;
+[branch] if(groundLand*groundNear>.0001)
+{
+    float2 groundUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
+    float forest=saturate(Texture2DSample(Woodland,WoodlandSampler,groundUV).r);
+    // Grass is an authored color heuristic, not a surveyed habitat map. Neutral
+    // roads/buildings keep their orthophoto rather than receiving blanket grass.
+    float green=smoothstep(1.03,1.2,GroundPhoto.g/max(GroundPhoto.r,.008))
+               *smoothstep(1.05,1.4,GroundPhoto.g/max(GroundPhoto.b,.008));
+    float cliff=1-smoothstep(.45,.72,abs(n.z));
+    float3 fn,gn,rnGround;float2 fa,ga,raGround;
+    // Shared world-group sampler prevents exhausting the 16 hardware samplers
+    // when this code is appended to the lakebed's nine existing PBR textures.
+    float3 foliage=bed.Layer(ForestColor,View.MaterialTextureBilinearWrapedSampler,
+        ForestNormal,View.MaterialTextureBilinearWrapedSampler,ForestARM,View.MaterialTextureBilinearWrapedSampler,
+        P,n,315,.5,fn,fa);
+    float3 grass=bed.Layer(GrassColor,View.MaterialTextureBilinearWrapedSampler,
+        GrassNormal,View.MaterialTextureBilinearWrapedSampler,GrassARM,View.MaterialTextureBilinearWrapedSampler,
+        P,n,251,.45,gn,ga);
+    float3 stone=bed.Layer(RockColor,RockColorSampler,RockNormal,RockNormalSampler,RockARM,RockARMSampler,
+        P,n,180,.65,rnGround,raGround);
+    // Retain regional grass hue with bounded tint; woodland removes the baked
+    // aerial crown shadows close to the observer now that trees cast real ones.
+    grass*=clamp(GroundPhoto/max(dot(GroundPhoto,float3(.2126,.7152,.0722)),.02),.65,1.5);
+    float groundWeight=max(green,forest);
+    float3 natural=lerp(grass,foliage,forest);
+    float3 naturalNormal=normalize(lerp(gn,fn,forest));
+    float2 naturalAR=lerp(ga,fa,forest);
+    groundColor=lerp(GroundPhoto,natural,groundWeight);
+    groundNormal=normalize(lerp(n,naturalNormal,groundWeight));
+    groundRough=lerp(.92,clamp(naturalAR.y,.65,.98),groundWeight);
+    groundAO=lerp(1,naturalAR.x,.35*groundWeight);
+    groundColor=lerp(groundColor,stone,cliff);
+    groundNormal=normalize(lerp(groundNormal,rnGround,cliff));
+    groundRough=lerp(groundRough,clamp(raGround.y,.65,.98),cliff);
+    groundAO=lerp(groundAO,lerp(1,raGround.x,.35),cliff);
+    groundColor=lerp(GroundPhoto,groundColor,groundNear);
+    groundNormal=normalize(lerp(n,groundNormal,groundNear));
+    groundRough=lerp(.92,groundRough,groundNear);
+    groundAO=lerp(1,groundAO,groundNear);
+}
+result=lerp(result,groundColor,groundLand);
+SurfaceNormal=normalize(lerp(SurfaceNormal,groundNormal,groundLand));
+Roughness=lerp(Roughness,groundRough,groundLand);
+Occlusion=lerp(Occlusion,groundAO,groundLand);
