@@ -11,6 +11,7 @@ param(
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [switch]$DisableNanite,
     [switch]$WaterPreview,
+    [switch]$ProductionWater,
     [switch]$ReflectionTransportStudy, [switch]$ReflectionTransportControl, [switch]$ReflectionUnified,
     [ValidateSet('full','routing','unshadowed','cached','vsm','vsm-fallback')][string]$ReflectionProfile='full',
     [ValidateRange(-70,70)][double]$LookPitch,
@@ -27,6 +28,7 @@ $ErrorActionPreference='Stop'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
+if($ProductionWater -and ($ReflectionTransportStudy -or $SpectralView)) {throw 'ProductionWater checks the normal cooked profile, not shader experiments.'}
 if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
 if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
 if($ReflectionProfile -ne 'full' -and (-not $ReflectionTransportStudy -or $ReflectionTransportControl)) {throw 'Diagnostic reflection profile requires active ReflectionTransportStudy.'}
@@ -41,7 +43,9 @@ $resultDir=Join-Path $repo "artifacts/$runName"
 New-Item -ItemType Directory -Path $resultDir -Force | Out-Null
 $logPath=Join-Path $resultDir 'Runtime.log'
 $context=[ordered]@{
-    started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite; water_preview=[bool]$WaterPreview; gravel_immediate_retirement=[bool]$ImmediateGravelRetirement
+    started_utc=[DateTime]::UtcNow.ToString('o'); editor=[bool]$Editor; disable_nanite=[bool]$DisableNanite
+    water_preview=([bool]$WaterPreview -or [bool]$ProductionWater); water_preview_requested=[bool]$WaterPreview
+    gravel_immediate_retirement=[bool]$ImmediateGravelRetirement
     population_immediate_retirement=[bool]$ImmediatePopulationRetirement
     legacy_rock_pose=[bool]$LegacyRockPose
     legacy_talus=[bool]$LegacyTalus
@@ -56,10 +60,11 @@ $context=[ordered]@{
     editor_sandbox=[bool]$EditorSandbox
     sandbox_name=$SandboxName
     fpv_probe=[bool]$FPVProbe
-    reflection_transport=[bool]$ReflectionTransportStudy
+    production_water=[bool]$ProductionWater
+    reflection_transport=([bool]$ReflectionTransportStudy -or [bool]$ProductionWater)
     reflection_control=[bool]$ReflectionTransportControl
-    reflection_unified=[bool]$ReflectionUnified
-    reflection_profile=$ReflectionProfile
+    reflection_unified=([bool]$ReflectionUnified -or [bool]$ProductionWater)
+    reflection_profile=$(if($ProductionWater){'vsm'}else{$ReflectionProfile})
     requested_pitch=$(if($PSBoundParameters.ContainsKey('LookPitch')) {$LookPitch} else {$null})
     source_head=(& git -C $repo rev-parse HEAD)
     source_dirty=[bool](& git -C $repo status --porcelain)
@@ -158,6 +163,18 @@ foreach($name in $captureFiles) {
     Copy-Item -LiteralPath $source.FullName -Destination (Join-Path $resultDir $name)
 }
 $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw | ConvertFrom-Json
+if($ProductionWater) {
+    $cooked=if($Editor){0}else{1}
+    foreach($marker in @("DIVE_PRODUCTION_WATER_READY cooked=$cooked",'DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0',
+        'DIVE_WATER_SCENE_READY','DIVE_LAKE_FOOTPRINT_READY','DIVE_REFLECTION_ROUTING_READY unified=1')) {
+        if(-not $log.Contains($marker)) {throw "Production benchmark is missing $marker"}
+    }
+    if(-not $metadata.production_water -or -not $metadata.reflection_transport -or -not $metadata.reflection_unified -or $metadata.reflection_control -or
+       -not $metadata.water_interface -or -not $metadata.bounded_water -or -not $metadata.native_scattering -or
+       $metadata.'r.Lumen.HardwareRayTracing' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.Inline' -ne 0 -or $metadata.'r.CustomDepth' -ne 3 -or
+       $metadata.'r.Lumen.TranslucencyReflections.FrontLayer.Allow' -ne 1 -or $metadata.'r.Lumen.HardwareRayTracing.HitLighting.Allowed' -ne 1 -or
+       $metadata.'r.Lumen.HardwareRayTracing.LightingMode' -ne 2) {throw 'Normal water benchmark profile was not preserved.'}
+}
 if($ReflectionTransportStudy -and $log -notmatch ('DIVE_REFLECTION_PROFILE_READY profile='+$ReflectionProfile+' ')) {throw 'Reflection diagnostic profile was not verified.'}
 if($ReflectionTransportStudy -and (-not $metadata.reflection_transport -or $metadata.reflection_control -ne [bool]$ReflectionTransportControl -or $metadata.reflection_unified -ne [bool]$ReflectionUnified -or $metadata.'r.Lumen.HardwareRayTracing.Inline' -ne 0 -or $metadata.'r.CustomDepth' -ne 3 -or $log -notmatch 'DIVE_WATER_SCENE_READY' -or $log -notmatch 'DIVE_LAKE_FOOTPRINT_READY' -or $log -notmatch ('DIVE_REFLECTION_TRANSPORT_READY enabled='+[int](-not $ReflectionTransportControl)) -or $log -notmatch ('DIVE_REFLECTION_ROUTING_READY unified='+[int][bool]$ReflectionUnified))) {throw 'Reflection benchmark mode was not preserved.'}
 if($WaterPreview -and (-not $metadata.water_preview -or -not $metadata.water_interface -or -not $metadata.bounded_water -or -not $metadata.native_scattering -or

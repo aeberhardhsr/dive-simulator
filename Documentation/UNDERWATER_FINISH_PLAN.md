@@ -56,6 +56,14 @@ Diese Grenzen sind konkrete Prüfkriterien dieser Abschlussiteration. Sie behaup
 
 **Ergebnis:** Ein gemessener, eingefrorener Paketkandidat und ein kurzer Leistungsbericht. Weitere allgemeine Engine-Optimierung wird nicht an diese Iteration angehängt.
 
+**Vorbereitung, noch keine Messung:** `Tools/TestUnderwaterFinishPerformance.ps1` führt nach Abschluss der Paketprüfung die drei festgelegten Fälle mit 15 s Aufwärmen, 1080p, Qualität 2 und 100 % Renderauflösung aus. Die ersten beiden Fälle sind stationäre Rundblicke: Weesen mit +35° angeforderter Blickneigung zur Wasserunterseite, Walenstadt mit −12° zum Grund. Der dritte Fall durchschwimmt den bestehenden Murg-Nachladepfad. Tatsächliche Kamerapose und Abschlussbild bleiben Bestandteil der Prüfung. Der Aufruf verwendet `-Pass baseline` beziehungsweise `-Pass confirmation`; eine vorhandene Spiel-, Editor- oder UnrealBuildTool-Instanz verhindert den Start. `Benchmark.ps1 -ProductionWater` verlangt den normalen Renderpfad samt aktiver Reflexion, Seegrenzen und unveränderten Qualitätswerten, ohne einen Grafik-Testschalter an das Spiel zu übergeben. Das Werkzeug erfasst alle drei Ergebnisse auch bei verfehlten Leistungsgrenzen und schreibt höchstens `NUMERICAL_PASS_REQUIRES_IMAGE_REVIEW`, keine automatische visuelle Abnahme.
+
+```powershell
+./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate -Pass baseline
+# Erst nach Auswertung und gegebenenfalls begrenzter Korrektur:
+./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate -Pass confirmation
+```
+
 ### 5. Stabilität, Abschlusslieferung und Übergabe an Überwasser
 
 **Umfang:** Den unveränderten Paketkandidaten aus Iteration 4 abschliessend prüfen und als Unterwasser-Abschlussstand kennzeichnen. Das ist eine technische Abschlussprüfung; die gestalterische Abnahme des Nutzers bleibt gültig.
