@@ -4,6 +4,8 @@
 
 Der [Überwasser-Ausgangsstand](Documentation/ABOVE_WATER_BASELINE.md) ist mit sechs gesichteten Paketansichten an Weesen, Murg und Mols gesichert. Zuerst werden die gestreckten Felsoberflächen der gegenüberliegenden Bergflanken bearbeitet; Geländeanschlüsse, Waldvolumen und Wiesen folgen. Diese Baseline ist noch keine grafische Verbesserung oder Referenzabnahme.
 
+Eine erste [räumliche Felsmaterial-Variante](Documentation/LANDSCAPE_CLIFF_STUDY.md) ist im Source-Editor sichtbar geprüft. Sie vermindert helle senkrechte Streifen, zeigt jedoch noch harte Auswahlgrenzen und unveränderte grobe Geländeformen. Sie bleibt ausdrücklich ausserhalb des normalen Spielstarts; das R3-Paket ist unverändert.
+
 Die begrenzte [Speicherdiagnose](Documentation/RECORDING_MEMORY_DIAGNOSIS.md) ist abgeschlossen: 360 erfolgreiche Sicherungen zeigen grössenabhängigen Speicherbedarf, bei 60 gleich grossen Sicherungen nur +0,25 MiB Endwertänderung. Die Zuordnung des gesamten R3-Speichertrends bleibt offen. Das Spielpaket wurde dafür nicht verändert; weitergehende Serialisierungsarbeit ist als Restpunkt dokumentiert.
 
 Die abgeschlossene Schattenoptimierung erreicht im geprüften Source-Editor-Vergleich 62,29 statt 55,19 FPS bei 1080p/Hoch. Sie ist im neuen R3-Paketkandidaten integriert, aber nicht in der bisherigen Vorschau `WindowsWaterline`. Editorvergleich und Paketmessungen sind getrennte Nachweise.

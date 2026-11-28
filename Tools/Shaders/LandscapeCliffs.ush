@@ -1,0 +1,33 @@
+// Above-water landscape experiment only. Coordinates are world centimetres.
+// Keep geographic land cover; replace stretched aerial colour on steep exposed
+// faces with spatially projected stone. This adds no surveyed rock geometry.
+float cliffDistance=smoothstep(6000,16000,distance(P,Camera));
+float cliffSlope=1-smoothstep(.48,.76,abs(n.z));
+float cliffGreen=smoothstep(1.04,1.22,Photo.g/max(Photo.r,.008))
+                *smoothstep(1.05,1.4,Photo.g/max(Photo.b,.008));
+float cliffWeight=cliffSlope*(1-.92*cliffGreen)*cliffDistance
+                 *smoothstep(200,1400,P.z)*saturate(DetailStrength);
+[branch] if(cliffWeight>.001)
+{
+    float3 cliffNormalA,cliffNormalB;float2 cliffARA,cliffARB;
+    float3 cliffA=bed.Layer(RockColor,RockColorSampler,RockNormal,RockNormalSampler,
+        RockARM,RockARMSampler,P,n,2800,.48,cliffNormalA,cliffARA);
+    float3 cliffB=bed.Layer(RockColor,RockColorSampler,RockNormal,RockNormalSampler,
+        RockARM,RockARMSampler,P+float3(7123,17391,3891),n,13700,.3,cliffNormalB,cliffARB);
+    float3 cliffWeights=pow(abs(n),4);cliffWeights/=max(dot(cliffWeights,1),.0001);
+    float cliffPatch=dot(cliffWeights,float3(bed.Noise(P.yz/28300),
+        bed.Noise(P.zx/28300),bed.Noise(P.xy/28300)));
+    float3 cliffStone=lerp(cliffA,cliffB,.34)*lerp(.84,1.13,cliffPatch);
+    // Low-frequency registered tint retains regional variation without copying
+    // every projected aerial streak into the cliff. Explicit mip is geographic.
+    float2 cliffUV=float2((P.y+300000)/2200000,(900000-P.x)/1300000);
+    float3 cliffRegion=Texture2DSampleLevel(FarOrtho,FarOrthoSampler,cliffUV,4).rgb;
+    float cliffLuma=dot(cliffRegion,float3(.2126,.7152,.0722));
+    float3 cliffTint=clamp(cliffRegion/max(cliffLuma,.015),.78,1.16);
+    cliffStone*=lerp(float3(1,1,1),cliffTint,.35);
+    result=lerp(result,cliffStone,cliffWeight);
+    float3 cliffNormal=normalize(lerp(cliffNormalA,cliffNormalB,.34));
+    SurfaceNormal=normalize(lerp(SurfaceNormal,cliffNormal,cliffWeight));
+    Roughness=lerp(Roughness,clamp(lerp(cliffARA.y,cliffARB.y,.34),.72,.97),cliffWeight);
+    Occlusion=lerp(Occlusion,lerp(1,lerp(cliffARA.x,cliffARB.x,.34),.18),cliffWeight);
+}

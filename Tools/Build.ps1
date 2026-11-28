@@ -25,6 +25,7 @@ param(
     [switch]$OnlyBuildings,
     [switch]$OnlyVegetation,
     [switch]$OnlyGround,
+    [switch]$OnlyFarCliffs,
     [switch]$OnlyFish,
     [switch]$OnlyRocks,
     [switch]$OnlyFormations,
@@ -70,6 +71,7 @@ if ($Target -eq 'Content') {
     if($OnlyBuildings) { $script=Join-Path $PSScriptRoot 'build_buildings_content.py' }
     if($OnlyVegetation) { $script=Join-Path $PSScriptRoot 'build_vegetation_content.py' }
     if($OnlyGround) { $script=Join-Path $PSScriptRoot 'build_ground_content.py' }
+    if($OnlyFarCliffs) { $script=Join-Path $PSScriptRoot 'build_landscape_cliff_study.py' }
     if($OnlyFish) { $script=Join-Path $PSScriptRoot 'build_fish_content.py' }
     if($OnlyRocks) { $script=Join-Path $PSScriptRoot 'build_rock_content.py' }
     if($OnlyFormations) { $script=Join-Path $PSScriptRoot 'build_formation_content.py' }

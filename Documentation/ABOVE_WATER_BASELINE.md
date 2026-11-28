@@ -2,6 +2,8 @@
 
 Stand: 28. November 2026. Nach den [fünf begrenzten Unterwasser-Runden](UNDERWATER_FINISH_HANDOVER.md) liegt der Schwerpunkt auf der Landschaft über Wasser. **Die sechs Ausgangsansichten sind aufgenommen und gesichtet; eine grafische Verbesserung ist in diesem Bericht noch nicht umgesetzt.**
 
+Folgeschritt: Eine separate [Felsmaterial-Variante](LANDSCAPE_CLIFF_STUDY.md) ist inzwischen im Source-Editor umgesetzt und an drei Ufern sowie bei zwei Sonnenständen geprüft. Sie vermindert einen Teil der Farbstreckung; Auswahlgrenzen und grobe Geländeformen verhindern vorerst die normale Integration. Die unten beschriebenen R3-Bilder bleiben die unveränderte Baseline.
+
 ## Reproduzierbarer Ausgangsstand
 
 Unverändertes Paket `WindowsUnderwaterFinalCandidateR3`, normaler Hardware-/VSM-Wasserpfad, 1600 × 900, Szenariodatum 21. Juni 2026 um 12:00 Uhr, Begrenzung auf 30 FPS für die Aufnahmen. Je zwei feste Ansichten an Weesen/Strandbad, Murg/West und Mols/Lediwracks: Richtung See und um 180° zurück zum Land. Alle sechs nativen Prüfungen bestehen; Uferanschlüsse, Kollision und Renderkonfiguration sind geprüft. Alle 53 Laufzeitdateien stimmen weiterhin mit R3 überein. Diese Reihe misst keine Bildrate und prüft keine bewegte Kamerafahrt.

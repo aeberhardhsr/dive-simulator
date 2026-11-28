@@ -425,15 +425,19 @@ void ADivePawn::Tick(float DeltaSeconds)
     if(bSmokeTest&&SmokeScenario==TEXT("shore-preview"))
     {
         ControlsSmokeClock+=DeltaSeconds;
-        if(ControlsSmokeClock>3&&!bSmokeCaptured)
+        float previewSeconds=3.f;
+        FParse::Value(FCommandLine::Get(),TEXT("DiveShorePreviewSeconds="),previewSeconds);
+        previewSeconds=FMath::Clamp(previewSeconds,3.f,60.f);
+        if(ControlsSmokeClock>previewSeconds&&!bSmokeCaptured)
         {
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_PREVIEW_CAPTURE warmup=%.3f elapsed=%.3f"),previewSeconds,ControlsSmokeClock);
             const FString suffix=FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView"))?TEXT("_Buildings"):
                 FParse::Param(FCommandLine::Get(),TEXT("DiveGroundView"))?TEXT("_Ground"):
                 FParse::Param(FCommandLine::Get(),TEXT("DiveShoreLookBack"))?TEXT("_Land"):TEXT("");
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Shore_%d%s.png"),EntryIndex,*suffix),true,false);
             bSmokeCaptured=true;
         }
-        if(ControlsSmokeClock>5)
+        if(ControlsSmokeClock>previewSeconds+2)
         {
             FString error; bool valid=Environment->ValidateShoreline(error);
             FCollisionQueryParams query(SCENE_QUERY_STAT(ShoreCollision),true,this);

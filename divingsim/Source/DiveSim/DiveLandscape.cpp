@@ -5,6 +5,8 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "Serialization/JsonSerializer.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
 void ADiveWorld::CreateLandscape()
 {
@@ -24,8 +26,14 @@ void ADiveWorld::CreateLandscape()
         !manifest->TryGetNumberField(TEXT("spacing_m"),spacing)||spacing!=grid.Spacing||
         !manifest->TryGetArrayField(TEXT("tiles"),tiles)||tiles->Num()!=expected)
     { fail(TEXT("Landschaftsmeshes fehlen: Tools/Build.ps1 -Target Landscape.")); return; }
-    auto* material=ImageryMaterial(TEXT("M_LandscapePhoto"),Terrain.LandscapeImagery);
+    const TCHAR* landscapeMaterial=TEXT("M_LandscapePhoto");
+#if WITH_EDITOR
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveFarCliffStudy")))
+        landscapeMaterial=TEXT("M_LandscapeCliffStudy");
+#endif
+    auto* material=ImageryMaterial(landscapeMaterial,Terrain.LandscapeImagery);
     if(!material) return;
+    UE_LOG(LogTemp,Display,TEXT("DIVE_LANDSCAPE_MATERIAL name=%s"),landscapeMaterial);
     TSet<FIntPoint> visited;
     int naniteAssets=0;
     for(const auto& item:*tiles)

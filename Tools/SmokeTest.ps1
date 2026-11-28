@@ -5,7 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
-    [switch]$GroundView, [switch]$GroundOff, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+    [switch]$GroundView, [switch]$GroundOff, [switch]$FarCliffStudy, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [ValidateCount(5,5)][double[]]$HabitatPose,
     [ValidateCount(4,4)][double[]]$WaterlinePose,
     [switch]$WaterlineSweep,
@@ -39,6 +39,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,9)][int]$WaterEnd=9,
     [ValidateRange(-180,360)][double]$SkyYaw=180, [ValidateRange(-85,85)][double]$SkyPitch=45,
     [ValidateRange(0,240)][int]$MaxFPS=0,
+    [ValidateRange(3,60)][double]$ShorePreviewSeconds=3,
     [ValidateRange(30,7200)][int]$TimeoutSeconds=180,
     [ValidateSet('1600x900','1920x1080','2560x1440','3840x2160','1280x1024')][string]$Viewport='1600x900',
     [ValidateRange(0,2)][int]$Torch=0,
@@ -49,6 +50,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateRange(0,23.99)][double]$Hour,
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
+if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStudy requires an editor sandbox; it is not a released package feature.'}
+if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and ($Scenario -ne 'shore-preview' -or $Packaged)) {throw 'ShorePreviewSeconds currently requires the editor shore-preview fixture.'}
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($ProductionWater -and ($ReflectionTransportStudy -or $ReflectionRayStudy -or $SolarShaderStudy -or $SpectralView)) {throw 'ProductionWater validates normal rendering and cannot enable a shader study.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
@@ -79,6 +82,8 @@ New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null
 $size=$Viewport.Split('x')
 $arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -unattended -abslog="{0}"' -f $logPath,$size[0],$size[1]
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
+if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
+if($PSBoundParameters.ContainsKey('ShorePreviewSeconds')) {$arguments+=' -DiveShorePreviewSeconds='+$ShorePreviewSeconds.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($SpectralDepthDebug) {$arguments+=' -DiveSpectralDepthDebug'}
 if($SolarShaderStudy) {$arguments+=' -DiveSolarShaderStudy'}
@@ -273,6 +278,8 @@ $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowSty
 if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Smoke test exceeded $TimeoutSeconds seconds; process $($process.Id) was left running. Inspect it and $logPath before starting another test." }
 $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
+if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff study material was not selected.'}
+if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and -not $log.Contains('DIVE_SHORE_PREVIEW_CAPTURE warmup='+$ShorePreviewSeconds.ToString('F3',[Globalization.CultureInfo]::InvariantCulture))) {throw 'Requested shore preview warmup was not confirmed.'}
 if($BufferView -ne 'none' -and ($log -match 'view mode not recognized|Debug viewmodes not allowed' -or $log -notmatch ('r.BufferVisualizationTarget = "'+$BufferView+'"'))) {throw 'Requested buffer visualization was not accepted.'}
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}
 if($ReflectionRayStudy -and $log -notmatch 'DIVE_REFLECTION_RAY_STUDY_READY') {throw 'Reflection ray classification was not enabled.'}

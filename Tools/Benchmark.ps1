@@ -16,6 +16,7 @@ param(
     [ValidateSet('full','routing','unshadowed','cached','vsm','vsm-fallback')][string]$ReflectionProfile='full',
     [ValidateRange(-70,70)][double]$LookPitch,
     [switch]$FPVProbe,
+    [switch]$FarCliffStudy,
     [switch]$SpectralView,
     [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [switch]$ImmediateGravelRetirement,
@@ -28,6 +29,7 @@ $ErrorActionPreference='Stop'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
+if($FarCliffStudy -and -not $EditorSandbox) {throw 'FarCliffStudy requires an editor sandbox.'}
 if($ProductionWater -and ($ReflectionTransportStudy -or $SpectralView)) {throw 'ProductionWater checks the normal cooked profile, not shader experiments.'}
 if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
 if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
@@ -60,6 +62,7 @@ $context=[ordered]@{
     editor_sandbox=[bool]$EditorSandbox
     sandbox_name=$SandboxName
     fpv_probe=[bool]$FPVProbe
+    far_cliff_study=[bool]$FarCliffStudy
     production_water=[bool]$ProductionWater
     reflection_transport=([bool]$ReflectionTransportStudy -or [bool]$ProductionWater)
     reflection_control=[bool]$ReflectionTransportControl
@@ -82,6 +85,11 @@ function Get-DiveHostCpuLoad {
     } catch {return @{available=$false}}
 }
 $context.host_cpu_before=Get-DiveHostCpuLoad
+if($FarCliffStudy) {
+    $context.far_cliff_inputs=@('Tools/Shaders/LandscapeCliffs.ush','divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset') | ForEach-Object {
+        @{file=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo $_)).Hash.ToLowerInvariant()}
+    }
+}
 if(Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $context.gpu_before=@(& nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu --format=csv)
 }
@@ -100,6 +108,7 @@ if($consoleCommands.Count) {$arguments+=' -ExecCmds="'+($consoleCommands -join '
 if($PSBoundParameters.ContainsKey('LookPitch')) {$arguments+=' -DivePerfPitch='+$LookPitch.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
 if($FPVProbe) {$arguments+=' -DiveFPVProbe'}
+if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -146,6 +155,7 @@ if(-not $process.WaitForExit(($Seconds+120)*1000)) { throw "Benchmark exceeded i
 $log=Get-Content -LiteralPath $logPath -Raw
 if($DisableNanite -and $log -notmatch 'r.Nanite = "0"') { throw 'Nanite fallback override was not applied.' }
 if($process.ExitCode -ne 0 -or $log -match 'DIVE_\w+_FAIL|WALENSEE_DATA_FAILED|Failed to compile Material|Default Material will be used') { throw "Benchmark capture failed: $logPath" }
+if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff material not confirmed in benchmark.'}
 foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS','DIVE_LIGHT_PASS','DIVE_PERF_CAPTURE_BEGIN')) {
     if($log -notmatch $marker) { throw "Missing $marker in $logPath" }
 }
