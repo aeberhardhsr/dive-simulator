@@ -2,6 +2,7 @@
 
 #if WITH_EDITOR
 #include "DiveTerrain.h"
+#include "DiveLandscapeDetail.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInterface.h"
 #include "MeshDescription.h"
@@ -30,6 +31,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
 #else
     FDiveTerrain terrain;
     if(!terrain.Load()) { UE_LOG(LogTemp,Error,TEXT("%s"),*terrain.Error); return 1; }
+    if(FParse::Param(*Params,TEXT("DetailStudy"))) return BakeLandscapeDetailStudy(terrain,Params);
     const auto& grid=terrain.Landscape;
     const FString folder=FPaths::ProjectContentDir()/TEXT("Diving/Geodata");
     // Hash the actual inputs, not only their manifest claims. Includes the

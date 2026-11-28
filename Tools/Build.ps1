@@ -1,9 +1,10 @@
 param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
-    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','Coast','CoastCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
+    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck','Coast','CoastCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
     [ValidateRange(1,64)][int]$MaxParallelActions=2,
     [switch]$EditorSandbox,
+    [switch]$RefreshSources,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
@@ -35,12 +36,14 @@ param(
     [switch]$OnlyPlantMaterial
 )
 $ErrorActionPreference = 'Stop'
+if($RefreshSources -and $Target -notin @('Editor','Game')) {throw 'RefreshSources applies to Editor or Game compilation.'}
 $repo = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $repo 'divingsim/divingsim.uproject'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($EditorSandbox) { . (Join-Path $PSScriptRoot 'PrepareEditorSandbox.ps1'); $project=Get-DiveEditorSandbox -SandboxName $SandboxName }
 if($BuildSlot -and $Target -notin @('Game','Package')) { throw 'BuildSlot applies to Game or Package only.' }
 $slotOptions=@()
+if($RefreshSources) { $slotOptions+='-gather' }
 $ubtOptions="-NoUBA -MaxParallelActions=$MaxParallelActions -NoHotReloadFromIDE"
 if($BuildSlot) { $slotOptions+="-DiveBuildSlot=$BuildSlot"; $ubtOptions+=" -DiveBuildSlot=$BuildSlot" }
 if(-not $PackageDirectory) { $PackageDirectory=Join-Path $repo 'Builds/Windows' }
@@ -101,9 +104,10 @@ if ($Target -eq 'Content') {
     $coastOptions=@()
     if($Target -eq 'CoastCheck') { $coastOptions+='-VerifyOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveCoastBake' @coastOptions -unattended -nullrhi -nosplash '-log=CoastBuild.log'
-} elseif ($Target -in @('Landscape','LandscapeCheck')) {
+} elseif ($Target -in @('Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck')) {
     $landOptions=@()
-    if($Target -eq 'LandscapeCheck') { $landOptions+='-VerifyOnly' }
+    if($Target -in @('LandscapeCheck','LandscapeDetailCheck')) { $landOptions+='-VerifyOnly' }
+    if($Target -in @('LandscapeDetail','LandscapeDetailCheck')) { $landOptions+='-DetailStudy' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions
 } elseif ($Target -eq 'Package') {
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveCoastBake' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=CoastCheck.log'

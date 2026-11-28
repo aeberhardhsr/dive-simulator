@@ -5,7 +5,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
-    [switch]$GroundView, [switch]$GroundOff, [switch]$FarCliffStudy, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+    [switch]$GroundView, [switch]$GroundOff, [switch]$FarCliffStudy, [switch]$LandscapeDetailStudy, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [ValidateCount(5,5)][double[]]$HabitatPose,
     [ValidateCount(4,4)][double[]]$WaterlinePose,
     [switch]$WaterlineSweep,
@@ -51,6 +51,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
 if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStudy requires an editor sandbox; it is not a released package feature.'}
+if($LandscapeDetailStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'LandscapeDetailStudy requires an editor sandbox.'}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and ($Scenario -ne 'shore-preview' -or $Packaged)) {throw 'ShorePreviewSeconds currently requires the editor shore-preview fixture.'}
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($ProductionWater -and ($ReflectionTransportStudy -or $ReflectionRayStudy -or $SolarShaderStudy -or $SpectralView)) {throw 'ProductionWater validates normal rendering and cannot enable a shader study.'}
@@ -83,6 +84,7 @@ $size=$Viewport.Split('x')
 $arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -unattended -abslog="{0}"' -f $logPath,$size[0],$size[1]
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
+if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds')) {$arguments+=' -DiveShorePreviewSeconds='+$ShorePreviewSeconds.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($SpectralDepthDebug) {$arguments+=' -DiveSpectralDepthDebug'}
@@ -280,6 +282,8 @@ $log=Get-Content $logPath -Raw
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff study material was not selected.'}
 if($FarCliffStudy -and -not $log.Contains('DIVE_CLIFF_COVERAGE_PASS texture=T_CliffCoverage size=4096 mips=13')) {throw 'Mapped cliff coverage was not validated.'}
+if($LandscapeDetailStudy -and -not $log.Contains('DIVE_LAND_DETAIL_READY tile=05_02 spacing=2m boundary=32m')) {throw 'Landscape detail study was not validated.'}
+if($LandscapeDetailStudy -and -not $log.Contains('DIVE_LAND_DETAIL_APPLIED tile=05_02 replacements=1')) {throw 'Landscape detail replacement was not applied.'}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and -not $log.Contains('DIVE_SHORE_PREVIEW_CAPTURE warmup='+$ShorePreviewSeconds.ToString('F3',[Globalization.CultureInfo]::InvariantCulture))) {throw 'Requested shore preview warmup was not confirmed.'}
 if($BufferView -ne 'none' -and ($log -match 'view mode not recognized|Debug viewmodes not allowed' -or $log -notmatch ('r.BufferVisualizationTarget = "'+$BufferView+'"'))) {throw 'Requested buffer visualization was not accepted.'}
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}

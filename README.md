@@ -6,6 +6,8 @@ Der [Überwasser-Ausgangsstand](Documentation/ABOVE_WATER_BASELINE.md) ist mit s
 
 Die [räumliche Felsmaterial-Variante](Documentation/LANDSCAPE_CLIFF_STUDY.md) nutzt jetzt [kartierte Felsflächen](Documentation/LANDSCAPE_CLIFF_COVERAGE.md). Vier identische Editor-Bildpaare zeigen weniger Farbstreckung, aber auch auffällige helle Materialgrenzen in Weesen und verbleibende Streckung in Mols. Die Datenprüfung besteht. Vier Leistungsläufe zeigen jedoch Aussetzer bis 376 ms; Übergänge und CPU-/Speicherbereinigung müssen vor normaler Übernahme weiter untersucht werden. Das R3-Paket ist unverändert.
 
+Eine anschliessende [lokale 2-m-Geländestudie gegenüber Murg](Documentation/LANDSCAPE_DETAIL_STUDY.md) zeigt feinere Felskanten und Rinnen. Vier Rendervergleiche sowie der Bau und die erneute Prüfung des gespeicherten Meshs bestehen. Materialstreckung bleibt sichtbar. Physische Geländeabfrage, Bewegung und Leistung dieser feineren Geometrie sind vor einer spielbaren Übernahme noch zu prüfen; das normale Spiel bleibt beim bisherigen Gelände.
+
 Die begrenzte [Speicherdiagnose](Documentation/RECORDING_MEMORY_DIAGNOSIS.md) ist abgeschlossen: 360 erfolgreiche Sicherungen zeigen grössenabhängigen Speicherbedarf, bei 60 gleich grossen Sicherungen nur +0,25 MiB Endwertänderung. Die Zuordnung des gesamten R3-Speichertrends bleibt offen. Das Spielpaket wurde dafür nicht verändert; weitergehende Serialisierungsarbeit ist als Restpunkt dokumentiert.
 
 Die abgeschlossene Schattenoptimierung erreicht im geprüften Source-Editor-Vergleich 62,29 statt 55,19 FPS bei 1080p/Hoch. Sie ist im neuen R3-Paketkandidaten integriert, aber nicht in der bisherigen Vorschau `WindowsWaterline`. Editorvergleich und Paketmessungen sind getrennte Nachweise.

@@ -1,5 +1,7 @@
 # Kartierte Felsflächen im Landschaftsmaterial
 
+Folgeschritt: Eine separate [2-m-Geländekachel gegenüber Murg](LANDSCAPE_DETAIL_STUDY.md) ist inzwischen mit beiden Materialien verglichen. Sie verbessert die lokale Formgliederung, löst aber die hier beschriebenen Materialgrenzen nicht. Die folgenden Bilder und Leistungsmessungen beziehen sich weiterhin auf die damalige 8-m-Landschaft.
+
 Stand: 28. November 2026. Die [erste Felsmaterial-Studie](LANDSCAPE_CLIFF_STUDY.md) verwendet jetzt die vorhandenen swissTLM3D-Flächen **Fels** und **Fels locker** zur Auswahl. Damit hängt die Auswahl nicht mehr von der grünen Farbe gestreckter Luftbilder ab. **Die Daten- und Laufzeitprüfung besteht; die gestalterischen Übergänge sind noch nicht für das normale Spiel freigegeben.**
 
 ## Sichtbarer Fortschritt und Grenzen

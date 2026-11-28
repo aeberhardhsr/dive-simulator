@@ -1,0 +1,327 @@
+{
+  "status": "AUDIT_COMPLETE_NO_GEOMETRY_CHANGE",
+  "native_tiles_verified": 286,
+  "runtime": {
+    "file": "divingsim/Content/Diving/Geodata/landscape.f32",
+    "sha256": "57579ad3e1f2018a33c562dbc2dfec4772db81e80f56f59375e7b2fb9796ebeb"
+  },
+  "source_manifest": {
+    "file": "divingsim/Content/Diving/Geodata/landscape.json",
+    "sha256": "4d428d6da25514ce722254ae744aac6d9204b3ade42ed5cd10b19900a45192ef"
+  },
+  "coverage": {
+    "file": "Art/GroundMaterials/CliffCoverage.png",
+    "sha256": "982b93f6cfea1a1ed03fb2ef46b3b3561c34ab0766a7a748a26a5d91dbe3f399"
+  },
+  "groups": {
+    "all_land": {
+      "samples": 65272585,
+      "signed_mean_m": -0.0011641973396763206,
+      "absolute_m": {
+        "p50": 0.1962738037109375,
+        "p95": 1.5208549499511719,
+        "p99": 4.487209796905518,
+        "max": 125.38874816894531
+      }
+    },
+    "mapped_rock": {
+      "samples": 3413992,
+      "signed_mean_m": -0.09017392247915268,
+      "absolute_m": {
+        "p50": 1.0295867919921875,
+        "p95": 7.83026123046875,
+        "p99": 15.79783821105957,
+        "max": 122.85997009277344
+      }
+    },
+    "northern_lakeside_rock": {
+      "samples": 711508,
+      "signed_mean_m": -0.1295086294412613,
+      "absolute_m": {
+        "p50": 1.3362197875976562,
+        "p95": 10.304389953613281,
+        "p99": 21.555953979492188,
+        "max": 104.43742370605469
+      }
+    }
+  },
+  "largest_rock_tile_differences": [
+    {
+      "file": "swissalti3d_2026_2741-1222_2_2056_5728.tif",
+      "samples": 25345,
+      "signed_mean_m": -0.0724957720300671,
+      "absolute_m": {
+        "p50": 2.4732437133789062,
+        "p95": 17.852362060546874,
+        "p99": 34.707033691406274,
+        "max": 122.85997009277344
+      },
+      "largest_difference": {
+        "east": 2741805,
+        "north": 1222615,
+        "native_m_ln02": 1030.277587890625,
+        "runtime_triangle_m_ln02": 1153.1375579833984,
+        "runtime_minus_native_m": 122.85997009277344
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2735-1223_2_2056_5728.tif",
+      "samples": 41846,
+      "signed_mean_m": -0.3511777477704709,
+      "absolute_m": {
+        "p50": 0.890838623046875,
+        "p95": 11.258800506591797,
+        "p99": 25.397412109375004,
+        "max": 104.43742370605469
+      },
+      "largest_difference": {
+        "east": 2735933,
+        "north": 1223053,
+        "native_m_ln02": 1879.9478759765625,
+        "runtime_triangle_m_ln02": 1984.3852996826172,
+        "runtime_minus_native_m": 104.43742370605469
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2734-1222_2_2056_5728.tif",
+      "samples": 32471,
+      "signed_mean_m": -0.3125549059242248,
+      "absolute_m": {
+        "p50": 2.1298751831054688,
+        "p95": 10.879581451416016,
+        "p99": 19.765673065185528,
+        "max": 104.05049133300781
+      },
+      "largest_difference": {
+        "east": 2734473,
+        "north": 1222323,
+        "native_m_ln02": 1037.35888671875,
+        "runtime_triangle_m_ln02": 1141.4093780517578,
+        "runtime_minus_native_m": 104.05049133300781
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2736-1223_2_2056_5728.tif",
+      "samples": 49162,
+      "signed_mean_m": -0.12273247820731316,
+      "absolute_m": {
+        "p50": 1.9584503173828125,
+        "p95": 13.351488494873031,
+        "p99": 30.141138610839835,
+        "max": 102.87330627441406
+      },
+      "largest_difference": {
+        "east": 2736333,
+        "north": 1223345,
+        "native_m_ln02": 1935.699462890625,
+        "runtime_triangle_m_ln02": 2038.572769165039,
+        "runtime_minus_native_m": 102.87330627441406
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2731-1222_2_2056_5728.tif",
+      "samples": 26380,
+      "signed_mean_m": -0.1120738229035789,
+      "absolute_m": {
+        "p50": 2.340900421142578,
+        "p95": 17.045901870727537,
+        "p99": 36.086590805053675,
+        "max": 101.51807403564453
+      },
+      "largest_difference": {
+        "east": 2731009,
+        "north": 1222395,
+        "native_m_ln02": 840.9334106445312,
+        "runtime_triangle_m_ln02": 942.4514846801758,
+        "runtime_minus_native_m": 101.51807403564453
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2730-1222_2_2056_5728.tif",
+      "samples": 27778,
+      "signed_mean_m": -0.1409037987454096,
+      "absolute_m": {
+        "p50": 2.544971466064453,
+        "p95": 18.643071556091307,
+        "p99": 38.5596094131469,
+        "max": 95.96050262451172
+      },
+      "largest_difference": {
+        "east": 2730757,
+        "north": 1222525,
+        "native_m_ln02": 991.8193969726562,
+        "runtime_triangle_m_ln02": 1087.779899597168,
+        "runtime_minus_native_m": 95.96050262451172
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2736-1222_2_2056_5728.tif",
+      "samples": 29424,
+      "signed_mean_m": -0.4410552168229535,
+      "absolute_m": {
+        "p50": 3.1337432861328125,
+        "p95": 14.876619338989236,
+        "p99": 26.179172592163106,
+        "max": 88.07355499267578
+      },
+      "largest_difference": {
+        "east": 2736801,
+        "north": 1222319,
+        "native_m_ln02": 1171.541015625,
+        "runtime_triangle_m_ln02": 1083.4674606323242,
+        "runtime_minus_native_m": -88.07355499267578
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2735-1222_2_2056_5728.tif",
+      "samples": 45875,
+      "signed_mean_m": -0.03607427596006471,
+      "absolute_m": {
+        "p50": 2.3355712890625,
+        "p95": 13.361254882812473,
+        "p99": 25.323161773681683,
+        "max": 86.44578552246094
+      },
+      "largest_difference": {
+        "east": 2735403,
+        "north": 1222445,
+        "native_m_ln02": 1367.61865234375,
+        "runtime_triangle_m_ln02": 1281.172866821289,
+        "runtime_minus_native_m": -86.44578552246094
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2734-1223_2_2056_5728.tif",
+      "samples": 55331,
+      "signed_mean_m": -0.012930356756649048,
+      "absolute_m": {
+        "p50": 0.570281982421875,
+        "p95": 7.6095123291015625,
+        "p99": 18.68029174804672,
+        "max": 85.5433349609375
+      },
+      "largest_difference": {
+        "east": 2734623,
+        "north": 1223139,
+        "native_m_ln02": 1854.6104736328125,
+        "runtime_triangle_m_ln02": 1940.15380859375,
+        "runtime_minus_native_m": 85.5433349609375
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2739-1224_2_2056_5728.tif",
+      "samples": 64191,
+      "signed_mean_m": -0.11138415756685553,
+      "absolute_m": {
+        "p50": 0.8831634521484375,
+        "p95": 9.52264404296875,
+        "p99": 19.22955474853513,
+        "max": 84.75483703613281
+      },
+      "largest_difference": {
+        "east": 2739287,
+        "north": 1224015,
+        "native_m_ln02": 2084.083740234375,
+        "runtime_triangle_m_ln02": 1999.3289031982422,
+        "runtime_minus_native_m": -84.75483703613281
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2740-1224_2_2056_5728.tif",
+      "samples": 79570,
+      "signed_mean_m": -0.028332689627340216,
+      "absolute_m": {
+        "p50": 1.0759201049804688,
+        "p95": 11.526120758056642,
+        "p99": 21.03351776123047,
+        "max": 78.73013305664062
+      },
+      "largest_difference": {
+        "east": 2740827,
+        "north": 1224041,
+        "native_m_ln02": 1789.1524658203125,
+        "runtime_triangle_m_ln02": 1867.8825988769531,
+        "runtime_minus_native_m": 78.73013305664062
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2729-1226_2_2056_5728.tif",
+      "samples": 26678,
+      "signed_mean_m": -0.24557286351237737,
+      "absolute_m": {
+        "p50": 1.272979736328125,
+        "p95": 7.602648925781244,
+        "p99": 14.693892669677732,
+        "max": 69.03689575195312
+      },
+      "largest_difference": {
+        "east": 2729521,
+        "north": 1226179,
+        "native_m_ln02": 1686.1810302734375,
+        "runtime_triangle_m_ln02": 1755.2179260253906,
+        "runtime_minus_native_m": 69.03689575195312
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2741-1224_2_2056_5728.tif",
+      "samples": 70706,
+      "signed_mean_m": -0.04708853931409198,
+      "absolute_m": {
+        "p50": 0.74560546875,
+        "p95": 8.475349426269531,
+        "p99": 19.436235046386702,
+        "max": 68.09152221679688
+      },
+      "largest_difference": {
+        "east": 2741395,
+        "north": 1224115,
+        "native_m_ln02": 1998.22021484375,
+        "runtime_triangle_m_ln02": 2066.311737060547,
+        "runtime_minus_native_m": 68.09152221679688
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2728-1217_2_2056_5728.tif",
+      "samples": 33135,
+      "signed_mean_m": -0.22119800526757252,
+      "absolute_m": {
+        "p50": 1.3594589233398438,
+        "p95": 8.78564300537109,
+        "p99": 16.16557556152329,
+        "max": 67.40779113769531
+      },
+      "largest_difference": {
+        "east": 2728183,
+        "north": 1217347,
+        "native_m_ln02": 1564.0609130859375,
+        "runtime_triangle_m_ln02": 1631.4687042236328,
+        "runtime_minus_native_m": 67.40779113769531
+      }
+    },
+    {
+      "file": "swissalti3d_2026_2729-1216_2_2056_5728.tif",
+      "samples": 80582,
+      "signed_mean_m": -0.12332215438971157,
+      "absolute_m": {
+        "p50": 1.62200927734375,
+        "p95": 7.815149688720702,
+        "p99": 13.981176300048837,
+        "max": 64.88865661621094
+      },
+      "largest_difference": {
+        "east": 2729527,
+        "north": 1216397,
+        "native_m_ln02": 1915.8077392578125,
+        "runtime_triangle_m_ln02": 1980.6963958740234,
+        "runtime_minus_native_m": 64.88865661621094
+      }
+    }
+  ],
+  "method": "All native 2m pixel centres, land >421m LN02; exact 8m mesh triangle interpolation (not bilinear), excluding outer incomplete cells. Mapped solid OR loose rock from decoded coverage.",
+  "limits": [
+    "Vertical elevation differences, not perpendicular surface distances or screen-space visual error.",
+    "Native 2m DTM also cannot represent overhangs; not an assertion of survey accuracy.",
+    "Audit of the landscape source surface, not Nanite-selected runtime triangles, shaders, coast patches or collision.",
+    "Northern-lakeside group is a geographic window, not a visibility test."
+  ]
+}

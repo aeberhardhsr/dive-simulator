@@ -10,6 +10,7 @@
 #if WITH_EDITOR
 #include "Engine/Texture2D.h"
 #include "TextureCompiler.h"
+#include "DiveLandscapeDetail.h"
 #endif
 
 void ADiveWorld::CreateLandscape()
@@ -53,6 +54,15 @@ void ADiveWorld::CreateLandscape()
     }
 #endif
     TSet<FIntPoint> visited;
+#if WITH_EDITOR
+    UStaticMesh* detailStudy=nullptr;
+    int detailApplied=0;
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeDetailStudy")))
+    {
+        FString detailError;detailStudy=LoadLandscapeDetailStudy(Terrain,detailError);
+        if(!detailStudy) { fail(*detailError);return; }
+    }
+#endif
     int naniteAssets=0;
     for(const auto& item:*tiles)
     {
@@ -75,6 +85,9 @@ void ADiveWorld::CreateLandscape()
         { fail(TEXT("Landschaftskachel falsch registriert.")); return; }
         visited.Add(key);
         auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
+#if WITH_EDITOR
+        if(detailStudy&&key==FIntPoint(1280,512)) { mesh=detailStudy;++detailApplied; }
+#endif
         if(!mesh||mesh->GetNumTriangles(0)<=0) { fail(TEXT("Landschaftsasset oder Fallback-Geometrie fehlt.")); return; }
         naniteAssets+=mesh->HasValidNaniteData()?1:0;
         auto* component=NewObject<UStaticMeshComponent>(this,*name);
@@ -84,6 +97,13 @@ void ADiveWorld::CreateLandscape()
         component->RegisterComponent(); LandscapeMeshes.Add(component);
     }
     UE_LOG(LogTemp,Display,TEXT("DIVE_LANDSCAPE_READY tiles=%d source_spacing=8m nanite_assets=%d"),LandscapeMeshes.Num(),naniteAssets);
+#if WITH_EDITOR
+    if(detailStudy)
+    {
+        if(detailApplied!=1) { fail(TEXT("Landscape detail replacement count mismatch"));return; }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_APPLIED tile=05_02 replacements=1"));
+    }
+#endif
 }
 
 bool ADiveWorld::ValidateLandscape(FString& Error) const
