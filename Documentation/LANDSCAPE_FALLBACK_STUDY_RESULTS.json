@@ -1,0 +1,829 @@
+{
+  "status": "LOCAL_FALLBACK_BOUNDARY_CORRECTED_NANITE_START_GAP_OPEN_NOT_RELEASED",
+  "created_utc": "2026-11-28T11:38:05.219312+00:00",
+  "sources": [
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Config/DefaultGame.ini",
+      "bytes": 975,
+      "sha256": "c1c5609bdfd130220658c429d12108f97d84b5e57a022d0c511bfbe956f840b2",
+      "project_file": "divingsim/Config/DefaultGame.ini"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Tools/Build.ps1",
+      "bytes": 10608,
+      "sha256": "d0852cd2eca9c9d9935b9fc00e466902768ba062adee1f9308f0e82d70f7e5c6",
+      "project_file": "Tools/Build.ps1"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Tools/SmokeTest.ps1",
+      "bytes": 41357,
+      "sha256": "05c492433f127885ff962fdadddc67b81308ce60b021b2bc165a86ba4655f3fb",
+      "project_file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Tools/Benchmark.ps1",
+      "bytes": 18614,
+      "sha256": "3365ec0407e8abad72834979e85a40dd90dbd1e39fd800e646a2fbf1918c539e",
+      "project_file": "Tools/Benchmark.ps1"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Tools/audit_landscape_fallback.py",
+      "bytes": 4494,
+      "sha256": "6626e50fbd38d6a2fdf2859964c87295e44cfff2032bc73752f3eba92aaf79b1",
+      "project_file": "Tools/audit_landscape_fallback.py"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Tools/analyze_performance.py",
+      "bytes": 5357,
+      "sha256": "05d186d0ac61b834b27af4d195a9817da9c4dd391fc8cf22ab357b78a33f4b0f",
+      "project_file": "Tools/analyze_performance.py"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Tests/test_landscape_fallback.py",
+      "bytes": 1557,
+      "sha256": "66085f74d5ec16bdc35d0ebdd78f6b0bff746d5c6463a6cc04df3cd531246d56",
+      "project_file": "Tests/test_landscape_fallback.py"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "bytes": 8116,
+      "sha256": "b910c00c63bbdee56f243f59e8335a7d89035fc3161455910f6d5f4eebee73f9",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeDetail.cpp",
+      "bytes": 18908,
+      "sha256": "d0f5d563182f164b7e8d128b38cc617614654887f426393bc31e17887a814983",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeDetail.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeDetail.h",
+      "bytes": 448,
+      "sha256": "ae98b24f4cf03f2394c8f7cecc304ddddbc7a9dfd069794fc61f9c449e39f119",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeDetail.h"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeFallback.cpp",
+      "bytes": 8906,
+      "sha256": "af4dcd956dd7f2a782d5486dc9d8d331bf2b1be0a6614ebaea740869f312b95f",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeFallback.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "bytes": 13864,
+      "sha256": "4603c7325e21bc0fc90159c538d0db882b0abfa2497d702380a41e0a7d3296d5",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveSim.Build.cs",
+      "bytes": 973,
+      "sha256": "8579ec55a6e7dd3e9f3be8f23612b0fc8341686c1807942c5bb430dac9ec9bed",
+      "project_file": "divingsim/Source/DiveSim/DiveSim.Build.cs"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+      "bytes": 40188,
+      "sha256": "92b4a3f53b51340980af516cba4b7d98538eaad32b383c38651e00d4e433809d",
+      "project_file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveTerrain.cpp",
+      "bytes": 12357,
+      "sha256": "14ad2f57b962ce1ae6945147dd8a32ecd0592bca9614f05567ff32d4d2a9da1e",
+      "project_file": "divingsim/Source/DiveSim/DiveTerrain.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveTerrain.h",
+      "bytes": 2354,
+      "sha256": "b2427eb754c5cb92b3f2ee4cc07877f24f32b4bb529b3ddc97901ee584e2ec36",
+      "project_file": "divingsim/Source/DiveSim/DiveTerrain.h"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+      "bytes": 4592,
+      "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea",
+      "project_file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DivePawn.cpp",
+      "bytes": 68841,
+      "sha256": "6989bb24429f8cfb544d967b27a79a47e18a7240cd5896c3ab26e4d06f8dfccb",
+      "project_file": "divingsim/Source/DiveSim/DivePawn.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/DivePawnContacts.cpp",
+      "bytes": 7285,
+      "sha256": "2194940a048d94214a11e03d645de06de7beea6315a2db93059fe1bcefbab4a4",
+      "project_file": "divingsim/Source/DiveSim/DivePawnContacts.cpp"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Source/DiveSim/Simulation/HeightGrid.h",
+      "bytes": 3839,
+      "sha256": "0025a4d8d51d736d61c6aa677f8a5e74c84065512964777065138b29dba85f93",
+      "project_file": "divingsim/Source/DiveSim/Simulation/HeightGrid.h"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Content/Diving/LandscapeStudy/Boundary_SM_Land_04_02.uasset",
+      "bytes": 32707781,
+      "sha256": "51d2d75d34511e2e76565c57aee7d301b59127712583dd8981de711e84f06320",
+      "project_file": "divingsim/Content/Diving/LandscapeStudy/Boundary_SM_Land_04_02.uasset"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Content/Diving/LandscapeStudy/Boundary_SM_Land_05_02.uasset",
+      "bytes": 33478130,
+      "sha256": "34631903eab63a2df1df65e5f158fe2ac84b84ed49f0bbf03f794a42fb82aac8",
+      "project_file": "divingsim/Content/Diving/LandscapeStudy/Boundary_SM_Land_05_02.uasset"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Content/Diving/LandscapeStudy/Boundary_SM_LandDetail_05_02.uasset",
+      "bytes": 507973110,
+      "sha256": "d94637ea16c36e23d90b9142d03f6ecfbe20dee09fc5ad0527256a13620b84ec",
+      "project_file": "divingsim/Content/Diving/LandscapeStudy/Boundary_SM_LandDetail_05_02.uasset"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Content/Diving/LandscapeStudy/SM_LandDetail_05_02.uasset",
+      "bytes": 41972228,
+      "sha256": "7230b5dbec006a4f0b4961dd43c40768e9c33c2d63bf9088d72bde314e5a492a",
+      "project_file": "divingsim/Content/Diving/LandscapeStudy/SM_LandDetail_05_02.uasset"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Content/Diving/Geodata/LandscapeStudy/detail_study.json",
+      "bytes": 4759,
+      "sha256": "4d17bff723aacd4c07a6ef65797a9b363e3a568ecfb80c38ea82f0cad76c0d9b",
+      "project_file": "divingsim/Content/Diving/Geodata/LandscapeStudy/detail_study.json"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/divingsim/Content/Diving/Geodata/LandscapeStudy/detail_05_02.f32",
+      "bytes": 4202500,
+      "sha256": "e313d4dc7d3627dde630cb3f9ba08df21bc328f3bf8f055cc4cb8fe8a6341e04",
+      "project_file": "divingsim/Content/Diving/Geodata/LandscapeStudy/detail_05_02.f32"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "bytes": 2929152,
+      "sha256": "2e8b5d721c1afc606d26964c919e402e17418930ada72c1ccdddbc0d4c8e061d",
+      "project_file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Snapshot/Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll",
+      "bytes": 36430336,
+      "sha256": "09b9c4e2b1a29d913926ac865062bfebb3d05ec4104c820a8c91edc10f77c5f5",
+      "project_file": "Builds/UE584/Engine/Binaries/Win64/UnrealEditor-Renderer.dll"
+    }
+  ],
+  "native_checks": [
+    {
+      "file": "artifacts/above-water-fallback-20261128/EditorBoundaryBuild-r3.log",
+      "bytes": 2510,
+      "sha256": "6a1bc3cdb44192960fabdee1a22ff864a96b26b2d9cc7f36d3b6e54433f29d3a"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/BoundaryBake-r2.log",
+      "bytes": 21786,
+      "sha256": "6394b0f382b70da8ed9c950c1d28a1bb8e44ee5bd874b059cca85d04f1ae96ec"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/BoundaryCheck.log",
+      "bytes": 20858,
+      "sha256": "b1195e1608ea4daac81cf120dff5de76991d4fbe0c777eeb5e692a01cfe932b6"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Audit.log",
+      "bytes": 20217,
+      "sha256": "840ab7ea05e3cade9c5f382feacd0eca33b2892c4d7810a3b89743bfd6a8b303"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/FixedExport.log",
+      "bytes": 20673,
+      "sha256": "64f8d7f4e7284c10e5b50bb8f107efeb83890bd915626de7116a8a5201f6abc3"
+    }
+  ],
+  "retained_failed_attempts": [
+    {
+      "file": "artifacts/above-water-fallback-20261128/EditorBoundaryBuild.log",
+      "bytes": 56221,
+      "sha256": "8612351b3983b75ba1edd21818b0f825edf5dc1e77be985a495be2c267b286cb"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/BoundaryBake.log",
+      "bytes": 21916,
+      "sha256": "9015a568b0264d6222f31b5631cf29aec085df55e123153ca2564e28072db38d"
+    }
+  ],
+  "audit_before": {
+    "manifest": {
+      "file": "artifacts\\above-water-fallback-20261128\\Original\\manifest.json",
+      "sha256": "9e48cf8952c6c2213bd611e103be7e780709f6d58a1f0d3b4d6f607d61519187"
+    },
+    "meshes": [
+      {
+        "name": "SM_Land_04_02",
+        "asset": "/Game/Diving/Landscape/SM_Land_04_02.SM_Land_04_02",
+        "vertices": 6713,
+        "triangles": 13159,
+        "source_triangles": 130182,
+        "origin_x_cm": 490000,
+        "origin_y_cm": 519600,
+        "fallback_relative_error": 0.25,
+        "open_edges": 265,
+        "max_shared_edge_horizontal_drift_cm": 112.24757295663585,
+        "buffers": [
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Original\\SM_Land_04_02.positions.f32",
+            "sha256": "a302973fb0b0754766f42fc3cfb09dec37b06a2f467695149570aa6abeb14c0f"
+          },
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Original\\SM_Land_04_02.indices.u32",
+            "sha256": "db20c9b2820a0f408f3439cb55fc2862d5a33449ec9735bd2dc8715719e081cc"
+          }
+        ]
+      },
+      {
+        "name": "SM_Land_05_02",
+        "asset": "/Game/Diving/Landscape/SM_Land_05_02.SM_Land_05_02",
+        "vertices": 10415,
+        "triangles": 20514,
+        "source_triangles": 131072,
+        "origin_x_cm": 490000,
+        "origin_y_cm": 724400,
+        "fallback_relative_error": 0.25,
+        "open_edges": 314,
+        "max_shared_edge_horizontal_drift_cm": 114.54560810899721,
+        "buffers": [
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Original\\SM_Land_05_02.positions.f32",
+            "sha256": "d583a3f51f8a556d13de9dc2ca399a1e9f7ce0a78a43da193bc186073cac4c7f"
+          },
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Original\\SM_Land_05_02.indices.u32",
+            "sha256": "aa9f6555d9b1601842eb38a7806f10fa489353b01ad62affb2317e04b83d7777"
+          }
+        ]
+      },
+      {
+        "name": "SM_LandDetail_05_02",
+        "asset": "/Game/Diving/LandscapeStudy/SM_LandDetail_05_02.SM_LandDetail_05_02",
+        "vertices": 25136,
+        "triangles": 49921,
+        "source_triangles": 2097152,
+        "origin_x_cm": 490000,
+        "origin_y_cm": 724400,
+        "fallback_relative_error": 0.25,
+        "open_edges": 349,
+        "max_shared_edge_horizontal_drift_cm": 60.948610568935784,
+        "buffers": [
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Original\\SM_LandDetail_05_02.positions.f32",
+            "sha256": "a624e0c144ab8eb21dbbdd25726f6dcb2b2ea6a264c178f7870938054d59afab"
+          },
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Original\\SM_LandDetail_05_02.indices.u32",
+            "sha256": "7962ecc7eab1600c61a7724aea18ab12cc0d1d9c652bafc98b221953100b2613"
+          }
+        ]
+      }
+    ],
+    "shared_edge_pairs": [
+      {
+        "east_mesh": "SM_Land_05_02",
+        "stations": 4065,
+        "max_horizontal_separation_cm": 207.5263959372616,
+        "max_vertical_separation_cm": 634.4717710354453,
+        "max_separation_cm": 635.0342127591387
+      },
+      {
+        "east_mesh": "SM_LandDetail_05_02",
+        "stations": 4065,
+        "max_horizontal_separation_cm": 114.15090144755551,
+        "max_vertical_separation_cm": 406.92630896455375,
+        "max_separation_cm": 407.92010595026494
+      }
+    ],
+    "scope": "Actual native fallback buffers, one shared edge, 0.5m stations excluding 8m corners. Not all landscape seams or full surface/collision agreement."
+  },
+  "audit_after": {
+    "manifest": {
+      "file": "artifacts\\above-water-fallback-20261128\\Fixed\\manifest.json",
+      "sha256": "fc983e91b5c0dd47e3c776e03a8c25c1df0274fe5b8cc2b458b27324179d7376"
+    },
+    "meshes": [
+      {
+        "name": "SM_Land_04_02",
+        "asset": "/Game/Diving/LandscapeStudy/Boundary_SM_Land_04_02.Boundary_SM_Land_04_02",
+        "vertices": 44688,
+        "triangles": 88350,
+        "source_triangles": 130182,
+        "origin_x_cm": 490000,
+        "origin_y_cm": 519600,
+        "fallback_relative_error": 0,
+        "open_edges": 1024,
+        "max_shared_edge_horizontal_drift_cm": 0.0,
+        "buffers": [
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Fixed\\SM_Land_04_02.positions.f32",
+            "sha256": "e30119347abf3f7b5c27a711b496cd2774d17a86df1e93b79afb5e17174cc2e2"
+          },
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Fixed\\SM_Land_04_02.indices.u32",
+            "sha256": "501c7e8233fdb80644b1ab1674ffee8e374e100831300280704f41b044313e2f"
+          }
+        ]
+      },
+      {
+        "name": "SM_Land_05_02",
+        "asset": "/Game/Diving/LandscapeStudy/Boundary_SM_Land_05_02.Boundary_SM_Land_05_02",
+        "vertices": 57679,
+        "triangles": 114332,
+        "source_triangles": 131072,
+        "origin_x_cm": 490000,
+        "origin_y_cm": 724400,
+        "fallback_relative_error": 0,
+        "open_edges": 1024,
+        "max_shared_edge_horizontal_drift_cm": 0.0,
+        "buffers": [
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Fixed\\SM_Land_05_02.positions.f32",
+            "sha256": "2756a3722a0919d6b7b1f7a969d962ce6c56e3724b27086f06cccf0705ad40f6"
+          },
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Fixed\\SM_Land_05_02.indices.u32",
+            "sha256": "1698f663643ccaa7d1717bf44569ec990aa0b937bf3d156edc10698cd0125884"
+          }
+        ]
+      },
+      {
+        "name": "SM_LandDetail_05_02",
+        "asset": "/Game/Diving/LandscapeStudy/Boundary_SM_LandDetail_05_02.Boundary_SM_LandDetail_05_02",
+        "vertices": 296334,
+        "triangles": 588570,
+        "source_triangles": 2097152,
+        "origin_x_cm": 490000,
+        "origin_y_cm": 724400,
+        "fallback_relative_error": 0,
+        "open_edges": 4096,
+        "max_shared_edge_horizontal_drift_cm": 0.0,
+        "buffers": [
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Fixed\\SM_LandDetail_05_02.positions.f32",
+            "sha256": "653d31c178a0c279bfad5ede02fcc5daf972bb8bd9877bf85cec4b794d6338b7"
+          },
+          {
+            "file": "artifacts\\above-water-fallback-20261128\\Fixed\\SM_LandDetail_05_02.indices.u32",
+            "sha256": "fa84a5a31444ce37e8efb84195ce5ae85e7bf091653138be018ef5b51fe06b8c"
+          }
+        ]
+      }
+    ],
+    "shared_edge_pairs": [
+      {
+        "east_mesh": "SM_Land_05_02",
+        "stations": 4065,
+        "max_horizontal_separation_cm": 0.0,
+        "max_vertical_separation_cm": 0.0,
+        "max_separation_cm": 0.0
+      },
+      {
+        "east_mesh": "SM_LandDetail_05_02",
+        "stations": 4065,
+        "max_horizontal_separation_cm": 0.0,
+        "max_vertical_separation_cm": 0.01171875,
+        "max_separation_cm": 0.01171875
+      }
+    ],
+    "scope": "Actual native fallback buffers, one shared edge, 0.5m stations excluding 8m corners. Not all landscape seams or full surface/collision agreement."
+  },
+  "audit_reports": [
+    {
+      "file": "artifacts/above-water-fallback-20261128/OriginalAudit.json",
+      "bytes": 3469,
+      "sha256": "b54670adfeb58afcb2234144076da2b3ae66c5ddb19b9cc95b46e0fe12ccbe3b"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/FixedAudit.json",
+      "bytes": 3392,
+      "sha256": "76f5617cb8359774295501a27e32f14fce8c19b477316a2d418f09a0b8f5f48f"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/AnalyticTests.log",
+      "bytes": 107,
+      "sha256": "ac1b6dce29687ac7b5e24d02cb9ac517c913c70757c76965e2dd1e63f95f44cb"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/LocalTests.log",
+      "bytes": 158,
+      "sha256": "d8280009558c19c1db2593dd2a35c2f95cdf59a6ab6a5aa4c459fb290ab864ef"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/PreservedCheck.log",
+      "bytes": 73,
+      "sha256": "11290df9893d531ba6676f1039b0e87f6e4b5352527798c26c1d85bca24a682e"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/Benchmarks.json",
+      "bytes": 3915,
+      "sha256": "c052e05d147e0c247636f4e9ed72ec210a859afdbb464668930c5be25e61b539"
+    },
+    {
+      "file": "artifacts/above-water-fallback-20261128/inspect_benchmarks.py",
+      "bytes": 1727,
+      "sha256": "e6a719f1e7d37aedcbd4ca2ef4c124922325085d51b78f55746200fc9484b1f3"
+    }
+  ],
+  "visuals": [
+    {
+      "case": "FixedControlFallback",
+      "image": {
+        "file": "artifacts/above-water-fallback-20261128/FixedControlFallback/View.png",
+        "bytes": 2365697,
+        "sha256": "e1cbc3aa7ebbab45b23fb5849691d920b8320e8612d125162e23e31898cad504"
+      },
+      "log": {
+        "file": "artifacts/above-water-fallback-20261128/FixedControlFallback/Runtime.log",
+        "bytes": 247305,
+        "sha256": "55eb4556ae96e97ce2e9484ab784dc599551c9b389412504b6b47f62cd0b6c93"
+      },
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/FixedControlFallback/Runner.log",
+        "bytes": 1504,
+        "sha256": "0ca5c29f861ddf4fb8e490b852e5b563bd4170af352d1e0e3d35730570b60c94"
+      },
+      "review": "Viewed. No previous visible shared-edge gap at this fixed camera after12s; not a frame-by-frame movement review."
+    },
+    {
+      "case": "FixedDetailFallback",
+      "image": {
+        "file": "artifacts/above-water-fallback-20261128/FixedDetailFallback/View.png",
+        "bytes": 2367374,
+        "sha256": "adfebe6737b2af7dae2f9088d0a3b9bcafc0f954798b30983c14243a202e6a39"
+      },
+      "log": {
+        "file": "artifacts/above-water-fallback-20261128/FixedDetailFallback/Runtime.log",
+        "bytes": 241324,
+        "sha256": "bab24afd44d14233cfcecdbaa923227722af6e63e43a1c3f0aad6671416e645b"
+      },
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/FixedDetailFallback/Runner.log",
+        "bytes": 1504,
+        "sha256": "565e475905f53c330fdafa39b311a556d0ef587b9b2b47287a5de5b1a7c5c0a1"
+      },
+      "review": "Viewed. No previous visible shared-edge gap at this fixed camera after12s; not a frame-by-frame movement review."
+    },
+    {
+      "case": "FixedDetailNanite",
+      "image": {
+        "file": "artifacts/above-water-fallback-20261128/FixedDetailNanite/View.png",
+        "bytes": 2266761,
+        "sha256": "57b04f2d5b7ff4ae7ec087aec2fb00db7123eabb3908e2d48d0012253a0a0f48"
+      },
+      "log": {
+        "file": "artifacts/above-water-fallback-20261128/FixedDetailNanite/Runtime.log",
+        "bytes": 241805,
+        "sha256": "57d30868e1cedee724767e96fa05b036afc661395d6eeb62f2d48a9866546271"
+      },
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/FixedDetailNanite/Runner.log",
+        "bytes": 1504,
+        "sha256": "0b00f1a98e307157f1c7bf615108cb29ff5d9f691d86eaaccb57a3e7af406a1f"
+      },
+      "review": "Viewed. No previous visible shared-edge gap at this fixed camera after12s; not a frame-by-frame movement review."
+    }
+  ],
+  "walk": {
+    "distance_m": 105.463,
+    "logged_samples": 105,
+    "files": [
+      {
+        "file": "artifacts/above-water-fallback-20261128/WalkFixed/Runtime.log",
+        "bytes": 982048,
+        "sha256": "907c3197634a8a2f971e1c10c2c10a73483958b93c5c126a8395b821e1ca9e66"
+      },
+      {
+        "file": "artifacts/above-water-fallback-20261128/WalkFixed/Runner.log",
+        "bytes": 459,
+        "sha256": "5ad5acc96c2244373196ad70b2043d41c2769aa0f0693fee3d2f74f39cd02751"
+      },
+      {
+        "file": "artifacts/above-water-fallback-20261128/WalkFixed/LandDetail_Start.png",
+        "bytes": 2193113,
+        "sha256": "9351912a4fdc80a634211e6acaa3b5bab1329e7317d124311043d8a3600ee16d"
+      },
+      {
+        "file": "artifacts/above-water-fallback-20261128/WalkFixed/LandDetail_Inside.png",
+        "bytes": 2028092,
+        "sha256": "8581bc1e8a4cc2ad6061910080ed186c8685110d4378c2f24747914ed2f355d8"
+      },
+      {
+        "file": "artifacts/above-water-fallback-20261128/WalkFixed/LandDetail_Return.png",
+        "bytes": 2101967,
+        "sha256": "4c1ba85b52cfdcb4f6900b2c5b27b5f3b4bd902a876321879b60e8d8a8fa1acb"
+      }
+    ],
+    "visual_review": "All3images viewed. Nanite start image still shows a visible gap immediately after relocation. Inside and return images show no such gap. Duration and mechanism unmeasured; fallback repair alone does not resolve this finding.",
+    "scope": "Native input-driven ground-support walk. Three screenshots, not continuous frame inspection or full body collision."
+  },
+  "benchmarks": [
+    {
+      "case": "BenchOriginalFallback",
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/BenchOriginalFallback.log",
+        "bytes": 187,
+        "sha256": "fc1e8b41416368a6d3ad67db8b1ee9831576ffa368297f2db21978442b9dd169"
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122708-662/Summary.json",
+          "bytes": 9138,
+          "sha256": "2680b43d86c9365d490dc644047dd60a4f5dade47f242d8792a32b37c28b0b01"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122708-662/Capture.csv",
+          "bytes": 6547596,
+          "sha256": "3aa1af88cb3beecff2e2b4b64b7e8018210156b3e6cbcdfeb8724a4155e481d1"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122708-662/Metadata.json",
+          "bytes": 2496,
+          "sha256": "afe6aa61382b5a8f73ab4a6d4795e93e862c3178ffb5ab56e492b00842b07a82"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122708-662/Host.json",
+          "bytes": 3756,
+          "sha256": "2ca6224fae3f229f32fe886f2c27892d45a6991a5b98c9a06d9b1b4ba582cfd1"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122708-662/Frame.png",
+          "bytes": 2701112,
+          "sha256": "3f4a6ab492fa54120fa026fad96ed63b0e6afc136edf41db9abfd71a2be19936"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122708-662/Runtime.log",
+          "bytes": 1224431,
+          "sha256": "c8ad86e54a8c9d4468a634d49016475ed2106e5973d5e72605f6188a9f18fb18"
+        }
+      ],
+      "average_fps": 47.716014667992965,
+      "one_percent_low_fps": 18.606130103942185,
+      "frame": {
+        "mean_ms": 20.957324432016776,
+        "p50_ms": 16.968,
+        "p95_ms": 41.6001,
+        "p99_ms": 51.2884,
+        "max_ms": 64.8232
+      },
+      "gpu": {
+        "mean_ms": 20.351079517651172,
+        "p50_ms": 16.4446,
+        "p95_ms": 40.5331,
+        "p99_ms": 50.5066,
+        "max_ms": 63.9344
+      },
+      "game_thread": {
+        "mean_ms": 6.958043586158686,
+        "p50_ms": 6.8944,
+        "p95_ms": 7.6861,
+        "p99_ms": 8.5596,
+        "max_ms": 44.1164
+      },
+      "memory_mb": {
+        "start": 9700.7734,
+        "end": 9620.2969,
+        "max": 9700.7734
+      },
+      "frames_over_100_ms": 0
+    },
+    {
+      "case": "BenchFixedFallback",
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/BenchFixedFallback.log",
+        "bytes": 187,
+        "sha256": "bfaf41477a655c59dc498a74f2106754a57ed88a3c65e8e1893688d8168c7077"
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122903-920/Summary.json",
+          "bytes": 9541,
+          "sha256": "21dcb86dbeb959ba360e82c32c05956290fe9927457ac04d8f5e1ada73833148"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122903-920/Capture.csv",
+          "bytes": 6519912,
+          "sha256": "f13da30e2d46bfcb480bbe114076e16adb7fef90bc87304e62bc413479ee96d6"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122903-920/Metadata.json",
+          "bytes": 2521,
+          "sha256": "a24d4f19b60d4e4310edef8e27c933b09d16a530b28edcbb9dcc42458b6de0c6"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122903-920/Host.json",
+          "bytes": 4134,
+          "sha256": "dfc80c7b05de2b8a8ca444fa0ecb0b67e59abb770ea4f6a9e28dea39b7d41ee0"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122903-920/Frame.png",
+          "bytes": 2728657,
+          "sha256": "d8daed0164bbf093a8a2cc1a549f193ca7794a3c6749b0b495ab64d5f9c431b8"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-122903-920/Runtime.log",
+          "bytes": 1234950,
+          "sha256": "3fed84b1f37f95dfa35e1f51ac3c9e63b55606b759a569d1e6555a352dd86a4d"
+        }
+      ],
+      "average_fps": 47.530167104272586,
+      "one_percent_low_fps": 18.506584962008535,
+      "frame": {
+        "mean_ms": 21.039269603369604,
+        "p50_ms": 17.2869,
+        "p95_ms": 40.0773,
+        "p99_ms": 51.3116,
+        "max_ms": 61.8636
+      },
+      "gpu": {
+        "mean_ms": 20.43219505089505,
+        "p50_ms": 16.687,
+        "p95_ms": 39.6647,
+        "p99_ms": 50.5699,
+        "max_ms": 61.3719
+      },
+      "game_thread": {
+        "mean_ms": 7.099771042471042,
+        "p50_ms": 6.9463,
+        "p95_ms": 8.3187,
+        "p99_ms": 9.415,
+        "max_ms": 35.7513
+      },
+      "memory_mb": {
+        "start": 10423.8711,
+        "end": 10353.4492,
+        "max": 10423.8711
+      },
+      "frames_over_100_ms": 0
+    },
+    {
+      "case": "BenchFixedNanite",
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/BenchFixedNanite.log",
+        "bytes": 185,
+        "sha256": "7adb73f5e0ce7f23505473ee60eb12f05a76e31d920e66f5cce9ffe71f867dcb"
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123111-765/Summary.json",
+          "bytes": 9514,
+          "sha256": "9212f05eb62f6065857b0fc105b7684c4dd8460668bd24718203db6f3f4c4e16"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123111-765/Capture.csv",
+          "bytes": 10816631,
+          "sha256": "1480e9b8af71f3b75a5695a66c0a4cff48841390119a3895eb48d900190a609b"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123111-765/Metadata.json",
+          "bytes": 2499,
+          "sha256": "57ed05cbbf3d3fa10f62d3ecdada679916bd6d2899d2a55941f846c11772a3de"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123111-765/Host.json",
+          "bytes": 4134,
+          "sha256": "e71b85bdee5526888f6934d65b1a4f421e25e04b5218ab52546b50b7623fb824"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123111-765/Frame.png",
+          "bytes": 2711836,
+          "sha256": "2541fc38de986963bf132c7ec71dcd699c1302d3254aae9480bdd84ea0e007c2"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123111-765/Runtime.log",
+          "bytes": 1837791,
+          "sha256": "032467dc9080f601ae9ab5fd86133226e8cee3acb969141655e41ad9afa4a765"
+        }
+      ],
+      "average_fps": 76.78702964919965,
+      "one_percent_low_fps": 61.080352893688215,
+      "frame": {
+        "mean_ms": 13.023032725298588,
+        "p50_ms": 12.8607,
+        "p95_ms": 14.9467,
+        "p99_ms": 15.5632,
+        "max_ms": 34.4153
+      },
+      "gpu": {
+        "mean_ms": 12.394313441910967,
+        "p50_ms": 12.1737,
+        "p95_ms": 14.1926,
+        "p99_ms": 14.6539,
+        "max_ms": 15.3672
+      },
+      "game_thread": {
+        "mean_ms": 7.103118805646037,
+        "p50_ms": 7.024,
+        "p95_ms": 7.9013,
+        "p99_ms": 8.9117,
+        "max_ms": 34.5
+      },
+      "memory_mb": {
+        "start": 10638.3633,
+        "end": 10554.7461,
+        "max": 10638.3633
+      },
+      "frames_over_100_ms": 0
+    },
+    {
+      "case": "BenchOriginalNanite",
+      "runner": {
+        "file": "artifacts/above-water-fallback-20261128/BenchOriginalNanite.log",
+        "bytes": 185,
+        "sha256": "524d1c34bc38717fef21e10a9766e99edb262ee4da68c9c6f919f0082d37560c"
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123323-674/Summary.json",
+          "bytes": 9118,
+          "sha256": "2a4216e6f716be16f4c20729c726ecb6b47b366437b61b2e39d91f3f14af02bb"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123323-674/Capture.csv",
+          "bytes": 10890093,
+          "sha256": "89e962ab51b8ec41cf27e7992ff29c96829c2af96d265485cfbcdb744673bfdc"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123323-674/Metadata.json",
+          "bytes": 2500,
+          "sha256": "08913c363258263be4e24d7271743ffd364a7dba342611b3cfd970d8b3ba3c3f"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123323-674/Host.json",
+          "bytes": 3757,
+          "sha256": "8c28be275c40ae55680de70535aa20339aba277b66d36e930433b89e05147049"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123323-674/Frame.png",
+          "bytes": 2742127,
+          "sha256": "375860a922f39aa06f2e4f3bb0ad7660ef6cadf428deacb33b01f58c2afd04d1"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-123323-674/Runtime.log",
+          "bytes": 1847526,
+          "sha256": "431d7dd29d98f2ed51517db99b953b6280631627ff41cf39c25989cc27fbdfa9"
+        }
+      ],
+      "average_fps": 77.30227596008768,
+      "one_percent_low_fps": 61.44175563411095,
+      "frame": {
+        "mean_ms": 12.936229723899913,
+        "p50_ms": 12.7463,
+        "p95_ms": 14.7703,
+        "p99_ms": 15.3269,
+        "max_ms": 30.7316
+      },
+      "gpu": {
+        "mean_ms": 12.31618209663503,
+        "p50_ms": 12.1175,
+        "p95_ms": 14.0416,
+        "p99_ms": 14.4027,
+        "max_ms": 15.0419
+      },
+      "game_thread": {
+        "mean_ms": 6.867789840379638,
+        "p50_ms": 6.7676,
+        "p95_ms": 7.8686,
+        "p99_ms": 8.8396,
+        "max_ms": 30.4645
+      },
+      "memory_mb": {
+        "start": 9738.5742,
+        "end": 9718.293,
+        "max": 9738.5742
+      },
+      "frames_over_100_ms": 0
+    }
+  ],
+  "report_images": [
+    {
+      "file": "Documentation/Images/Terrain_Ground_FallbackClosed.png",
+      "bytes": 2367374,
+      "sha256": "adfebe6737b2af7dae2f9088d0a3b9bcafc0f954798b30983c14243a202e6a39"
+    },
+    {
+      "file": "Documentation/Images/Terrain_Ground_NaniteStartGap.png",
+      "bytes": 2193113,
+      "sha256": "9351912a4fdc80a634211e6acaa3b5bab1329e7317d124311043d8a3600ee16d"
+    }
+  ],
+  "preservation": {
+    "original_landscape_material_files": 121,
+    "frozen_r3_files": 53,
+    "all_byte_identical": true
+  },
+  "limits": [
+    "Two tile positions only, three alternatives. Neighbouring75tiles and their seams not generally fixed.",
+    "10cm collapse-point tolerance is not a global surface-error bound.",
+    "Independent section audit covers4065stations on one edge, excluding8mendcorners. Native boundary checks cover all open edges of the three assets.",
+    "Fine corrected editor asset507973110bytes; not a cooked package or GPU-memory measurement.",
+    "LandscapeStudy added to DirectoriesToNeverCook; future package exclusion not yet validated by a new cook.",
+    "Single60s sample per condition, sequential and not counterbalanced. No performance acceptance or causal cost estimate.",
+    "Three walk screenshots are not continuous visual coverage. Landscape components remain NoCollision.",
+    "Isolated editor study only. Frozen playableR3 unchanged. Underwater closing rounds remain closed."
+  ]
+}

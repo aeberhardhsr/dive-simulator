@@ -64,9 +64,40 @@ Derselbe Blick mit deaktiviertem Nanite; die offene Kante bleibt sichtbar:
 
 ![Offene Kante in der Ersatzgeometrie](Images/Terrain_Ground_FallbackGap.png)
 
-Eine neue Leistungsmessung der feineren Kachel, lückenlose bewegte Sichtprüfung, weitere Sonnenstände und Paketvalidierung fehlen noch. Die zuvor beobachteten CPU-/Speicherbereinigungs-Aussetzer sind weiterhin offen; die alten FPS-Werte gelten nicht als Messung dieser neuen Geometrie. Waldvolumen, Wiesen, Nahbereich und Materialübergänge bleiben eigenständige Aufgaben.
+## Korrektur der konventionellen Ersatzgeometrie
 
-Nächste Schritte: Die offene Kante der Ersatzgeometrie eingrenzen und beheben, Fels-/Vegetationsübergänge verbessern und die CPU-Aussetzer untersuchen. Erst nach Bewegungs- und Leistungstests soll die feinere Darstellung auf weitere passende Bergflächen erweitert und ins normale Spiel übernommen werden. Die fünf Unterwasser-Abschlussrunden bleiben abgeschlossen.
+Die oben dokumentierten Bilder bleiben als Vorher-Zustand erhalten. Die tatsächlichen LOD0-Renderpuffer zeigen, dass die bisherige Vereinfachung die offenen Kachelränder verschiebt. Eine unabhängige Auswertung prüft 4’065 Schnittpunkte im Abstand von 0,5 m an der gemeinsamen Kante, unter Ausschluss von je 8 m an den Enden. Im bisherigen 8-m-Paar beträgt die grösste räumliche Trennung über diese gesamte Kante 6,35 m, beim alten Westnachbarn mit der feinen Ostkachel 4,08 m. Diese Maxima sind keine Messung der Breite des lokalen Spalts im Screenshot.
+
+Die isolierte Korrektur bewahrt sämtliche offenen Randvertices und Randsegmente während der Vereinfachung. Das ursprüngliche Quellmesh bleibt unverändert als HiRes-Geometrie für Nanite erhalten; das eigens erzeugte LOD0 dient als konventionelle Ersatzdarstellung. Unreal vereinfacht dieses LOD0 nicht erneut. Die 10-cm-Toleranz begrenzt den geprüften Kollapspunkt während der Vereinfachung; sie ist **keine nachgewiesene globale Oberflächen- oder Kollisionsfehlerschranke**.
+
+Native Prüfungen vor dem Speichern und nach erneutem Laden bestätigen für alle drei Testassets die erhaltenen Randvertices und offenen Randsegmente in den Renderpuffern sowie die unveränderten HiRes-Positionen und Anzahlen. Die unabhängige Schnittprüfung ergibt jetzt **0 cm** im korrigierten 8-m-Paar und höchstens **0,01171875 cm** zwischen korrigiertem Westnachbarn und feiner Ostkachel, ohne horizontale Trennung. Vier analytische Tests prüfen unter anderem geteilte Rendervertices, kollineare Unterteilungen und fehlende Schnittabdeckung.
+
+Alle drei neuen festen Vergleichsbilder sind gesichtet: alte Geometrie mit korrigiertem Fallback, feine Geometrie mit korrigiertem Fallback und feine Geometrie mit Nanite. Der zuvor sichtbare Spalt fehlt nach zwölf Sekunden Vorlauf auch bei ausgeschaltetem Nanite:
+
+![Korrigierte Ersatzgeometrie ohne sichtbaren Spalt am festen Testblick](Images/Terrain_Ground_FallbackClosed.png)
+
+Die Korrektur gilt bisher für **zwei Kachelpositionen**, mit drei Assets für die alte und feine Variante. Die anderen 75 Kacheln und die Anschlüsse zu deren unveränderten Ersatzmeshes sind damit nicht allgemein repariert. Die Landschaft ist weiterhin eine Editorstudie. [Prüfbericht mit tatsächlichen Renderpuffern, Eingaben und Messläufen](LANDSCAPE_FALLBACK_STUDY_RESULTS.json).
+
+Die erhaltenen Grenzen kosten zusätzliche Geometrie: Die Fallback-Dreieckszahlen steigen von 13’159 auf 88’350 im Westnachbarn, von 20’514 auf 114’332 in der alten Ostkachel und von 49’921 auf 588’570 in der feinen Ostkachel. Das feine korrigierte **Editorasset umfasst 507’973’110 Bytes**, gegenüber 41’972’228 Bytes des bisherigen feinen Assets. Diese Dateigrösse ist keine Messung des gekochten Pakets oder des GPU-Speichers. Eine flächendeckende Übernahme ist damit noch nicht gerechtfertigt.
+
+`LandscapeStudy` ist in den Projekteinstellungen ausdrücklich vom Cook ausgeschlossen, damit der allgemeine Cook-Eintrag für `/Game/Diving` die experimentellen Meshes nicht in das nächste normale Paket aufnimmt. Die Auswahl im Spielcode ist ausschliesslich für Editor-Builds verfügbar. Ein neuer Paketbau zur Überprüfung dieses Ausschlusses steht noch aus; das eingefrorene R3-Paket bleibt unverändert.
+
+Vier aufeinanderfolgende 60-s-Messungen am Einstieg Murg mit umlaufender Blickrichtung, 15 s Vorlauf, 1920 × 1080, Qualitätsstufe 2, 100 % Renderauflösung und normalem Wasserpfad ergeben:
+
+| Darstellung der feinen Kachel | FPS Mittel | 1-%-Low | Langsamster Frame | Max. Prozessspeicher |
+| --- | ---: | ---: | ---: | ---: |
+| Bisheriger Fallback, Nanite aus | 47,72 | 18,61 | 64,82 ms | 9’700,8 MiB |
+| Korrigierter Fallback, Nanite aus | 47,53 | 18,51 | 61,86 ms | 10’423,9 MiB |
+| Korrigiertes Asset, Nanite an | 76,79 | 61,08 | 34,42 ms | 10’638,4 MiB |
+| Bisheriges Asset, Nanite an | 77,30 | 61,44 | 30,73 ms | 9’738,6 MiB |
+
+Die Mittelwerte liegen innerhalb der jeweiligen Darstellungsart nahe beieinander. Der Prozessspeicher ist mit der Korrektur in diesen Läufen rund 723 beziehungsweise 900 MiB höher. Es ist jeweils **nur eine Messung**, in fester Reihenfolge und mit unterschiedlicher Hintergrundlast. Dies belegt weder einen exakten kausalen Mehrbedarf noch eine allgemeine Leistungsfreigabe. Alle inneren Frames einschliesslich Aussetzern bleiben in der Auswertung; nur die beiden CSV-Randframes werden wie im vorhandenen Analysewerkzeug ausgeschlossen. Die vier abschliessenden Benchmarkbilder sind gesichtet. Die zuvor beobachteten stärkeren CPU-/GC-Aussetzer gelten durch diese kurzen Läufe nicht als behoben. Vor einer Ausweitung muss besonders der Speicherbedarf der Studienassets reduziert beziehungsweise erklärt werden.
+
+Die wiederholte Gehprobe mit korrigierten Assets besteht über **105,463 m und 105 protokollierte Stützpunkte**. Alle drei gespeicherten Bilder sind gesichtet. Das erste Bild direkt nach der einmaligen Startplatzierung zeigt mit aktivem Nanite weiterhin einen deutlichen Spalt; die Bilder innerhalb der Kachel und nach der Rückkehr zeigen ihn nicht. Die Dauer und genaue Ursache sind nicht gemessen. Damit ist ausdrücklich belegt: **Die Fallback-Korrektur allein behebt diesen Startbefund nicht.** Eine Untersuchung der während des Nachladens gewählten Nanite-Geometrie bleibt notwendig; sie darf nicht durch einen verlängerten Vorlauf aus der Fehlerbilanz verschwinden.
+
+![Weiterhin offener Nanite-Startbefund trotz korrigierter Ersatzgeometrie](Images/Terrain_Ground_NaniteStartGap.png)
+
+Lückenlose bewegte Sichtprüfung, weitere Sonnenstände und Paketvalidierung bleiben offen. Die zuvor beobachteten CPU-/Speicherbereinigungs-Aussetzer sind weiterhin offen; die alten FPS-Werte gelten nicht als Messung dieser neuen Geometrie. Waldvolumen, Wiesen, Nahbereich und Materialübergänge bleiben eigenständige Aufgaben. Nach Bewegungs- und Leistungstests sind die Kosten der Korrektur zu bewerten, Fels-/Vegetationsübergänge zu verbessern und die CPU-Aussetzer einzugrenzen. Die fünf Unterwasser-Abschlussrunden bleiben abgeschlossen.
 
 ## Reproduktion
 
@@ -89,3 +120,14 @@ Die Bodenprüfung ist in `LandscapeDetailCheck` enthalten. Die zusätzliche Bewe
 ```
 
 Für den festen 8-m-Vergleich `-LandscapeDetailStudy` weglassen; für die konventionelle Ersatzgeometrie zusätzlich `-DisableNanite` setzen. Diese Aufnahmen sind Funktionstests, keine Leistungsmessungen.
+
+Die isolierte Randkorrektur wird separat gebaut und geprüft:
+
+```powershell
+./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target LandscapeFallback
+./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target LandscapeFallbackCheck
+./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target LandscapeFallbackAudit -BoundaryStudy
+./Tools/.geodata-env/Scripts/python.exe Tools/audit_landscape_fallback.py Builds/SourceEditorSandbox/divingsim/Saved/LandscapeFallbackAudit --output artifacts/fallback-audit.json --require-closed
+```
+
+Bei Bild-, Geh- und Leistungstests aktiviert `-LandscapeFallbackStudy` die korrigierten Ersatzmeshes. Für den ursprünglichen Pufferexport bei `LandscapeFallbackAudit` den Schalter `-BoundaryStudy` weglassen. Die beiden Exporte vor einem erneuten Lauf getrennt archivieren: Der Commandlet verwendet dasselbe Ausgabeverzeichnis.

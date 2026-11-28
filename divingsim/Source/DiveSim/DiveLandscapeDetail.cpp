@@ -6,6 +6,7 @@
 #include "MeshDescription.h"
 #include "StaticMeshAttributes.h"
 #include "StaticMeshCompiler.h"
+#include "StaticMeshResources.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "UObject/SavePackage.h"
 #include "UObject/MetaData.h"
@@ -15,6 +16,7 @@
 #include "Misc/Paths.h"
 #include "Misc/Parse.h"
 #include "Misc/SecureHash.h"
+#include "HAL/FileManager.h"
 #include "Serialization/JsonSerializer.h"
 
 namespace
@@ -228,5 +230,45 @@ UStaticMesh* LoadLandscapeDetailStudy(FDiveTerrain& Terrain,FString& Error)
     InstallGround(Terrain,input);
     UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_READY tile=05_02 spacing=2m boundary=32m source=%s"),*input.Key);
     return mesh;
+}
+
+int32 AuditLandscapeFallback(FDiveTerrain& Terrain,const FString& Params)
+{
+    const FString folder=FPaths::ProjectSavedDir()/TEXT("LandscapeFallbackAudit");
+    IFileManager::Get().MakeDirectory(*folder,true);
+    TArray<TSharedPtr<FJsonValue>> entries;
+    for(int variant=0;variant<3;++variant)
+    {
+        const int column=variant==0?1024:1280;
+        const FString name=variant==0?TEXT("SM_Land_04_02"):variant==1?TEXT("SM_Land_05_02"):TEXT("SM_LandDetail_05_02");
+        const FString path=TEXT("/Game/Diving/")+FString(variant==2?TEXT("LandscapeStudy/"):TEXT("Landscape/"))+name+TEXT(".")+name;
+        TStrongObjectPtr<UStaticMesh> mesh(LoadObject<UStaticMesh>(nullptr,*path));
+        if(!mesh) return 1;
+        if(FParse::Param(*Params,TEXT("BoundaryStudy"))) mesh.Reset(LoadLandscapeFallbackStudy(mesh.Get()));
+        if(!mesh) return 1;
+        FStaticMeshCompilingManager::Get().FinishCompilation({mesh.Get()});
+        const auto* data=mesh->GetRenderData();
+        if(!data||data->LODResources.Num()<1) return 1;
+        const auto& lod=data->LODResources[0];const auto& vertices=lod.VertexBuffers.PositionVertexBuffer;
+        const auto view=lod.IndexBuffer.GetArrayView();
+        TArray<float> positions;TArray<uint32> indices;
+        for(uint32 i=0;i<vertices.GetNumVertices();++i)
+        { const FVector3f p=vertices.VertexPosition(i);positions.Append({p.X,p.Y,p.Z}); }
+        for(int32 i=0;i<view.Num();++i) indices.Add(view[i]);
+        if(positions.IsEmpty()||indices.IsEmpty()) return 1;
+        if(!FFileHelper::SaveArrayToFile(MakeArrayView(reinterpret_cast<const uint8*>(positions.GetData()),positions.Num()*sizeof(float)),*(folder/(name+TEXT(".positions.f32"))))||
+           !FFileHelper::SaveArrayToFile(MakeArrayView(reinterpret_cast<const uint8*>(indices.GetData()),indices.Num()*sizeof(uint32)),*(folder/(name+TEXT(".indices.u32"))))) return 1;
+        const auto* source=mesh->IsHiResMeshDescriptionValid()?mesh->GetHiResMeshDescription():mesh->GetMeshDescription(0);if(!source) return 1;
+        const FVector origin=Terrain.ToWorld(Terrain.Landscape.West+(column+.5)*8,Terrain.Landscape.North-(512+.5)*8);
+        auto item=MakeShared<FJsonObject>();item->SetStringField(TEXT("name"),name);item->SetStringField(TEXT("asset"),mesh->GetPathName());
+        item->SetNumberField(TEXT("vertices"),vertices.GetNumVertices());item->SetNumberField(TEXT("triangles"),indices.Num()/3);
+        item->SetNumberField(TEXT("source_triangles"),source->Triangles().Num());item->SetNumberField(TEXT("origin_x_cm"),origin.X);item->SetNumberField(TEXT("origin_y_cm"),origin.Y);
+        item->SetNumberField(TEXT("fallback_relative_error"),mesh->GetNaniteSettings().FallbackRelativeError);
+        entries.Add(MakeShared<FJsonValueObject>(item));
+        UE_LOG(LogTemp,Display,TEXT("DIVE_FALLBACK_AUDIT mesh=%s vertices=%u triangles=%d source_triangles=%d"),*name,vertices.GetNumVertices(),indices.Num()/3,source->Triangles().Num());
+    }
+    auto root=MakeShared<FJsonObject>();root->SetArrayField(TEXT("meshes"),entries);FString json;
+    FJsonSerializer::Serialize(root,TJsonWriterFactory<>::Create(&json));
+    return FFileHelper::SaveStringToFile(json,*(folder/TEXT("manifest.json")))?0:1;
 }
 #endif

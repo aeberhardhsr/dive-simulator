@@ -1,10 +1,11 @@
 param(
     [string]$EngineRoot = 'C:/Program Files/Epic Games/UE_5.8',
-    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck','Coast','CoastCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
+    [ValidateSet('Editor','Game','Content','Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck','LandscapeFallbackAudit','LandscapeFallback','LandscapeFallbackCheck','Coast','CoastCheck','Buildings','BuildingsCheck','Package')][string]$Target = 'Editor',
     [string]$PackageDirectory='',
     [ValidateRange(1,64)][int]$MaxParallelActions=2,
     [switch]$EditorSandbox,
     [switch]$RefreshSources,
+    [switch]$BoundaryStudy,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
@@ -104,8 +105,12 @@ if ($Target -eq 'Content') {
     $coastOptions=@()
     if($Target -eq 'CoastCheck') { $coastOptions+='-VerifyOnly' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveCoastBake' @coastOptions -unattended -nullrhi -nosplash '-log=CoastBuild.log'
-} elseif ($Target -in @('Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck')) {
+} elseif ($Target -in @('Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck','LandscapeFallbackAudit','LandscapeFallback','LandscapeFallbackCheck')) {
     $landOptions=@()
+    if($BoundaryStudy) { $landOptions+='-BoundaryStudy' }
+    if($Target -in @('LandscapeFallback','LandscapeFallbackCheck')) { $landOptions+='-FallbackStudy' }
+    if($Target -eq 'LandscapeFallbackCheck') { $landOptions+='-VerifyOnly' }
+    if($Target -eq 'LandscapeFallbackAudit') { $landOptions+='-FallbackAudit' }
     if($Target -in @('LandscapeCheck','LandscapeDetailCheck')) { $landOptions+='-VerifyOnly' }
     if($Target -in @('LandscapeDetail','LandscapeDetailCheck')) { $landOptions+='-DetailStudy' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions

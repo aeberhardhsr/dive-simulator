@@ -17,6 +17,8 @@ param(
     [ValidateRange(-70,70)][double]$LookPitch,
     [switch]$FPVProbe,
     [switch]$FarCliffStudy,
+    [switch]$LandscapeDetailStudy,
+    [switch]$LandscapeFallbackStudy,
     [switch]$SpectralView,
     [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [switch]$ImmediateGravelRetirement,
@@ -30,6 +32,7 @@ if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxNam
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
 if($FarCliffStudy -and -not $EditorSandbox) {throw 'FarCliffStudy requires an editor sandbox.'}
+if(($LandscapeDetailStudy -or $LandscapeFallbackStudy) -and -not $EditorSandbox) {throw 'Landscape studies require an editor sandbox.'}
 if($ProductionWater -and ($ReflectionTransportStudy -or $SpectralView)) {throw 'ProductionWater checks the normal cooked profile, not shader experiments.'}
 if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
 if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
@@ -63,6 +66,8 @@ $context=[ordered]@{
     sandbox_name=$SandboxName
     fpv_probe=[bool]$FPVProbe
     far_cliff_study=[bool]$FarCliffStudy
+    landscape_detail_study=[bool]$LandscapeDetailStudy
+    landscape_fallback_study=[bool]$LandscapeFallbackStudy
     production_water=[bool]$ProductionWater
     reflection_transport=([bool]$ReflectionTransportStudy -or [bool]$ProductionWater)
     reflection_control=[bool]$ReflectionTransportControl
@@ -85,6 +90,15 @@ function Get-DiveHostCpuLoad {
     } catch {return @{available=$false}}
 }
 $context.host_cpu_before=Get-DiveHostCpuLoad
+if($LandscapeDetailStudy -or $LandscapeFallbackStudy) {
+    $landInputs=@('divingsim/Content/Diving/Geodata/landscape.f32','divingsim/Content/Diving/Landscape/SM_Land_04_02.uasset','divingsim/Content/Diving/Landscape/SM_Land_05_02.uasset')
+    if($LandscapeDetailStudy) {$landInputs+=@('divingsim/Content/Diving/Geodata/LandscapeStudy/detail_study.json','divingsim/Content/Diving/Geodata/LandscapeStudy/detail_05_02.f32','divingsim/Content/Diving/LandscapeStudy/SM_LandDetail_05_02.uasset')}
+    if($LandscapeFallbackStudy) {
+        $landInputs+='divingsim/Content/Diving/LandscapeStudy/Boundary_SM_Land_04_02.uasset'
+        $landInputs+=if($LandscapeDetailStudy){'divingsim/Content/Diving/LandscapeStudy/Boundary_SM_LandDetail_05_02.uasset'}else{'divingsim/Content/Diving/LandscapeStudy/Boundary_SM_Land_05_02.uasset'}
+    }
+    $context.landscape_inputs=@($landInputs | ForEach-Object {@{file=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo $_)).Hash.ToLowerInvariant()}})
+}
 if($FarCliffStudy) {
     $context.far_cliff_inputs=@('Tools/Shaders/LandscapeCliffs.ush','divingsim/Content/Diving/Materials/M_LandscapeCliffStudy.uasset','divingsim/Content/Diving/Textures/T_CliffCoverage.uasset','Documentation/CLIFF_COVERAGE.json') | ForEach-Object {
         @{file=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo $_)).Hash.ToLowerInvariant()}
@@ -109,6 +123,8 @@ if($PSBoundParameters.ContainsKey('LookPitch')) {$arguments+=' -DivePerfPitch='+
 if($WaterPreview) { $arguments+=' -DiveWaterPreview' }
 if($FPVProbe) {$arguments+=' -DiveFPVProbe'}
 if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
+if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
+if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -157,6 +173,8 @@ if($DisableNanite -and $log -notmatch 'r.Nanite = "0"') { throw 'Nanite fallback
 if($process.ExitCode -ne 0 -or $log -match 'DIVE_\w+_FAIL|WALENSEE_DATA_FAILED|Failed to compile Material|Default Material will be used') { throw "Benchmark capture failed: $logPath" }
 if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff material not confirmed in benchmark.'}
 if($FarCliffStudy -and -not $log.Contains('DIVE_CLIFF_COVERAGE_PASS texture=T_CliffCoverage size=4096 mips=13')) {throw 'Mapped cliff coverage not confirmed in benchmark.'}
+if($LandscapeDetailStudy -and -not $log.Contains('DIVE_LAND_DETAIL_APPLIED tile=05_02 replacements=1')) {throw 'Fine landscape not confirmed in benchmark.'}
+if($LandscapeFallbackStudy -and ($log -notmatch 'DIVE_FALLBACK_STUDY_APPLIED tile=4_2' -or $log -notmatch 'DIVE_FALLBACK_STUDY_APPLIED tile=5_2')) {throw 'Boundary-preserving fallback not confirmed in benchmark.'}
 foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS','DIVE_LIGHT_PASS','DIVE_PERF_CAPTURE_BEGIN')) {
     if($log -notmatch $marker) { throw "Missing $marker in $logPath" }
 }

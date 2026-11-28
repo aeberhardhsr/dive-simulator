@@ -87,6 +87,13 @@ void ADiveWorld::CreateLandscape()
         auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
 #if WITH_EDITOR
         if(detailStudy&&key==FIntPoint(1280,512)) { mesh=detailStudy;++detailApplied; }
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeFallbackStudy"))&&
+           (key==FIntPoint(1024,512)||key==FIntPoint(1280,512)))
+        {
+            mesh=LoadLandscapeFallbackStudy(mesh);
+            if(!mesh) { fail(TEXT("Boundary-preserving fallback study missing/stale"));return; }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_FALLBACK_STUDY_APPLIED tile=%d_%d asset=%s"),key.X/256,key.Y/256,*mesh->GetName());
+        }
 #endif
         if(!mesh||mesh->GetNumTriangles(0)<=0) { fail(TEXT("Landschaftsasset oder Fallback-Geometrie fehlt.")); return; }
         naniteAssets+=mesh->HasValidNaniteData()?1:0;

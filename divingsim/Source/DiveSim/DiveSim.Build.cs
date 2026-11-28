@@ -13,6 +13,6 @@ public class DiveSim : ModuleRules
         });
         PrivateDependencyModuleNames.AddRange(new string[] { "Json", "JsonUtilities", "SlateCore", "Slate", "AudioMixer", "CelestialVault", "DaySequence", "RenderCore", "RHI", "DiveRendering" });
         if (Target.bBuildEditor)
-            PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "MeshDescription", "StaticMeshDescription", "AssetRegistry" });
+            PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "MeshDescription", "StaticMeshDescription", "AssetRegistry", "GeometryCore", "DynamicMesh", "MeshConversion" });
     }
 }
