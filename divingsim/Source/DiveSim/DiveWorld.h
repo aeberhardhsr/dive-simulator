@@ -111,6 +111,7 @@ public:
     bool ValidateLandscape(FString& Error) const;
     bool ValidateBuildings(FString& Error) const;
     bool ValidateVegetation(FString& Error) const;
+    bool SaveVegetationAnchorProbe(const FString& Directory) const;
     bool TestVegetationStreaming(FString& Detail);
     void EmitBreath(const FVector& Position,const FVector& Direction,float Pressure);
     void Configure(const Dive::Config& Config);

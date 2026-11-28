@@ -78,14 +78,31 @@ def export(name, source_name, objects, lod, beech=False, base=None, target_trian
         if not bottom: bottom=[v.co for v in mesh.vertices if v.co.z<lowest+.2]
         base=Vector((sum(v.x for v in bottom)/len(bottom),sum(v.y for v in bottom)/len(bottom),lowest))
     for v in mesh.vertices: v.co-=base
+    protected_roots=[]
     if target_triangles:
         mesh.calc_loop_triangles()
+        # Keep the source trunk foot fixed across distant LODs. Unconstrained
+        # collapse raised FirC's lowest vertex by 0.825 m in the old LOD3.
+        # Zero-weight endpoints are excluded from Blender's collapse heap.
+        root_vertices=[v for v in mesh.vertices if v.co.z<=.02]
+        protected_roots=[tuple(round(float(c),6) for c in v.co) for v in root_vertices]
+        if not protected_roots: raise ValueError('Missing trunk foot '+name)
+        group=obj.vertex_groups.new(name='FarReduction')
+        group.add([v.index for v in mesh.vertices],1.0,'REPLACE')
+        group.add([v.index for v in root_vertices],0.0,'REPLACE')
         reduction=obj.modifiers.new('FarGeometry','DECIMATE')
         reduction.decimate_type='COLLAPSE'
         reduction.ratio=min(1.,target_triangles/len(mesh.loop_triangles))
         reduction.use_collapse_triangulate=True
+        reduction.vertex_group=group.name
+        reduction.vertex_group_factor=1.0
         bpy.ops.object.modifier_apply(modifier=reduction.name)
         mesh=obj.data
+        remaining={tuple(round(float(c),6) for c in v.co) for v in mesh.vertices}
+        if not set(protected_roots)<=remaining: raise ValueError('Decimation moved trunk foot '+name)
+        if abs(min(v.co.z for v in mesh.vertices))>.01: raise ValueError('Distant trunk no longer grounded '+name)
+        current_group=obj.vertex_groups.get('FarReduction')
+        if current_group: obj.vertex_groups.remove(current_group)
     height=max(v.co.z for v in mesh.vertices)
     if not 3<height<40: raise ValueError('Unexpected physical tree height')
     for mat in mesh.materials:
@@ -110,6 +127,7 @@ def export(name, source_name, objects, lod, beech=False, base=None, target_trian
               triangles=len(mesh.loop_triangles),vertices=len(mesh.vertices),height_m=height,bounds_m=bounds,
               source_base_m=list(base),materials=[m.name for m in mesh.materials],sha256=hashlib.sha256(target.read_bytes()).hexdigest())
     if target_triangles: item['authored_reduction_target_triangles']=target_triangles
+    if protected_roots: item['preserved_root_vertices']=len(protected_roots)
     report['assets'].append(item)
     bpy.data.objects.remove(obj,do_unlink=True)
     print('TREE_EXPORT_PASS',name,lod,item['triangles'],height,flush=True)

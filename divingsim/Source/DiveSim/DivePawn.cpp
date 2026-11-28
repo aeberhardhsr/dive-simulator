@@ -424,7 +424,9 @@ void ADivePawn::Tick(float DeltaSeconds)
             // Incremental input keeps a blocked request from being added anew
             // as an absolute orbit target on every rendered frame.
             FRotator requested=pc->GetControlRotation();
-            requested.Yaw+=6*FMath::Min(DeltaSeconds,.25f);
+            double fixedYaw=0;
+            if(FParse::Value(FCommandLine::Get(),TEXT("DivePerfFixedYaw="),fixedYaw)&&FMath::IsFinite(fixedYaw)) requested.Yaw=fixedYaw;
+            else requested.Yaw+=6*FMath::Min(DeltaSeconds,.25f);
             pc->SetControlRotation(requested);
         }
     if(bSmokeTest&&!bSmokeImageryChecked&&GetWorld()->GetTimeSeconds()>2)

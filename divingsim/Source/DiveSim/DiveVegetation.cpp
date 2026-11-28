@@ -9,6 +9,9 @@
 #include "Misc/Paths.h"
 #include "Misc/SecureHash.h"
 #include "Serialization/JsonSerializer.h"
+#include "GameFramework/PlayerController.h"
+#include "StaticMeshResources.h"
+#include "ProceduralMeshComponent.h"
 
 namespace
 {
@@ -175,6 +178,56 @@ void ADiveWorld::StreamVegetation(const FVector& Player,bool Immediate)
         material->SetScalarParameterValue(TEXT("TreeTime"),WorldTime);
         material->SetVectorParameterValue(TEXT("TreeWind"),FLinearColor(FMath::Cos(angle)*strength,FMath::Sin(angle)*strength,strength*.3,0));
     }
+}
+
+bool ADiveWorld::SaveVegetationAnchorProbe(const FString& Directory) const
+{
+    auto* pc=GetWorld()->GetFirstPlayerController();if(!pc) return false;
+    FVector eye;FRotator view;pc->GetPlayerViewPoint(eye,view);
+    int32 width=0,height=0;pc->GetViewportSize(width,height);
+    TArray<TSharedPtr<FJsonValue>> records;
+    for(const auto& pair:TreeCells) for(const auto& component:pair.Value.Trees)
+    {
+        UStaticMesh* mesh=component->GetStaticMesh();if(!mesh) continue;
+        for(int32 index=0;index<component->GetInstanceCount();++index)
+        {
+            FTransform transform;component->GetInstanceTransform(index,transform,true);
+            const FVector root=transform.GetLocation();FVector2D screen;
+            if(FVector::Distance(root,eye)>30000||!pc->ProjectWorldLocationToScreen(root,screen)||
+               screen.X<0||screen.X>width||screen.Y<0||screen.Y>height) continue;
+            auto row=MakeShared<FJsonObject>();
+            row->SetStringField(TEXT("mesh"),mesh->GetName());
+            for(const auto& n:{TPair<const TCHAR*,double>(TEXT("screen_x"),screen.X),{TEXT("screen_y"),screen.Y},
+                {TEXT("east"),Terrain.OriginEast+root.Y/100},{TEXT("north"),Terrain.OriginNorth+root.X/100},
+                {TEXT("root_z_cm"),root.Z},{TEXT("distance_m"),FVector::Distance(root,eye)/100},
+                {TEXT("scale"),transform.GetScale3D().Z}}) row->SetNumberField(n.Key,n.Value);
+            row->SetBoolField(TEXT("has_nanite"),mesh->HasValidNaniteData());
+            float ground=0;row->SetBoolField(TEXT("sample_ground_valid"),Terrain.SampleGround(root.X,root.Y,ground));
+            row->SetNumberField(TEXT("sample_ground_cm"),ground);
+            // Independently ray-test the actual procedural shore collision.
+            for(const auto& shore:ShoreMeshes)
+            {
+                FHitResult hit;FCollisionQueryParams query;
+                if(shore->LineTraceComponent(hit,root+FVector(0,0,50000),root-FVector(0,0,50000),query))
+                    row->SetNumberField(TEXT("shore_collision_z_cm"),hit.ImpactPoint.Z);
+            }
+#if WITH_EDITOR
+            TArray<TSharedPtr<FJsonValue>> bottoms;
+            if(const auto* data=mesh->GetRenderData()) for(const auto& lod:data->LODResources)
+            {
+                float bottom=MAX_flt;
+                const auto& vertices=lod.VertexBuffers.PositionVertexBuffer;
+                for(uint32 i=0;i<vertices.GetNumVertices();++i) bottom=FMath::Min(bottom,vertices.VertexPosition(i).Z);
+                bottoms.Add(MakeShared<FJsonValueNumber>(bottom));
+            }
+            row->SetArrayField(TEXT("lod_min_local_z_cm"),bottoms);
+#endif
+            records.Add(MakeShared<FJsonValueObject>(row));
+        }
+    }
+    auto json=MakeShared<FJsonObject>();json->SetArrayField(TEXT("trees"),records);
+    FString text;return !records.IsEmpty()&&FJsonSerializer::Serialize(json,TJsonWriterFactory<>::Create(&text))&&
+        FFileHelper::SaveStringToFile(text,*(Directory/TEXT("TreeAnchors.json")));
 }
 
 bool ADiveWorld::ValidateVegetation(FString& Error) const

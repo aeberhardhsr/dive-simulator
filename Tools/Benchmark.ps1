@@ -21,6 +21,9 @@ param(
     [switch]$LandscapeFallbackStudy,
     [switch]$LandscapeResidentStudy,
     [switch]$LandscapePilot,
+    [switch]$TreeAnchorProbe,
+    [ValidateRange(-180,360)][double]$FixedYaw,
+    [ValidateRange(-1,3)][int]$TreeLOD=-1,
     [switch]$SpectralView,
     [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [switch]$ImmediateGravelRetirement,
@@ -30,6 +33,8 @@ param(
     [string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8'
 )
 $ErrorActionPreference='Stop'
+if($TreeLOD -ge 0 -and -not $DisableNanite) {throw 'TreeLOD requires DisableNanite to inspect conventional foliage LODs.'}
+if($PSBoundParameters.ContainsKey('FixedYaw') -and $Scenario -eq 'stream') {throw 'FixedYaw is for stationary captures, not the streaming route.'}
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
 if($SpectralView -and -not $WaterPreview) {throw 'SpectralView requires WaterPreview.'}
 if($EditorSandbox) {$Editor=$true}
@@ -74,6 +79,9 @@ $context=[ordered]@{
     landscape_fallback_study=[bool]$LandscapeFallbackStudy
     landscape_resident_study=[bool]$LandscapeResidentStudy
     landscape_pilot=[bool]$LandscapePilot
+    tree_anchor_probe=[bool]$TreeAnchorProbe
+    fixed_yaw=if($PSBoundParameters.ContainsKey('FixedYaw')){$FixedYaw}else{$null}
+    tree_lod=$TreeLOD
     production_water=[bool]$ProductionWater
     reflection_transport=([bool]$ReflectionTransportStudy -or [bool]$ProductionWater)
     reflection_control=[bool]$ReflectionTransportControl
@@ -123,6 +131,8 @@ $scaleText=$RenderScale.ToString([Globalization.CultureInfo]::InvariantCulture)
 $arguments='-DiveSmokeTest -DiveScenario=perf-{0} -DiveEntry={1} -DiveQuality={2} -DiveRenderScale={3} -DivePerfSeconds={4} -windowed -ForceRes -ResX={5} -ResY={6} -WinX=0 -WinY=0 -NoVSync -csvGpuStats -nosplash -unattended -abslog="{7}"' -f $Scenario,$Entry,$Quality,$scaleText,$Seconds,$size[0],$size[1],$logPath
 $consoleCommands=@()
 if($DisableNanite) { $consoleCommands+='r.Nanite 0' }
+if($TreeLOD -ge 0) {$consoleCommands+='foliage.ForceLOD '+$TreeLOD}
+if($PSBoundParameters.ContainsKey('FixedYaw')) {$arguments+=' -DivePerfFixedYaw='+$FixedYaw.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ReflectionTransportStudy) {
  $arguments+=' -DiveReflectionTransportStudy -DiveLakeFootprint'
  $arguments+=' -DiveReflectionProfile='+$ReflectionProfile
@@ -139,6 +149,7 @@ if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
 if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
 if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
+if($TreeAnchorProbe) {$arguments+=' -DiveTreeAnchorProbe'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -199,6 +210,7 @@ if($log -notmatch 'DIVE_PERF_CAPTURE_READY directory=([^\r\n]+)') { throw 'No co
 $captureDir=$Matches[1].Trim()
 if($SpectralView -and $log -notmatch ('DIVE_SPECTRAL_VIEW_READY gain='+$AbsorptionGain.ToString('F3',[Globalization.CultureInfo]::InvariantCulture)+' samples=16 fog_resource=1 stage=BeforeDOF')) {throw 'Missing spectral rendering pass.'}
 $captureFiles=@('Capture.csv','Metadata.json','Frame.png')
+if($TreeAnchorProbe) {$captureFiles+='TreeAnchors.json'}
 if($FPVProbe) {
     if($log -notmatch 'DIVE_FPV_PROBE_PASS') {throw 'FPV probe did not complete.'}
     $captureFiles+=@('FPVGeometry.json','Frame_NoSuit.png','Frame_Restored.png')
@@ -209,6 +221,9 @@ foreach($name in $captureFiles) {
     Copy-Item -LiteralPath $source.FullName -Destination (Join-Path $resultDir $name)
 }
 $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw | ConvertFrom-Json
+if($PSBoundParameters.ContainsKey('FixedYaw') -and ($metadata.orbit_input -ne 'fixed_yaw' -or
+   [math]::Abs(([math]::IEEERemainder($metadata.camera_rotation_degrees.yaw-$FixedYaw,360))) -gt .1)) {throw 'Fixed camera heading not reached.'}
+if($TreeLOD -ge 0 -and $log -notmatch ('foliage.ForceLOD = "'+$TreeLOD+'"')) {throw 'Requested tree LOD was not activated.'}
 if($ProductionWater) {
     $cooked=if($Editor){0}else{1}
     foreach($marker in @("DIVE_PRODUCTION_WATER_READY cooked=$cooked",'DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0',

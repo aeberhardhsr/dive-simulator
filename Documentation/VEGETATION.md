@@ -1,5 +1,7 @@
 # Räumliche Vegetation am Walensee
 
+Aktuelle Ergänzung: [Korrigierter Bodenkontakt der Baum-Fernstufen](VEGETATION_ROOTS.md), geprüft am 28. November 2026. Die nachstehend beschriebenen historischen Pakete bleiben unverändert.
+
 Der Windows-Entwicklungsbuild `Builds/WindowsVegetation/divingsim.exe` ergänzt die Landschaft um räumliche Bäume mit PBR-Materialien, Schatten, Windbewegung und vereinfachter Stammkollision. Er führt die Uferergänzung und den Tauchablauf aus `WindowsCoast` fort. Der bisherige Build bleibt unverändert erhalten. Diese Ergänzung bearbeitet WRLD-008; sie ist keine vollständige fotorealistische Landschaftsabnahme.
 
 Gleicher Blick vom Weesener Einstieg zum Land, jeweils 1600 × 900 im verpackten Spiel:

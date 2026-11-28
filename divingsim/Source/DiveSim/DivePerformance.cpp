@@ -103,6 +103,8 @@ void ADivePawn::SetupPerformance()
     IFileManager::Get().MakeDirectory(*PerformanceDirectory,true);
     PerformanceStarted=FPlatformTime::Seconds();
     if(auto* pc=Cast<APlayerController>(GetController())) PerformanceYaw=pc->GetControlRotation().Yaw;
+    double fixedYaw=0;
+    if(FParse::Value(FCommandLine::Get(),TEXT("DivePerfFixedYaw="),fixedYaw)&&FMath::IsFinite(fixedYaw)) PerformanceYaw=fixedYaw;
     if(SmokeScenario!=TEXT("perf-stream")&&SmokeScenario!=TEXT("perf-soak"))
         if(auto* pc=Cast<APlayerController>(GetController()))
         {
@@ -185,7 +187,9 @@ void ADivePawn::TickPerformance()
         root->SetNumberField(TEXT("head_yaw_degrees"),PhysicalPose.HeadYaw);
         root->SetNumberField(TEXT("body_yaw_degrees"),PhysicalPose.BodyYaw());
         root->SetNumberField(TEXT("blocked_pose_steps"),BlockedPoseSteps);
-        root->SetStringField(TEXT("orbit_input"),TEXT("incremental_6_degrees_per_simulation_second"));
+        double fixedYaw=0;
+        root->SetStringField(TEXT("orbit_input"),FParse::Value(FCommandLine::Get(),TEXT("DivePerfFixedYaw="),fixedYaw)&&FMath::IsFinite(fixedYaw)?
+            TEXT("fixed_yaw"):TEXT("incremental_6_degrees_per_simulation_second"));
         root->SetBoolField(TEXT("water_preview"),Environment->WaterPreviewEnabled());
         root->SetBoolField(TEXT("gravel_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediateGravelRetirement")));
         root->SetBoolField(TEXT("population_immediate_retirement"),FParse::Param(FCommandLine::Get(),TEXT("DiveImmediatePopulationRetirement")));
@@ -218,6 +222,9 @@ void ADivePawn::TickPerformance()
             FFileHelper::SaveStringToFile(json,*(PerformanceDirectory/TEXT("Metadata.json")))&&IFileManager::Get().FileSize(*csv)>1000;
         if(!valid) { UE_LOG(LogTemp,Error,TEXT("DIVE_PERF_FAIL missing capture or metadata")); FPlatformMisc::RequestExitWithStatus(false,1); return; }
         FScreenshotRequest::RequestScreenshot(PerformanceDirectory/TEXT("Frame.png"),true,false);
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveTreeAnchorProbe"))&&
+           (!Environment||!Environment->SaveVegetationAnchorProbe(PerformanceDirectory)))
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_TREE_ANCHOR_PROBE_FAIL"));FPlatformMisc::RequestExitWithStatus(false,1);return; }
 #if WITH_EDITOR
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveFPVProbe"))&&!SaveFPVGeometry(this,PerformanceDirectory))
         { UE_LOG(LogTemp,Error,TEXT("DIVE_FPV_PROBE_FAIL geometry export"));FPlatformMisc::RequestExitWithStatus(false,1);return; }

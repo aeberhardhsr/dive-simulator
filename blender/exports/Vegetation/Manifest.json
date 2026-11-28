@@ -365,13 +365,13 @@
       "lod": 2,
       "file": "blender/exports/Vegetation/SM_LeafTree_LOD2.fbx",
       "triangles": 19981,
-      "vertices": 202434,
+      "vertices": 202424,
       "height_m": 4.5834503173828125,
       "bounds_m": [
         [
           -1.3156179189682007,
           -2.920962333679199,
-          -0.0016628446755930781
+          -9.038485586643219e-05
         ],
         [
           1.6120543479919434,
@@ -389,22 +389,23 @@
         "tree_small_02_leaves",
         "tree_small_02_trunk"
       ],
-      "sha256": "3decbaf7fcd5547f8728cdbb6207f98a3d179cf1b5ca6f9ebc1847947de0296c",
-      "authored_reduction_target_triangles": 20000
+      "sha256": "5ad1c7becda7acb94180ce1f3e40fc63111af9f4441d48fed90c84d44065e551",
+      "authored_reduction_target_triangles": 20000,
+      "preserved_root_vertices": 25
     },
     {
       "name": "SM_LeafTree",
       "source": "tree_small_02",
       "lod": 3,
       "file": "blender/exports/Vegetation/SM_LeafTree_LOD3.fbx",
-      "triangles": 13618,
-      "vertices": 196457,
+      "triangles": 13649,
+      "vertices": 196479,
       "height_m": 4.5834503173828125,
       "bounds_m": [
         [
           -1.3156179189682007,
           -2.920962333679199,
-          0.2383527010679245
+          -9.038485586643219e-05
         ],
         [
           1.6120543479919434,
@@ -422,8 +423,9 @@
         "tree_small_02_leaves",
         "tree_small_02_trunk"
       ],
-      "sha256": "17e80bc79c85359f05351cf015e8fbaea10310b6986908f2d72e8eea76848489",
-      "authored_reduction_target_triangles": 4000
+      "sha256": "579d5d3b6740b01f56ff1227443d4b6139e80eb5f74da89e191f2d7031f41f7c",
+      "authored_reduction_target_triangles": 4000,
+      "preserved_root_vertices": 25
     },
     {
       "name": "SM_FirA",
@@ -431,13 +433,13 @@
       "lod": 2,
       "file": "blender/exports/Vegetation/SM_FirA_LOD2.fbx",
       "triangles": 12000,
-      "vertices": 30086,
+      "vertices": 30045,
       "height_m": 19.04075050354004,
       "bounds_m": [
         [
           -3.2727653980255127,
           -2.688735008239746,
-          -0.002676136326044798
+          -4.731118679046631e-06
         ],
         [
           3.2852487564086914,
@@ -456,22 +458,23 @@
         "fir_tree_01_twig",
         "fir_tree_01_dead_branches"
       ],
-      "sha256": "39eed6b574dc58c24c2b7dce921a17bd5a9d7b63385ac87d737ea1d93db04cb5",
-      "authored_reduction_target_triangles": 12000
+      "sha256": "b947e33efdbb5d51373f43b5f46bf26a4604ff36c27f78455b486a7c32c605e1",
+      "authored_reduction_target_triangles": 12000,
+      "preserved_root_vertices": 95
     },
     {
       "name": "SM_FirA",
       "source": "fir_tree_01",
       "lod": 3,
       "file": "blender/exports/Vegetation/SM_FirA_LOD3.fbx",
-      "triangles": 10357,
-      "vertices": 28463,
+      "triangles": 10498,
+      "vertices": 28561,
       "height_m": 18.95288848876953,
       "bounds_m": [
         [
           -3.2727653980255127,
           -2.688735008239746,
-          0.20853789150714874
+          -4.731118679046631e-06
         ],
         [
           3.2852487564086914,
@@ -490,8 +493,9 @@
         "fir_tree_01_twig",
         "fir_tree_01_dead_branches"
       ],
-      "sha256": "6f77956a35aeb60e78bcbef73016fc09e3aa76ff692b5bb168d3bf4ba97fc5ba",
-      "authored_reduction_target_triangles": 3000
+      "sha256": "babde1b5e8b6259183f758d0059f3d360fbf2a529bfb49fa4aa00296295fbdd9",
+      "authored_reduction_target_triangles": 3000,
+      "preserved_root_vertices": 95
     },
     {
       "name": "SM_FirB",
@@ -499,13 +503,13 @@
       "lod": 2,
       "file": "blender/exports/Vegetation/SM_FirB_LOD2.fbx",
       "triangles": 12000,
-      "vertices": 21693,
+      "vertices": 21588,
       "height_m": 14.092721939086914,
       "bounds_m": [
         [
           -2.719302177429199,
           -2.7599751949310303,
-          -0.0009842754807323217
+          0.0
         ],
         [
           2.9069104194641113,
@@ -524,22 +528,23 @@
         "fir_tree_01_twig",
         "fir_tree_01_dead_branches"
       ],
-      "sha256": "8b943b89cd666beee9fcbe6f362b20c5dad7ba07f1b1de8f64a39fdab0676fd5",
-      "authored_reduction_target_triangles": 12000
+      "sha256": "0f745d854eda5c29d492c81715c0867746f9d1540e2f0663c5b95bdbf3e4270b",
+      "authored_reduction_target_triangles": 12000,
+      "preserved_root_vertices": 137
     },
     {
       "name": "SM_FirB",
       "source": "fir_tree_01",
       "lod": 3,
       "file": "blender/exports/Vegetation/SM_FirB_LOD3.fbx",
-      "triangles": 4847,
-      "vertices": 15282,
+      "triangles": 5112,
+      "vertices": 15422,
       "height_m": 14.092721939086914,
       "bounds_m": [
         [
           -2.719302177429199,
           -2.7599751949310303,
-          0.025681372731924057
+          0.0
         ],
         [
           2.9069104194641113,
@@ -558,8 +563,9 @@
         "fir_tree_01_twig",
         "fir_tree_01_dead_branches"
       ],
-      "sha256": "1dac12e658a6b025463c33bbb36b3c4cb159c31e73ebb3b9ea6dd1222eda61ea",
-      "authored_reduction_target_triangles": 3000
+      "sha256": "30ab54f85c09454d4dcdc131c96ebb02f80506b68ede037001fea288658d5701",
+      "authored_reduction_target_triangles": 3000,
+      "preserved_root_vertices": 137
     },
     {
       "name": "SM_FirC",
@@ -567,13 +573,13 @@
       "lod": 2,
       "file": "blender/exports/Vegetation/SM_FirC_LOD2.fbx",
       "triangles": 11999,
-      "vertices": 12676,
+      "vertices": 12683,
       "height_m": 14.552308082580566,
       "bounds_m": [
         [
           -2.675313949584961,
           -2.723142147064209,
-          -0.00020458568178582937
+          0.0
         ],
         [
           3.6745901107788086,
@@ -592,22 +598,23 @@
         "fir_tree_01_dead_branches",
         "fir_tree_01_trunk_c"
       ],
-      "sha256": "fc7e56145e53d9b9bda155f8e3ba6d8845a5e1c4e945f3847e2ea468689618c8",
-      "authored_reduction_target_triangles": 12000
+      "sha256": "db0ba511dfad3d63caa722c518e7732c45c59984e2929b60dab6121941df5ed9",
+      "authored_reduction_target_triangles": 12000,
+      "preserved_root_vertices": 41
     },
     {
       "name": "SM_FirC",
       "source": "fir_tree_01",
       "lod": 3,
       "file": "blender/exports/Vegetation/SM_FirC_LOD3.fbx",
-      "triangles": 4301,
-      "vertices": 6532,
+      "triangles": 4372,
+      "vertices": 6576,
       "height_m": 14.574806213378906,
       "bounds_m": [
         [
           -2.6705102920532227,
           -2.711089849472046,
-          0.8251658082008362
+          0.0
         ],
         [
           3.6551151275634766,
@@ -626,8 +633,9 @@
         "fir_tree_01_dead_branches",
         "fir_tree_01_trunk_c"
       ],
-      "sha256": "8d219b15f31cb1d9db0daf17d505b8ca113ce04b2e43ef4b802533693fb34396",
-      "authored_reduction_target_triangles": 3000
+      "sha256": "4ce3ebfed507be446b13cb2e826cf779834ab754aa57455b7eddcbc7c1ca367b",
+      "authored_reduction_target_triangles": 3000,
+      "preserved_root_vertices": 41
     }
   ],
   "materials": {
