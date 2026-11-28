@@ -1,6 +1,6 @@
 # Visuelles Qualitätsziel
 
-**Aktualisierung vom 28. November 2026:** Der Nutzer hat die Unterwasserwelt gestalterisch abgenommen. Es folgen genau [fünf begrenzte Abschlussiterationen](UNDERWATER_FINISH_PLAN.md), danach wird die Überwasserwelt zum Entwicklungsschwerpunkt. Diese Entscheidung ersetzt frühere Aussagen, die Unterwasser-Referenzabnahme sei noch offen. Die Bilder bleiben Orientierung; eine identische Umsetzung ist weiterhin nicht verlangt.
+**Aktualisierung vom 28. November 2026:** Der Nutzer hat die Unterwasserwelt gestalterisch abgenommen. Die [fünf begrenzten Abschlussiterationen](UNDERWATER_FINISH_PLAN.md) sind mit ausgewiesenen technischen Abweichungen beendet; [Abschlussbericht](UNDERWATER_FINISH_HANDOVER.md). Die Überwasserwelt ist jetzt der Entwicklungsschwerpunkt. Diese Entscheidung ersetzt frühere Aussagen, die Unterwasser-Referenzabnahme sei noch offen. Die Bilder bleiben Orientierung; eine identische Umsetzung ist weiterhin nicht verlangt.
 
 Die am 26. November 2026 vom Nutzer bereitgestellten Bilder definieren die gewünschte Detail- und Realitätsstufe für das fertige Spielerlebnis. Sie sind gestalterische Referenzen, keine bereits erreichten Spielaufnahmen, geografischen Messungen oder Vorgaben für eine identische Szene. Originale liegen unverändert unter `References/`. Daraus werden keine Texturen oder Hintergrundkulissen für das Spiel übernommen.
 
