@@ -59,9 +59,9 @@ Diese Grenzen sind konkrete Prüfkriterien dieser Abschlussiteration. Sie behaup
 **Vorbereitung, noch keine Messung:** `Tools/TestUnderwaterFinishPerformance.ps1` führt nach Abschluss der Paketprüfung die drei festgelegten Fälle mit 15 s Aufwärmen, 1080p, Qualität 2 und 100 % Renderauflösung aus. Die ersten beiden Fälle sind stationäre Rundblicke: Weesen mit +35° angeforderter Blickneigung zur Wasserunterseite, Walenstadt mit −12° zum Grund. Der dritte Fall durchschwimmt den bestehenden Murg-Nachladepfad. Tatsächliche Kamerapose und Abschlussbild bleiben Bestandteil der Prüfung. Der Aufruf verwendet `-Pass baseline` beziehungsweise `-Pass confirmation`; eine vorhandene Spiel-, Editor- oder UnrealBuildTool-Instanz verhindert den Start. `Benchmark.ps1 -ProductionWater` verlangt den normalen Renderpfad samt aktiver Reflexion, Seegrenzen und unveränderten Qualitätswerten, ohne einen Grafik-Testschalter an das Spiel zu übergeben. Das Werkzeug erfasst alle drei Ergebnisse auch bei verfehlten Leistungsgrenzen und schreibt höchstens `NUMERICAL_PASS_REQUIRES_IMAGE_REVIEW`, keine automatische visuelle Abnahme.
 
 ```powershell
-./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate -Pass baseline
+./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR2 -Pass baseline
 # Erst nach Auswertung und gegebenenfalls begrenzter Korrektur:
-./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate -Pass confirmation
+./Tools/TestUnderwaterFinishPerformance.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR2 -Pass confirmation
 ```
 
 ### 5. Stabilität, Abschlusslieferung und Übergabe an Überwasser
@@ -80,7 +80,7 @@ Diese Grenzen sind konkrete Prüfkriterien dieser Abschlussiteration. Sie behaup
 
 ```powershell
 # Erst nach Runde 4, mit exakt demselben unveränderten Paket:
-./Tools/Soak.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate -Seconds 7200 -Entry 0 -Quality 2 -ProductionWater
+./Tools/Soak.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR2 -Seconds 7200 -Entry 0 -Quality 2 -ProductionWater
 ```
 
 ## Umfang begrenzen, Abschlüsse ehrlich halten
@@ -111,6 +111,6 @@ Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_
 | --- | --- | --- |
 | 1 – Wasserlinie | Prüfrunde beendet mit Abweichung | [Übergangsbericht](WATERLINE_SEAM_STUDY.md); ursprüngliches Fehlerfrei-Kriterium nicht erfüllt, Restpunkte ausdrücklich unter UW-LATER-07 vertagt |
 | 2 – Licht-Randfälle | Bestanden | [Licht- und Schattenprüfung](REFLECTION_FINISH_VALIDATION.md); acht Grundkontrollen und vier physische Randfallkontrollen bestanden, vereinigter VSM-Pfad für Paketintegration ausgewählt |
-| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); Game-Build und erste Paketierung bestanden, Produktionspfad beim normalen Start bestätigt; fehlender Himmel-Materialverweis wird korrigiert. Paketabnahme noch ausstehend |
+| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); korrigiertes Paket R2 und gezielter Kameratest bestanden, vollständige Paketserie läuft. Normale Menübedienung und Paketabnahme noch ausstehend |
 | 4 – Leistung | Geplant | Ausstehend |
 | 5 – Stabilität und Übergabe | Geplant | Ausstehend |

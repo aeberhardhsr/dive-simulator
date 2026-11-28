@@ -1,6 +1,6 @@
 # Abschlussrunde 3: normal startbares Wasserpaket
 
-Stand: 28. November 2026. **In Bearbeitung. Source-Game-Build und erste vollständige Paketierung bestanden. Der normale Paketstart bestätigt den Produktionspfad, meldet aber einen fehlenden Himmel-Materialverweis; die gezielte Korrektur wird nachgebaut. Noch kein freigegebenes neues Paket.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
+Stand: 28. November 2026. **In Bearbeitung. Korrigiertes Paket R2 erstellt; der gezielte Kameratest besteht ohne den vorherigen Himmel-Materialfehler. Die vollständige Paketserie läuft, die normale Menübedienung ist noch offen. Noch keine vollständige Paketabnahme.** Die [zweite Abschlussrunde](REFLECTION_FINISH_VALIDATION.md) hat den vereinigten VSM-Reflexionsweg für diese Integration ausgewählt.
 
 ## Buildverlauf und eingefrorene Eingaben
 
@@ -28,7 +28,9 @@ Der erste Start meldet zudem einen echten Inhaltsfehler: Der `CelestialVaultDayS
 
 `Tools/PrepareCelestialPackagePatch.py` bereitet für den geprüften 5.8.4-Quellstand die Korrektur genau dieses hart codierten Verweises vor. Die kleine Änderung wurde ausschliesslich in der separaten Source-Engine angewendet. Das Material und die gewünschte Darstellung werden dadurch nicht ersetzt. `SmokeTest.ps1` weist nun auch fehlende Konstruktor-Assets zurück: Ein echter Lauf des ersten Pakets meldet zwar `DIVE_SMOKE_PASS rocks=1`, endet wegen des fehlenden Materials aber korrekt mit Werkzeug-Exitcode 1. Der [Korrekturbericht](CELESTIAL_PACKAGE_FIX.json) hält diese Gegenprobe und die Inspektion fest. Alle drei Bilder des ersten Pakets wurden gesichtet: grüne Unterwasserreflexion mit gespiegeltem Grund, Sonnenblick durch das Brechungsfenster und Überwasseransicht mit Boje und sichtbarem Grund. Diese Tagesbilder heben den protokollierten Materialfehler und die ausstehende Nachtprüfung nicht auf.
 
-Der gezielte Editor-Nachbau unter `celestial-editor-build.log` bestand mit Exitcode 0 nach 21,84 Sekunden. Das korrigierte Paket wird nun als `Builds/WindowsUnderwaterFinalCandidateR2` erstellt (`production-package-build-r03.log`). Danach folgen derselbe Start-/Kameratest und die vollständige Paketserie. `WindowsUnderwaterFinalCandidate` bleibt als erster, nicht freigegebener Kandidat erhalten.
+Der gezielte Editor-Nachbau unter `celestial-editor-build.log` bestand mit Exitcode 0 nach 21,84 Sekunden. Das korrigierte Paket `Builds/WindowsUnderwaterFinalCandidateR2` ist ebenfalls erstellt (`production-package-build-r03.log`, Exitcode 0, 3 Minuten 28 Sekunden AutomationTool-Laufzeit). Ein vorübergehender Fehler beim Lesen des lokalen Zen-Speichers wurde durch den eingebauten Wiederholungsversuch überwunden; Cook, Staging und Archivierung endeten erfolgreich. Der [R2-Paketnachweis](PRODUCTION_PACKAGE_R2_EVIDENCE.json) bindet erneut 53 Laufzeitdateien und den korrigierten Engine-Quelltext.
+
+Derselbe Kameratest besteht im korrigierten Paket mit Werkzeug-Exitcode 0, `cooked=1` und ohne den fehlenden Konstruktor-Verweis. Alle drei neuen Bilder wurden neben der Gegenprobe gesichtet; es wurde keine neue sichtbare Änderung durch die Verweiskorrektur festgestellt. Die achtzehnteilige Paketserie gegen R2 hat 17 Fälle mit ihren erwarteten Aufnahmen abgeschlossen. Beim letzten Handgelenkfall besteht die native Funktion, die Aufnahmeliste erwartete jedoch fälschlich zwei statt vier PNGs. `DivePawn.cpp` erzeugt ausdrücklich `DiveUnderwater`, `DiveSmoke`, `WristTexture` und `WristVitals`. Das Werkzeug prüft jetzt alle vier exakten Dateinamen; nur dieser Fall wird wiederholt. Die erste Zurückweisung ist unter `wrist-count-before/RejectedCapture.json` erhalten. Die gesamte Bildsichtung und normale Menübedienung sind noch offen. `WindowsUnderwaterFinalCandidate` bleibt als erster, nicht freigegebener Kandidat erhalten.
 
 - `[DiveRendering] ProductionWater=True` wählt auf der separat gepatchten Source-Engine den geprüften Renderweg für normale Starts. Die drei Binding-Versionen müssen vorhanden sein. Die unveränderte installierte Engine erhält dadurch keine inkompatible Szenenstruktur.
 - Wasseroberfläche, begrenztes Volumen, Seegrenzenraster und Reflexionsmaske werden ohne Smoke-/Study-Schalter aktiviert. Das Profil bleibt `unified/vsm` mit ursprünglicher Spielbelichtung und ursprünglichen Lichtintensitäten. Die anderen Lichtmodell-Experimente werden nicht freigegeben.
@@ -57,6 +59,12 @@ Der ursprüngliche Editor-Nachbau, der erste Editor-Smoke-Test, Game-Build und e
 ./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target Game -MaxParallelActions 4
 ./Tools/Build.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -Target Package -MaxParallelActions 4 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate
 ./Tools/TestProductionWater.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate
+```
+
+Der obige Block dokumentiert den ersten Integrationsdurchlauf. **Für die weitere Abnahme gilt der korrigierte Kandidat:**
+
+```powershell
+./Tools/TestProductionWater.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR2
 ```
 
 `Build.ps1` bereitet für die Engine mit VSM-Binding die Produktionsshader automatisch vor, bevor ein Editor/Cooker gestartet wird. Der Smoke-Test soll zunächst belegen, dass Konfiguration, Shader und Szenendaten tatsächlich aktiv sind. Erst nach erfolgreichem Nachbau folgt der Cook.

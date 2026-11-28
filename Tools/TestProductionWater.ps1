@@ -33,7 +33,8 @@ $cases=@(
     @{name='moon-shadow';probe='moon';count=3},
     @{name='software';noRT=$true;count=3},
     @{name='ui';scenario='ui';count=14},
-    @{name='wrist';scenario='wrist';count=2}
+    @{name='wrist';scenario='wrist';count=4;
+        imageNames=@('DiveSmoke_0_wrist.png','DiveUnderwater_0_wrist.png','WristTexture_wrist.png','WristVitals_wrist.png')}
 )
 if($CaseName) {
     $cases=@($cases | Where-Object {$_.name -eq $CaseName})
@@ -68,6 +69,9 @@ foreach($case in $cases) {
     if($log -match 'DIVE_\w*FAIL|Fatal error:|Failed to compile Material|Default Material will be used') {throw "Rendering failure: $($case.name)"}
     $images=@(Get-ChildItem (Join-Path $PackageDirectory 'divingsim/Saved/Screenshots') -Filter '*.png' -File | Where-Object {$_.LastWriteTimeUtc -ge $started})
     if($images.Count -ne $case.count) {throw "Fresh capture count: $($case.name) $($images.Count)/$($case.count)"}
+    if($case.imageNames -and @(Compare-Object @($case.imageNames | Sort-Object) @($images.Name | Sort-Object)).Count) {
+        throw "Unexpected capture names: $($case.name)"
+    }
     $images | Copy-Item -Destination $folder
     $completed+=@{name=$case.name;status='CAPTURE_PASS';options=$options;
         images=@($images | ForEach-Object {@{file=$_.Name;sha256=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant()}});

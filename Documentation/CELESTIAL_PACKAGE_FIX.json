@@ -1,5 +1,5 @@
 {
-  "status": "EDITOR_BUILD_SUCCEEDED_CORRECTED_PACKAGE_BUILD_RUNNING",
+  "status": "CORRECTED_PACKAGE_CAMERA_TEST_PASSED_FULL_ACCEPTANCE_PENDING",
   "engine": "O:\\games\\dive game\\Builds\\UE584",
   "file": "Engine/Plugins/Runtime/CelestialVault/Source/CelestialVault/Private/CelestialVaultDaySequenceActor.cpp",
   "original_sha256": "a8b1bb7357502d03199772a99e4572b80edbb6780ce653c77a7783d6d0ca9e84",
@@ -55,5 +55,29 @@
       }
     ],
     "exit_code": 0
+  },
+  "after_test": {
+    "review": "Same three daytime inspection views as before: underwater reflected bed, Sun window, and surface buoy/shore. No new visible difference attributable to the reference correction. Night and full package matrix remain separate.",
+    "log": "artifacts/underwater-package-20261128/celestial-gate-after.log",
+    "sha256": "348792e7c4b6d44e52b878af30dd4f6f3c3c3d30e5c05162d3bbebde5d5debaf",
+    "missing_constructor_asset": false,
+    "tool_exit_code": 0,
+    "images_visually_reviewed": true,
+    "images": [
+      {
+        "sha256": "3529c5649a03f0b614fc7a96049165cf3249967451d73ff9cee9f4872f1af222",
+        "file": "artifacts/underwater-package-20261128/corrected-package-native/near-normal/Water_0_0.png"
+      },
+      {
+        "sha256": "2f2d30d13a5736369f54fcd3c813c22deea07cf6122f02e8a9665ea715c01b1f",
+        "file": "artifacts/underwater-package-20261128/corrected-package-native/near-normal/Water_0_1.png"
+      },
+      {
+        "sha256": "882957a794d742d57f0562414445f7be7b9a010a36edc3ee065fab478a8e338e",
+        "file": "artifacts/underwater-package-20261128/corrected-package-native/near-normal/Water_0_2.png"
+      }
+    ],
+    "package": "Builds/WindowsUnderwaterFinalCandidateR2",
+    "native_marker": "DIVE_SMOKE_PASS rocks=1"
   }
 }
