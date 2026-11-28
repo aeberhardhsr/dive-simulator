@@ -32,6 +32,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
     FDiveTerrain terrain;
     if(!terrain.Load()) { UE_LOG(LogTemp,Error,TEXT("%s"),*terrain.Error); return 1; }
     if(FParse::Param(*Params,TEXT("FallbackAudit"))) return AuditLandscapeFallback(terrain,Params);
+    if(FParse::Param(*Params,TEXT("ResidentStudy"))) return BakeLandscapeResidentStudy(Params);
     if(FParse::Param(*Params,TEXT("FallbackStudy"))) return BakeLandscapeFallbackStudy(Params);
     if(FParse::Param(*Params,TEXT("DetailStudy"))) return BakeLandscapeDetailStudy(terrain,Params);
     const auto& grid=terrain.Landscape;

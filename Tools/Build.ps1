@@ -6,6 +6,7 @@ param(
     [switch]$EditorSandbox,
     [switch]$RefreshSources,
     [switch]$BoundaryStudy,
+    [switch]$ResidentStudy,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
@@ -38,6 +39,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 if($RefreshSources -and $Target -notin @('Editor','Game')) {throw 'RefreshSources applies to Editor or Game compilation.'}
+if($ResidentStudy -and $Target -notin @('LandscapeFallback','LandscapeFallbackCheck')) {throw 'ResidentStudy requires LandscapeFallback or LandscapeFallbackCheck.'}
 $repo = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $repo 'divingsim/divingsim.uproject'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
@@ -108,6 +110,7 @@ if ($Target -eq 'Content') {
 } elseif ($Target -in @('Landscape','LandscapeCheck','LandscapeDetail','LandscapeDetailCheck','LandscapeFallbackAudit','LandscapeFallback','LandscapeFallbackCheck')) {
     $landOptions=@()
     if($BoundaryStudy) { $landOptions+='-BoundaryStudy' }
+    if($ResidentStudy) { $landOptions+='-ResidentStudy' }
     if($Target -in @('LandscapeFallback','LandscapeFallbackCheck')) { $landOptions+='-FallbackStudy' }
     if($Target -eq 'LandscapeFallbackCheck') { $landOptions+='-VerifyOnly' }
     if($Target -eq 'LandscapeFallbackAudit') { $landOptions+='-FallbackAudit' }

@@ -2,6 +2,7 @@
 #if WITH_EDITOR
 #include "Engine/StaticMesh.h"
 #include "StaticMeshResources.h"
+#include "Rendering/NaniteResources.h"
 #include "StaticMeshAttributes.h"
 #include "StaticMeshCompiler.h"
 #include "MeshDescriptionToDynamicMesh.h"
@@ -131,6 +132,80 @@ int32 BakeLandscapeFallbackStudy(const FString& Params)
         }
         UE_LOG(LogTemp,Display,TEXT("DIVE_FALLBACK_BOUNDARY_PASS mesh=%s boundary_vertices=%d boundary_edges=%d source_triangles=%d fallback_triangles=%d reused=%d"),
             *name,boundaryPositions.Num(),boundarySegments.Num(),description->Triangles().Num(),mesh->GetNumTriangles(0),reuse);
+    }
+    return 0;
+}
+namespace
+{
+FString ResidentPackage(const UStaticMesh* Source)
+{ return TEXT("/Game/Diving/LandscapeStudy/Resident_")+Source->GetName(); }
+bool FullyResident(const UStaticMesh* Mesh)
+{
+    const auto* data=Mesh?Mesh->GetRenderData():nullptr;
+    const auto* n=data?data->NaniteResourcesPtr.Get():nullptr;
+    return n&&n->NumRootPages>0&&n->NumRootPages==static_cast<uint32>(n->PageStreamingStates.Num())&&n->StreamablePages.GetBulkDataSize()==0;
+}
+}
+
+UStaticMesh* LoadLandscapeResidentStudy(UStaticMesh* Source)
+{
+    if(!Source) return nullptr;
+    const FString package=ResidentPackage(Source),key=FallbackStudyKey(Source)+TEXT(":resident-v1");
+    auto* mesh=LoadObject<UStaticMesh>(nullptr,*(package+TEXT(".")+FPackageName::GetLongPackageAssetName(package)));
+    if(!mesh||!FullyResident(mesh)||mesh->GetPackage()->GetMetaData().GetValue(mesh,TEXT("DiveResidentSource"))!=key) return nullptr;
+    return mesh;
+}
+
+int32 BakeLandscapeResidentStudy(const FString& Params)
+{
+    for(const TCHAR* name:{TEXT("Boundary_SM_Land_04_02"),TEXT("Boundary_SM_LandDetail_05_02")})
+    {
+        const FString path=TEXT("/Game/Diving/LandscapeStudy/")+FString(name)+TEXT(".")+name;
+        TStrongObjectPtr<UStaticMesh> source(LoadObject<UStaticMesh>(nullptr,*path));
+        if(!source||!source->IsHiResMeshDescriptionValid()) return 1;
+        const FString packageName=ResidentPackage(source.Get()),key=FallbackStudyKey(source.Get())+TEXT(":resident-v1");
+        UPackage* package=CreatePackage(*packageName);package->FullyLoad();
+        const FString assetName=FPackageName::GetLongPackageAssetName(packageName);
+        auto* mesh=FindObject<UStaticMesh>(package,*assetName);
+        const bool reuse=mesh&&package->GetMetaData().GetValue(mesh,TEXT("DiveResidentSource"))==key;
+        if(FParse::Param(*Params,TEXT("VerifyOnly"))&&!reuse) return 1;
+        if(!reuse)
+        {
+            if(mesh) return 1; // Preserve stale diagnostic assets for review rather than overwriting.
+            mesh=DuplicateObject<UStaticMesh>(source.Get(),package,*assetName);
+            // Duplication does not retain CachedMeshDescriptionBounds. Commit
+            // the unchanged LOD0 to restore the same source bounds as the control.
+            if(!mesh->GetMeshDescription(0)) return 1;
+            mesh->CommitMeshDescription(0);
+            auto settings=mesh->GetNaniteSettings();settings.TargetMinimumResidencyInKB=MAX_uint32;
+            mesh->SetNaniteSettings(settings);mesh->Build(false);
+        }
+        FStaticMeshCompilingManager::Get().FinishCompilation({mesh});
+        if(!FullyResident(mesh)) return 1;
+        if(!mesh->GetBounds().Origin.Equals(source->GetBounds().Origin,.01)||
+           !mesh->GetBounds().BoxExtent.Equals(source->GetBounds().BoxExtent,.01)) return 1;
+        for(int level=0;level<2;++level)
+        {
+            const auto* a=level?source->GetHiResMeshDescription():source->GetMeshDescription(0);
+            const auto* b=level?mesh->GetHiResMeshDescription():mesh->GetMeshDescription(0);
+            if(!a||!b||a->Vertices().Num()!=b->Vertices().Num()||a->Triangles().Num()!=b->Triangles().Num()) return 1;
+            const auto pa=FStaticMeshConstAttributes(*a).GetVertexPositions(),pb=FStaticMeshConstAttributes(*b).GetVertexPositions();
+            for(const auto v:a->Vertices().GetElementIDs()) if(pa[v]!=pb[v]) return 1;
+        }
+        const auto& old=*source->GetRenderData()->NaniteResourcesPtr;
+        const auto& n=*mesh->GetRenderData()->NaniteResourcesPtr;
+        UE_LOG(LogTemp,Display,TEXT("DIVE_RESIDENT_BOUNDS mesh=%s source=%s clone=%s source_render=%s clone_render=%s total_pages=%d"),
+            *assetName,*source->GetBounds().BoxExtent.ToString(),*mesh->GetBounds().BoxExtent.ToString(),
+            *source->GetRenderData()->Bounds.BoxExtent.ToString(),*mesh->GetRenderData()->Bounds.BoxExtent.ToString(),n.PageStreamingStates.Num());
+        if(!reuse)
+        {
+            package->GetMetaData().SetValue(mesh,TEXT("DiveResidentSource"),*key);
+            FAssetRegistryModule::AssetCreated(mesh);package->MarkPackageDirty();
+            FSavePackageArgs args;args.TopLevelFlags=RF_Public|RF_Standalone;args.SaveFlags=SAVE_NoError;
+            if(!UPackage::SavePackage(package,mesh,*FPackageName::LongPackageNameToFilename(packageName,FPackageName::GetAssetPackageExtension()),args)) return 1;
+        }
+        UE_LOG(LogTemp,Display,TEXT("DIVE_RESIDENT_BAKE_PASS mesh=%s old_root_pages=%u old_root_bytes=%d old_stream_bytes=%lld root_pages=%u root_bytes=%d stream_bytes=%lld source_positions_unchanged=1 reused=%d"),
+            *assetName,old.NumRootPages,old.RootData.Num(),old.StreamablePages.GetBulkDataSize(),n.NumRootPages,n.RootData.Num(),n.StreamablePages.GetBulkDataSize(),reuse);
     }
     return 0;
 }

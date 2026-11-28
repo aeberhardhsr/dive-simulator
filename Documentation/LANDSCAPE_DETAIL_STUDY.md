@@ -97,6 +97,8 @@ Die wiederholte Gehprobe mit korrigierten Assets besteht über **105,463 m und 1
 
 ![Weiterhin offener Nanite-Startbefund trotz korrigierter Ersatzgeometrie](Images/Terrain_Ground_NaniteStartGap.png)
 
+Die anschliessende [stationäre Nanite-Gegenprobe](LANDSCAPE_NANITE_BOUNDARY.md) reproduziert den Startspalt ohne Bewegung und zeigt eine bereits im ersten Bild geschlossene Kante bei vollständig residenten Nanite-Daten der beiden Testkacheln. Damit gibt es einen geprüften lokalen Lösungsansatz; eine allgemeine Übernahme und die Speicherstrategie stehen weiterhin aus.
+
 Lückenlose bewegte Sichtprüfung, weitere Sonnenstände und Paketvalidierung bleiben offen. Die zuvor beobachteten CPU-/Speicherbereinigungs-Aussetzer sind weiterhin offen; die alten FPS-Werte gelten nicht als Messung dieser neuen Geometrie. Waldvolumen, Wiesen, Nahbereich und Materialübergänge bleiben eigenständige Aufgaben. Nach Bewegungs- und Leistungstests sind die Kosten der Korrektur zu bewerten, Fels-/Vegetationsübergänge zu verbessern und die CPU-Aussetzer einzugrenzen. Die fünf Unterwasser-Abschlussrunden bleiben abgeschlossen.
 
 ## Reproduktion

@@ -93,6 +93,12 @@ void ADiveWorld::CreateLandscape()
             mesh=LoadLandscapeFallbackStudy(mesh);
             if(!mesh) { fail(TEXT("Boundary-preserving fallback study missing/stale"));return; }
             UE_LOG(LogTemp,Display,TEXT("DIVE_FALLBACK_STUDY_APPLIED tile=%d_%d asset=%s"),key.X/256,key.Y/256,*mesh->GetName());
+            if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeResidentStudy")))
+            {
+                mesh=LoadLandscapeResidentStudy(mesh);
+                if(!mesh) { fail(TEXT("Resident Nanite study missing/stale"));return; }
+                UE_LOG(LogTemp,Display,TEXT("DIVE_RESIDENT_STUDY_APPLIED tile=%d_%d asset=%s"),key.X/256,key.Y/256,*mesh->GetName());
+            }
         }
 #endif
         if(!mesh||mesh->GetNumTriangles(0)<=0) { fail(TEXT("Landschaftsasset oder Fallback-Geometrie fehlt.")); return; }

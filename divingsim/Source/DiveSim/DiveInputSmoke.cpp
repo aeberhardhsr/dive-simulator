@@ -9,6 +9,8 @@
 #include "Engine/GameViewportClient.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "HAL/PlatformMisc.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
@@ -41,6 +43,7 @@ void ADivePawn::InputSmokeTick(float Dt)
     if(SmokeScenario==TEXT("land-detail"))
     {
 #if WITH_EDITOR
+        const bool boundaryProbe=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeBoundaryProbe"));
         auto fail=[&](const TCHAR* reason)
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LAND_DETAIL_WALK_FAIL phase=%d %s position=%s"),ControlsSmokePhase,reason,*GetActorLocation().ToString());FPlatformMisc::RequestExitWithStatus(false,1); };
         auto& terrain=Environment->Terrain;
@@ -57,8 +60,9 @@ void ADivePawn::InputSmokeTick(float Dt)
             SetActorLocation(start);VelocityMetres=FVector::ZeroVector;bWalking=true;
             pc->SetControlRotation(FRotator(-15,90,0));ResetContactPose();
             if(!bContactPoseReady) { fail(TEXT("Initial contact pose"));return; }
-            ControlsSmokePhase=1;TestLessonStage=0;
-            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/LandDetail_Start.png"),true,false);
+            ControlsSmokePhase=boundaryProbe?4:1;TestLessonStage=0;TutorialFinishedAt=ControlsSmokeClock;
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/(boundaryProbe?TEXT("Screenshots/LandBoundary_00.png"):TEXT("Screenshots/LandDetail_Start.png")),true,false);
+            if(boundaryProbe) UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_BOUNDARY_FRAME tick=0 elapsed=0 frame=%llu"),GFrameCounter);
             UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_START east=%.3f north=%.3f"),startEast,routeNorth);
             return;
         }
@@ -66,6 +70,23 @@ void ADivePawn::InputSmokeTick(float Dt)
         const FVector p=GetActorLocation();const FVector2D survey=terrain.ToSurvey(p);float ground=0;
         if(!terrain.SampleGround(p.X,p.Y,ground)||!bWalking||FMath::Abs(p.Z-ground-Dive::ShoreMovement::FloorClearance*100)>.5||FMath::Abs(survey.Y-routeNorth)>.25)
         { fail(TEXT("Lost ground support or route"));return; }
+        if(ControlsSmokePhase==4)
+        {
+            ++TestLessonStage;
+            if(FMath::Abs(survey.X-startEast)>.001) { fail(TEXT("Boundary probe moved"));return; }
+            for(int frame:{1,2,3,4,5,10,20,30,60}) if(TestLessonStage==frame)
+            {
+                if(FScreenshotRequest::IsScreenshotRequested()) { fail(TEXT("Previous probe screenshot pending"));return; }
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/LandBoundary_%02d.png"),frame),true,false);
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_BOUNDARY_FRAME tick=%d elapsed=%.6f frame=%llu"),frame,ControlsSmokeClock-TutorialFinishedAt,GFrameCounter);
+            }
+            if(TestLessonStage>62)
+            {
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_BOUNDARY_PASS stationary=1 shots=10"));
+                UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS land_boundary=1"));FPlatformMisc::RequestExitWithStatus(false,0);
+            }
+            return;
+        }
         if(ControlsSmokePhase==1||ControlsSmokePhase==2)
         {
             const bool outbound=ControlsSmokePhase==1;
