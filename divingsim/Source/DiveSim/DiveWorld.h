@@ -202,6 +202,10 @@ private:
     UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> SolarWater;
     float CausticsStrength=1;
     UPROPERTY() TArray<TObjectPtr<UStaticMeshComponent>> CausticsProbe;
+    UPROPERTY() TObjectPtr<UStaticMeshComponent> ReflectionShadowOccluder;
+    UPROPERTY() TObjectPtr<class UDirectionalLightComponent> ReflectionShadowDuplicate;
+    int32 ReflectionShadowLastView=-1;
+    bool ConfigureReflectionShadowProbe(const FString& Kind,int32 View,FVector& Eye,FRotator& Rotation);
     void UpdateCaustics();
     UPROPERTY() TObjectPtr<class UExponentialHeightFogComponent> Fog;
     TArray<FDiveBubble> BubbleState;

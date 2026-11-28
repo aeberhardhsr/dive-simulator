@@ -1,6 +1,6 @@
 param([ValidateRange(180,1800)][int]$TimeoutSeconds=1200,
- [ValidateSet('waterline','response','consistency','seam','sweep')][string]$Suite='waterline',[switch]$Unified,
- [ValidateSet('full','cached','vsm','vsm-fallback','vsm-coverage','vsm-path')][string]$Profile='full',
+ [ValidateSet('waterline','response','consistency','seam','sweep','shadows')][string]$Suite='waterline',[switch]$Unified,
+ [ValidateSet('full','unshadowed','cached','vsm','vsm-fallback','vsm-coverage','vsm-path')][string]$Profile='full',
  [string]$CaseName='')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
@@ -30,6 +30,11 @@ $records=@($files | Sort-Object FullName | ForEach-Object {@{file=$_.FullName.Su
 $cases=if($Suite -eq 'waterline') {@(@{name='baseline';control=$true},@{name='transport-no-screens';screens=$true},@{name='transport-hybrid'})}
 elseif($Suite -eq 'consistency') {@(@{name='near-hybrid';near=$true},@{name='near-no-screens';near=$true;screens=$true})}
 elseif($Suite -eq 'seam') {@(@{name='normal'},@{name='no-surface';surface=$true},@{name='no-post-material';post=$true},@{name='no-direct';direct=$true})}
+elseif($Suite -eq 'shadows') {@(
+ @{name='sun-shadow';probe='sun';near=$true;screens=$true},
+ @{name='moon-shadow';probe='moon';near=$true;screens=$true},
+ @{name='missing-maps';probe='missing';near=$true;screens=$true},
+ @{name='ambiguous-light';probe='ambiguous';near=$true;screens=$true})}
 elseif($Suite -eq 'sweep') {@(
  @{name='weesen-strandbad';sweep=$true;pose=@(329004.7802942805,172781.7364295479,180,0)},
  @{name='murg-west';sweep=$true;pose=@(53031.55998047441,830331.2463976908,0,0)},
@@ -57,6 +62,10 @@ foreach($case in $cases) {
  if($case.direct) {$opts.LightIsolation='direct'}
  if($case.sweep) {$opts.WaterlineSweep=$true;$opts.WaterlinePose=$case.pose}
  if($case.near) {$opts.Remove('WaterlinePose')}
+ if($case.probe) {
+  $opts.ReflectionShadowProbe=$case.probe
+  if($case.probe -eq 'moon') {$opts.Date='2026-03-29';$opts.Hour=1.98333333333333}
+ }
  if($case.visibility) {$opts.Visibility=$case.visibility}
  if($case.night) {$opts.Hour=1.5}
  if($case.lamp) {$opts.WaterInspectionLamp=$true}
@@ -85,6 +94,17 @@ foreach($case in $cases) {
   if($highest -lt 19.9 -or $lowest -gt -19.9 -or $previous -lt 20) {throw 'Incomplete up/down crossing.'}
  } elseif($images.Count -ne 3) {throw 'Missing fresh captures.'}
  $images | Copy-Item -Destination $folder
+ if($case.probe) {
+  $views=[regex]::Matches($log,'DIVE_REFLECTION_SHADOW_SETUP kind=(\w+) view=(\d) blocked=(\d) source_lux=([\d.]+) source_up=([\d.]+) map_enabled=(-?\d+) duplicate=(\d) eye=([^\r\n]+)')
+  if($views.Count -ne 3) {throw 'Missing physical shadow fixture states.'}
+  for($i=0;$i -lt 3;$i++) {
+   $v=$views[$i]
+   if($v.Groups[1].Value -ne $case.probe -or [int]$v.Groups[2].Value -ne $i -or [int]$v.Groups[3].Value -ne @(0,1,0)[$i] -or
+      [int]$v.Groups[6].Value -ne $(if($case.probe -eq 'missing'){0}else{1}) -or
+      [int]$v.Groups[7].Value -ne $(if($case.probe -eq 'ambiguous'){1}else{0})) {throw 'Unexpected shadow fixture state.'}
+  }
+  if($views[0].Groups[8].Value -ne $views[1].Groups[8].Value -or $views[0].Groups[8].Value -ne $views[2].Groups[8].Value) {throw 'Shadow camera or caster position moved.'}
+ }
  $done+=@{name=$case.name;status='PASS';options=$opts;captures=@($views | ForEach-Object {$_.Value});images=@($images.Name)}
  $done | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $root 'Cases.json') -Encoding utf8
  Write-Output "PASS $($case.name)"

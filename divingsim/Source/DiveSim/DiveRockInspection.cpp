@@ -22,6 +22,61 @@
 #include "Components/DirectionalLightComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "ProceduralMeshComponent.h"
+#include "CelestialVaultDaySequenceActor.h"
+#include "HAL/IConsoleManager.h"
+
+bool ADiveWorld::ConfigureReflectionShadowProbe(const FString& Kind,int32 View,FVector& Eye,FRotator& Rotation)
+{
+    if(!bOpticsSmoke||!Celestial||!Diver||View<0||View>2||
+        (Kind!=TEXT("sun")&&Kind!=TEXT("moon")&&Kind!=TEXT("missing")&&Kind!=TEXT("ambiguous"))) return false;
+    // One surveyed water position and one frozen wave/camera state for all
+    // three views. Only the physical shadow caster is added/removed.
+    Eye=FVector(329004.7802942805,172781.7364295479,0);
+    float bed=0;
+    if(!Terrain.SampleGround(Eye.X,Eye.Y,bed)||bed>-350) return false;
+    if(FVector::DistSquared2D(Eye,Diver->GetActorLocation())>10000)
+    {StreamTerrain(Eye,true);StreamPopulation(Eye,true);StreamGravel(Eye,true);}
+    UpdateWater(Eye);
+    // SurfaceZ fades waves around the pawn's previous position. The fixture
+    // teleports before its first frame, so sample the final local wave directly.
+    Eye.Z=Waves.Sample(Eye.X/100,Eye.Y/100,Diver->Simulation.Data.ElapsedSeconds).Height*100-150;
+    Rotation=FRotator(25,180,0);
+    auto* source=Kind==TEXT("moon")?Celestial->MoonLightComponent.Get():Sun.Get();
+    if(!source) return false;
+    const FVector toLight=-source->GetForwardVector();
+    if(toLight.Z<=.1||source->Intensity<=0) return false;
+    if(!ReflectionShadowOccluder)
+    {
+        ReflectionShadowOccluder=Prop(TEXT("ReflectionShadowOccluder"),TEXT("/Engine/BasicShapes/Cube.Cube"),
+            Eye,FVector(20,20,.2),TEXT("M_CausticsProbe"),false);
+        ReflectionShadowOccluder->SetCastShadow(true);
+    }
+    const FVector receiver=Eye+FRotator(0,Rotation.Yaw,0).Vector()*500;
+    ReflectionShadowOccluder->SetWorldLocation(receiver+toLight*((400-receiver.Z)/toLight.Z));
+    ReflectionShadowOccluder->SetVisibility(View==1);
+    if(Kind==TEXT("ambiguous"))
+    {
+        if(!ReflectionShadowDuplicate)
+        {
+            ReflectionShadowDuplicate=NewObject<UDirectionalLightComponent>(this,TEXT("ReflectionShadowDuplicate"));
+            ReflectionShadowDuplicate->SetupAttachment(RootComponent);
+            ReflectionShadowDuplicate->SetIntensity(source->Intensity*.5f);
+            ReflectionShadowDuplicate->SetForwardShadingPriority(source->ForwardShadingPriority-1);
+            ReflectionShadowDuplicate->SetWorldRotation(source->GetComponentRotation());
+            ReflectionShadowDuplicate->RegisterComponent();
+        }
+    }
+    UpdateAtmosphere();
+    if(ReflectionShadowLastView!=View)
+    {
+        const auto* maps=IConsoleManager::Get().FindConsoleVariable(TEXT("r.Shadow.Virtual.Enable"));
+        UE_LOG(LogTemp,Display,TEXT("DIVE_REFLECTION_SHADOW_SETUP kind=%s view=%d blocked=%d source_lux=%.9f source_up=%.6f map_enabled=%d duplicate=%d eye=%s caster=%s"),
+            *Kind,View,View==1?1:0,source->Intensity,toLight.Z,maps?maps->GetInt():-1,
+            ReflectionShadowDuplicate?1:0,*Eye.ToString(),*ReflectionShadowOccluder->GetComponentLocation().ToString());
+        ReflectionShadowLastView=View;
+    }
+    return true;
+}
 
 // Fixed comparison scene in surveyed water. Variant zero is the previous mesh;
 // the three new forms use the same position, scale and camera.
@@ -139,6 +194,9 @@ bool ADiveWorld::SetRockInspection(int32 Variant,int32 View,FVector& Eye,FRotato
     if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterView")))
     {
         if(!WaterMaterial||Variant>9||View>2) return false;
+        FString shadowProbe;
+        if(FParse::Value(FCommandLine::Get(),TEXT("DiveReflectionShadowProbe="),shadowProbe,false))
+            return Variant==0&&ConfigureReflectionShadowProbe(shadowProbe,View,Eye,Rotation);
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveWaterline")))
         {
             // Repeat one real shoreline viewpoint on both sides of the frozen
@@ -339,6 +397,12 @@ void ADivePawn::TickRockInspection(float Dt)
     // WaterView manages deliberate fog overrides inside SetRockInspection.
     Environment->RefreshInspectionMedium();
     if(waterView) Camera->PostProcessSettings.AutoExposureBias=Environment->ExposureBiasAt(eye);
+    FString reflectionShadowProbe;
+    if(waterView&&FParse::Value(FCommandLine::Get(),TEXT("DiveReflectionShadowProbe="),reflectionShadowProbe,false)&&reflectionShadowProbe==TEXT("moon"))
+        // Measurement exposure only: native lunar radiance falls below the PNG
+        // quantization floor. Keep the light and transport unchanged, and use
+        // the same +8 EV for clear, blocked, restored and reference profiles.
+        Camera->PostProcessSettings.AutoExposureBias+=8;
     if(waterView&&((variant&4)||variant>=8)) Camera->PostProcessSettings.WeightedBlendables.Array.Reset();
     if(waterView&&variant>=8)
     {

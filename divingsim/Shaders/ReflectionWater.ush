@@ -167,7 +167,9 @@ float3 DiveIntegrateReflectionWater(RaytracingAccelerationStructure SceneTLAS,fl
 #elif DIVE_REFLECTION_PROFILE == 6
     // Diagnostic only: green = mapped directional shadows, red = ray fallback.
     float coverage=shadowStats.x>0 ? shadowStats.y/shadowStats.x : 0;
-    return float3(1-coverage,coverage,0)*10000*View.PreExposure;
+    // Fixed pre-exposed display signal: world-radiance scaling washed out the
+    // diagnostic at the higher exposure needed to measure physical moonlight.
+    return float3(1-coverage,coverage,0);
 #else
     return radiance*transmittance+scattering*View.PreExposure;
 #endif

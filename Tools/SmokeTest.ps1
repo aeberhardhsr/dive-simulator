@@ -20,8 +20,9 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$ReflectionTransportStudy,
     [switch]$ReflectionTransportControl,
     [switch]$ReflectionUnified,
-    [ValidateSet('full','cached','vsm','vsm-fallback','vsm-coverage','vsm-path')][string]$ReflectionProfile='full',
+    [ValidateSet('full','unshadowed','cached','vsm','vsm-fallback','vsm-coverage','vsm-path')][string]$ReflectionProfile='full',
     [switch]$WaterInspectionLamp,
+    [ValidateSet('none','sun','moon','missing','ambiguous')][string]$ReflectionShadowProbe='none',
     [switch]$HabitatClose, [switch]$NoRockAprons, [switch]$NoRockRubble, [switch]$SparseGravel, [switch]$LegacyRockSurface, [switch]$LegacyPlantPlacement, [switch]$HabitatLowView, [switch]$LegacyRockPose,
     [switch]$LegacyTalus, [switch]$NoPlantUnderstory, [switch]$UnlimitedPlants, [switch]$LegacyFormations, [switch]$FormationView, [switch]$FootDeposits, [switch]$NoFootDeposits, [switch]$ImmediateGravelBuild, [switch]$ImmediatePopulationBuild,
     [ValidateRange(0,1)][double]$FogScatterGain=1, [ValidateRange(0,1)][double]$ViewScatterGain=1,
@@ -109,6 +110,17 @@ if($LightIsolation -eq 'function') {$consoleCommands+='ShowFlag.LightFunctions 0
 if($DisableVolumetrics) { $consoleCommands+='r.VolumetricFog 0' }
 if($NoReflectionScreenTraces) { $consoleCommands+='r.Lumen.Reflections.ScreenTraces 0' }
 if($ReflectionTransportStudy) { $consoleCommands+='r.Lumen.HardwareRayTracing.Inline 0' }
+if($ReflectionProfile -eq 'vsm-coverage') {
+    # Pure usage data, without primary-view fog mixing into the red/green code.
+    # Keep the native medium/CVar enabled so reflected sampling still executes.
+    $consoleCommands+='ShowFlag.Fog 0'
+}
+if($ReflectionShadowProbe -eq 'missing') { $consoleCommands+='r.Shadow.Virtual.Enable 0' }
+if($ReflectionShadowProbe -eq 'moon') {
+    # The +8 EV measurement camera needs the cache's FP16 range centred on
+    # nighttime radiance too. This changes storage scaling, not light intensity.
+    $consoleCommands+='r.EyeAdaptation.CachedLightingPreExposure 0'
+}
 if($FogComposition -ne -1) { $consoleCommands+='r.Fog.SeparateComposition '+$FogComposition }
 if($DisableLightShafts) { $consoleCommands+='ShowFlag.LightShafts 0' }
 if($DisableFogDepthCulling) { $consoleCommands+='r.VolumetricFog.ConservativeDepth 0' }
@@ -201,6 +213,12 @@ if($WaterlineNoSurface) {
 if($WaterlineSweep) {
     if(-not $WaterlinePose -or $WaterlineNoSurface) {throw 'WaterlineSweep requires a visible waterline comparison.'}
     $arguments+=' -DiveWaterlineSweep'
+}
+if($ReflectionShadowProbe -ne 'none') {
+    if(-not $ReflectionTransportStudy -or -not $WaterView -or $WaterlinePose -or $WaterStart -ne 0 -or $WaterEnd -ne 0) {
+        throw 'ReflectionShadowProbe requires reflection transport, WaterView state 0 and no WaterlinePose.'
+    }
+    $arguments+=' -DiveReflectionShadowProbe='+$ReflectionShadowProbe
 }
 if($WaterlineFogDistance) {
     if(-not $WaterlinePose -or $WaterlineFogDistance -lt 2000) {throw 'WaterlineFogDistance requires WaterlinePose and at least 2000 cm.'}
