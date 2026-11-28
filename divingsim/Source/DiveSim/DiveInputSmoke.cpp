@@ -42,7 +42,6 @@ void ADivePawn::InputSmokeTick(float Dt)
     if(!pc||!hud) return;
     if(SmokeScenario==TEXT("land-detail"))
     {
-#if WITH_EDITOR
         const bool boundaryProbe=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeBoundaryProbe"));
         const bool turnWalk=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeTurnWalk"));
         auto fail=[&](const TCHAR* reason)
@@ -161,9 +160,6 @@ void ADivePawn::InputSmokeTick(float Dt)
             UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_PASS distance_m=%.4f samples=%d two_way_seam=1"),Simulation.Data.DistanceMetres,TestLessonStage);
             UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS land_detail=1"));FPlatformMisc::RequestExitWithStatus(false,0);
         }
-#else
-        FPlatformMisc::RequestExitWithStatus(false,1);
-#endif
         return;
     }
     if(SmokeScenario==TEXT("ui"))

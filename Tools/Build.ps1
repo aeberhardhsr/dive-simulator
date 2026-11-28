@@ -7,6 +7,7 @@ param(
     [switch]$RefreshSources,
     [switch]$BoundaryStudy,
     [switch]$ResidentStudy,
+    [switch]$LandscapePilot,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
     [ValidatePattern('^[A-Za-z0-9_]{0,24}$')][string]$BuildSlot='',
     [switch]$OnlyEnvironment,
@@ -40,6 +41,7 @@ param(
 $ErrorActionPreference = 'Stop'
 if($RefreshSources -and $Target -notin @('Editor','Game')) {throw 'RefreshSources applies to Editor or Game compilation.'}
 if($ResidentStudy -and $Target -notin @('LandscapeFallback','LandscapeFallbackCheck')) {throw 'ResidentStudy requires LandscapeFallback or LandscapeFallbackCheck.'}
+if($LandscapePilot -and ($ResidentStudy -or $BoundaryStudy -or $Target -notin @('LandscapeFallback','LandscapeFallbackCheck','Package'))) {throw 'LandscapePilot requires LandscapeFallback, LandscapeFallbackCheck or Package without other study flags.'}
 $repo = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $repo 'divingsim/divingsim.uproject'
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
@@ -111,6 +113,7 @@ if ($Target -eq 'Content') {
     $landOptions=@()
     if($BoundaryStudy) { $landOptions+='-BoundaryStudy' }
     if($ResidentStudy) { $landOptions+='-ResidentStudy' }
+    if($LandscapePilot) { $landOptions+='-LandscapePilot' }
     if($Target -in @('LandscapeFallback','LandscapeFallbackCheck')) { $landOptions+='-FallbackStudy' }
     if($Target -eq 'LandscapeFallbackCheck') { $landOptions+='-VerifyOnly' }
     if($Target -eq 'LandscapeFallbackAudit') { $landOptions+='-FallbackAudit' }
@@ -118,6 +121,10 @@ if ($Target -eq 'Content') {
     if($Target -in @('LandscapeDetail','LandscapeDetailCheck')) { $landOptions+='-DetailStudy' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' -unattended -nullrhi -nosplash '-log=LandscapeBuild.log' @landOptions
 } elseif ($Target -eq 'Package') {
+    if($LandscapePilot) {
+        & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveLandscapeBake' '-LandscapePilot' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=LandscapePilotCheck.log'
+        if($LASTEXITCODE -ne 0) {throw 'Landscape pilot assets/data failed verification.'}
+    }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveCoastBake' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=CoastCheck.log'
     if ($LASTEXITCODE -ne 0) { throw 'Coast assets are missing or stale; run -Target Editor and -Target Coast.' }
     & "$EngineRoot/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" $project '-run=DiveBuildingsBake' '-VerifyOnly' -unattended -nullrhi -nosplash '-log=BuildingsCheck.log'
@@ -132,6 +139,9 @@ if ($Target -eq 'Content') {
 if ($LASTEXITCODE -ne 0) { throw "Unreal $Target failed with exit code $LASTEXITCODE" }
 if($Target -eq 'Package') {
     Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartDiveSimulator.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
+    if($LandscapePilot) {
+        Copy-Item -LiteralPath (Join-Path $repo 'Tools/StartLandscapePilot.cmd') -Destination (Join-Path $PackageDirectory 'Start-DiveSimulator.cmd')
+    }
     Copy-Item -LiteralPath (Join-Path $repo 'Tools/WaterPreviewLauncher.cmd') -Destination (Join-Path $PackageDirectory 'Start-WaterPreview.cmd')
     # Keep scenario-data attribution readable without extracting the game pak.
     Copy-Item -LiteralPath (Join-Path $repo 'divingsim/Content/Diving/Geodata/TEMPERATURE_NOTICE.txt') -Destination (Join-Path $PackageDirectory 'TEMPERATURE_NOTICE.txt')

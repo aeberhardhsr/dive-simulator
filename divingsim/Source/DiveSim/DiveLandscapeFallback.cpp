@@ -163,7 +163,9 @@ int32 BakeLandscapeResidentStudy(const FString& Params)
         const FString path=TEXT("/Game/Diving/LandscapeStudy/")+FString(name)+TEXT(".")+name;
         TStrongObjectPtr<UStaticMesh> source(LoadObject<UStaticMesh>(nullptr,*path));
         if(!source||!source->IsHiResMeshDescriptionValid()) return 1;
-        const FString packageName=ResidentPackage(source.Get()),key=FallbackStudyKey(source.Get())+TEXT(":resident-v1");
+        const bool pilot=FParse::Param(*Params,TEXT("LandscapePilot"));
+        const FString packageName=pilot?TEXT("/Game/Diving/LandscapePilot/")+FString(name).RightChop(9):ResidentPackage(source.Get());
+        const FString key=FallbackStudyKey(source.Get())+TEXT(":resident-v1");
         UPackage* package=CreatePackage(*packageName);package->FullyLoad();
         const FString assetName=FPackageName::GetLongPackageAssetName(packageName);
         auto* mesh=FindObject<UStaticMesh>(package,*assetName);

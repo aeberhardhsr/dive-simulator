@@ -8,9 +8,7 @@
 
 bool FDiveTerrain::Load()
 {
-#if WITH_EDITOR
     LandscapeDetail=Dive::SurfaceGrid{};
-#endif
     Mosaic.Tiles.clear(); Entries.Reset(); Overview.Reset(); LoadedTiles=0; Error.Empty();
     const FString folder=FPaths::ProjectContentDir()/TEXT("Diving/Geodata");
     FString text;
@@ -188,7 +186,6 @@ bool FDiveTerrain::InShorePatch(double X,double Y,double MarginMetres) const
 }
 bool FDiveTerrain::SampleGround(double X,double Y,float& Z) const
 {
-#if WITH_EDITOR
     if(!LandscapeDetail.Heights.empty())
     {
         const double east=OriginEast+Y/100,north=OriginNorth+X/100;
@@ -200,7 +197,6 @@ bool FDiveTerrain::SampleGround(double X,double Y,float& Z) const
            (!InCoast(X,Y)&&!InShorePatch(X,Y)&&!Sample(X,Y,Z)&&Landscape.SampleTriangle(east,north,height)))
         { Z=static_cast<float>(height*100);return true; }
     }
-#endif
     // Collision uses planar triangles on an integer-metre vertex lattice.
     // Interpolate those planes, rather than a bilinear saddle between vertices.
     const double x=FMath::FloorToDouble(X/100)*100,y=FMath::FloorToDouble(Y/100)*100;

@@ -51,3 +51,5 @@ Reproduktion nach dem in der Vorgängerdokumentation beschriebenen Residency-Bak
 Für den Rückweg ohne Kamerawende `-LandscapeTurnWalk` weglassen. Die Bilder vor dem nächsten Lauf getrennt archivieren, da das Screenshot-Verzeichnis wiederverwendet wird.
 
 [Messdaten und eingefrorene Nachweise](LANDSCAPE_RESIDENT_WALK_RESULTS.json).
+
+Fortsetzung: Der [spielbare Gelände-Pilot](LANDSCAPE_PILOT.md) setzt den beschriebenen nächsten Schritt in einem separaten Windows-Paket um. Die Nachweise dieser Editorstudie bleiben unverändert erhalten.

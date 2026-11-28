@@ -19,6 +19,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$ReflectionRayStudy,
     [switch]$LandscapeResidentStudy,
     [switch]$LandscapeTurnWalk,
+    [switch]$LandscapePilot,
     [switch]$ReflectionTransportStudy,
     [switch]$ProductionWater,
     [switch]$ReflectionTransportControl,
@@ -54,9 +55,10 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
 $ErrorActionPreference='Stop'
 if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStudy requires an editor sandbox; it is not a released package feature.'}
 if($LandscapeDetailView -and ($Packaged -or -not $EditorSandbox -or $Scenario -ne 'shore-preview' -or $BuildingsView -or $GroundView -or $ShoreLookBack)) {throw 'LandscapeDetailView requires a dedicated editor shore-preview.'}
-if($Scenario -eq 'land-detail' -and -not $LandscapeDetailStudy) {throw 'land-detail requires the isolated LandscapeDetailStudy.'}
+if($LandscapePilot -and ($LandscapeDetailStudy -or $LandscapeFallbackStudy -or $LandscapeResidentStudy)) {throw 'LandscapePilot cannot be mixed with editor studies.'}
+if($Scenario -eq 'land-detail' -and -not ($LandscapeDetailStudy -or $LandscapePilot)) {throw 'land-detail requires LandscapeDetailStudy or LandscapePilot.'}
 if($LandscapeBoundaryProbe -and ($Scenario -ne 'land-detail' -or -not $EditorSandbox)) {throw 'LandscapeBoundaryProbe requires editor land-detail.'}
-if($LandscapeTurnWalk -and ($Scenario -ne 'land-detail' -or -not $EditorSandbox -or $LandscapeBoundaryProbe)) {throw 'LandscapeTurnWalk requires editor land-detail without a stationary boundary probe.'}
+if($LandscapeTurnWalk -and ($Scenario -ne 'land-detail' -or (-not $EditorSandbox -and -not ($Packaged -and $LandscapePilot)) -or $LandscapeBoundaryProbe)) {throw 'LandscapeTurnWalk requires editor land-detail or a packaged pilot without a stationary boundary probe.'}
 if($LandscapeResidentStudy -and (-not $LandscapeFallbackStudy -or -not $LandscapeDetailStudy -or -not $EditorSandbox)) {throw 'LandscapeResidentStudy requires both isolated landscape studies in an editor sandbox.'}
 if($LandscapeFallbackStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'LandscapeFallbackStudy requires an editor sandbox.'}
 if($LandscapeDetailStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'LandscapeDetailStudy requires an editor sandbox.'}
@@ -95,6 +97,7 @@ if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
 if($LandscapeDetailView) {$arguments+=' -DiveLandscapeDetailView'}
 if($LandscapeBoundaryProbe) {$arguments+=' -DiveLandscapeBoundaryProbe'}
 if($LandscapeTurnWalk) {$arguments+=' -DiveLandscapeTurnWalk'}
+if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
 if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
@@ -302,7 +305,7 @@ if($LandscapeBoundaryProbe) {
 }
 if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe -and ($log -notmatch 'DIVE_LAND_DETAIL_WALK_PASS' -or $log -match 'DIVE_LAND_DETAIL_WALK_FAIL')) {throw 'Terrain walk failed.'}
 if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe) {
-    $saved=Join-Path (Split-Path $project -Parent) 'Saved/Screenshots'
+    $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
     $stages=@('Start','Inside','Return')
     if($LandscapeTurnWalk) {
         if($log -notmatch 'DIVE_LAND_DETAIL_TURN_WALK_PASS crossings=2 turn_degrees=180') {throw 'Turning terrain walk failed.'}
@@ -320,6 +323,10 @@ if($LandscapeFallbackStudy -and ($log -notmatch 'DIVE_FALLBACK_STUDY_APPLIED til
 if($LandscapeResidentStudy -and ($log -notmatch 'DIVE_RESIDENT_STUDY_APPLIED tile=4_2' -or $log -notmatch 'DIVE_RESIDENT_STUDY_APPLIED tile=5_2')) {throw 'Resident Nanite study was not applied to both tiles.'}
 if($LandscapeDetailStudy -and -not $log.Contains('DIVE_LAND_DETAIL_READY tile=05_02 spacing=2m boundary=32m')) {throw 'Landscape detail study was not validated.'}
 if($LandscapeDetailStudy -and -not $log.Contains('DIVE_LAND_DETAIL_APPLIED tile=05_02 replacements=1')) {throw 'Landscape detail replacement was not applied.'}
+if($LandscapePilot) {
+    if($log -notmatch ('DIVE_LAND_PILOT_READY tiles=2 spacing=2m root_pages=1330 budget_pages=2048 cooked='+[int][bool]$Packaged) -or
+       $log -notmatch 'DIVE_LAND_PILOT_APPLIED tile=4_2' -or $log -notmatch 'DIVE_LAND_PILOT_APPLIED tile=5_2') {throw 'Landscape pilot was not validated/applied.'}
+}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and -not $log.Contains('DIVE_SHORE_PREVIEW_CAPTURE warmup='+$ShorePreviewSeconds.ToString('F3',[Globalization.CultureInfo]::InvariantCulture))) {throw 'Requested shore preview warmup was not confirmed.'}
 if($BufferView -ne 'none' -and ($log -match 'view mode not recognized|Debug viewmodes not allowed' -or $log -notmatch ('r.BufferVisualizationTarget = "'+$BufferView+'"'))) {throw 'Requested buffer visualization was not accepted.'}
 if($WaterPreview -and ($log -notmatch 'DIVE_WATER_PREVIEW_READY' -or $log -notmatch 'DIVE_WATER_INTERFACE_PASS' -or $log -notmatch 'DIVE_BOUNDED_WATER_PASS')) {throw 'Water preview was not active.'}

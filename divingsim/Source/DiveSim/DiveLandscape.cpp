@@ -7,6 +7,7 @@
 #include "Serialization/JsonSerializer.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#include "DiveLandscapePilot.h"
 #if WITH_EDITOR
 #include "Engine/Texture2D.h"
 #include "TextureCompiler.h"
@@ -54,6 +55,16 @@ void ADiveWorld::CreateLandscape()
     }
 #endif
     TSet<FIntPoint> visited;
+    UStaticMesh* pilotWest=nullptr;UStaticMesh* pilotEast=nullptr;
+    if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapePilot")))
+    {
+        if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeDetailStudy"))||
+           FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeFallbackStudy"))||
+           FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeResidentStudy")))
+        { fail(TEXT("Landscape pilot cannot be mixed with editor studies"));return; }
+        FString error;
+        if(!LoadLandscapePilot(Terrain,pilotWest,pilotEast,error)) { fail(*error);return; }
+    }
 #if WITH_EDITOR
     UStaticMesh* detailStudy=nullptr;
     int detailApplied=0;
@@ -84,7 +95,10 @@ void ADiveWorld::CreateLandscape()
             FMath::Abs(x-origin.X)>.01||FMath::Abs(y-origin.Y)>.01)
         { fail(TEXT("Landschaftskachel falsch registriert.")); return; }
         visited.Add(key);
-        auto* mesh=LoadObject<UStaticMesh>(nullptr,*path);
+        auto* mesh=pilotWest&&key==FIntPoint(1024,512)?pilotWest:
+            pilotEast&&key==FIntPoint(1280,512)?pilotEast:LoadObject<UStaticMesh>(nullptr,*path);
+        if(mesh&&(mesh==pilotWest||mesh==pilotEast))
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_PILOT_APPLIED tile=%d_%d asset=%s"),key.X/256,key.Y/256,*mesh->GetName());
 #if WITH_EDITOR
         if(detailStudy&&key==FIntPoint(1280,512)) { mesh=detailStudy;++detailApplied; }
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeFallbackStudy"))&&

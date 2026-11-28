@@ -3,6 +3,7 @@
 #if WITH_EDITOR
 #include "DiveTerrain.h"
 #include "DiveLandscapeDetail.h"
+#include "DiveLandscapePilot.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInterface.h"
 #include "MeshDescription.h"
@@ -31,6 +32,7 @@ int32 UDiveLandscapeBakeCommandlet::Main(const FString& Params)
 #else
     FDiveTerrain terrain;
     if(!terrain.Load()) { UE_LOG(LogTemp,Error,TEXT("%s"),*terrain.Error); return 1; }
+    if(FParse::Param(*Params,TEXT("LandscapePilot"))) return BakeLandscapePilot(terrain,Params);
     if(FParse::Param(*Params,TEXT("FallbackAudit"))) return AuditLandscapeFallback(terrain,Params);
     if(FParse::Param(*Params,TEXT("ResidentStudy"))) return BakeLandscapeResidentStudy(Params);
     if(FParse::Param(*Params,TEXT("FallbackStudy"))) return BakeLandscapeFallbackStudy(Params);

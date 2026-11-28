@@ -20,6 +20,7 @@ param(
     [switch]$LandscapeDetailStudy,
     [switch]$LandscapeFallbackStudy,
     [switch]$LandscapeResidentStudy,
+    [switch]$LandscapePilot,
     [switch]$SpectralView,
     [ValidateRange(0,2)][double]$AbsorptionGain=1,
     [switch]$ImmediateGravelRetirement,
@@ -35,6 +36,7 @@ if($EditorSandbox) {$Editor=$true}
 if($FarCliffStudy -and -not $EditorSandbox) {throw 'FarCliffStudy requires an editor sandbox.'}
 if(($LandscapeDetailStudy -or $LandscapeFallbackStudy) -and -not $EditorSandbox) {throw 'Landscape studies require an editor sandbox.'}
 if($LandscapeResidentStudy -and (-not $LandscapeFallbackStudy -or -not $LandscapeDetailStudy -or -not $EditorSandbox)) {throw 'Resident landscape requires both isolated landscape studies.'}
+if($LandscapePilot -and ($LandscapeDetailStudy -or $LandscapeFallbackStudy -or $LandscapeResidentStudy)) {throw 'LandscapePilot cannot be mixed with editor studies.'}
 if($ProductionWater -and ($ReflectionTransportStudy -or $SpectralView)) {throw 'ProductionWater checks the normal cooked profile, not shader experiments.'}
 if($ReflectionTransportStudy -and (-not $EditorSandbox -or -not $WaterPreview)) {throw 'Reflection transport benchmarking requires an editor sandbox and WaterPreview.'}
 if(($ReflectionTransportControl -or $ReflectionUnified) -and -not $ReflectionTransportStudy) {throw 'Reflection routing/control requires ReflectionTransportStudy.'}
@@ -71,6 +73,7 @@ $context=[ordered]@{
     landscape_detail_study=[bool]$LandscapeDetailStudy
     landscape_fallback_study=[bool]$LandscapeFallbackStudy
     landscape_resident_study=[bool]$LandscapeResidentStudy
+    landscape_pilot=[bool]$LandscapePilot
     production_water=[bool]$ProductionWater
     reflection_transport=([bool]$ReflectionTransportStudy -or [bool]$ProductionWater)
     reflection_control=[bool]$ReflectionTransportControl
@@ -135,6 +138,7 @@ if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
 if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
 if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
+if($LandscapePilot) {$arguments+=' -DiveLandscapePilot'}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($ImmediateGravelRetirement) { $arguments+=' -DiveImmediateGravelRetirement' }
 if($ImmediatePopulationRetirement) { $arguments+=' -DiveImmediatePopulationRetirement' }
@@ -186,6 +190,8 @@ if($FarCliffStudy -and -not $log.Contains('DIVE_CLIFF_COVERAGE_PASS texture=T_Cl
 if($LandscapeDetailStudy -and -not $log.Contains('DIVE_LAND_DETAIL_APPLIED tile=05_02 replacements=1')) {throw 'Fine landscape not confirmed in benchmark.'}
 if($LandscapeFallbackStudy -and ($log -notmatch 'DIVE_FALLBACK_STUDY_APPLIED tile=4_2' -or $log -notmatch 'DIVE_FALLBACK_STUDY_APPLIED tile=5_2')) {throw 'Boundary-preserving fallback not confirmed in benchmark.'}
 if($LandscapeResidentStudy -and ($log -notmatch 'DIVE_RESIDENT_STUDY_APPLIED tile=4_2' -or $log -notmatch 'DIVE_RESIDENT_STUDY_APPLIED tile=5_2')) {throw 'Resident Nanite not confirmed in benchmark.'}
+if($LandscapePilot -and ($log -notmatch 'DIVE_LAND_PILOT_READY tiles=2 spacing=2m root_pages=1330 budget_pages=2048' -or
+   $log -notmatch 'DIVE_LAND_PILOT_APPLIED tile=4_2' -or $log -notmatch 'DIVE_LAND_PILOT_APPLIED tile=5_2')) {throw 'Landscape pilot not confirmed in benchmark.'}
 foreach($marker in @('DIVE_IMAGERY_PASS','DIVE_LANDSCAPE_PASS','DIVE_OPTICS_PASS','DIVE_LIGHT_PASS','DIVE_PERF_CAPTURE_BEGIN')) {
     if($log -notmatch $marker) { throw "Missing $marker in $logPath" }
 }

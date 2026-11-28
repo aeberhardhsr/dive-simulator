@@ -1,0 +1,1319 @@
+{
+  "schema": 1,
+  "status": "PLAYABLE_TWO_TILE_PILOT_VALIDATED_NOT_VISUAL_ACCEPTANCE",
+  "created_utc": "2026-11-28T12:55:57.086859+00:00",
+  "base_commit": "b37a54414fbb2d32ab4a29d826734c86442ee6be",
+  "source_dirty_at_build": true,
+  "sources": [
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "bytes": 2955264,
+      "sha256": "af5459488b8037c3f1a49aaef04ad0dd255be79effcbe9db162257cf30d9bf95",
+      "project_file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Documentation/LANDSCAPE_PILOT.md",
+      "bytes": 7468,
+      "sha256": "08c52833740c70326cea442027ff5e00bea888834dcdee3574ce00d52369a6ec",
+      "project_file": "Documentation/LANDSCAPE_PILOT.md"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Documentation/LANDSCAPE_RESIDENT_WALK.md",
+      "bytes": 6591,
+      "sha256": "4f39265f31bf7362374595bb254c7d3d22cb5b533af37f77e0d7bb7d8a370345",
+      "project_file": "Documentation/LANDSCAPE_RESIDENT_WALK.md"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Tools/Benchmark.ps1",
+      "bytes": 20130,
+      "sha256": "a6137f1089a68fba69d7799a3c5b8f0e2a5ea299ea05ad2bc4cddba8f809d65b",
+      "project_file": "Tools/Benchmark.ps1"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Tools/Build.ps1",
+      "bytes": 11713,
+      "sha256": "cfd431a12733bcdd8f5ab3d0bb4f7246a296110da0ad0c2943d78cb955139fc7",
+      "project_file": "Tools/Build.ps1"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Tools/SmokeTest.ps1",
+      "bytes": 44074,
+      "sha256": "d58f70298c01536a303d40797875839c72a84fd03484fddebd11bfd193c02291",
+      "project_file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Tools/StartLandscapePilot.cmd",
+      "bytes": 60,
+      "sha256": "6e4a90612e2e2313b5686cc0fe8971b10e16cc2751600e200f0444d76039438b",
+      "project_file": "Tools/StartLandscapePilot.cmd"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/Tools/TestPackageLauncher.ps1",
+      "bytes": 2645,
+      "sha256": "75a05691b7ec516dcb5573be1dbd550e90786a4ce397906d559cde624a6d6d85",
+      "project_file": "Tools/TestPackageLauncher.ps1"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Content/Diving/Geodata/LandscapePilot/detail_05_02.f32",
+      "bytes": 4202500,
+      "sha256": "e313d4dc7d3627dde630cb3f9ba08df21bc328f3bf8f055cc4cb8fe8a6341e04",
+      "project_file": "divingsim/Content/Diving/Geodata/LandscapePilot/detail_05_02.f32"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Content/Diving/Geodata/LandscapePilot/pilot.json",
+      "bytes": 9412,
+      "sha256": "be02b1242b8b754b94ac60b9938fd3ada4a8a0d04f305010ea3a83096af700ec",
+      "project_file": "divingsim/Content/Diving/Geodata/LandscapePilot/pilot.json"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Content/Diving/LandscapePilot/SM_LandDetail_05_02.uasset",
+      "bytes": 507974049,
+      "sha256": "db5407c7c254ae5db4837dddb59910de92989510251fa5d31c1cb369e18b80e4",
+      "project_file": "divingsim/Content/Diving/LandscapePilot/SM_LandDetail_05_02.uasset"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Content/Diving/LandscapePilot/SM_Land_04_02.uasset",
+      "bytes": 32708720,
+      "sha256": "bc2cba899d670e162aa607218446f1af67f5377bf1601c48b33b5007fa3a1bbf",
+      "project_file": "divingsim/Content/Diving/LandscapePilot/SM_Land_04_02.uasset"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+      "bytes": 44284,
+      "sha256": "7d377fee058940da3c9e14cb61cff4cea339b6442ebb522db0a419408b974895",
+      "project_file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscape.cpp",
+      "bytes": 9419,
+      "sha256": "6a14cf195f49c55ad6afeb6d4406f02bdf2d3d186ae856dd73dac9f0ad579d8c",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscape.cpp"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp",
+      "bytes": 14089,
+      "sha256": "145925c85f8a9a08aaf3241a10b2088bb7c207215d9a5c150369d5e06d2af7ff",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeBakeCommandlet.cpp"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapeFallback.cpp",
+      "bytes": 13893,
+      "sha256": "199e1b5efcbe9b9227f103bc558628c5d4102c7dada9d605f6e16111f716c117",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapeFallback.cpp"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapePilot.cpp",
+      "bytes": 7420,
+      "sha256": "71a60817012d6e7168922d6f6a842d305811cbc5e793ac3f1152bc503ad4640c",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapePilot.cpp"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveLandscapePilot.h",
+      "bytes": 272,
+      "sha256": "86b5c30113d67a2ac0a453cc5c8cf2b2d3f09d3301c6247434abddf5b32f8df7",
+      "project_file": "divingsim/Source/DiveSim/DiveLandscapePilot.h"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveTerrain.cpp",
+      "bytes": 12311,
+      "sha256": "1ccd2c36c0f059eb71ed72c0cec1b307c5f28fee8c69641d4d24873394e64166",
+      "project_file": "divingsim/Source/DiveSim/DiveTerrain.cpp"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Snapshot/divingsim/Source/DiveSim/DiveTerrain.h",
+      "bytes": 2321,
+      "sha256": "d8b13d5ac4d2ea5757803bf04642360f116af3b6859d0643863d81b3fa65375c",
+      "project_file": "divingsim/Source/DiveSim/DiveTerrain.h"
+    }
+  ],
+  "preservation": {
+    "status": "PASS",
+    "original_landscape_and_material_files": 121,
+    "frozen_r3_files": 53,
+    "historical_unique_files": 776
+  },
+  "package": {
+    "root": "Builds/WindowsLandscapePilotR1",
+    "files": [
+      {
+        "file": "Builds/WindowsLandscapePilotR1/BUILDINGS_NOTICE.txt",
+        "bytes": 700,
+        "sha256": "fde15e2a4b30de35cd1c5890c16d7cf5ffeaefa8e1870d756daf6ddf6ee472a6"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/COAST_NOTICE.txt",
+        "bytes": 752,
+        "sha256": "67d611cd459bb117ca11eb859e6c5d61c8cc20e1f33998d91392370e3e97ab2e"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Binaries/Win64/D3D12/x64/D3D12Core.dll",
+        "bytes": 4821064,
+        "sha256": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Binaries/Win64/D3D12/x64/d3d12SDKLayers.dll",
+        "bytes": 4932640,
+        "sha256": "bcec9e1315fb4dbc767371926fb5eb8281de1b3ab1fb530a636b3c193a9a2bbd"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Binaries/Win64/divingsim-LandPilotR1.exe",
+        "bytes": 335119360,
+        "sha256": "22d66365eebab557d0dc8db4b38f27319b3d3dde7e960c3804901ae90a55ce89"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Binaries/Win64/DML/x64/DirectML.dll",
+        "bytes": 18527776,
+        "sha256": "9c9e6d822561c6c41b90e6994b3e8857cf1d66dbfb1e0c4c799c7c89b4e92da1"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Binaries/Win64/tbb12.dll",
+        "bytes": 331776,
+        "sha256": "e6856cefe45a067aaa5fdf033e6fe9704dafe8cf96e648c02230cf0cef0e745f"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Binaries/Win64/tbbmalloc.dll",
+        "bytes": 106496,
+        "sha256": "af20d7ca563e542432b856f6628d9481247197d1853bd4057caaf6c449749d42"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Content/Paks/divingsim-Windows.pak",
+        "bytes": 115733833,
+        "sha256": "792a6697fef4fd7b9b72aa201ad926e413d43e53b1cfd42c18ef211e5f236bdc"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Content/Paks/divingsim-Windows.ucas",
+        "bytes": 1573217120,
+        "sha256": "533c9bccad5319e427233b6a492615984484c579be2e75ac8e2e8a98cd9a5dd5"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Content/Paks/divingsim-Windows.utoc",
+        "bytes": 1242100,
+        "sha256": "ca094fa2a3ba2de79edcd26b95d95bda833a3dc3dc3783306a69fed134a74b1d"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Content/Paks/global.ucas",
+        "bytes": 3245584,
+        "sha256": "9c303afe7d40274632dd189664cea812492d52819f8db98a251fc6bf751002d9"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim/Content/Paks/global.utoc",
+        "bytes": 794,
+        "sha256": "3c680b0bac6a3bf1df2dc58f33fa75c34a6d8034d9a87797a9096e4b12f37294"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/divingsim.exe",
+        "bytes": 173568,
+        "sha256": "71b0109fb4f00919777a7e13348ec18f87fe75408b42f03514e567470f680baf"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/DbgHelp/dbghelp.dll",
+        "bytes": 2221984,
+        "sha256": "4b803d0bfa5d360cfcb3237d260226743d2255eacf6a98615334fb55deb7cf88"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/MsQuic/v220/win64/msquic.dll",
+        "bytes": 2536368,
+        "sha256": "150963f4a05ffddc9a8498ae0ec4ddf5bed762a83b6ad089d2fd8d499101c7ea"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/NVIDIA/NVaftermath/Win64/GFSDK_Aftermath_Lib.x64.dll",
+        "bytes": 5788312,
+        "sha256": "4177e09de4bbcc168deeb4f2d88f8961fe98009fae8046d08b418e725414de42"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Ogg/Win64/VS2015/libogg_64.dll",
+        "bytes": 49152,
+        "sha256": "284a6e70a6dce01f8a02d93e1bb78baf0efb6140459c587d8986d59fb6bd675b"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vorbis/Win64/VS2015/libvorbis_64.dll",
+        "bytes": 1714176,
+        "sha256": "0f66dcb5837e9b59c499277fd272b862043356aa9145802cf0a63e00a1bcca59"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vorbis/Win64/VS2015/libvorbisfile_64.dll",
+        "bytes": 37888,
+        "sha256": "a9d6f5538f44011c1f65d7ace64216a237636717cb0c8c59f4f89cc08dd3d24f"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_api_dump.dll",
+        "bytes": 8150968,
+        "sha256": "a054a2d5f8deb5ea37deb2dfd7a9b9d2ebeead0d180f35ebafe7cbb9e295dc26"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_api_dump.json",
+        "bytes": 13848,
+        "sha256": "9e55221c225dce4b5448bac7dadb7e39fd216f51354dde02e58f950f4a0dd80b"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_crash_diagnostic.dll",
+        "bytes": 2879416,
+        "sha256": "6ad29d193d05c2a08840332a8151b19d484607a2b05eca80295435aed4236f7f"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_crash_diagnostic.json",
+        "bytes": 23055,
+        "sha256": "578bde354874789671dee1a96468c965619c9f3ba16cfa65f850e81a80674087"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_gfxreconstruct.dll",
+        "bytes": 8155576,
+        "sha256": "e830ce115f1364a0706803e225ce6284490dfbc6bfbc9a4654497b24f10063db"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_gfxreconstruct.json",
+        "bytes": 28099,
+        "sha256": "71d4e243a2af74874f4f61378bdfe3753cb01ce5eb9b98400d83612bf882a815"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_profiles.dll",
+        "bytes": 1474488,
+        "sha256": "8a1b11b70d25abb493ebd8f0a42104d0eb6ff1c3522302d0052358006d227ff9"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_profiles.json",
+        "bytes": 66696,
+        "sha256": "6095c28691757e083a8c1bef3c69ca76a8b5017e21acaf55d1bc7e82221a0fbe"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_shader_object.dll",
+        "bytes": 404920,
+        "sha256": "7d6685dc57ef61be1034ba89bd684ba4de5a9d019096e26325a54d2387dac444"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_shader_object.json",
+        "bytes": 4455,
+        "sha256": "18ecafc9a65e1b7af8cd0e36dc936026cdb3aed333c4ea5a7c17d6d9465cfaf4"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_synchronization2.dll",
+        "bytes": 386488,
+        "sha256": "ce94fe27d8ef20f9cdc0cb80c42ae07716762d6da13e4be4631344fb1cf8d2a1"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_synchronization2.json",
+        "bytes": 1910,
+        "sha256": "a1e980a24be9a16a826b00c27d61b85ee0e2e17226dc9c4e8eec031879e5f26a"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_validation.dll",
+        "bytes": 19498424,
+        "sha256": "e7a002edbf2bfcce1106291c5d717b768bd09013ad3b21ffac38c7f9269fe8d3"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Vulkan/Win64/VkLayer_khronos_validation.json",
+        "bytes": 95917,
+        "sha256": "5c464b84457776d92a674de506f7b7a489294583a7d7609f78fcc52bc4406d09"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64/WinPixEventRuntime.dll",
+        "bytes": 58368,
+        "sha256": "81adcfd8253c3489be720da7e30f16004dc9a1f02a8b418c6c3aef4993032e6d"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Binaries/ThirdParty/Windows/XAudio2_9/x64/xaudio2_9redist.dll",
+        "bytes": 847440,
+        "sha256": "0e01f400baa09694cacfd2cfbff0d721c17b56785d2d6e29b6fdd117f70ccc1e"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Config/StagedBuild_divingsim.ini",
+        "bytes": 3,
+        "sha256": "f1945cd6c19e56b3c1c78943ef5ec18116907a4ca1efc40a57d48ab1db7adfc5"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Content/Renderer/TessellationTable.bin",
+        "bytes": 259568,
+        "sha256": "edc4f3b628a139c5e185bbaeca661c95c1f427368d3b92892c5cff36c56dd941"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Content/Slate/Cursor/invisible.cur",
+        "bytes": 326,
+        "sha256": "fef3980fa567e9c45d5d8dcaa432a2c1a3f3bb17fe67d7ab198164f56c142aa1"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Content/SlateDebug/Fonts/LastResort.tps",
+        "bytes": 916,
+        "sha256": "1a89a055e643272d999b80b89e7ae84083bd2bbd5fdd5c131b386fb1056be0d9"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Content/SlateDebug/Fonts/LastResort.ttf",
+        "bytes": 5395052,
+        "sha256": "fff0f8de0b868b964950fe97c9b60f893e9bc85a4f90b3629c5693db058b97b9"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Extras/GPUDumpViewer/GPUDumpViewer.html",
+        "bytes": 195428,
+        "sha256": "eb599b5171e99d7c2e35732abf9525baeb39b9c2ac86619522f307c57cc90384"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Extras/GPUDumpViewer/OpenGPUDumpViewer.bat",
+        "bytes": 879,
+        "sha256": "e8f7ef9c88697041bd87902b76e52558979ca866c7450b1da108a94a027f441b"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Extras/GPUDumpViewer/OpenGPUDumpViewer.sh",
+        "bytes": 2060,
+        "sha256": "36c1b4731dc096b05bea7024259aa375479ba631c44b7f81f1f10d85fcd3d1f3"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Engine/Plugins/NNE/NNERuntimeORT/Binaries/ThirdParty/Onnxruntime/Win64/onnxruntime.dll",
+        "bytes": 17328672,
+        "sha256": "8fba9fd33466c722a077731d46947d009ae20756b18977bb13158a29dd93d80a"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Manifest_DebugFiles_Win64.txt",
+        "bytes": 447,
+        "sha256": "1e2089179d1d441d6a73548976fbf98d7bd7556f76e1643c12ccbc0e1f2f69cd"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Manifest_NonUFSFiles_Win64.txt",
+        "bytes": 2905,
+        "sha256": "62eba54c05939bc4804e184884f076da1593a76e5c403acb4510dd1caffe553a"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Manifest_UFSFiles_Win64.txt",
+        "bytes": 661116,
+        "sha256": "529b06e58d8fa9d56b610e9eb5e37fb27ec7cadc8aff62f09befc222ca822dba"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/NOTICES.txt",
+        "bytes": 111,
+        "sha256": "ba49ae5586f817b36a2772269f71f899cb1f54b5f2720fad951319edd5e140b8"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Start-DiveSimulator.cmd",
+        "bytes": 60,
+        "sha256": "6e4a90612e2e2313b5686cc0fe8971b10e16cc2751600e200f0444d76039438b"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/Start-WaterPreview.cmd",
+        "bytes": 58,
+        "sha256": "0c95e90b705fa7fc63e6a891f38ad0dc9f020aaab84e7047d9ddfd7980afa034"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/TEMPERATURE_NOTICE.txt",
+        "bytes": 964,
+        "sha256": "a5d74ebc24341aa5b3e2e4d63165a168eb9702ce80bcfce1d15e8ee9a47cbc67"
+      },
+      {
+        "file": "Builds/WindowsLandscapePilotR1/VEGETATION_NOTICE.txt",
+        "bytes": 1012,
+        "sha256": "6d5b5a61c764e80bb14a90fe83fb532cf7786800c96c8e4f3497eea1675bd684"
+      }
+    ],
+    "hash_scope": "All files excluding Saved* directories and debug PDBs; keep this package immutable."
+  },
+  "container_check": {
+    "status": "PASS",
+    "pilot_chunks": [
+      {
+        "Filename": "../../../divingsim/Content/Diving/LandscapePilot/SM_Land_04_02.uasset",
+        "ChunkType": "ExportBundleData",
+        "Size": "8743913",
+        "CompressedSize": "3860929",
+        "Hash": "0xdea9d2b3dd04f56b70c6b826c1aa5ef5daf51793"
+      },
+      {
+        "Filename": "../../../divingsim/Content/Diving/LandscapePilot/SM_LandDetail_05_02.uasset",
+        "ChunkType": "ExportBundleData",
+        "Size": "83685591",
+        "CompressedSize": "40604186",
+        "Hash": "0x6b4691dbb153dab462705b11da1741f6e5434eab"
+      },
+      {
+        "Filename": "../../../divingsim/Content/Diving/LandscapePilot/SM_Land_04_02.ubulk",
+        "ChunkType": "BulkData",
+        "Size": "1260918",
+        "CompressedSize": "602031",
+        "Hash": "0xd328a8c139eef12c92820e9835611fbdf031460f"
+      },
+      {
+        "Filename": "../../../divingsim/Content/Diving/LandscapePilot/SM_LandDetail_05_02.ubulk",
+        "ChunkType": "BulkData",
+        "Size": "1297558",
+        "CompressedSize": "653166",
+        "Hash": "0xd9518aa3620a4b81f66b5e1b4b414f6ae4716c6e"
+      }
+    ],
+    "pilot_logical_bytes": 94987980,
+    "pilot_compressed_chunk_bytes": 45720312,
+    "study_mesh_chunks": 0,
+    "total_listed_chunks": 5282,
+    "note": "Mesh chunk payload only; excludes alignment/container overhead and staged geodata. Legacy study geodata is still present in UFS pak."
+  },
+  "launcher": {
+    "finished_utc": "2026-11-28T12:47:16.4439834Z",
+    "status": "PASS",
+    "started_utc": "2026-11-28T12:46:43.7658463Z",
+    "exit_code": 0,
+    "log_sha256": "8908CB9F7C562315F868058A0CE2C88790F18166679F43F37557254944DEC907",
+    "child_id": 63520,
+    "executable_sha256": "22D66365EEBAB557D0DC8DB4B38F27319B3D3DDE7E960C3804901AE90A55CE89",
+    "landscape_pilot": true,
+    "child": "O:\\games\\dive game\\Builds\\WindowsLandscapePilotR1\\divingsim\\Binaries\\Win64\\divingsim-LandPilotR1.exe"
+  },
+  "walk": {
+    "distance_m": 105.3505,
+    "logged_samples": 105,
+    "max_logged_ground_error_cm": 0.0,
+    "crossings": 2,
+    "turn_degrees": 180,
+    "all_six_images_reviewed": true,
+    "scope": "One inland shared boundary; ordinary movement after initial placement. No all-seam or continuous frame visual acceptance."
+  },
+  "regression": {
+    "murg_native_dive": "PASS",
+    "weesen_native_shore": "PASS",
+    "weesen_scope": "Staged fixture including reset for return, not a continuous manual round trip.",
+    "python_tests": 54
+  },
+  "benchmarks": [
+    {
+      "case": "baseline",
+      "summary": {
+        "metadata": {
+          "scenario": "perf-shore",
+          "csv": "O:/games/dive game/Builds/WindowsLandscapePilotR1/divingsim/Saved/Performance/perf-shore_0AEDF40B/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-0+UE5",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 60,
+          "simulation_seconds": 74.9199983254075,
+          "distance_m": 0,
+          "depth_m": 0,
+          "walking": true,
+          "camera_rotation_degrees": {
+            "pitch": -5,
+            "yaw": 89.54458618164062,
+            "roll": 7.981759709111101e-16
+          },
+          "physical_gaze_degrees": {
+            "pitch": -5,
+            "yaw": 449.5445861816406,
+            "roll": 0
+          },
+          "control_rotation_degrees": {
+            "pitch": -5,
+            "yaw": 449.5445760563016,
+            "roll": 0
+          },
+          "eye_world_cm": {
+            "x": 51231.55998047441,
+            "y": 830331.2463976908,
+            "z": 648.8215637207031
+          },
+          "head_yaw_degrees": 0,
+          "body_yaw_degrees": 89.54458618164062,
+          "blocked_pose_steps": 0,
+          "orbit_input": "incremental_6_degrees_per_simulation_second",
+          "water_preview": true,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "legacy_rock_pose": false,
+          "legacy_talus": false,
+          "no_plant_understory": false,
+          "unlimited_plants": false,
+          "legacy_formations": false,
+          "foot_deposits": true,
+          "gravel_staged_build": true,
+          "population_staged_build": true,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "reflection_transport": true,
+          "production_water": true,
+          "reflection_control": false,
+          "reflection_unified": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.Lumen.HardwareRayTracing.Inline": 0,
+          "r.CustomDepth": 3,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-28T12:49:27.0376536Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "water_preview_requested": false,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "legacy_rock_pose": false,
+          "legacy_talus": false,
+          "no_plant_understory": false,
+          "unlimited_plants": false,
+          "legacy_formations": false,
+          "foot_deposits": true,
+          "gravel_staged_build": true,
+          "population_staged_build": true,
+          "spectral_view": false,
+          "absorption_gain": 1.0,
+          "editor_sandbox": false,
+          "sandbox_name": "EditorSandbox",
+          "fpv_probe": false,
+          "far_cliff_study": false,
+          "landscape_detail_study": false,
+          "landscape_fallback_study": false,
+          "landscape_resident_study": false,
+          "landscape_pilot": false,
+          "production_water": true,
+          "reflection_transport": true,
+          "reflection_control": false,
+          "reflection_unified": true,
+          "reflection_profile": "vsm",
+          "requested_pitch": null,
+          "source_head": "b37a54414fbb2d32ab4a29d826734c86442ee6be",
+          "source_dirty": true,
+          "background_processes": [],
+          "host_cpu_before": {
+            "total_core_percent": 679.0,
+            "available": true,
+            "peak_core_percent": 248.0,
+            "logical_processors": 32,
+            "processes_over_tenth_core": 8
+          },
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2536 MiB, 14 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsLandscapePilotR1\\divingsim\\Binaries\\Win64\\divingsim-LandPilotR1.exe",
+          "executable_sha256": "22d66365eebab557d0dc8db4b38f27319b3d3dde7e960c3804901ae90a55ce89",
+          "package_containers": [
+            {
+              "sha256": "792a6697fef4fd7b9b72aa201ad926e413d43e53b1cfd42c18ef211e5f236bdc",
+              "bytes": 115733833,
+              "file": "divingsim-Windows.pak"
+            },
+            {
+              "sha256": "533c9bccad5319e427233b6a492615984484c579be2e75ac8e2e8a98cd9a5dd5",
+              "bytes": 1573217120,
+              "file": "divingsim-Windows.ucas"
+            },
+            {
+              "sha256": "ca094fa2a3ba2de79edcd26b95d95bda833a3dc3dc3783306a69fed134a74b1d",
+              "bytes": 1242100,
+              "file": "divingsim-Windows.utoc"
+            },
+            {
+              "sha256": "9c303afe7d40274632dd189664cea812492d52819f8db98a251fc6bf751002d9",
+              "bytes": 3245584,
+              "file": "global.ucas"
+            },
+            {
+              "sha256": "3c680b0bac6a3bf1df2dc58f33fa75c34a6d8034d9a87797a9096e4b12f37294",
+              "bytes": 794,
+              "file": "global.utoc"
+            }
+          ],
+          "host_cpu_after": {
+            "total_core_percent": 309.0,
+            "available": true,
+            "peak_core_percent": 102.0,
+            "logical_processors": 32,
+            "processes_over_tenth_core": 5
+          }
+        },
+        "frames": 4663,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 59.9780272,
+        "average_fps": 77.74513797279414,
+        "one_percent_low_fps": 64.26037538450264,
+        "frame": {
+          "mean_ms": 12.8625406819644,
+          "p50_ms": 12.7109,
+          "p95_ms": 14.7675,
+          "p99_ms": 15.3588,
+          "max_ms": 16.2081
+        },
+        "game_thread": {
+          "mean_ms": 6.384579841303881,
+          "p50_ms": 6.2977,
+          "p95_ms": 7.2433,
+          "p99_ms": 8.3229,
+          "max_ms": 10.48
+        },
+        "render_thread": {
+          "mean_ms": 12.855957924083208,
+          "p50_ms": 12.6999,
+          "p95_ms": 14.7649,
+          "p99_ms": 15.3433,
+          "max_ms": 16.0683
+        },
+        "rhi_thread": {
+          "mean_ms": 3.692513746515119,
+          "p50_ms": 3.6471,
+          "p95_ms": 4.3039,
+          "p99_ms": 4.8306,
+          "max_ms": 8.0814
+        },
+        "gpu": {
+          "mean_ms": 12.251463821574093,
+          "p50_ms": 12.0365,
+          "p95_ms": 14.0413,
+          "p99_ms": 14.4511,
+          "max_ms": 15.2847
+        },
+        "frames_over_16_67_ms": 0,
+        "frames_over_33_33_ms": 0,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": true,
+        "memory_mb": {
+          "start": 4955.1094,
+          "end": 4932.4688,
+          "max": 4976.0703
+        },
+        "terrain_chunks": {
+          "min": 9.0,
+          "max": 9.0,
+          "frames_below_nine": 0
+        },
+        "distance_m": 0.0,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 3.0286561870040747
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 1.0197699335191936
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.9040541711344628
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 0.8726299806991208
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 0.7421462577739653
+          },
+          {
+            "name": "GPU/Basepass",
+            "mean_ms": 0.7027855457859747
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.6863931160197297
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.5053450568303667
+          },
+          {
+            "name": "GPU/RayTracingScene",
+            "mean_ms": 0.26869877761098004
+          },
+          {
+            "name": "GPU/NaniteBasePass",
+            "mean_ms": 0.2622558438773322
+          },
+          {
+            "name": "GPU/Lights",
+            "mean_ms": 0.25703782972335404
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.2521660947887626
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-134927-033/Capture.csv",
+          "bytes": 10861567,
+          "sha256": "ea3b16e171b25b170b4bcd1af83f61cc5af1aca63716ca4c52ef1058112eb7ab"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-134927-033/Frame.png",
+          "bytes": 2719629,
+          "sha256": "110b511e1d9cd6185c1b35b953c3058857c31a365bbcf02367834b3169bf72b7"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-134927-033/Host.json",
+          "bytes": 2721,
+          "sha256": "9ed1cac065b39cde4de122e94590ebcc212c5108c321c0242867d032939d0c37"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-134927-033/Metadata.json",
+          "bytes": 2508,
+          "sha256": "b45e40937fa2579d6c17316794631180f8e8feea2a78efc64bbd659d9807bd66"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-134927-033/Runtime.log",
+          "bytes": 1788513,
+          "sha256": "71127dfdc90df9dd08dbc3ac8c7a985e397257d2409dd8749f214562bd20ce14"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-134927-033/Summary.json",
+          "bytes": 8056,
+          "sha256": "7581a69e615387751a95fe4e528fe983dd5638cd9def2e007a28a7eca0546899"
+        }
+      ]
+    },
+    {
+      "case": "pilot",
+      "summary": {
+        "metadata": {
+          "scenario": "perf-shore",
+          "csv": "O:/games/dive game/Builds/WindowsLandscapePilotR1/divingsim/Saved/Performance/perf-shore_4A7013AD/Capture.csv",
+          "gpu": "NVIDIA GeForce RTX 3090",
+          "cpu": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+          "engine": "5.8.4-0+UE5",
+          "width": 1920,
+          "height": 1080,
+          "quality": 2,
+          "warmup_seconds": 15,
+          "requested_capture_seconds": 60,
+          "simulation_seconds": 74.83999832719564,
+          "distance_m": 0,
+          "depth_m": 0,
+          "walking": true,
+          "camera_rotation_degrees": {
+            "pitch": -5.000000000000003,
+            "yaw": 89.0579528808594,
+            "roll": 0
+          },
+          "physical_gaze_degrees": {
+            "pitch": -5,
+            "yaw": 449.0579528808594,
+            "roll": 0
+          },
+          "control_rotation_degrees": {
+            "pitch": -5,
+            "yaw": 449.05794179439545,
+            "roll": 0
+          },
+          "eye_world_cm": {
+            "x": 51231.55998047441,
+            "y": 830331.2463976908,
+            "z": 648.8215637207031
+          },
+          "head_yaw_degrees": 0,
+          "body_yaw_degrees": 89.05795288085938,
+          "blocked_pose_steps": 0,
+          "orbit_input": "incremental_6_degrees_per_simulation_second",
+          "water_preview": true,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "legacy_rock_pose": false,
+          "legacy_talus": false,
+          "no_plant_understory": false,
+          "unlimited_plants": false,
+          "legacy_formations": false,
+          "foot_deposits": true,
+          "gravel_staged_build": true,
+          "population_staged_build": true,
+          "water_interface": true,
+          "bounded_water": true,
+          "native_scattering": true,
+          "reflection_transport": true,
+          "production_water": true,
+          "reflection_control": false,
+          "reflection_unified": true,
+          "sediment_born": 0,
+          "sediment_live": 0,
+          "r.ScreenPercentage": 100,
+          "r.SecondaryScreenPercentage.GameViewport": 100,
+          "r.DynamicRes.OperationMode": 0,
+          "r.VSync": 0,
+          "t.MaxFPS": 0,
+          "sg.ViewDistanceQuality": 2,
+          "sg.AntiAliasingQuality": 2,
+          "sg.ShadowQuality": 2,
+          "sg.GlobalIlluminationQuality": 2,
+          "sg.ReflectionQuality": 2,
+          "sg.PostProcessQuality": 2,
+          "sg.TextureQuality": 2,
+          "sg.EffectsQuality": 2,
+          "sg.FoliageQuality": 2,
+          "r.Lumen.HardwareRayTracing": 1,
+          "r.Lumen.HardwareRayTracing.LightingMode": 2,
+          "r.Lumen.HardwareRayTracing.HitLighting.Allowed": 1,
+          "r.Lumen.TranslucencyReflections.FrontLayer.Allow": 1,
+          "r.Lumen.Reflections.ScreenTraces": 1,
+          "r.Lumen.HardwareRayTracing.Inline": 0,
+          "r.CustomDepth": 3,
+          "r.VolumetricFog": 1,
+          "r.VolumetricFog.DepthDistributionScale": 8,
+          "r.VolumetricFog.GridSizeZ": 64,
+          "r.VolumetricFog.GridPixelSize": 16
+        },
+        "host": {
+          "started_utc": "2026-11-28T12:51:09.3532040Z",
+          "editor": false,
+          "disable_nanite": false,
+          "water_preview": true,
+          "water_preview_requested": false,
+          "gravel_immediate_retirement": false,
+          "population_immediate_retirement": false,
+          "legacy_rock_pose": false,
+          "legacy_talus": false,
+          "no_plant_understory": false,
+          "unlimited_plants": false,
+          "legacy_formations": false,
+          "foot_deposits": true,
+          "gravel_staged_build": true,
+          "population_staged_build": true,
+          "spectral_view": false,
+          "absorption_gain": 1.0,
+          "editor_sandbox": false,
+          "sandbox_name": "EditorSandbox",
+          "fpv_probe": false,
+          "far_cliff_study": false,
+          "landscape_detail_study": false,
+          "landscape_fallback_study": false,
+          "landscape_resident_study": false,
+          "landscape_pilot": true,
+          "production_water": true,
+          "reflection_transport": true,
+          "reflection_control": false,
+          "reflection_unified": true,
+          "reflection_profile": "vsm",
+          "requested_pitch": null,
+          "source_head": "b37a54414fbb2d32ab4a29d826734c86442ee6be",
+          "source_dirty": true,
+          "background_processes": [],
+          "host_cpu_before": {
+            "available": true,
+            "total_core_percent": 243.0,
+            "logical_processors": 32,
+            "peak_core_percent": 94.0,
+            "processes_over_tenth_core": 4
+          },
+          "gpu_before": [
+            "name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%]",
+            "NVIDIA GeForce RTX 3090, 617.14, 24576 MiB, 2536 MiB, 20 %"
+          ],
+          "executable": "O:\\games\\dive game\\Builds\\WindowsLandscapePilotR1\\divingsim\\Binaries\\Win64\\divingsim-LandPilotR1.exe",
+          "executable_sha256": "22d66365eebab557d0dc8db4b38f27319b3d3dde7e960c3804901ae90a55ce89",
+          "package_containers": [
+            {
+              "bytes": 115733833,
+              "file": "divingsim-Windows.pak",
+              "sha256": "792a6697fef4fd7b9b72aa201ad926e413d43e53b1cfd42c18ef211e5f236bdc"
+            },
+            {
+              "bytes": 1573217120,
+              "file": "divingsim-Windows.ucas",
+              "sha256": "533c9bccad5319e427233b6a492615984484c579be2e75ac8e2e8a98cd9a5dd5"
+            },
+            {
+              "bytes": 1242100,
+              "file": "divingsim-Windows.utoc",
+              "sha256": "ca094fa2a3ba2de79edcd26b95d95bda833a3dc3dc3783306a69fed134a74b1d"
+            },
+            {
+              "bytes": 3245584,
+              "file": "global.ucas",
+              "sha256": "9c303afe7d40274632dd189664cea812492d52819f8db98a251fc6bf751002d9"
+            },
+            {
+              "bytes": 794,
+              "file": "global.utoc",
+              "sha256": "3c680b0bac6a3bf1df2dc58f33fa75c34a6d8034d9a87797a9096e4b12f37294"
+            }
+          ],
+          "host_cpu_after": {
+            "available": true,
+            "total_core_percent": 353.0,
+            "logical_processors": 32,
+            "peak_core_percent": 100.0,
+            "processes_over_tenth_core": 6
+          }
+        },
+        "frames": 4672,
+        "discarded_boundary_frames": 2,
+        "measured_seconds": 59.9743034,
+        "average_fps": 77.90002943160488,
+        "one_percent_low_fps": 64.2200292979972,
+        "frame": {
+          "mean_ms": 12.836965625,
+          "p50_ms": 12.6957,
+          "p95_ms": 14.7551,
+          "p99_ms": 15.2748,
+          "max_ms": 16.6065
+        },
+        "game_thread": {
+          "mean_ms": 6.233984011130137,
+          "p50_ms": 6.1706,
+          "p95_ms": 6.8537,
+          "p99_ms": 8.304,
+          "max_ms": 10.4908
+        },
+        "render_thread": {
+          "mean_ms": 12.830815303938357,
+          "p50_ms": 12.7018,
+          "p95_ms": 14.7354,
+          "p99_ms": 15.2727,
+          "max_ms": 16.5906
+        },
+        "rhi_thread": {
+          "mean_ms": 3.519629944349315,
+          "p50_ms": 3.4987,
+          "p95_ms": 4.0076,
+          "p99_ms": 4.3568,
+          "max_ms": 6.9009
+        },
+        "gpu": {
+          "mean_ms": 12.224511065924657,
+          "p50_ms": 12.0197,
+          "p95_ms": 14.0488,
+          "p99_ms": 14.4737,
+          "max_ms": 15.4473
+        },
+        "frames_over_16_67_ms": 0,
+        "frames_over_33_33_ms": 0,
+        "frames_over_100_ms": 0,
+        "all_frames_within_30fps_budget": true,
+        "memory_mb": {
+          "start": 4956.1094,
+          "end": 4941.7852,
+          "max": 4985.4258
+        },
+        "terrain_chunks": {
+          "min": 9.0,
+          "max": 9.0,
+          "frames_below_nine": 0
+        },
+        "distance_m": 0.0,
+        "top_gpu_passes_ms_not_additive": [
+          {
+            "name": "GPU/ShadowDepths",
+            "mean_ms": 3.028943450342466
+          },
+          {
+            "name": "GPU/VolumetricCloudShadow",
+            "mean_ms": 0.9886398758561644
+          },
+          {
+            "name": "GPU/Unaccounted",
+            "mean_ms": 0.900711558219178
+          },
+          {
+            "name": "GPU/NaniteVisBuffer",
+            "mean_ms": 0.8819339469178082
+          },
+          {
+            "name": "GPU/LumenReflections",
+            "mean_ms": 0.7386202482876713
+          },
+          {
+            "name": "GPU/Basepass",
+            "mean_ms": 0.7014519049657534
+          },
+          {
+            "name": "GPU/TemporalSuperResolution",
+            "mean_ms": 0.6865513698630137
+          },
+          {
+            "name": "GPU/ShadowProjection",
+            "mean_ms": 0.5079322345890411
+          },
+          {
+            "name": "GPU/RayTracingScene",
+            "mean_ms": 0.27067630565068496
+          },
+          {
+            "name": "GPU/NaniteBasePass",
+            "mean_ms": 0.25999066780821917
+          },
+          {
+            "name": "GPU/Lights",
+            "mean_ms": 0.2574412885273973
+          },
+          {
+            "name": "GPU/LumenSceneUpdate",
+            "mean_ms": 0.2555149186643836
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-135109-348/Capture.csv",
+          "bytes": 10888117,
+          "sha256": "6c1af71862f4577991aaf66e6622aabd35e2a164f7a00a0bf3946618d41768bf"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-135109-348/Frame.png",
+          "bytes": 2755920,
+          "sha256": "c81a893ad88b5d6824bf2dd60093ac7286f8dfb878a8c93588f4a82faf698abd"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-135109-348/Host.json",
+          "bytes": 2719,
+          "sha256": "ace275e10abbb1becb57c963ec55474b5c7bda925e42d26b833b114c36d260b5"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-135109-348/Metadata.json",
+          "bytes": 2504,
+          "sha256": "de7f6dfcf9f03e5fec545260ce54682a656df8d0f470f8826088fec8f90c1cdb"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-135109-348/Runtime.log",
+          "bytes": 1792188,
+          "sha256": "e5174a6560d9d3784612c05b6cc9bf7163c708aae2aba788988175de0a3173fa"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-135109-348/Summary.json",
+          "bytes": 8045,
+          "sha256": "8611e40348b05594fa25d650cb90c2f11741bd014e5866fae932767d85b3d009"
+        }
+      ]
+    }
+  ],
+  "memory_comparison": [
+    {
+      "case": "perf-shore-1080p-q2-20261128-134927-033",
+      "fps": 77.74513797279414,
+      "gpu": {
+        "mean_ms": 12.251463821574093,
+        "p50_ms": 12.0365,
+        "p95_ms": 14.0413,
+        "p99_ms": 14.4511,
+        "max_ms": 15.2847
+      },
+      "memory_mb": {
+        "start": 4955.1094,
+        "end": 4932.4688,
+        "max": 4976.0703
+      },
+      "root_pool": {
+        "NaniteStreaming/RootAllocationMB": {
+          "min": 48.0,
+          "max": 48.0,
+          "mean": 48.0
+        },
+        "NaniteStreaming/RootDataSizeMB": {
+          "min": 40.6562,
+          "max": 40.6562,
+          "mean": 40.6562
+        }
+      }
+    },
+    {
+      "case": "perf-shore-1080p-q2-20261128-135109-348",
+      "fps": 77.90002943160488,
+      "gpu": {
+        "mean_ms": 12.224511065924657,
+        "p50_ms": 12.0197,
+        "p95_ms": 14.0488,
+        "p99_ms": 14.4737,
+        "max_ms": 15.4473
+      },
+      "memory_mb": {
+        "start": 4956.1094,
+        "end": 4941.7852,
+        "max": 4985.4258
+      },
+      "root_pool": {
+        "NaniteStreaming/RootAllocationMB": {
+          "min": 96.0,
+          "max": 96.0,
+          "mean": 96.0
+        },
+        "NaniteStreaming/RootDataSizeMB": {
+          "min": 82.1562,
+          "max": 82.1562,
+          "mean": 82.1562
+        }
+      }
+    }
+  ],
+  "benchmark_scope": "One pair, same packaged binary at 1080p Q2, 15s warmup + 60s orbit; original 8m geometry versus opt-in two-tile pilot. No statistical speedup or long-session claim.",
+  "visual_review": {
+    "pilot_walk": "Six closed-boundary keyframes; angular westward material/shading patch persists.",
+    "regression": "Two Murg dive images and one Weesen shore image reviewed.",
+    "benchmark": "Both endframes reviewed: coarse transitions and floating trees remain visible in both."
+  },
+  "open_items": [
+    "Above-water material transitions, foliage grounding/density, rock and shore detail.",
+    "Other tile boundaries and physical wall-body collision remain unverified.",
+    "Large editor assets; legacy study geodata still staged in UFS.",
+    "Historical CPU/GC hitches are not resolved by this short pair without hitches."
+  ],
+  "evidence": [
+    {
+      "file": "artifacts/above-water-pilot-20261128/BenchBaseline.log",
+      "bytes": 185,
+      "sha256": "296edf41bf042a57aa0b350c4beaa2907a603eb289aeb538a9363e69e78adeec"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/BenchPilot.log",
+      "bytes": 185,
+      "sha256": "7c010e729b723cabef10f0a14b16487a7466e75dfe8c5093f47da9083edf031f"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/ContainerCheck.json",
+      "bytes": 1409,
+      "sha256": "bfd5938cb8042c229168e7b67fa28231cc95d9f7b29bdd8fad024f87d6784eb9"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/EditorBuild-r2.log",
+      "bytes": 2579,
+      "sha256": "d18000958c899c68ab108c2439b08fd3a7c12b1ca3f6bd0f5d737edf27eeeaf4"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/EditorBuild.log",
+      "bytes": 46318,
+      "sha256": "ddb80cf92825c160795ece1eb1f3014bf96780873909ab002756962703d445c3"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/freeze.py",
+      "bytes": 7247,
+      "sha256": "1adbd81dded23cca0adffc15b76345cd8d6d8b8eee5af002122a0be7fb1b460d"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/IoStore.csv",
+      "bytes": 1469984,
+      "sha256": "544187b7b7c8bcbea56cc1f293aee635035af017c79efc81b4683bdd5ea5c97a"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/IoStoreList.log",
+      "bytes": 458,
+      "sha256": "e0967180f869c2bcaf0f0fc2ab7fb8a5d03e335587e46919e88380e5794e41e5"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Launcher/DiveSmoke_1_dive.png",
+      "bytes": 882320,
+      "sha256": "238962d7d54a9f79bbbbafc1ebaf6aa317ecd9a0a906da8f98a104167d58fac9"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Launcher/DiveUnderwater_1_dive.png",
+      "bytes": 1419896,
+      "sha256": "1a8a8633d90b8d26b644a8e9e872382e6bcf023cc65a0be36d501b4f70433819"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Launcher/Launcher.json",
+      "bytes": 497,
+      "sha256": "c64416e1712d2e465c356acc71f0393618939b07d20ae3e83ef3df48aafcd3ff"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Launcher/Launcher.log",
+      "bytes": 299922,
+      "sha256": "8908cb9f7c562315f868058a0ce2c88790f18166679f43f37557254944dec907"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/LauncherRunner.log",
+      "bytes": 80,
+      "sha256": "8667f307e29aa10135a16a6b999995ea9378dda6a945e1c9a23880f003f01ebd"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/LocalTests.log",
+      "bytes": 158,
+      "sha256": "b6ed3c4bcdff24d9b51e235c3efa188c8e5f016627cbc743475f73e17e956687"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/MemoryComparison.json",
+      "bytes": 1283,
+      "sha256": "812886dd508b313ba64bce9f42b0749a6c62cc73e5ce6b6ade2f45967ab7b027"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageBuild.log",
+      "bytes": 338740,
+      "sha256": "5d6fed77bd8f3f3d8d037efc1bcac33089bc7f1259ca6ffba5488bc3bf389298"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/LandDetail_CrossEast.png",
+      "bytes": 2803756,
+      "sha256": "b8440b6fc65fe83aefad1ba8815da282dd0c284b004ac4158b2b982775731ca1"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/LandDetail_CrossWest.png",
+      "bytes": 2892744,
+      "sha256": "bd3937dd5840f2e7b2a81c38f822dfeb014e2917987bb058850952992b3f4b98"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/LandDetail_Inside.png",
+      "bytes": 2917820,
+      "sha256": "f3c84be827424d77ce8c66614383dee48c9d78c39eee0ed86acef05d198579cc"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/LandDetail_Return.png",
+      "bytes": 2920973,
+      "sha256": "e5b936f4ee76cadd253bd62dd8e9fa2e63680741fbbcddeca71949c5e3a43b7f"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/LandDetail_Start.png",
+      "bytes": 2938907,
+      "sha256": "68e6eba1afe2c6bfc62cf7563c59977fabcee1220cad1d2aee754493e2c53904"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/LandDetail_Turn.png",
+      "bytes": 3193862,
+      "sha256": "6931003dca23d86c7ed859c2c405da8b5397fec2ace1d870751e14c4314fcc29"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/Runner.log",
+      "bytes": 459,
+      "sha256": "1da556480c774049b6aa7009fda7c02a462b95b0166b9e15dd827a4da3484203"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PackageWalk/Runtime.log",
+      "bytes": 1873272,
+      "sha256": "b0af7006ff94c8e6d85b5266a0684026d38d673c126614fb3e0b2922613dbc62"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PakList.log",
+      "bytes": 725471,
+      "sha256": "cddc8f2ba01a6112eeaa25974b7820b1f24c42ed5738cc93d5ada2d3287c8317"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PilotBake.log",
+      "bytes": 22502,
+      "sha256": "ebff558ab1ae588ead62037085141b2c0ee9104a8907b7c864a59418af29e124"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/PowerShellParse.log",
+      "bytes": 110,
+      "sha256": "e45a3b092983b187b2905909c41b7d99ef0eeb29ba73594f66f88c1fd1755b1b"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Preservation.json",
+      "bytes": 134,
+      "sha256": "44be9a43e3a67ec9fc9eecd5030caae26e77a9799837f68b2418c3eb4c895ac5"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Weesen/DiveSmoke_0_shore.png",
+      "bytes": 1897869,
+      "sha256": "8c5c4ace84cef872d20cf67e2ffd3174b8674a9019ffbf956a427780f508f98f"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Weesen/Runner.log",
+      "bytes": 2053,
+      "sha256": "1f8faffe4b026b7327cc088523b5bea1b25a50fefc51f67600522957d1930332"
+    },
+    {
+      "file": "artifacts/above-water-pilot-20261128/Weesen/Runtime.log",
+      "bytes": 905436,
+      "sha256": "0480b08c5f62848f32e87b4a1dd4da35b29d471a21b5d220b03c5382477d004d"
+    }
+  ]
+}
