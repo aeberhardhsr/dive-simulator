@@ -497,7 +497,11 @@
   "remaining": [
     "Targeted visible terrain continuity during cell transitions, bound to this package.",
     "Unverified full route sequence portions, especially Mols; user reports Murg/Weesen tested without flashes or control problems.",
-    "Two-hour rendered soak launched on unchanged R3; completion and separate memory/image review pending. This does not close rounds 3 or 4."
+    "Two-hour R3 soak completed with 55.76 FPS on its distinct route. Positive private-memory trend and background transition remain open; short-route numerical passes are not a full-scene performance guarantee."
   ],
-  "scope": "No rendering or quality changes between baseline and confirmation. No before/after speed-up claim. No global 60 FPS guarantee. Round 4 is not accepted by this report."
+  "scope": "No rendering or quality changes between baseline and confirmation. No before/after speed-up claim. No global 60 FPS guarantee. Round 4 is not accepted by this report.",
+  "soak_review": {
+    "file": "Documentation/UNDERWATER_FINISH_SOAK_R3.json",
+    "sha256": "ac47ce20c086950a1293b350440cc8928e701704ed63e88d9c00311bb1b2da63"
+  }
 }
