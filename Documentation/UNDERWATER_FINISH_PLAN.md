@@ -102,6 +102,7 @@ Diese Punkte blockieren die gestalterische Unterwasser-Abnahme und den anschlies
 | UW-LATER-05 | Weitere Hardware, durchgehende 60 FPS in allen Szenen, 1440p/4K und macOS-Grafikgleichwertigkeit | Anforderungen erhalten; heutige lokale Windows-Messungen nicht als globale Erfüllung ausgeben |
 | UW-LATER-06 | Vollständige reale Maus-/FPV-Ergonomieabnahme und zusätzliche Menü-/HUD-Wünsche | Bestehende UI erhalten und in Iteration 3/5 auf Regression prüfen; umfassende weitere Gestaltung bleibt eigene Arbeit |
 | UW-LATER-07 | Verbliebener heller Saum und kurze breite blaue Streifen direkt beim Grenzflächendurchgang | In Iteration 1 mit altem und korrigiertem Material an festen Simulationszeiten nachgewiesen; Saum vermindert, keine vollständige Fehlerbehebung. Ausdrückliche Abweichung vom ursprünglichen Abschlusskriterium; spätere gezielte Grenzflächenarbeit, keine neue Unterwasser-Gestaltungsrunde |
+| UW-LATER-08 | Software-Ersatzpfad ohne Hardware-Raytracing | Paket R2 startet, zeigt jedoch blaue Unterwasserbänder und deutlich schwächere Reflexionen der Wasserunterseite. Keine Gleichwertigkeit zur abgenommenen Hardware-Darstellung; gesonderte spätere Kompatibilitätsarbeit |
 
 Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_CONTEXT.md), [Originalanforderungen](REQUIREMENTS.csv), [Testorte](TEST_ENTRY_LOCATIONS.md), [Wasserlinienkorrektur](WATERLINE_BLEND.md), [Source-Engine](SOURCE_ENGINE.md), [abgeschlossene Schattenoptimierung](REFLECTION_SHADOW_STUDY.md).
 
@@ -111,6 +112,6 @@ Quellen: [visuelle Vorgabe](VISUAL_TARGET.md), [Anforderungsbasis](REQUIREMENTS_
 | --- | --- | --- |
 | 1 – Wasserlinie | Prüfrunde beendet mit Abweichung | [Übergangsbericht](WATERLINE_SEAM_STUDY.md); ursprüngliches Fehlerfrei-Kriterium nicht erfüllt, Restpunkte ausdrücklich unter UW-LATER-07 vertagt |
 | 2 – Licht-Randfälle | Bestanden | [Licht- und Schattenprüfung](REFLECTION_FINISH_VALIDATION.md); acht Grundkontrollen und vier physische Randfallkontrollen bestanden, vereinigter VSM-Pfad für Paketintegration ausgewählt |
-| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); korrigiertes Paket R2 und gezielter Kameratest bestanden, vollständige Paketserie läuft. Normale Menübedienung und Paketabnahme noch ausstehend |
+| 3 – Spielpaket | In Bearbeitung | [Paketintegration](UNDERWATER_PACKAGE_INTEGRATION.md); R2 liefert 18 native Fälle/84 gesichtete Bilder, fällt jedoch im Sonnen-Schattenvergleich durch. Gezielte Cache-Korrektur im Kontrolllauf bestätigt; separater Kandidat R3 im Aufbau. Normale Menübedienung und Paketabnahme ausstehend |
 | 4 – Leistung | Geplant | Ausstehend |
 | 5 – Stabilität und Übergabe | Geplant | Ausstehend |

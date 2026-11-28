@@ -109,7 +109,18 @@ class FDiveRenderingModule final : public IModuleInterface
         if(DiveReflectionTransportEnabled())
             if(auto* CustomDepth=IConsoleManager::Get().FindConsoleVariable(TEXT("r.CustomDepth"))) CustomDepth->Set(3,ECVF_SetByCode);
         if(DiveProductionWaterEnabled())
+        {
             if(auto* Inline=IConsoleManager::Get().FindConsoleVariable(TEXT("r.Lumen.HardwareRayTracing.Inline"))) Inline->Set(0,ECVF_SetByCode);
+            // UE 5.8 defaults to mode 2, which suppresses geometry-driven
+            // invalidation in coarse directional VSM pages. Water scattering
+            // samples these pages even outside visible opaque receivers. Keep
+            // streamed/moving shadow casters current in cooked games as well.
+            if(auto* Coarse=IConsoleManager::Get().FindConsoleVariable(TEXT("r.Shadow.Virtual.MarkCoarsePagesDirectional")))
+            {
+                Coarse->Set(1,ECVF_SetByCode);
+                UE_LOG(LogTemp,Display,TEXT("DIVE_PRODUCTION_SHADOW_CACHE directional_coarse=%d"),Coarse->GetInt());
+            }
+        }
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveSpectralView"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveSmokeTest"))&&FParse::Param(FCommandLine::Get(),TEXT("DiveWaterPreview")))
         {
             if(auto* CustomDepth=IConsoleManager::Get().FindConsoleVariable(TEXT("r.CustomDepth"))) CustomDepth->Set(3,ECVF_SetByCode);

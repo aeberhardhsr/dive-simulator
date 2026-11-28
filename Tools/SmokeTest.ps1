@@ -331,6 +331,7 @@ if($ProductionWater) {
     $cooked=if($Packaged){1}else{0}
     $hardware=if($DisableRayTracing){0}else{1}
     foreach($marker in @("DIVE_PRODUCTION_WATER_READY cooked=$cooked",'DIVE_REFLECTION_ROUTING_READY unified=1',
+        'DIVE_PRODUCTION_SHADOW_CACHE directional_coarse=1',
         'DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0','DIVE_WATER_SCENE_READY','DIVE_LAKE_FOOTPRINT_READY',
         "DIVE_WATER_PREVIEW_READY smoke=1 hardware=$hardware bounded=1 interface=1 lighting_mode=2")) {
         if(-not $log.Contains($marker)) {throw "Missing normal water configuration: $marker"}

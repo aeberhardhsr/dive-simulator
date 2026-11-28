@@ -30,13 +30,23 @@ Der erste Start meldet zudem einen echten Inhaltsfehler: Der `CelestialVaultDayS
 
 Der gezielte Editor-Nachbau unter `celestial-editor-build.log` bestand mit Exitcode 0 nach 21,84 Sekunden. Das korrigierte Paket `Builds/WindowsUnderwaterFinalCandidateR2` ist ebenfalls erstellt (`production-package-build-r03.log`, Exitcode 0, 3 Minuten 28 Sekunden AutomationTool-Laufzeit). Ein vorübergehender Fehler beim Lesen des lokalen Zen-Speichers wurde durch den eingebauten Wiederholungsversuch überwunden; Cook, Staging und Archivierung endeten erfolgreich. Der [R2-Paketnachweis](PRODUCTION_PACKAGE_R2_EVIDENCE.json) bindet erneut 53 Laufzeitdateien und den korrigierten Engine-Quelltext.
 
-Derselbe Kameratest besteht im korrigierten Paket mit Werkzeug-Exitcode 0, `cooked=1` und ohne den fehlenden Konstruktor-Verweis. Alle drei neuen Bilder wurden neben der Gegenprobe gesichtet; es wurde keine neue sichtbare Änderung durch die Verweiskorrektur festgestellt. Die achtzehnteilige Paketserie gegen R2 hat 17 Fälle mit ihren erwarteten Aufnahmen abgeschlossen. Beim letzten Handgelenkfall besteht die native Funktion, die Aufnahmeliste erwartete jedoch fälschlich zwei statt vier PNGs. `DivePawn.cpp` erzeugt ausdrücklich `DiveUnderwater`, `DiveSmoke`, `WristTexture` und `WristVitals`. Das Werkzeug prüft jetzt alle vier exakten Dateinamen; nur dieser Fall wird wiederholt. Die erste Zurückweisung ist unter `wrist-count-before/RejectedCapture.json` erhalten. Die gesamte Bildsichtung und normale Menübedienung sind noch offen. `WindowsUnderwaterFinalCandidate` bleibt als erster, nicht freigegebener Kandidat erhalten.
+Derselbe Kameratest besteht im korrigierten Paket mit Werkzeug-Exitcode 0, `cooked=1` und ohne den fehlenden Konstruktor-Verweis. Die achtzehnteilige Paketserie gegen R2 liefert nach einer gezielten Wiederholung des Handgelenkfalls alle 84 vorgesehenen Bilder. Der erste Versuch erwartete fälschlich zwei statt der vier ausdrücklich erzeugten Handgelenkbilder; die ursprüngliche Zurückweisung bleibt unter `wrist-count-before/RejectedCapture.json` erhalten. Alle Bilder und 15 ausgewählte Editor-/Paketpaare wurden gesichtet. Der [R2-Prüfbericht](PRODUCTION_PACKAGE_R2_REVIEW.json) bindet beide Läufe, alle Originalbilder und Laufzeitprotokolle. Alle 53 Paketdateien wurden danach erneut gegen den unveränderten R2-Nachweis geprüft.
+
+**R2 ist trotzdem nicht freigegeben:** Der direkte Bildvergleich weist deutlich zu schwache Sonnenabschattung nach. `CAPTURE_PASS` besagt nur, dass der native Ablauf und seine Aufnahmen vollständig sind. Eine erste positive Einschätzung der Abschattung anhand der Einzelbilder war unzutreffend und wurde beim direkten Vergleich korrigiert. Die Mondkontrolle reagiert; ihre +8-EV-Messbelichtung ist ausdrücklich keine normale Nachthelligkeit. Die Uferabläufe, drei Wasserstarts, klare/trübe Sicht, Lampe, Menü/HUD und vier Handgelenkbilder sind vorhanden. Der Softwarepfad startet, zeigt aber blaue Unterwasserbänder und deutlich schwächere Unterseitenreflexionen (UW-LATER-08). UW-LATER-07 bleibt unverändert offen. Die echte Menübedienung wartet weiterhin auf das manuelle Schliessen der Windows-Sicherheitsabfrage.
+
+## Gezielte Schatten-Cache-Korrektur für R3
+
+Der aktuelle Source-Editor reproduziert mit normaler Produktionskonfiguration weiterhin die erwartete Sonnenabschattung. Das Abschalten der Strahl-Ausblendung im Paket und eine Kontrolle mit derselben Qualitätsstufe 2 beheben den Unterschied nicht. Inline-Tracing ist bereits korrekt auf 0 gesetzt; beide Richtungslichter haben Schatten und volumetrische Schatten aktiviert.
+
+Die entscheidende Kontrolle setzt `r.Shadow.Virtual.MarkCoarsePagesDirectional=1`. Der lokale UE-5.8.4-Quelltext in `VirtualShadowMapClipmap.cpp` beschreibt den Standardwert 2 als Modus, der Änderungen der Geometrie für grobe Schattenseiten nicht invalidiert. Mit Wert 1 werden diese Seiten regulär aktualisiert. Die Kontrolle stellt die Abschattung im Paket wieder her: Der Helligkeitsabfall über das gesamte Bild beträgt 48,28 von 255 Stufen gegenüber 48,26 im Editor; R2 ohne Korrektur liefert nur 4,61. Das ist eine Vergleichsmessung des gesamten Bildes, keine isolierte Reflexionsmessung und kein Leistungsnachweis. Alle drei Kontrollbilder wurden neben den Editorbildern gesichtet; Abschattung und anschliessende Wiederherstellung stimmen sichtbar überein. Originaldaten im [Diagnosebericht](PRODUCTION_SHADOW_CACHE_DIAGNOSIS.json).
+
+`DiveRendering` setzt diese Einstellung jetzt ausschliesslich für den normalen Produktions-Wasserpfad und protokolliert den tatsächlichen Wert. Smoke-, Leistungs- und Dauerlaufwerkzeuge verlangen diesen Marker. Der Editor-Nachbau besteht nach 18,19 Sekunden. Ein separater Kandidat `Builds/WindowsUnderwaterFinalCandidateR3` wird gebaut; erst seine nativen Bilder ohne zusätzlichen Konsolen-Override können die integrierte Korrektur bestätigen. R2 und der erste Kandidat bleiben unverändert als historische Gegenproben erhalten.
 
 - `[DiveRendering] ProductionWater=True` wählt auf der separat gepatchten Source-Engine den geprüften Renderweg für normale Starts. Die drei Binding-Versionen müssen vorhanden sein. Die unveränderte installierte Engine erhält dadurch keine inkompatible Szenenstruktur.
 - Wasseroberfläche, begrenztes Volumen, Seegrenzenraster und Reflexionsmaske werden ohne Smoke-/Study-Schalter aktiviert. Das Profil bleibt `unified/vsm` mit ursprünglicher Spielbelichtung und ursprünglichen Lichtintensitäten. Die anderen Lichtmodell-Experimente werden nicht freigegeben.
 - Der Editor und Cooker verwenden die separat vorbereiteten Shader unter `Intermediate/DiveReflectionProduction`. Ein gekochtes Spiel lädt seine enthaltenen Shader und benötigt keine lokalen Engine-Quelldateien oder `Intermediate`-Dateien. Shader-Experimente werden im neuen gekochten Spiel zurückgewiesen; ein Diagnoseprofil darf keinen normalen Start beeinflussen.
 - Die Szenenstruktur bleibt beim Abschalten von Hardware-Raytracing bestehen. Der vorhandene Software-Ersatzpfad muss im Paket gesondert geprüft werden; eine gleichwertige Darstellung ist nicht zugesagt.
-- `Start-DiveSimulator.cmd` startet die Paket-EXE ohne Grafik-Testschalter. Der bisherige Vorschau-Launcher bleibt zusätzlich vorhanden. Der neue Paketordner wird `Builds/WindowsUnderwaterFinalCandidate`; bisherige Paketordner werden nicht ersetzt.
+- `Start-DiveSimulator.cmd` startet die Paket-EXE ohne Grafik-Testschalter. Der bisherige Vorschau-Launcher bleibt zusätzlich vorhanden. Der aktuelle Nachbau verwendet `Builds/WindowsUnderwaterFinalCandidateR3`; bisherige Paketordner werden nicht ersetzt.
 - `SmokeTest.ps1 -ProductionWater` ist ausschliesslich eine Erwartungsprüfung des Testwerkzeugs: Es aktiviert keinen Renderzweig per Kommandozeile. Es verlangt die normalen Laufzeitmarker, Seegrenzen und passende Hardware-/Software-Auswahl.
 
 Die Vorbereitung mit `PrepareReflectionTransport.py --production --unified --profile vsm --project divingsim` wurde ausgeführt. Alle 96 vorbereiteten Shaderdateien stimmen bytegenau mit dem ausgewählten VSM-Versuch überein. Ungültige Produktionsanforderungen (fehlende vereinigte Führung oder Diagnoseprofil) werden abgewiesen. Die geänderten PowerShell-Skripte und alle 43 lokalen Python-Prüfungen bestehen. Die GitHub-Prüfungen des Integrationsstands sind in [Push](https://github.com/aeberhardhsr/dive-simulator/actions/runs/46090206490) und [PR](https://github.com/aeberhardhsr/dive-simulator/actions/runs/46090211200) erfolgreich. **Das ersetzt weder Cook noch Paketstart.**
@@ -49,7 +59,7 @@ Der [Prüfnachweis](PRODUCTION_EDITOR_EVIDENCE.json) bindet Quellen, Konfigurati
 
 ![Erste normale Renderprüfung: zwei Unterwasseransichten und eine Überwasseransicht](Images/ProductionWater_Editor.jpg)
 
-## Noch auszuführen
+## Historische Befehle und verbleibende Prüfung
 
 Der ursprüngliche Editor-Nachbau, der erste Editor-Smoke-Test, Game-Build und erste Package-Schritt aus der folgenden Befehlsfolge sind bestanden. Der erste Paketstart hat die oben beschriebene Korrektur erforderlich gemacht; seine vollständige Paketserie wurde deshalb noch nicht gestartet. Vor der Fortsetzung den gezielten Nachbau und den neuen Kandidaten verwenden, nicht den verworfenen ersten Kandidaten als bestanden behandeln:
 
@@ -61,10 +71,10 @@ Der ursprüngliche Editor-Nachbau, der erste Editor-Smoke-Test, Game-Build und e
 ./Tools/TestProductionWater.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate
 ```
 
-Der obige Block dokumentiert den ersten Integrationsdurchlauf. **Für die weitere Abnahme gilt der korrigierte Kandidat:**
+Der obige Block dokumentiert den ersten Integrationsdurchlauf. **Nach erfolgreichem R3-Nachbau gilt für die weitere Abnahme:**
 
 ```powershell
-./Tools/TestProductionWater.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR2
+./Tools/TestProductionWater.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidateR3
 ```
 
 `Build.ps1` bereitet für die Engine mit VSM-Binding die Produktionsshader automatisch vor, bevor ein Editor/Cooker gestartet wird. Der Smoke-Test soll zunächst belegen, dass Konfiguration, Shader und Szenendaten tatsächlich aktiv sind. Erst nach erfolgreichem Nachbau folgt der Cook.

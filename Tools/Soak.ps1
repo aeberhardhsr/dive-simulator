@@ -38,6 +38,7 @@ $lastProgress=''
 $productionChecked=$false
 function Test-DiveProductionSoakLog([string]$Text) {
     foreach($marker in @('DIVE_PRODUCTION_WATER_READY cooked=1','DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0',
+        'DIVE_PRODUCTION_SHADOW_CACHE directional_coarse=1',
         'DIVE_REFLECTION_ROUTING_READY unified=1','DIVE_WATER_SCENE_READY','DIVE_LAKE_FOOTPRINT_READY',
         'DIVE_WATER_PREVIEW_READY smoke=1 hardware=1 bounded=1 interface=1 lighting_mode=2')) {
         if(-not $Text.Contains($marker)) {return $false}

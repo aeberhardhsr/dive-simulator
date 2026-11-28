@@ -166,6 +166,7 @@ $metadata=Get-Content -LiteralPath (Join-Path $resultDir 'Metadata.json') -Raw |
 if($ProductionWater) {
     $cooked=if($Editor){0}else{1}
     foreach($marker in @("DIVE_PRODUCTION_WATER_READY cooked=$cooked",'DIVE_REFLECTION_PROFILE_READY profile=vsm diagnostic=0',
+        'DIVE_PRODUCTION_SHADOW_CACHE directional_coarse=1',
         'DIVE_WATER_SCENE_READY','DIVE_LAKE_FOOTPRINT_READY','DIVE_REFLECTION_ROUTING_READY unified=1')) {
         if(-not $log.Contains($marker)) {throw "Production benchmark is missing $marker"}
     }
