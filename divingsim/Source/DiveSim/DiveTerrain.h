@@ -41,6 +41,11 @@ public:
     static constexpr int MapWidth=512, MapHeight=128;
     TArray<float> Overview;
     Dive::SurfaceGrid Landscape;
+#if WITH_EDITOR
+    // Populated only after the isolated detail mesh and its source have passed
+    // identity checks. Empty in normal play; not a new released terrain area.
+    Dive::SurfaceGrid LandscapeDetail;
+#endif
     FString LandscapeImagery;
     TArray<FString> ShoreImagery;
     double OriginEast=2726000,OriginNorth=1219000;

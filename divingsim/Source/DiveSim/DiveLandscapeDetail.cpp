@@ -24,6 +24,16 @@ const TCHAR* DetailPackageName=TEXT("/Game/Diving/LandscapeStudy/SM_LandDetail_0
 const TCHAR* DetailAssetName=TEXT("/Game/Diving/LandscapeStudy/SM_LandDetail_05_02.SM_LandDetail_05_02");
 struct FDetailInput { TArray<float> Heights; FString Key; };
 
+void InstallGround(FDiveTerrain& Terrain,const FDetailInput& Input)
+{
+    auto& grid=Terrain.LandscapeDetail;
+    grid.Columns=grid.Rows=DetailGridSize;grid.Spacing=2;
+    // SurfaceGrid addresses cell centres; the prepared values are vertices.
+    grid.West=Terrain.Landscape.West+(DetailColumn+.5)*8-1;
+    grid.North=Terrain.Landscape.North-(DetailRow+.5)*8+1;
+    grid.Heights.assign(Input.Heights.GetData(),Input.Heights.GetData()+Input.Heights.Num());
+}
+
 bool HashMatches(const TArray<uint8>& Bytes,const FString& Expected)
 {
     return FSHA1::HashBuffer(Bytes.GetData(),Bytes.Num()).ToString().Equals(Expected,ESearchCase::IgnoreCase);
@@ -162,6 +172,45 @@ int32 BakeLandscapeDetailStudy(FDiveTerrain& Terrain,const FString& Params)
         if((x==0||y==0||x==DetailGridSize-1||y==DetailGridSize-1)&&!normals[id].Equals(BoundaryNormal(Terrain,x,y),.00001f)) return 1;
     }
     if(sourceError>.02||edgeError>.02) return 1;
+    // Compare runtime ground against planes from the saved mesh itself. Both
+    // triangle halves matter: bilinear interpolation can hide large errors.
+    TArray<float> shoreBefore;
+    for(const auto& entry:Terrain.ShoreEntries)
+    { float z=0;if(!Terrain.SampleGround(entry.Position.X,entry.Position.Y,z)) return 1;shoreBefore.Add(z); }
+    InstallGround(Terrain,input);
+    const FVector origin=Terrain.ToWorld(Terrain.LandscapeDetail.West+1,Terrain.LandscapeDetail.North-1);
+    double groundError=0;int groundProbes=0;
+    for(const auto triangle:description->Triangles().GetElementIDs())
+    {
+        const auto corners=description->GetTriangleVertices(triangle);
+        const FVector a(positions[corners[0]]),b(positions[corners[1]]),c(positions[corners[2]]);
+        for(const FVector weights:{FVector(1./3,1./3,1./3),FVector(.17,.29,.54)})
+        {
+            const FVector p=a*weights.X+b*weights.Y+c*weights.Z;
+            float z=0;
+            if(!Terrain.SampleGround(origin.X+p.X,origin.Y+p.Y,z)) return 1;
+            groundError=FMath::Max(groundError,FMath::Abs(z-p.Z));++groundProbes;
+        }
+    }
+    double seamError=0;int seamProbes=0;
+    for(int i=0;i<=4096;++i) for(int side=0;side<4;++side)
+    {
+        const double along=i*.5;
+        // On both sides of each edge, including fractional coarse cells.
+        for(double offset:{-.001,0.,.001})
+        {
+            const double col=side<2?(side==0?offset:2048-offset):along;
+            const double row=side>=2?(side==2?offset:2048-offset):along;
+            const double east=Terrain.LandscapeDetail.West+1+col,north=Terrain.LandscapeDetail.North-1-row;
+            const FVector p=Terrain.ToWorld(east,north);float z=0;double coarse=0;
+            if(!Terrain.SampleGround(p.X,p.Y,z)||!Terrain.Landscape.SampleTriangle(east,north,coarse)) return 1;
+            seamError=FMath::Max(seamError,FMath::Abs(z-coarse*100));++seamProbes;
+        }
+    }
+    for(int i=0;i<Terrain.ShoreEntries.Num();++i)
+    { const auto& p=Terrain.ShoreEntries[i].Position;float z=0;if(!Terrain.SampleGround(p.X,p.Y,z)||z!=shoreBefore[i]) return 1; }
+    if(groundError>.03||seamError>.03) { UE_LOG(LogTemp,Error,TEXT("DIVE_LAND_DETAIL_GROUND_FAIL max_error_cm=%.6f seam_error_cm=%.6f"),groundError,seamError);return 1; }
+    UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_GROUND_PASS probes=%d max_error_cm=%.6f seam_probes=%d seam_error_cm=%.6f shore_unchanged=%d"),groundProbes,groundError,seamProbes,seamError,shoreBefore.Num());
     UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_BAKE_PASS vertices=%d triangles=%d edge_error_cm=%.6f source_error_cm=%.6f reused=%d"),
         DetailGridSize*DetailGridSize,2*(DetailGridSize-1)*(DetailGridSize-1),edgeError,sourceError,reuse);
     return 0;
@@ -176,6 +225,7 @@ UStaticMesh* LoadLandscapeDetailStudy(FDiveTerrain& Terrain,FString& Error)
        mesh->GetNaniteSettings().PositionPrecision!=FDiveTerrain::NanitePositionPrecision||
        mesh->GetPackage()->GetMetaData().GetValue(mesh,TEXT("DiveLandscapeDetailSource"))!=input.Key)
     { Error=TEXT("Landscape detail asset missing/stale");return nullptr; }
+    InstallGround(Terrain,input);
     UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_READY tile=05_02 spacing=2m boundary=32m source=%s"),*input.Key);
     return mesh;
 }

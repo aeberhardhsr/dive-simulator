@@ -1,11 +1,11 @@
 param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Packaged, [switch]$EditorSandbox,
     [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$SandboxName='EditorSandbox',
-    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('ui','dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression','fish','rocks')][string]$Scenario='dive',
+    [ValidateRange(0,2)][int]$Entry=0, [ValidateSet('ui','dive','surface','surface-calm','surface-rain','surface-storm','daycycle','stream','wrist','wrist-night','torch','logbook','audio','controls','tutorial','profiles','environment','config','shore-preview','land-detail','shore','breathing','reserve-loss','modes','loadout','avatar','sediment','navigation','waypoints','discoveries','coast','decompression','fish','rocks')][string]$Scenario='dive',
     [ValidateRange(0,5)][int]$LoadoutCase=0,
     [ValidateSet('exploration','manual','simulation','hardcore','warm','hypoxia')][string]$ModeCase='simulation',
     [string]$PackageDirectory='', [string]$DiscoveryVerify='', [string]$WaypointVerify='', [switch]$DisableNanite, [switch]$LampOff, [switch]$CelestialReferences, [switch]$SkyView, [switch]$ShoreLookBack, [switch]$BuildingsView,
     [ValidatePattern('^[a-z,]*$')][string]$HideSky='',
-    [switch]$GroundView, [switch]$GroundOff, [switch]$FarCliffStudy, [switch]$LandscapeDetailStudy, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
+    [switch]$GroundView, [switch]$GroundOff, [switch]$FarCliffStudy, [switch]$LandscapeDetailStudy, [switch]$LandscapeDetailView, [switch]$GravelView, [switch]$PlantView, [switch]$WaterView, [switch]$HabitatView,
     [ValidateCount(5,5)][double[]]$HabitatPose,
     [ValidateCount(4,4)][double[]]$WaterlinePose,
     [switch]$WaterlineSweep,
@@ -51,6 +51,8 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [ValidatePattern('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')][string]$Date='')
 $ErrorActionPreference='Stop'
 if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStudy requires an editor sandbox; it is not a released package feature.'}
+if($LandscapeDetailView -and ($Packaged -or -not $EditorSandbox -or $Scenario -ne 'shore-preview' -or $BuildingsView -or $GroundView -or $ShoreLookBack)) {throw 'LandscapeDetailView requires a dedicated editor shore-preview.'}
+if($Scenario -eq 'land-detail' -and -not $LandscapeDetailStudy) {throw 'land-detail requires the isolated LandscapeDetailStudy.'}
 if($LandscapeDetailStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'LandscapeDetailStudy requires an editor sandbox.'}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds') -and ($Scenario -ne 'shore-preview' -or $Packaged)) {throw 'ShorePreviewSeconds currently requires the editor shore-preview fixture.'}
 if($SandboxName -ne 'EditorSandbox' -and -not $EditorSandbox) {throw 'SandboxName requires EditorSandbox.'}
@@ -84,6 +86,7 @@ $size=$Viewport.Split('x')
 $arguments='-DiveSmokeTest -windowed -ForceRes -ResX={1} -ResY={2} -nosplash -unattended -abslog="{0}"' -f $logPath,$size[0],$size[1]
 $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
+if($LandscapeDetailView) {$arguments+=' -DiveLandscapeDetailView'}
 if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
 if($PSBoundParameters.ContainsKey('ShorePreviewSeconds')) {$arguments+=' -DiveShorePreviewSeconds='+$ShorePreviewSeconds.ToString([Globalization.CultureInfo]::InvariantCulture)}
 if($SpectralView) {$arguments+=' -DiveSpectralView -DiveAbsorptionGain='+$AbsorptionGain.ToString([Globalization.CultureInfo]::InvariantCulture)}
@@ -279,6 +282,14 @@ $startedAt=[DateTime]::UtcNow
 $process=Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
 if(-not $process.WaitForExit($TimeoutSeconds*1000)) { throw "Smoke test exceeded $TimeoutSeconds seconds; process $($process.Id) was left running. Inspect it and $logPath before starting another test." }
 $log=Get-Content $logPath -Raw
+if($Scenario -eq 'land-detail' -and ($log -notmatch 'DIVE_LAND_DETAIL_WALK_PASS' -or $log -match 'DIVE_LAND_DETAIL_WALK_FAIL')) {throw 'Terrain walk failed.'}
+if($Scenario -eq 'land-detail') {
+    $saved=Join-Path (Split-Path $project -Parent) 'Saved/Screenshots'
+    foreach($stage in @('Start','Inside','Return')) {
+        $capture=Get-Item -LiteralPath (Join-Path $saved "LandDetail_$stage.png")
+        if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) {throw "Missing terrain walk capture: $stage"}
+    }
+}
 if($process.ExitCode -ne 0 -or $log -notmatch 'DIVE_SMOKE_PASS') { throw "Gameplay smoke test failed. See $logPath." }
 if($FarCliffStudy -and -not $log.Contains('DIVE_LANDSCAPE_MATERIAL name=M_LandscapeCliffStudy')) {throw 'Far-cliff study material was not selected.'}
 if($FarCliffStudy -and -not $log.Contains('DIVE_CLIFF_COVERAGE_PASS texture=T_CliffCoverage size=4096 mips=13')) {throw 'Mapped cliff coverage was not validated.'}
@@ -432,7 +443,7 @@ if($Scenario -eq 'profiles' -and $log -notmatch 'DIVE_PROFILES_PASS') { throw "P
 if($Scenario -in @('shore-preview','shore') -and $log -notmatch 'DIVE_SHORE_PASS') { throw "Shore test failed. See $logPath." }
 if($Scenario -in @('controls','tutorial','profiles','environment','config','torch','surface-storm','daycycle','shore-preview','shore','breathing','reserve-loss')) {
     $saved=if($Packaged) { Join-Path $PackageDirectory 'divingsim/Saved/Screenshots' } else { Join-Path (Split-Path $project -Parent) 'Saved/Screenshots' }
-    $images=if($Scenario -eq 'torch') { @('DiveUnderwater','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_torch" } } elseif($Scenario -eq 'daycycle') { $startHour=if($PSBoundParameters.ContainsKey('Hour')) { [int][Math]::Floor($Hour) } else { 17 }; @('Before','After') | ForEach-Object { 'DayCycle_{0}_{1:00}' -f $_,$startHour } } elseif($Scenario -eq 'surface-storm') { @('DiveUnderwater','SurfaceAir','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_surface-storm" } } elseif($Scenario -eq 'environment') { @('EnvironmentWinter_DE','EnvironmentSummer_EN','EnvironmentManual_EN','EnvironmentRain_EN','EnvironmentDive_EN','EnvironmentLocked_EN') } elseif($Scenario -eq 'config') { @('ConfigPressure_DE','ConfigRange_DE','ConfigTime_DE','ConfigValues_DE','ConfigAir_EN','ConfigValues_EN','ConfigDate_EN','ConfigDateValues_EN','ConfigSpringGap_EN','ConfigTorch_EN') } elseif($Scenario -eq 'reserve-loss') { @('Reserve_Short','Reserve_Low','Reserve_Summary','Logbook_0','Logbook_1','Logbook_2','Logbook_3') } elseif($Scenario -eq 'breathing') { @('Breathing_NoSupply','Breathing_Air') } elseif($Scenario -eq 'controls') { @('Controls_DE','Controls_EN') } elseif($Scenario -eq 'profiles') { @('ProfileName','Profiles_DE','ProfileDuplicate','ProfilesArchive','ProfilesActive','Profiles_EN') } elseif($Scenario -eq 'shore-preview') { @(if($BuildingsView) { "Shore_${Entry}_Buildings" } elseif($GroundView) { "Shore_${Entry}_Ground" } elseif($ShoreLookBack) { "Shore_${Entry}_Land" } else { "Shore_$Entry" }) } elseif($Scenario -eq 'shore') { @('ShoreStart','ShoreWater','ShoreDive','ShoreReturn','ShoreComplete','ShoreMenu') | ForEach-Object { "$($_)_$Entry" } } else { (0..7 | ForEach-Object { "Tutorial_$_" })+@('TutorialMap','TutorialComplete') }
+    $images=if($Scenario -eq 'torch') { @('DiveUnderwater','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_torch" } } elseif($Scenario -eq 'daycycle') { $startHour=if($PSBoundParameters.ContainsKey('Hour')) { [int][Math]::Floor($Hour) } else { 17 }; @('Before','After') | ForEach-Object { 'DayCycle_{0}_{1:00}' -f $_,$startHour } } elseif($Scenario -eq 'surface-storm') { @('DiveUnderwater','SurfaceAir','DiveSmoke') | ForEach-Object { "$($_)_${Entry}_surface-storm" } } elseif($Scenario -eq 'environment') { @('EnvironmentWinter_DE','EnvironmentSummer_EN','EnvironmentManual_EN','EnvironmentRain_EN','EnvironmentDive_EN','EnvironmentLocked_EN') } elseif($Scenario -eq 'config') { @('ConfigPressure_DE','ConfigRange_DE','ConfigTime_DE','ConfigValues_DE','ConfigAir_EN','ConfigValues_EN','ConfigDate_EN','ConfigDateValues_EN','ConfigSpringGap_EN','ConfigTorch_EN') } elseif($Scenario -eq 'reserve-loss') { @('Reserve_Short','Reserve_Low','Reserve_Summary','Logbook_0','Logbook_1','Logbook_2','Logbook_3') } elseif($Scenario -eq 'breathing') { @('Breathing_NoSupply','Breathing_Air') } elseif($Scenario -eq 'controls') { @('Controls_DE','Controls_EN') } elseif($Scenario -eq 'profiles') { @('ProfileName','Profiles_DE','ProfileDuplicate','ProfilesArchive','ProfilesActive','Profiles_EN') } elseif($Scenario -eq 'shore-preview') { @(if($LandscapeDetailView) { "Shore_${Entry}_Detail" } elseif($BuildingsView) { "Shore_${Entry}_Buildings" } elseif($GroundView) { "Shore_${Entry}_Ground" } elseif($ShoreLookBack) { "Shore_${Entry}_Land" } else { "Shore_$Entry" }) } elseif($Scenario -eq 'shore') { @('ShoreStart','ShoreWater','ShoreDive','ShoreReturn','ShoreComplete','ShoreMenu') | ForEach-Object { "$($_)_$Entry" } } else { (0..7 | ForEach-Object { "Tutorial_$_" })+@('TutorialMap','TutorialComplete') }
     foreach($name in $images) {
         $capture=Get-Item -LiteralPath (Join-Path $saved "$name.png")
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) { throw "Missing fresh screenshot: $name" }

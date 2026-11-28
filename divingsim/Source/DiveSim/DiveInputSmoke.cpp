@@ -1,6 +1,7 @@
 #include "DivePawn.h"
 #include "DiveHUD.h"
 #include "DiveWorld.h"
+#include "Simulation/ShoreMovement.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "InputKeyEventArgs.h"
@@ -37,6 +38,68 @@ void ADivePawn::InputSmokeTick(float Dt)
     auto* pc=Cast<APlayerController>(GetController());
     auto* hud=pc?Cast<ADiveHUD>(pc->GetHUD()):nullptr;
     if(!pc||!hud) return;
+    if(SmokeScenario==TEXT("land-detail"))
+    {
+#if WITH_EDITOR
+        auto fail=[&](const TCHAR* reason)
+        { UE_LOG(LogTemp,Error,TEXT("DIVE_LAND_DETAIL_WALK_FAIL phase=%d %s position=%s"),ControlsSmokePhase,reason,*GetActorLocation().ToString());FPlatformMisc::RequestExitWithStatus(false,1); };
+        auto& terrain=Environment->Terrain;
+        if(terrain.LandscapeDetail.Heights.empty()||!PendingConfig.StartOnShore) { fail(TEXT("Missing study ground"));return; }
+        // Fixed gentle transect, 8m outside to 44m inside the west edge. This
+        // crosses the 32m blending collar as well as both grid resolutions.
+        constexpr double startEast=2733236,endEast=2733288,routeNorth=1223622;
+        if(ControlsSmokeClock>145) { fail(TEXT("Route timed out"));return; }
+        if(ControlsSmokePhase==0&&ControlsSmokeClock>12)
+        {
+            FVector start=terrain.ToWorld(startEast,routeNorth);float ground=0;
+            if(!terrain.SampleGround(start.X,start.Y,ground)) { fail(TEXT("Missing start"));return; }
+            start.Z=ground+Dive::ShoreMovement::FloorClearance*100;
+            SetActorLocation(start);VelocityMetres=FVector::ZeroVector;bWalking=true;
+            pc->SetControlRotation(FRotator(-15,90,0));ResetContactPose();
+            if(!bContactPoseReady) { fail(TEXT("Initial contact pose"));return; }
+            ControlsSmokePhase=1;TestLessonStage=0;
+            FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/LandDetail_Start.png"),true,false);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_START east=%.3f north=%.3f"),startEast,routeNorth);
+            return;
+        }
+        if(ControlsSmokePhase==0) return;
+        const FVector p=GetActorLocation();const FVector2D survey=terrain.ToSurvey(p);float ground=0;
+        if(!terrain.SampleGround(p.X,p.Y,ground)||!bWalking||FMath::Abs(p.Z-ground-Dive::ShoreMovement::FloorClearance*100)>.5||FMath::Abs(survey.Y-routeNorth)>.25)
+        { fail(TEXT("Lost ground support or route"));return; }
+        if(ControlsSmokePhase==1||ControlsSmokePhase==2)
+        {
+            const bool outbound=ControlsSmokePhase==1;
+            // Walk forward, then backward on the same heading: input drives
+            // the ordinary fixed-step movement, with no per-frame teleport.
+            TestKey(Controls.Key(outbound?EDiveAction::Forward:EDiveAction::Backward),true);
+            TestKey(Controls.Key(EDiveAction::Sprint),true);
+            const int metre=FMath::FloorToInt(Simulation.Data.DistanceMetres);
+            if(metre>TestLessonStage)
+            {
+                TestLessonStage=metre;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_SAMPLE phase=%d east=%.4f north=%.4f foot_cm=%.6f ground_cm=%.6f walking=%d"),
+                    ControlsSmokePhase,survey.X,survey.Y,p.Z-Dive::ShoreMovement::FloorClearance*100,ground,bWalking);
+            }
+            if((outbound&&survey.X>=endEast)||(!outbound&&survey.X<=startEast))
+            {
+                TestKey(Controls.Key(outbound?EDiveAction::Forward:EDiveAction::Backward),false);
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/(outbound?TEXT("Screenshots/LandDetail_Inside.png"):TEXT("Screenshots/LandDetail_Return.png")),true,false);
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_ENDPOINT phase=%d east=%.4f distance_m=%.4f"),ControlsSmokePhase,survey.X,Simulation.Data.DistanceMetres);
+                ++ControlsSmokePhase;
+                if(!outbound) { TestKey(Controls.Key(EDiveAction::Sprint),false);TutorialFinishedAt=ControlsSmokeClock; }
+            }
+        }
+        if(ControlsSmokePhase==3&&ControlsSmokeClock>TutorialFinishedAt+2)
+        {
+            if(Simulation.Data.DistanceMetres<104||TestLessonStage<100) { fail(TEXT("Insufficient walked distance"));return; }
+            UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_PASS distance_m=%.4f samples=%d two_way_seam=1"),Simulation.Data.DistanceMetres,TestLessonStage);
+            UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS land_detail=1"));FPlatformMisc::RequestExitWithStatus(false,0);
+        }
+#else
+        FPlatformMisc::RequestExitWithStatus(false,1);
+#endif
+        return;
+    }
     if(SmokeScenario==TEXT("ui"))
     {
         if(ControlsSmokePhase<28&&ControlsSmokeClock>ControlsSmokePhase+2)

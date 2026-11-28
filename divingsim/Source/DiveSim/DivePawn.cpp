@@ -124,7 +124,7 @@ void ADivePawn::BeginPlay()
         if(FParse::Param(FCommandLine::Get(),TEXT("DiveAutomaticEnvironment")))
         { PendingConfig.AutoTemperature=PendingConfig.AutoVisibility=true;PendingConfig.CurrentSource=Dive::CurrentSetting::Automatic; }
         if(SmokeScenario==TEXT("audio")) { PendingConfig.WindMetresPerSecond=9; PendingConfig.Weather=2; }
-        if(SmokeScenario==TEXT("shore")) { PendingConfig.StartOnShore=true; PendingConfig.WindMetresPerSecond=0; PendingConfig.CurrentMetresPerSecond=0; }
+        if(SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("land-detail")) { PendingConfig.StartOnShore=true; PendingConfig.WindMetresPerSecond=0; PendingConfig.CurrentMetresPerSecond=0; }
         if(SmokeScenario==TEXT("tutorial"))
         {
             PendingConfig.GameMode=Dive::Mode::Exploration; PendingConfig.CylinderLitres=15; PendingConfig.StartPressureBar=250;
@@ -182,6 +182,18 @@ void ADivePawn::BeginPlay()
                 if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(lookBack?0:-12,shore.Yaw+(lookBack?180:0),0));
                 if(FParse::Param(FCommandLine::Get(),TEXT("DiveGroundView")))
                     if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-60,shore.Yaw+(lookBack?180:0),0));
+#if WITH_EDITOR
+                if(FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeDetailView")))
+                {
+                    double ground=0;
+                    if(!Environment->Terrain.Landscape.SampleTriangle(2733236,1223622,ground))
+                    { FPlatformMisc::RequestExitWithStatus(false,1);return; }
+                    FVector eye=Environment->Terrain.ToWorld(2733236,1223622);eye.Z=ground*100+176;
+                    SetActorLocation(eye);
+                    if(auto* pc=Cast<APlayerController>(GetController())) pc->SetControlRotation(FRotator(-15,90,0));
+                    UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_VIEW position=%s yaw=90 pitch=-15"),*eye.ToString());
+                }
+#endif
                 if(FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView")))
                 {
                     TArray<FDiveBuildingTile> tiles;int32 count=0;FString error;
@@ -431,7 +443,8 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(ControlsSmokeClock>previewSeconds&&!bSmokeCaptured)
         {
             UE_LOG(LogTemp,Display,TEXT("DIVE_SHORE_PREVIEW_CAPTURE warmup=%.3f elapsed=%.3f"),previewSeconds,ControlsSmokeClock);
-            const FString suffix=FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView"))?TEXT("_Buildings"):
+            const FString suffix=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeDetailView"))?TEXT("_Detail"):
+                FParse::Param(FCommandLine::Get(),TEXT("DiveBuildingsView"))?TEXT("_Buildings"):
                 FParse::Param(FCommandLine::Get(),TEXT("DiveGroundView"))?TEXT("_Ground"):
                 FParse::Param(FCommandLine::Get(),TEXT("DiveShoreLookBack"))?TEXT("_Land"):TEXT("");
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/Shore_%d%s.png"),EntryIndex,*suffix),true,false);
@@ -453,7 +466,7 @@ void ADivePawn::Tick(float DeltaSeconds)
             FPlatformMisc::RequestExitWithStatus(false,valid?0:1);
         }
     }
-    if(bSmokeTest&&(SmokeScenario==TEXT("ui")||SmokeScenario==TEXT("coast")||SmokeScenario==TEXT("discoveries")||SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
+    if(bSmokeTest&&(SmokeScenario==TEXT("ui")||SmokeScenario==TEXT("land-detail")||SmokeScenario==TEXT("coast")||SmokeScenario==TEXT("discoveries")||SmokeScenario==TEXT("waypoints")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("avatar")||SmokeScenario==TEXT("loadout")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("profiles")||SmokeScenario==TEXT("shore")||SmokeScenario==TEXT("breathing")||SmokeScenario==TEXT("reserve-loss")))
     { InputSmokeTick(DeltaSeconds); if(TutorialFinishedAt>0) return; }
     if(bSmokeTest&&SmokeScenario==TEXT("audio"))
     {
@@ -592,7 +605,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         if(SmokeScenario==TEXT("stream"))
             if(auto* PC=Cast<APlayerController>(GetController()))
                 PC->SetControlRotation(FRotator(0,Environment->Terrain.Entries[EntryIndex].Yaw,0));
-        if(!bPerformance&&SmokeScenario!=TEXT("coast")&&SmokeScenario!=TEXT("shore")&&SmokeScenario!=TEXT("modes")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("torch")&&SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
+        if(!bPerformance&&SmokeScenario!=TEXT("land-detail")&&SmokeScenario!=TEXT("coast")&&SmokeScenario!=TEXT("shore")&&SmokeScenario!=TEXT("modes")&&Simulation.Data.ElapsedSeconds>smokeDuration-4) bShowMap=SmokeScenario!=TEXT("torch")&&SmokeScenario!=TEXT("daycycle")&&!SmokeScenario.StartsWith(TEXT("surface"))&&!SmokeScenario.StartsWith(TEXT("wrist"));
         if(SmokeScenario.StartsWith(TEXT("wrist")))
         {
             const double t=Simulation.Data.ElapsedSeconds;
@@ -633,7 +646,7 @@ void ADivePawn::Tick(float DeltaSeconds)
         bSmokeCaptured=true;
         FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/FString::Printf(TEXT("Screenshots/DiveSmoke_%d_%s.png"),EntryIndex,*SmokeScenario),true,false);
     }
-    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && SmokeScenario!=TEXT("ui") && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
+    if(bSmokeTest && !bPerformance && SmokeScenario!=TEXT("rocks") && SmokeScenario!=TEXT("ui") && SmokeScenario!=TEXT("decompression") && SmokeScenario!=TEXT("land-detail") && SmokeScenario!=TEXT("coast") && SmokeScenario!=TEXT("avatar") && SmokeScenario!=TEXT("loadout") && SmokeScenario!=TEXT("modes") && SmokeScenario!=TEXT("tutorial") && SmokeScenario!=TEXT("shore") && SmokeScenario!=TEXT("reserve-loss") && bDiveActive && Simulation.Data.ElapsedSeconds>=smokeDuration)
     {
         const double displacement=FVector::Dist2D(GetActorLocation(),EntryLocation)/100;
         const bool extended=SmokeScenario.StartsWith(TEXT("surface"))?bSmokeSurfaceReached:
@@ -773,7 +786,7 @@ void ADivePawn::SimulateStep(float Step)
     auto* PC=Cast<APlayerController>(GetController()); if(!PC) return;
     auto Down=[this,PC](EDiveAction Action)
     {
-        if(!bSmokeTest||SmokeScenario==TEXT("coast")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
+        if(!bSmokeTest||SmokeScenario==TEXT("land-detail")||SmokeScenario==TEXT("coast")||SmokeScenario==TEXT("navigation")||SmokeScenario==TEXT("environment")||SmokeScenario==TEXT("config")||SmokeScenario==TEXT("controls")||SmokeScenario==TEXT("tutorial")||SmokeScenario==TEXT("shore")) return PC->IsInputKeyDown(Controls.Key(Action))?1.f:0.f;
         const double t=Simulation.Data.ElapsedSeconds;
         if(SmokeScenario==TEXT("avatar")&&ControlsSmokePhase>=16&&ControlsSmokePhase<=18)
             return Action==EDiveAction::Ascend?1.f:0.f;

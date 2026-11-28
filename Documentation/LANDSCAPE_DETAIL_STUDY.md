@@ -1,6 +1,6 @@
 # Feinere Geländeform gegenüber Murg
 
-Stand: 28. November 2026. Eine 2048 × 2048 Meter grosse Bergkachel gegenüber Murg ist als separate **2-Meter-Geometrie** aufgebaut und mit der bisherigen 8-Meter-Geometrie verglichen. In den Bildern werden Felskanten und Rinnen feiner gegliedert. Die gestreckte Luftbildfarbe und harte Materialübergänge bleiben sichtbar. **Dies ist eine lokale Darstellungsstudie, noch keine Übernahme in das normale Spiel.**
+Stand: 28. November 2026. Eine 2048 × 2048 Meter grosse Bergkachel gegenüber Murg ist als separate **2-Meter-Geometrie** aufgebaut und mit der bisherigen 8-Meter-Geometrie verglichen. In den Bildern werden Felskanten und Rinnen feiner gegliedert. Die gestreckte Luftbildfarbe und harte Materialübergänge bleiben sichtbar. **Dies ist eine lokale Gelände- und Bodenstudie, noch keine Übernahme in das normale Spiel.**
 
 ## Belegter Detailverlust in der bisherigen Aufbereitung
 
@@ -48,11 +48,25 @@ Der erste Bau erforderte eine erneute Erfassung der Quelldateien durch UnrealBui
 
 ## Grenzen vor einer spielbaren Übernahme
 
-Die physische Geländeabfrage bleibt bisher bei 8 Metern. **Die Darstellungsstudie darf deshalb nicht allein als neue begehbare Geländegrundlage übernommen werden.** Zuerst muss die physische Höhenabfrage mit derselben feineren Oberfläche verbunden und geprüft werden. Die bestehende Uferkollision ist davon getrennt und unverändert.
+Die isolierte Editorstudie verwendet jetzt für die Bodenstützung dieselben 2-m-Dreiecke wie das neue Quellmesh. Ausserhalb der Kachel ergänzt sie im bisher nicht unterstützten Binnenland eine Abfrage der bestehenden 8-m-Dreiecke. **Korrektur zum ersten Bericht:** Im normalen Spiel war die Bodenabfrage auf Seegrund, Ufer und Küstenmodell beschränkt; das gesamte Binnenland war nicht bereits als 8-m-Fläche begehbar. Der neue Binnenlandpfad wird nur zusammen mit der geprüften Detailstudie aktiviert.
 
-Eine neue Leistungsmessung der feineren Kachel, bewegte Sichtprüfung, weitere Sonnenstände und Paketvalidierung fehlen noch. Die zuvor beobachteten CPU-/Speicherbereinigungs-Aussetzer sind weiterhin offen; die alten FPS-Werte gelten nicht als Messung dieser neuen Geometrie. Waldvolumen, Wiesen, Nahbereich und Materialübergänge bleiben eigenständige Aufgaben.
+Der native Abgleich prüft zwei baryzentrische Punkte je gespeichertem Dreieck: **4’194’304 Abfragen**, höchstens **0,015625 cm** Abweichung. Weitere **49’164 Randabfragen** liegen auf sowie 1 mm beiderseits der vier Kachelgrenzen; die grösste Differenz zur alten Fläche beträgt **0,015887 cm**. Die Bodenhöhe an allen drei bestehenden Einstiegen bleibt bitgleich.
 
-Nächste Schritte: Fels-/Vegetationsübergänge anhand der klareren Geometrie verbessern, die physische Geländeabfrage passend ergänzen und die CPU-Aussetzer eingrenzen. Erst nach Bewegungs- und Leistungstests soll die feinere Darstellung auf weitere passende Bergflächen erweitert und ins normale Spiel übernommen werden. Die fünf Unterwasser-Abschlussrunden bleiben abgeschlossen.
+Eine native Gehprobe verläuft von 8 m ausserhalb des Westrands bis 44 m innerhalb und zurück. Sie durchquert damit auch den 32-m-Übergang. Nach einmaliger Startplatzierung bewegen Vorwärts-/Rückwärtseingaben die Spielfigur über die normale Bewegungssimulation; Stützhöhe und Gehzustand werden währenddessen geprüft. Rund **105 m** wurden ohne Verlust der Bodenstützung zurückgelegt. Dies prüft die Höhenstützung, **keine vollständige Körperkollision mit Bergwänden**: Die Landschaftskomponenten bleiben `NoCollision`. Der numerische Vergleich betrifft die Quellfläche, nicht jede zur Laufzeit gewählte Nanite-Vereinfachung.
+
+Die Bildprüfung verhindert eine vorschnelle Freigabe: Unmittelbar nach dem Versetzen der Testfigur erscheint ein himmelfarbener Spalt. Die neue und die alte Geometrie zeigen am festen Blickpunkt mit Nanite nach zwölf Sekunden Vorlauf keinen solchen Spalt. **Mit deaktiviertem Nanite zeigt die Detailkachel dagegen auch nach dem Vorlauf eine deutliche offene Kante.** Auch die bisherige 8-m-Ersatzdarstellung zeigt rechts einen kleineren Spalt; die feinere Kachel vergrössert ihn deutlich. Dieser Fehler der Ersatzdarstellung ist noch offen; ein Zusammenhang mit dem ersten kurzzeitigen Spalt ist plausibel, aber nicht bewiesen. Die vollständige Bewegungsfolge wurde nicht Bild für Bild gesichtet. [Neuer Prüfbericht zur Bodenstützung und zur offenen Ersatzdarstellung](LANDSCAPE_GROUND_STUDY_RESULTS.json).
+
+Fester Blickpunkt mit Nanite nach zwölf Sekunden Vorlauf:
+
+![Geschlossene Oberfläche im geprüften Nanite-Blick](Images/Terrain_Ground_Nanite.png)
+
+Derselbe Blick mit deaktiviertem Nanite; die offene Kante bleibt sichtbar:
+
+![Offene Kante in der Ersatzgeometrie](Images/Terrain_Ground_FallbackGap.png)
+
+Eine neue Leistungsmessung der feineren Kachel, lückenlose bewegte Sichtprüfung, weitere Sonnenstände und Paketvalidierung fehlen noch. Die zuvor beobachteten CPU-/Speicherbereinigungs-Aussetzer sind weiterhin offen; die alten FPS-Werte gelten nicht als Messung dieser neuen Geometrie. Waldvolumen, Wiesen, Nahbereich und Materialübergänge bleiben eigenständige Aufgaben.
+
+Nächste Schritte: Die offene Kante der Ersatzgeometrie eingrenzen und beheben, Fels-/Vegetationsübergänge verbessern und die CPU-Aussetzer untersuchen. Erst nach Bewegungs- und Leistungstests soll die feinere Darstellung auf weitere passende Bergflächen erweitert und ins normale Spiel übernommen werden. Die fünf Unterwasser-Abschlussrunden bleiben abgeschlossen.
 
 ## Reproduktion
 
@@ -66,3 +80,12 @@ Nächste Schritte: Fels-/Vegetationsübergänge anhand der klareren Geometrie ve
 ```
 
 Für die Geometriekontrolle `-LandscapeDetailStudy` weglassen; für das Luftbildpaar zusätzlich in beiden Läufen `-FarCliffStudy` weglassen. Die Quelldateien stammen aus dem vorhandenen verifizierten Geodatensatz. Die Aufbereitung verändert weder `landscape.f32` noch die alten Landschaftsmeshes.
+
+Die Bodenprüfung ist in `LandscapeDetailCheck` enthalten. Die zusätzliche Bewegungsprüfung und der feste Vergleichsblick verwenden:
+
+```powershell
+./Tools/SmokeTest.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -ProductionWater -Scenario land-detail -Entry 1 -Hour 12 -Date 2026-06-21 -MaxFPS 30 -LandscapeDetailStudy -FarCliffStudy -TimeoutSeconds 240
+./Tools/SmokeTest.ps1 -EngineRoot 'O:/games/dive game/Builds/UE584' -EditorSandbox -SandboxName SourceEditorSandbox -ProductionWater -Scenario shore-preview -Entry 1 -Hour 12 -Date 2026-06-21 -MaxFPS 30 -ShorePreviewSeconds 12 -LandscapeDetailView -LandscapeDetailStudy -FarCliffStudy
+```
+
+Für den festen 8-m-Vergleich `-LandscapeDetailStudy` weglassen; für die konventionelle Ersatzgeometrie zusätzlich `-DisableNanite` setzen. Diese Aufnahmen sind Funktionstests, keine Leistungsmessungen.
