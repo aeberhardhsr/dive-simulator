@@ -74,6 +74,15 @@ Diese Grenzen sind konkrete Prüfkriterien dieser Abschlussiteration. Sie behaup
 
 **Ergebnis:** Gesicherter Unterwasser-Abschlussstand. **Die nächste Entwicklungsiteration arbeitet an der Überwasserlandschaft**: Gelände-/Felstopologie, Ufer, Wiesen und Wald, danach Materialien und atmosphärische Gesamtwirkung auf dem gewünschten Referenzniveau. Es wird keine sechste Unterwasser-Optimierungsrunde eröffnet.
 
+**Vorbereitung, noch kein Dauerlauf:** `Tools/Soak.ps1 -ProductionWater` prüft den normalen VSM-/Wasserpfad bereits nach Beginn der Messung. Eine nachgewiesene falsche Konfiguration beendet nur die gerade vom Werkzeug gestartete Testinstanz; ein blosses Beobachtungszeitlimit beendet weiterhin keinen Prozess. Zusätzlich zu den nativen 30-s-Intervallen mit Streckenfortschritt und Arbeitssatz entsteht `HostMemory.jsonl` mit privatem Prozessspeicher, Arbeitssatz und virtuellem Adressraum. Die drei Grössen sind getrennt auszuwerten; virtueller Adressraum ist kein RAM-Verbrauch. Die Speicherabnahme bleibt eine eigene Auswertung wiederholter vergleichbarer Streckenabschnitte. Ein erfolgreich abgeschlossener Prozess oder der Marker `DIVE_SOAK_PASS` allein ist dafür kein Beweis.
+
+`Tools/ReportSoak.py` bindet diese Beobachtungen bei einem Produktionslauf zwingend an den Bericht und verlangt eine hinreichend vollständige Messreihe nach bestätigter Renderkonfiguration. Die zehn gezielten Prüfungen von Soak-Integrität und Speicheraufzeichnung bestehen: Fehlende, verkürzte, ungeprüfte, ungültige oder zeitlich rückwärts laufende Messreihen werden zurückgewiesen; Warmup und privates Speicherwachstum bleiben sichtbar, auch wenn der Arbeitssatz konstant ist. Der Bericht kennzeichnet die Speicher- und Bildauswertung weiterhin als erforderlich. Historische Paketprüfsummen werden nicht durch neue Pakete ersetzt; bereits entfernte alte Testpakete liefern keinen erneut verifizierten Lauf.
+
+```powershell
+# Erst nach Runde 4, mit exakt demselben unveränderten Paket:
+./Tools/Soak.ps1 -PackageDirectory Builds/WindowsUnderwaterFinalCandidate -Seconds 7200 -Entry 0 -Quality 2 -ProductionWater
+```
+
 ## Umfang begrenzen, Abschlüsse ehrlich halten
 
 „100 % abgeschlossen“ bedeutet: alle vereinbarten Ergebnisse und Prüfungen der jeweiligen Iteration sind erledigt und belegt. Es bedeutet nicht, dass jede mögliche physikalische Verbesserung oder jede ursprünglich formulierte Gesamtspielanforderung erfüllt ist. Der Planstatus bleibt bis zur tatsächlichen Ausführung offen; insbesondere ist die heutige Source-Editor-Messung keine Paketabnahme.

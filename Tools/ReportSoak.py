@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 from analyze_soak import validate, verify_package
+from soak_memory import read_memory
 
 def read(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
@@ -25,11 +26,20 @@ def main():
     report['intervals'] = [[row['total']['wall_seconds'], row['interval']['average_fps'], row['interval']['maximum_ms'], row['memory_mb'], row['successful_autosaves']] for row in rows]
     report['windows_below_60_fps'] = sum(row['interval']['average_fps'] < 60 for row in rows)
     report['minimum_window_fps'] = min(row['interval']['average_fps'] for row in rows)
-    report['development_activity'] = [json.loads(line) for line in (args.run / 'DevelopmentActivity.jsonl').read_text(encoding='utf-8-sig').splitlines()]
+    activity = args.run / 'DevelopmentActivity.jsonl'
+    report['development_activity'] = [json.loads(line) for line in activity.read_text(encoding='utf-8-sig').splitlines()] if activity.exists() else None
+    host_memory = args.run / 'HostMemory.jsonl'
+    samples = read_memory(host_memory, report['host'].get('production_water', False), report['result']['requested_seconds'])
+    if samples is not None:
+        report['host_memory_sha256'] = hashlib.sha256(host_memory.read_bytes()).hexdigest()
+        report['host_memory_samples'] = samples
+    report['memory_review_required'] = True
     report['captures'] = [{'file': p.name, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(args.run.glob('*.png'))]
-    report['limitations'] = ['Concurrent development and other game instances: not an isolated performance benchmark', 'Sampled physical working set does not prove absence of memory leaks', 'Only this immutable package and the recorded route/mode are covered']
+    report['limitations'] = ['Background activity is documented by the launcher snapshot and any separately supplied activity log; no blanket claim of concurrent builds',
+        'Review private-memory and working-set histories at comparable route phases; structural validation alone does not prove memory stability',
+        'Only this immutable package and the recorded route/mode are covered']
     args.output.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-    print(f"SOAK_REPORT_PASS windows={len(rows)} below60={report['windows_below_60_fps']} minimum_fps={report['minimum_window_fps']:.2f}")
+    print(f"SOAK_REPORT_VALIDATED windows={len(rows)} below60={report['windows_below_60_fps']} minimum_fps={report['minimum_window_fps']:.2f} memory_review=required")
 
 if __name__ == '__main__':
     main()
