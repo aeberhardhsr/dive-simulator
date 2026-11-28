@@ -62,3 +62,5 @@ Die Diagnoseassets sind lokal erzeugte, von Git ausgeschlossene Ableitungen. Sie
 Für die Streaming-Kontrolle `-LandscapeResidentStudy` weglassen. Für den konventionellen Vergleich zusätzlich `-DisableNanite` setzen. Die Bilder jeder Variante unmittelbar getrennt archivieren, da das Screenshot-Verzeichnis wiederverwendet wird. Die normale Gehprobe bleibt ohne `-LandscapeBoundaryProbe` verfügbar.
 
 [Messdaten, lokale Eingabesnapshots und Protokolle](LANDSCAPE_NANITE_BOUNDARY_RESULTS.json).
+
+Fortsetzung: [Bewegte Grenzprüfung, Korrektur des Geh-Testablaufs und Auswertung der nativen Root-Pool-Speicherzähler](LANDSCAPE_RESIDENT_WALK.md). Die historischen Messdaten dieses Berichts bleiben unverändert.

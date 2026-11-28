@@ -18,6 +18,7 @@ param([string]$EngineRoot='C:/Program Files/Epic Games/UE_5.8', [switch]$Package
     [switch]$DisablePostProcessMaterials,
     [switch]$ReflectionRayStudy,
     [switch]$LandscapeResidentStudy,
+    [switch]$LandscapeTurnWalk,
     [switch]$ReflectionTransportStudy,
     [switch]$ProductionWater,
     [switch]$ReflectionTransportControl,
@@ -55,6 +56,7 @@ if($FarCliffStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'FarCliffStud
 if($LandscapeDetailView -and ($Packaged -or -not $EditorSandbox -or $Scenario -ne 'shore-preview' -or $BuildingsView -or $GroundView -or $ShoreLookBack)) {throw 'LandscapeDetailView requires a dedicated editor shore-preview.'}
 if($Scenario -eq 'land-detail' -and -not $LandscapeDetailStudy) {throw 'land-detail requires the isolated LandscapeDetailStudy.'}
 if($LandscapeBoundaryProbe -and ($Scenario -ne 'land-detail' -or -not $EditorSandbox)) {throw 'LandscapeBoundaryProbe requires editor land-detail.'}
+if($LandscapeTurnWalk -and ($Scenario -ne 'land-detail' -or -not $EditorSandbox -or $LandscapeBoundaryProbe)) {throw 'LandscapeTurnWalk requires editor land-detail without a stationary boundary probe.'}
 if($LandscapeResidentStudy -and (-not $LandscapeFallbackStudy -or -not $LandscapeDetailStudy -or -not $EditorSandbox)) {throw 'LandscapeResidentStudy requires both isolated landscape studies in an editor sandbox.'}
 if($LandscapeFallbackStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'LandscapeFallbackStudy requires an editor sandbox.'}
 if($LandscapeDetailStudy -and ($Packaged -or -not $EditorSandbox)) {throw 'LandscapeDetailStudy requires an editor sandbox.'}
@@ -92,6 +94,7 @@ $arguments+=' -DiveEntry={0} -DiveScenario={1}' -f $Entry,$Scenario
 if($FarCliffStudy) {$arguments+=' -DiveFarCliffStudy'}
 if($LandscapeDetailView) {$arguments+=' -DiveLandscapeDetailView'}
 if($LandscapeBoundaryProbe) {$arguments+=' -DiveLandscapeBoundaryProbe'}
+if($LandscapeTurnWalk) {$arguments+=' -DiveLandscapeTurnWalk'}
 if($LandscapeResidentStudy) {$arguments+=' -DiveLandscapeResidentStudy'}
 if($LandscapeFallbackStudy) {$arguments+=' -DiveLandscapeFallbackStudy'}
 if($LandscapeDetailStudy) {$arguments+=' -DiveLandscapeDetailStudy'}
@@ -300,7 +303,12 @@ if($LandscapeBoundaryProbe) {
 if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe -and ($log -notmatch 'DIVE_LAND_DETAIL_WALK_PASS' -or $log -match 'DIVE_LAND_DETAIL_WALK_FAIL')) {throw 'Terrain walk failed.'}
 if($Scenario -eq 'land-detail' -and -not $LandscapeBoundaryProbe) {
     $saved=Join-Path (Split-Path $project -Parent) 'Saved/Screenshots'
-    foreach($stage in @('Start','Inside','Return')) {
+    $stages=@('Start','Inside','Return')
+    if($LandscapeTurnWalk) {
+        if($log -notmatch 'DIVE_LAND_DETAIL_TURN_WALK_PASS crossings=2 turn_degrees=180') {throw 'Turning terrain walk failed.'}
+        $stages+=@('CrossEast','Turn','CrossWest')
+    }
+    foreach($stage in $stages) {
         $capture=Get-Item -LiteralPath (Join-Path $saved "LandDetail_$stage.png")
         if($capture.LastWriteTimeUtc -lt $startedAt -or $capture.Length -lt 10000) {throw "Missing terrain walk capture: $stage"}
     }

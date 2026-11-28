@@ -44,6 +44,7 @@ void ADivePawn::InputSmokeTick(float Dt)
     {
 #if WITH_EDITOR
         const bool boundaryProbe=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeBoundaryProbe"));
+        const bool turnWalk=FParse::Param(FCommandLine::Get(),TEXT("DiveLandscapeTurnWalk"));
         auto fail=[&](const TCHAR* reason)
         { UE_LOG(LogTemp,Error,TEXT("DIVE_LAND_DETAIL_WALK_FAIL phase=%d %s position=%s"),ControlsSmokePhase,reason,*GetActorLocation().ToString());FPlatformMisc::RequestExitWithStatus(false,1); };
         auto& terrain=Environment->Terrain;
@@ -60,7 +61,10 @@ void ADivePawn::InputSmokeTick(float Dt)
             SetActorLocation(start);VelocityMetres=FVector::ZeroVector;bWalking=true;
             pc->SetControlRotation(FRotator(-15,90,0));ResetContactPose();
             if(!bContactPoseReady) { fail(TEXT("Initial contact pose"));return; }
-            ControlsSmokePhase=boundaryProbe?4:1;TestLessonStage=0;TutorialFinishedAt=ControlsSmokeClock;
+            ControlsSmokePhase=boundaryProbe?4:1;TestLessonStage=0;TestLessonScreenshots=0;
+            // A positive TutorialFinishedAt freezes simulation in Tick(). Only
+            // the stationary probe should freeze here; the route must move.
+            TutorialFinishedAt=boundaryProbe?ControlsSmokeClock:0;
             FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/(boundaryProbe?TEXT("Screenshots/LandBoundary_00.png"):TEXT("Screenshots/LandDetail_Start.png")),true,false);
             if(boundaryProbe) UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_BOUNDARY_FRAME tick=0 elapsed=0 frame=%llu"),GFrameCounter);
             UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_START east=%.3f north=%.3f"),startEast,routeNorth);
@@ -87,13 +91,47 @@ void ADivePawn::InputSmokeTick(float Dt)
             }
             return;
         }
+        if(ControlsSmokePhase==5)
+        {
+            // Let ordinary movement decelerate before rotating. Physics and
+            // body contact checks remain active throughout this turning route.
+            if(VelocityMetres.Size2D()<.01) { ControlsSmokePhase=6;TestLessonAge=ControlsSmokeClock; }
+            return;
+        }
+        if(ControlsSmokePhase==6)
+        {
+            const double fraction=FMath::Clamp((ControlsSmokeClock-TestLessonAge)/1.5,0.,1.);
+            pc->SetControlRotation(FRotator(-15,90+180*fraction,0));
+            if(fraction>=.5&&!(TestLessonScreenshots&4))
+            {
+                if(FScreenshotRequest::IsScreenshotRequested()) { fail(TEXT("Turn screenshot pending"));return; }
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/TEXT("Screenshots/LandDetail_Turn.png"),true,false);
+                TestLessonScreenshots|=4;
+            }
+            if(fraction>=1)
+            {
+                ControlsSmokePhase=2;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_TURN yaw=270 east=%.4f north=%.4f"),survey.X,survey.Y);
+            }
+            return;
+        }
         if(ControlsSmokePhase==1||ControlsSmokePhase==2)
         {
             const bool outbound=ControlsSmokePhase==1;
-            // Walk forward, then backward on the same heading: input drives
-            // the ordinary fixed-step movement, with no per-frame teleport.
-            TestKey(Controls.Key(outbound?EDiveAction::Forward:EDiveAction::Backward),true);
+            // The default returns backwards; TurnWalk turns and walks forward.
+            // Both use ordinary fixed-step movement, no per-frame teleport.
+            const EDiveAction walkAction=(outbound||turnWalk)?EDiveAction::Forward:EDiveAction::Backward;
+            TestKey(Controls.Key(walkAction),true);
             TestKey(Controls.Key(EDiveAction::Sprint),true);
+            const uint32 crossingBit=outbound?1:2;
+            if(turnWalk&&!(TestLessonScreenshots&crossingBit)&&
+               (outbound?survey.X>=2733244:survey.X<=2733244))
+            {
+                if(FScreenshotRequest::IsScreenshotRequested()) { fail(TEXT("Crossing screenshot pending"));return; }
+                FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/(outbound?TEXT("Screenshots/LandDetail_CrossEast.png"):TEXT("Screenshots/LandDetail_CrossWest.png")),true,false);
+                TestLessonScreenshots|=crossingBit;
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_CROSS phase=%d east=%.4f yaw=%.2f"),ControlsSmokePhase,survey.X,pc->GetControlRotation().Yaw);
+            }
             const int metre=FMath::FloorToInt(Simulation.Data.DistanceMetres);
             if(metre>TestLessonStage)
             {
@@ -103,16 +141,23 @@ void ADivePawn::InputSmokeTick(float Dt)
             }
             if((outbound&&survey.X>=endEast)||(!outbound&&survey.X<=startEast))
             {
-                TestKey(Controls.Key(outbound?EDiveAction::Forward:EDiveAction::Backward),false);
+                TestKey(Controls.Key(walkAction),false);
                 FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir()/(outbound?TEXT("Screenshots/LandDetail_Inside.png"):TEXT("Screenshots/LandDetail_Return.png")),true,false);
                 UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_ENDPOINT phase=%d east=%.4f distance_m=%.4f"),ControlsSmokePhase,survey.X,Simulation.Data.DistanceMetres);
                 ++ControlsSmokePhase;
+                if(outbound&&turnWalk) { ControlsSmokePhase=5;TestKey(Controls.Key(EDiveAction::Sprint),false); }
                 if(!outbound) { TestKey(Controls.Key(EDiveAction::Sprint),false);TutorialFinishedAt=ControlsSmokeClock; }
             }
         }
         if(ControlsSmokePhase==3&&ControlsSmokeClock>TutorialFinishedAt+2)
         {
             if(Simulation.Data.DistanceMetres<104||TestLessonStage<100) { fail(TEXT("Insufficient walked distance"));return; }
+            if(turnWalk)
+            {
+                if(TestLessonScreenshots!=7||FMath::Abs(FRotator::NormalizeAxis(pc->GetControlRotation().Yaw-270))>.01)
+                { fail(TEXT("Incomplete turning route"));return; }
+                UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_TURN_WALK_PASS crossings=2 turn_degrees=180"));
+            }
             UE_LOG(LogTemp,Display,TEXT("DIVE_LAND_DETAIL_WALK_PASS distance_m=%.4f samples=%d two_way_seam=1"),Simulation.Data.DistanceMetres,TestLessonStage);
             UE_LOG(LogTemp,Display,TEXT("DIVE_SMOKE_PASS land_detail=1"));FPlatformMisc::RequestExitWithStatus(false,0);
         }

@@ -1,0 +1,1759 @@
+{
+  "status": "LOCAL_RESIDENT_MOVEMENT_CHECKED_NOT_RELEASED",
+  "created_utc": "2026-11-28T12:21:46.869816+00:00",
+  "sources": [
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/Tools/SmokeTest.ps1",
+      "bytes": 43314,
+      "sha256": "ad97d9468bfdcb88a44feb6e370f5623c4b6a511d014d9ffd744eae7701ce5a2",
+      "project_file": "Tools/SmokeTest.ps1"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/divingsim/Source/DiveSim/DiveInputSmoke.cpp",
+      "bytes": 44372,
+      "sha256": "8cf75b289a685b28f2110f16dd7a403b380d2be194edf4b16c9bfe17d74d53a2",
+      "project_file": "divingsim/Source/DiveSim/DiveInputSmoke.cpp"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/divingsim/Source/DiveSim/DivePawn.cpp",
+      "bytes": 68841,
+      "sha256": "6989bb24429f8cfb544d967b27a79a47e18a7240cd5896c3ab26e4d06f8dfccb",
+      "project_file": "divingsim/Source/DiveSim/DivePawn.cpp"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/divingsim/Source/DiveSim/DiveShoreMovement.cpp",
+      "bytes": 4592,
+      "sha256": "4a31c1f065ad0829cc0c81d09d7f2bf4fecbd1991b0384058a35a0a348330dea",
+      "project_file": "divingsim/Source/DiveSim/DiveShoreMovement.cpp"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll",
+      "bytes": 2941440,
+      "sha256": "19d7fdc9c00b898570cd2572124f912a33a43b0271d7b983eb4f335fd1882ba5",
+      "project_file": "Builds/SourceEditorSandbox/divingsim/Binaries/Win64/UnrealEditor-DiveSim.dll"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/Builds/UE584/Engine/Source/Runtime/Engine/Private/Rendering/NaniteStreamingManager.cpp",
+      "bytes": 131575,
+      "sha256": "2ded65983dba488c1a3606f85d43b97025ff7a7f426041fb0d30a32ad9ec8556",
+      "project_file": "Builds/UE584/Engine/Source/Runtime/Engine/Private/Rendering/NaniteStreamingManager.cpp"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Snapshot/Builds/UE584/Engine/Shaders/Shared/NaniteDefinitions.h",
+      "bytes": 27545,
+      "sha256": "7e439de653d4067deac388d7c6ae8b587057303d0146e1e6e00ba5c2879d76ba",
+      "project_file": "Builds/UE584/Engine/Shaders/Shared/NaniteDefinitions.h"
+    }
+  ],
+  "cases": [
+    {
+      "case": "ForwardFixed",
+      "distance_m": 105.3441,
+      "reported_sample_counter": 105,
+      "logged_samples": 105,
+      "max_logged_ground_error_cm": 0.0,
+      "samples": [
+        {
+          "phase": 1,
+          "east": 2733237.0184,
+          "north": 1223622.0,
+          "foot_cm": 102856.734375,
+          "ground_cm": 102856.734375
+        },
+        {
+          "phase": 1,
+          "east": 2733238.0083,
+          "north": 1223622.0,
+          "foot_cm": 102861.3125,
+          "ground_cm": 102861.3125
+        },
+        {
+          "phase": 1,
+          "east": 2733238.9982,
+          "north": 1223622.0,
+          "foot_cm": 102866.632812,
+          "ground_cm": 102866.632812
+        },
+        {
+          "phase": 1,
+          "east": 2733240.018,
+          "north": 1223622.0,
+          "foot_cm": 102872.109375,
+          "ground_cm": 102872.109375
+        },
+        {
+          "phase": 1,
+          "east": 2733241.0077,
+          "north": 1223622.0,
+          "foot_cm": 102877.421875,
+          "ground_cm": 102877.421875
+        },
+        {
+          "phase": 1,
+          "east": 2733241.9975,
+          "north": 1223622.0,
+          "foot_cm": 102882.742188,
+          "ground_cm": 102882.742188
+        },
+        {
+          "phase": 1,
+          "east": 2733243.0171,
+          "north": 1223622.0,
+          "foot_cm": 102888.21875,
+          "ground_cm": 102888.21875
+        },
+        {
+          "phase": 1,
+          "east": 2733244.0067,
+          "north": 1223622.0,
+          "foot_cm": 102893.53125,
+          "ground_cm": 102893.53125
+        },
+        {
+          "phase": 1,
+          "east": 2733244.9963,
+          "north": 1223622.0,
+          "foot_cm": 102899.492188,
+          "ground_cm": 102899.492188
+        },
+        {
+          "phase": 1,
+          "east": 2733245.9858,
+          "north": 1223622.0,
+          "foot_cm": 102905.445312,
+          "ground_cm": 102905.445312
+        },
+        {
+          "phase": 1,
+          "east": 2733247.0053,
+          "north": 1223622.0,
+          "foot_cm": 102913.65625,
+          "ground_cm": 102913.65625
+        },
+        {
+          "phase": 1,
+          "east": 2733247.9947,
+          "north": 1223622.0,
+          "foot_cm": 102921.664062,
+          "ground_cm": 102921.664062
+        },
+        {
+          "phase": 1,
+          "east": 2733248.9841,
+          "north": 1223622.0,
+          "foot_cm": 102929.8125,
+          "ground_cm": 102929.8125
+        },
+        {
+          "phase": 1,
+          "east": 2733249.9734,
+          "north": 1223622.0,
+          "foot_cm": 102937.960938,
+          "ground_cm": 102937.960938
+        },
+        {
+          "phase": 1,
+          "east": 2733250.9926,
+          "north": 1223622.0,
+          "foot_cm": 102946.367188,
+          "ground_cm": 102946.367188
+        },
+        {
+          "phase": 1,
+          "east": 2733251.9819,
+          "north": 1223622.0,
+          "foot_cm": 102954.523438,
+          "ground_cm": 102954.523438
+        },
+        {
+          "phase": 1,
+          "east": 2733252.971,
+          "north": 1223622.0,
+          "foot_cm": 102962.53125,
+          "ground_cm": 102962.53125
+        },
+        {
+          "phase": 1,
+          "east": 2733253.9602,
+          "north": 1223622.0,
+          "foot_cm": 102970.539062,
+          "ground_cm": 102970.539062
+        },
+        {
+          "phase": 1,
+          "east": 2733254.9792,
+          "north": 1223622.0,
+          "foot_cm": 102979.273438,
+          "ground_cm": 102979.273438
+        },
+        {
+          "phase": 1,
+          "east": 2733255.9683,
+          "north": 1223622.0,
+          "foot_cm": 102987.773438,
+          "ground_cm": 102987.773438
+        },
+        {
+          "phase": 1,
+          "east": 2733256.9573,
+          "north": 1223622.0,
+          "foot_cm": 102996.53125,
+          "ground_cm": 102996.53125
+        },
+        {
+          "phase": 1,
+          "east": 2733257.9462,
+          "north": 1223622.0,
+          "foot_cm": 103005.296875,
+          "ground_cm": 103005.296875
+        },
+        {
+          "phase": 1,
+          "east": 2733258.9651,
+          "north": 1223622.0,
+          "foot_cm": 103014.78125,
+          "ground_cm": 103014.78125
+        },
+        {
+          "phase": 1,
+          "east": 2733259.9539,
+          "north": 1223622.0,
+          "foot_cm": 103024.007812,
+          "ground_cm": 103024.007812
+        },
+        {
+          "phase": 1,
+          "east": 2733260.9427,
+          "north": 1223622.0,
+          "foot_cm": 103034.46875,
+          "ground_cm": 103034.46875
+        },
+        {
+          "phase": 1,
+          "east": 2733261.9314,
+          "north": 1223622.0,
+          "foot_cm": 103044.984375,
+          "ground_cm": 103044.984375
+        },
+        {
+          "phase": 1,
+          "east": 2733262.9201,
+          "north": 1223622.0,
+          "foot_cm": 103057.695312,
+          "ground_cm": 103057.695312
+        },
+        {
+          "phase": 1,
+          "east": 2733263.9088,
+          "north": 1223622.0,
+          "foot_cm": 103070.5625,
+          "ground_cm": 103070.5625
+        },
+        {
+          "phase": 1,
+          "east": 2733264.9273,
+          "north": 1223622.0,
+          "foot_cm": 103082.742188,
+          "ground_cm": 103082.742188
+        },
+        {
+          "phase": 1,
+          "east": 2733265.9159,
+          "north": 1223622.0,
+          "foot_cm": 103094.453125,
+          "ground_cm": 103094.453125
+        },
+        {
+          "phase": 1,
+          "east": 2733266.9044,
+          "north": 1223622.0,
+          "foot_cm": 103101.742188,
+          "ground_cm": 103101.742188
+        },
+        {
+          "phase": 1,
+          "east": 2733267.8929,
+          "north": 1223622.0,
+          "foot_cm": 103108.632812,
+          "ground_cm": 103108.632812
+        },
+        {
+          "phase": 1,
+          "east": 2733268.9112,
+          "north": 1223622.0,
+          "foot_cm": 103110.15625,
+          "ground_cm": 103110.15625
+        },
+        {
+          "phase": 1,
+          "east": 2733269.8996,
+          "north": 1223622.0,
+          "foot_cm": 103111.007812,
+          "ground_cm": 103111.007812
+        },
+        {
+          "phase": 1,
+          "east": 2733270.9179,
+          "north": 1223622.0,
+          "foot_cm": 103110.507812,
+          "ground_cm": 103110.507812
+        },
+        {
+          "phase": 1,
+          "east": 2733271.9061,
+          "north": 1223622.0,
+          "foot_cm": 103109.875,
+          "ground_cm": 103109.875
+        },
+        {
+          "phase": 1,
+          "east": 2733272.8943,
+          "north": 1223622.0,
+          "foot_cm": 103112.546875,
+          "ground_cm": 103112.546875
+        },
+        {
+          "phase": 1,
+          "east": 2733273.9124,
+          "north": 1223622.0,
+          "foot_cm": 103115.648438,
+          "ground_cm": 103115.648438
+        },
+        {
+          "phase": 1,
+          "east": 2733274.9006,
+          "north": 1223622.0,
+          "foot_cm": 103120.164062,
+          "ground_cm": 103120.164062
+        },
+        {
+          "phase": 1,
+          "east": 2733275.8886,
+          "north": 1223622.0,
+          "foot_cm": 103124.828125,
+          "ground_cm": 103124.828125
+        },
+        {
+          "phase": 1,
+          "east": 2733276.9066,
+          "north": 1223622.0,
+          "foot_cm": 103126.882812,
+          "ground_cm": 103126.882812
+        },
+        {
+          "phase": 1,
+          "east": 2733277.8946,
+          "north": 1223622.0,
+          "foot_cm": 103128.546875,
+          "ground_cm": 103128.546875
+        },
+        {
+          "phase": 1,
+          "east": 2733278.9124,
+          "north": 1223622.0,
+          "foot_cm": 103129.851562,
+          "ground_cm": 103129.851562
+        },
+        {
+          "phase": 1,
+          "east": 2733279.9003,
+          "north": 1223622.0,
+          "foot_cm": 103131.078125,
+          "ground_cm": 103131.078125
+        },
+        {
+          "phase": 1,
+          "east": 2733280.8882,
+          "north": 1223622.0,
+          "foot_cm": 103133.671875,
+          "ground_cm": 103133.671875
+        },
+        {
+          "phase": 1,
+          "east": 2733281.9059,
+          "north": 1223622.0,
+          "foot_cm": 103136.507812,
+          "ground_cm": 103136.507812
+        },
+        {
+          "phase": 1,
+          "east": 2733282.8936,
+          "north": 1223622.0,
+          "foot_cm": 103141.273438,
+          "ground_cm": 103141.273438
+        },
+        {
+          "phase": 1,
+          "east": 2733283.8813,
+          "north": 1223622.0,
+          "foot_cm": 103146.25,
+          "ground_cm": 103146.25
+        },
+        {
+          "phase": 1,
+          "east": 2733284.8988,
+          "north": 1223622.0,
+          "foot_cm": 103156.773438,
+          "ground_cm": 103156.773438
+        },
+        {
+          "phase": 1,
+          "east": 2733285.8864,
+          "north": 1223622.0,
+          "foot_cm": 103167.679688,
+          "ground_cm": 103167.679688
+        },
+        {
+          "phase": 1,
+          "east": 2733286.874,
+          "north": 1223622.0,
+          "foot_cm": 103179.03125,
+          "ground_cm": 103179.03125
+        },
+        {
+          "phase": 1,
+          "east": 2733287.8615,
+          "north": 1223622.0,
+          "foot_cm": 103190.4375,
+          "ground_cm": 103190.4375
+        },
+        {
+          "phase": 2,
+          "east": 2733288.1732,
+          "north": 1223622.0,
+          "foot_cm": 103192.929688,
+          "ground_cm": 103192.929688
+        },
+        {
+          "phase": 2,
+          "east": 2733287.1739,
+          "north": 1223622.0,
+          "foot_cm": 103182.5,
+          "ground_cm": 103182.5
+        },
+        {
+          "phase": 2,
+          "east": 2733286.1866,
+          "north": 1223622.0,
+          "foot_cm": 103171.085938,
+          "ground_cm": 103171.085938
+        },
+        {
+          "phase": 2,
+          "east": 2733285.1993,
+          "north": 1223622.0,
+          "foot_cm": 103160.09375,
+          "ground_cm": 103160.09375
+        },
+        {
+          "phase": 2,
+          "east": 2733284.1822,
+          "north": 1223622.0,
+          "foot_cm": 103148.859375,
+          "ground_cm": 103148.859375
+        },
+        {
+          "phase": 2,
+          "east": 2733283.195,
+          "north": 1223622.0,
+          "foot_cm": 103142.789062,
+          "ground_cm": 103142.789062
+        },
+        {
+          "phase": 2,
+          "east": 2733282.2079,
+          "north": 1223622.0,
+          "foot_cm": 103137.8125,
+          "ground_cm": 103137.8125
+        },
+        {
+          "phase": 2,
+          "east": 2733281.1909,
+          "north": 1223622.0,
+          "foot_cm": 103134.515625,
+          "ground_cm": 103134.515625
+        },
+        {
+          "phase": 2,
+          "east": 2733280.2038,
+          "north": 1223622.0,
+          "foot_cm": 103131.765625,
+          "ground_cm": 103131.765625
+        },
+        {
+          "phase": 2,
+          "east": 2733279.1869,
+          "north": 1223622.0,
+          "foot_cm": 103130.195312,
+          "ground_cm": 103130.195312
+        },
+        {
+          "phase": 2,
+          "east": 2733278.2,
+          "north": 1223622.0,
+          "foot_cm": 103128.96875,
+          "ground_cm": 103128.96875
+        },
+        {
+          "phase": 2,
+          "east": 2733277.2131,
+          "north": 1223622.0,
+          "foot_cm": 103127.398438,
+          "ground_cm": 103127.398438
+        },
+        {
+          "phase": 2,
+          "east": 2733276.1964,
+          "north": 1223622.0,
+          "foot_cm": 103125.6875,
+          "ground_cm": 103125.6875
+        },
+        {
+          "phase": 2,
+          "east": 2733275.2096,
+          "north": 1223622.0,
+          "foot_cm": 103121.625,
+          "ground_cm": 103121.625
+        },
+        {
+          "phase": 2,
+          "east": 2733274.1929,
+          "north": 1223622.0,
+          "foot_cm": 103116.828125,
+          "ground_cm": 103116.828125
+        },
+        {
+          "phase": 2,
+          "east": 2733273.2062,
+          "north": 1223622.0,
+          "foot_cm": 103113.492188,
+          "ground_cm": 103113.492188
+        },
+        {
+          "phase": 2,
+          "east": 2733272.1897,
+          "north": 1223622.0,
+          "foot_cm": 103110.390625,
+          "ground_cm": 103110.390625
+        },
+        {
+          "phase": 2,
+          "east": 2733271.2031,
+          "north": 1223622.0,
+          "foot_cm": 103110.328125,
+          "ground_cm": 103110.328125
+        },
+        {
+          "phase": 2,
+          "east": 2733270.1866,
+          "north": 1223622.0,
+          "foot_cm": 103110.976562,
+          "ground_cm": 103110.976562
+        },
+        {
+          "phase": 2,
+          "east": 2733269.2001,
+          "north": 1223622.0,
+          "foot_cm": 103110.40625,
+          "ground_cm": 103110.40625
+        },
+        {
+          "phase": 2,
+          "east": 2733268.2137,
+          "north": 1223622.0,
+          "foot_cm": 103109.5625,
+          "ground_cm": 103109.5625
+        },
+        {
+          "phase": 2,
+          "east": 2733267.1974,
+          "north": 1223622.0,
+          "foot_cm": 103103.789062,
+          "ground_cm": 103103.789062
+        },
+        {
+          "phase": 2,
+          "east": 2733266.211,
+          "north": 1223622.0,
+          "foot_cm": 103096.914062,
+          "ground_cm": 103096.914062
+        },
+        {
+          "phase": 2,
+          "east": 2733265.2247,
+          "north": 1223622.0,
+          "foot_cm": 103086.265625,
+          "ground_cm": 103086.265625
+        },
+        {
+          "phase": 2,
+          "east": 2733264.2086,
+          "north": 1223622.0,
+          "foot_cm": 103074.226562,
+          "ground_cm": 103074.226562
+        },
+        {
+          "phase": 2,
+          "east": 2733263.2224,
+          "north": 1223622.0,
+          "foot_cm": 103061.632812,
+          "ground_cm": 103061.632812
+        },
+        {
+          "phase": 2,
+          "east": 2733262.2362,
+          "north": 1223622.0,
+          "foot_cm": 103048.789062,
+          "ground_cm": 103048.789062
+        },
+        {
+          "phase": 2,
+          "east": 2733261.2501,
+          "north": 1223622.0,
+          "foot_cm": 103037.734375,
+          "ground_cm": 103037.734375
+        },
+        {
+          "phase": 2,
+          "east": 2733260.2341,
+          "north": 1223622.0,
+          "foot_cm": 103026.929688,
+          "ground_cm": 103026.929688
+        },
+        {
+          "phase": 2,
+          "east": 2733259.2481,
+          "north": 1223622.0,
+          "foot_cm": 103017.421875,
+          "ground_cm": 103017.421875
+        },
+        {
+          "phase": 2,
+          "east": 2733258.2621,
+          "north": 1223622.0,
+          "foot_cm": 103008.21875,
+          "ground_cm": 103008.21875
+        },
+        {
+          "phase": 2,
+          "east": 2733257.2762,
+          "north": 1223622.0,
+          "foot_cm": 102999.359375,
+          "ground_cm": 102999.359375
+        },
+        {
+          "phase": 2,
+          "east": 2733256.2605,
+          "north": 1223622.0,
+          "foot_cm": 102990.359375,
+          "ground_cm": 102990.359375
+        },
+        {
+          "phase": 2,
+          "east": 2733255.2746,
+          "north": 1223622.0,
+          "foot_cm": 102981.8125,
+          "ground_cm": 102981.8125
+        },
+        {
+          "phase": 2,
+          "east": 2733254.259,
+          "north": 1223622.0,
+          "foot_cm": 102973.085938,
+          "ground_cm": 102973.085938
+        },
+        {
+          "phase": 2,
+          "east": 2733253.2733,
+          "north": 1223622.0,
+          "foot_cm": 102964.976562,
+          "ground_cm": 102964.976562
+        },
+        {
+          "phase": 2,
+          "east": 2733252.2876,
+          "north": 1223622.0,
+          "foot_cm": 102957.0,
+          "ground_cm": 102957.0
+        },
+        {
+          "phase": 2,
+          "east": 2733251.2721,
+          "north": 1223622.0,
+          "foot_cm": 102948.671875,
+          "ground_cm": 102948.671875
+        },
+        {
+          "phase": 2,
+          "east": 2733250.2865,
+          "north": 1223622.0,
+          "foot_cm": 102940.546875,
+          "ground_cm": 102940.546875
+        },
+        {
+          "phase": 2,
+          "east": 2733249.301,
+          "north": 1223622.0,
+          "foot_cm": 102932.421875,
+          "ground_cm": 102932.421875
+        },
+        {
+          "phase": 2,
+          "east": 2733248.2856,
+          "north": 1223622.0,
+          "foot_cm": 102924.054688,
+          "ground_cm": 102924.054688
+        },
+        {
+          "phase": 2,
+          "east": 2733247.3002,
+          "north": 1223622.0,
+          "foot_cm": 102916.046875,
+          "ground_cm": 102916.046875
+        },
+        {
+          "phase": 2,
+          "east": 2733246.2849,
+          "north": 1223622.0,
+          "foot_cm": 102907.835938,
+          "ground_cm": 102907.835938
+        },
+        {
+          "phase": 2,
+          "east": 2733245.2996,
+          "north": 1223622.0,
+          "foot_cm": 102901.3125,
+          "ground_cm": 102901.3125
+        },
+        {
+          "phase": 2,
+          "east": 2733244.3143,
+          "north": 1223622.0,
+          "foot_cm": 102895.382812,
+          "ground_cm": 102895.382812
+        },
+        {
+          "phase": 2,
+          "east": 2733243.2992,
+          "north": 1223622.0,
+          "foot_cm": 102889.734375,
+          "ground_cm": 102889.734375
+        },
+        {
+          "phase": 2,
+          "east": 2733242.314,
+          "north": 1223622.0,
+          "foot_cm": 102884.4375,
+          "ground_cm": 102884.4375
+        },
+        {
+          "phase": 2,
+          "east": 2733241.299,
+          "north": 1223622.0,
+          "foot_cm": 102878.992188,
+          "ground_cm": 102878.992188
+        },
+        {
+          "phase": 2,
+          "east": 2733240.3139,
+          "north": 1223622.0,
+          "foot_cm": 102873.695312,
+          "ground_cm": 102873.695312
+        },
+        {
+          "phase": 2,
+          "east": 2733239.299,
+          "north": 1223622.0,
+          "foot_cm": 102868.25,
+          "ground_cm": 102868.25
+        },
+        {
+          "phase": 2,
+          "east": 2733238.314,
+          "north": 1223622.0,
+          "foot_cm": 102862.953125,
+          "ground_cm": 102862.953125
+        },
+        {
+          "phase": 2,
+          "east": 2733237.2992,
+          "north": 1223622.0,
+          "foot_cm": 102858.03125,
+          "ground_cm": 102858.03125
+        },
+        {
+          "phase": 2,
+          "east": 2733236.3142,
+          "north": 1223622.0,
+          "foot_cm": 102853.476562,
+          "ground_cm": 102853.476562
+        }
+      ],
+      "visually_reviewed": [
+        "Start",
+        "Inside",
+        "Return"
+      ],
+      "files": [
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/ForwardFixed/Runtime.log",
+          "bytes": 2338982,
+          "sha256": "531c0fac285c9d8f0f803d19374d034d82703917973b6876314010b78dd11b00"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/ForwardFixed/Runner.log",
+          "bytes": 459,
+          "sha256": "27ffad31bc3d9bb0634c04e45e8ff8faff2662641caa248a03e674188125eb15"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/ForwardFixed/LandDetail_Start.png",
+          "bytes": 3083137,
+          "sha256": "3d11b7a2a280f4504ec21f0207bfbc465168f367554881430c7bf86ccaf5bbb2"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/ForwardFixed/LandDetail_Inside.png",
+          "bytes": 3005608,
+          "sha256": "c9749e1e311f71846186eee3eed6f524745531edf2187ed4fd0c3bdca7cd4215"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/ForwardFixed/LandDetail_Return.png",
+          "bytes": 2995347,
+          "sha256": "2918c423311f1bc82e39056842801a7189bfa20590575dcb9623592ac49bc9f0"
+        }
+      ]
+    },
+    {
+      "case": "TurnResident",
+      "distance_m": 105.3505,
+      "reported_sample_counter": 105,
+      "logged_samples": 105,
+      "max_logged_ground_error_cm": 0.0,
+      "samples": [
+        {
+          "phase": 1,
+          "east": 2733237.0184,
+          "north": 1223622.0,
+          "foot_cm": 102856.734375,
+          "ground_cm": 102856.734375
+        },
+        {
+          "phase": 1,
+          "east": 2733238.0083,
+          "north": 1223622.0,
+          "foot_cm": 102861.3125,
+          "ground_cm": 102861.3125
+        },
+        {
+          "phase": 1,
+          "east": 2733238.9982,
+          "north": 1223622.0,
+          "foot_cm": 102866.632812,
+          "ground_cm": 102866.632812
+        },
+        {
+          "phase": 1,
+          "east": 2733240.018,
+          "north": 1223622.0,
+          "foot_cm": 102872.109375,
+          "ground_cm": 102872.109375
+        },
+        {
+          "phase": 1,
+          "east": 2733241.0077,
+          "north": 1223622.0,
+          "foot_cm": 102877.421875,
+          "ground_cm": 102877.421875
+        },
+        {
+          "phase": 1,
+          "east": 2733241.9975,
+          "north": 1223622.0,
+          "foot_cm": 102882.742188,
+          "ground_cm": 102882.742188
+        },
+        {
+          "phase": 1,
+          "east": 2733243.0171,
+          "north": 1223622.0,
+          "foot_cm": 102888.21875,
+          "ground_cm": 102888.21875
+        },
+        {
+          "phase": 1,
+          "east": 2733244.0067,
+          "north": 1223622.0,
+          "foot_cm": 102893.53125,
+          "ground_cm": 102893.53125
+        },
+        {
+          "phase": 1,
+          "east": 2733244.9963,
+          "north": 1223622.0,
+          "foot_cm": 102899.492188,
+          "ground_cm": 102899.492188
+        },
+        {
+          "phase": 1,
+          "east": 2733245.9858,
+          "north": 1223622.0,
+          "foot_cm": 102905.445312,
+          "ground_cm": 102905.445312
+        },
+        {
+          "phase": 1,
+          "east": 2733247.0053,
+          "north": 1223622.0,
+          "foot_cm": 102913.65625,
+          "ground_cm": 102913.65625
+        },
+        {
+          "phase": 1,
+          "east": 2733247.9947,
+          "north": 1223622.0,
+          "foot_cm": 102921.664062,
+          "ground_cm": 102921.664062
+        },
+        {
+          "phase": 1,
+          "east": 2733248.9841,
+          "north": 1223622.0,
+          "foot_cm": 102929.8125,
+          "ground_cm": 102929.8125
+        },
+        {
+          "phase": 1,
+          "east": 2733249.9734,
+          "north": 1223622.0,
+          "foot_cm": 102937.960938,
+          "ground_cm": 102937.960938
+        },
+        {
+          "phase": 1,
+          "east": 2733250.9926,
+          "north": 1223622.0,
+          "foot_cm": 102946.367188,
+          "ground_cm": 102946.367188
+        },
+        {
+          "phase": 1,
+          "east": 2733251.9819,
+          "north": 1223622.0,
+          "foot_cm": 102954.523438,
+          "ground_cm": 102954.523438
+        },
+        {
+          "phase": 1,
+          "east": 2733252.971,
+          "north": 1223622.0,
+          "foot_cm": 102962.53125,
+          "ground_cm": 102962.53125
+        },
+        {
+          "phase": 1,
+          "east": 2733253.9602,
+          "north": 1223622.0,
+          "foot_cm": 102970.539062,
+          "ground_cm": 102970.539062
+        },
+        {
+          "phase": 1,
+          "east": 2733254.9792,
+          "north": 1223622.0,
+          "foot_cm": 102979.273438,
+          "ground_cm": 102979.273438
+        },
+        {
+          "phase": 1,
+          "east": 2733255.9683,
+          "north": 1223622.0,
+          "foot_cm": 102987.773438,
+          "ground_cm": 102987.773438
+        },
+        {
+          "phase": 1,
+          "east": 2733256.9573,
+          "north": 1223622.0,
+          "foot_cm": 102996.53125,
+          "ground_cm": 102996.53125
+        },
+        {
+          "phase": 1,
+          "east": 2733257.9462,
+          "north": 1223622.0,
+          "foot_cm": 103005.296875,
+          "ground_cm": 103005.296875
+        },
+        {
+          "phase": 1,
+          "east": 2733258.9651,
+          "north": 1223622.0,
+          "foot_cm": 103014.78125,
+          "ground_cm": 103014.78125
+        },
+        {
+          "phase": 1,
+          "east": 2733259.9539,
+          "north": 1223622.0,
+          "foot_cm": 103024.007812,
+          "ground_cm": 103024.007812
+        },
+        {
+          "phase": 1,
+          "east": 2733260.9427,
+          "north": 1223622.0,
+          "foot_cm": 103034.46875,
+          "ground_cm": 103034.46875
+        },
+        {
+          "phase": 1,
+          "east": 2733261.9314,
+          "north": 1223622.0,
+          "foot_cm": 103044.984375,
+          "ground_cm": 103044.984375
+        },
+        {
+          "phase": 1,
+          "east": 2733262.9201,
+          "north": 1223622.0,
+          "foot_cm": 103057.695312,
+          "ground_cm": 103057.695312
+        },
+        {
+          "phase": 1,
+          "east": 2733263.9088,
+          "north": 1223622.0,
+          "foot_cm": 103070.5625,
+          "ground_cm": 103070.5625
+        },
+        {
+          "phase": 1,
+          "east": 2733264.9273,
+          "north": 1223622.0,
+          "foot_cm": 103082.742188,
+          "ground_cm": 103082.742188
+        },
+        {
+          "phase": 1,
+          "east": 2733265.9159,
+          "north": 1223622.0,
+          "foot_cm": 103094.453125,
+          "ground_cm": 103094.453125
+        },
+        {
+          "phase": 1,
+          "east": 2733266.9044,
+          "north": 1223622.0,
+          "foot_cm": 103101.742188,
+          "ground_cm": 103101.742188
+        },
+        {
+          "phase": 1,
+          "east": 2733267.8929,
+          "north": 1223622.0,
+          "foot_cm": 103108.632812,
+          "ground_cm": 103108.632812
+        },
+        {
+          "phase": 1,
+          "east": 2733268.9112,
+          "north": 1223622.0,
+          "foot_cm": 103110.15625,
+          "ground_cm": 103110.15625
+        },
+        {
+          "phase": 1,
+          "east": 2733269.8996,
+          "north": 1223622.0,
+          "foot_cm": 103111.007812,
+          "ground_cm": 103111.007812
+        },
+        {
+          "phase": 1,
+          "east": 2733270.9179,
+          "north": 1223622.0,
+          "foot_cm": 103110.507812,
+          "ground_cm": 103110.507812
+        },
+        {
+          "phase": 1,
+          "east": 2733271.9061,
+          "north": 1223622.0,
+          "foot_cm": 103109.875,
+          "ground_cm": 103109.875
+        },
+        {
+          "phase": 1,
+          "east": 2733272.8943,
+          "north": 1223622.0,
+          "foot_cm": 103112.546875,
+          "ground_cm": 103112.546875
+        },
+        {
+          "phase": 1,
+          "east": 2733273.9124,
+          "north": 1223622.0,
+          "foot_cm": 103115.648438,
+          "ground_cm": 103115.648438
+        },
+        {
+          "phase": 1,
+          "east": 2733274.9006,
+          "north": 1223622.0,
+          "foot_cm": 103120.164062,
+          "ground_cm": 103120.164062
+        },
+        {
+          "phase": 1,
+          "east": 2733275.8886,
+          "north": 1223622.0,
+          "foot_cm": 103124.828125,
+          "ground_cm": 103124.828125
+        },
+        {
+          "phase": 1,
+          "east": 2733276.9066,
+          "north": 1223622.0,
+          "foot_cm": 103126.882812,
+          "ground_cm": 103126.882812
+        },
+        {
+          "phase": 1,
+          "east": 2733277.8946,
+          "north": 1223622.0,
+          "foot_cm": 103128.546875,
+          "ground_cm": 103128.546875
+        },
+        {
+          "phase": 1,
+          "east": 2733278.9124,
+          "north": 1223622.0,
+          "foot_cm": 103129.851562,
+          "ground_cm": 103129.851562
+        },
+        {
+          "phase": 1,
+          "east": 2733279.9003,
+          "north": 1223622.0,
+          "foot_cm": 103131.078125,
+          "ground_cm": 103131.078125
+        },
+        {
+          "phase": 1,
+          "east": 2733280.8882,
+          "north": 1223622.0,
+          "foot_cm": 103133.671875,
+          "ground_cm": 103133.671875
+        },
+        {
+          "phase": 1,
+          "east": 2733281.9059,
+          "north": 1223622.0,
+          "foot_cm": 103136.507812,
+          "ground_cm": 103136.507812
+        },
+        {
+          "phase": 1,
+          "east": 2733282.8936,
+          "north": 1223622.0,
+          "foot_cm": 103141.273438,
+          "ground_cm": 103141.273438
+        },
+        {
+          "phase": 1,
+          "east": 2733283.8813,
+          "north": 1223622.0,
+          "foot_cm": 103146.25,
+          "ground_cm": 103146.25
+        },
+        {
+          "phase": 1,
+          "east": 2733284.8988,
+          "north": 1223622.0,
+          "foot_cm": 103156.773438,
+          "ground_cm": 103156.773438
+        },
+        {
+          "phase": 1,
+          "east": 2733285.8864,
+          "north": 1223622.0,
+          "foot_cm": 103167.679688,
+          "ground_cm": 103167.679688
+        },
+        {
+          "phase": 1,
+          "east": 2733286.874,
+          "north": 1223622.0,
+          "foot_cm": 103179.03125,
+          "ground_cm": 103179.03125
+        },
+        {
+          "phase": 1,
+          "east": 2733287.8615,
+          "north": 1223622.0,
+          "foot_cm": 103190.4375,
+          "ground_cm": 103190.4375
+        },
+        {
+          "phase": 2,
+          "east": 2733288.1729,
+          "north": 1223622.0,
+          "foot_cm": 103192.921875,
+          "ground_cm": 103192.921875
+        },
+        {
+          "phase": 2,
+          "east": 2733287.1735,
+          "north": 1223622.0,
+          "foot_cm": 103182.492188,
+          "ground_cm": 103182.492188
+        },
+        {
+          "phase": 2,
+          "east": 2733286.1861,
+          "north": 1223622.0,
+          "foot_cm": 103171.085938,
+          "ground_cm": 103171.085938
+        },
+        {
+          "phase": 2,
+          "east": 2733285.1987,
+          "north": 1223622.0,
+          "foot_cm": 103160.085938,
+          "ground_cm": 103160.085938
+        },
+        {
+          "phase": 2,
+          "east": 2733284.1814,
+          "north": 1223622.0,
+          "foot_cm": 103148.851562,
+          "ground_cm": 103148.851562
+        },
+        {
+          "phase": 2,
+          "east": 2733283.1941,
+          "north": 1223622.0,
+          "foot_cm": 103142.789062,
+          "ground_cm": 103142.789062
+        },
+        {
+          "phase": 2,
+          "east": 2733282.2069,
+          "north": 1223622.0,
+          "foot_cm": 103137.8125,
+          "ground_cm": 103137.8125
+        },
+        {
+          "phase": 2,
+          "east": 2733281.1898,
+          "north": 1223622.0,
+          "foot_cm": 103134.515625,
+          "ground_cm": 103134.515625
+        },
+        {
+          "phase": 2,
+          "east": 2733280.2026,
+          "north": 1223622.0,
+          "foot_cm": 103131.765625,
+          "ground_cm": 103131.765625
+        },
+        {
+          "phase": 2,
+          "east": 2733279.1856,
+          "north": 1223622.0,
+          "foot_cm": 103130.195312,
+          "ground_cm": 103130.195312
+        },
+        {
+          "phase": 2,
+          "east": 2733278.1986,
+          "north": 1223622.0,
+          "foot_cm": 103128.96875,
+          "ground_cm": 103128.96875
+        },
+        {
+          "phase": 2,
+          "east": 2733277.2116,
+          "north": 1223622.0,
+          "foot_cm": 103127.398438,
+          "ground_cm": 103127.398438
+        },
+        {
+          "phase": 2,
+          "east": 2733276.1947,
+          "north": 1223622.0,
+          "foot_cm": 103125.679688,
+          "ground_cm": 103125.679688
+        },
+        {
+          "phase": 2,
+          "east": 2733275.2078,
+          "north": 1223622.0,
+          "foot_cm": 103121.617188,
+          "ground_cm": 103121.617188
+        },
+        {
+          "phase": 2,
+          "east": 2733274.191,
+          "north": 1223622.0,
+          "foot_cm": 103116.820312,
+          "ground_cm": 103116.820312
+        },
+        {
+          "phase": 2,
+          "east": 2733273.2042,
+          "north": 1223622.0,
+          "foot_cm": 103113.492188,
+          "ground_cm": 103113.492188
+        },
+        {
+          "phase": 2,
+          "east": 2733272.2174,
+          "north": 1223622.0,
+          "foot_cm": 103110.476562,
+          "ground_cm": 103110.476562
+        },
+        {
+          "phase": 2,
+          "east": 2733271.2008,
+          "north": 1223622.0,
+          "foot_cm": 103110.328125,
+          "ground_cm": 103110.328125
+        },
+        {
+          "phase": 2,
+          "east": 2733270.2142,
+          "north": 1223622.0,
+          "foot_cm": 103110.960938,
+          "ground_cm": 103110.960938
+        },
+        {
+          "phase": 2,
+          "east": 2733269.1976,
+          "north": 1223622.0,
+          "foot_cm": 103110.40625,
+          "ground_cm": 103110.40625
+        },
+        {
+          "phase": 2,
+          "east": 2733268.2111,
+          "north": 1223622.0,
+          "foot_cm": 103109.554688,
+          "ground_cm": 103109.554688
+        },
+        {
+          "phase": 2,
+          "east": 2733267.1947,
+          "north": 1223622.0,
+          "foot_cm": 103103.765625,
+          "ground_cm": 103103.765625
+        },
+        {
+          "phase": 2,
+          "east": 2733266.2082,
+          "north": 1223622.0,
+          "foot_cm": 103096.898438,
+          "ground_cm": 103096.898438
+        },
+        {
+          "phase": 2,
+          "east": 2733265.2218,
+          "north": 1223622.0,
+          "foot_cm": 103086.226562,
+          "ground_cm": 103086.226562
+        },
+        {
+          "phase": 2,
+          "east": 2733264.2055,
+          "north": 1223622.0,
+          "foot_cm": 103074.1875,
+          "ground_cm": 103074.1875
+        },
+        {
+          "phase": 2,
+          "east": 2733263.2192,
+          "north": 1223622.0,
+          "foot_cm": 103061.585938,
+          "ground_cm": 103061.585938
+        },
+        {
+          "phase": 2,
+          "east": 2733262.2329,
+          "north": 1223622.0,
+          "foot_cm": 103048.75,
+          "ground_cm": 103048.75
+        },
+        {
+          "phase": 2,
+          "east": 2733261.2466,
+          "north": 1223622.0,
+          "foot_cm": 103037.703125,
+          "ground_cm": 103037.703125
+        },
+        {
+          "phase": 2,
+          "east": 2733260.2605,
+          "north": 1223622.0,
+          "foot_cm": 103027.210938,
+          "ground_cm": 103027.210938
+        },
+        {
+          "phase": 2,
+          "east": 2733259.2444,
+          "north": 1223622.0,
+          "foot_cm": 103017.390625,
+          "ground_cm": 103017.390625
+        },
+        {
+          "phase": 2,
+          "east": 2733258.2584,
+          "north": 1223622.0,
+          "foot_cm": 103008.1875,
+          "ground_cm": 103008.1875
+        },
+        {
+          "phase": 2,
+          "east": 2733257.2723,
+          "north": 1223622.0,
+          "foot_cm": 102999.328125,
+          "ground_cm": 102999.328125
+        },
+        {
+          "phase": 2,
+          "east": 2733256.2564,
+          "north": 1223622.0,
+          "foot_cm": 102990.320312,
+          "ground_cm": 102990.320312
+        },
+        {
+          "phase": 2,
+          "east": 2733255.2705,
+          "north": 1223622.0,
+          "foot_cm": 102981.78125,
+          "ground_cm": 102981.78125
+        },
+        {
+          "phase": 2,
+          "east": 2733254.2846,
+          "north": 1223622.0,
+          "foot_cm": 102973.304688,
+          "ground_cm": 102973.304688
+        },
+        {
+          "phase": 2,
+          "east": 2733253.2689,
+          "north": 1223622.0,
+          "foot_cm": 102964.945312,
+          "ground_cm": 102964.945312
+        },
+        {
+          "phase": 2,
+          "east": 2733252.2831,
+          "north": 1223622.0,
+          "foot_cm": 102956.96875,
+          "ground_cm": 102956.96875
+        },
+        {
+          "phase": 2,
+          "east": 2733251.2973,
+          "north": 1223622.0,
+          "foot_cm": 102948.882812,
+          "ground_cm": 102948.882812
+        },
+        {
+          "phase": 2,
+          "east": 2733250.2818,
+          "north": 1223622.0,
+          "foot_cm": 102940.507812,
+          "ground_cm": 102940.507812
+        },
+        {
+          "phase": 2,
+          "east": 2733249.2961,
+          "north": 1223622.0,
+          "foot_cm": 102932.382812,
+          "ground_cm": 102932.382812
+        },
+        {
+          "phase": 2,
+          "east": 2733248.2806,
+          "north": 1223622.0,
+          "foot_cm": 102924.015625,
+          "ground_cm": 102924.015625
+        },
+        {
+          "phase": 2,
+          "east": 2733247.2951,
+          "north": 1223622.0,
+          "foot_cm": 102916.0,
+          "ground_cm": 102916.0
+        },
+        {
+          "phase": 2,
+          "east": 2733246.3096,
+          "north": 1223622.0,
+          "foot_cm": 102908.03125,
+          "ground_cm": 102908.03125
+        },
+        {
+          "phase": 2,
+          "east": 2733245.2943,
+          "north": 1223622.0,
+          "foot_cm": 102901.28125,
+          "ground_cm": 102901.28125
+        },
+        {
+          "phase": 2,
+          "east": 2733244.3089,
+          "north": 1223622.0,
+          "foot_cm": 102895.351562,
+          "ground_cm": 102895.351562
+        },
+        {
+          "phase": 2,
+          "east": 2733243.2936,
+          "north": 1223622.0,
+          "foot_cm": 102889.703125,
+          "ground_cm": 102889.703125
+        },
+        {
+          "phase": 2,
+          "east": 2733242.3083,
+          "north": 1223622.0,
+          "foot_cm": 102884.414062,
+          "ground_cm": 102884.414062
+        },
+        {
+          "phase": 2,
+          "east": 2733241.323,
+          "north": 1223622.0,
+          "foot_cm": 102879.117188,
+          "ground_cm": 102879.117188
+        },
+        {
+          "phase": 2,
+          "east": 2733240.308,
+          "north": 1223622.0,
+          "foot_cm": 102873.664062,
+          "ground_cm": 102873.664062
+        },
+        {
+          "phase": 2,
+          "east": 2733239.3228,
+          "north": 1223622.0,
+          "foot_cm": 102868.375,
+          "ground_cm": 102868.375
+        },
+        {
+          "phase": 2,
+          "east": 2733238.3078,
+          "north": 1223622.0,
+          "foot_cm": 102862.921875,
+          "ground_cm": 102862.921875
+        },
+        {
+          "phase": 2,
+          "east": 2733237.3228,
+          "north": 1223622.0,
+          "foot_cm": 102858.140625,
+          "ground_cm": 102858.140625
+        },
+        {
+          "phase": 2,
+          "east": 2733236.3079,
+          "north": 1223622.0,
+          "foot_cm": 102853.453125,
+          "ground_cm": 102853.453125
+        }
+      ],
+      "visually_reviewed": [
+        "Start",
+        "CrossEast",
+        "Inside",
+        "Turn",
+        "CrossWest",
+        "Return"
+      ],
+      "files": [
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/Runtime.log",
+          "bytes": 2315615,
+          "sha256": "f57cbe2378039a639a7f6690989fc2347881183113580ddf59a729112969d052"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/Runner.log",
+          "bytes": 459,
+          "sha256": "43565af186093dbb940fa9abb950bba97b0bc68ff794c2990a2668ca97de85cd"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/LandDetail_Start.png",
+          "bytes": 3096568,
+          "sha256": "2303f8a8ef34f819d7d5a12092ace4635ce150f922d1da2abc4a976cf625c7a1"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/LandDetail_CrossEast.png",
+          "bytes": 2868680,
+          "sha256": "a16c34550109521838214e63f14eae8a374ebf5c4334bce564df9cc6c27c7658"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/LandDetail_Inside.png",
+          "bytes": 3004912,
+          "sha256": "0d1cb563b5e65de5ce1b0ea51db10460a25aa15962587c0eab66df5afdbfa4d8"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/LandDetail_Turn.png",
+          "bytes": 3079511,
+          "sha256": "281e9e12f36fd9180be615a68c00b4da866b006d6de0b3b8c0306379985c86bf"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/LandDetail_CrossWest.png",
+          "bytes": 2910730,
+          "sha256": "c76f7506343221f6b288e671dd6b481fc5b5ae631f044d08c57934bdf8b3b833"
+        },
+        {
+          "file": "artifacts/above-water-resident-walk-20261128/TurnResident/LandDetail_Return.png",
+          "bytes": 2959195,
+          "sha256": "ff3c933e0e1d09d27163d24e695e25d8c6f7b58bb0c795698bd227294367c1cd"
+        }
+      ]
+    }
+  ],
+  "memory_from_prior_frozen_captures": [
+    {
+      "condition": "streamed",
+      "stats_mib": {
+        "NaniteStreaming/RootAllocationMB": {
+          "min": 48.0,
+          "max": 48.0,
+          "mean": 48.0,
+          "last": 48.0,
+          "samples": 4607
+        },
+        "NaniteStreaming/RootDataSizeMB": {
+          "min": 40.6875,
+          "max": 40.75,
+          "mean": 40.735673974386806,
+          "last": 40.6875,
+          "samples": 4607
+        }
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125729-491/Capture.csv",
+          "bytes": 10825494,
+          "sha256": "4eab48a36292fcc2e36693bdbfc0c9251e722b378099120e6add9c657141a352"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125729-491/Host.json",
+          "bytes": 4173,
+          "sha256": "22f350a55f60e7bf54af71ccd42faad05f009fea0095c176976cce019a48b73d"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125729-491/Metadata.json",
+          "bytes": 2499,
+          "sha256": "d56858907d3f1f5e340b8d4454a42512090a5c6ac90064f55ae52623ba20aa7f"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125729-491/Summary.json",
+          "bytes": 9554,
+          "sha256": "dd6e9eb88077e9b3d80f21da32cceb3ddec4a08f0191417d1487dae734b1f4af"
+        }
+      ]
+    },
+    {
+      "condition": "resident",
+      "stats_mib": {
+        "NaniteStreaming/RootAllocationMB": {
+          "min": 96.0,
+          "max": 96.0,
+          "mean": 96.0,
+          "last": 96.0,
+          "samples": 4588
+        },
+        "NaniteStreaming/RootDataSizeMB": {
+          "min": 82.25,
+          "max": 82.3125,
+          "mean": 82.29833260680034,
+          "last": 82.25,
+          "samples": 4588
+        }
+      },
+      "files": [
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125930-861/Capture.csv",
+          "bytes": 10783800,
+          "sha256": "d4744d50d7193139215f49a6ca473613f2a3721442386f9116c7b6f88e1e84b6"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125930-861/Host.json",
+          "bytes": 4570,
+          "sha256": "0a36f48d53472ac142309955855dd91c229b2ec4b8752c3a3d7322ff7775bf86"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125930-861/Metadata.json",
+          "bytes": 2501,
+          "sha256": "4a8d891df1037386c5cf882787e1f67a3221f0b549151b1df036fd89e32efc9c"
+        },
+        {
+          "file": "artifacts/perf-shore-1080p-q2-20261128-125930-861/Summary.json",
+          "bytes": 9965,
+          "sha256": "db9ce30d0c8c8e2e4dde8c3cdfad706ff850917e49f9eb0ea8c8d09211277125"
+        }
+      ]
+    }
+  ],
+  "prior_inputs": {
+    "file": "Documentation/LANDSCAPE_NANITE_BOUNDARY_RESULTS.json",
+    "bytes": 41427,
+    "sha256": "235729b9af4e4f1089c4434269e8f0a5cdb04a4757437d44853dbca04dcf8f07"
+  },
+  "failed_regression_case": {
+    "files": [
+      {
+        "file": "artifacts/above-water-resident-walk-20261128/Forward/Runtime.log",
+        "bytes": 510816,
+        "sha256": "cfc42a83314401d4d47ddadf8a171513b4a9e9d320461b87557fc8e26e866bf3"
+      },
+      {
+        "file": "artifacts/above-water-resident-walk-20261128/Forward/Runner.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "artifacts/above-water-resident-walk-20261128/Forward/LandDetail_Start.png",
+        "bytes": 3082884,
+        "sha256": "d44468d854f19b470311b9e8fa3c6a5518d8e8b47ef986474ab5ed13e47a87b5"
+      }
+    ],
+    "cause": "Stationary probe reused TutorialFinishedAt at initial placement for all land-detail tests; Tick returned before movement. Fixed by setting the freeze timestamp only for the stationary variant."
+  },
+  "native_logs": [
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/Build.log",
+      "bytes": 2550,
+      "sha256": "2bfe0f914e1d18480f824634f97bbb459c07d3ac9f3d5bcbebd0a5f906bef4a1"
+    },
+    {
+      "file": "artifacts/above-water-resident-walk-20261128/LocalTests.log",
+      "bytes": 158,
+      "sha256": "661bba6cd53c43ec1f4f3128a59d415185a3de2f996e66b2caa12b36dca0f063"
+    }
+  ],
+  "root_page_slot_bytes": 32768,
+  "two_resident_assets_root_pages": 1330,
+  "two_resident_assets_root_slot_mib": 41.5625,
+  "observed_global_root_pool_delta_mib": 48,
+  "preservation": {
+    "original_landscape_material_files": 121,
+    "frozen_r3_files": 53,
+    "byte_identical": true
+  },
+  "limits": [
+    "Single 105m-scale transect, not all terrain borders or all entrances.",
+    "Screenshots are sampled views, not continuous flash detection or a performance benchmark.",
+    "Turn uses controller camera rotation; ordinary movement, deceleration and contact physics stay active. No manual mouse-input validation.",
+    "Engine CSV measures root-pool allocation and allocator address span, not whole-application VRAM or CPU RootData bytes.",
+    "Editor diagnostic loads source and cloned meshes. Cooked direct-loading memory may differ.",
+    "Existing GC hitches, editor asset size, vegetation loading and above-water art quality remain open.",
+    "No new package, no adoption on all77tiles, accepted underwater world unchanged."
+  ]
+}
